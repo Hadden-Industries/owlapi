@@ -13,6 +13,7 @@ import {
 import { OWLObjectKind } from "../../../model/kinds.js";
 import { IRI } from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
+import { requireTwoDistinctBooleanOperands } from "../../model/setConstructs.js";
 
 import {
   isManchesterKeyword,
@@ -1171,7 +1172,7 @@ export class OWLManchesterSyntaxOWLParser {
     }
     return operands.length === 1
       ? operands[0]
-      : this.#dataFactory.getOWLObjectUnionOf(operands);
+      : this.#dataFactory.getOWLObjectUnionOf(this.#booleanOperands(operands));
   }
 
   #parseConjunction(depth) {
@@ -1189,7 +1190,9 @@ export class OWLManchesterSyntaxOWLParser {
         this.#lexer.consume();
         operands.push(this.#parseThatRestriction(depth));
       }
-      return this.#dataFactory.getOWLObjectIntersectionOf(operands);
+      return this.#dataFactory.getOWLObjectIntersectionOf(
+        this.#booleanOperands(operands),
+      );
     }
     while (this.#isBare("and")) {
       this.#lexer.consume();
@@ -1197,7 +1200,15 @@ export class OWLManchesterSyntaxOWLParser {
     }
     return operands.length === 1
       ? operands[0]
-      : this.#dataFactory.getOWLObjectIntersectionOf(operands);
+      : this.#dataFactory.getOWLObjectIntersectionOf(
+          this.#booleanOperands(operands),
+        );
+  }
+
+  #booleanOperands(operands) {
+    return this.#configuration.parsingMode === "preserve"
+      ? operands
+      : requireTwoDistinctBooleanOperands(operands);
   }
 
   #parseThatRestriction(depth) {

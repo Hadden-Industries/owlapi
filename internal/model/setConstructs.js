@@ -21,6 +21,15 @@ export const minimumTwoSetFields = new Map([
 export const repeatSingleton = (values) =>
   values.length === 1 ? [values[0], values[0]] : values;
 
+/** Enforce parser arity independently of the factory's construction profile. */
+export function requireTwoDistinctBooleanOperands(operands) {
+  const firstKey = operands[0]?.structuralKey();
+  if (!operands.some((operand) => operand.structuralKey() !== firstKey)) {
+    throw new RangeError("operands requires at least 2 value(s)");
+  }
+  return operands;
+}
+
 export const hasNormalizedSingleton = (value) => {
   const pending = [value];
   const seen = new Set();

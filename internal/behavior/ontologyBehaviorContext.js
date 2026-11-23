@@ -45,6 +45,9 @@ const definitions = new Map([
     "normative-v1",
     Object.freeze({
       behaviorProfileId: "normative-v1",
+      objectBooleanExpressionPolicy: Object.freeze({
+        minimumDistinctOperands: 2,
+      }),
       rdfReconstructionPolicy: Object.freeze({
         recoversNamedDatatypeRestrictions: true,
         recoversAnonymousUndeclaredAnnotations: false,
@@ -165,6 +168,9 @@ const definitions = new Map([
     "java-owlapi-5.5.1",
     Object.freeze({
       behaviorProfileId: "java-owlapi-5.5.1",
+      objectBooleanExpressionPolicy: Object.freeze({
+        minimumDistinctOperands: 1,
+      }),
       rdfReconstructionPolicy: Object.freeze({
         recoversNamedDatatypeRestrictions: false,
         recoversAnonymousUndeclaredAnnotations: true,

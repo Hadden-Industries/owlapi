@@ -16,6 +16,7 @@ import { OWLOntology } from "../../model/owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "../../model/owlOntologyLoaderConfiguration.js";
 import { IRI, StructuralSet } from "../../model/structural.js";
 import { normalizeCardinality } from "../model/cardinality.js";
+import { requireTwoDistinctBooleanOperands } from "../model/setConstructs.js";
 import { OntologyBehaviorContext } from "../behavior/ontologyBehaviorContext.js";
 import { readSourceStatementCount } from "../rdfjs/sourceStatementCount.js";
 import { createRdfReadView } from "./rdfReadView.js";
@@ -530,6 +531,7 @@ class OntologyTransaction {
 class RdfGraphInterpreter {
   #metadataPolicy;
   #rdfReconstructionPolicy;
+  #retainsSingletonObjectBooleans;
   #sourceStatementCount;
   #unparsedTriples = [];
   #headerState = RDFOntologyHeaderStatus.PARSED_ZERO_HEADERS;
@@ -622,6 +624,10 @@ class RdfGraphInterpreter {
     ).behaviorProfileDefinition;
     this.#metadataPolicy = behaviorDefinition.rdfParserMetadataPolicy;
     this.#rdfReconstructionPolicy = behaviorDefinition.rdfReconstructionPolicy;
+    this.#retainsSingletonObjectBooleans =
+      configuration.parsingMode === "compatible" &&
+      behaviorDefinition.objectBooleanExpressionPolicy
+        .minimumDistinctOperands === 1;
     this.#sourceStatementCount = sourceStatementCount;
     this.#dataFactory = dataFactory;
     this.#dataset = dataset;
@@ -2665,6 +2671,7 @@ class RdfGraphInterpreter {
       this.#requireListArity(operands, 2, predicate);
     if (
       operands.length === 1 &&
+      !this.#retainsSingletonObjectBooleans &&
       this.#configuration.parsingMode !== "preserve"
     ) {
       return operands[0];
@@ -2680,6 +2687,9 @@ class RdfGraphInterpreter {
             : OWL_VOCABULARY.Nothing,
         ),
       );
+    }
+    if (this.#configuration.parsingMode === "strict") {
+      requireTwoDistinctBooleanOperands(operands);
     }
     return predicate === OWL_VOCABULARY.intersectionOf
       ? this.#dataFactory.getOWLObjectIntersectionOf(operands)

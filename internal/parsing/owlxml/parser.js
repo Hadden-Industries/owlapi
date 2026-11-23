@@ -19,6 +19,7 @@ import {
 } from "../../../io/errors.js";
 import { IRI } from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
+import { requireTwoDistinctBooleanOperands } from "../../model/setConstructs.js";
 import { xmlParserAdapter } from "../xml/xmlParserAdapter.js";
 import { OntologyBehaviorContext } from "../../behavior/ontologyBehaviorContext.js";
 
@@ -936,9 +937,13 @@ export class OWLXMLParser {
       2,
       Number.POSITIVE_INFINITY,
     );
-    return this.#dataFactory[constructor](
-      children.map((child) => this.#parseClassExpression(child, depth + 1)),
+    const operands = children.map((child) =>
+      this.#parseClassExpression(child, depth + 1),
     );
+    if (this.#configuration.parsingMode === "strict") {
+      requireTwoDistinctBooleanOperands(operands);
+    }
+    return this.#dataFactory[constructor](operands);
   }
 
   #parseObjectRestriction(element, depth, constructor, fillerType) {

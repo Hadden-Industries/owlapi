@@ -13,6 +13,7 @@ import {
 } from "../../../io/errors.js";
 import { IRI } from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
+import { requireTwoDistinctBooleanOperands } from "../../model/setConstructs.js";
 import { OntologyBehaviorContext } from "../../behavior/ontologyBehaviorContext.js";
 
 import { decodePrefixedLocalName } from "../lexicalNames.js";
@@ -763,6 +764,9 @@ export class OWLFunctionalSyntaxOWLParser {
     }
     this.#expectType(")");
     this.#requireMinimum(operands, 2, keyword, start);
+    if (this.#configuration.parsingMode === "strict") {
+      requireTwoDistinctBooleanOperands(operands);
+    }
     return this.#dataFactory[constructor](operands);
   }
 

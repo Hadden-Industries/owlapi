@@ -240,6 +240,12 @@ const createSetConstruct = (
     : object;
 };
 
+const objectBooleanMinimumOperands = (factory) =>
+  isSourcePreservingFactory(factory)
+    ? 2
+    : readDataFactoryBehaviorDefinition(factory).objectBooleanExpressionPolicy
+        .minimumDistinctOperands;
+
 export class OWLDataFactory {
   // UNSUPPORTED(OWLAPI parity): The Java OWLDataFactory overload matrix is not
   // reproduced mechanically. The initial 0.1 package exposes one unambiguous JavaScript signature
@@ -498,6 +504,8 @@ export class OWLDataFactory {
       "operands",
       operands,
       CLASS_EXPRESSION_KINDS,
+      undefined,
+      objectBooleanMinimumOperands(this),
     );
   }
 
@@ -516,6 +524,8 @@ export class OWLDataFactory {
       "operands",
       operands,
       CLASS_EXPRESSION_KINDS,
+      undefined,
+      objectBooleanMinimumOperands(this),
     );
   }
 

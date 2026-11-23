@@ -183,6 +183,11 @@ Java RDF metadata reports the observed constant `PARSED_ONE_HEADER` and counts s
 Normative metadata reports actual distinct header count and selected unique triples.
 Both describe the original parse, not later edits or complete source preservation.
 
+In the Java profile, compatible RDF parsing retains object unions and intersections with a single distinct operand.
+Its data factory accepts those constructors, so their structure survives serialization and reload.
+Normative RDF parsing reduces one-item lists to their operand under [OWL 1 DL compatibility in Table 15 of the RDF mapping](https://www.w3.org/TR/owl2-mapping-to-rdf/).
+Source-preservation mode requires at least two entries in the original Boolean list.
+
 Java OWL/XML preserves the released parser's omission of anonymous individuals inside `ObjectOneOf`, including its empty result, and the Java factory accepts an empty enumeration. Normative OWL/XML includes anonymous operands and requires at least one individual, as specified by the [OWL 2 XML serialization schema](https://www.w3.org/TR/owl2-xml-serialization/#sec-xml-schema).
 
 These contracts have paired tests; the older expected-difference receipt retains its original Java revision and is not used as a Java-profile exemption.

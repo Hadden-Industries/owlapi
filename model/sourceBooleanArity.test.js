@@ -1,4 +1,10 @@
-import { OWL2DLProfile, OWLManager, StringDocumentSource } from "../index.js";
+import {
+  OWL2DLProfile,
+  OWLDocumentFormats,
+  OWLManager,
+  StringDocumentSource,
+  StringDocumentTarget,
+} from "../index.js";
 
 const booleanKinds = [
   ["and", "OWLObjectIntersectionOf"],
@@ -152,3 +158,103 @@ describe.each(["krss1", "krss2"])(
     );
   },
 );
+
+describe("RDF Boolean constructor arity", () => {
+  const rdf = `
+    @prefix owl: <http://www.w3.org/2002/07/owl#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix : <urn:owlapi:singleton:> .
+    :ontology a owl:Ontology .
+    :UnionSubject a owl:Class ; rdfs:subClassOf [a owl:Class ; owl:unionOf (:B)] .
+    :IntersectionSubject a owl:Class ; rdfs:subClassOf [a owl:Class ; owl:intersectionOf (:C)] .
+    :PairSubject a owl:Class ; rdfs:subClassOf [a owl:Class ; owl:unionOf (:B :C)] .
+    :LegacySubject a owl:Class ; owl:unionOf (:B) .
+    :B a owl:Class .
+    :C a owl:Class .
+  `;
+  const read = (manager, text, format, parsingMode) =>
+    manager.loadOntologyFromOntologyDocument(
+      new StringDocumentSource(text, { format }),
+      { parsingMode },
+    );
+  const operandCounts = (ontology, kind) =>
+    expressions(ontology, kind)
+      .map(({ operands }) => operands.length)
+      .sort((left, right) => left - right);
+
+  test.each([
+    ["java-owlapi-5.5.1", "compatible", [1, 1, 2], [1]],
+    ["java-owlapi-5.5.1", "strict", [2], []],
+    ["normative-v1", "compatible", [2], []],
+  ])(
+    "%s in %s mode reconstructs the expected unions and intersections",
+    async (behaviorProfileId, parsingMode, union, intersection) => {
+      const manager = OWLManager.createOWLOntologyManager({
+        behaviorProfileId,
+      });
+      const ontology = await read(
+        manager,
+        rdf,
+        OWLDocumentFormats.TURTLE,
+        parsingMode,
+      );
+      expect(operandCounts(ontology, "OWLObjectUnionOf")).toEqual(union);
+      expect(operandCounts(ontology, "OWLObjectIntersectionOf")).toEqual(
+        intersection,
+      );
+    },
+  );
+
+  test.each([
+    ["turtle", rdf.replace("owl:unionOf (:B)", "owl:unionOf (:B :B)")],
+    [
+      "functional",
+      "Ontology(<urn:singleton:strict> SubClassOf(<urn:A> ObjectUnionOf(<urn:B> <urn:B>)))",
+    ],
+    [
+      "owlxml",
+      `<Ontology xmlns="http://www.w3.org/2002/07/owl#" ontologyIRI="urn:singleton:strict">
+        <SubClassOf><Class IRI="urn:A"/><ObjectUnionOf>
+          <Class IRI="urn:B"/><Class IRI="urn:B"/>
+        </ObjectUnionOf></SubClassOf>
+      </Ontology>`,
+    ],
+    [
+      "manchester",
+      "Ontology: <urn:singleton:strict>\nClass: <urn:A>\n SubClassOf: <urn:B> or <urn:B>",
+    ],
+  ])("strict Java %s rejects duplicate-only operands", async (format, text) => {
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    });
+    await expect(read(manager, text, format, "strict")).rejects.toThrow(
+      RangeError,
+    );
+  });
+
+  test.each([OWLDocumentFormats.FUNCTIONAL, OWLDocumentFormats.RDF_XML])(
+    "Java-compatible singleton constructors survive storage in %s",
+    async (format) => {
+      const options = { behaviorProfileId: "java-owlapi-5.5.1" };
+      const manager = OWLManager.createOWLOntologyManager(options);
+      const original = await read(
+        manager,
+        rdf,
+        OWLDocumentFormats.TURTLE,
+        "compatible",
+      );
+      expect(operandCounts(original, "OWLObjectUnionOf")).toEqual([1, 1, 2]);
+      const destination = new StringDocumentTarget();
+      await manager.saveOntology(original, format, destination);
+      const restored = await read(
+        OWLManager.createOWLOntologyManager(options),
+        destination.toString(),
+        format,
+        "compatible",
+      );
+      const keys = (ontology) =>
+        [...ontology.getAxioms()].map((axiom) => axiom.structuralKey()).sort();
+      expect(keys(restored)).toEqual(keys(original));
+    },
+  );
+});
