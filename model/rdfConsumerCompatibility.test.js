@@ -17,6 +17,135 @@ const root = `:root a owl:Ontology; rdfs:label "selected"; owl:imports :a .
 
 describe("bounded RDF consumer compatibility", () => {
   it.each([
+    [":Subject a owl:Class", "rdfs:subClassOf", K.SUBCLASS_OF_AXIOM],
+    [":Subject a owl:Class", "owl:equivalentClass", K.EQUIVALENT_CLASSES_AXIOM],
+    [
+      "_:subject a owl:Class; owl:complementOf :B",
+      "owl:equivalentClass",
+      K.EQUIVALENT_CLASSES_AXIOM,
+      "_:subject",
+    ],
+    [
+      ":Subject a owl:ObjectProperty",
+      "rdfs:domain",
+      K.OBJECT_PROPERTY_DOMAIN_AXIOM,
+    ],
+    [
+      ":Subject a owl:ObjectProperty",
+      "rdfs:range",
+      K.OBJECT_PROPERTY_RANGE_AXIOM,
+    ],
+  ])(
+    "recovers a repeated anonymous class expression annotated through %s %s",
+    async (declaration, predicate, kind, subject = ":Subject") => {
+      const expression =
+        "[a owl:Class; owl:intersectionOf (:A [a owl:Class; owl:complementOf :B])]";
+      const manager = OWLManager.createOWLOntologyManager({
+        behaviorProfileId: "java-owlapi-5.5.1",
+      });
+      const ontology = await manager.loadOntologyFromOntologyDocument(
+        source(`
+      :root a owl:Ontology .
+      :A a owl:Class . :B a owl:Class . :note a owl:AnnotationProperty .
+      ${declaration}; ${predicate} ${expression} .
+      [] a owl:Axiom; owl:annotatedSource ${subject}; owl:annotatedProperty ${predicate};
+        owl:annotatedTarget ${expression}; :note "origin" .
+    `),
+        { parsingMode: "compatible" },
+      );
+      const axioms = [...ontology.getAxioms()].filter(
+        (axiom) => axiom.kind === kind,
+      );
+      expect(axioms).toHaveLength(1);
+      expect(
+        axioms[0].annotations.map(({ value }) => value.lexicalForm),
+      ).toEqual(["origin"]);
+    },
+  );
+
+  it.each([
+    [
+      "an ignored reflexive equivalence",
+      "owl:Thing",
+      "[a owl:Class; owl:intersectionOf ()]",
+      false,
+    ],
+    [
+      "an expression with unrelated constructor triples",
+      ":A",
+      "[a owl:Class; owl:complementOf :B; owl:someValuesFrom :A]",
+      true,
+    ],
+  ])(
+    "keeps the copied annotation unparsed for %s",
+    async (_, subject, expression, emitsAxiom) => {
+      const manager = OWLManager.createOWLOntologyManager({
+        behaviorProfileId: "java-owlapi-5.5.1",
+      });
+      const ontology = await manager.loadOntologyFromOntologyDocument(
+        source(`
+        :root a owl:Ontology .
+        :A a owl:Class . :B a owl:Class . :note a owl:AnnotationProperty .
+        ${subject} a owl:Class; owl:equivalentClass ${expression} .
+        [] a owl:Axiom; owl:annotatedSource ${subject};
+          owl:annotatedProperty owl:equivalentClass;
+          owl:annotatedTarget ${expression}; :note "origin" .
+      `),
+        { parsingMode: "compatible" },
+      );
+      const axioms = [...ontology.getAxiomsByType(K.EQUIVALENT_CLASSES_AXIOM)];
+      expect(axioms).toHaveLength(emitsAxiom ? 1 : 0);
+      expect(axioms.flatMap(({ annotations }) => annotations)).toEqual([]);
+      const unparsed = manager
+        .getOntologyFormat(ontology)
+        .getOntologyLoaderMetaData()
+        .getUnparsedTriples();
+      expect(
+        unparsed.some(
+          ({ predicate }) => predicate.value === "urn:consumer:note",
+        ),
+      ).toBe(true);
+      if (emitsAxiom) {
+        expect(
+          unparsed.filter(
+            ({ predicate }) =>
+              predicate.value ===
+              "http://www.w3.org/2002/07/owl#someValuesFrom",
+          ),
+        ).toHaveLength(2);
+      }
+    },
+  );
+
+  it.each([
+    ["java-owlapi-5.5.1", 0],
+    ["normative-v1", 1],
+  ])(
+    "applies the %s inverse-property axiom annotation policy",
+    async (behaviorProfileId, annotations) => {
+      const manager = OWLManager.createOWLOntologyManager({
+        behaviorProfileId,
+      });
+      const ontology = await manager.loadOntologyFromOntologyDocument(
+        source(`
+      :root a owl:Ontology .
+      :p a owl:ObjectProperty; owl:inverseOf :q .
+      :q a owl:ObjectProperty .
+      :note a owl:AnnotationProperty .
+      [] a owl:Axiom; owl:annotatedSource :p; owl:annotatedProperty owl:inverseOf;
+        owl:annotatedTarget :q; :note "origin" .
+    `),
+        { parsingMode: "compatible" },
+      );
+      const axioms = [...ontology.getAxioms()].filter(
+        ({ kind }) => kind === K.INVERSE_OBJECT_PROPERTIES_AXIOM,
+      );
+      expect(axioms).toHaveLength(1);
+      expect(axioms[0].annotations).toHaveLength(annotations);
+    },
+  );
+
+  it.each([
     [["a"], true],
     [["a", "b"], true],
     [["a"], false],

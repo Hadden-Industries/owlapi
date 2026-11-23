@@ -177,6 +177,8 @@ const definitions = new Map([
         recoversNamedDatatypeRestrictions: false,
         recoversAnonymousUndeclaredAnnotations: true,
         recoversRdfPropertyRolesWithoutDeclarations: true,
+        recoversRepeatedClassExpressionAnnotations: true,
+        defersInverseAxiomsPastAnnotations: true,
         recoversDetachedPropertyChainAnnotations: true,
         separatesReifiedAnnotationAssertions: true,
         recoversDatatypePropertyRanges: true,

@@ -20,6 +20,7 @@ import { requireTwoDistinctBooleanOperands } from "../model/setConstructs.js";
 import { OntologyBehaviorContext } from "../behavior/ontologyBehaviorContext.js";
 import { readSourceStatementCount } from "../rdfjs/sourceStatementCount.js";
 import { createRdfReadView } from "./rdfReadView.js";
+import { repeatedClassExpression } from "./repeatedClassExpression.js";
 import { selectOntologyGraph } from "../rdfjs/graphPolicy.js";
 import { CompactDefaultGraph } from "../rdfjs/compactDefaultGraph.js";
 import {
@@ -74,6 +75,12 @@ const RDF_AXIOM_NODE_TYPES = new Set([
   OWL_VOCABULARY.Annotation,
   OWL_VOCABULARY.Axiom,
   OWL_VOCABULARY.NegativePropertyAssertion,
+]);
+const classExpressionAxiomPredicates = new Set([
+  RDFS_VOCABULARY.subClassOf,
+  RDFS_VOCABULARY.domain,
+  RDFS_VOCABULARY.range,
+  OWL_VOCABULARY.equivalentClass,
 ]);
 const NON_ASSERTION_TYPES = new Set([
   ...RDF_AXIOM_NODE_TYPES,
@@ -547,6 +554,7 @@ class RdfGraphInterpreter {
   #implicitAnnotationDomainIris;
   #axiomReifications = new Map();
   #detachedSubclassRestrictions = new Map();
+  #repeatedClassExpressionReifications = new Map();
   #propertyChainReifications = new Map();
   #retainedAxiomAnnotationBases = new Set();
   #retainedAnnotationBases = new Set();
@@ -2416,10 +2424,23 @@ class RdfGraphInterpreter {
     const recoversDetachedChains =
       recoversDetachedRestrictions &&
       this.#rdfReconstructionPolicy.recoversDetachedPropertyChainAnnotations;
+    const recoversRepeatedClassExpressions =
+      recoversDetachedRestrictions &&
+      this.#rdfReconstructionPolicy.recoversRepeatedClassExpressionAnnotations;
     const explicitChains = new Set();
     const chainReifications = [];
     const subclassTargetsBySource = new Map();
     const checkedSubclassTargets = new Set();
+    const classExpressionTargets = new Map();
+    const exclusiveCopies = new Map();
+    const isExclusiveCopy = (term) => {
+      let exclusive = exclusiveCopies.get(term.value);
+      if (exclusive === undefined) {
+        exclusive = this.#dataset.match(null, null, term, null).size === 1;
+        exclusiveCopies.set(term.value, exclusive);
+      }
+      return exclusive;
+    };
     for (const currentQuad of this.#read.quads) {
       if (
         recoversDetachedChains &&
@@ -2459,18 +2480,25 @@ class RdfGraphInterpreter {
         "owl:annotatedProperty requires an IRI object",
       );
       const nodeKey = termKey(currentQuad.subject);
-      const detachedRestriction =
-        recoversDetachedRestrictions &&
+      const predicate = property.object.value;
+      const hasAnonymousAxiomTarget =
         currentQuad.object.value === OWL_VOCABULARY.Axiom &&
-        property.object.value === RDFS_VOCABULARY.subClassOf &&
-        source.object.termType === "NamedNode"
-          ? this.#findDetachedSubclassRestriction(
-              source.object,
-              target.object,
-              subclassTargetsBySource,
-              checkedSubclassTargets,
-            )
-          : undefined;
+        target.object.termType === "BlankNode";
+      let detachedRestriction;
+      if (
+        recoversDetachedRestrictions &&
+        hasAnonymousAxiomTarget &&
+        source.object.termType === "NamedNode" &&
+        predicate === RDFS_VOCABULARY.subClassOf
+      ) {
+        detachedRestriction = this.#findDetachedSubclassRestriction(
+          source.object,
+          target.object,
+          subclassTargetsBySource,
+          checkedSubclassTargets,
+          isExclusiveCopy,
+        );
+      }
       const key = tripleKey(
         source.object,
         property.object,
@@ -2478,6 +2506,34 @@ class RdfGraphInterpreter {
       );
       if (detachedRestriction)
         this.#detachedSubclassRestrictions.set(nodeKey, detachedRestriction);
+      if (
+        !detachedRestriction &&
+        recoversRepeatedClassExpressions &&
+        hasAnonymousAxiomTarget &&
+        classExpressionAxiomPredicates.has(predicate) &&
+        (source.object.termType === "NamedNode" ||
+          (source.object.termType === "BlankNode" &&
+            predicate === OWL_VOCABULARY.equivalentClass))
+      ) {
+        const repeated = this.#findRepeatedClassExpressionTarget(
+          source.object,
+          predicate,
+          target.object,
+          classExpressionTargets,
+          isExclusiveCopy,
+        );
+        if (repeated) {
+          const baseKey = tripleKey(
+            source.object,
+            property.object,
+            repeated.baseTarget,
+          );
+          const entries =
+            this.#repeatedClassExpressionReifications.get(baseKey) ?? [];
+          entries.push({ ...repeated, node: currentQuad.subject, key });
+          this.#repeatedClassExpressionReifications.set(baseKey, entries);
+        }
+      }
       this.#reificationNodes.add(nodeKey);
       const index =
         currentQuad.object.value === OWL_VOCABULARY.Axiom
@@ -2516,11 +2572,48 @@ class RdfGraphInterpreter {
     }
   }
 
+  #findRepeatedClassExpressionTarget(
+    source,
+    predicate,
+    target,
+    targetCache,
+    isExclusiveCopy,
+  ) {
+    const outgoing = (term) => this.#outgoing(term);
+    const copied = repeatedClassExpression(
+      target,
+      outgoing,
+      termKey,
+      isExclusiveCopy,
+    );
+    if (!copied) return undefined;
+    const key = JSON.stringify([termKey(source), predicate]);
+    let targets = targetCache.get(key);
+    if (!targets) {
+      targets = new Map();
+      for (const { object } of this.#outgoing(source, predicate)) {
+        if (object.termType !== "BlankNode") continue;
+        const authored = repeatedClassExpression(object, outgoing, termKey);
+        if (!authored) continue;
+        targets.set(
+          authored.signature,
+          targets.has(authored.signature)
+            ? null
+            : { baseTarget: object, baseQuads: authored.quads },
+        );
+      }
+      targetCache.set(key, targets);
+    }
+    const base = targets.get(copied.signature);
+    return base && { ...base, targetQuads: copied.quads };
+  }
+
   #findDetachedSubclassRestriction(
     source,
     target,
     subclassTargetsBySource,
     checkedSubclassTargets,
+    isExclusiveCopy,
   ) {
     if (
       target.termType !== "BlankNode" ||
@@ -2528,8 +2621,7 @@ class RdfGraphInterpreter {
     )
       return undefined;
     checkedSubclassTargets.add(target.value);
-    if (this.#dataset.match(null, null, target, null).size !== 1)
-      return undefined;
+    if (!isExclusiveCopy(target)) return undefined;
     const targetQuads = this.#outgoing(target);
     const signature = this.#flatRestrictionSignature(targetQuads);
     if (signature === undefined) return undefined;
@@ -2677,6 +2769,45 @@ class RdfGraphInterpreter {
       }
     }
     return annotations;
+  }
+
+  #repeatedClassExpressionReificationsFor(baseQuad) {
+    if (
+      !this.#repeatedClassExpressionReifications.size ||
+      baseQuad.object.termType !== "BlankNode" ||
+      !classExpressionAxiomPredicates.has(baseQuad.predicate.value)
+    )
+      return undefined;
+    const key = tripleKey(
+      baseQuad.subject,
+      baseQuad.predicate,
+      baseQuad.object,
+    );
+    return this.#repeatedClassExpressionReifications.get(key);
+  }
+
+  async #addRepeatedClassExpressionAnnotations(axiom, baseQuad, entries) {
+    const annotations = [];
+    for (const { baseQuads, targetQuads, node, key } of entries) {
+      // Copy only syntax consumed by a class expression on an accepted axiom.
+      if (!baseQuads.every((quad) => this.#isConsumed(quad))) continue;
+      const nested = await this.#nodeAnnotations(node, 0);
+      if (!nested.length) continue;
+      annotations.push(...nested);
+      this.#retainedAxiomAnnotationBases.add(key);
+      for (const quad of targetQuads) this.#consume(quad);
+      if (this.#configuration.collectWarnings) {
+        this.#diagnostics.push({
+          code: "RDF_REPEATED_CLASS_EXPRESSION_ANNOTATION",
+          message:
+            "A repeated class expression was matched to its asserted axiom",
+          severity: "warning",
+          subject: baseQuad.subject.value,
+          predicate: baseQuad.predicate.value,
+        });
+      }
+    }
+    return annotations.length ? axiom.getAnnotatedAxiom(annotations) : axiom;
   }
 
   async #annotationAssertionGroups(baseQuad) {
@@ -2854,7 +2985,17 @@ class RdfGraphInterpreter {
         continue;
       }
       if (axiom) {
-        this.#transaction.addAxiom(axiom);
+        const repeated =
+          this.#repeatedClassExpressionReificationsFor(currentQuad);
+        this.#transaction.addAxiom(
+          repeated
+            ? await this.#addRepeatedClassExpressionAnnotations(
+                axiom,
+                currentQuad,
+                repeated,
+              )
+            : axiom,
+        );
       }
       this.#consume(currentQuad);
       visited += 1;
@@ -3246,15 +3387,31 @@ class RdfGraphInterpreter {
         currentQuad.subject.termType === "NamedNode" &&
         this.#isObjectPropertyTerm(currentQuad.subject)
       ) {
+        // Java processes inverse-property axioms after its annotation pass.
+        const inverseAnnotations =
+          this.#configuration.parsingMode === "compatible" &&
+          this.#rdfReconstructionPolicy.defersInverseAxiomsPastAnnotations
+            ? undefined
+            : annotations;
         axiom = this.#dataFactory.getOWLInverseObjectPropertiesAxiom(
           await this.#objectPropertyExpression(currentQuad.subject, 0),
           await this.#objectPropertyExpression(currentQuad.object, 0),
-          annotations,
+          inverseAnnotations,
         );
       } else {
         continue;
       }
-      this.#transaction.addAxiom(axiom);
+      const repeated =
+        this.#repeatedClassExpressionReificationsFor(currentQuad);
+      this.#transaction.addAxiom(
+        repeated
+          ? await this.#addRepeatedClassExpressionAnnotations(
+              axiom,
+              currentQuad,
+              repeated,
+            )
+          : axiom,
+      );
       this.#consume(currentQuad);
       visited += 1;
       if (visited % CHECK_INTERVAL === 0) {
