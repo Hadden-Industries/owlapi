@@ -369,6 +369,8 @@ test.each([true, false])(
         schemaVersion: 3,
         corpus: {
           baseSchemaVersion: 2,
+          rosterSha256: "7".repeat(64),
+          requiredCount: 1,
           input: {
             source: {
               route: "promoted",
@@ -387,30 +389,35 @@ test.each([true, false])(
           },
         },
       };
-      const faultyBytes = Buffer.from(canonicalJson(faulty));
-      const faultyZip = zipArchive([
-        { path: "manifest.json", content: faultyBytes },
-      ]);
-      checkpoint.files.set("artifact-91.zip", faultyZip);
-      checkpoint.files.set(
-        "origin-10-1-release-qualification-10-1.json",
-        Buffer.from(
-          JSON.stringify({
-            run: releaseRun,
-            artifact: archived(
-              descriptor(91, qualifiedName, faultyZip),
-              releaseRun,
-            ),
-          }),
-        ),
-      );
+      const useArchivedManifest = (manifest) => {
+        const bytes = Buffer.from(canonicalJson(manifest));
+        const zip = zipArchive([{ path: "manifest.json", content: bytes }]);
+        checkpoint.files.set("artifact-91.zip", zip);
+        checkpoint.files.set(
+          "origin-10-1-release-qualification-10-1.json",
+          Buffer.from(
+            JSON.stringify({
+              run: releaseRun,
+              artifact: archived(
+                descriptor(91, qualifiedName, zip),
+                releaseRun,
+              ),
+            }),
+          ),
+        );
+        return { ...env, MANIFEST_SHA256: hash(bytes) };
+      };
       await expect(
-        originalManifest(
-          client,
-          { ...env, MANIFEST_SHA256: hash(faultyBytes) },
-          checkpoint,
-        ),
+        originalManifest(client, useArchivedManifest(faulty), checkpoint),
       ).rejects.toThrow("tarball differs from qualification");
+      faulty.corpus.input.subject.tarballSha256 = record.assets.tarball.sha256;
+      const retained = await originalManifest(
+        client,
+        useArchivedManifest(faulty),
+        checkpoint,
+      );
+      expect(retained.manifest).toEqual(faulty);
+      expect(retained.candidate.archivedBytes).toEqual(candidateZip);
     }
   },
 );

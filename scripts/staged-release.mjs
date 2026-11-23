@@ -1,5 +1,6 @@
 import { REPOSITORY as repo } from "./release-identity.mjs";
 import {
+  assertCorpusQualificationBinding,
   qualificationBaseSchema,
   verifyCorpusQualification,
 } from "./corpus-qualification-manifest.mjs";
@@ -151,6 +152,7 @@ function subject(manifest) {
       "Promoted qualification contains conflicting candidate identities",
     );
   }
+  if (manifest.schemaVersion === 3) assertCorpusQualificationBinding(manifest);
 }
 export function verifyPrivateStage({
   manifest,
@@ -624,8 +626,6 @@ export async function originalManifest(client, env, checkpoint) {
       "Promoted candidate size changed",
     );
   }
-  if (manifest.schemaVersion === 3)
-    await verifyCorpusQualification(manifest, { env });
   return { manifest, candidate, manifestBytes: bytes };
 }
 export async function stageOnce({
@@ -1040,6 +1040,8 @@ async function executeStage(mode, env, beginRequest) {
     intent,
     manifest,
   );
+  if (manifest.schemaVersion === 3)
+    await verifyCorpusQualification(manifest, { env });
   if (mode !== "stage") {
     emit(
       {

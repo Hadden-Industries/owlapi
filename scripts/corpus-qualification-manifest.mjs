@@ -14,17 +14,13 @@ export function parseCorpusArtifactLocator(value) {
 const pick = (object, keys) =>
   Object.fromEntries(keys.map((key) => [key, object[key]]));
 
-async function authenticateHosted(input, env) {
+async function authenticateHosted(input, env, packageVersion) {
   const { readHostedCorpus } = await import("./release-corpus-artifacts.mjs");
-  return readHostedCorpus(input, env);
+  return readHostedCorpus(input, env, packageVersion);
 }
 
-/** Reconcile the original artifacts under the subject admitted by qualification. */
-async function authenticateQualification(
-  manifest,
-  input,
-  { authenticate = authenticateHosted, env },
-) {
+/** Bind the descriptor to the subject admitted by qualification. */
+function assertCandidateBinding(manifest, input) {
   const base = qualificationBaseSchema(manifest);
   assert.ok([1, 2].includes(base), "Unknown corpus qualification base schema");
   const { source, subject } = input;
@@ -60,7 +56,31 @@ async function authenticateQualification(
     ],
     "Corpus artifact or tarball differs from qualification",
   );
-  const result = await authenticate(input, env);
+}
+
+/** Check the retained corpus subject and roster identity without opening live artifacts. */
+export function assertCorpusQualificationBinding(manifest) {
+  assert.equal(
+    manifest.schemaVersion,
+    3,
+    "A corpus-bound qualification manifest is required",
+  );
+  const { corpus } = manifest;
+  assertCandidateBinding(manifest, corpus.input);
+  assert.ok(
+    Number.isSafeInteger(corpus.requiredCount) &&
+      corpus.requiredCount > 0 &&
+      /^[0-9a-f]{64}$/u.test(corpus.rosterSha256),
+    "Invalid retained corpus coverage identity",
+  );
+}
+
+async function authenticateCompleteCorpus(
+  manifest,
+  input,
+  { authenticate = authenticateHosted, env },
+) {
+  const result = await authenticate(input, env, manifest.package.version);
   assert.ok(
     result.status === "complete" &&
       result.missing.length === 0 &&
@@ -76,7 +96,14 @@ async function authenticateQualification(
 /** Record a fully covered subject while the hosted producer is in shadow. */
 export async function sealCorpusQualification(manifest, input, options = {}) {
   assert.ok([1, 2].includes(manifest.schemaVersion));
-  const result = await authenticateQualification(manifest, input, options);
+  assert.equal(typeof options.readCurrentMain, "function");
+  assertCandidateBinding(manifest, input);
+  const result = await authenticateCompleteCorpus(manifest, input, options);
+  assert.equal(
+    await options.readCurrentMain(),
+    manifest.commit,
+    "Protected main changed during corpus qualification",
+  );
   return {
     ...manifest,
     schemaVersion: 3,
@@ -117,13 +144,9 @@ export async function sealCorpusQualification(manifest, input, options = {}) {
 
 /** Recheck the original corpus artifacts at the staging boundary. */
 export async function verifyCorpusQualification(manifest, options = {}) {
-  assert.equal(
-    manifest.schemaVersion,
-    3,
-    "A corpus-bound qualification manifest is required",
-  );
+  assertCorpusQualificationBinding(manifest);
   const { corpus } = manifest;
-  const result = await authenticateQualification(
+  const result = await authenticateCompleteCorpus(
     manifest,
     corpus.input,
     options,

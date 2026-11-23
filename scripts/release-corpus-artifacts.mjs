@@ -33,12 +33,6 @@ const digest = (value) =>
 const revision = (value) =>
   typeof value === "string" && /^[0-9a-f]{40}$/u.test(value);
 const producerFiles = ["verification.json", "report.json"];
-const packageStem = `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}`;
-const candidateFiles = [
-  "SHA256SUMS",
-  `${packageStem}.cdx.json`,
-  `${packageStem}.tgz`,
-];
 const uploadStep = "Upload the verified corpus shard";
 const producerName = (shardId) => `Corpus shadow / ${shardId}`;
 const decode = (bytes) =>
@@ -73,7 +67,15 @@ export async function reconcileHostedCorpus({
   read,
   download,
   now = Date.now(),
+  packageVersion = PACKAGE_VERSION,
 }) {
+  assert.match(packageVersion, /^\d+\.\d+\.\d+(?:-rc\.\d+)?$/u);
+  const packageStem = `${PACKAGE_FILE_STEM}-${packageVersion}`;
+  const candidateFiles = [
+    "SHA256SUMS",
+    `${packageStem}.cdx.json`,
+    `${packageStem}.tgz`,
+  ];
   const { source, subject, oracle, artifacts } = input;
   assert.ok(
     input.schemaVersion === 1 &&
@@ -384,7 +386,11 @@ export async function reconcileHostedCorpus({
   };
 }
 
-export function readHostedCorpus(input, env = process.env) {
+export function readHostedCorpus(
+  input,
+  env = process.env,
+  packageVersion = PACKAGE_VERSION,
+) {
   const budgetMs = 600_000;
   const deadline = performance.now() + budgetMs;
   const read = createRepositoryReader({
@@ -402,5 +408,5 @@ export function readHostedCorpus(input, env = process.env) {
   });
   const download = (artifact, maxBytes) =>
     downloadReleaseArtifact(client, artifact, maxBytes, { deadline });
-  return reconcileHostedCorpus({ input, read, download });
+  return reconcileHostedCorpus({ input, read, download, packageVersion });
 }

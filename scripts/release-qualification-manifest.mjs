@@ -80,6 +80,10 @@ export async function validateReleaseCoordinate({
 async function writeQualification(manifest, env, read) {
   const selected = env.CORPUS_QUALIFICATION_ARTIFACT;
   const sameRunInput = env.CORPUS_QUALIFICATION_INPUT;
+  const readCurrentMain = async () => {
+    await validateReleaseCoordinate({ read, commit: manifest.commit });
+    return (await read("/git/ref/heads/main")).object.sha;
+  };
   assert.ok(
     !(selected && sameRunInput),
     "Choose one source of corpus qualification evidence",
@@ -102,7 +106,10 @@ async function writeQualification(manifest, env, read) {
           downloadReleaseArtifact(client, artifact, maxBytes),
       },
     );
-    manifest = await sealCorpusQualification(manifest, input, { env });
+    manifest = await sealCorpusQualification(manifest, input, {
+      env,
+      readCurrentMain,
+    });
   }
   if (sameRunInput) {
     const input = JSON.parse(readFileSync(sameRunInput, "utf8"));
@@ -112,7 +119,10 @@ async function writeQualification(manifest, env, read) {
       Number(manifest.runId),
       "Fresh corpus proof requires the same run",
     );
-    manifest = await sealCorpusQualification(manifest, input, { env });
+    manifest = await sealCorpusQualification(manifest, input, {
+      env,
+      readCurrentMain,
+    });
   }
   mkdirSync(".release/qualification-manifest", { recursive: true });
   writeFileSync(

@@ -95,7 +95,11 @@ test("the exact descriptor archive must match the selected locator and closed in
   ).rejects.toThrow("does not match the retained artifact");
 });
 
-function fixture(route, selectedShards = [shard]) {
+function fixture(
+  route,
+  selectedShards = [shard],
+  packageVersion = PACKAGE_VERSION,
+) {
   const repo = { id: REPOSITORY_ID, full_name: REPOSITORY };
   const run = {
     id: 84,
@@ -125,7 +129,7 @@ function fixture(route, selectedShards = [shard]) {
       head_repository_id: repo.id,
     },
   });
-  const stem = `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}`;
+  const stem = `${PACKAGE_FILE_STEM}-${packageVersion}`;
   const candidateAttempt = route === "fresh" ? run.run_attempt : 1;
   const tarball = Buffer.from("exact retained candidate bytes");
   const original = zipArchive([
@@ -297,6 +301,7 @@ function fixture(route, selectedShards = [shard]) {
     return {
       input,
       now,
+      packageVersion,
       read: async (path) => {
         const page =
           /^\/actions\/runs\/84\/artifacts\?per_page=100&page=(\d+)$/u.exec(
@@ -391,10 +396,12 @@ test("authenticates a complete simulated two-platform roster across inventory pa
 test.each(["fresh", "promoted"])(
   "%s qualification seals and revalidates the complete roster at staging",
   async (route) => {
-    const replay = fixture(route, plannedShards).request();
+    const version = route === "promoted" ? "0.1.0-rc.7" : PACKAGE_VERSION;
+    const replay = fixture(route, plannedShards, version).request();
     const { source, subject } = replay.input;
     const baseManifest = {
       schemaVersion: route === "fresh" ? 1 : 2,
+      package: { version },
       runId: String(source.runId),
       attempt: String(source.attempt),
       commit: source.commit,
@@ -416,7 +423,9 @@ test.each(["fresh", "promoted"])(
         : {}),
     };
     const options = {
-      authenticate: (input) => reconcileHostedCorpus({ ...replay, input }),
+      authenticate: (input, _env, packageVersion) =>
+        reconcileHostedCorpus({ ...replay, input, packageVersion }),
+      readCurrentMain: async () => source.commit,
     };
     const manifest = await sealCorpusQualification(
       baseManifest,
@@ -427,9 +436,18 @@ test.each(["fresh", "promoted"])(
     expect(qualificationBaseSchema(manifest)).toBe(baseManifest.schemaVersion);
     expect(manifest.corpus.requiredCount).toBe(roster.cells.length);
     expect(manifest.corpus.input.artifacts).toHaveLength(plannedShards.length);
-    expect((await verifyCorpusQualification(manifest, options)).status).toBe(
-      "complete",
-    );
+    const rechecked = await verifyCorpusQualification(manifest, options);
+    expect(rechecked.status).toBe("complete");
+    let head = source.commit;
+    await expect(
+      sealCorpusQualification(baseManifest, replay.input, {
+        authenticate: async () => {
+          head = "9".repeat(40);
+          return rechecked;
+        },
+        readCurrentMain: async () => head,
+      }),
+    ).rejects.toThrow("Protected main changed");
     const changedCandidate = {
       ...manifest,
       assets: { tarball: { sha256: hex("9") } },
