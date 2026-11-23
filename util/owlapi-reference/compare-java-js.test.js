@@ -783,6 +783,10 @@ test("July closure propagation uses the OWL-Time approval only on its exact impo
     scenario: "closure-roundtrip",
   };
   const [selected] = comparisonCases(selection);
+  expect(selected.definition.javaRdfXml).toEqual({
+    addMissingTypes: false,
+    observeDefault: true,
+  });
   const [time] = comparisonCases({
     ...selection,
     input: "july/time.rdf",
@@ -801,6 +805,11 @@ test("July closure propagation uses the OWL-Time approval only on its exact impo
   ]) {
     const [alternate] = comparisonCases({ ...selection, ...variant });
     expect(alternate.definition.expectedDifferences).toBeUndefined();
+    expect(alternate.definition.javaRdfXml).toEqual(
+      variant.input === "july/reference-data"
+        ? selected.definition.javaRdfXml
+        : undefined,
+    );
   }
 });
 

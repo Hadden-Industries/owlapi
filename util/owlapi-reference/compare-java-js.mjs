@@ -495,12 +495,12 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
     return selectedScenarios.flatMap((scenario) =>
       profiles.map((profile) => {
         let expectedDifferences;
-        if (
+        const normativeJuly =
           oracle &&
           policy === "recorded" &&
           profile.behaviorProfileId === normativeProfile &&
-          profile.parsingMode === "compatible"
-        ) {
+          profile.parsingMode === "compatible";
+        if (normativeJuly) {
           if (
             scenario === "direct-load" &&
             input.source.path === julyTimePath
@@ -558,6 +558,9 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             : {}),
           ...(request.javaTurtle ? { javaTurtle: request.javaTurtle } : {}),
           ...(expectedDifferences ? { expectedDifferences } : {}),
+          ...(normativeJuly && input.closure && scenario === "closure-roundtrip"
+            ? { javaRdfXml: { addMissingTypes: false, observeDefault: true } }
+            : {}),
           ...(scenario === "direct-load" &&
           input.id === originalIdmp.id &&
           input.sha256 === originalIdmp.sha256 &&
@@ -845,12 +848,19 @@ async function caseVerdict(definition, measurements, js, native, performance) {
   const completedRequestedStages =
     definition.scenario !== "closure-roundtrip" ||
     completedClosureStages(js, native);
+  const matchedWriter =
+    !definition.javaRdfXml ||
+    (native.javaRdfXmlRoundTrip?.addMissingTypes ===
+      definition.javaRdfXml.addMissingTypes &&
+      native.javaDefaultRdfXmlRoundTrip?.addMissingTypes === true &&
+      typeof native.javaDefaultRdfXmlRoundTrip.write?.status === "string");
   const behavior =
     matchedProfiles &&
     matchedDocument &&
     matchedLoader &&
     matchedLoadSequence &&
     completedRequestedStages &&
+    matchedWriter &&
     expectedLoad &&
     offline
       ? "observed"
@@ -1123,6 +1133,7 @@ async function observeCase(
       : {}),
     ...(definition.javaXml ? { javaXml: definition.javaXml } : {}),
     ...(definition.javaTurtle ? { javaTurtle: definition.javaTurtle } : {}),
+    ...(definition.javaRdfXml ? { javaRdfXml: definition.javaRdfXml } : {}),
   };
   try {
     const model = js.functional?.artifact;
@@ -1331,6 +1342,7 @@ async function verifyWorkerArtifacts(directory, js, native) {
     js.rdfXmlReload?.functional,
     native.javaModel,
     native.javaRdfXmlRoundTrip?.write,
+    native.javaDefaultRdfXmlRoundTrip?.write,
     native.loadPublicationFixture,
   ];
   for (const output of outputs) {

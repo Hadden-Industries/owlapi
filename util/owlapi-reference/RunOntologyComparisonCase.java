@@ -257,9 +257,20 @@ public final class RunOntologyComparisonCase {
                     result.put("structure", blocked("Java closure merge failed"));
                     return result;
                 }
+                var writer = new RDFXMLDocumentFormat();
+                JsonNode rdfXml = request.path("javaRdfXml");
+                var logicalBase = request.required("document").required("documentIRI").asText();
+                if (rdfXml.isObject()) {
+                    writer.setAddMissingTypes(rdfXml.required("addMissingTypes").asBoolean());
+                    if (rdfXml.required("observeDefault").asBoolean()) {
+                        result.put("javaDefaultRdfXmlRoundTrip", roundTripRdfXml(
+                            merger, expected, resultPath.resolveSibling("java-default-closure.rdf"),
+                            logicalBase, configuration, new RDFXMLDocumentFormat()));
+                    }
+                }
                 result.put("javaRdfXmlRoundTrip", roundTripRdfXml(
                     merger, expected, resultPath.resolveSibling("java-closure.rdf"),
-                    request.required("document").required("documentIRI").asText(), configuration));
+                    logicalBase, configuration, writer));
             }
             if (request.path("functionalPath").isNull() || request.path("functionalPath").isMissingNode()) {
                 Path sourceModel = resultPath.resolveSibling("java-direct.ofn");
@@ -666,11 +677,12 @@ public final class RunOntologyComparisonCase {
     }
 
     private static Map<String, Object> roundTripRdfXml(OWLOntologyManager manager, OWLOntology original,
-        Path output, String logicalBase, OWLOntologyLoaderConfiguration configuration) {
+        Path output, String logicalBase, OWLOntologyLoaderConfiguration configuration, RDFXMLDocumentFormat format) {
         Map<String, Object> stages = new LinkedHashMap<>();
+        stages.put("addMissingTypes", format.isAddMissingTypes());
         try {
             try (OutputStream stream = Files.newOutputStream(output, StandardOpenOption.CREATE_NEW)) {
-                manager.saveOntology(original, new RDFXMLDocumentFormat(), stream);
+                manager.saveOntology(original, format, stream);
             }
             stages.put("write", Map.of("status", "completed", "artifact", pin(output)));
         } catch (Exception failure) {

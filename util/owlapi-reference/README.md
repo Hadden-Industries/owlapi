@@ -103,6 +103,8 @@ The stock IDMP refusal has a required behavior cell and a recorded reason for th
 The normative July core and extended closures apply the OWL-Time approvals to their exact compared member.
 Java then merges the verified JavaScript models and compares that merge with the JavaScript closure.
 Both RDF/XML writer and reload results still contribute independent verdicts.
+The four normative July closures explicitly disable native missing-type generation for the structural check.
+The separate native default result retains the added declarations and its own reload verdict.
 
 The official released Java OWLAPI 5.5.1 oracle, historical source-build pins and frozen performance timings retain their distinct identities.
 Use [the 0.1.0 roadmap](../../docs/plans/2026-10-29-0.1.0-release-reconciliation.md#4-java-toolchain-and-oracle-migration) to select the appropriate oracle and preserve old evidence.
