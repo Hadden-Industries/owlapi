@@ -49,4 +49,30 @@ describe("ontology identity across RDF document preparation and reconstruction",
       );
     },
   );
+
+  it("keeps a consumed ontology type triple out of the ontology annotations", async () => {
+    const document = `<rdf:RDF
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:owl="http://www.w3.org/2002/07/owl#"
+      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+      <owl:Ontology rdf:about="${ONTOLOGY_IRI}">
+        <rdfs:label>Example ontology</rdfs:label>
+      </owl:Ontology>
+      <owl:AnnotationProperty rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    </rdf:RDF>`;
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    });
+
+    const ontology = await manager.loadOntologyFromOntologyDocument(
+      new StringDocumentSource(document, {
+        contentType: "application/rdf+xml",
+      }),
+    );
+
+    expect(ontology.getOntologyID().ontologyIRI?.value).toBe(ONTOLOGY_IRI);
+    expect(
+      [...ontology.getAnnotations()].map(({ property }) => property.iri.value),
+    ).toEqual(["http://www.w3.org/2000/01/rdf-schema#label"]);
+  });
 });

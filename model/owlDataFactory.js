@@ -1099,7 +1099,9 @@ export class OWLDataFactory {
     );
     if (
       normalizedObjectProperties.length + normalizedDataProperties.length ===
-      0
+        0 &&
+      !readDataFactoryBehaviorDefinition(this).rdfReconstructionPolicy
+        .allowsEmptyHasKey
     ) {
       throw new RangeError("OWLHasKeyAxiom requires at least one property");
     }

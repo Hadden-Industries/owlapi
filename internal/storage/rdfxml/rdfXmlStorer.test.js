@@ -95,6 +95,60 @@ const requireRepresentabilityFailure = async (
 };
 
 describe("manager-selected lossless RDF/XML storage", () => {
+  it.each(["normative-v1", "java-owlapi-5.5.1"])(
+    "preserves an ontology IRI with a nonempty fragment in %s",
+    async (behaviorProfileId) => {
+      const options = { behaviorProfileId };
+      const manager = OWLManager.createOWLOntologyManager(options);
+      const ontology = await read(
+        manager,
+        `Ontology(<https://example.org/ontology#core> <https://example.org/ontology#core-1>
+  Declaration(Class(<https://example.org/ontology#Member>))
+)`,
+      );
+      const target = new StringDocumentTarget();
+      await manager.saveOntology(ontology, OWLDocumentFormats.RDF_XML, target);
+      const output = target.toString();
+      expect(output).toContain('xmlns="https://example.org/ontology#"');
+      const reloaded = await read(
+        OWLManager.createOWLOntologyManager(options),
+        output,
+      );
+      expect(compareOntologies(ontology, reloaded)).toEqual({
+        equal: true,
+        mismatch: null,
+      });
+    },
+  );
+
+  it("retains supported generic property roles without introducing declarations", async () => {
+    const options = { behaviorProfileId: "java-owlapi-5.5.1" };
+    const manager = OWLManager.createOWLOntologyManager(options);
+    const ontology = await read(
+      manager,
+      `Ontology(<urn:rdf-property-test>
+  Declaration(Class(<urn:rdf-property-test:Domain>))
+  AnnotationPropertyDomain(<urn:rdf-property-test:annotation> <urn:rdf-property-test:Domain>)
+  AnnotationAssertion(<urn:rdf-property-test:metadata> <urn:rdf-property-test:annotation> <urn:rdf-property-test:Value>)
+  ObjectPropertyDomain(<urn:rdf-property-test:object> <urn:rdf-property-test:Domain>)
+  ObjectPropertyRange(<urn:rdf-property-test:object> <urn:rdf-property-test:Domain>)
+)`,
+    );
+    const target = new StringDocumentTarget();
+    await manager.saveOntology(ontology, OWLDocumentFormats.RDF_XML, target);
+    const reloader = OWLManager.createOWLOntologyManager(options);
+    const source = new StringDocumentSource(target.toString(), {
+      format: OWLDocumentFormats.RDF_XML,
+    });
+    const reloaded = await reloader.loadOntologyFromOntologyDocument(source, {
+      parsingMode: "compatible",
+    });
+    expect(compareOntologies(ontology, reloaded)).toEqual({
+      equal: true,
+      mismatch: null,
+    });
+  });
+
   it("retains the exhaustive native Java oracle fixture's direct structure", async () => {
     const java = JSON.parse(
       readFileSync(

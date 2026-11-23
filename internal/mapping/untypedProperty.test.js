@@ -31,13 +31,19 @@ const document = (body) => `
   </rdf:RDF>
 `;
 
-const load = (body, parsingMode = "compatible") =>
-  OWLManager.createOWLOntologyManager().loadOntologyGraphFromOntologyDocument(
+const load = (
+  body,
+  parsingMode = "compatible",
+  behaviorProfileId = "normative-v1",
+) =>
+  OWLManager.createOWLOntologyManager({
+    behaviorProfileId,
+  }).loadOntologyGraphFromOntologyDocument(
     new StringDocumentSource(document(body), {
       contentType: "application/rdf+xml",
       fileName: "untyped.rdf",
     }),
-    new OWLOntologyLoaderConfiguration({ parsingMode }),
+    new OWLOntologyLoaderConfiguration({ parsingMode, behaviorProfileId }),
   );
 
 const declaredCategories = (ontology) => {
@@ -50,6 +56,32 @@ const declaredCategories = (ontology) => {
   }
   return [...categories];
 };
+
+it.each([
+  ["http://www.w3.org/2001/XMLSchema#decimal", "OWLDataProperty"],
+  ["urn:test:Target", "OWLObjectProperty"],
+])(
+  "recovers the Java range and domain of malformed rdfs:Property with %s",
+  async (range, kind) => {
+    const body = `<rdfs:Property rdf:about="urn:test:untypedProperty">
+    <rdfs:range rdf:resource="${range}"/>
+    <rdfs:domain rdf:resource="urn:test:Target"/>
+  </rdfs:Property>`;
+    const { ontology } = await load(body, "compatible", "java-owlapi-5.5.1");
+    const axioms = [...ontology.getAxioms()];
+    expect(axioms).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ kind: kind + "DomainAxiom" }),
+        expect.objectContaining({ kind: kind + "RangeAxiom" }),
+      ]),
+    );
+    expect(declaredCategories(ontology)).toEqual([]);
+    const normative = await load(body);
+    expect([...normative.ontology.getAxioms()]).not.toContainEqual(
+      expect.objectContaining({ kind: kind + "DomainAxiom" }),
+    );
+  },
+);
 
 describe("bare rdf:Property declarations", () => {
   it("recovers a literal-ranged property as a data property", async () => {

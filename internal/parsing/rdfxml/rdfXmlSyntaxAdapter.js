@@ -392,6 +392,7 @@ const closingTagIdentity = (text, start, end, configuration) => {
 const validateXmlStructure = (text, configuration, execution) => {
   const elements = [];
   const startTags = [];
+  let parseTypeOffset = text.indexOf("parseType");
   let offset = 0;
   let root;
   let rootCount = 0;
@@ -495,7 +496,17 @@ const validateXmlStructure = (text, configuration, execution) => {
 
     const end = startTagEnd(text, offset, configuration);
     const identity = startTagIdentity(text, offset, end, configuration);
-    startTags.push({ end, start: offset });
+    // The normalization pass only reads spans that could contain a parseType
+    // attribute. Ordinary RDF elements do not need retained span records.
+    while (parseTypeOffset !== -1 && parseTypeOffset < offset) {
+      parseTypeOffset = text.indexOf(
+        "parseType",
+        parseTypeOffset + "parseType".length,
+      );
+    }
+    if (parseTypeOffset !== -1 && parseTypeOffset < end) {
+      startTags.push({ end, start: offset });
+    }
     if (elements.length === 0) {
       rootCount += 1;
       if (rootCount > 1) {

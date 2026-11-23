@@ -62,11 +62,17 @@ export class RDFXMLParser {
   }
 
   async #prepare(source, transaction, configuration) {
-    const syntax = await this.#readSyntax(source, transaction, configuration);
-    const prepared = await syntax.translator.prepare(
+    let syntax = await this.#readSyntax(source, transaction, configuration);
+    const prefixes = Object.fromEntries(
+      readRdfXmlSourcePrefixes(syntax.dataset),
+    );
+    const preparation = syntax.translator.prepare(
       syntax.dataset,
       syntax.options,
     );
+    // eslint-disable-next-line no-useless-assignment -- Release this reference while declaration discovery runs on the projected graph.
+    syntax = undefined;
+    const prepared = await preparation;
     transaction.setOntologyID(prepared.ontology.getOntologyID());
     await transaction.addImportsDeclarations(
       prepared.ontology.getImportsDeclarations(),
@@ -81,21 +87,26 @@ export class RDFXMLParser {
         this.#populateTransaction(
           await prepared.reconstruct(declarations, sourceRoles),
           completedTransaction,
-          syntax.dataset,
+          prefixes,
         ),
     };
   }
 
   async parse(source, transaction, configuration) {
-    const syntax = await this.#readSyntax(source, transaction, configuration);
-    return this.#populateTransaction(
-      await syntax.translator.translate(syntax.dataset, syntax.options),
-      transaction,
-      syntax.dataset,
+    let syntax = await this.#readSyntax(source, transaction, configuration);
+    const prefixes = Object.fromEntries(
+      readRdfXmlSourcePrefixes(syntax.dataset),
     );
+    const translation = syntax.translator.translate(
+      syntax.dataset,
+      syntax.options,
+    );
+    // eslint-disable-next-line no-useless-assignment -- Release this reference while OWL reconstruction runs on the projected graph.
+    syntax = undefined;
+    return this.#populateTransaction(await translation, transaction, prefixes);
   }
 
-  async #populateTransaction(translated, transaction, dataset) {
+  async #populateTransaction(translated, transaction, prefixes) {
     const { context, ontology } = translated;
 
     transaction.setOntologyID(ontology.getOntologyID());
@@ -107,9 +118,7 @@ export class RDFXMLParser {
     for (const diagnostic of context.diagnostics) {
       transaction.addDiagnostic(diagnostic);
     }
-    transaction.setPrefixes(
-      Object.fromEntries(readRdfXmlSourcePrefixes(dataset)),
-    );
+    transaction.setPrefixes(prefixes);
     const documentFormat = OWLDocumentFormats.RDF_XML;
     const loadedFormat = context.loaderMetaData
       ? documentFormat.withOntologyLoaderMetaData(context.loaderMetaData)

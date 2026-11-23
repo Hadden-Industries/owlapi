@@ -1,4 +1,8 @@
-import { OWLObjectKind } from "../../model/index.js";
+import {
+  OWLDataFactory,
+  OWLObjectKind,
+  OWLOntologyLoaderConfiguration,
+} from "../../model/index.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../rdfjs/environment.js";
 import { RdfToOwlTranslator } from "./rdfToOwlTranslator.js";
 
@@ -31,6 +35,107 @@ const expectAxiomCount = (ontology, kind, size = 1) =>
   expect(ontology.getAxiomsByType(kind)).toHaveProperty("size", size);
 
 describe("RdfToOwlTranslator axiom reconstruction", () => {
+  it.each([
+    ["java-owlapi-5.5.1", [["first source"], ["second source"]]],
+    ["normative-v1", [["first source", "second source"]]],
+  ])(
+    "applies %s annotation assertion reification grouping",
+    async (behaviorProfileId, expected) => {
+      const subject = nn(`${EX}subject`);
+      const property = nn(`${EX}definition`);
+      const value = literal("One definition");
+      const reification = (name, citation) => {
+        const node = bn(name);
+        return [
+          declaration(node, `${OWL}Axiom`),
+          q(node, nn(`${OWL}annotatedSource`), subject),
+          q(node, nn(`${OWL}annotatedProperty`), property),
+          q(node, nn(`${OWL}annotatedTarget`), value),
+          q(node, nn(`${RDFS}label`), literal(citation)),
+        ];
+      };
+      const input = datasetOf(
+        declaration(subject, `${OWL}Class`),
+        declaration(property, `${OWL}AnnotationProperty`),
+        q(subject, property, value),
+        reification("first-reification", "first source"),
+        reification("second-reification", "second source"),
+      );
+      const translator = new RdfToOwlTranslator({
+        dataFactory: new OWLDataFactory({ behaviorProfileId }),
+      });
+      const { ontology } = await translator.translate(input, {
+        configuration: new OWLOntologyLoaderConfiguration({
+          behaviorProfileId,
+          parsingMode: "compatible",
+        }),
+      });
+
+      const axioms = [
+        ...ontology.getAxiomsByType(OWLObjectKind.ANNOTATION_ASSERTION_AXIOM),
+      ];
+      expect(
+        axioms
+          .map(({ annotations }) =>
+            annotations.map(({ value }) => value.lexicalForm).sort(),
+          )
+          .sort(),
+      ).toEqual(expected);
+    },
+  );
+
+  it.each([
+    ["java-owlapi-5.5.1", ["defining chain"]],
+    ["normative-v1", []],
+  ])(
+    "applies %s property-chain reification semantics",
+    async (behaviorProfileId, expected) => {
+      const first = nn(`${EX}first`);
+      const second = nn(`${EX}second`);
+      const superProperty = nn(`${EX}superProperty`);
+      const propertyChain = nn(`${OWL}propertyChainAxiom`);
+      const chain = rdfList("base-chain", [first, second]);
+      const detached = rdfList("annotation-chain", [first, second]);
+      const reversed = rdfList("different-chain", [second, first]);
+      const reification = (name, list, label) => {
+        const node = bn(name);
+        return [
+          declaration(node, `${OWL}Axiom`),
+          q(node, nn(`${OWL}annotatedSource`), superProperty),
+          q(node, nn(`${OWL}annotatedProperty`), propertyChain),
+          q(node, nn(`${OWL}annotatedTarget`), list.head),
+          q(node, nn(`${RDFS}label`), literal(label)),
+          ...list.quads,
+        ];
+      };
+      const input = datasetOf(
+        [first, second, superProperty].map((term) =>
+          declaration(term, `${OWL}ObjectProperty`),
+        ),
+        q(superProperty, propertyChain, chain.head),
+        chain.quads,
+        reification("matching-reification", detached, "defining chain"),
+        reification("mismatching-reification", reversed, "different order"),
+      );
+      const translator = new RdfToOwlTranslator({
+        dataFactory: new OWLDataFactory({ behaviorProfileId }),
+      });
+      const { ontology } = await translator.translate(input, {
+        configuration: new OWLOntologyLoaderConfiguration({
+          behaviorProfileId,
+          parsingMode: "compatible",
+        }),
+      });
+
+      const [axiom] = ontology.getAxiomsByType(
+        OWLObjectKind.SUB_PROPERTY_CHAIN_AXIOM,
+      );
+      expect(axiom.annotations.map(({ value }) => value.lexicalForm)).toEqual(
+        expected,
+      );
+    },
+  );
+
   it("removes the redundant OWL 1 declaration and list types from strict input", async () => {
     const owlClass = nn(`${EX}LegacyClass`);
     const property = nn(`${EX}legacyProperty`);

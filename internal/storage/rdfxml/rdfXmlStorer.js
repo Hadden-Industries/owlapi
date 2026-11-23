@@ -14,7 +14,9 @@ import {
   ResourceLimitError,
 } from "../../../io/errors.js";
 import { StringDocumentSource } from "../../../io/stringDocumentSource.js";
-import { OWL_NAMESPACE } from "../../rdfjs/vocabulary.js";
+import { OWLObjectKind } from "../../../model/kinds.js";
+import { rdfDataFactory } from "../../rdfjs/environment.js";
+import { OWL_NAMESPACE, RDF_VOCABULARY } from "../../rdfjs/vocabulary.js";
 
 import { readAnonymousIndividualRdfNodes } from "../../mapping/owlToRdfTranslator.js";
 
@@ -23,6 +25,71 @@ import { RdfXmlSyntaxAdapter } from "../../parsing/rdfxml/rdfXmlSyntaxAdapter.js
 import { writeRdfXmlGraph } from "./rdfXmlGraphWriter.js";
 import { defaultDocumentStoragePolicy } from "../../behavior/ontologyBehaviorContext.js";
 import { readStorageFormatParameters } from "../storageFormatParameters.js";
+
+function ontologyNamespace(ontologyIRI) {
+  if (!ontologyIRI) return OWL_NAMESPACE;
+  const fragment = ontologyIRI.indexOf("#");
+  if (fragment !== -1) return ontologyIRI.slice(0, fragment + 1);
+  return ontologyIRI.endsWith("/") ? ontologyIRI : `${ontologyIRI}#`;
+}
+
+const namedPropertyKinds = new Set([
+  OWLObjectKind.ANNOTATION_PROPERTY,
+  OWLObjectKind.DATA_PROPERTY,
+  OWLObjectKind.OBJECT_PROPERTY,
+]);
+const rangeKinds = [
+  OWLObjectKind.ANNOTATION_PROPERTY_RANGE_AXIOM,
+  OWLObjectKind.DATA_PROPERTY_RANGE_AXIOM,
+  OWLObjectKind.OBJECT_PROPERTY_RANGE_AXIOM,
+];
+
+function retainGenericPropertyRoles(ontology, dataset) {
+  const declaredProperties = new Set();
+  const declaredClasses = new Set();
+  for (const { entity } of ontology.getAxiomsByType(
+    OWLObjectKind.DECLARATION_AXIOM,
+  )) {
+    if (namedPropertyKinds.has(entity.kind))
+      declaredProperties.add(entity.iri.value);
+    if (entity.kind === OWLObjectKind.CLASS)
+      declaredClasses.add(entity.iri.value);
+  }
+  const ranges = new Map();
+  for (const kind of rangeKinds) {
+    for (const { property, range } of ontology.getAxiomsByType(kind)) {
+      const iri = property.iri?.value;
+      if (!iri || declaredProperties.has(iri)) continue;
+      ranges.set(
+        iri,
+        ranges.get(iri) !== false &&
+          kind === OWLObjectKind.OBJECT_PROPERTY_RANGE_AXIOM &&
+          range.kind === OWLObjectKind.CLASS &&
+          declaredClasses.has(range.iri.value),
+      );
+    }
+  }
+  const recoverable = new Set(
+    [...ranges]
+      .filter(([, objectClassRange]) => objectClassRange)
+      .map(([iri]) => iri),
+  );
+  for (const { property } of ontology.getAxiomsByType(
+    OWLObjectKind.ANNOTATION_PROPERTY_DOMAIN_AXIOM,
+  )) {
+    const iri = property.iri.value;
+    if (!declaredProperties.has(iri) && !ranges.has(iri)) recoverable.add(iri);
+  }
+  // RDF Schema typing supplies the existing loader's recovery cue without
+  // creating an explicit OWL property declaration in the reloaded model.
+  const type = rdfDataFactory.namedNode(RDF_VOCABULARY.type);
+  const genericProperty = rdfDataFactory.namedNode(RDF_VOCABULARY.Property);
+  for (const iri of recoverable) {
+    dataset.add(
+      rdfDataFactory.quad(rdfDataFactory.namedNode(iri), type, genericProperty),
+    );
+  }
+}
 
 /** Private composition seam for testing mapping defects, never a manager option. */
 export const createRdfXmlStorer = ({
@@ -58,17 +125,16 @@ export const createRdfXmlStorer = ({
       try {
         const original = createRdfStorageOntology(snapshot);
         const mappedDataset = map(original);
+        if (documentStoragePolicy.preservesGenericRdfPropertyRoles) {
+          retainGenericPropertyRoles(original, mappedDataset);
+        }
         const ontologyIRI = snapshot.ontologyID.ontologyIRI?.value;
         const text = writeRdfXmlGraph(mappedDataset, writerContext, {
           prefixes:
             format instanceof RDFXMLDocumentFormat
               ? readRdfXmlPrefixes(format)
               : undefined,
-          defaultNamespace: ontologyIRI
-            ? /[#/]$/u.test(ontologyIRI)
-              ? ontologyIRI
-              : `${ontologyIRI}#`
-            : OWL_NAMESPACE,
+          defaultNamespace: ontologyNamespace(ontologyIRI),
           forceXsdString: parameters["force xsd:string on literals"] ?? false,
           anonymousIndividuals: readAnonymousIndividualRdfNodes(mappedDataset),
           documentStoragePolicy,

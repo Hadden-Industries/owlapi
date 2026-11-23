@@ -204,6 +204,30 @@ test("private matched views retain provider method getters without extra reads",
   expect(reads).toBe(expectedReads);
 });
 
+test("matched default-graph reads replay provider term order across subjects", () => {
+  const input = rdfDatasetFactory.dataset([
+    factory.quad(named("a"), named("p"), named("o")),
+    factory.quad(named("b"), named("p"), named("o")),
+    factory.quad(named("c"), named("p"), named("o")),
+    factory.quad(named("a"), named("q"), named("c")),
+  ]);
+  const read = createRdfReadView(input, execution(), true);
+
+  expect(read.quads.map(({ subject }) => subject.value)).toEqual([
+    "urn:a",
+    "urn:a",
+    "urn:b",
+    "urn:c",
+  ]);
+  expect(read.matchedQuads().map(({ subject }) => subject.value)).toEqual([
+    "urn:a",
+    "urn:a",
+    "urn:c",
+    "urn:b",
+  ]);
+  expect(read.matchedQuads()).toEqual([...input.match()]);
+});
+
 test.each(["predicate", "value"])(
   "private singleton views preserve a foreign %s getter and the original checks",
   (field) => {

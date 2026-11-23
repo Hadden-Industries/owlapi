@@ -4,6 +4,7 @@ const empty = Object.freeze([]);
 const nativeDatasetPrototype = Object.getPrototypeOf(
   rdfDatasetFactory.dataset(),
 );
+const NativeDataset = nativeDatasetPrototype.constructor;
 const nativeMatch = nativeDatasetPrototype.match;
 const nativeReadMethods = [
   "match",
@@ -56,6 +57,44 @@ const nativeNamedValue = (term) => {
     return undefined;
   const value = Object.getOwnPropertyDescriptor(term, "value");
   return value && Object.hasOwn(value, "value") ? value.value : undefined;
+};
+
+// A whole-graph match replays the provider's insertion order into a new
+// dataset. Keep its native term ranks and SPO order without rebuilding the
+// three query indexes for a result that will only be iterated.
+const replayDefaultGraphOrder = (quads) => {
+  const ranker = new NativeDataset();
+  const ranks = new Uint32Array(quads.length * 3);
+  const order = new Uint32Array(quads.length);
+  let offset = 0;
+  ranker._addToIndex = () => {};
+  ranker._setQuad = (subject, predicate, object) => {
+    ranks[offset++] = subject;
+    ranks[offset++] = predicate;
+    ranks[offset++] = object;
+  };
+  for (let index = 0; index < quads.length; index += 1) {
+    nativeAdd.call(ranker, quads[index]);
+    order[index] = index;
+  }
+  const compareRanks = (left, right) => {
+    const a = left * 3;
+    const b = right * 3;
+    return (
+      ranks[a] - ranks[b] ||
+      ranks[a + 1] - ranks[b + 1] ||
+      ranks[a + 2] - ranks[b + 2]
+    );
+  };
+  order.sort((left, right) => compareRanks(left, right) || left - right);
+  const ordered = [];
+  for (let index = 0; index < order.length; index += 1) {
+    const current = order[index];
+    if (index + 1 === order.length || compareRanks(current, order[index + 1])) {
+      ordered.push(quads[current]);
+    }
+  }
+  return ordered;
 };
 
 /**
@@ -159,41 +198,56 @@ export function createRdfReadView(
     quads,
     matchedQuads() {
       execution.check();
+      if (matched !== undefined) return matched;
+      const canReplayNativeMatch =
+        nativeProjection &&
+        Object.getPrototypeOf(dataset) === nativeDatasetPrototype &&
+        !("id" in nativeDefaultGraph) &&
+        !Object.hasOwn(nativeDefaultGraph, "termType") &&
+        Object.getPrototypeOf(nativeDefaultGraph) ===
+          nativeDefaultGraphPrototype &&
+        Object.getOwnPropertyDescriptor(nativeDefaultGraphPrototype, "termType")
+          ?.value === "DefaultGraph" &&
+        Object.getOwnPropertyDescriptor(nativeNamedNodePrototype, "termType")
+          ?.value === "NamedNode" &&
+        typeof nativeAdd === "function" &&
+        Object.getOwnPropertyDescriptor(nativeDatasetPrototype, "add")
+          ?.value === nativeAdd &&
+        Object.getOwnPropertyDescriptor(Array.prototype, "values")?.value ===
+          nativeArrayIterator &&
+        Object.getOwnPropertyDescriptor(Array.prototype, Symbol.iterator)
+          ?.value === nativeArrayIterator &&
+        nativeReadMethods.every(
+          ([name, method]) =>
+            typeof method === "function" &&
+            !Object.hasOwn(dataset, name) &&
+            Object.getOwnPropertyDescriptor(nativeDatasetPrototype, name)
+              ?.value === method,
+        );
       // Reindexing retains subject order only when each subject has one quad
       // and the two constant terms never occur as subjects. There is no inner
       // subject order to change, and constants cannot gain an earlier rank.
-      matched ??= collect(
+      const alreadyInReplayOrder =
         uniformNamedSingletons &&
-          uniformPredicate !== undefined &&
-          !singletons.get("NamedNode")?.has(uniformPredicate) &&
-          !singletons.get("NamedNode")?.has(uniformObject) &&
-          !("id" in nativeDefaultGraph) &&
-          !Object.hasOwn(nativeDefaultGraph, "termType") &&
-          Object.getPrototypeOf(nativeDefaultGraph) ===
-            nativeDefaultGraphPrototype &&
-          Object.getOwnPropertyDescriptor(
-            nativeDefaultGraphPrototype,
-            "termType",
-          )?.value === "DefaultGraph" &&
-          Object.getOwnPropertyDescriptor(nativeNamedNodePrototype, "termType")
-            ?.value === "NamedNode" &&
-          typeof nativeAdd === "function" &&
-          Object.getOwnPropertyDescriptor(nativeDatasetPrototype, "add")
-            ?.value === nativeAdd &&
-          Object.getOwnPropertyDescriptor(Array.prototype, "values")?.value ===
-            nativeArrayIterator &&
-          Object.getOwnPropertyDescriptor(Array.prototype, Symbol.iterator)
-            ?.value === nativeArrayIterator &&
-          nativeReadMethods.every(
-            ([name, method]) =>
-              typeof method === "function" &&
-              !Object.hasOwn(dataset, name) &&
-              Object.getOwnPropertyDescriptor(nativeDatasetPrototype, name)
-                ?.value === method,
-          )
-          ? quads
-          : dataset.match(null, null, null, null),
-      );
+        uniformPredicate !== undefined &&
+        !singletons.get("NamedNode")?.has(uniformPredicate) &&
+        !singletons.get("NamedNode")?.has(uniformObject);
+      let ordered;
+      if (canReplayNativeMatch && alreadyInReplayOrder) {
+        ordered = quads;
+      } else if (
+        canReplayNativeMatch &&
+        quads.every(
+          (quad) =>
+            Object.getOwnPropertyDescriptor(quad, "graph")?.value ===
+            nativeDefaultGraph,
+        )
+      ) {
+        ordered = replayDefaultGraphOrder(quads);
+      } else {
+        ordered = dataset.match(null, null, null, null);
+      }
+      matched = collect(ordered);
       return matched;
     },
     outgoing(subject, predicate) {

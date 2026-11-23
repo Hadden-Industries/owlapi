@@ -225,23 +225,30 @@ class ParseTransaction {
   #ontologyID;
   #prefixes;
   #publication;
+  #batchPublicationAxioms;
 
-  constructor(dataFactory, configuration, publication) {
+  constructor(
+    dataFactory,
+    configuration,
+    publication,
+    batchPublicationAxioms = false,
+  ) {
     this.#dataFactory =
       configuration.parsingMode === "preserve"
         ? createSourcePreservingDataFactory(dataFactory)
         : dataFactory;
     this.#configuration = configuration;
     this.#publication = publication;
+    this.#batchPublicationAxioms = batchPublicationAxioms;
   }
 
   getOWLDataFactory() {
     return this.#dataFactory;
   }
 
-  addAxiom(axiom) {
+  #recordAxiom(axiom) {
     if (this.#axioms.has(axiom)) {
-      return;
+      return false;
     }
     if (this.#axioms.size >= this.#configuration.maxAxioms) {
       throw new ResourceLimitError("The ontology axiom limit was exceeded", {
@@ -250,12 +257,28 @@ class ParseTransaction {
       });
     }
     this.#axioms.add(axiom);
-    this.#publication?.addAxiom(axiom);
+    return true;
+  }
+
+  addAxiom(axiom) {
+    if (this.#recordAxiom(axiom)) this.#publication?.addAxiom(axiom);
   }
 
   addAxioms(axioms) {
-    for (const axiom of axioms) {
-      this.addAxiom(axiom);
+    if (!this.#batchPublicationAxioms) {
+      for (const axiom of axioms) this.addAxiom(axiom);
+      return;
+    }
+    // Built-in RDF reconstruction supplies an already validated model. Stage
+    // its synchronous additions together so publication builds the immutable
+    // snapshot once. On a limit failure, publish the accepted prefix.
+    const accepted = [];
+    try {
+      for (const axiom of axioms) {
+        if (this.#recordAxiom(axiom)) accepted.push(axiom);
+      }
+    } finally {
+      if (accepted.length) this.#publication.addAxioms(accepted);
     }
   }
 
@@ -1479,6 +1502,12 @@ export class OWLOntologyManager {
       publication = {
         managedOntology,
         addAxiom: (axiom) => mutate("stageAxiomAddition", axiom),
+        addAxioms: (axioms) => {
+          const draft = ontologyState.createMutationDraft();
+          for (const axiom of axioms) draft.stageAxiomAddition(axiom);
+          ontologyState.preflightMutation(draft);
+          ontologyState.commitMutation(draft);
+        },
         addAnnotation: (annotation) =>
           mutate("stageOntologyAnnotationAddition", annotation),
         addImport: async (declaration) => {
@@ -1522,6 +1551,7 @@ export class OWLOntologyManager {
           this.#dataFactory,
           configuration,
           publication,
+          committed.sourceTrusted,
         );
         await committed.prepared.reconstruct(declarations, reconstructed);
         committed.context = reconstructed.commit(
