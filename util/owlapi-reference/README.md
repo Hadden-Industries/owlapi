@@ -48,6 +48,16 @@ The ten previously local-only prospect inputs use publisher retrieval under the 
 The clearance covers automated fixture retrieval, temporary runner caching and retained test reports.
 The recorded source bytes, document IRIs and import mappings identify those cases.
 
+The 2026-11-23 OBO acquisition records 22 new byte pins from publisher releases or publisher archives.
+Each row retains the historical acquisition reason and reported length alongside its new source.
+The wider suite keeps the recorded request IRI as the logical document base.
+GAZ's verified Zenodo archive declares `http://purl.obolibrary.org/obo/TEMP` in the OWL document.
+GAZ remains available for authorized local replay because the shared HTTPS client receives HTTP 403 from Zenodo.
+The OGG publisher's merged OWL download still returns HTTP 404.
+
+This corpus uses the Human Phenotype Ontology Consortium's HPO release of 2026-09-01.
+Credit [Köhler et al. (2014)](https://doi.org/10.1093/nar/gkt1026) and the [HPO licence](https://human-phenotype-ontology.github.io/license.html).
+
 Set `--cache` and `--output` to absolute paths outside the checkout.
 Select the complete JDK with `--java-home`.
 Local qualification of Temurin `25.0.5.1+2-LTS` uses `--java-selection 25.0.5+1.2`.

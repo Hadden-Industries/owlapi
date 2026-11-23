@@ -6360,267 +6360,408 @@
       "id": "obo-chebi",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 866813815,
+      "sha256": "88fc6f7c48213ea97f9686ff453eecde97dbc24eccf5668ba9cbeabbee96d4aa",
       "documentIRI": "http://purl.obolibrary.org/obo/chebi.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/chebi.owl",
-        "redirects": [
-          "https://purl.obolibrary.org"
-        ]
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chebi/archive/rel256/ontology/chebi.owl.gz",
+        "redirects": [],
+        "archive": {
+          "format": "gzip",
+          "byteLength": 66465865,
+          "sha256": "1c9bca8c9b9dde991c0ee2ed50d2c2ac37e8347c62fc09fb9eaccd86edd2c0f1"
+        }
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 895864911
+      "licenseSource": "https://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/chebi/256/chebi.owl",
+      "releaseEvidence": "https://ftp.ebi.ac.uk/pub/databases/chebi/archive/rel256/ontology/",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 895864911,
+        "source": "https://purl.obolibrary.org/obo/chebi.owl"
+      }
     },
     {
       "id": "obo-cl",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 74743295,
+      "sha256": "d749cde807aa9314026d00b1eba2966a23dcf83872eaa249b03564f1ece3f887",
       "documentIRI": "http://purl.obolibrary.org/obo/cl.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/cl.owl",
+        "url": "https://github.com/obophenotype/cell-ontology/releases/download/v2026-11-13/cl.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 74743295
+      "licenseSource": "http://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/cl/releases/2026-11-13/cl.owl",
+      "releaseEvidence": "https://github.com/obophenotype/cell-ontology/releases/download/v2026-11-13/cl.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 74743295,
+        "source": "https://purl.obolibrary.org/obo/cl.owl"
+      }
     },
     {
       "id": "obo-dron",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 724133638,
+      "sha256": "967e5718bea18c004be492474dc041e83ff028b00cde5be386818ae97a7dd6f5",
       "documentIRI": "http://purl.obolibrary.org/obo/dron.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/dron.owl",
+        "url": "https://github.com/mcwdsi/dron/releases/download/v2026-09-19/dron.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 3.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 724133638
+      "licenseSource": "http://creativecommons.org/licenses/by/3.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/dron/releases/2026-09-19/dron.owl",
+      "releaseEvidence": "https://github.com/mcwdsi/dron/releases/download/v2026-09-19/dron.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 724133638,
+        "source": "https://purl.obolibrary.org/obo/dron.owl"
+      }
     },
     {
       "id": "obo-fbbt",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 120631875,
+      "sha256": "9de076a1d3f4730aaac12421c9dcd16300fa399fcd444d6d022699c7278d3b42",
       "documentIRI": "http://purl.obolibrary.org/obo/fbbt.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/fbbt.owl",
+        "url": "https://github.com/FlyBase/drosophila-anatomy-developmental-ontology/releases/download/v2026-11-02/fbbt.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 120631875
+      "licenseSource": "http://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/fbbt/releases/2026-11-02/fbbt.owl",
+      "releaseEvidence": "https://github.com/FlyBase/drosophila-anatomy-developmental-ontology/releases/download/v2026-11-02/fbbt.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 120631875,
+        "source": "https://purl.obolibrary.org/obo/fbbt.owl"
+      }
     },
     {
       "id": "obo-fypo",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 69341403,
+      "sha256": "b80bec10f3238505f21ee939673c0a23aa9dc4ddd6630272b477b3c3ed0eb513",
       "documentIRI": "http://purl.obolibrary.org/obo/fypo.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/fypo.owl",
+        "url": "https://github.com/pombase/fypo/releases/download/v2026-09-08/fypo.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 69341403
+      "licenseSource": "http://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/fypo/releases/2026-09-08/fypo.owl",
+      "releaseEvidence": "https://github.com/pombase/fypo/releases/download/v2026-09-08/fypo.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 69341403,
+        "source": "https://purl.obolibrary.org/obo/fypo.owl"
+      }
     },
     {
       "id": "obo-gaz",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 1308877129,
+      "sha256": "3961bb86e7b2c364d76ed03cf8b36aac3080b99d8bf578d62bcdc27f702bcc6f",
       "documentIRI": "http://purl.obolibrary.org/obo/gaz.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/gaz.owl",
-        "redirects": [
-          "https://purl.obolibrary.org"
-        ]
+        "url": "https://zenodo.org/api/records/18247183/files/gaz.owl/content",
+        "redirects": []
       },
-      "acquisition": "unavailable",
+      "acquisition": "local-only",
+      "reason": "Zenodo returns HTTP 403 to the shared HTTPS client; a verified local seed is available",
       "licenseLead": "CC0 1.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 1308877129
+      "licenseSource": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "https://zenodo.org/records/18247183",
+      "releaseEvidence": "https://zenodo.org/records/18247183",
+      "declaredOntologyIRI": "http://purl.obolibrary.org/obo/TEMP",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 1308877129,
+        "source": "https://purl.obolibrary.org/obo/gaz.owl"
+      }
     },
     {
       "id": "obo-gno",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 219496016,
+      "sha256": "c5a1d743b9589351233445913ab8b57dd4d1b4f0126467f1e1369f681b76051d",
       "documentIRI": "http://purl.obolibrary.org/obo/gno.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/gno.owl",
+        "url": "https://github.com/glygen-glycan-data/GNOme/releases/download/V2.8.0/GNOme.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 219496016
+      "licenseSource": "https://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/gno/2026-11-16/gno.owl",
+      "releaseEvidence": "https://github.com/glygen-glycan-data/GNOme/releases/download/V2.8.0/GNOme.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 219496016,
+        "source": "https://purl.obolibrary.org/obo/gno.owl"
+      }
     },
     {
       "id": "obo-go",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 129874498,
+      "sha256": "6200169cab2fe30be09aac3cf9c96a84e3193b6a3c6d6e0e53dd05bce74e395c",
       "documentIRI": "http://purl.obolibrary.org/obo/go.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/go.owl",
-        "redirects": [
-          "https://purl.obolibrary.org"
-        ]
+        "url": "https://release.geneontology.org/2026-06-19/ontology/go.owl",
+        "redirects": []
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 129926009
+      "licenseSource": "https://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/go/releases/2026-06-15/go.owl",
+      "releaseEvidence": "https://release.geneontology.org/2026-06-19/",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 129926009,
+        "source": "https://purl.obolibrary.org/obo/go.owl"
+      }
     },
     {
       "id": "obo-hp",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 76854086,
+      "sha256": "8da35ec3b4cb494369b249acb9c2b3874a5a5839a91d5fae74b0d215b355138b",
       "documentIRI": "http://purl.obolibrary.org/obo/hp.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/hp.owl",
+        "url": "https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2026-09-01/hp.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
-      "licenseLead": "hpo",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 76854086
+      "acquisition": "publisher",
+      "licenseLead": "HPO project licence",
+      "licenseSource": "https://human-phenotype-ontology.github.io/license.html",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/hp/releases/2026-09-01/hp.owl",
+      "releaseEvidence": "https://github.com/obophenotype/human-phenotype-ontology/releases/tag/v2026-09-01",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 76854086,
+        "source": "https://purl.obolibrary.org/obo/hp.owl"
+      }
     },
     {
       "id": "obo-mondo",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 255163272,
+      "sha256": "bcb279667af4ee0da10fbf0007703bbe75f862298af593384d21353bbe300937",
       "documentIRI": "http://purl.obolibrary.org/obo/mondo.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/mondo.owl",
+        "url": "https://github.com/monarch-initiative/mondo/releases/download/v2026-11-03/mondo.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 255163272
+      "licenseSource": "http://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/mondo/releases/2026-11-03/mondo.owl",
+      "releaseEvidence": "https://github.com/monarch-initiative/mondo/releases/download/v2026-11-03/mondo.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 255163272,
+        "source": "https://purl.obolibrary.org/obo/mondo.owl"
+      }
     },
     {
       "id": "obo-mp",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 84312711,
+      "sha256": "8bdb5dc2e330369c76413faf91496a4860750f67b0a4a650de17a486a0a5001d",
       "documentIRI": "http://purl.obolibrary.org/obo/mp.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/mp.owl",
+        "url": "https://github.com/mgijax/mammalian-phenotype-ontology/releases/download/v2026-11-18/mp.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 101403062
+      "licenseSource": "http://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/mp/releases/2026-11-18/mp.owl",
+      "releaseEvidence": "https://github.com/mgijax/mammalian-phenotype-ontology/releases/tag/v2026-11-18",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 101403062,
+        "source": "https://purl.obolibrary.org/obo/mp.owl"
+      }
     },
     {
       "id": "obo-ncbitaxon",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 2144127337,
+      "sha256": "3b08aa1dcf115c7953a8dc2f4ec0b91ebd3a3694e18aa42971ae25e069dd0cb5",
       "documentIRI": "http://purl.obolibrary.org/obo/ncbitaxon.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/ncbitaxon.owl",
+        "url": "https://github.com/obophenotype/ncbitaxon/releases/download/v2026-11-09/ncbitaxon.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC0 1.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 2144127337
+      "licenseSource": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncbitaxon/2026-11-09/ncbitaxon.owl",
+      "releaseEvidence": "https://github.com/obophenotype/ncbitaxon/releases/download/v2026-11-09/ncbitaxon.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 2144127337,
+        "source": "https://purl.obolibrary.org/obo/ncbitaxon.owl"
+      }
     },
     {
       "id": "obo-ncit",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 811620064,
+      "sha256": "1f89a02063ff807183dcdc8eac43ef88f65d5eb525cc88709ee8c57fa5f9e780",
       "documentIRI": "http://purl.obolibrary.org/obo/ncit.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/ncit.owl",
+        "url": "https://github.com/ncit-obo-org/ncit-obo-edition/releases/download/v2026-03-19/ncit.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 811620064
+      "licenseSource": "https://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
+      "releaseEvidence": "https://github.com/ncit-obo-org/ncit-obo-edition/releases/tag/v2026-03-19",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 811620064,
+        "source": "https://purl.obolibrary.org/obo/ncit.owl"
+      }
     },
     {
       "id": "obo-oba",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 186767857,
+      "sha256": "30a1cc460563df2c0ab6341e551b93cb7bf1c5aa94759950db389056817a01cf",
       "documentIRI": "http://purl.obolibrary.org/obo/oba.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/oba.owl",
+        "url": "https://github.com/obophenotype/bio-attribute-ontology/releases/download/v2026-10-10/oba.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC0 1.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 186767857
+      "licenseSource": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/oba/releases/2026-10-10/oba.owl",
+      "releaseEvidence": "https://github.com/obophenotype/bio-attribute-ontology/releases/download/v2026-10-10/oba.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 186767857,
+        "source": "https://purl.obolibrary.org/obo/oba.owl"
+      }
     },
     {
       "id": "obo-ogg",
@@ -6645,153 +6786,227 @@
       "id": "obo-pcl",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 209667392,
+      "sha256": "1c168173f88b8f6f9b2798575bc6181c06b21f725d5927d7e2115f5e029c2884",
       "documentIRI": "http://purl.obolibrary.org/obo/pcl.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/pcl.owl",
+        "url": "https://github.com/obophenotype/provisional_cell_ontology/releases/download/v2026-11-16/pcl.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 209667392
+      "licenseSource": "http://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/pcl/releases/2026-11-16/pcl.owl",
+      "releaseEvidence": "https://github.com/obophenotype/provisional_cell_ontology/releases/download/v2026-11-16/pcl.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 209667392,
+        "source": "https://purl.obolibrary.org/obo/pcl.owl"
+      }
     },
     {
       "id": "obo-pr",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 1279414670,
+      "sha256": "b9dc8168e08a24a660f2821a1319aabefb89c80c329a631ff35a688522a63679",
       "documentIRI": "http://purl.obolibrary.org/obo/pr.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/pr.owl",
-        "redirects": [
-          "https://purl.obolibrary.org"
-        ]
+        "url": "https://proconsortium.org/download/release_73.1/pro_reasoned.owl.gz",
+        "redirects": []
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 4.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 1279414670
+      "licenseSource": "http://creativecommons.org/licenses/by/4.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/pr/73.1/pr.owl",
+      "releaseEvidence": "https://proconsortium.org/download/release_73.1/pro_reasoned.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 1279414670,
+        "source": "https://purl.obolibrary.org/obo/pr.owl"
+      }
     },
     {
       "id": "obo-tto",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 70851141,
+      "sha256": "ea11cf0aeb4e588b68caeee28210166f2a4d87a31524dbfefd58e63e85e4f480",
       "documentIRI": "http://purl.obolibrary.org/obo/tto.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/tto.owl",
-        "redirects": [
-          "https://purl.obolibrary.org"
-        ]
+        "url": "https://raw.githubusercontent.com/phenoscape/teleost-taxonomy-ontology/706b2edab28a716b5c4717d59e8dc2c1bfd236ab/tto.owl",
+        "redirects": []
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC0 1.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 67125248
+      "licenseSource": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "https://github.com/phenoscape/teleost-taxonomy-ontology/blob/706b2edab28a716b5c4717d59e8dc2c1bfd236ab/tto.owl",
+      "releaseEvidence": "https://github.com/phenoscape/teleost-taxonomy-ontology/blob/706b2edab28a716b5c4717d59e8dc2c1bfd236ab/tto.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 67125248,
+        "source": "https://purl.obolibrary.org/obo/tto.owl"
+      }
     },
     {
       "id": "obo-uberon",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 96362958,
+      "sha256": "e48e9e6516451be67a46efa156a39e5980d6b651fdcfc92b8de072b698e61600",
       "documentIRI": "http://purl.obolibrary.org/obo/uberon.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/uberon.owl",
+        "url": "https://github.com/obophenotype/uberon/releases/download/v2026-11-05/uberon.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 3.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 96362958
+      "licenseSource": "http://creativecommons.org/licenses/by/3.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/uberon/releases/2026-11-05/uberon.owl",
+      "releaseEvidence": "https://github.com/obophenotype/uberon/releases/download/v2026-11-05/uberon.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 96362958,
+        "source": "https://purl.obolibrary.org/obo/uberon.owl"
+      }
     },
     {
       "id": "obo-upheno",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 445001590,
+      "sha256": "39abd7bdb9f151ab70369e93d6fad805c109e058da0c45ec93ad4c664e32e735",
       "documentIRI": "http://purl.obolibrary.org/obo/upheno.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/upheno.owl",
+        "url": "https://github.com/obophenotype/upheno/releases/download/v2026-10-19/upheno.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC0 1.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 445001590
+      "licenseSource": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/upheno/releases/2026-10-19/upheno.owl",
+      "releaseEvidence": "https://github.com/obophenotype/upheno/releases/download/v2026-10-19/upheno.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 445001590,
+        "source": "https://purl.obolibrary.org/obo/upheno.owl"
+      }
     },
     {
       "id": "obo-vto",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 152582746,
+      "sha256": "962952bc0ed4ad5a000bd3bdac8c6e85dc0ae9cc2a84d4783124cced7362a42f",
       "documentIRI": "http://purl.obolibrary.org/obo/vto.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/vto.owl",
-        "redirects": [
-          "https://purl.obolibrary.org"
-        ]
+        "url": "https://vertebrate-taxonomy-ontology.s3.us-west-2.amazonaws.com/releases/2020-11-13/vto.owl",
+        "redirects": []
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC0 1.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 152582746
+      "licenseSource": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/vto/2020-11-13/vto.owl",
+      "releaseEvidence": "https://obofoundry.org/ontology/vto.html",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 152582746,
+        "source": "https://purl.obolibrary.org/obo/vto.owl"
+      }
     },
     {
       "id": "obo-xpo",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 97539811,
+      "sha256": "04657f8bf0e2f2513aec638a1b1d31fe7e99f75666a246d824627469b0c80349",
       "documentIRI": "http://purl.obolibrary.org/obo/xpo.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/xpo.owl",
+        "url": "https://github.com/obophenotype/xenopus-phenotype-ontology/releases/download/v2025-07-25/xpo.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 3.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 97539811
+      "licenseSource": "http://creativecommons.org/licenses/by/3.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/xpo/releases/2025-07-25/xpo.owl",
+      "releaseEvidence": "https://github.com/obophenotype/xenopus-phenotype-ontology/releases/download/v2025-07-25/xpo.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 97539811,
+        "source": "https://purl.obolibrary.org/obo/xpo.owl"
+      }
     },
     {
       "id": "obo-zp",
       "collection": "obo",
       "suite": "wider",
-      "role": "root",
+      "syntax": "rdfxml",
+      "byteLength": 176700913,
+      "sha256": "7c7ce1930ea2a2d03df11445098dec0728126aaf118174bbcc02f75b50e2c034",
       "documentIRI": "http://purl.obolibrary.org/obo/zp.owl",
       "basePolicy": "recorded-request",
       "source": {
         "kind": "https",
-        "url": "https://purl.obolibrary.org/obo/zp.owl",
+        "url": "https://github.com/obophenotype/zebrafish-phenotype-ontology/releases/download/v2026-11-10/zp.owl",
         "redirects": [
-          "https://purl.obolibrary.org"
+          "https://release-assets.githubusercontent.com"
         ]
       },
-      "acquisition": "unavailable",
+      "acquisition": "publisher",
       "licenseLead": "CC BY 3.0",
-      "reason": "Exceeded original fetch ceiling",
-      "reportedLength": 176700913
+      "licenseSource": "http://creativecommons.org/licenses/by/3.0/",
+      "role": "root",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/zp/releases/2026-11-10/zp.owl",
+      "releaseEvidence": "https://github.com/obophenotype/zebrafish-phenotype-ontology/releases/download/v2026-11-10/zp.owl",
+      "acquiredOn": "2026-11-23",
+      "historicalAcquisition": {
+        "reason": "Exceeded original fetch ceiling",
+        "reportedLength": 176700913,
+        "source": "https://purl.obolibrary.org/obo/zp.owl"
+      }
     }
   ]
 }

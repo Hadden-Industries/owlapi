@@ -282,10 +282,19 @@ test("the reviewed roster preserves all original, closure and held cases", async
     ]),
   );
   const wider = comparisonCases({ suite: "wider", ...named });
-  expect(wider.filter(({ input }) => input.sha256)).toHaveLength(178);
+  expect(wider).toHaveLength(201);
+  expect(wider.filter(({ input }) => input.sha256)).toHaveLength(200);
+  expect(wider.filter(({ input }) => input.historicalAcquisition)).toHaveLength(
+    22,
+  );
   expect(
-    wider.filter(({ input }) => input.acquisition === "unavailable"),
-  ).toHaveLength(23);
+    wider
+      .filter(({ input }) => input.acquisition === "unavailable")
+      .map(({ input }) => input.id),
+  ).toEqual(["obo-ogg"]);
+  expect(
+    corpusQualificationRoster(comparisonCases).held.map(({ input }) => input),
+  ).toEqual(["obo-gaz", "obo-ogg"]);
   expect(comparisonCatalogue.collections).toHaveLength(24);
   expect(comparisonCatalogue.standIns).toHaveLength(57);
   expect(comparisonCases({ suite: "july", ...named })).toHaveLength(11);
