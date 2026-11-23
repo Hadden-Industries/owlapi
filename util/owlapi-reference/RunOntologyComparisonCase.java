@@ -27,14 +27,17 @@ import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.StringDocumentTarget;
 import org.semanticweb.owlapi.io.UnparsableOntologyException;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
+import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.AddOntologyAnnotation;
 import org.semanticweb.owlapi.model.MissingImportHandlingStrategy;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyWriterConfiguration;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider;
 import org.semanticweb.owlapi.util.OWLOntologyMerger;
@@ -85,13 +88,17 @@ public final class RunOntologyComparisonCase {
             throw new IllegalArgumentException("Unexpected OWLAPI implementation version " + version);
         }
         result.put("oracleVersion", version);
-        if (request.path("configuration").isObject()) {
+        if (request.path("configuration").isObject() || request.path("mutation").isObject()) {
             OntologyReferenceContract.configureOfflineDocumentLoading(Map.of());
             try {
-                result.put("configuration", observeConfiguration(request.required("configuration")));
+                if (request.path("configuration").isObject()) {
+                    result.put("configuration", observeConfiguration(request.required("configuration")));
+                } else {
+                    result.put("mutation", observeMutation(request.required("mutation")));
+                }
                 result.put("javaLoad", Map.of("status", "completed"));
             } catch (Exception failure) {
-                result.put("javaLoad", failure("public-configuration", failure));
+                result.put("javaLoad", failure("public-api-behavior", failure));
             }
             result.put("networkAttempts", OntologyReferenceContract.networkAccessAttemptCount());
             result.put("structure", Map.of("status", "not-requested"));
@@ -261,6 +268,48 @@ public final class RunOntologyComparisonCase {
         }
         Files.move(pending, resultPath.resolveSibling("native-source-load.json"),
             StandardCopyOption.ATOMIC_MOVE);
+    }
+
+    // The original mutation probe exercises the public single-axiom removal boundary.
+    @SuppressWarnings("deprecation")
+    private static Map<String, Object> observeMutation(JsonNode recipe) throws Exception {
+        var manager = OWLManager.createOWLOntologyManager();
+        var factory = manager.getOWLDataFactory();
+        var originalId = new OWLOntologyID(IRI.create(recipe.required("ontologyIRI").asText()));
+        var otherId = new OWLOntologyID(IRI.create(recipe.required("otherIRI").asText()));
+        var ontology = manager.createOntology(originalId);
+        var axiom = factory.getOWLDeclarationAxiom(
+            factory.getOWLClass(IRI.create(recipe.required("entityIRI").asText())));
+        String kind = recipe.required("kind").asText();
+        if ("foreign-manager".equals(kind)) {
+            var foreign = OWLManager.createOWLOntologyManager();
+            var add = foreign.addAxiom(ontology, axiom);
+            var rename = foreign.applyChange(new SetOntologyID(ontology, otherId));
+            return Map.of("add", add, "rename", rename, "axiomCount", ontology.getAxiomCount(),
+                "renamed", ontology.getOntologyID().equals(otherId),
+                "ownerFindsOriginal", manager.getOntology(originalId) == ontology,
+                "ownerFindsRenamed", manager.getOntology(otherId) == ontology,
+                "foreignFindsOriginal", foreign.getOntology(originalId) == ontology,
+                "foreignFindsRenamed", foreign.getOntology(otherId) == ontology);
+        }
+        if (!"batch-publication".equals(kind)) throw new IllegalArgumentException("Unknown mutation kind " + kind);
+        var empty = manager.applyChanges(List.of());
+        var add = List.of(manager.addAxiom(ontology, axiom), manager.addAxiom(ontology, axiom));
+        var remove = List.of(manager.removeAxiom(ontology, axiom), manager.removeAxiom(ontology, axiom));
+        var netZero = manager.applyChanges(List.of(new AddAxiom(ontology, axiom), new RemoveAxiom(ontology, axiom)));
+        int netZeroAxiomCount = ontology.getAxiomCount();
+        var occupied = manager.createOntology(otherId);
+        boolean rejected = false;
+        try {
+            manager.applyChanges(List.of(new AddAxiom(ontology, axiom), new SetOntologyID(ontology, otherId)));
+        } catch (RuntimeException failure) {
+            rejected = true;
+        }
+        var collision = Map.of("rejected", rejected, "axiomCount", ontology.getAxiomCount(),
+            "retainsOriginal", ontology.getOntologyID().equals(originalId) && manager.getOntology(originalId) == ontology,
+            "retainsOccupied", manager.getOntology(otherId) == occupied);
+        return Map.of("empty", empty, "add", add, "remove", remove, "netZero", netZero,
+            "netZeroAxiomCount", netZeroAxiomCount, "collision", collision);
     }
 
     private static Map<String, Object> observeConfiguration(JsonNode recipe) {

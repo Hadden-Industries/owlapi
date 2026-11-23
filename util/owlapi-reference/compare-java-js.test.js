@@ -219,19 +219,32 @@ test("public configuration behavior cases bind the supported loader and writer o
     action: "list",
     suite: "public-api-behavior",
   });
-  expect(cases.map(({ input }) => input.id)).toEqual([
+  const configurationCases = cases.filter((item) => item.configuration);
+  expect(configurationCases.map(({ input }) => input.id)).toEqual([
     "configuration/loader",
     "configuration/writer",
   ]);
-  expect(cases.map(({ configuration }) => configuration.decisionId)).toEqual([
-    "BEHAVIOR-LOADER-CONFIGURATION",
-    "BEHAVIOR-WRITER-CONFIGURATION",
-  ]);
+  expect(
+    configurationCases.map(({ configuration }) => configuration.decisionId),
+  ).toEqual(["BEHAVIOR-LOADER-CONFIGURATION", "BEHAVIOR-WRITER-CONFIGURATION"]);
   expect(
     cases.every(
       ({ behaviorProfileId }) => behaviorProfileId === "java-owlapi-5.5.1",
     ),
   ).toBe(true);
+});
+
+test("public mutation cases register batch publication and foreign manager ownership separately", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "public-api-behavior",
+  });
+  const mutationCases = cases.filter((item) => item.mutation);
+  expect(mutationCases.map(({ mutation }) => mutation.decisionId)).toEqual([
+    "BEHAVIOR-MUTATION-PUBLICATION",
+    "BEHAVIOR-FOREIGN-MANAGER-MUTATION",
+  ]);
+  expect(new Set(mutationCases.map(({ caseId }) => caseId)).size).toBe(2);
 });
 
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {

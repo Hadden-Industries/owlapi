@@ -7,6 +7,10 @@ import {
   AddImport,
   IRI,
 } from "./index.js";
+import {
+  mutationComparisonCases,
+  observeMutation,
+} from "../util/owlapi-reference/comparison-mutation.mjs";
 
 const createManager = (behaviorProfileId = "java-owlapi-5.5.1") =>
   OWLManager.createOWLOntologyManager({ behaviorProfileId });
@@ -71,20 +75,20 @@ describe("profile-specific mutation publication", () => {
     expect(manager.getOntology(thirdID)).toBeUndefined();
   });
   test("Java reports enacted changes even when the final axiom set is unchanged", () => {
-    const manager = createManager();
-    const ontology = manager.createOntology();
-    const axiom = declaration(manager);
-    expect(manager.applyChanges([])).toBe("NO_OPERATION");
-    expect(manager.addAxiom(ontology, axiom)).toBe("SUCCESSFULLY");
-    expect(manager.addAxiom(ontology, axiom)).toBe("NO_OPERATION");
-    expect(manager.removeAxiom(ontology, axiom)).toBe("SUCCESSFULLY");
-    expect(
-      manager.applyChanges([
-        new AddAxiom(ontology, axiom),
-        new RemoveAxiom(ontology, axiom),
-      ]),
-    ).toBe("SUCCESSFULLY");
-    expect(ontology.getAxiomCount()).toBe(0);
+    const { caseId, definition } = mutationComparisonCases().find(
+      ({ input }) => input.id === "mutation/batch-publication",
+    );
+    const { mutation } = observeMutation(
+      { OWLManager, AddAxiom, RemoveAxiom, SetOntologyID, IRI },
+      { ...definition, caseId },
+    );
+    expect(mutation).toMatchObject({
+      empty: "NO_OPERATION",
+      add: ["SUCCESSFULLY", "NO_OPERATION"],
+      remove: ["SUCCESSFULLY", "NO_OPERATION"],
+      netZero: "SUCCESSFULLY",
+      netZeroAxiomCount: 0,
+    });
   });
 
   test.each(["java-owlapi-5.5.1", "normative-v1"])(
