@@ -138,6 +138,7 @@ for (const benchmark of benchmarks) {
     },
     outputQuads: [...outputQuads][0],
     shape: benchmark.shape,
+    measurements,
   });
 }
 

@@ -12,11 +12,14 @@ import { OWLDocumentFormats } from "../formats/index.js";
 import { StringDocumentSource, StringDocumentTarget } from "../io/index.js";
 import { OWLObjectKind } from "../model/index.js";
 import { prepareSharedFixtureDirectory } from "./benchmark-owlapi-java-parity.mjs";
-import { observeCurrentJavaToolchain } from "../scripts/java-toolchain.mjs";
+import {
+  javaProcessEnvironment,
+  javaToolchainSelection,
+  observeSelectedJavaJdk,
+} from "../scripts/java-toolchain.mjs";
+import { admitReleasedClasspath } from "./owlapi-reference/comparison-oracle.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const lockPath =
-  "docs/compatibility/profiles/java-owlapi-5.5.1/java-dependencies.lock.json";
 const harnessPath = "util/owlapi-reference/VerifyBenchmarkIoSemantics.java";
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const formats = {
@@ -74,50 +77,42 @@ export function assertDeclarationWorkload(observation, name) {
   assert.deepEqual(observation, expectedDeclarationWorkload(name));
 }
 
-export async function verifyBenchmarkIoSemantics({ classpathFile, javaHome }) {
+export async function verifyBenchmarkIoSemantics({
+  classpathFile,
+  javaHome,
+  javaSelection,
+}) {
   // Resolve once in the caller's context; native children run at repository root.
   // Observation, hashing and execution must refer to the same admitted files.
   javaHome = resolve(javaHome);
-  const lockBytes = readFileSync(join(root, lockPath));
-  const lock = JSON.parse(lockBytes);
-  const jars = readFileSync(resolve(classpathFile), "utf8")
-    .trim()
-    .split(delimiter)
-    .map((path) => resolve(path));
+  const { jars, identity: oracle } = await admitReleasedClasspath({
+    classpathFile: resolve(classpathFile),
+  });
   const classpath = jars.join(delimiter);
-  assert.equal(jars.length, lock.orderedExecutionClasspath.length);
-  for (let index = 0; index < jars.length; index++) {
-    const artifact = lock.artifacts.find(
-      (a) => a.repositoryPath === lock.orderedExecutionClasspath[index],
-    );
-    const bytes = readFileSync(jars[index]);
-    assert.equal(bytes.length, artifact.byteLength);
-    assert.equal(sha256(bytes), artifact.sha256, artifact.repositoryPath);
-  }
-  const executable = (name) =>
-    join(javaHome, "bin", name + (process.platform === "win32" ? ".exe" : ""));
-  const java = observeCurrentJavaToolchain(executable("java"));
+  const jdk = observeSelectedJavaJdk(
+    javaHome,
+    javaSelection === undefined
+      ? undefined
+      : javaToolchainSelection(javaSelection),
+  );
   const fixtures = prepareSharedFixtureDirectory();
   const scratch = mkdtempSync(join(tmpdir(), "owlapi-io-semantics-"));
   const native = (program, args) => {
-    const result = spawnSync(executable(program), args, {
-      cwd: root,
-      encoding: "utf8",
-      timeout: 60000,
-      maxBuffer: 1024 * 1024,
-      windowsHide: true,
-      env: Object.fromEntries(
-        Object.entries(process.env).filter(
-          ([key]) =>
-            ![
-              "JAVA_TOOL_OPTIONS",
-              "JDK_JAVA_OPTIONS",
-              "_JAVA_OPTIONS",
-              "CLASSPATH",
-            ].includes(key.toUpperCase()),
-        ),
-      ),
-    });
+    const result = spawnSync(
+      program === "java" ? jdk.javaPath : jdk.javacPath,
+      [
+        `${program === "javac" ? "-J" : ""}-XX:ErrorFile=${join(scratch, "hs_err_pid%p.log")}`,
+        ...args,
+      ],
+      {
+        cwd: root,
+        encoding: "utf8",
+        timeout: 60000,
+        maxBuffer: 1024 * 1024,
+        windowsHide: true,
+        env: javaProcessEnvironment(),
+      },
+    );
     if (result.error) throw result.error;
     assert.equal(result.status, 0, result.stderr);
   };
@@ -242,8 +237,8 @@ export async function verifyBenchmarkIoSemantics({ classpathFile, javaHome }) {
       schemaVersion: 1,
       scope:
         "Six 100-class declaration I/O groups only; not full API, metadata, malformed-input or byte-for-byte serializer parity. Untimed sinks do not replace historical Java timings.",
-      java,
-      classpathLockSha256: sha256(lockBytes),
+      java: jdk.identity,
+      classpathLockSha256: oracle.lockSha256,
       harnessSha256: sha256(readFileSync(join(root, harnessPath))),
       sinkSha256: sha256(readFileSync(fileURLToPath(import.meta.url))),
       fixtureGeneratorSha256: sha256(
@@ -274,6 +269,7 @@ if (
     options: {
       "classpath-file": { type: "string" },
       "java-home": { type: "string" },
+      "java-selection": { type: "string" },
       output: { type: "string" },
     },
     strict: true,
@@ -283,6 +279,7 @@ if (
   const result = await verifyBenchmarkIoSemantics({
     classpathFile: values["classpath-file"],
     javaHome: values["java-home"],
+    javaSelection: values["java-selection"],
   });
   writeFileSync(
     values.output,

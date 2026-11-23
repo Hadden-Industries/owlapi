@@ -1,11 +1,11 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import { canonicalJson } from "../scripts/canonical-json.mjs";
 
-import {
-  OWLOntologyLoaderConfiguration,
-  StringDocumentSource,
-} from "../io/index.js";
+import { StringDocumentSource } from "../io/index.js";
+import { OWLOntologyLoaderConfiguration } from "../model/index.js";
 import { RdfXmlSyntaxAdapter } from "../internal/parsing/rdfxml/rdfXmlSyntaxAdapter.js";
 import { RdfToOwlTranslator } from "../internal/mapping/rdfToOwlTranslator.js";
 
@@ -64,6 +64,15 @@ const rdfXmlFixtures = benchmarkCorpus.realWorldFixtures.filter(({ id }) =>
   expectations.has(id),
 );
 
+export const benchmarkCorpusInputs = benchmarkCorpus.realWorldFixtures;
+export const rdfXmlCorpusEvidence = rdfXmlFixtures.map((fixture) => ({
+  fixture,
+  expected: {
+    ...expectations.get(fixture.id),
+    strictErrorCode: expectations.get(fixture.id).strictErrorCode ?? null,
+  },
+}));
+
 if (rdfXmlFixtures.length !== expectations.size) {
   throw new Error("The RDF/XML benchmark corpus inventory is incomplete");
 }
@@ -111,19 +120,14 @@ const parse = async (text, fileName, mode) => {
   return { dataset, ...translated };
 };
 
-const results = [];
-for (const fixture of rdfXmlFixtures) {
+/** Exercise the original parser and translator with the exact retained source bytes. */
+export async function observeRdfXmlCorpusFixture(fixture, bytes) {
   const expected = expectations.get(fixture.id);
-  if (!existsSync(fixture.localEvidencePath)) {
-    throw new Error(
-      `Missing pinned corpus input ${fixture.localEvidencePath}; acquire the exact fixture before running this verifier`,
-    );
-  }
-  const bytes = readFileSync(fixture.localEvidencePath);
   const sha256 = createHash("sha256").update(bytes).digest("hex");
   assertEqual(bytes.byteLength, fixture.bytes, `${fixture.id} byte length`);
   assertEqual(sha256, fixture.sha256, `${fixture.id} SHA-256`);
 
+  let strictErrorCode = null;
   if (expected.strictErrorCode) {
     let strictError;
     try {
@@ -136,6 +140,7 @@ for (const fixture of rdfXmlFixtures) {
       expected.strictErrorCode,
       `${fixture.id} strict-mode error code`,
     );
+    strictErrorCode = strictError.code;
   }
 
   const { context, dataset, ontology } = await parse(
@@ -143,7 +148,12 @@ for (const fixture of rdfXmlFixtures) {
     fixture.id,
     expected.mode,
   );
-  const observed = {
+  return {
+    bytes: bytes.byteLength,
+    id: fixture.id,
+    mode: expected.mode,
+    sha256,
+    strictErrorCode,
     axioms: ontology.getAxioms().size,
     classes: ontology.getClassesInSignature().size,
     dataProperties: ontology.getDataPropertiesInSignature().size,
@@ -151,6 +161,20 @@ for (const fixture of rdfXmlFixtures) {
     objectProperties: ontology.getObjectPropertiesInSignature().size,
     quads: dataset.size,
   };
+}
+
+/** Preserve the exact model, diagnostics and typed rejection checks on evidence readback. */
+export function assertRdfXmlCorpusObservation(fixture, observed) {
+  const expected = expectations.get(fixture.id);
+  assertEqual(observed.id, fixture.id, "RDF/XML fixture ID");
+  assertEqual(observed.bytes, fixture.bytes, `${fixture.id} byte length`);
+  assertEqual(observed.sha256, fixture.sha256, `${fixture.id} SHA-256`);
+  assertEqual(observed.mode, expected.mode, `${fixture.id} parsing mode`);
+  assertEqual(
+    observed.strictErrorCode,
+    expected.strictErrorCode ?? null,
+    `${fixture.id} strict-mode error code`,
+  );
   for (const key of [
     "axioms",
     "classes",
@@ -165,25 +189,36 @@ for (const fixture of rdfXmlFixtures) {
     expected.diagnosticCounts,
     `${fixture.id} diagnostic counts`,
   );
-  results.push({
-    bytes: bytes.byteLength,
-    id: fixture.id,
-    mode: expected.mode,
-    sha256,
-    strictErrorCode: expected.strictErrorCode || null,
-    ...observed,
-  });
 }
 
-console.log(
-  JSON.stringify(
-    {
-      corpus: "docs/performance/benchmark-corpus.json",
-      measuredOn: new Date().toISOString(),
-      results,
-      schemaVersion: 1,
-    },
-    null,
-    2,
-  ),
-);
+if (
+  process.argv[1] &&
+  pathToFileURL(resolve(process.argv[1])).href === import.meta.url
+) {
+  const results = [];
+  for (const fixture of rdfXmlFixtures) {
+    if (!existsSync(fixture.localEvidencePath)) {
+      throw new Error(
+        `Missing pinned corpus input ${fixture.localEvidencePath}; acquire the exact fixture before running this verifier`,
+      );
+    }
+    const observation = await observeRdfXmlCorpusFixture(
+      fixture,
+      readFileSync(fixture.localEvidencePath),
+    );
+    assertRdfXmlCorpusObservation(fixture, observation);
+    results.push(observation);
+  }
+  process.stdout.write(
+    JSON.stringify(
+      {
+        corpus: "docs/performance/benchmark-corpus.json",
+        measuredOn: new Date().toISOString(),
+        results,
+        schemaVersion: 1,
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+}

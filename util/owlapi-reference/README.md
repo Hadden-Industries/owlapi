@@ -3,7 +3,76 @@
 ## Current Java execution target
 
 New Java work reads the single [`.java-version`](../../.java-version) selection through the [Java toolchain policy](../../docs/development/java-toolchain.md), which derives native and Windows package spellings.
-That declaration records the exact runtime and shared executable policy used by CI and native validation; historical build observations below retain their original JDK identity.
+That selection governs CI and records the shared executable policy.
+Historical observations below retain their original JDK identities.
+
+## Java/JS comparison
+
+Use `npm run compare:java-js -- list --suite smoke` to inspect the published CGMES and SAREF inputs and the reduced witness.
+`prepare` restores and verifies fixture and JAR bytes.
+`run` uses the verified cache and records the source load, Functional Syntax transport, and native verdict for each case.
+`verify` checks the original worker artifacts against the same requested case set.
+
+The `prospects` suite covers direct loading and the applicable RDF/XML closure round trips.
+Its typed stock IDMP behavior check verifies the Java and JS XML limits and their different import observations.
+`--java-xml historical-idmp` selects a separate native configuration for the exact pinned IDMP input.
+`--java-turtle owlapi` selects a separate case with Java's `TurtleDocumentFormat`.
+Comparisons with exact mapped HTTP imports enable those imports in the normative profile through a local document loader.
+The workers record unexpected network attempts.
+
+Set `--cache` and `--output` to absolute paths outside the checkout.
+Select the complete JDK with `--java-home`.
+Local qualification of Temurin `25.0.5.1+2-LTS` uses `--java-selection 25.0.5+1.2`.
+The release workflows select their shared pin through `.java-version`.
+
+By default on Windows, the comparison command admits one run at a time into a Job Object.
+The default job cap is 3 GiB of committed memory with a 1.5 GiB Node old-space setting.
+Admission checks both available RAM and commit headroom.
+The launcher terminates the job if either drops below the reserve.
+Use `--no-memory-guard` or set `memoryGuard: false` in the `runComparison` environment to disable this job cap.
+Unguarded JS workers inherit the calling process's Node options.
+
+For a larger diagnostic, select one input and provide a process-tree budget and a Node heap that fits inside it.
+The combination `--memory-budget-mib 10240 --node-heap-mib 8192` gives the worker room to profile a representative load when Windows admits that envelope.
+Use `--java-heap-mib` when the JVM needs its own heap limit.
+The large-literal scenario accepts a single test format with `--format turtle` or the corresponding Functional Syntax, RDF/XML, or OWL/XML selection.
+
+Use `--scenario large-literal-rendering` to check the public Manchester object renderer.
+The installed Java-profile renderer and released Java must produce the same quoted 33,554,433-character literal.
+The default JS renderer must return a typed output-byte refusal on that literal.
+
+The `rdfxml-writer` suite uses the same Functional Syntax fixture for seven writer modes.
+Supply `--reference-checkout` with the built historical source revision in `pinned-version.json`.
+The suite checks the original layout and separately uses Java to verify the reloaded structure.
+
+The `canonical-vowl-dl` suite uses the same reference checkout.
+It runs the 20 Functional Syntax input sequences and verifies the native OWL 2 DL verdicts and the JS preserve-mode formal and source assessments against their original expectations.
+
+The `july` suite also selects that historical Java revision.
+It uses the pinned Universal Ontology Git objects and their original catalog mappings.
+Supply the same released classpath or historical reference checkout to `verify` that the selected cases used in `run`.
+
+The `rdfxml-corpus` suite checks the source RDF/XML adapter and translator against the recorded Wine, GeoNames and Schema.org expectations.
+Use `prepare` with `--seed ID=PATH` for the original bytes, then run against the verified cache.
+These observations cover the JavaScript pipeline.
+
+The `format-performance` suite runs the 14 JavaScript format and mapping programs with their original sampling protocols.
+Use `--input` to select a program such as `rdfxml`.
+The suite retains the original samples and reports each program's result independently.
+
+Use `--measure performance` for fresh-process working-set and warmed load samples.
+A ratio requires equivalent untimed structural evidence on the same profile and input.
+Mixed or incomplete loads retain their diagnostic observations.
+The `api-benchmarks` suite carries the 70 generated workload IDs and their raw historical or live observations.
+Use `--benchmark-mode live` when measuring with the selected local JDK.
+
+Use `--scenario strict-first` to measure a separate downstream retry.
+A successful strict load ends the sequence.
+A typed syntax, unsupported-construct or resource refusal starts a compatible load in a fresh manager on the same document.
+The report retains the observed attempts and labels the released Java direct load as a separate diagnostic baseline.
+
+The `release-semantics` selection derives its shadow roster from the catalogue and the recorded hold reasons.
+Its verifier consumes receipts after the producer artifacts and installed candidate have been authenticated.
 
 The official released Java OWLAPI 5.5.1 oracle, historical source-build pins and frozen performance timings retain their distinct identities.
 Use [the 0.1.0 roadmap](../../docs/plans/2026-10-29-0.1.0-release-reconciliation.md#4-java-toolchain-and-oracle-migration) to select the appropriate oracle and preserve old evidence.

@@ -2266,6 +2266,7 @@ export const runJavaBenchmarks = ({
   sharedFixtures = null,
   classpath = resolveDefaultJavaClasspath(),
   sourcePath = DEFAULT_JAVA_SOURCE_PATH,
+  java,
 } = {}) => {
   const ownsFixtures = !sharedFixtures;
   const fixtures = sharedFixtures ?? prepareSharedFixtureDirectory();
@@ -2294,6 +2295,7 @@ export const runJavaBenchmarks = ({
       outputDirectory,
       classpath,
       sourcePath,
+      java,
       arguments: [specPath],
     });
     if (observation.status !== 0) {

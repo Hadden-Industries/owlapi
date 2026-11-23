@@ -1,0 +1,537 @@
+import { expect, test } from "@jest/globals";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { comparisonCases, runComparison } from "./compare-java-js.mjs";
+import { runWindowsComparisonJob } from "./comparison-job.mjs";
+import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
+import {
+  corpusQualificationRoster,
+  reconcileCorpusReceipts,
+} from "./comparison-release-evidence.mjs";
+import {
+  comparisonCatalogue,
+  comparisonWitnesses,
+  resolveComparisonFixture,
+} from "./comparison-fixtures.mjs";
+import { readNativeComparisonResult, sha256 } from "./comparison-evidence.mjs";
+
+async function withScratch(run) {
+  const directory = await mkdtemp(join(tmpdir(), "owlapi-comparison-test-"));
+  try {
+    return await run(directory);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+}
+
+test("the reviewed roster preserves all original, closure and held cases", async () => {
+  const named = { profile: "java-owlapi-5.5.1" };
+  const prospects = comparisonCases({ suite: "prospects", ...named });
+  expect(
+    prospects.filter(({ definition }) => definition.scenario === "direct-load"),
+  ).toHaveLength(47);
+  const closures = prospects
+    .filter(({ definition }) => definition.scenario === "closure-roundtrip")
+    .map(({ input }) => input.id);
+  expect(closures).toHaveLength(31);
+  expect(closures).toEqual(
+    expect.arrayContaining([
+      "eu-epo-core",
+      "entsoe-cgmes-eq",
+      "iof-core",
+      "pistoia-idmp",
+      "ogc-geosparql",
+      "brick-only",
+      "building-smart-ifcowl",
+      "esco-model",
+    ]),
+  );
+  const wider = comparisonCases({ suite: "wider", ...named });
+  expect(wider.filter(({ input }) => input.sha256)).toHaveLength(178);
+  expect(
+    wider.filter(({ input }) => input.acquisition === "unavailable"),
+  ).toHaveLength(23);
+  expect(comparisonCatalogue.collections).toHaveLength(24);
+  expect(comparisonCatalogue.standIns).toHaveLength(57);
+  expect(comparisonCases({ suite: "july", ...named })).toHaveLength(11);
+  for (const { definition } of comparisonCases({ suite: "july", ...named })) {
+    expect(definition.oracle).toEqual({
+      kind: "pinned-source",
+      revision: "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      version: "5.5.1",
+    });
+  }
+  const list = await runComparison({
+    action: "list",
+    suite: "prospects",
+    ...named,
+  });
+  expect(list.cases.map(({ caseId }) => caseId)).toEqual(
+    prospects.map(({ caseId }) => caseId),
+  );
+});
+
+test("the benchmark registry accounts for all 70 workloads under both profiles", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "api-benchmarks",
+  });
+  expect(cases).toHaveLength(140);
+  expect(new Set(cases.map(({ input }) => input)).size).toBe(70);
+  expect(new Set(cases.map(({ caseId }) => caseId)).size).toBe(140);
+  expect(
+    cases.filter(
+      ({ behaviorProfileId }) => behaviorProfileId === "normative-v1",
+    ),
+  ).toHaveLength(70);
+});
+
+test("Manchester literal rendering owns a separate behavior-only release case", async () => {
+  const scenario = "large-literal-rendering";
+  const { cases } = await runComparison({ action: "list", scenario });
+  expect(cases).toHaveLength(1);
+  const [rendering] = cases;
+  expect(rendering).toMatchObject({
+    scenario,
+    observationPoint: "manchester-object-render",
+    input: { id: "large-literal/manchester-render" },
+    literal: { character: "x", length: 33_554_433, renderedBytes: 33_554_435 },
+    behaviorProfileId: "java-owlapi-5.5.1",
+  });
+  const fourWriters = comparisonCases({ scenario: "large-literal-roundtrip" });
+  expect(fourWriters).toHaveLength(4);
+  expect(fourWriters.map(({ caseId }) => caseId)).not.toContain(
+    rendering.caseId,
+  );
+  expect(
+    corpusQualificationRoster(comparisonCases)
+      .cells.filter(({ caseId }) => caseId === rendering.caseId)
+      .map(({ platform, measurement }) => [platform, measurement]),
+  ).toEqual([
+    ["linux", "behavior"],
+    ["win32", "behavior"],
+  ]);
+});
+
+test("RDF/XML writer presentation and structure have seven same-input cases", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "rdfxml-writer",
+  });
+  expect(cases.map(({ writerMode }) => writerMode)).toEqual([
+    "defaults",
+    "no-banners",
+    "two-spaces",
+    "no-indent",
+    "labels",
+    "save-ids",
+    "force-string",
+  ]);
+  expect(new Set(cases.map(({ caseId }) => caseId)).size).toBe(7);
+  expect(new Set(cases.map(({ input }) => input.sha256)).size).toBe(1);
+  for (const entry of cases) {
+    expect(entry).toMatchObject({
+      scenario: "rdfxml-writer",
+      oracle: {
+        kind: "pinned-source",
+        revision: "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      },
+      input: { syntax: "functional" },
+      behaviorProfileId: "normative-v1",
+    });
+  }
+});
+
+test("canonical VOWL cases bind each original preserve-mode OWL 2 DL assessment", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "canonical-vowl-dl",
+  });
+  expect(cases).toHaveLength(20);
+  expect(new Set(cases.map(({ caseId }) => caseId)).size).toBe(20);
+  expect(cases.map(({ input }) => input.id)).toEqual(
+    expect.arrayContaining([
+      "valid-empty",
+      "invalid-datatype-cycle",
+      "import-nonsimple-forward",
+      "import-nonsimple-reverse",
+      "import-bad-annotation",
+    ]),
+  );
+  for (const entry of cases) {
+    expect(entry).toMatchObject({
+      scenario: "canonical-vowl-dl",
+      observationPoint: "owl2-dl-profile-assessment",
+      parsingMode: "preserve",
+      sourceAssessment: true,
+      behaviorProfileId: "normative-v1",
+      oracle: { kind: "pinned-source" },
+    });
+  }
+});
+
+test("the RDF/XML benchmark corpus preserves the three pinned source observations", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "rdfxml-corpus",
+  });
+  expect(cases.map(({ input }) => input.id)).toEqual([
+    "real-medium-wine",
+    "real-large-geonames",
+    "real-largest-schemaorg",
+  ]);
+  expect(cases.map(({ expected }) => expected.strictErrorCode)).toEqual([
+    null,
+    "UNSUPPORTED_CONSTRUCT",
+    "OWL_SYNTAX_ERROR",
+  ]);
+  for (const { input } of cases) {
+    expect(input.sha256).toMatch(/^[0-9a-f]{64}$/u);
+    expect(input).not.toHaveProperty("localEvidencePath");
+  }
+});
+
+test("the format performance suite registers all 14 programs and their sampling cases", async () => {
+  const { cases, fixtures } = await runComparison({
+    action: "list",
+    suite: "format-performance",
+  });
+  expect(cases).toHaveLength(14);
+  const turtle = cases.find(({ input }) => input === "turtle");
+  expect(turtle.resultIds).toEqual([
+    "generated-turtle-large.syntax-to-rdf.chunk-16384",
+    "generated-turtle-large.syntax-to-rdf.chunk-65536",
+    "generated-turtle-large.syntax-to-rdf.chunk-262144",
+    "generated-turtle-large.end-to-end",
+  ]);
+  expect(cases.every(({ engine }) => engine === "javascript")).toBe(true);
+  expect(fixtures.map(({ id }) => id)).toEqual([
+    "real-small-sosa",
+    "real-medium-wine",
+    "real-large-geonames",
+    "real-largest-schemaorg",
+  ]);
+});
+
+test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
+  const subject = {
+    tarballSha256: "1".repeat(64),
+    dependencyGraphSha256: "2".repeat(64),
+    artifactSha256: "3".repeat(64),
+    artifactId: "123",
+    integrity: "sha512-AAAA",
+  };
+  const oracle = {
+    lockSha256: sha256(await readFile(oracleLockPath)),
+    version: oracleVersion,
+  };
+  const roster = corpusQualificationRoster(comparisonCases);
+  const cell = roster.cells.find(
+    ({ measurement }) => measurement === "structure",
+  );
+  const receipt = {
+    ...cell,
+    subject,
+    oracle,
+    provenance: "SOURCE",
+    verdict: "match",
+    stageSha256: "5".repeat(64),
+    producerArtifactSha256: "6".repeat(64),
+    producerRun: "7",
+    producerAttempt: "1",
+  };
+  await expect(
+    reconcileCorpusReceipts(
+      {
+        subject,
+        oracle: { ...oracle, lockSha256: "4".repeat(64) },
+        receipts: [],
+      },
+      comparisonCases,
+    ),
+  ).rejects.toThrow("authenticated candidate and oracle identities");
+  const verdict = await reconcileCorpusReceipts(
+    { subject, oracle, receipts: [receipt, receipt] },
+    comparisonCases,
+  );
+  expect(verdict.status).toBe("incomplete");
+  expect(verdict.missing).toHaveLength(roster.cells.length - 1);
+  expect(verdict.rejected.map(({ reason }) => reason)).toEqual([
+    "Missing, mismatched or inconclusive case evidence",
+    "Duplicate required cell",
+  ]);
+});
+
+test("release shadow preserves the separately pinned writer and VOWL source cases", async () => {
+  const roster = corpusQualificationRoster(comparisonCases);
+  const [writer] = comparisonCases({ suite: "rdfxml-writer" });
+  const [vowl] = comparisonCases({ suite: "canonical-vowl-dl" });
+  const cells = (caseId) =>
+    roster.cells.filter((cell) => cell.caseId === caseId);
+  expect(cells(writer.caseId).map(({ measurement }) => measurement)).toEqual([
+    "behavior",
+    "structure",
+    "behavior",
+    "structure",
+  ]);
+  expect(cells(vowl.caseId).map(({ measurement }) => measurement)).toEqual([
+    "behavior",
+    "behavior",
+  ]);
+  for (const cell of [...cells(writer.caseId), ...cells(vowl.caseId)]) {
+    expect(cell.oracle).toEqual(writer.definition.oracle);
+  }
+  const subject = {
+    tarballSha256: "1".repeat(64),
+    dependencyGraphSha256: "2".repeat(64),
+    artifactSha256: "3".repeat(64),
+    artifactId: "123",
+    integrity: "sha512-AAAA",
+  };
+  const oracle = {
+    lockSha256: sha256(await readFile(oracleLockPath)),
+    version: oracleVersion,
+  };
+  const [cell] = cells(writer.caseId);
+  const base = {
+    ...cell,
+    subject,
+    provenance: "INSTALLED_CANDIDATE",
+    verdict: "observed",
+    stageSha256: "5".repeat(64),
+    producerArtifactSha256: "6".repeat(64),
+    producerRun: "7",
+    producerAttempt: "1",
+  };
+  const redirected = await reconcileCorpusReceipts(
+    { subject, oracle, receipts: [{ ...base, oracle }] },
+    comparisonCases,
+  );
+  expect(redirected.rejected).toHaveLength(1);
+  const admitted = await reconcileCorpusReceipts(
+    {
+      subject,
+      oracle,
+      receipts: [
+        {
+          ...base,
+          oracle: {
+            ...cell.oracle,
+            classpathSha256: "7".repeat(64),
+            jars: [
+              {
+                file: "owlapi-api-5.5.1.jar",
+                byteLength: 99,
+                sha256: "8".repeat(64),
+              },
+            ],
+          },
+        },
+      ],
+    },
+    comparisonCases,
+  );
+  expect(admitted.rejected).toHaveLength(0);
+  expect(admitted.status).toBe("incomplete");
+});
+
+test("a requested Node heap must fit within the Windows job budget", async () => {
+  await expect(
+    runWindowsComparisonJob(
+      { action: "run" },
+      {
+        memoryBudgetMiB: 3072,
+        nodeHeapMiB: 3072,
+      },
+      "unused",
+    ),
+  ).rejects.toThrow("smaller than the comparison job budget");
+});
+
+test("an explicit unguarded comparison reaches the normal run boundary", async () => {
+  await expect(
+    runComparison(
+      { action: "run", input: "pistoia-idmp" },
+      { memoryGuard: false, memoryBudgetMiB: 1 },
+    ),
+  ).rejects.toThrow("Comparison requires an absolute output directory");
+});
+
+test("only the exact stock IDMP direct load expects the typed XML limit", () => {
+  const request = { input: "pistoia-idmp", profile: "java-owlapi-5.5.1" };
+  const [stock] = comparisonCases({ ...request, javaXml: "stock" });
+  expect(stock.definition.expectedLoadRefusals).toMatchObject({
+    js: { category: "RESOURCE_LIMIT_EXCEEDED", limit: 100_000 },
+    java: { diagnosticCode: "JAXP00010004" },
+  });
+  for (const changes of [
+    { javaXml: "historical-idmp" },
+    { scenario: "closure-roundtrip" },
+    { imports: "none" },
+    { profile: "normative-v1" },
+  ]) {
+    const [different] = comparisonCases({ ...request, ...changes });
+    expect(different.definition.expectedLoadRefusals).toBeUndefined();
+    expect(different.caseId).not.toBe(stock.caseId);
+  }
+});
+
+test("the approved July Time differences bind only the exact normative compatible direct load", () => {
+  const request = { input: "july/time.rdf", profile: "normative-v1" };
+  const [compatible] = comparisonCases(request);
+  expect(compatible.definition.expectedDifferences).toMatchObject({
+    fixture:
+      "universal-ontology@e2c667f3584b8fb705671cada0fe205b1000b617:src/external/time.rdf",
+    ruleIds: expect.arrayContaining([
+      "JULY-TIME-JAVA-UNPARSED-NAMED-RESTRICTIONS-B61EBE2",
+    ]),
+  });
+  expect(compatible.definition.expectedDifferences.ruleIds).toHaveLength(7);
+  for (const changes of [
+    { profile: "java-owlapi-5.5.1" },
+    { parsingMode: "strict" },
+    { scenario: "closure-roundtrip" },
+    { imports: "none" },
+  ]) {
+    const [different] = comparisonCases({ ...request, ...changes });
+    expect(different.definition.expectedDifferences).toBeUndefined();
+  }
+});
+
+test("relative imports bind distinct logical documents with the same basename", () => {
+  const [entry] = comparisonCases({
+    input: "relative-imports",
+    scenario: "closure-roundtrip",
+  });
+  expect(
+    entry.definition.imports.map(({ documentIRI }) => documentIRI),
+  ).toEqual([
+    "https://owlapi.example.test/comparison/left/same.ttl",
+    "https://owlapi.example.test/comparison/right/same.ttl",
+  ]);
+  expect(entry.definition.jsLoaderOptions).toEqual({
+    remoteImports: true,
+    remoteJsonLdContexts: false,
+  });
+  const [denied] = comparisonCases({
+    input: "relative-imports",
+    imports: "none",
+  });
+  expect(denied.definition.imports).toEqual([]);
+  expect(denied.definition.jsLoaderOptions).toBeUndefined();
+  expect(denied.caseId).not.toEqual(entry.caseId);
+});
+
+test("strict-first retries have an identity distinct from a direct load", () => {
+  const input = { input: "obo-fovt", profile: "java-owlapi-5.5.1" };
+  const [direct] = comparisonCases(input);
+  const [retry] = comparisonCases({ ...input, scenario: "strict-first" });
+
+  expect(retry.caseId).not.toBe(direct.caseId);
+  expect(retry.definition).toMatchObject({
+    observationPoint: "public-strict-then-compatible-load",
+    loadSequence: ["strict", "compatible"],
+    parsingMode: "compatible",
+    input: direct.definition.input,
+  });
+  expect(() =>
+    comparisonCases({
+      ...input,
+      scenario: "strict-first",
+      parsingMode: "strict",
+    }),
+  ).toThrow("requires a compatible retry");
+});
+
+test("the released OWLAPI Turtle parser variant has its own case identity", () => {
+  const request = { input: "ogc-geosparql" };
+  const [reference] = comparisonCases(request);
+  const [owlapi] = comparisonCases({ ...request, javaTurtle: "owlapi" });
+  expect(owlapi.definition.javaTurtle).toBe("owlapi");
+  expect(owlapi.caseId).not.toBe(reference.caseId);
+  expect(() =>
+    comparisonCases({ input: "entsoe-cgmes-eq", javaTurtle: "owlapi" }),
+  ).toThrow("requires Turtle inputs");
+});
+
+test("changing only a logical base or an input digest invalidates the case", () => {
+  const request = { input: "entsoe-cgmes-eq" };
+  const [original] = comparisonCases(request);
+  for (const change of [
+    { documentIRI: "https://other.example.test/base" },
+    { sha256: "f".repeat(64) },
+  ]) {
+    const fixtures = comparisonCatalogue.fixtures.map((fixture) =>
+      fixture.id === request.input ? { ...fixture, ...change } : fixture,
+    );
+    const [different] = comparisonCases(request, {
+      ...comparisonCatalogue,
+      fixtures,
+    });
+    expect(different.caseId).not.toBe(original.caseId);
+  }
+});
+
+test("concurrent preparations admit one object, and an altered cache hit fails offline", () =>
+  withScratch(async (cacheDirectory) => {
+    const fixture = comparisonWitnesses.find(
+      ({ id }) => id === "cgmes-range-less",
+    );
+    const environment = { cacheDirectory };
+    const paths = await Promise.all([
+      resolveComparisonFixture(fixture, environment, true),
+      resolveComparisonFixture(fixture, environment, true),
+    ]);
+    expect(paths[0]).toBe(paths[1]);
+    await writeFile(paths[0], Buffer.alloc(fixture.byteLength, "x"));
+    await expect(
+      resolveComparisonFixture(fixture, environment),
+    ).rejects.toThrow("wrong digest");
+  }));
+
+test("a multi-megabyte completed diff is usable and a partial result is refused", () =>
+  withScratch(async (directory) => {
+    const caseId = "1".repeat(64);
+    const resultPath = join(directory, "oracle.json");
+    const result = {
+      caseId,
+      schemaVersion: 1,
+      structure: {
+        status: "mismatch",
+        differences: "x".repeat(2 * 1024 * 1024),
+      },
+    };
+    const bytes = Buffer.from(JSON.stringify(result));
+    await writeFile(resultPath, bytes);
+    const header = {
+      caseId,
+      schemaVersion: 1,
+      stage: "native-comparison",
+      byteLength: bytes.length,
+      sha256: sha256(bytes),
+    };
+    const request = {
+      caseId,
+      resultPath,
+      exitCode: 1,
+      stdout: JSON.stringify(header),
+      maxResultBytes: 3 * 1024 * 1024,
+    };
+    await expect(readNativeComparisonResult(request)).resolves.toMatchObject({
+      result,
+    });
+    await expect(
+      readNativeComparisonResult({ ...request, stdout: "" }),
+    ).rejects.toThrow("completion header");
+    await expect(
+      readNativeComparisonResult({ ...request, exitCode: 9 }),
+    ).rejects.toThrow("contradicts");
+    await expect(
+      readNativeComparisonResult({ ...request, maxResultBytes: 1024 * 1024 }),
+    ).rejects.toThrow("byte limit");
+    await writeFile(resultPath, bytes.subarray(0, -1));
+    await expect(readNativeComparisonResult(request)).rejects.toThrow(
+      "length differs",
+    );
+  }));
