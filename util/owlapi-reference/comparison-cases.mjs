@@ -40,6 +40,7 @@ const julyTimeClosureRoots = new Set(["july/core", "july/extended"]);
 const originalIdmp = comparisonCatalogue.fixtures.find(
   ({ id }) => id === "pistoia-idmp",
 );
+const ifcowlInputId = "building-smart-ifcowl";
 const nativeClosureControls = new Set([
   "eu-epo-core",
   "entsoe-cgmes-eq",
@@ -156,7 +157,11 @@ function importedDocuments(input, all, standIns, policy) {
   const visit = (fixture) => {
     if (seen.has(fixture.id)) return;
     seen.add(fixture.id);
-    for (const id of fixture.imports ?? []) {
+    const imports =
+      policy === "mapped"
+        ? (fixture.mappedImports ?? fixture.imports)
+        : fixture.imports;
+    for (const id of imports ?? []) {
       if (!all.has(id)) continue;
       const dependency = all.get(id);
       for (const alias of [dependency.ontologyIRI, dependency.documentIRI]) {
@@ -203,7 +208,7 @@ const importIdentities = (imports) =>
     ...documentIdentity(document),
   }));
 
-const recordedScenarioInputs = (() => {
+const pinnedScenarioInputs = (() => {
   const canonicalInputs = new Map(
     [
       ...comparisonCatalogue.fixtures,
@@ -216,25 +221,24 @@ const recordedScenarioInputs = (() => {
     ...nativeClosureControls,
     ...julyComparisonFixtures.map(({ id }) => id),
   ];
-  return new Map(
-    scopedIds.map((id) => {
-      const input = canonicalInputs.get(id);
-      return [
-        id,
-        comparisonIdentity({
-          input: documentIdentity(input),
-          imports: importIdentities(
-            importedDocuments(
-              input,
-              canonicalInputs,
-              comparisonCatalogue.standIns,
-              "recorded",
-            ),
-          ),
-        }),
-      ];
-    }),
-  );
+  const identity = (id, policy) => {
+    const input = canonicalInputs.get(id);
+    return comparisonIdentity({
+      input: documentIdentity(input),
+      imports: importIdentities(
+        importedDocuments(
+          input,
+          canonicalInputs,
+          comparisonCatalogue.standIns,
+          policy,
+        ),
+      ),
+    });
+  };
+  return {
+    recorded: new Map(scopedIds.map((id) => [id, identity(id, "recorded")])),
+    mappedIfcowl: identity(ifcowlInputId, "mapped"),
+  };
 })();
 
 function literalCases(request) {
@@ -426,11 +430,15 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       input: documentIdentity(input),
       imports: importIdentities(imports),
     };
-    const frozenInputs = recordedScenarioInputs.get(input.id);
+    const frozenInputs = pinnedScenarioInputs.recorded.get(input.id);
     const exactRecordedInputs =
       policy === "recorded" &&
       frozenInputs !== undefined &&
       frozenInputs === comparisonIdentity(admittedInputs);
+    const exactMappedIfcowlInputs =
+      policy === "mapped" &&
+      input.id === ifcowlInputId &&
+      pinnedScenarioInputs.mappedIfcowl === comparisonIdentity(admittedInputs);
     const hasMappedHttpImports = imports.some(([, document]) =>
       /^https?:/u.test(document.documentIRI),
     );
@@ -488,8 +496,8 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           scenario === "closure-roundtrip" &&
           (expectedJsRdfXmlWriteRefusal !== undefined ||
             (normativeJuly && input.closure) ||
-            (nativeClosureControls.has(input.id) &&
-              exactRecordedInputs &&
+            (((nativeClosureControls.has(input.id) && exactRecordedInputs) ||
+              exactMappedIfcowlInputs) &&
               profile.behaviorProfileId === javaProfile &&
               profile.parsingMode === "compatible"));
         let expectedLoadRefusals;

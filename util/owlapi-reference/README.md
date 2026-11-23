@@ -25,6 +25,14 @@ The merged models contain an ontology annotation whose predicate has no declarat
 The cases require equality for every original model and the merged model, an exact Java save and reload with missing-type generation disabled, and the specific JavaScript refusal with an empty target.
 The root and import byte identities bind this check to the recorded inputs.
 
+Use `--input building-smart-ifcowl --imports mapped` for the original IFC4 ADD2 document with the published EXPRESS and LIST ontologies.
+The catalogue pins both imports to their CC BY 3.0 releases.
+The mapped Java-compatible closure checks the default writer and the declaration-preserving save and reload.
+Use `--imports recorded` for the historical EXPRESS stand-in.
+
+- [EXPRESS publication](https://pi.pauwel.be/evoc/express_W3ID/20151211/index.html)
+- [LIST publication](https://pi.pauwel.be/evoc/list_W3ID/20151211/index.html)
+
 Set `--cache` and `--output` to absolute paths outside the checkout.
 Select the complete JDK with `--java-home`.
 Local qualification of Temurin `25.0.5.1+2-LTS` uses `--java-selection 25.0.5+1.2`.

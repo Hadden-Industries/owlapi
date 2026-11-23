@@ -1147,6 +1147,50 @@ test("recorded refusals and writer controls require their frozen import bytes", 
   expect(differentClosure.definition.javaRdfXml).toBeUndefined();
 });
 
+test("the fully mapped ifcOWL case uses the two published imports and exact Java writer", () => {
+  const request = {
+    input: "building-smart-ifcowl",
+    profile: "java-owlapi-5.5.1",
+    scenario: "closure-roundtrip",
+  };
+  const [recorded] = comparisonCases(request);
+  const [mapped] = comparisonCases({ ...request, imports: "mapped" });
+  expect(
+    recorded.imports.map(([iri, fixture]) => [iri, fixture.source.kind]),
+  ).toEqual([["https://w3id.org/express", "generated"]]);
+  expect(recorded.definition.javaRdfXml).toBeUndefined();
+  expect(mapped.definition.input).toEqual(recorded.definition.input);
+  expect(mapped.caseId).not.toBe(recorded.caseId);
+  expect(mapped.imports.map(([iri, fixture]) => [iri, fixture.id])).toEqual([
+    ["https://w3id.org/express", "ifcowl-express-20151211"],
+    ["https://w3id.org/list", "ifcowl-list-20151211"],
+  ]);
+  expect(mapped.definition.javaRdfXml).toEqual({
+    addMissingTypes: false,
+    observeDefault: true,
+  });
+  const altered = {
+    ...comparisonCatalogue,
+    fixtures: comparisonCatalogue.fixtures.map((fixture) =>
+      fixture.id === "ifcowl-list-20151211"
+        ? { ...fixture, sha256: "0".repeat(64) }
+        : fixture,
+    ),
+  };
+  const [changed] = comparisonCases({ ...request, imports: "mapped" }, altered);
+  expect(changed.definition.javaRdfXml).toBeUndefined();
+
+  const module = { input: "ifcowl-express-20151211" };
+  const [recordedModule] = comparisonCases({ ...module, imports: "recorded" });
+  const [mappedModule] = comparisonCases({ ...module, imports: "mapped" });
+  expect(recordedModule.imports.map(([iri]) => iri)).not.toContain(
+    "https://w3id.org/list",
+  );
+  expect(mappedModule.imports.map(([iri]) => iri)).toEqual([
+    "https://w3id.org/list",
+  ]);
+});
+
 test("July closure propagation uses the OWL-Time approval only on its exact imported document", () => {
   const selection = {
     input: "july/core",

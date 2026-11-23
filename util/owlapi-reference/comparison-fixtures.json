@@ -853,7 +853,55 @@
       },
       "acquisition": "publisher",
       "licenseLead": "CC BY 3.0 in the pinned file",
-      "role": "root"
+      "role": "root",
+      "mappedImports": [
+        "ifcowl-express-20151211"
+      ]
+    },
+    {
+      "id": "ifcowl-express-20151211",
+      "collection": "building-smart-ifcowl",
+      "suite": "imports",
+      "syntax": "turtle",
+      "byteLength": 17956,
+      "sha256": "338d7ff34f4f35cb6317f55a3fc6ca96832ae8c3f9b33c71998a7d4b800236ab",
+      "ontologyIRI": "https://w3id.org/express",
+      "documentIRI": "https://w3id.org/express",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://pi.pauwel.be/evoc/express_W3ID/20151211/express.ttl",
+        "redirects": [
+          "https://pi.pauwel.be"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "CC BY 3.0 by Walter Terkaj and Pieter Pauwels",
+      "role": "module",
+      "mappedImports": [
+        "ifcowl-list-20151211"
+      ]
+    },
+    {
+      "id": "ifcowl-list-20151211",
+      "collection": "building-smart-ifcowl",
+      "suite": "imports",
+      "syntax": "turtle",
+      "byteLength": 4857,
+      "sha256": "8e46ea0dec9378637aaf97b52966e46fd3e159e67026d950078b796405c7b389",
+      "ontologyIRI": "https://w3id.org/list",
+      "documentIRI": "https://w3id.org/list",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://pi.pauwel.be/evoc/list_W3ID/20151211/list.ttl",
+        "redirects": [
+          "https://pi.pauwel.be"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "CC BY 3.0 by Walter Terkaj and Pieter Pauwels",
+      "role": "module"
     },
     {
       "id": "europeana-edm",
