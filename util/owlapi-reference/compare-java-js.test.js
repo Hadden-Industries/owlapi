@@ -785,32 +785,43 @@ test("an explicit unguarded comparison reaches the normal run boundary", async (
   ).rejects.toThrow("Comparison requires an absolute output directory");
 });
 
-test("only the exact stock IDMP direct load expects the typed XML limit", () => {
+test("the exact stock IDMP load gates both direct and closure observations", () => {
   const request = { input: "pistoia-idmp", profile: "java-owlapi-5.5.1" };
   const [stock] = comparisonCases({ ...request, javaXml: "stock" });
   expect(stock.definition.expectedLoadRefusals).toMatchObject({
     js: { category: "RESOURCE_LIMIT_EXCEEDED", limit: 100_000 },
     java: { diagnosticCode: "JAXP00010004" },
   });
-  const roster = corpusQualificationRoster(comparisonCases);
-  const stockCells = roster.cells.filter(
-    ({ caseId }) => caseId === stock.caseId,
-  );
-  expect(stockCells.map(({ measurement }) => measurement)).toEqual([
-    "behavior",
-    "behavior",
-  ]);
-  expect(roster.inapplicable).toContainEqual({
-    caseId: stock.caseId,
-    input: "pistoia-idmp",
-    measurement: "structure",
-    prerequisite: "load",
-    reason: "expected-xml-entity-limit",
+  const [closure] = comparisonCases({
+    ...request,
+    javaXml: "stock",
+    scenario: "closure-roundtrip",
   });
+  expect(closure.caseId).not.toBe(stock.caseId);
+  expect(closure.definition.expectedLoadRefusals).toEqual(
+    stock.definition.expectedLoadRefusals,
+  );
+  const roster = corpusQualificationRoster(comparisonCases);
+  for (const { caseId } of [stock, closure]) {
+    expect(
+      roster.cells
+        .filter((cell) => cell.caseId === caseId)
+        .map(({ measurement }) => measurement),
+    ).toEqual(["behavior", "behavior"]);
+    expect(roster.inapplicable).toContainEqual({
+      caseId,
+      input: "pistoia-idmp",
+      measurement: "structure",
+      prerequisite: "load",
+      reason: "expected-xml-entity-limit",
+    });
+  }
   for (const changes of [
     { javaXml: "historical-idmp" },
-    { scenario: "closure-roundtrip" },
+    { scenario: "closure-roundtrip", javaXml: "historical-idmp" },
+    { scenario: "strict-first" },
     { imports: "none" },
+    { imports: "mapped" },
     { profile: "normative-v1" },
   ]) {
     const [different] = comparisonCases({ ...request, ...changes });

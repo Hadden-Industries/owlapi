@@ -562,7 +562,8 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           ...(normativeJuly && input.closure && scenario === "closure-roundtrip"
             ? { javaRdfXml: { addMissingTypes: false, observeDefault: true } }
             : {}),
-          ...(scenario === "direct-load" &&
+          ...((scenario === "direct-load" ||
+            scenario === "closure-roundtrip") &&
           input.id === originalIdmp.id &&
           input.sha256 === originalIdmp.sha256 &&
           input.documentIRI === originalIdmp.documentIRI &&
@@ -656,9 +657,26 @@ function matchesExpectedLoadRefusals(definition, js, native) {
     javaFailure.category === expected.java.category &&
     javaFailure.diagnosticCode === expected.java.diagnosticCode &&
     javaFailure.resource === expected.java.resource &&
-    native.xmlSettings?.[expected.java.resource] === null &&
+    [
+      "jdk.xml.entityExpansionLimit",
+      "jdk.xml.totalEntitySizeLimit",
+      "jdk.xml.maxGeneralEntitySizeLimit",
+      "jdk.xml.maxParameterEntitySizeLimit",
+    ].every((property) => native.xmlSettings?.[property] === null) &&
     native.xmlSettings?.["javax.xml.accessExternalDTD"] === "" &&
     native.xmlSettings?.["javax.xml.accessExternalSchema"] === "" &&
+    native.structure?.status === "blocked" &&
+    [
+      js.functional,
+      js.documentModels,
+      js.merge,
+      js.rdfXmlWrite,
+      js.rdfXmlReload,
+      native.javaModel,
+      native.documentComparisons,
+      native.merge,
+      native.javaRdfXmlRoundTrip,
+    ].every((stage) => stage === undefined) &&
     comparisonIdentity(native.importRequests ?? {}) ===
       comparisonIdentity(importMappings) &&
     js.importRequests?.length === 0
@@ -848,6 +866,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     matchesStrictFirstAttempts(js.loadAttempts);
   const completedRequestedStages =
     definition.scenario !== "closure-roundtrip" ||
+    (definition.expectedLoadRefusals && expectedLoad) ||
     completedClosureStages(js, native);
   const matchedWriter =
     !definition.javaRdfXml ||

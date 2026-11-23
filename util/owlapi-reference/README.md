@@ -101,7 +101,8 @@ The authenticated reader uses `verify --suite release-semantics --corpus-artifac
 Record the candidate's original producing job and attempt, including when a later partial rerun retained that package.
 Its verifier consumes receipts after the producer artifacts and installed candidate have been authenticated.
 Accepted public behavior decisions without a registered case hold shadow qualification.
-The stock IDMP refusal has a required behavior cell and a recorded reason for the dependent structure stage.
+The stock IDMP direct and closure cases each require the typed XML refusals from both runtimes and the recorded import behavior.
+Their dependent structure stages are inapplicable once those refusals are verified.
 The normative July core and extended closures apply the OWL-Time approvals to their exact compared member.
 Java then merges the verified JavaScript models and compares that merge with the JavaScript closure.
 Both RDF/XML writer and reload results still contribute independent verdicts.
