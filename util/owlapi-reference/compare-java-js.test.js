@@ -929,7 +929,6 @@ test("the exact stock IDMP load gates both direct and closure observations", () 
     { scenario: "strict-first" },
     { imports: "none" },
     { imports: "mapped" },
-    { profile: "normative-v1" },
   ]) {
     const [different] = comparisonCases({ ...request, ...changes });
     expect(different.definition.expectedLoadRefusals).toBeUndefined();
@@ -965,13 +964,45 @@ test("strict stock IDMP binds the refused annotation in direct and closure cases
     });
   }
   for (const changes of [
-    { parsingMode: "compatible" },
     { javaXml: "historical-idmp" },
     { imports: "none" },
     { scenario: "strict-first", parsingMode: "compatible" },
   ]) {
     const [alternative] = comparisonCases({ ...request, ...changes });
     expect(alternative.definition.expectedLoadRefusals).toBeUndefined();
+  }
+});
+
+test("compatible IDMP observes both stock outcomes and keeps historical structural proof required", () => {
+  const request = {
+    input: "pistoia-idmp",
+    profile: "normative-v1",
+    parsingMode: "compatible",
+  };
+  const roster = corpusQualificationRoster(comparisonCases);
+  for (const scenario of ["direct-load", "closure-roundtrip"]) {
+    const [stock] = comparisonCases({ ...request, scenario });
+    const [historical] = comparisonCases({
+      ...request,
+      scenario,
+      javaXml: "historical-idmp",
+    });
+    expect(stock.definition.expectedLoadRefusals).toMatchObject({
+      dependentStageReason: "expected-native-xml-entity-limit",
+      js: { diagnostic: { code: "RDF_UNDECLARED_ANNOTATION_PROPERTY" } },
+      java: { diagnosticCode: "JAXP00010004" },
+    });
+    expect(historical.definition.expectedLoadRefusals).toBeUndefined();
+    expect(
+      roster.cells
+        .filter(({ caseId }) => caseId === stock.caseId)
+        .map(({ measurement }) => measurement),
+    ).toEqual(["behavior", "behavior"]);
+    expect(
+      roster.cells
+        .filter(({ caseId }) => caseId === historical.caseId)
+        .map(({ measurement }) => measurement),
+    ).toEqual(["behavior", "structure", "behavior", "structure"]);
   }
 });
 

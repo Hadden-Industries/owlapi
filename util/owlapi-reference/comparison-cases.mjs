@@ -76,6 +76,24 @@ const strictIdmpRefusal = {
   },
   java: stockIdmpRefusal.java,
 };
+const compatibleIdmpNativeLimit = {
+  dependentStageReason: "expected-native-xml-entity-limit",
+  authority:
+    "docs/compatibility/behavior-profiles.md#configuration-and-resource-defaults",
+  js: {
+    identity: {
+      ontologyIRI:
+        "https://spec.pistoiaalliance.org/idmp/ontology/IdentificationOfMedicinalProductsOntology/",
+      versionIRI:
+        "https://spec.pistoiaalliance.org/idmp/ontology/20260301/IdentificationOfMedicinalProductsOntology/",
+    },
+    diagnostic: {
+      code: "RDF_UNDECLARED_ANNOTATION_PROPERTY",
+      iri: "http://purl.org/dc/terms/abstract",
+    },
+  },
+  java: stockIdmpRefusal.java,
+};
 const profileSelections = [
   { behaviorProfileId: javaProfile, parsingMode: "compatible" },
   { behaviorProfileId: normativeProfile, parsingMode: "compatible" },
@@ -447,11 +465,11 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             profile.parsingMode === "compatible"
           ) {
             expectedLoadRefusals = stockIdmpRefusal;
-          } else if (
-            profile.behaviorProfileId === normativeProfile &&
-            profile.parsingMode === "strict"
-          ) {
-            expectedLoadRefusals = strictIdmpRefusal;
+          } else if (profile.behaviorProfileId === normativeProfile) {
+            expectedLoadRefusals =
+              profile.parsingMode === "strict"
+                ? strictIdmpRefusal
+                : compatibleIdmpNativeLimit;
           }
         }
         const definition = {

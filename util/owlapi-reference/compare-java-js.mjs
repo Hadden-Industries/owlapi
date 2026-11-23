@@ -243,9 +243,9 @@ async function observeJs(request, directory, environment) {
   });
 }
 
-function matchesExpectedLoadRefusals(definition, js, native) {
+function matchesExpectedLoadOutcomes(definition, js, native) {
   const expected = definition.expectedLoadRefusals;
-  const jsFailure = js.load;
+  const jsLoad = js.load;
   const javaFailure = native.javaLoad;
   const importMappings = Object.fromEntries(
     definition.imports.map(({ ontologyIRI, documentIRI }) => [
@@ -253,32 +253,51 @@ function matchesExpectedLoadRefusals(definition, js, native) {
       documentIRI,
     ]),
   );
-  const { statement } = expected.js;
-  const details = jsFailure?.details;
+  const { identity, diagnostic, statement } = expected.js;
+  const details = jsLoad?.details;
+  const resolvedMappedImports =
+    Array.isArray(js.importRequests) &&
+    js.importRequests.length === definition.imports.length &&
+    comparisonIdentity(
+      Object.fromEntries(
+        js.importRequests.map(({ ontologyIRI, documentIRI }) => [
+          ontologyIRI,
+          documentIRI,
+        ]),
+      ),
+    ) === comparisonIdentity(importMappings);
   const matchesJsFailure = statement
     ? details?.graph === statement.graph &&
       details.subject === statement.subject &&
       details.predicate === statement.predicate &&
       typeof details.object === "string" &&
       sha256(details.object) === statement.objectSha256 &&
-      js.importRequests?.length === definition.imports.length &&
-      comparisonIdentity(
-        Object.fromEntries(
-          js.importRequests.map(({ ontologyIRI, documentIRI }) => [
-            ontologyIRI,
-            documentIRI,
-          ]),
-        ),
-      ) === comparisonIdentity(importMappings)
+      resolvedMappedImports
     : details?.resource === expected.js.resource &&
-      details.limit === expected.js.limit &&
-      details.observed > expected.js.limit &&
+      details?.limit === expected.js.limit &&
+      details?.observed > expected.js.limit &&
       js.importRequests?.length === 0;
+  const matchesJs = identity
+    ? jsLoad?.status === "completed" &&
+      jsLoad.identity?.ontologyIRI === identity.ontologyIRI &&
+      jsLoad.identity.versionIRI === identity.versionIRI &&
+      Number.isSafeInteger(jsLoad.axioms) &&
+      jsLoad.axioms > 0 &&
+      jsLoad.diagnostics?.some(
+        ({ documentIRI, diagnostics }) =>
+          documentIRI === definition.input.documentIRI &&
+          diagnostics.some(
+            ({ code, iri }) =>
+              code === diagnostic.code && iri === diagnostic.iri,
+          ),
+      ) &&
+      resolvedMappedImports
+    : jsLoad?.status === "failed" &&
+      jsLoad.phase === "load" &&
+      jsLoad.category === expected.js.category &&
+      matchesJsFailure;
   return (
-    jsFailure?.status === "failed" &&
-    jsFailure.phase === "load" &&
-    jsFailure.category === expected.js.category &&
-    matchesJsFailure &&
+    matchesJs &&
     javaFailure?.status === "failed" &&
     javaFailure.phase === "load" &&
     javaFailure.category === expected.java.category &&
@@ -478,7 +497,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     };
   }
   const expectedLoad = definition.expectedLoadRefusals
-    ? matchesExpectedLoadRefusals(definition, js, native)
+    ? matchesExpectedLoadOutcomes(definition, js, native)
     : js.load?.status === "completed" &&
       native.javaLoad?.status === "completed";
   const matchedDocument =
@@ -709,9 +728,10 @@ async function observeCase(
     measurements.includes("performance") &&
     definition.scenario === "direct-load";
   const compareStructure =
-    definition.scenario === "closure-roundtrip" ||
-    measurements.includes("structure") ||
-    measurements.includes("performance");
+    !definition.expectedLoadRefusals &&
+    (definition.scenario === "closure-roundtrip" ||
+      measurements.includes("structure") ||
+      measurements.includes("performance"));
   if (
     measurements.includes("performance") &&
     !["direct-load", "strict-first"].includes(definition.scenario)

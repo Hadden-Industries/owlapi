@@ -6,6 +6,13 @@ import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
 
 const releaseSuites = [
   { suite: "prospects" },
+  ...["direct-load", "closure-roundtrip"].map((scenario) => ({
+    input: "pistoia-idmp",
+    profile: "normative-v1",
+    parsingMode: "compatible",
+    javaXml: "historical-idmp",
+    scenario,
+  })),
   { suite: "wider" },
   { suite: "july" },
   { scenario: "large-literal-roundtrip" },
