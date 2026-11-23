@@ -12,6 +12,7 @@ import { loadPublicApi } from "./qualify-universal-ontology.mjs";
 import { observeConfiguration } from "./comparison-configuration.mjs";
 import { observeMutation } from "./comparison-mutation.mjs";
 import { observeLoadPublication } from "./comparison-load-publication.mjs";
+import { observeStorage } from "./comparison-storage.mjs";
 
 const iriValue = (iri) => iri?.value ?? null;
 const ontologyIdentity = (ontology) => ({
@@ -450,18 +451,25 @@ async function observe(request, directory) {
   const includeManchesterRenderer =
     request.scenario === "large-literal-rendering";
   const api = await loadPublicApi({ ...request, includeManchesterRenderer });
-  if (request.configuration || request.mutation || request.loadPublication) {
+  const publicObservers = {
+    configuration: observeConfiguration,
+    mutation: observeMutation,
+    loadPublication: observeLoadPublication,
+    storage: observeStorage,
+  };
+  const publicOperation = Object.keys(publicObservers).find(
+    (key) => request[key],
+  );
+  if (publicOperation) {
     const networkRequests = [];
     globalThis.fetch = async (input) => {
       networkRequests.push(String(input));
       throw new Error("Comparison workers run offline");
     };
-    const observe = request.configuration
-      ? observeConfiguration
-      : request.mutation
-        ? observeMutation
-        : observeLoadPublication;
-    return { ...(await observe(api, request)), networkRequests };
+    return {
+      ...(await publicObservers[publicOperation](api, request)),
+      networkRequests,
+    };
   }
   if (includeManchesterRenderer) return observeManchesterLiteral(api, request);
   if (request.literal) return observeLargeLiteral(api, request);

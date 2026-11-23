@@ -65,6 +65,7 @@ It compares the supported settings with released Java and checks the default Jav
 It also observes enacted mutations, same-profile foreign manager changes and the model state after a rejected operation.
 The ontology copy case records whether the destination is visible to its provider and which declarations survive a provider failure.
 The load publication case records import visibility and retained state after a syntax failure, followed by a successful retry on the same manager.
+The storage cases check target reuse, datatype parameters and retained failure bytes in Functional Syntax, Turtle, RDF/XML and OWL/XML.
 
 Use `--measure performance` for fresh-process working-set and warmed load samples.
 A ratio requires equivalent untimed structural evidence on the same profile and input.

@@ -93,16 +93,18 @@ public final class RunOntologyComparisonCase {
         }
         result.put("oracleVersion", version);
         if (request.path("configuration").isObject() || request.path("mutation").isObject() ||
-            request.path("loadPublication").isObject()) {
+            request.path("loadPublication").isObject() || request.path("storage").isObject()) {
             OntologyReferenceContract.configureOfflineDocumentLoading(Map.of());
             try {
                 if (request.path("configuration").isObject()) {
                     result.put("configuration", observeConfiguration(request.required("configuration")));
                 } else if (request.path("mutation").isObject()) {
                     result.put("mutation", observeMutation(request.required("mutation")));
-                } else {
+                } else if (request.path("loadPublication").isObject()) {
                     observeLoadPublication(request.required("loadPublication"),
                         resultPath.resolveSibling("publication-child.ofn"), result);
+                } else {
+                    OntologyStorageComparison.observe(request.required("storage"), result);
                 }
                 result.put("javaLoad", Map.of("status", "completed"));
             } catch (Exception failure) {

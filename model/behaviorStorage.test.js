@@ -3,6 +3,10 @@ import { IRI } from "./index.js";
 import { OWLDocumentFormats } from "../formats/index.js";
 import { StringDocumentSource, StringDocumentTarget } from "../io/index.js";
 import { readFileSync } from "node:fs";
+import {
+  observeStorage,
+  storageComparisonCases,
+} from "../util/owlapi-reference/comparison-storage.mjs";
 
 const formats = [
   OWLDocumentFormats.FUNCTIONAL,
@@ -37,35 +41,24 @@ const storageFixture = (manager) => {
 test.each(formats)(
   "Java $key ignores unknown output parameters and consumes the string datatype parameter",
   async (format) => {
-    const manager = OWLManager.createOWLOntologyManager({
-      behaviorProfileId: "java-owlapi-5.5.1",
+    const { caseId, definition } = storageComparisonCases().find(
+      ({ input }) => input.id === `storage/parameters/${format.key}`,
+    );
+    const { storage } = await observeStorage(
+      { OWLManager, IRI, OWLDocumentFormats, StringDocumentTarget },
+      { ...definition, caseId },
+    );
+    expect(storage).toMatchObject({
+      ignoredSame: true,
+      forceChanged: true,
+      refusedInvalid: true,
     });
-    const ontology = storageFixture(manager);
-    const save = async (selectedFormat) => {
-      const target = new StringDocumentTarget();
-      await manager.saveOntology(ontology, selectedFormat, target);
-      return target.toString();
-    };
-    const original = await save(format);
-    expect(
-      await save(format.withParameter("ignored parameter", "not a boolean")),
-    ).toBe(original);
-    expect(
-      await save(format.withParameter("force xsd:string on literals", true)),
-    ).not.toBe(original);
-    const failed = new StringDocumentTarget();
-    await expect(
-      manager.saveOntology(
-        ontology,
-        format.withParameter("force xsd:string on literals", "not a boolean"),
-        failed,
-      ),
-    ).rejects.toThrow();
+    const failed = storage.failurePrefix;
     if (format === OWLDocumentFormats.OWL_XML) {
-      expect(failed.toString()).toMatch(/^<\?xml version="1.0"\?>\n<Ontology/u);
-      expect(failed.toString()).toContain("<Declaration>");
-      expect(failed.toString()).not.toContain("<AnnotationAssertion>");
-      expect(failed.toString()).not.toContain("</Ontology>");
+      expect(failed).toMatch(/^<\?xml version="1.0"\?>\n<Ontology/u);
+      expect(failed).toContain("<Declaration>");
+      expect(failed).not.toContain("<AnnotationAssertion>");
+      expect(failed).not.toContain("</Ontology>");
       const native = JSON.parse(
         readFileSync(
           new URL(
@@ -86,8 +79,8 @@ test.each(formats)(
       const prefix = line
         .slice(line.indexOf(", ", line.indexOf(", ") + 2) + 2, -1)
         .replaceAll("\\n", "\n");
-      expect(failed.toString()).toBe(prefix);
-    } else expect(failed.toString()).toBe("");
+      expect(failed).toBe(prefix);
+    } else expect(failed).toBe("");
   },
 );
 

@@ -264,6 +264,24 @@ test("the load publication case records distinct failure and retry documents", a
   expect(loading.loadPublication.failedText).toContain("NOT_SYNTAX");
 });
 
+test("storage behavior registers reuse and parameter observation for all four formats", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "public-api-behavior",
+  });
+  const storageCases = cases.filter((item) => item.storage);
+  expect(storageCases).toHaveLength(8);
+  for (const format of ["functional", "turtle", "rdfxml", "owlxml"]) {
+    const formatCases = storageCases.filter(
+      ({ storage }) => storage.format === format,
+    );
+    expect(formatCases.map(({ storage }) => storage.decisionId)).toEqual([
+      "BEHAVIOR-STORAGE-TARGET",
+      "BEHAVIOR-STORAGE-PARAMETERS",
+    ]);
+  }
+});
+
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
   const subject = {
     tarballSha256: "1".repeat(64),

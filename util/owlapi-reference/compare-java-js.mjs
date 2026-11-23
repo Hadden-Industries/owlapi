@@ -48,6 +48,7 @@ import { runWindowsComparisonJob } from "./comparison-job.mjs";
 import { configurationComparisonCases } from "./comparison-configuration.mjs";
 import { mutationComparisonCases } from "./comparison-mutation.mjs";
 import { loadPublicationComparisonCase } from "./comparison-load-publication.mjs";
+import { storageComparisonCases } from "./comparison-storage.mjs";
 import {
   julyTimeDifferenceScope,
   reconcileJulyTimeLoad,
@@ -101,6 +102,8 @@ const comparisonInputs = [
   "./comparison-configuration.mjs",
   "./comparison-mutation.mjs",
   "./comparison-load-publication.mjs",
+  "./comparison-storage.mjs",
+  "./OntologyStorageComparison.java",
   "./comparison-july-differences.mjs",
   "./reconcile-structural-differences.mjs",
   "../../docs/compatibility/expected-differences.json",
@@ -137,6 +140,7 @@ const normativeObservation = {
   configuration: "normativeCopy",
   mutation: "normativeMutation",
   loadPublication: "normativeLoadPublication",
+  storage: "normativeStorage",
 };
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
@@ -321,6 +325,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       ...configurationComparisonCases(request),
       ...mutationComparisonCases(),
       loadPublicationComparisonCase(),
+      ...storageComparisonCases(),
     ];
   if (selectsWriter(request)) return writerComparisonCases(request);
   if (selectsVowl(request))
@@ -625,6 +630,20 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     const recipe = definition[behaviorField];
     const expectedNormative = recipe.normative ?? recipe.normativeCopy;
     const observedNormative = js[normativeObservation[behaviorField]];
+    const matchedExpected = Object.entries(recipe.expected ?? {}).every(
+      ([key, value]) => js[behaviorField]?.[key] === value,
+    );
+    const recordedStorageBytes =
+      behaviorField !== "storage" ||
+      [js, native].every(
+        ({ storageDocumentSha256 }) =>
+          Array.isArray(storageDocumentSha256) &&
+          storageDocumentSha256.length ===
+            (recipe.kind === "target-reuse" ? 2 : 4) &&
+          storageDocumentSha256.every((digest) =>
+            /^[0-9a-f]{64}$/u.test(digest),
+          ),
+      );
     const matchedFailure =
       behaviorField !== "loadPublication" ||
       (native.loadPublicationFailure === recipe.javaFailure &&
@@ -636,6 +655,8 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       offline &&
       js.load?.status === "completed" &&
       native.javaLoad?.status === "completed" &&
+      matchedExpected &&
+      recordedStorageBytes &&
       js[behaviorField] &&
       native[behaviorField] &&
       matchedFailure &&
