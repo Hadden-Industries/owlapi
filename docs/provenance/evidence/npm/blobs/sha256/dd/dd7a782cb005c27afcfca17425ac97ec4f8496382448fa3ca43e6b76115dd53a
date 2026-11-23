@@ -1,0 +1,179 @@
+{
+  "artifactId": "4e08b83184b0e6d390ff45bdc242cba71af4f27c163433611109ba8ba7962ab1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 114108,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "71bc9106276d4da0dcf03fa870e9557b8f20e9dbd66b4957d51107a3fd3b5aad",
+        "size": 83,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.d.ts",
+        "sha256": "416bbbb127088908fdd1d9d27008f0315d619921ad0023a7b549aaede670ed10",
+        "size": 16212,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.full.d.ts",
+        "sha256": "2eef45ee930f6e7b47b837644e6cdd8009e1f8a5e89d0d0700ac98d029bc58fd",
+        "size": 15049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.full.js",
+        "sha256": "883a6836261df70ec305e0ccadd50e9ccb93f9f1ebb348da6136c5622f5169ad",
+        "size": 387825,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.js",
+        "sha256": "3d0e38aa58a02ac9a769f19fe4d343933642eb28359cf089aebe2a49d58d099a",
+        "size": 351809,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/plugins/async-work.d.ts",
+        "sha256": "d4a858cca594bd6d2459c08260ad20ff003e07b087651cc488e6bf38a6b8d978",
+        "size": 185,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/plugins/async-work.js",
+        "sha256": "97c2cdd9a06be426d4ede731b3c1920dac742bfd71a2459ee8f1ea958153eee9",
+        "size": 39951,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/plugins/index.d.ts",
+        "sha256": "97272c742ecc0f9e21a71b54eafed1cbcfdf68bd98f2b6f6fe7af82363ecedff",
+        "size": 221,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/plugins/index.js",
+        "sha256": "d0145b2439fecf9cb6e00a2c9661d4f8d50196ef88bd601b70a3f836fb6cf198",
+        "size": 154,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/plugins/threadsafe-function.d.ts",
+        "sha256": "cc46660acedd46bb343551be9a2a30ec149884a94427feb642b1fdcf89fd9bcd",
+        "size": 186,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/plugins/threadsafe-function.js",
+        "sha256": "d576ad4982abf2fc03f7793c1f8988d5d693d22b6233237199e863abc092209e",
+        "size": 47241,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/plugins/v8.d.ts",
+        "sha256": "cc46660acedd46bb343551be9a2a30ec149884a94427feb642b1fdcf89fd9bcd",
+        "size": 186,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/plugins/v8.js",
+        "sha256": "d8055b61ade14dca5aea41179a58c673eec4556691c45cebe801c1c96c533cd3",
+        "size": 84884,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "810024b973ea81b3d6d5c33355f061a1d2ca444a5d43b860440bdba195dad38b",
+        "size": 1138,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rollup.config.js",
+        "sha256": "bac09d646583c415861a17775ed0fd54cd8664a7777009108f163f4f60321b2e",
+        "size": 2101,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1076,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/20/2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+          "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076
+      }
+    ],
+    "expandedBytes": 948301,
+    "packageIdentity": {
+      "author": "toyobayashi",
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "name": "@emnapi/core",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "version": "2.0.0-beta.2"
+    },
+    "packageMetadata": {
+      "author": "toyobayashi",
+      "bugs": {
+        "url": "https://github.com/toyobayashi/emnapi/issues"
+      },
+      "dependencies": {
+        "@emnapi/wasi-threads": "2.2.0",
+        "tslib": "^2.4.0"
+      },
+      "description": "emnapi core",
+      "exports": {
+        ".": "./dist/emnapi-core.js",
+        "./package.json": "./package.json",
+        "./plugins": "./dist/plugins/index.js",
+        "./plugins/async-work": "./dist/plugins/async-work.js",
+        "./plugins/index": "./dist/plugins/index.js",
+        "./plugins/threadsafe-function": "./dist/plugins/threadsafe-function.js",
+        "./plugins/v8": "./dist/plugins/v8.js"
+      },
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "main": "./dist/emnapi-core.js",
+      "module": "./dist/emnapi-core.js",
+      "name": "@emnapi/core",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "scripts": {
+        "build": "node ./script/build.js && rollup -c",
+        "test": "node ./test/index.js"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./dist/emnapi-core.d.ts",
+      "version": "2.0.0-beta.2"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 114108,
+      "sha256": "fe0f9490bc841e59e50ecfd7b7ab0f198e275fcca27c12736e94f69e7c7f5edf"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

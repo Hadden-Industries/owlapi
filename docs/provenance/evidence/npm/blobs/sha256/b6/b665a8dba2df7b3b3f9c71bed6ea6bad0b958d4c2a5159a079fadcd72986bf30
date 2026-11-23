@@ -1,0 +1,151 @@
+{
+  "artifactId": "a98d22afc5b7e42fdc218c4022a397b6c9f0737ea26fd20f03f76aa2c367e6c0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 19079,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "21c2679a63d7699c0e644409e2f17d0adbc7a965003feb06b3ff4b833d21f722",
+        "size": 1118,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "10edaabde1794ec4ba8fc6c7c69b27ed22a379ee110781339f51f319b57065ef",
+        "size": 2279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/browser.js",
+        "sha256": "15033df6adbe95cce9e1ede2f990476a0b7ed0bb5ff209cb4e439e2a49144fd4",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cli.js",
+        "sha256": "21c84680fc237b5c8b43d7a5ebc269afe8a163b4ca65e7f46ffa37c13cae5d59",
+        "size": 4526,
+        "type": "FILE"
+      },
+      {
+        "path": "package/error.d.ts",
+        "sha256": "7fc4a63dde1022f192a174739a8e86f6e1f234539c5427678bf0ee84d2ce8a9c",
+        "size": 155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/error.js",
+        "sha256": "31a088cef26edc246ab9aecf33e12d59a5abf90d8afec7846b66ab80f7cd26d4",
+        "size": 299,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "88623aa2028777d8f073c61590feb7f3abde4513918329d868c8c0cb38d2d000",
+        "size": 4961,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "20b9d06db03a822a5d0c37775d096d835d7066c9fee94a1de8aeaa69713829f4",
+        "size": 37008,
+        "type": "FILE"
+      },
+      {
+        "path": "package/node.js",
+        "sha256": "57b5d48ae7bc92eb6b06b3165c76588244d9eb6bf2d2466f1e5757d43c0a7835",
+        "size": 14266,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8979b88be7796d33ea7b0eca936a9e21497e7e1219d1922973dc7c0d80870c72",
+        "size": 1112,
+        "type": "FILE"
+      },
+      {
+        "path": "package/parse.js",
+        "sha256": "cd10323f96fc20ad2b85adb316f9bc800b6b6c64a240892c699fefcce59b3516",
+        "size": 5068,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1118,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/21/21c2679a63d7699c0e644409e2f17d0adbc7a965003feb06b3ff4b833d21f722",
+          "sha256": "21c2679a63d7699c0e644409e2f17d0adbc7a965003feb06b3ff4b833d21f722"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "21c2679a63d7699c0e644409e2f17d0adbc7a965003feb06b3ff4b833d21f722",
+        "size": 1118
+      }
+    ],
+    "expandedBytes": 71909,
+    "packageIdentity": {
+      "author": "Andrey Sitnik <andrey@sitnik.es>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "browserslist",
+      "repository": "browserslist/browserslist",
+      "version": "4.29.6"
+    },
+    "packageMetadata": {
+      "author": "Andrey Sitnik <andrey@sitnik.es>",
+      "bin": {
+        "browserslist": "cli.js"
+      },
+      "browser": {
+        "./node.js": "./browser.js",
+        "path": false
+      },
+      "dependencies": {
+        "baseline-browser-mapping": "^2.11.37",
+        "caniuse-lite": "^1.0.30001826",
+        "electron-to-chromium": "^1.5.486",
+        "node-releases": "^2.0.64",
+        "update-browserslist-db": "^1.4.0"
+      },
+      "description": "Share target browsers between different front-end tools, like Autoprefixer, Stylelint and babel-env-preset",
+      "engines": {
+        "node": "^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7"
+      },
+      "funding": [
+        {
+          "type": "opencollective",
+          "url": "https://opencollective.com/browserslist"
+        },
+        {
+          "type": "tidelift",
+          "url": "https://tidelift.com/funding/github/npm/browserslist"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/ai"
+        }
+      ],
+      "keywords": [
+        "browsers",
+        "caniuse",
+        "target"
+      ],
+      "license": "MIT",
+      "name": "browserslist",
+      "repository": "browserslist/browserslist",
+      "types": "./index.d.ts",
+      "version": "4.29.6"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 19079,
+      "sha256": "7fc8b546e5eed35909c24815e68da674b281c078a18e6dec8c98053839446e52"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

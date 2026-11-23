@@ -1,0 +1,180 @@
+{
+  "artifactId": "01aaa340594b0d0522649e72efe2a6cb6d863d80fb1a21b3defb00b89bd87e6e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 52575,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b",
+        "size": 1098,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Readme.md",
+        "sha256": "b8da3574e5c21bca9cb82c616f87322c25f25b1502652dbd4f396165286b45fd",
+        "size": 42062,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "732a09a62a766dabc012a5edc592c2f9866f1a2028763b9319e44ac0313e3225",
+        "size": 697,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/argument.js",
+        "sha256": "a86c43174d904198b92ece266e97b6b711e640f3b89ac45291b682a753e145e4",
+        "size": 3134,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/command.js",
+        "sha256": "99cecd3ca1720f9a9ae06c150a3b25e210d80713ae28591916b120319c228c2b",
+        "size": 88266,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/error.js",
+        "sha256": "98ac5e1b63894792fa7740e5fb2b79ef8c016d94fc41e55bb6ff85fff3346e72",
+        "size": 1089,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/help.js",
+        "sha256": "e3c4c079a2596b233a38c1d57b52e08408da0adb258369487ce4d69b87fb7941",
+        "size": 20942,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/option.js",
+        "sha256": "94c2b305718c5fcf222d2977505ff320f2b6d6b76e629e4ddcff8708c9c32371",
+        "size": 10251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/suggestSimilar.js",
+        "sha256": "eaa0c4bd9f4d51259c9107e65173f7de37a5413cbd5de39a5795d83d3c7deb3f",
+        "size": 2735,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package-support.json",
+        "sha256": "fdce1022e389b2774b706b3f4851c7938a52d099ee39153fc1d965ab7b5b7f81",
+        "size": 337,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "130b7d64b2681da74e60757da092067ec3b69315acbb4549c79f9f0e1d13a40d",
+        "size": 1668,
+        "type": "FILE"
+      },
+      {
+        "path": "package/typings/index.d.ts",
+        "sha256": "003af0daee9bc184c545c7e89f00278ebdec36e39069fb407eb2b1bc99a166ed",
+        "size": 34773,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1098,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/04/04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b",
+          "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b",
+        "size": 1098
+      }
+    ],
+    "expandedBytes": 207052,
+    "packageIdentity": {
+      "author": "TJ Holowaychuk <tj@vision-media.ca>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "commander",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tj/commander.js.git"
+      },
+      "version": "15.1.0"
+    },
+    "packageMetadata": {
+      "author": "TJ Holowaychuk <tj@vision-media.ca>",
+      "description": "the complete solution for node.js command-line programs",
+      "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@types/node": "^22.7.4",
+        "eslint": "^10.0.2",
+        "eslint-config-prettier": "^10.0.1",
+        "eslint-node-test": "^1.0.0",
+        "globals": "^17.3.0",
+        "prettier": "^3.2.5",
+        "tsd": "^0.33.0",
+        "typescript": "^6.0.2",
+        "typescript-eslint": "^8.12.2"
+      },
+      "engines": {
+        "node": ">=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "types": "./typings/index.d.ts"
+        }
+      },
+      "files": [
+        "index.js",
+        "lib/*.js",
+        "typings/index.d.ts",
+        "package-support.json"
+      ],
+      "keywords": [
+        "commander",
+        "command",
+        "option",
+        "parser",
+        "cli",
+        "argument",
+        "args",
+        "argv"
+      ],
+      "license": "MIT",
+      "main": "./index.js",
+      "name": "commander",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tj/commander.js.git"
+      },
+      "scripts": {
+        "check": "npm run check:type && npm run check:lint && npm run check:format",
+        "check:format": "prettier --check .",
+        "check:lint": "eslint .",
+        "check:type": "npm run check:type:js && npm run check:type:ts",
+        "check:type:js": "tsc -p tsconfig.js.json",
+        "check:type:ts": "tsd && tsc -p tsconfig.ts.json",
+        "fix": "npm run fix:lint && npm run fix:format",
+        "fix:format": "prettier --write .",
+        "fix:lint": "eslint --fix .",
+        "test": "node --test && npm run check:type:ts",
+        "test-all": "node --test && npm run check"
+      },
+      "support": true,
+      "type": "module",
+      "types": "typings/index.d.ts",
+      "version": "15.1.0"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 52575,
+      "sha256": "308f16a324f6d0c889c1a388858868d84e1b4eb4e2bf856caa001f01c1c55bdf"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

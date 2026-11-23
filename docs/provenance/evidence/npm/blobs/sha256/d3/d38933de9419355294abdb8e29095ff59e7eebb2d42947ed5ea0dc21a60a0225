@@ -1,0 +1,184 @@
+{
+  "artifactId": "fef370b82378822d316cf112f41ef0f9af867db6be30d50024891b97a9f63302",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7916,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "8e2ff644b2422824b04554bcc34c30bdb53917dd499df5a11ce434020cfa5327",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2d32809299182b112efae164b40fc9fa161b7989d8e6c5a1d6ed68ec72ab6493",
+        "size": 2764,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "d5b7eba65427f456e06432f137fdf162cf87ead0f4b59ec260e09ef937a92640",
+        "size": 31,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2b8089edf9dafb71eafe3c20cbe8a29d67686d96620dbff896adff9ef74e60fa",
+        "size": 839,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js.map",
+        "sha256": "bce863d1cb291140b003626f5700a7ea2b220059052024f6cb279c32338e20fa",
+        "size": 178,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Resolve.d.ts",
+        "sha256": "79cf30427d11720c8353cb352db0f62c8ca455816dba4ac11d526c74acb78fee",
+        "size": 1012,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Resolve.js",
+        "sha256": "90f014e45fb494632a87951d695d6d9ba3243f9da381cad99789833053a9545b",
+        "size": 9956,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Resolve.js.map",
+        "sha256": "7fe8d4bf930fccaaffffda81c2722157ffa53ba68d9dd7bd516e998676f57736",
+        "size": 15442,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a545cd2504d6c8ae5acb378f61d12fd4ca9b9628909a2c9a2da58201f775973b",
+        "size": 1951,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8e/8e2ff644b2422824b04554bcc34c30bdb53917dd499df5a11ce434020cfa5327",
+          "sha256": "8e2ff644b2422824b04554bcc34c30bdb53917dd499df5a11ce434020cfa5327"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "8e2ff644b2422824b04554bcc34c30bdb53917dd499df5a11ce434020cfa5327",
+        "size": 1079
+      },
+      {
+        "blob": {
+          "bytes": 2764,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2d/2d32809299182b112efae164b40fc9fa161b7989d8e6c5a1d6ed68ec72ab6493",
+          "sha256": "2d32809299182b112efae164b40fc9fa161b7989d8e6c5a1d6ed68ec72ab6493"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "2d32809299182b112efae164b40fc9fa161b7989d8e6c5a1d6ed68ec72ab6493",
+        "size": 2764
+      }
+    ],
+    "expandedBytes": 33252,
+    "packageIdentity": {
+      "author": "Ruben Taelman <rubensworks@gmail.com>",
+      "homepage": "https://github.com/rubensworks/relative-to-absolute-iri.js#readme",
+      "license": "MIT",
+      "name": "relative-to-absolute-iri",
+      "repository": "git@github.com:rubensworks/relative-to-absolute-iri.js.git",
+      "version": "1.0.9"
+    },
+    "packageMetadata": {
+      "author": "Ruben Taelman <rubensworks@gmail.com>",
+      "bugs": {
+        "url": "https://github.com/rubensworks/relative-to-absolute-iri.js/issues"
+      },
+      "description": "Resolve relative IRIs to absolute IRIs given a base IRI",
+      "devDependencies": {
+        "@types/jest": "^30.0.0",
+        "@types/node": "^26.0.0",
+        "coveralls": "^3.0.0",
+        "jest": "^30.0.0",
+        "manual-git-changelog": "^1.0.0",
+        "pre-commit": "^2.0.0",
+        "ts-jest": "^29.0.0",
+        "tslint": "^6.0.0",
+        "tslint-eslint-rules": "^5.3.1",
+        "typescript": "^5.2.0"
+      },
+      "files": [
+        "lib/**/*.d.ts",
+        "lib/**/*.js",
+        "lib/**/*.js.map",
+        "index.d.ts",
+        "index.js.map",
+        "index.js"
+      ],
+      "funding": {
+        "type": "individual",
+        "url": "https://github.com/sponsors/rubensworks/"
+      },
+      "homepage": "https://github.com/rubensworks/relative-to-absolute-iri.js#readme",
+      "jest": {
+        "collectCoverage": true,
+        "moduleFileExtensions": [
+          "ts",
+          "js"
+        ],
+        "testEnvironment": "node",
+        "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.ts$",
+        "transform": {
+          "^.+\\.ts$": "ts-jest"
+        },
+        "transformIgnorePatterns": [
+          "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+        ]
+      },
+      "keywords": [
+        "iri",
+        "uri",
+        "url",
+        "relative",
+        "absolute",
+        "base",
+        "resolve",
+        "RFC3986"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "relative-to-absolute-iri",
+      "pre-commit": [
+        "build",
+        "lint",
+        "test"
+      ],
+      "repository": "git@github.com:rubensworks/relative-to-absolute-iri.js.git",
+      "scripts": {
+        "build": "tsc",
+        "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
+        "lint": "tslint index.ts lib/**/*.ts test/**/*.ts --exclude '**/*.d.ts'",
+        "prepare": "npm run build",
+        "test": "jest ${1}",
+        "test-watch": "jest ${1} --watch",
+        "validate": "npm ls",
+        "version": "manual-git-changelog onversion"
+      },
+      "typings": "index",
+      "version": "1.0.9"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 7916,
+      "sha256": "a3fe7a09f544be314b8c236760669b4ce69d797515d1011aa60ded7906b18ea6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

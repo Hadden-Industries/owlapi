@@ -1,0 +1,114 @@
+{
+  "artifactId": "0f3d4090126a55ecaea7fa89ff4ed203ced8234c5e654debfacd91045c575785",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 12351,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "4508eed20dcb00b1b39b38a89ee0c8f2d2b32cd9b65890b3d446bd2448397140",
+        "size": 5888,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.d.ts",
+        "sha256": "390fb3defac83f35cc43508bdb04a4171d783598ea7dae1eae780a5cf75c9ebb",
+        "size": 8513,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.js",
+        "sha256": "317e0c864c7d454c245f5053471f3c9148bfb3b9149c1f18b5f2ad0c24f0e92f",
+        "size": 38830,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "33a239ed375d6aa21f5e9795e60deed2720262d5cb9742a7a627272c73fc037d",
+        "size": 885,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rollup.config.js",
+        "sha256": "93d0a295747adaf64c182ad6c287959a60a0a9c50dddc1b27c6749edd60d8fb4",
+        "size": 138,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1076,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/20/2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+          "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076
+      }
+    ],
+    "expandedBytes": 55330,
+    "packageIdentity": {
+      "author": "toyobayashi",
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "name": "@emnapi/wasi-threads",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "version": "2.2.0"
+    },
+    "packageMetadata": {
+      "author": "toyobayashi",
+      "bugs": {
+        "url": "https://github.com/toyobayashi/emnapi/issues"
+      },
+      "dependencies": {
+        "tslib": "^2.4.0"
+      },
+      "description": "WASI threads proposal implementation in JavaScript",
+      "exports": {
+        ".": "./dist/wasi-threads.js",
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "main": "./dist/wasi-threads.js",
+      "module": "./dist/wasi-threads.js",
+      "name": "@emnapi/wasi-threads",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "scripts": {
+        "build": "rollup -c",
+        "build:test": "node ./test/build.js",
+        "test": "node ./test/index.js"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./dist/wasi-threads.d.ts",
+      "version": "2.2.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 12351,
+      "sha256": "f4c934b40a8a60763115a1da4e570fc8f2a549f9c0fac468c6a91169a154e110"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

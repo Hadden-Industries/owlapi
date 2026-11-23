@@ -1,0 +1,158 @@
+{
+  "artifactId": "7f51e227236b92f6cd1d659aa8bacd2754e681e27111b2de4d378950db165901",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 153575,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "3eaa7ce7f1df69723b82a4dda99a7213e2e26faedfe976d72b44d189ac0325f4",
+        "size": 1511,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-plugins.cjs",
+        "sha256": "242eb9edd6419ab2a443e4aa0936eb384f30913578dbdbc63f484ea37a081bee",
+        "size": 59991,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-plugins.js",
+        "sha256": "94ba2bce144d149db3f4cf87267034a176466c37c8c03267e0eef8ff044bedde",
+        "size": 59915,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/fs-proxy.cjs",
+        "sha256": "60344c89721cf1d623e726905f33923bdad51a1bf9444c9531ef39d8e77bbe6e",
+        "size": 7373,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/fs.js",
+        "sha256": "7b2d1ef854bf399420693b19db849f000e4d99e9eb896433d0be93fe9dd421aa",
+        "size": 620985,
+        "type": "FILE"
+      },
+      {
+        "path": "package/fs-proxy.js",
+        "sha256": "95cc7ffb14b5f605461a33470f66792ece28b80dd2b4325838542249705dbc45",
+        "size": 8510,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d6f1c4646138b02b4127e6990b3bb9a71db177e5144937fc8094da3c93ba545c",
+        "size": 1619,
+        "type": "FILE"
+      },
+      {
+        "path": "package/runtime.cjs",
+        "sha256": "e629eb9752723e52273d193537939b96cd12df097e6e7cd404affec2a713e877",
+        "size": 1718,
+        "type": "FILE"
+      },
+      {
+        "path": "package/runtime.js",
+        "sha256": "a27764d8d05c5bd5fbaf1ed50fc41b885b73bd59a9f3df776c7bfd3ad44ee8c2",
+        "size": 1697,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 763319,
+    "packageIdentity": {
+      "author": {
+        "name": "LongYinan",
+        "url": "https://github.com/Brooooooklyn"
+      },
+      "homepage": "https://napi.rs/",
+      "license": "MIT",
+      "name": "@napi-rs/wasm-runtime",
+      "repository": {
+        "directory": "wasm-runtime",
+        "type": "git",
+        "url": "git+https://github.com/napi-rs/napi-rs.git"
+      },
+      "version": "1.2.6"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "LongYinan",
+        "url": "https://github.com/Brooooooklyn"
+      },
+      "dependencies": {
+        "@tybys/wasm-util": "^0.10.3"
+      },
+      "description": "Runtime and polyfill for wasm targets",
+      "devDependencies": {
+        "@emnapi/core": "2.0.0-beta.2",
+        "@emnapi/runtime": "2.0.0-beta.2",
+        "buffer": "^6.0.3",
+        "events": "^3.3.0",
+        "memfs": "^4.64.0",
+        "node-inspect-extracted": "^3.3.2",
+        "path-browserify": "^1.0.1",
+        "process": "^0.11.10",
+        "readable-stream": "^4.7.0",
+        "rolldown": "^1.2.1",
+        "tslib": "^2.8.1",
+        "wabt": "^1.0.39"
+      },
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=23.5.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./runtime.js",
+          "require": "./runtime.cjs"
+        },
+        "./fs": {
+          "import": "./dist/fs.js"
+        }
+      },
+      "files": [
+        "runtime.cjs",
+        "runtime.js",
+        "fs-proxy.js",
+        "dist/*.cjs",
+        "dist/*.js"
+      ],
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/Brooooooklyn"
+      },
+      "homepage": "https://napi.rs/",
+      "license": "MIT",
+      "name": "@napi-rs/wasm-runtime",
+      "peerDependencies": {
+        "@emnapi/core": "^1.7.1 || 2.0.0-beta.2",
+        "@emnapi/runtime": "^1.7.1 || 2.0.0-beta.2"
+      },
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "directory": "wasm-runtime",
+        "type": "git",
+        "url": "git+https://github.com/napi-rs/napi-rs.git"
+      },
+      "scripts": {
+        "build": "rolldown -c",
+        "prepack": "yarn run build",
+        "test": "yarn run build && node --test"
+      },
+      "type": "module",
+      "version": "1.2.6"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 153575,
+      "sha256": "49fc597f07717343452de3f9accf3c89000bdb299a11ca1cb7c8fb5bf0b01815"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

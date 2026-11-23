@@ -1,0 +1,147 @@
+{
+  "artifactId": "6785ef6fa74142838ee9841df3b2cb5ec9784340c5464ab00a7a5b1b733ccf20",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 12114,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "821e8da15ad4691e6a2a8a219a5f1877b6f032f42ef443b90db88e0d9c80d301",
+        "size": 425,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dynamic-import.js",
+        "sha256": "16fe98bd2b82c2a04c7d8b5d4a69608d17530e99df1d280f5522663a2a8c0a14",
+        "size": 1472,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dynamic-import.js.map",
+        "sha256": "a9cce66a9599bb7d18af50baba3fe342046f545daff7e5e327ec38e8dc47a689",
+        "size": 3725,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/hooks.js",
+        "sha256": "98edbc4875b9949cd46cf3da2ee51b96346b735d1622344adfc2c867c733c3f9",
+        "size": 1133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/hooks.js.map",
+        "sha256": "f4b6c4f275fe5524d8163630152b52609d426d3c7183e0a79d1dfc6322686228",
+        "size": 3433,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "db0d82f5c6c81c11e8458339c1d751693b16d1e4b2621f93e673c24d00bb23cf",
+        "size": 8232,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "0afd14bd3f6f6e7615ab187465c9342861f6ce81795086b49dbc2168106fa539",
+        "size": 19514,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/lazy.js",
+        "sha256": "58bad4161bbf0988289aada97ca4e15ac1902d373b0a51e8552b245bfadffab4",
+        "size": 1328,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/lazy.js.map",
+        "sha256": "e1448461f95f4b7b30d09b65d7f7d35d1aa858d51a28a3405e2045c706e3a56e",
+        "size": 2872,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8613ded7ea3a314fd8d1eb864cfc2c5e4cb06c13ed04e3bc897305a9dadf156e",
+        "size": 1047,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 44287,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-transform-modules-commonjs",
+      "license": "MIT",
+      "name": "@babel/plugin-transform-modules-commonjs",
+      "repository": {
+        "directory": "packages/babel-plugin-transform-modules-commonjs",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.14"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-module-transforms": "^7.29.14",
+        "@babel/helper-plugin-utils": "^7.29.7"
+      },
+      "description": "This plugin transforms ES2015 modules to CommonJS",
+      "devDependencies": {
+        "@babel/core": "^7.29.13",
+        "@babel/helper-plugin-test-runner": "^7.29.7",
+        "@babel/plugin-external-helpers": "^7.29.7",
+        "@babel/plugin-transform-dynamic-import": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-transform-modules-commonjs",
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/plugin-transform-modules-commonjs",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-transform-modules-commonjs",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.14"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 12114,
+      "sha256": "417fdd2224892d1d4313114afb255b16c6b3cd45f0e10f1ff2602235e9316c53"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

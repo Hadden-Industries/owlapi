@@ -1,0 +1,129 @@
+{
+  "artifactId": "c4a420bac222b7813cf0a0b410a22d4f57a956a06dedb42aee2c3a72eb3cbfbc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3993215,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "9a5ecc3b46921e54292aa37c54add0bbd56bc60c78af6bb3e113bd39160a1077",
+        "size": 104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "51240ab717c84322e58e4cb8803acf19587e78fd73ad41865428a9a83ffc95cb",
+        "size": 1238,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rolldown-binding.wasi-browser.js",
+        "sha256": "169928275e38b417fd87baacd822509abcc0a547893c4f7b59524d17d65e7635",
+        "size": 61031,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rolldown-binding.wasi.cjs",
+        "sha256": "01fd76391144044f32cb53d6de240fb6abe85a98180517db78c010e514303612",
+        "size": 94032,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rolldown-binding.wasi.d.cts",
+        "sha256": "4b3967b656b724fec0fe124ca86618215e76b01fc70bdb667f4612060858823c",
+        "size": 105994,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rolldown-binding.wasm32-wasi.wasm",
+        "sha256": "82e71587d5736cc521243c1aa5e451f4e47409116cb638a9a32957734bc783ec",
+        "size": 12090756,
+        "type": "FILE"
+      },
+      {
+        "path": "package/wasi-worker-browser.mjs",
+        "sha256": "9cb6ec2670d85d603542b07a9242d667089d33e62d6295ae192e0eb6e97b7549",
+        "size": 2587,
+        "type": "FILE"
+      },
+      {
+        "path": "package/wasi-worker.mjs",
+        "sha256": "f1a1a998d9d253108e44a5ecff3d1eff27d38d1de02f1772ce3d37473dbc4b35",
+        "size": 6468,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 12362210,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://rolldown.rs/",
+      "license": "MIT",
+      "name": "@rolldown/binding-wasm32-wasi",
+      "repository": {
+        "directory": "packages/rolldown",
+        "type": "git",
+        "url": "git+https://github.com/rolldown/rolldown.git"
+      },
+      "version": "1.2.19"
+    },
+    "packageMetadata": {
+      "browser": "rolldown-binding.wasi-browser.js",
+      "bugs": {
+        "url": "https://github.com/rolldown/rolldown/issues"
+      },
+      "cpu": [
+        "wasm32"
+      ],
+      "dependencies": {
+        "@emnapi/core": "2.0.0-beta.2",
+        "@emnapi/runtime": "2.0.0-beta.2",
+        "@napi-rs/wasm-runtime": "1.2.6"
+      },
+      "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=23.5.0"
+      },
+      "files": [
+        "rolldown-binding.wasm32-wasi.wasm",
+        "rolldown-binding.wasi.cjs",
+        "rolldown-binding.wasi.d.cts",
+        "rolldown-binding.wasi-browser.js",
+        "wasi-worker.mjs",
+        "wasi-worker-browser.mjs"
+      ],
+      "homepage": "https://rolldown.rs/",
+      "keywords": [
+        "bundler",
+        "esbuild",
+        "parcel",
+        "rolldown",
+        "rollup",
+        "webpack"
+      ],
+      "license": "MIT",
+      "main": "rolldown-binding.wasi.cjs",
+      "name": "@rolldown/binding-wasm32-wasi",
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "directory": "packages/rolldown",
+        "type": "git",
+        "url": "git+https://github.com/rolldown/rolldown.git"
+      },
+      "type": "module",
+      "types": "rolldown-binding.wasi.d.cts",
+      "version": "1.2.19"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 3993215,
+      "sha256": "ac92bc777ff743588bf25509191a7fdacfafc272413b32ae1ea33be4ae29fd15"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

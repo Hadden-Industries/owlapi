@@ -1,0 +1,198 @@
+{
+  "artifactId": "df38f932cd260736f8d68cc77aaf84ae710e9cab0a944b3889a3c126f6a3c9dd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8594,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "830c61b95e880bcd42f96d8a4181b0d84dec566ba5dd131b386dcb9608043832",
+        "size": 1900,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "266fcd72f8606ae61640f98ea2aa660562c08d3e5cc14956d09051813aab47c0",
+        "size": 107,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "347511f401eb79a6030b80f6a67d126ab41da1f663f0374c1d0a93312ae08e00",
+        "size": 1547,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "fabe05044becc9ae3ff1320f4c2ed30d8aa8859b4944e126cac22a570bae9574",
+        "size": 8631,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d9d6c7f8e4783917a559989166b153a2234096db0de812205538e18efe3f2a65",
+        "size": 2638,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "355b2de5a960d720935a74bbebd987087e8232fde7e63c8eb3ffad4978572fd1",
+        "size": 12401,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/53/536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+          "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 12401,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/35/355b2de5a960d720935a74bbebd987087e8232fde7e63c8eb3ffad4978572fd1",
+          "sha256": "355b2de5a960d720935a74bbebd987087e8232fde7e63c8eb3ffad4978572fd1"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "355b2de5a960d720935a74bbebd987087e8232fde7e63c8eb3ffad4978572fd1",
+        "size": 12401
+      }
+    ],
+    "expandedBytes": 28323,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "mdast-util-math",
+      "repository": "syntax-tree/mdast-util-math",
+      "version": "3.0.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/syntax-tree/mdast-util-math/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "@types/hast": "^3.0.0",
+        "@types/mdast": "^4.0.0",
+        "devlop": "^1.0.0",
+        "longest-streak": "^3.0.0",
+        "mdast-util-from-markdown": "^2.0.0",
+        "mdast-util-to-markdown": "^2.1.0",
+        "unist-util-remove-position": "^5.0.0"
+      },
+      "description": "mdast extension to parse and serialize math",
+      "devDependencies": {
+        "@types/node": "^20.0.0",
+        "c8": "^8.0.0",
+        "micromark-extension-math": "^3.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^11.0.0",
+        "remark-preset-wooorm": "^9.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^5.0.0",
+        "xo": "^0.55.0"
+      },
+      "exports": "./index.js",
+      "files": [
+        "lib/",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "unist",
+        "mdast",
+        "mdast-util",
+        "util",
+        "utility",
+        "markdown",
+        "markup",
+        "math",
+        "katex",
+        "latex",
+        "tex"
+      ],
+      "license": "MIT",
+      "name": "mdast-util-math",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "syntax-tree/mdast-util-math",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "npm run test-api-dev && npm run test-api-prod",
+        "test-api-dev": "node --conditions development test.js",
+        "test-api-prod": "node --conditions production test.js",
+        "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "strict": true
+      },
+      "version": "3.0.0",
+      "xo": {
+        "overrides": [
+          {
+            "files": [
+              "**/*.ts"
+            ],
+            "rules": {
+              "@typescript-eslint/ban-types": "off",
+              "@typescript-eslint/consistent-type-definitions": "off"
+            }
+          }
+        ],
+        "prettier": true,
+        "rules": {
+          "unicorn/prefer-at": "off",
+          "unicorn/prefer-string-replace-all": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 8594,
+      "sha256": "4de30d5fa2382687ff805a2abeb55465c48bed3c859aa6fac8292fb377e8cd90"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

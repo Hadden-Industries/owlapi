@@ -1,0 +1,158 @@
+{
+  "artifactId": "b694e1081c89d74e58a19d38a9dcbf7d2c8fe69ba0210cccb0eb3599fa710de4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8742,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+        "size": 11601,
+        "type": "FILE"
+      },
+      {
+        "path": "package/NOTICE",
+        "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d",
+        "size": 254,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6826f70cde30d7bc2211a9aa1fc6c11832f1b4ea43707749c9aa508d651c2ce4",
+        "size": 11280,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cli.js",
+        "sha256": "79e23e6a249176295b8490567daa7717448a75866d6ea6f6b296ff3d23305c69",
+        "size": 707,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "ec8997c2e5cea26befc76e7bf990750e96babb16977673a9ff3b5c0575d01e48",
+        "size": 679,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "499da5dd8585212108a1443793de31ebc061ca7db02343f107955f261180cdfc",
+        "size": 648,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.mjs",
+        "sha256": "ec8997c2e5cea26befc76e7bf990750e96babb16977673a9ff3b5c0575d01e48",
+        "size": 679,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "72ff26856a8b26394f293275b6b485e85823218524f41a9c65c62615cd783542",
+        "size": 754,
+        "type": "FILE"
+      },
+      {
+        "path": "package/reporter.d.ts",
+        "sha256": "04392f8e190f9e51301f73d17bbb34babd54858c1efc932d2193962f66dabae2",
+        "size": 650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/reporter.js",
+        "sha256": "207244dfcfb3fe0c5b845e881fc3c115b047ef37f4e81bda53272ea1e0dec962",
+        "size": 645,
+        "type": "FILE"
+      },
+      {
+        "path": "package/reporter.mjs",
+        "sha256": "207244dfcfb3fe0c5b845e881fc3c115b047ef37f4e81bda53272ea1e0dec962",
+        "size": 645,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11601,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/45/45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+          "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+        "size": 11601
+      },
+      {
+        "blob": {
+          "bytes": 254,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6d/6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d",
+          "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d"
+        },
+        "kind": "NOTICE",
+        "path": "package/NOTICE",
+        "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d",
+        "size": 254
+      }
+    ],
+    "expandedBytes": 28542,
+    "packageIdentity": {
+      "author": {
+        "name": "Microsoft Corporation"
+      },
+      "homepage": "https://playwright.dev",
+      "license": "Apache-2.0",
+      "name": "@playwright/test",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/microsoft/playwright.git"
+      },
+      "version": "1.65.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Microsoft Corporation"
+      },
+      "bin": {
+        "playwright": "cli.js"
+      },
+      "dependencies": {
+        "playwright": "1.65.1"
+      },
+      "description": "A high-level API to automate web browsers",
+      "engines": {
+        "node": ">=20"
+      },
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "import": "./index.mjs",
+          "require": "./index.js",
+          "types": "./index.d.ts"
+        },
+        "./cli": "./cli.js",
+        "./package.json": "./package.json",
+        "./reporter": "./reporter.js"
+      },
+      "homepage": "https://playwright.dev",
+      "license": "Apache-2.0",
+      "name": "@playwright/test",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/microsoft/playwright.git"
+      },
+      "scripts": {},
+      "version": "1.65.1"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 8742,
+      "sha256": "025a0b1ab36fd4e5f4ede6c9397020b9c3805d8f19c75a16989a02d70a88f37b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

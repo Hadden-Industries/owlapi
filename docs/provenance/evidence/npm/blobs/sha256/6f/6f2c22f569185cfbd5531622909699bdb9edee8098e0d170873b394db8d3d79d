@@ -1,0 +1,184 @@
+{
+  "artifactId": "5208315646888d70a2e58b69bfd05f13f2cf4da77da22f811f9833a912c14fab",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7443,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "1d04dc112477c24fa0fa94a15304721c786002da29ace699ebe24de5bde1cf6e",
+        "size": 552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "dbc81be3e646c158c356549bf8ad764dded1af0aab70c8dbec6c4e95a5c2cbe7",
+        "size": 305,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "7a4656d4f6e259733e75f160544e681c1250180db6f099907dde936bce1d8c7b",
+        "size": 516,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "1a1f7c7dacd5356ee4f8086295d6507365baad05ea94f7534fe6dec7613910d0",
+        "size": 2141,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts.map",
+        "sha256": "e792a02fe510967014720917f639e4bf24a1583854c550c51067b357ff9eecd0",
+        "size": 696,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "05adae524539c2a0915c7c6bc631f3eb226ae24c6e4c0bfa540a9d79b3fdee01",
+        "size": 6743,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0b64bd646a488124ac19627c878f46a36132c6a29dcaa8f5fb9a9590325d499d",
+        "size": 2007,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "3b7ccdb8c4f069cc089b0a100b59caa5ea3e421d41766c331671dae36009111a",
+        "size": 9213,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 9213,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3b/3b7ccdb8c4f069cc089b0a100b59caa5ea3e421d41766c331671dae36009111a",
+          "sha256": "3b7ccdb8c4f069cc089b0a100b59caa5ea3e421d41766c331671dae36009111a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "3b7ccdb8c4f069cc089b0a100b59caa5ea3e421d41766c331671dae36009111a",
+        "size": 9213
+      }
+    ],
+    "expandedBytes": 23267,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "mdast-util-find-and-replace",
+      "repository": "syntax-tree/mdast-util-find-and-replace",
+      "version": "3.0.5"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/syntax-tree/mdast-util-find-and-replace/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "@types/mdast": "^4.0.0",
+        "escape-string-regexp": "^5.0.0",
+        "unist-util-is": "^6.0.0",
+        "unist-util-visit-parents": "^6.1.0"
+      },
+      "description": "mdast utility to find and replace text in a tree",
+      "devDependencies": {
+        "@types/node": "^26.0.0",
+        "c8": "^12.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^11.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^6.0.0",
+        "xo": "^5.0.0"
+      },
+      "exports": "./index.js",
+      "files": [
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js",
+        "lib/"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "find",
+        "markdown",
+        "mdast-util",
+        "mdast",
+        "unist",
+        "utility",
+        "util",
+        "replace"
+      ],
+      "license": "MIT",
+      "name": "mdast-util-find-and-replace",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "syntax-tree/mdast-util-find-and-replace",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark --frail --output --quiet -- . && prettier --log-level warn --write -- . && xo --fix",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "node --conditions development test.js",
+        "test-coverage": "c8 --100 --reporter lcov -- npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "ignoreFiles": [
+          "lib/index.d.ts"
+        ],
+        "strict": true
+      },
+      "version": "3.0.5"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 7443,
+      "sha256": "2679199747f8999b4fc68206848d692ebb5a02b4ad5ecd2421dffa2ddc26f061"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

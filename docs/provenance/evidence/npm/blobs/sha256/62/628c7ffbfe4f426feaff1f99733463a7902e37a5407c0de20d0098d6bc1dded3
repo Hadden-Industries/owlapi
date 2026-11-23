@@ -1,0 +1,130 @@
+{
+  "artifactId": "668516aea6d98f03bbbca160fdb0ef984ae137d8a298d1e37e9fd4c92cf1b37b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 62091,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "71bc9106276d4da0dcf03fa870e9557b8f20e9dbd66b4957d51107a3fd3b5aad",
+        "size": 83,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.d.ts",
+        "sha256": "14de9762bc245aa89dd2a4e2076450c6d4d023778fe378a61b7e6d3037c0547c",
+        "size": 31045,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.js",
+        "sha256": "07cfac2cbf841e57b36d60c56953326defe1fc6503041325a15bd2aa87204c0c",
+        "size": 88612,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.js.map",
+        "sha256": "94810b158298619064ccb50c935ed022bbcd7da293eddccb05b5f6d7ecb04f78",
+        "size": 185408,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.cjs",
+        "sha256": "b63fd04492489d0155df7c63c62ec47fdef451ba47fc4e751ab9be88877bd099",
+        "size": 3977,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c6be4695062aba5ef6943535b23a02d667a3b7b539a1afbeb874b79389526bea",
+        "size": 915,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rollup.config.js",
+        "sha256": "da8568b8cac7a74195e4dd0b0306a43c3daf31761abc5f1199a7076f98a34c93",
+        "size": 1062,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1076,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/20/2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+          "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076
+      }
+    ],
+    "expandedBytes": 312178,
+    "packageIdentity": {
+      "author": "toyobayashi",
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "name": "@emnapi/runtime",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "version": "2.0.0-beta.2"
+    },
+    "packageMetadata": {
+      "author": "toyobayashi",
+      "bugs": {
+        "url": "https://github.com/toyobayashi/emnapi/issues"
+      },
+      "dependencies": {
+        "tslib": "^2.4.0"
+      },
+      "description": "emnapi runtime",
+      "exports": {
+        ".": {
+          "default": "./dist/emnapi.js",
+          "import": "./dist/emnapi.js",
+          "require": "./index.cjs",
+          "types": "./dist/emnapi.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "main": "./dist/emnapi.js",
+      "module": "./dist/emnapi.js",
+      "name": "@emnapi/runtime",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "scripts": {
+        "build": "rollup -c",
+        "test": "node ./test/index.js"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./dist/emnapi.d.ts",
+      "version": "2.0.0-beta.2"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 62091,
+      "sha256": "b2295c046d70bd46f85a906065b002443e3c9399bcd194fdf335fae9e9b700cb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

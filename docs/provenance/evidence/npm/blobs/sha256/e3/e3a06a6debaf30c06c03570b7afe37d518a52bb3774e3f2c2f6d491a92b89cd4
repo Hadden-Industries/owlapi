@@ -1,0 +1,137 @@
+{
+  "artifactId": "cb1fe68529d958856a164ba564ffa81dce3d68f050498a6abfab5d0589c63a0c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9935,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+        "size": 1552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1c8169c6bd7d7c966616574b9b7479c9890193ff6c5af98faa28672a1d429382",
+        "size": 4741,
+        "type": "FILE"
+      },
+      {
+        "path": "package/clone.js",
+        "sha256": "7258eca52e65d69845759503f9fdd66c252f40e5eafb76db5d481172e31ac9ed",
+        "size": 496,
+        "type": "FILE"
+      },
+      {
+        "path": "package/graceful-fs.js",
+        "sha256": "7da35669b6b6b0e4aafee31674c033f2cebb0c8f9ae010f709dcc185d3f17786",
+        "size": 12680,
+        "type": "FILE"
+      },
+      {
+        "path": "package/legacy-streams.js",
+        "sha256": "60a6a7ecf7c3e55a3ffaae13433b6cff388b7205bba6daf393c863f77a949e36",
+        "size": 2655,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7cc365c012febc9c44ef6d998b49d749840c852d91db3302b19eb6eca07ead3d",
+        "size": 1007,
+        "type": "FILE"
+      },
+      {
+        "path": "package/polyfills.js",
+        "sha256": "66ea1687ed5edf39d67296d26edccc8da695d9a869303a78d0e580cd770aca27",
+        "size": 10141,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1552,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8a/8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+          "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+        "size": 1552
+      }
+    ],
+    "expandedBytes": 33272,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "BlueOak-1.0.0",
+      "name": "graceful-fs",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/isaacs/node-graceful-fs"
+      },
+      "version": "4.2.12"
+    },
+    "packageMetadata": {
+      "description": "A drop-in replacement for fs, making various improvements.",
+      "devDependencies": {
+        "import-fresh": "^2.0.0",
+        "mkdirp": "^0.5.0",
+        "rimraf": "^2.2.8",
+        "tap": "^16.3.4"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "files": [
+        "fs.js",
+        "graceful-fs.js",
+        "legacy-streams.js",
+        "polyfills.js",
+        "clone.js"
+      ],
+      "keywords": [
+        "fs",
+        "module",
+        "reading",
+        "retry",
+        "retries",
+        "queue",
+        "error",
+        "errors",
+        "handling",
+        "EMFILE",
+        "EAGAIN",
+        "EINVAL",
+        "EPERM",
+        "EACCESS"
+      ],
+      "license": "BlueOak-1.0.0",
+      "main": "graceful-fs.js",
+      "name": "graceful-fs",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/isaacs/node-graceful-fs"
+      },
+      "scripts": {
+        "posttest": "nyc report",
+        "postversion": "git push origin --follow-tags",
+        "preversion": "npm test",
+        "test": "nyc --silent node test.js | tap -c -"
+      },
+      "tap": {
+        "reporter": "classic"
+      },
+      "version": "4.2.12"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 9935,
+      "sha256": "4ce49e6df444e0e984000530452b68dae551d7f9aefe832dc6fbfbf583b0cc6a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

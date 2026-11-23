@@ -1,0 +1,206 @@
+{
+  "artifactId": "6274962cc6f2d5954db6f4dc31acc358456633f6de3de201eab33d148076e786",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 18056,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9",
+        "size": 1091,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "dbfcccb75df9360390f29d12c6ace93f9db3c6cd6b505158c11bdee572c1c4f2",
+        "size": 1049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "02ae26406508e28f9ba0865be16cf77f0b33de6c4d4d49c212c4176df1d5625a",
+        "size": 479,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/constants.js",
+        "sha256": "cdcb0716c3c7137f34fbec4fe29613de0aaa0a7de01505601ef3a88a5ba05fb0",
+        "size": 4556,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/parse.js",
+        "sha256": "a59b25c67cce014f5226836f8391cb1f323dc76224dc82b85c6826d10b33922a",
+        "size": 37665,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/picomatch.js",
+        "sha256": "fdd249d7ffff853f3bb1c77eafc8baa1a437bea85a94c35877b83c6a40d9ca94",
+        "size": 10722,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/scan.js",
+        "sha256": "6457a1764e5c2e543cc3a0c00ce12ebb3764097628868198370b64d4e642aaae",
+        "size": 9483,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utils.js",
+        "sha256": "f04604f70cd1a3f6ace80b84766468674ff38b4bb83818d2ef1d81fc6355f935",
+        "size": 1994,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5497ec4e5caf2347e431c000e13d8d997f42a8e8ebdc387c67ba034563483c5c",
+        "size": 2051,
+        "type": "FILE"
+      },
+      {
+        "path": "package/posix.js",
+        "sha256": "5695ff5dfcd5a338a40630bd506056f2950bcb08fe1cc068519cbbfe60add480",
+        "size": 60,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1091,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d0/d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9",
+          "sha256": "d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9",
+        "size": 1091
+      },
+      {
+        "blob": {
+          "bytes": 1049,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/db/dbfcccb75df9360390f29d12c6ace93f9db3c6cd6b505158c11bdee572c1c4f2",
+          "sha256": "dbfcccb75df9360390f29d12c6ace93f9db3c6cd6b505158c11bdee572c1c4f2"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "dbfcccb75df9360390f29d12c6ace93f9db3c6cd6b505158c11bdee572c1c4f2",
+        "size": 1049
+      }
+    ],
+    "expandedBytes": 69150,
+    "packageIdentity": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "homepage": "https://github.com/ryotsu-kankichi/secured-picomatch#readme",
+      "license": "MIT",
+      "name": "@ryotsu/picomatch",
+      "repository": "ryotsu-kankichi/secured-picomatch",
+      "version": "4.0.7"
+    },
+    "packageMetadata": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "bugs": {
+        "url": "https://github.com/ryotsu-kankichi/secured-picomatch/issues"
+      },
+      "contributors": [
+        {
+          "email": "security.ryotsu.kankichi@gmail.com",
+          "name": "ryotsu-kankichi"
+        }
+      ],
+      "description": "Fork of picomatch 4.0.7 with a patch for CVE-2026-112366.",
+      "devDependencies": {
+        "eslint": "^8.57.0",
+        "fill-range": "^7.0.1",
+        "gulp-format-md": "^2.0.0",
+        "mocha": "^10.4.0",
+        "nyc": "^15.1.0"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "files": [
+        "index.js",
+        "posix.js",
+        "lib"
+      ],
+      "funding": "https://github.com/sponsors/jonschlinkert",
+      "homepage": "https://github.com/ryotsu-kankichi/secured-picomatch#readme",
+      "keywords": [
+        "glob",
+        "match",
+        "picomatch"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "@ryotsu/picomatch",
+      "nyc": {
+        "reporter": [
+          "html",
+          "lcov",
+          "text-summary",
+          "cobertura"
+        ]
+      },
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/",
+        "tag": "latest"
+      },
+      "repository": "ryotsu-kankichi/secured-picomatch",
+      "scripts": {
+        "lint": "eslint --cache --cache-location node_modules/.cache/.eslintcache --report-unused-disable-directives --ignore-path .gitignore .",
+        "mocha": "mocha --reporter dot",
+        "test": "npm run lint && npm run mocha",
+        "test:ci": "npm run test:cover",
+        "test:cover": "nyc npm run mocha"
+      },
+      "sideEffects": false,
+      "verb": {
+        "layout": "empty",
+        "lint": {
+          "reflinks": true
+        },
+        "plugins": [
+          "gulp-format-md"
+        ],
+        "reflinks": [
+          "braces",
+          "expand-brackets",
+          "extglob",
+          "fill-range",
+          "micromatch",
+          "minimatch",
+          "nanomatch",
+          "picomatch"
+        ],
+        "related": {
+          "list": [
+            "braces",
+            "micromatch"
+          ]
+        },
+        "tasks": [
+          "readme"
+        ],
+        "toc": {
+          "maxdepth": 3,
+          "method": "preWrite",
+          "render": true
+        }
+      },
+      "version": "4.0.7"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 18056,
+      "sha256": "7f56d3a987b830b7aaca3c9bb47a5db5d542f202448c600e8172576dfd28b3b7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
