@@ -18,7 +18,7 @@ describe("development dependency and runtime eligibility", () => {
     expect(Object.keys(manifest.devDependencies)).toHaveLength(26);
     expect(
       manifest.devDependencies["@hadden-industries/markdown-quality"],
-    ).toBe(">=3.0.1");
+    ).toBe(">=3.0.4");
     expect(manifest.scripts).not.toHaveProperty("install:markdown");
     expect(manifest.scripts).not.toHaveProperty("qualify:markdown");
     expect(lock.packages[""].devDependencies).toEqual(manifest.devDependencies);
