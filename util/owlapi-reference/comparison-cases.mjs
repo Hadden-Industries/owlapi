@@ -21,6 +21,17 @@ import { transportComparisonCases } from "./comparison-transport.mjs";
 import { julyTimeDifferenceScope } from "./comparison-july-differences.mjs";
 import { writerComparisonCases } from "./comparison-writer.mjs";
 import { profileComparisonCases } from "./comparison-profile.mjs";
+import {
+  ifcowlInputId,
+  ifcowlImportClosure,
+  ifcowlMappedInputsSha256,
+  ifcowlMappedStrictRefusal,
+  ifcowlMappedWriteRefusal,
+  ifcowlRecordedInputsSha256,
+  ifcowlSingletonUnionScope,
+  recordedIfcowlMismatch,
+  recordedIfcowlSuite,
+} from "./comparison-ifcowl.mjs";
 
 export const javaProfile = "java-owlapi-5.5.1";
 export const normativeProfile = "normative-v1";
@@ -40,7 +51,6 @@ const julyTimeClosureRoots = new Set(["july/core", "july/extended"]);
 const originalIdmp = comparisonCatalogue.fixtures.find(
   ({ id }) => id === "pistoia-idmp",
 );
-const ifcowlInputId = "building-smart-ifcowl";
 const brickInputId = "brick-only";
 const nativeClosureControls = new Set([
   "eu-epo-core",
@@ -251,7 +261,6 @@ const pinnedScenarioInputs = (() => {
   };
   return {
     recorded: new Map(scopedIds.map((id) => [id, identity(id, "recorded")])),
-    mappedIfcowl: identity(ifcowlInputId, "mapped"),
   };
 })();
 
@@ -325,6 +334,49 @@ function literalCases(request) {
 
 /** Expand named inputs, operations and exact loader settings independently of run evidence. */
 export function comparisonCases(request, catalogue = comparisonCatalogue) {
+  if (request.suite === recordedIfcowlSuite) {
+    if (
+      [
+        "input",
+        "scenario",
+        "profile",
+        "parsingMode",
+        "imports",
+        "javaTurtle",
+        "javaXml",
+        "format",
+      ].some((key) => request[key] !== undefined)
+    ) {
+      throw new Error(
+        "The recorded ifcOWL control owns its input and loader settings",
+      );
+    }
+    const [recorded] = comparisonCases(
+      {
+        input: ifcowlInputId,
+        profile: javaProfile,
+        imports: "recorded",
+        scenario: "direct-load",
+      },
+      catalogue,
+    );
+    const { input, imports } = recorded.definition;
+    if (comparisonIdentity({ input, imports }) !== ifcowlRecordedInputsSha256) {
+      throw new Error(
+        "The recorded ifcOWL control requires the exact historical inputs",
+      );
+    }
+    const definition = {
+      ...recorded.definition,
+      observationPoint: "recorded-ifcowl-incomplete-imports",
+      measurements: ["behavior"],
+      requiredImportClosure: ifcowlImportClosure("recorded"),
+      expectedRecordedIfcowlMismatch: structuredClone(recordedIfcowlMismatch),
+    };
+    return [
+      { ...recorded, definition, caseId: comparisonIdentity(definition) },
+    ];
+  }
   if (literalScenarios.includes(request.scenario)) return literalCases(request);
   if (selectsPublicBehavior(request))
     return [
@@ -369,8 +421,10 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
   ) {
     throw new Error("The strict-first scenario requires a compatible retry");
   }
-  const policy = request.imports ?? "recorded";
-  if (!["recorded", "mapped", "none"].includes(policy))
+  if (
+    request.imports !== undefined &&
+    !["recorded", "mapped", "none"].includes(request.imports)
+  )
     throw new Error("Unknown comparison import policy");
   if (
     request.javaXml !== undefined &&
@@ -438,6 +492,11 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
     }
   }
   return selected.flatMap((input) => {
+    const policy =
+      request.imports ??
+      (request.suite === "prospects" && input.id === ifcowlInputId
+        ? "mapped"
+        : "recorded");
     const oracle = input.suite === "july" ? pinnedSourceOracle() : null;
     const imports = importedDocuments(input, all, catalogue.standIns, policy);
     const admittedInputs = {
@@ -452,7 +511,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
     const exactMappedIfcowlInputs =
       policy === "mapped" &&
       input.id === ifcowlInputId &&
-      pinnedScenarioInputs.mappedIfcowl === comparisonIdentity(admittedInputs);
+      ifcowlMappedInputsSha256 === comparisonIdentity(admittedInputs);
     const hasMappedHttpImports = imports.some(([, document]) =>
       /^https?:/u.test(document.documentIRI),
     );
@@ -497,12 +556,23 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             };
           }
         }
+        const normativeMappedIfcowl =
+          exactMappedIfcowlInputs &&
+          profile.behaviorProfileId === normativeProfile &&
+          !strictFirst &&
+          !request.javaTurtle;
+        if (normativeMappedIfcowl && profile.parsingMode === "compatible") {
+          expectedDifferences = ifcowlSingletonUnionScope(scenario);
+        }
         const expectedJsRdfXmlWriteRefusal =
           scenario === "closure-roundtrip" &&
-          exactRecordedInputs &&
           profile.behaviorProfileId === normativeProfile &&
           profile.parsingMode === "compatible"
-            ? normativeRdfXmlWriteRefusals.get(input.id)
+            ? normativeMappedIfcowl
+              ? ifcowlMappedWriteRefusal
+              : exactRecordedInputs
+                ? normativeRdfXmlWriteRefusals.get(input.id)
+                : undefined
             : undefined;
         // The exact round trip preserves the admitted axiom set. Keep the
         // unconfigured native writer result as a separate observation.
@@ -519,7 +589,9 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           profile.behaviorProfileId === javaProfile &&
           profile.parsingMode === "compatible";
         const oggArchivePin = oggArchiveXmlRefusalInputs.get(input.id);
-        if (
+        if (normativeMappedIfcowl && profile.parsingMode === "strict") {
+          expectedLoadRefusals = ifcowlMappedStrictRefusal;
+        } else if (
           scenario === "direct-load" &&
           compatibleJava &&
           policy === "mapped" &&
@@ -583,6 +655,9 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           ...(oracle ? { oracle } : {}),
           ...admittedInputs,
           importPolicy: policy,
+          ...(exactMappedIfcowlInputs && !strictFirst && !expectedLoadRefusals
+            ? { requiredImportClosure: ifcowlImportClosure("mapped") }
+            : {}),
           ...(hasMappedHttpImports &&
           profile.behaviorProfileId === normativeProfile
             ? {

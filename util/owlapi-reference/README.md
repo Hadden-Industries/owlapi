@@ -28,10 +28,18 @@ The merged models contain an ontology annotation whose predicate has no declarat
 The cases require equality for every original model and the merged model, an exact Java save and reload with missing-type generation disabled, and the specific JavaScript refusal with an empty target.
 The root and import byte identities bind this check to the recorded inputs.
 
-Use `--input building-smart-ifcowl --imports mapped` for the original IFC4 ADD2 document with the published EXPRESS and LIST ontologies.
-The catalogue pins both imports to their CC BY 3.0 releases.
-The mapped Java-compatible closure checks the default writer and the declaration-preserving save and reload.
-Use `--imports recorded` for the historical EXPRESS stand-in.
+Corpus qualification policy 2 selects the complete published import closure for IFC4 ADD2 in the `prospects` suite.
+The catalogue pins the root and the CC BY 3.0 EXPRESS and LIST releases by SHA-256.
+Use `--input building-smart-ifcowl --imports mapped` to select the same mapping explicitly.
+The Java-compatible closure checks the declaration-preserving RDF/XML save and reload and records the default native writer result.
+Normative compatible checks the exact singleton union reductions in the root, imported EXPRESS document and merged model.
+The closure verifies native propagation and the exact JavaScript RDF/XML refusal for the undeclared license annotation.
+Normative strict checks the typed refusal for that same annotation during loading and records the completed Java load.
+
+Use `--suite ifcowl-recorded` for the incomplete-import regression.
+It uses the historical EXPRESS stand-in and checks the exact 16 Java placeholder replacements in the direct source comparison, including the corresponding JavaScript restrictions.
+Use `--input building-smart-ifcowl --imports recorded` to reproduce the raw historical comparison.
+Publication qualification reconciles the versioned roster on both release routes and both platforms.
 
 - [EXPRESS publication](https://pi.pauwel.be/evoc/express_W3ID/20151211/index.html)
 - [LIST publication](https://pi.pauwel.be/evoc/list_W3ID/20151211/index.html)

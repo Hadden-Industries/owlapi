@@ -8,6 +8,46 @@ export const sha256 = (bytes) =>
 
 export const comparisonIdentity = (value) => sha256(canonicalJson(value));
 
+/** Match the full logical import mapping reported by each worker. */
+export function comparisonImportRequests(imports, js, native) {
+  const asMapping = (entries) =>
+    Object.fromEntries(
+      entries.map(({ ontologyIRI, documentIRI }) => [ontologyIRI, documentIRI]),
+    );
+  const expected = comparisonIdentity(asMapping(imports));
+  return {
+    javascript:
+      Array.isArray(js.importRequests) &&
+      js.importRequests.length === imports.length &&
+      comparisonIdentity(asMapping(js.importRequests)) === expected,
+    java: comparisonIdentity(native.importRequests ?? {}) === expected,
+  };
+}
+
+export function matchesOntologyClosure(actual, expected) {
+  return (
+    Array.isArray(actual) &&
+    actual.length === expected.length &&
+    comparisonIdentity(actual.map(comparisonIdentity).sort()) ===
+      comparisonIdentity(expected.map(comparisonIdentity).sort())
+  );
+}
+
+/** Mapper calls and membership in the resulting ontology are separate observations. */
+export function matchesComparisonImportClosure(definition, js, native) {
+  const { imports, requiredImportClosure } = definition;
+  const requests = comparisonImportRequests(imports, js, native);
+  return (
+    requests.javascript &&
+    requests.java &&
+    matchesOntologyClosure(js.load?.closure, requiredImportClosure) &&
+    matchesOntologyClosure(
+      native.javaLoad?.ontology?.closure,
+      requiredImportClosure,
+    )
+  );
+}
+
 const diagnosticFields = [
   "reason",
   "iri",

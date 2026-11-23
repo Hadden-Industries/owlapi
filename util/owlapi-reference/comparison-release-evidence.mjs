@@ -3,9 +3,14 @@ import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
 import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
+import { recordedIfcowlSuite } from "./comparison-ifcowl.mjs";
 
+// Version 2 qualifies the published ifcOWL closure and checks the recorded
+// stand-in as behavior. The version is part of the authenticated roster hash.
+const qualificationPolicyVersion = 2;
 const releaseSuites = [
   { suite: "prospects" },
+  { suite: recordedIfcowlSuite },
   ...["direct-load", "closure-roundtrip"].map((scenario) => ({
     input: "pistoia-idmp",
     profile: "normative-v1",
@@ -209,6 +214,7 @@ export function corpusQualificationRoster(comparisonCases) {
   }
   return {
     schemaVersion: 1,
+    policyVersion: qualificationPolicyVersion,
     cells,
     inapplicable,
     held: [...held.values()],

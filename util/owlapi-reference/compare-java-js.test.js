@@ -21,12 +21,18 @@ import {
   resolveComparisonFixture,
 } from "./comparison-fixtures.mjs";
 import {
+  comparisonIdentity,
   comparisonStageFailure,
   exactComparedDocuments,
+  matchesComparisonImportClosure,
   readNativeComparisonResult,
   recordedNativeRdfXmlRoundTrip,
   sha256,
 } from "./comparison-evidence.mjs";
+import {
+  matchesRecordedIfcowlMismatch,
+  reconcileIfcowlSingletonUnions,
+} from "./comparison-ifcowl.mjs";
 import { loadPerformanceReport } from "./comparison-performance.mjs";
 
 async function withScratch(run) {
@@ -1488,6 +1494,266 @@ test("the fully mapped ifcOWL case uses the two published imports and exact Java
   expect(mappedModule.imports.map(([iri]) => iri)).toEqual([
     "https://w3id.org/list",
   ]);
+});
+
+test("the release roster qualifies mapped ifcOWL and retains one recorded import control", () => {
+  const input = "building-smart-ifcowl";
+  const prospectCases = comparisonCases({ suite: "prospects" }).filter(
+    (entry) => entry.input.id === input,
+  );
+  expect(prospectCases).toHaveLength(6);
+  for (const { definition } of prospectCases) {
+    expect(definition.importPolicy).toBe("mapped");
+    expect(definition.imports.map(({ id }) => id)).toEqual([
+      "ifcowl-express-20151211",
+      "ifcowl-list-20151211",
+    ]);
+  }
+  const recordedCases = comparisonCases({
+    suite: "prospects",
+    imports: "recorded",
+  }).filter((entry) => entry.input.id === input);
+  expect(recordedCases).toHaveLength(6);
+  expect(
+    recordedCases.every(
+      ({ definition }) => definition.importPolicy === "recorded",
+    ),
+  ).toBe(true);
+  const [recorded] = comparisonCases({
+    input,
+    imports: "recorded",
+    profile: "java-owlapi-5.5.1",
+  });
+  expect(recorded.caseId).toBe(
+    "f39fb0b737464105998d0cc5738bc05fb5ea0e828a26e393bdb1c5e15cf99a41",
+  );
+  const [control] = comparisonCases({ suite: "ifcowl-recorded" });
+  expect(control.definition.input).toEqual(recorded.definition.input);
+  expect(control.definition.imports).toEqual(recorded.definition.imports);
+  expect(control.definition.measurements).toEqual(["behavior"]);
+  expect(control.definition.expectedRecordedIfcowlMismatch).toBeDefined();
+  expect(control.caseId).not.toBe(recorded.caseId);
+  const changedCatalogue = {
+    ...comparisonCatalogue,
+    standIns: comparisonCatalogue.standIns.filter(
+      ({ iri }) => iri !== "https://w3id.org/express",
+    ),
+  };
+  expect(() =>
+    comparisonCases({ suite: "ifcowl-recorded" }, changedCatalogue),
+  ).toThrow("requires the exact historical inputs");
+
+  const roster = corpusQualificationRoster(comparisonCases);
+  expect(roster.policyVersion).toBe(2);
+  const cells = roster.cells.filter((cell) => cell.input === input);
+  const positive = new Set(prospectCases.map(({ caseId }) => caseId));
+  expect(new Set(cells.map(({ caseId }) => caseId))).toEqual(
+    new Set([...positive, control.caseId]),
+  );
+  expect(
+    cells
+      .filter(({ caseId }) => caseId === control.caseId)
+      .map(({ measurement }) => measurement),
+  ).toEqual(["behavior", "behavior"]);
+  const strict = prospectCases.filter(
+    ({ definition }) => definition.parsingMode === "strict",
+  );
+  expect(
+    strict.every(
+      ({ definition }) => definition.expectedLoadRefusals?.java.identity,
+    ),
+  ).toBe(true);
+  expect(
+    cells.filter(
+      ({ caseId, measurement }) =>
+        strict.some((entry) => entry.caseId === caseId) &&
+        measurement === "structure",
+    ),
+  ).toHaveLength(0);
+  const compatible = prospectCases.filter(
+    ({ definition }) =>
+      definition.behaviorProfileId === "normative-v1" &&
+      definition.parsingMode === "compatible",
+  );
+  expect(
+    compatible.every(({ definition }) =>
+      definition.expectedDifferences?.ruleIds.includes(
+        "IFCOWL-MAPPED-SINGLETON-UNIONS",
+      ),
+    ),
+  ).toBe(true);
+});
+
+test("the recorded ifcOWL witness admits only counter renumbering", () => {
+  const jvmError = (counter = "") =>
+    `SubClassOf(<urn:example:Class> <http://org.semanticweb.owlapi/error#Error${counter}>)`;
+  const axioms = {
+    javaOnly: [jvmError()],
+    jsOnly: ["SubClassOf(<urn:example:Class> <urn:example:Parent>)"],
+  };
+  const imports = [{ ontologyIRI: "urn:module", documentIRI: "urn:document" }];
+  const definition = {
+    imports,
+    expectedRecordedIfcowlMismatch: {
+      count: 1,
+      oracleVersion: "pinned-oracle",
+      sha256: comparisonIdentity({ axioms }),
+    },
+  };
+  const js = { importRequests: imports };
+  const native = {
+    oracleVersion: "pinned-oracle",
+    importRequests: { "urn:module": "urn:document" },
+    javaLoad: { ontology: { unparsedRdf: [] } },
+    functionalReparse: { status: "completed" },
+    structure: {
+      status: "mismatch",
+      detailStatus: "completed",
+      differences: { axioms: { ...axioms, javaOnly: [jvmError(99)] } },
+    },
+  };
+  expect(matchesRecordedIfcowlMismatch(definition, js, native)).toBe(true);
+  expect(
+    matchesRecordedIfcowlMismatch(definition, { importRequests: [] }, native),
+  ).toBe(false);
+  const unrelated = structuredClone(native);
+  unrelated.structure.differences.axioms.jsOnly[0] =
+    "SubClassOf(<urn:example:Class> <urn:example:Unrelated>)";
+  expect(matchesRecordedIfcowlMismatch(definition, js, unrelated)).toBe(false);
+  const unexpected = structuredClone(native);
+  unexpected.structure.differences.annotations = { javaOnly: ["unexpected"] };
+  expect(matchesRecordedIfcowlMismatch(definition, js, unexpected)).toBe(false);
+});
+
+test("returning an ifcOWL case does not share its approved witness with later requests", () => {
+  const recorded = { suite: "ifcowl-recorded" };
+  const mapped = {
+    input: "building-smart-ifcowl",
+    imports: "mapped",
+    profile: "normative-v1",
+    scenario: "closure-roundtrip",
+  };
+  const [priorRecorded] = comparisonCases(recorded);
+  const [priorMapped] = comparisonCases(mapped);
+  priorRecorded.definition.expectedRecordedIfcowlMismatch.count = 1;
+  const { structure, documentDifferences } =
+    priorMapped.definition.expectedDifferences;
+  structure.count = 1;
+  documentDifferences["https://w3id.org/express"].count = 1;
+  const [nextRecorded] = comparisonCases(recorded);
+  const [nextMapped] = comparisonCases(mapped);
+  expect(nextRecorded.caseId).toBe(priorRecorded.caseId);
+  expect(nextRecorded.definition.expectedRecordedIfcowlMismatch.count).toBe(16);
+  expect(nextMapped.caseId).toBe(priorMapped.caseId);
+  expect(nextMapped.definition.expectedDifferences.structure.count).toBe(22);
+  expect(
+    nextMapped.definition.expectedDifferences.documentDifferences[
+      "https://w3id.org/express"
+    ].count,
+  ).toBe(4);
+});
+
+test("mapped ifcOWL requires the resulting closure as well as mapper calls", () => {
+  const [{ definition }] = comparisonCases({
+    input: "building-smart-ifcowl",
+    imports: "mapped",
+    profile: "java-owlapi-5.5.1",
+  });
+  const { imports, requiredImportClosure } = definition;
+  const js = {
+    importRequests: imports,
+    load: { closure: requiredImportClosure },
+  };
+  const native = {
+    importRequests: Object.fromEntries(
+      imports.map(({ ontologyIRI, documentIRI }) => [ontologyIRI, documentIRI]),
+    ),
+    javaLoad: { ontology: { closure: [...requiredImportClosure].reverse() } },
+  };
+  expect(requiredImportClosure).toHaveLength(3);
+  expect(matchesComparisonImportClosure(definition, js, native)).toBe(true);
+  expect(
+    matchesComparisonImportClosure(
+      definition,
+      { ...js, load: { closure: requiredImportClosure.slice(0, 1) } },
+      native,
+    ),
+  ).toBe(false);
+  expect(
+    matchesComparisonImportClosure(definition, js, {
+      ...native,
+      javaLoad: { ontology: { closure: requiredImportClosure.slice(0, 2) } },
+    }),
+  ).toBe(false);
+});
+
+test("ifcOWL singleton reconciliation requires the complete compared closure", () => {
+  const root = "urn:example:root";
+  const module = "urn:example:import";
+  const imports = [{ ontologyIRI: module, documentIRI: module }];
+  const differences = {
+    axioms: {
+      javaOnly: [
+        "SubClassOf(<urn:example:Class> ObjectUnionOf(<urn:example:Parent>))",
+      ],
+      jsOnly: ["SubClassOf(<urn:example:Class> <urn:example:Parent>)"],
+    },
+  };
+  const recorded = { count: 1, sha256: comparisonIdentity(differences) };
+  const ruleIds = ["IFCOWL-MAPPED-SINGLETON-UNIONS"];
+  const definition = {
+    input: { documentIRI: root },
+    imports,
+    expectedDifferences: {
+      oracleVersion: "pinned-oracle",
+      ruleIds,
+      structure: recorded,
+      documentDifferences: { [root]: recorded },
+    },
+  };
+  const expected = {
+    status: "mismatch",
+    detailStatus: "completed",
+    differences,
+  };
+  const js = {
+    importRequests: imports,
+    documentModels: [root, module].map((documentIRI) => ({
+      documentIRI,
+      status: "completed",
+      artifact: { sha256: "0".repeat(64) },
+    })),
+  };
+  const native = {
+    oracleVersion: "pinned-oracle",
+    importRequests: { [module]: module },
+    javaLoad: { ontology: { unparsedRdf: [] } },
+    structure: expected,
+    closurePropagation: { status: "match" },
+    documentComparisons: [
+      { documentIRI: root, unparsedRdf: [], comparison: expected },
+      { documentIRI: module, unparsedRdf: [], comparison: { status: "match" } },
+    ],
+  };
+  expect(reconcileIfcowlSingletonUnions(definition, js, native)).toEqual(
+    ruleIds,
+  );
+  expect(
+    reconcileIfcowlSingletonUnions(
+      definition,
+      { ...js, documentModels: js.documentModels.slice(0, 1) },
+      {
+        ...native,
+        documentComparisons: native.documentComparisons.slice(0, 1),
+      },
+    ),
+  ).toBeNull();
+  expect(
+    reconcileIfcowlSingletonUnions(definition, js, {
+      ...native,
+      closurePropagation: { status: "mismatch" },
+    }),
+  ).toBeNull();
 });
 
 test("mapped IDMP resolves its published imports without replacing the recorded closure", () => {

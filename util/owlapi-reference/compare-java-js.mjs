@@ -12,7 +12,10 @@ import {
 } from "./comparison-fixtures.mjs";
 import {
   comparisonIdentity,
+  comparisonImportRequests,
   exactComparedDocuments,
+  matchesComparisonImportClosure,
+  matchesOntologyClosure,
   publishComparisonFile,
   publishComparisonJson,
   readCompletedComparisonFile,
@@ -51,6 +54,11 @@ import {
   reconcileJulyTimeClosure,
   reconcileJulyTimeLoad,
 } from "./comparison-july-differences.mjs";
+import {
+  matchesRecordedIfcowlMismatch,
+  reconcileIfcowlSingletonUnions,
+  recordedIfcowlSuite,
+} from "./comparison-ifcowl.mjs";
 import { runFormatPerformance } from "./comparison-format-performance.mjs";
 import { runRdfXmlCorpusComparison } from "./comparison-rdfxml-corpus.mjs";
 import { verifyWriterStages } from "./comparison-writer.mjs";
@@ -81,6 +89,7 @@ const repository = fileURLToPath(new URL("../../", import.meta.url));
 const comparisonInputs = [
   "./compare-java-js.mjs",
   "./comparison-cases.mjs",
+  "./comparison-ifcowl.mjs",
   "./run-comparison-js.mjs",
   "./comparison-evidence.mjs",
   "./comparison-fixtures.mjs",
@@ -246,26 +255,11 @@ async function observeJs(request, directory, environment) {
 function matchesExpectedLoadOutcomes(definition, js, native) {
   const expected = definition.expectedLoadRefusals;
   const jsLoad = js.load;
-  const javaFailure = native.javaLoad;
-  const importMappings = Object.fromEntries(
-    definition.imports.map(({ ontologyIRI, documentIRI }) => [
-      ontologyIRI,
-      documentIRI,
-    ]),
-  );
+  const javaLoad = native.javaLoad;
+  const requests = comparisonImportRequests(definition.imports, js, native);
   const { identity, diagnostic, statement, collisionIdentities } = expected.js;
   const details = jsLoad?.details;
-  const resolvedMappedImports =
-    Array.isArray(js.importRequests) &&
-    js.importRequests.length === definition.imports.length &&
-    comparisonIdentity(
-      Object.fromEntries(
-        js.importRequests.map(({ ontologyIRI, documentIRI }) => [
-          ontologyIRI,
-          documentIRI,
-        ]),
-      ),
-    ) === comparisonIdentity(importMappings);
+  const resolvedMappedImports = requests.javascript;
   let matchesJsFailure;
   if (collisionIdentities) {
     matchesJsFailure =
@@ -312,20 +306,32 @@ function matchesExpectedLoadOutcomes(definition, js, native) {
       jsLoad.phase === "load" &&
       jsLoad.category === expected.js.category &&
       matchesJsFailure;
+  const { ontology } = javaLoad ?? {};
+  const javaCompleted = expected.java.identity !== undefined;
+  const matchesJava = javaCompleted
+    ? javaLoad?.status === "completed" &&
+      native.oracleVersion === expected.java.oracleVersion &&
+      ontology?.identity &&
+      comparisonIdentity(ontology.identity) ===
+        comparisonIdentity(expected.java.identity) &&
+      ontology.counts?.axioms === expected.java.axioms &&
+      ontology.unparsedRdf?.length === 0 &&
+      matchesOntologyClosure(ontology.closure, expected.java.closure)
+    : javaLoad?.status === "failed" &&
+      javaLoad.phase === "load" &&
+      javaLoad.category === expected.java.category &&
+      javaLoad.diagnosticCode === expected.java.diagnosticCode &&
+      javaLoad.resource === expected.java.resource &&
+      (!collisionIdentities ||
+        (javaLoad.collisionIdentity &&
+          collisionIdentities.some(
+            ({ ontologyIRI, versionIRI }) =>
+              javaLoad.collisionIdentity.ontologyIRI === ontologyIRI &&
+              javaLoad.collisionIdentity.versionIRI === versionIRI,
+          )));
   return (
     matchesJs &&
-    javaFailure?.status === "failed" &&
-    javaFailure.phase === "load" &&
-    javaFailure.category === expected.java.category &&
-    javaFailure.diagnosticCode === expected.java.diagnosticCode &&
-    javaFailure.resource === expected.java.resource &&
-    (!collisionIdentities ||
-      (javaFailure.collisionIdentity &&
-        collisionIdentities.some(
-          ({ ontologyIRI, versionIRI }) =>
-            javaFailure.collisionIdentity.ontologyIRI === ontologyIRI &&
-            javaFailure.collisionIdentity.versionIRI === versionIRI,
-        ))) &&
+    matchesJava &&
     [
       "jdk.xml.entityExpansionLimit",
       "jdk.xml.totalEntitySizeLimit",
@@ -334,7 +340,8 @@ function matchesExpectedLoadOutcomes(definition, js, native) {
     ].every((property) => native.xmlSettings?.[property] === null) &&
     native.xmlSettings?.["javax.xml.accessExternalDTD"] === "" &&
     native.xmlSettings?.["javax.xml.accessExternalSchema"] === "" &&
-    native.structure?.status === "blocked" &&
+    native.structure?.status ===
+      (javaCompleted ? "not-requested" : "blocked") &&
     [
       js.functional,
       js.documentModels,
@@ -350,8 +357,7 @@ function matchesExpectedLoadOutcomes(definition, js, native) {
       native.jsRdfXmlRoundTrip,
       native.closurePropagation,
     ].every((stage) => stage === undefined) &&
-    comparisonIdentity(native.importRequests ?? {}) ===
-      comparisonIdentity(importMappings)
+    requests.java
   );
 }
 
@@ -399,7 +405,7 @@ function completedClosureStages(js, native, expectedJsRdfXmlWriteRefusal) {
 function compareClosureStages(
   js,
   native,
-  reconciledMember,
+  reconciledMembers = [],
   expectedJsRdfXmlWriteRefusal,
 ) {
   const javaRoundTrip = native.javaRdfXmlRoundTrip;
@@ -408,7 +414,7 @@ function compareClosureStages(
     javaRoundTrip?.comparison?.status,
     ...(expectedJsRdfXmlWriteRefusal ? [] : [native.jsRdfXmlRoundTrip?.status]),
     ...comparisons.map(({ documentIRI, comparison }) =>
-      documentIRI === reconciledMember ? "match" : comparison.status,
+      reconciledMembers.includes(documentIRI) ? "match" : comparison.status,
     ),
   ];
   if (verdicts.includes("mismatch")) return "mismatch";
@@ -430,6 +436,16 @@ function matchesStrictFirstAttempts(attempts) {
         strictRetryCategories.includes(attempts[0].category) &&
         attempts[1]?.parsingMode === "compatible" &&
         attempts[1].status === "completed";
+}
+
+async function reconcileCaseDifferences(definition, js, native) {
+  const scope = definition.expectedDifferences;
+  if (!scope) return null;
+  if (scope.kind === "ifcowl-singleton-unions")
+    return reconcileIfcowlSingletonUnions(definition, js, native);
+  return scope.memberDocumentIRI
+    ? reconcileJulyTimeClosure(definition, js, native)
+    : reconcileJulyTimeLoad(definition, native);
 }
 
 async function caseVerdict(definition, measurements, js, native, performance) {
@@ -581,6 +597,12 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       definition.javaRdfXml.addMissingTypes &&
       native.javaDefaultRdfXmlRoundTrip?.addMissingTypes === true &&
       recordedNativeRdfXmlRoundTrip(native.javaDefaultRdfXmlRoundTrip));
+  const matchedRecordedIfcowl =
+    !definition.expectedRecordedIfcowlMismatch ||
+    matchesRecordedIfcowlMismatch(definition, js, native);
+  const matchedImportClosure =
+    !definition.requiredImportClosure ||
+    matchesComparisonImportClosure(definition, js, native);
   const behavior =
     matchedProfiles &&
     matchedDocument &&
@@ -588,15 +610,17 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     matchedLoadSequence &&
     completedRequestedStages &&
     matchedWriter &&
+    matchedRecordedIfcowl &&
+    matchedImportClosure &&
     expectedLoad &&
     offline
       ? "observed"
       : "incomplete";
   const reconciledRuleIds =
-    behavior === "observed" && measurements.includes("structure")
-      ? definition.expectedDifferences?.memberDocumentIRI
-        ? await reconcileJulyTimeClosure(definition, js, native)
-        : await reconcileJulyTimeLoad(definition, native)
+    behavior === "observed" &&
+    (measurements.includes("structure") ||
+      definition.expectedJsRdfXmlWriteRefusal)
+      ? await reconcileCaseDifferences(definition, js, native)
       : null;
   const sourceStructure = reconciledRuleIds
     ? "reconciled"
@@ -604,9 +628,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       ? "mismatch"
       : (native.structure?.status ?? "inconclusive");
   const inapplicable =
-    behavior === "observed" &&
-    definition.expectedLoadRefusals &&
-    native.structure?.status === "blocked"
+    behavior === "observed" && definition.expectedLoadRefusals
       ? { structure: definition.expectedLoadRefusals.dependentStageReason }
       : null;
   let structure = sourceStructure;
@@ -621,17 +643,22 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       );
     }
     if (sourceStructure === "reconciled") {
+      const { memberDocumentIRI, memberDocumentIRIs } =
+        definition.expectedDifferences;
       const stages = compareClosureStages(
         js,
         native,
-        definition.expectedDifferences.memberDocumentIRI,
+        memberDocumentIRIs ?? [memberDocumentIRI],
+        definition.expectedJsRdfXmlWriteRefusal,
       );
       structure = stages === "match" ? "reconciled" : stages;
     }
   }
   const accepted =
     behavior === "observed" &&
-    (!definition.expectedJsRdfXmlWriteRefusal || structure === "match") &&
+    (!definition.expectedJsRdfXmlWriteRefusal ||
+      structure === "match" ||
+      structure === "reconciled") &&
     (!measurements.includes("structure") ||
       structure === "match" ||
       structure === "reconciled" ||
@@ -780,6 +807,11 @@ async function observeLoadPerformance({
   };
 }
 
+const builtInObservation = (definition) =>
+  [...Object.keys(normativeObservation), "literal"].find(
+    (field) => definition[field],
+  );
+
 async function observeCase(
   entry,
   environment,
@@ -795,6 +827,7 @@ async function observeCase(
   const compareStructure =
     !definition.expectedLoadRefusals &&
     (definition.scenario === "closure-roundtrip" ||
+      Boolean(definition.expectedRecordedIfcowlMismatch) ||
       measurements.includes("structure") ||
       measurements.includes("performance"));
   if (
@@ -805,9 +838,7 @@ async function observeCase(
       "Load performance requires a direct-load or strict-first scenario",
     );
   }
-  const operation = [...Object.keys(normativeObservation), "literal"].find(
-    (field) => definition[field],
-  );
+  const operation = builtInObservation(definition);
   const input = operation
     ? { [operation]: definition[operation] }
     : await resolvedDocuments(entry, environment, false);
@@ -863,7 +894,8 @@ async function observeCase(
     scenario: definition.scenario,
     compareStructure,
     ...(compareLoadedDocuments ? { compareLoadedDocuments } : {}),
-    ...(definition.expectedDifferences?.memberDocumentIRI
+    ...(definition.expectedDifferences?.memberDocumentIRI ||
+    definition.expectedDifferences?.memberDocumentIRIs?.length
       ? { propagateClosure: true }
       : {}),
     ...(definition.javaXml ? { javaXml: definition.javaXml } : {}),
@@ -1653,7 +1685,10 @@ async function executeComparison(request, environment = {}) {
   if (!["prepare", "run", "verify"].includes(request.action))
     throw new Error(`Unknown comparison action ${request.action}`);
   const isLiteral = literalScenarios.includes(request.scenario);
-  const behaviorOnly = isLiteral || selectsPublicBehavior(request);
+  const behaviorOnly =
+    isLiteral ||
+    selectsPublicBehavior(request) ||
+    request.suite === recordedIfcowlSuite;
   // The released Turtle parser grows its literal buffer incrementally. Give
   // this explicitly selected stress case the same wall-time as the old probe.
   if (
@@ -1729,7 +1764,8 @@ async function executeComparison(request, environment = {}) {
     }
     for (const entry of entries) {
       try {
-        if (!behaviorOnly) await resolvedDocuments(entry, options, true);
+        if (!builtInObservation(entry.definition))
+          await resolvedDocuments(entry, options, true);
         cases.push({
           caseId: entry.caseId,
           input: entry.input.id,
