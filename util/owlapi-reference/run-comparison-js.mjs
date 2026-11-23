@@ -14,6 +14,7 @@ import { observeMutation } from "./comparison-mutation.mjs";
 import { observeLoadPublication } from "./comparison-load-publication.mjs";
 import { observeStorage } from "./comparison-storage.mjs";
 import { observeLiteralConstruction } from "./comparison-literal-construction.mjs";
+import { observeQueryBehavior } from "./comparison-query.mjs";
 
 const iriValue = (iri) => iri?.value ?? null;
 const ontologyIdentity = (ontology) => ({
@@ -451,13 +452,18 @@ function observeManchesterLiteral(api, request) {
 async function observe(request, directory) {
   const includeManchesterRenderer =
     request.scenario === "large-literal-rendering";
-  const api = await loadPublicApi({ ...request, includeManchesterRenderer });
+  const api = await loadPublicApi({
+    ...request,
+    includeManchesterRenderer,
+    includeSearch: Boolean(request.queryBehavior),
+  });
   const publicObservers = {
     configuration: observeConfiguration,
     mutation: observeMutation,
     loadPublication: observeLoadPublication,
     storage: observeStorage,
     literalConstruction: observeLiteralConstruction,
+    queryBehavior: observeQueryBehavior,
   };
   const publicOperation = Object.keys(publicObservers).find(
     (key) => request[key],

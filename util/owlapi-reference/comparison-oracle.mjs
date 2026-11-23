@@ -33,6 +33,7 @@ const oracleSources = [
   "OntologyStructuralComparison.java",
   "OntologyStorageComparison.java",
   "OntologyLiteralComparison.java",
+  "OntologyQueryComparison.java",
   "RunOntologyComparisonCase.java",
 ].map(sourceFile);
 const referencePin = new URL("./pinned-version.json", import.meta.url);

@@ -104,6 +104,8 @@ public final class RunOntologyComparisonCase {
                         resultPath.resolveSibling("publication-child.ofn"), result);
                 } else if (request.path("storage").isObject()) {
                     OntologyStorageComparison.observe(request.required("storage"), result);
+                } else if (request.path("queryBehavior").isObject()) {
+                    result.put("queryBehavior", OntologyQueryComparison.observe(request.required("queryBehavior")));
                 } else {
                     result.put("literalConstruction", OntologyLiteralComparison.observe(request.required("literalConstruction")));
                 }

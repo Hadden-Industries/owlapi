@@ -299,6 +299,18 @@ test("literal construction binds every recorded typed and language input", async
   expect(literal.literalConstruction.javaRowsSha256).toMatch(/^[0-9a-f]{64}$/u);
 });
 
+test("query behavior registers deferred search and closure snapshots independently", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "public-api-behavior",
+  });
+  expect(
+    cases
+      .filter(({ queryBehavior }) => queryBehavior)
+      .map(({ queryBehavior }) => queryBehavior.decisionId),
+  ).toEqual(["BEHAVIOR-SEARCH-CONSUMPTION", "BEHAVIOR-CLOSURE-PROVIDER"]);
+});
+
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
   const subject = {
     tarballSha256: "1".repeat(64),

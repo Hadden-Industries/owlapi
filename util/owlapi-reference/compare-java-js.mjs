@@ -50,6 +50,7 @@ import { mutationComparisonCases } from "./comparison-mutation.mjs";
 import { loadPublicationComparisonCase } from "./comparison-load-publication.mjs";
 import { storageComparisonCases } from "./comparison-storage.mjs";
 import { literalConstructionComparisonCase } from "./comparison-literal-construction.mjs";
+import { queryComparisonCases } from "./comparison-query.mjs";
 import {
   julyTimeDifferenceScope,
   reconcileJulyTimeLoad,
@@ -107,6 +108,8 @@ const comparisonInputs = [
   "./OntologyStorageComparison.java",
   "./comparison-literal-construction.mjs",
   "./OntologyLiteralComparison.java",
+  "./comparison-query.mjs",
+  "./OntologyQueryComparison.java",
   "./comparison-july-differences.mjs",
   "./reconcile-structural-differences.mjs",
   "../../docs/compatibility/expected-differences.json",
@@ -145,6 +148,7 @@ const normativeObservation = {
   loadPublication: "normativeLoadPublication",
   storage: "normativeStorage",
   literalConstruction: "normativeLiteralConstruction",
+  queryBehavior: "normativeQueryBehavior",
 };
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
@@ -331,6 +335,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       loadPublicationComparisonCase(),
       ...storageComparisonCases(),
       literalConstructionComparisonCase(),
+      ...queryComparisonCases(),
     ];
   if (selectsWriter(request)) return writerComparisonCases(request);
   if (selectsVowl(request))

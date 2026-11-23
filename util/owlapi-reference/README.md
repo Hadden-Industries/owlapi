@@ -67,6 +67,7 @@ The ontology copy case records whether the destination is visible to its provide
 The load publication case records import visibility and retained state after a syntax failure, followed by a successful retry on the same manager.
 The storage cases check target reuse, datatype parameters and retained failure bytes in Functional Syntax, Turtle, RDF/XML and OWL/XML.
 The literal construction case checks all 678 factory invocations against the released reference and the original observations.
+The query cases check deferred search consumption and import closure membership before and after changes.
 
 Use `--measure performance` for fresh-process working-set and warmed load samples.
 A ratio requires equivalent untimed structural evidence on the same profile and input.
