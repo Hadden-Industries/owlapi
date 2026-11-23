@@ -67,20 +67,31 @@ export function corpusQualificationRoster(comparisonCases) {
     const measurements =
       definition.measurements ??
       (definition.literal ? ["behavior"] : ["behavior", "structure"]);
+    let behaviorDecisionId = entry.behaviorDecisionId;
     if (definition.scenario === "public-api-behavior") {
       const witnesses = Object.values(definition).filter(
         (recipe) => typeof recipe?.decisionId === "string",
       );
       if (
         witnesses.length !== 1 ||
-        !decisions.has(witnesses[0].decisionId) ||
+        (behaviorDecisionId && behaviorDecisionId !== witnesses[0].decisionId)
+      ) {
+        throw new Error(
+          `Invalid public behavior decision binding for ${input.id}`,
+        );
+      }
+      behaviorDecisionId = witnesses[0].decisionId;
+    }
+    if (behaviorDecisionId) {
+      if (
+        !decisions.has(behaviorDecisionId) ||
         !measurements.includes("behavior")
       ) {
         throw new Error(
           `Invalid public behavior decision binding for ${input.id}`,
         );
       }
-      registeredDecisions.add(witnesses[0].decisionId);
+      registeredDecisions.add(behaviorDecisionId);
     }
     for (const operatingSystem of platform) {
       for (const measurement of measurements) {
@@ -90,6 +101,9 @@ export function corpusQualificationRoster(comparisonCases) {
           measurement,
           platform: operatingSystem,
           behaviorProfileId: definition.behaviorProfileId,
+          ...(behaviorDecisionId && measurement === "behavior"
+            ? { behaviorDecisionId }
+            : {}),
           ...(definition.oracle ? { oracle: definition.oracle } : {}),
           ...(measurement === "structure" && definition.expectedDifferences
             ? {
@@ -188,6 +202,7 @@ export async function reconcileCorpusReceipts(
       comparisonIdentity(receipt.subject) !== comparisonIdentity(subject) ||
       !matchesOracle(receipt.oracle, expected.oracle, oracle) ||
       receipt.input !== expected.input ||
+      receipt.behaviorDecisionId !== expected.behaviorDecisionId ||
       receipt.behaviorProfileId !== expected.behaviorProfileId ||
       !validDigest(receipt.stageSha256) ||
       !validDigest(receipt.producerArtifactSha256) ||

@@ -108,6 +108,13 @@ public final class RunOntologyComparisonCase {
                     result.put("queryBehavior", OntologyQueryComparison.observe(request.required("queryBehavior")));
                 } else if (request.path("parserBehavior").isObject()) {
                     result.put("parserBehavior", OntologyParserBehaviorComparison.observe(request.required("parserBehavior")));
+                } else if (request.path("profileIdentity").isObject()) {
+                    var manager = OWLManager.createOWLOntologyManager();
+                    var factory = manager.getOWLDataFactory();
+                    result.put("profileIdentity", Map.of(
+                        "factoryReused", factory == manager.getOWLDataFactory(),
+                        "connectionTimeout", manager.getOntologyLoaderConfiguration().getConnectionTimeout(),
+                        "writerIndentSize", manager.getOntologyWriterConfiguration().getIndentSize()));
                 } else {
                     result.put("literalConstruction", OntologyLiteralComparison.observe(request.required("literalConstruction")));
                 }

@@ -52,6 +52,7 @@ import { storageComparisonCases } from "./comparison-storage.mjs";
 import { literalConstructionComparisonCase } from "./comparison-literal-construction.mjs";
 import { queryComparisonCases } from "./comparison-query.mjs";
 import { parserBehaviorComparisonCases } from "./comparison-parser-behavior.mjs";
+import { profileIdentityComparisonCase } from "./comparison-profile-identity.mjs";
 import {
   julyTimeDifferenceScope,
   reconcileJulyTimeLoad,
@@ -113,6 +114,7 @@ const comparisonInputs = [
   "./OntologyQueryComparison.java",
   "./comparison-parser-behavior.mjs",
   "./OntologyParserBehaviorComparison.java",
+  "./comparison-profile-identity.mjs",
   "./comparison-july-differences.mjs",
   "./reconcile-structural-differences.mjs",
   "../../docs/compatibility/expected-differences.json",
@@ -153,6 +155,7 @@ const normativeObservation = {
   literalConstruction: "normativeLiteralConstruction",
   queryBehavior: "normativeQueryBehavior",
   parserBehavior: "normativeParserBehavior",
+  profileIdentity: "profileBindings",
 };
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
@@ -325,6 +328,7 @@ function literalCases(request) {
       definition,
       input,
       imports: [],
+      behaviorDecisionId: "BEHAVIOR-RESOURCE-ACCEPTANCE",
     };
   });
 }
@@ -341,6 +345,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       literalConstructionComparisonCase(),
       ...queryComparisonCases(),
       ...parserBehaviorComparisonCases(),
+      profileIdentityComparisonCase(),
     ];
   if (selectsWriter(request)) return writerComparisonCases(request);
   if (selectsVowl(request))

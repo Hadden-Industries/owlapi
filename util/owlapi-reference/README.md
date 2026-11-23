@@ -69,6 +69,7 @@ The storage cases check target reuse, datatype parameters and retained failure b
 The literal construction case checks all 678 factory invocations against the released reference and the original observations.
 The query cases check deferred search consumption and import closure membership before and after changes.
 The parser cases check selected parser outcomes, RDF metadata, OWL/XML enumeration and named datatype restrictions.
+The profile identity case checks the selected manager, factory and configuration bindings and their state after a mismatched binding is refused.
 
 Use `--measure performance` for fresh-process working-set and warmed load samples.
 A ratio requires equivalent untimed structural evidence on the same profile and input.

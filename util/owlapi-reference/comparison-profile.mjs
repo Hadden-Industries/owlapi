@@ -60,6 +60,7 @@ export function profileComparisonCases(request, oracle) {
       definition,
       input,
       imports: [],
+      behaviorDecisionId: "BEHAVIOR-OWL-LANGUAGE-PROFILES",
     };
   });
 }

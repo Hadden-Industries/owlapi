@@ -331,6 +331,28 @@ test("parser behavior binds witnessed selection, metadata, enumeration and datat
   ]);
 });
 
+test("profile identity is explicit and existing resource and language profile cases bind the ledger", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "public-api-behavior",
+  });
+  const identity = cases.find((item) => item.profileIdentity);
+  expect(identity?.profileIdentity.decisionId).toBe(
+    "BEHAVIOR-PROFILE-IDENTITY",
+  );
+  const roster = corpusQualificationRoster(comparisonCases);
+  for (const id of [
+    "BEHAVIOR-PROFILE-IDENTITY",
+    "BEHAVIOR-RESOURCE-ACCEPTANCE",
+    "BEHAVIOR-OWL-LANGUAGE-PROFILES",
+  ]) {
+    expect(roster.unregisteredBehaviorDecisions).not.toContain(id);
+    expect(roster.cells.some((cell) => cell.behaviorDecisionId === id)).toBe(
+      true,
+    );
+  }
+});
+
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
   const subject = {
     tarballSha256: "1".repeat(64),
