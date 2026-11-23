@@ -28,6 +28,30 @@ const recipes = [
       foreignContainsOriginal: false,
     },
   },
+  {
+    kind: "ontology-copy",
+    decisionId: "BEHAVIOR-ONTOLOGY-COPY",
+    ontologyIRI: "urn:copy:source",
+    otherIRI: "urn:copy:target",
+    failedIRI: "urn:copy:failed",
+    entityIRI: "urn:copy:C",
+    normative: {
+      publishedDuringProvider: false,
+      distinctCopy: true,
+      copyContainsDeclaration: true,
+      copyAxioms: 1,
+      sourceAxioms: 1,
+      ownsCopy: true,
+      ownsSource: true,
+      collision: { refused: true, providerCalls: 1, retainsCopy: true },
+      failure: {
+        preserved: true,
+        retainsPartial: false,
+        partialAxioms: 0,
+        partialContainsDeclaration: false,
+      },
+    },
+  },
 ];
 
 /** Keep stateful mutation sequences separate from configuration and load cases. */
@@ -155,16 +179,97 @@ function observeForeign(api, java, normative, options) {
   };
 }
 
+function copyTrace(
+  api,
+  recipe,
+  { manager, ontology, axiom, originalId },
+  options,
+) {
+  manager.addAxiom(ontology, axiom);
+  const destination = api.OWLManager.createOWLOntologyManager(options);
+  const factory = destination.getOWLDataFactory();
+  const targetIRI = api.IRI.create(recipe.otherIRI);
+  const targetId = factory.getOWLOntologyID(targetIRI);
+  let publishedDuringProvider;
+  const copied = new api.OWLOntologyMerger({
+    ontologies() {
+      publishedDuringProvider = Boolean(destination.getOntology(targetId));
+      return [ontology];
+    },
+  }).createMergedOntology(destination, targetIRI);
+  let providerCalls = 0;
+  let refused = false;
+  const collision = new api.OWLOntologyMerger({
+    ontologies() {
+      providerCalls++;
+      return [ontology];
+    },
+  });
+  try {
+    collision.createMergedOntology(destination, targetIRI);
+  } catch {
+    refused = true;
+  }
+  const failedIRI = api.IRI.create(recipe.failedIRI);
+  const failure = new Error("owned provider failure");
+  const failing = new api.OWLOntologyMerger({
+    *ontologies() {
+      yield ontology;
+      throw failure;
+    },
+  });
+  let preserved = false;
+  try {
+    failing.createMergedOntology(destination, failedIRI);
+  } catch (error) {
+    preserved = error === failure;
+  }
+  const partial = destination.getOntology(factory.getOWLOntologyID(failedIRI));
+  return {
+    publishedDuringProvider,
+    distinctCopy: copied !== ontology,
+    copyContainsDeclaration: copied.containsAxiom(axiom),
+    copyAxioms: copied.getAxiomCount(),
+    sourceAxioms: ontology.getAxiomCount(),
+    ownsCopy: destination.getOntology(targetId) === copied,
+    ownsSource: manager.getOntology(originalId) === ontology,
+    collision: {
+      refused,
+      providerCalls,
+      retainsCopy: destination.getOntology(targetId) === copied,
+    },
+    failure: {
+      preserved,
+      retainsPartial: Boolean(partial),
+      partialAxioms: partial?.getAxiomCount() ?? 0,
+      partialContainsDeclaration: partial?.containsAxiom(axiom) ?? false,
+    },
+  };
+}
+
 /** Observe completion and manager indexes independently under both profiles. */
 export function observeMutation(api, request) {
   const options = { behaviorProfileId: request.behaviorProfileId };
   const recipe = request.mutation;
   const java = mutationFixture(api, recipe, options);
   const normative = mutationFixture(api, recipe);
-  const observation =
-    recipe.kind === "batch-publication"
-      ? observeBatch(api, java, normative)
-      : observeForeign(api, java, normative, options);
+  let observation;
+  switch (recipe.kind) {
+    case "batch-publication":
+      observation = observeBatch(api, java, normative);
+      break;
+    case "foreign-manager":
+      observation = observeForeign(api, java, normative, options);
+      break;
+    case "ontology-copy":
+      observation = {
+        mutation: copyTrace(api, recipe, java, options),
+        normativeMutation: copyTrace(api, recipe, normative),
+      };
+      break;
+    default:
+      throw new Error(`Unknown mutation kind ${recipe.kind}`);
+  }
   return {
     caseId: request.caseId,
     schemaVersion: 1,

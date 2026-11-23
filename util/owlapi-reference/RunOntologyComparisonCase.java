@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.formats.NQuadsDocumentFormat;
@@ -281,6 +282,47 @@ public final class RunOntologyComparisonCase {
         var axiom = factory.getOWLDeclarationAxiom(
             factory.getOWLClass(IRI.create(recipe.required("entityIRI").asText())));
         String kind = recipe.required("kind").asText();
+        if ("ontology-copy".equals(kind)) {
+            manager.addAxiom(ontology, axiom);
+            var destination = OWLManager.createOWLOntologyManager();
+            var targetIRI = IRI.create(recipe.required("otherIRI").asText());
+            boolean[] publishedDuringProvider = {false};
+            var copied = new OWLOntologyMerger(() -> {
+                publishedDuringProvider[0] = destination.contains(targetIRI);
+                return Stream.of(ontology);
+            }).createMergedOntology(destination, targetIRI);
+            int[] providerCalls = {0};
+            var collision = new OWLOntologyMerger(() -> {
+                providerCalls[0]++;
+                return Stream.of(ontology);
+            });
+            boolean refused = false;
+            try {
+                collision.createMergedOntology(destination, targetIRI);
+            } catch (Exception expected) {
+                refused = true;
+            }
+            var failedIRI = IRI.create(recipe.required("failedIRI").asText());
+            var failure = new IllegalStateException("owned provider failure");
+            var failing = new OWLOntologyMerger(() ->
+                Stream.concat(Stream.of(ontology), Stream.generate(() -> { throw failure; })));
+            boolean preserved = false;
+            try {
+                failing.createMergedOntology(destination, failedIRI);
+            } catch (Exception error) {
+                preserved = error == failure;
+            }
+            var partial = destination.getOntology(failedIRI);
+            boolean ownsCopy = destination.getOntology(targetIRI) == copied;
+            return Map.of("publishedDuringProvider", publishedDuringProvider[0],
+                "distinctCopy", copied != ontology, "copyContainsDeclaration", copied.containsAxiom(axiom),
+                "copyAxioms", copied.getAxiomCount(), "sourceAxioms", ontology.getAxiomCount(),
+                "ownsCopy", ownsCopy, "ownsSource", manager.getOntology(originalId) == ontology,
+                "collision", Map.of("refused", refused, "providerCalls", providerCalls[0], "retainsCopy", ownsCopy),
+                "failure", Map.of("preserved", preserved, "retainsPartial", partial != null,
+                    "partialAxioms", partial == null ? 0 : partial.getAxiomCount(),
+                    "partialContainsDeclaration", partial != null && partial.containsAxiom(axiom)));
+        }
         if ("foreign-manager".equals(kind)) {
             var foreign = OWLManager.createOWLOntologyManager();
             var add = foreign.addAxiom(ontology, axiom);

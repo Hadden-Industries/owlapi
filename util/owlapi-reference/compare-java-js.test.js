@@ -234,7 +234,7 @@ test("public configuration behavior cases bind the supported loader and writer o
   ).toBe(true);
 });
 
-test("public mutation cases register batch publication and foreign manager ownership separately", async () => {
+test("public mutation cases register batch publication, foreign ownership and copy independently", async () => {
   const { cases } = await runComparison({
     action: "list",
     suite: "public-api-behavior",
@@ -243,8 +243,9 @@ test("public mutation cases register batch publication and foreign manager owner
   expect(mutationCases.map(({ mutation }) => mutation.decisionId)).toEqual([
     "BEHAVIOR-MUTATION-PUBLICATION",
     "BEHAVIOR-FOREIGN-MANAGER-MUTATION",
+    "BEHAVIOR-ONTOLOGY-COPY",
   ]);
-  expect(new Set(mutationCases.map(({ caseId }) => caseId)).size).toBe(2);
+  expect(new Set(mutationCases.map(({ caseId }) => caseId)).size).toBe(3);
 });
 
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
