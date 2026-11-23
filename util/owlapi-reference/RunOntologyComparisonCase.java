@@ -35,6 +35,7 @@ import org.semanticweb.owlapi.model.AddOntologyAnnotation;
 import org.semanticweb.owlapi.model.MissingImportHandlingStrategy;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyAlreadyExistsException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderListener;
@@ -809,6 +810,8 @@ public final class RunOntologyComparisonCase {
             unparsable.getExceptions().values().stream().anyMatch(RunOntologyComparisonCase::isTotalEntityLimit)) {
             result.put("diagnosticCode", "JAXP00010004");
             result.put("resource", "jdk.xml.totalEntitySizeLimit");
+        } else if (error instanceof OWLOntologyAlreadyExistsException collision) {
+            result.put("collisionIdentity", OntologyStructuralComparison.ontologyIdentity(collision.getOntologyID()));
         }
         return result;
     }

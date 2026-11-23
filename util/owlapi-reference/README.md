@@ -37,6 +37,10 @@ Use `--input pistoia-idmp --imports mapped --java-xml historical-idmp` for the s
 The catalogue pins 22 direct dependencies and the transitive LCC LanguageRepresentation ontology to [Commons 1.3](https://www.omg.org/spec/Commons/1.3/) and [LCC 1.2](https://www.omg.org/spec/LCC/1.2/).
 The mapped cases have separate IDs and leave the recorded stand-in cases in the qualification roster.
 
+The pinned Brick case in the Java profile verifies a duplicate ontology ID during load in both engines.
+The receipt requires the same recorded import mappings, the complete JavaScript collision candidate set and a native exception naming one of those IDs.
+Structural and writer comparisons are inapplicable after that load failure.
+
 Set `--cache` and `--output` to absolute paths outside the checkout.
 Select the complete JDK with `--java-home`.
 Local qualification of Temurin `25.0.5.1+2-LTS` uses `--java-selection 25.0.5+1.2`.

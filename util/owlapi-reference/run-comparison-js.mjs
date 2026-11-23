@@ -613,6 +613,16 @@ async function observe(request, directory) {
     }
   } catch (error) {
     result.load = failure("load", error);
+    if (
+      error?.code === "ONTOLOGY_STATE_INVALID" &&
+      error.reason === "RDF_HEADER_ID_COLLISION" &&
+      Array.isArray(error.ontologyIDs)
+    ) {
+      result.load.collisionIdentities = error.ontologyIDs.map((id) => ({
+        ontologyIRI: iriValue(id.ontologyIRI),
+        versionIRI: iriValue(id.versionIRI),
+      }));
+    }
     await publishComparisonJson(directory, "js-source-load.json", result);
     return result;
   }

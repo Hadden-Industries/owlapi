@@ -16,6 +16,116 @@ const root = `:root a owl:Ontology; rdfs:label "selected"; owl:imports :a .
 :secondary a owl:Ontology; rdfs:label "secondary"; owl:imports :b .`;
 
 describe("bounded RDF consumer compatibility", () => {
+  it.each([
+    [["a"], true],
+    [["a", "b"], true],
+    [["a"], false],
+  ])(
+    "reports a Java header collision with imports %j and annotation axioms enabled %s",
+    async (imports, loadAnnotationAxioms) => {
+      const manager = OWLManager.createOWLOntologyManager({
+        behaviorProfileId: "java-owlapi-5.5.1",
+        documentLoader: {
+          load: async (iri) =>
+            new StringDocumentSource(`Ontology(<${iri.value}>)`, {
+              documentIRI: iri.value,
+              format: "functional",
+            }),
+        },
+      });
+      const importIRIs = imports.map((name) => `:${name}`).join(", ");
+      await expect(
+        manager.loadOntologyFromOntologyDocument(
+          source(`:root a owl:Ontology; owl:imports ${importIRIs}; rdfs:isDefinedBy :root .
+            :Member a owl:Class .`),
+          { parsingMode: "compatible", loadAnnotationAxioms },
+        ),
+      ).rejects.toMatchObject({ code: "ONTOLOGY_STATE_INVALID" });
+      const df = manager.getOWLDataFactory();
+      const ontologyID = (name) =>
+        df.getOWLOntologyID(IRI.create(`urn:consumer:${name}`));
+      expect(manager.getOntology(ontologyID("root"))).toBeUndefined();
+      for (const name of imports)
+        expect(manager.getOntology(ontologyID(name))).toBeDefined();
+    },
+  );
+
+  it("finishes Java header selection after loading imports without publishing the filtered ID", async () => {
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+      documentLoader: {
+        load: async (iri) => source(":child a owl:Ontology .", iri.value),
+      },
+    });
+    const rootID = manager
+      .getOWLDataFactory()
+      .getOWLOntologyID(IRI.create("urn:consumer:root"));
+    const existing = manager.createOntology(rootID);
+    const ontology = await manager.loadOntologyFromOntologyDocument(
+      source(
+        `:root a owl:Ontology; owl:imports :child; rdfs:isDefinedBy :root .
+          :child rdfs:isDefinedBy :child .
+          :Member a owl:Class .`,
+        "urn:consumer:second-document",
+      ),
+      { parsingMode: "compatible" },
+    );
+    expect(ontology.getOntologyID().ontologyIRI).toBeUndefined();
+    expect(manager.getOntology(rootID)).toBe(existing);
+    expect(
+      [...ontology.getAnnotations()].map(({ value }) => value.value),
+    ).toEqual(
+      expect.arrayContaining(["urn:consumer:root", "urn:consumer:child"]),
+    );
+    expect(ontology.getAnnotations().size).toBe(2);
+  });
+
+  it("avoids claiming an occupied original ID when several fallback IDs survive", async () => {
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+      documentLoader: {
+        load: async (iri) =>
+          source(`<${iri.value}-actual> a owl:Ontology .`, iri.value),
+      },
+    });
+    const rootID = manager
+      .getOWLDataFactory()
+      .getOWLOntologyID(IRI.create("urn:consumer:root"));
+    const original = manager.createOntology(rootID);
+    const ontology = await manager.loadOntologyFromOntologyDocument(
+      source(
+        ":root a owl:Ontology; owl:imports :a, :b; rdfs:isDefinedBy :root . :Member a owl:Class .",
+        "urn:consumer:second-document",
+      ),
+      { parsingMode: "compatible" },
+    );
+    expect(ontology.getOntologyID().ontologyIRI).toBeUndefined();
+    expect(manager.getOntology(rootID)).toBe(original);
+  });
+
+  it.each([
+    ["java-owlapi-5.5.1", true, undefined],
+    ["java-owlapi-5.5.1", false, "urn:consumer:root"],
+    ["normative-v1", true, "urn:consumer:root"],
+  ])(
+    "gets the %s ontology identity with all candidates annotated set to %s",
+    async (behaviorProfileId, selfReference, expected) => {
+      const manager = OWLManager.createOWLOntologyManager({
+        behaviorProfileId,
+        documentLoader: {
+          load: async (iri) => source(":child a owl:Ontology .", iri.value),
+        },
+      });
+      const ontology = await manager.loadOntologyFromOntologyDocument(
+        source(`:root a owl:Ontology; owl:imports :child; rdfs:isDefinedBy :child .
+          ${selfReference ? ":root rdfs:isDefinedBy :root ." : ""}
+          :Member a owl:Class .`),
+        { parsingMode: "compatible" },
+      );
+      expect(ontology.getOntologyID().ontologyIRI?.value).toBe(expected);
+    },
+  );
+
   it("retains non-IRI imports outside the selected header as unparsed triples", async () => {
     const manager = OWLManager.createOWLOntologyManager();
     const ontology = await manager.loadOntologyFromOntologyDocument(

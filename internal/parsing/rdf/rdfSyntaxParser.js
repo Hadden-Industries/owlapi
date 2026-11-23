@@ -66,7 +66,8 @@ export class RdfSyntaxParser {
       syntax.dataset,
       syntax.options,
     );
-    transaction.setOntologyID(prepared.ontology.getOntologyID());
+    if (!prepared.deferOntologyIdentity)
+      transaction.setOntologyID(prepared.ontology.getOntologyID());
     await transaction.addImportsDeclarations(
       prepared.ontology.getImportsDeclarations(),
     );
@@ -104,10 +105,13 @@ export class RdfSyntaxParser {
   ) {
     const { context, ontology } = translated;
 
-    transaction.setOntologyID(ontology.getOntologyID());
+    const candidates = context.javaRdfOntologyIdCandidates;
+    if (!candidates) transaction.setOntologyID(ontology.getOntologyID());
     transaction.addAnnotations(ontology.getAnnotations());
     await transaction.addImportsDeclarations(ontology.getImportsDeclarations());
     transaction.addAxioms(ontology.getAxioms());
+    if (candidates)
+      transaction.setOntologyID(ontology.getOntologyID(), candidates);
     if (context.sourceStructure)
       transaction.setSourceStructure(context.sourceStructure);
     for (const diagnostic of context.diagnostics) {

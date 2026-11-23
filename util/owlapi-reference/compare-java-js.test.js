@@ -936,6 +936,53 @@ test("the exact stock IDMP load gates both direct and closure observations", () 
   }
 });
 
+test("only the pinned recorded Brick case admits a typed Java header collision", () => {
+  const request = {
+    input: "brick-only",
+    profile: "java-owlapi-5.5.1",
+    parsingMode: "compatible",
+  };
+  const [direct] = comparisonCases({ ...request, scenario: "direct-load" });
+  const [closure] = comparisonCases({
+    ...request,
+    scenario: "closure-roundtrip",
+  });
+  const expected = direct.definition.expectedLoadRefusals;
+  expect(expected).toMatchObject({
+    dependentStageReason: "expected-rdf-header-id-collision",
+    js: {
+      reason: "RDF_HEADER_ID_COLLISION",
+      category: "ONTOLOGY_STATE_INVALID",
+    },
+    java: { category: "OWLOntologyAlreadyExistsException" },
+  });
+  expect(expected.js.collisionIdentities).toEqual(
+    direct.imports.map(([ontologyIRI]) => ({ ontologyIRI, versionIRI: null })),
+  );
+  expect(expected.js.collisionIdentities).toHaveLength(5);
+  expect(closure.definition.expectedLoadRefusals).toEqual(expected);
+  for (const boundary of [
+    { imports: "mapped" },
+    { imports: "none" },
+    { profile: "normative-v1" },
+    { javaTurtle: "owlapi" },
+  ]) {
+    const [changed] = comparisonCases({ ...request, ...boundary });
+    expect(changed.definition.expectedLoadRefusals).toBeUndefined();
+  }
+  const differentBytes = {
+    ...comparisonCatalogue,
+    fixtures: comparisonCatalogue.fixtures.map((fixture) =>
+      fixture.id === "brick-only"
+        ? { ...fixture, sha256: "0".repeat(64) }
+        : fixture,
+    ),
+  };
+  expect(
+    comparisonCases(request, differentBytes)[0].definition.expectedLoadRefusals,
+  ).toBeUndefined();
+});
+
 test("strict stock IDMP binds the refused annotation in direct and closure cases", () => {
   const request = {
     input: "pistoia-idmp",

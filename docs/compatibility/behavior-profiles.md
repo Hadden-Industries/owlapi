@@ -208,6 +208,13 @@ The repeated target must be used only by the reification and match exactly one a
 Missing, ambiguous and different targets remain visible as unparsed RDF.
 Strict mapping requires the original RDF term identity specified in [Table 17 of the OWL 2 RDF mapping](https://www.w3.org/TR/owl2-mapping-to-rdf/#Parsing_of_Annotated_Axioms).
 
+The Java-compatible RDF loader can discard a sole declared header's IRI when an ontology annotation refers to that IRI and the header has imports.
+It adopts a sole remaining candidate or stays anonymous when every candidate is filtered out.
+If every remaining candidate collides with a loaded ontology, the load fails and retains the completed imports.
+When several candidates survive, Java's choice is unspecified.
+An occupied original ID leaves the JavaScript load anonymous when a candidate is available.
+The normative loader selects the header under [Table 4 of the OWL 2 RDF mapping](https://www.w3.org/TR/owl2-mapping-to-rdf/#Parsing_of_the_Ontology_Header_and_Declarations).
+
 EntitySearcher results are deferred and single-use in both profiles; materialize once when repeat traversal is needed.
 Closure providers query current membership on each call and return that call's defensive snapshot.
 The ledger and public API registry distinguish these timing contracts from Java/JS collection shapes.

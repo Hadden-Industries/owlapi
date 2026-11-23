@@ -309,9 +309,10 @@ class ParseTransaction {
     this.#diagnostics.push(freezeDiagnostic(diagnostic));
   }
 
-  setOntologyID(ontologyID) {
-    this.#ontologyID = ontologyID;
-    this.#publication?.setOntologyID(ontologyID);
+  setOntologyID(ontologyID, rdfHeaderCandidates) {
+    this.#ontologyID =
+      this.#publication?.setOntologyID(ontologyID, rdfHeaderCandidates) ??
+      ontologyID;
   }
 
   setDocumentFormat(documentFormat) {
@@ -1468,6 +1469,16 @@ export class OWLOntologyManager {
     }
   }
 
+  #hasJavaOntologyIdConflict(ontology, ontologyID) {
+    const occupied = this.#managedOntologyIndex.getOntologyByID(ontologyID);
+    if (!occupied || occupied === ontology) return false;
+    const sourceAxioms = ontology.getAxioms();
+    return (
+      occupied.getAxiomCount() !== sourceAxioms.size ||
+      [...sourceAxioms].some((axiom) => !occupied.containsAxiom(axiom))
+    );
+  }
+
   /** Java exposes the document while its parser resolves imports. A failed
    * document is withdrawn, without withdrawing imports that completed earlier.
    */
@@ -1520,7 +1531,29 @@ export class OWLOntologyManager {
             depth,
           );
         },
-        setOntologyID: (ontologyID) => {
+        setOntologyID: (ontologyID, rdfHeaderCandidates) => {
+          // Native fallback ordering among several candidates is unspecified.
+          // If every candidate would collide, the root must fail either way.
+          if (rdfHeaderCandidates?.length > 1) {
+            if (
+              rdfHeaderCandidates.every((candidate) =>
+                this.#hasJavaOntologyIdConflict(ontology, candidate),
+              )
+            )
+              throw new OWLOntologyStateError(
+                "All RDF ontology identity candidates already exist",
+                {
+                  ontology,
+                  ontologyIDs: rdfHeaderCandidates,
+                  operation: "loadOntologyDocument",
+                  reason: "RDF_HEADER_ID_COLLISION",
+                },
+              );
+            const original =
+              this.#managedOntologyIndex.getOntologyByID(ontologyID);
+            if (original && original !== ontology)
+              return ontology.getOntologyID();
+          }
           this.#commitAtomicChanges(
             [
               {
@@ -1839,15 +1872,11 @@ export class OWLOntologyManager {
         const currentOntologyID = mutationDraft.getStagedOntologyID();
         mutationDraft.stageOntologyIDReplacement(descriptor.newOntologyID);
         if (usesJavaIndexSemantics) {
-          const occupied = this.#managedOntologyIndex.getOntologyByID(
-            descriptor.newOntologyID,
-          );
-          const sourceAxioms = descriptor.ontology.getAxioms();
           if (
-            occupied &&
-            occupied !== descriptor.ontology &&
-            (occupied.getAxiomCount() !== sourceAxioms.size ||
-              [...sourceAxioms].some((axiom) => !occupied.containsAxiom(axiom)))
+            this.#hasJavaOntologyIdConflict(
+              descriptor.ontology,
+              descriptor.newOntologyID,
+            )
           )
             throw new OWLOntologyStateError(
               "An ontology with this ID already exists",

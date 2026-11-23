@@ -73,7 +73,8 @@ export class RDFXMLParser {
     // eslint-disable-next-line no-useless-assignment -- Release this reference while declaration discovery runs on the projected graph.
     syntax = undefined;
     const prepared = await preparation;
-    transaction.setOntologyID(prepared.ontology.getOntologyID());
+    if (!prepared.deferOntologyIdentity)
+      transaction.setOntologyID(prepared.ontology.getOntologyID());
     await transaction.addImportsDeclarations(
       prepared.ontology.getImportsDeclarations(),
     );
@@ -109,10 +110,13 @@ export class RDFXMLParser {
   async #populateTransaction(translated, transaction, prefixes) {
     const { context, ontology } = translated;
 
-    transaction.setOntologyID(ontology.getOntologyID());
+    const candidates = context.javaRdfOntologyIdCandidates;
+    if (!candidates) transaction.setOntologyID(ontology.getOntologyID());
     transaction.addAnnotations(ontology.getAnnotations());
     await transaction.addImportsDeclarations(ontology.getImportsDeclarations());
     transaction.addAxioms(ontology.getAxioms());
+    if (candidates)
+      transaction.setOntologyID(ontology.getOntologyID(), candidates);
     if (context.sourceStructure)
       transaction.setSourceStructure(context.sourceStructure);
     for (const diagnostic of context.diagnostics) {

@@ -253,7 +253,7 @@ function matchesExpectedLoadOutcomes(definition, js, native) {
       documentIRI,
     ]),
   );
-  const { identity, diagnostic, statement } = expected.js;
+  const { identity, diagnostic, statement, collisionIdentities } = expected.js;
   const details = jsLoad?.details;
   const resolvedMappedImports =
     Array.isArray(js.importRequests) &&
@@ -266,17 +266,33 @@ function matchesExpectedLoadOutcomes(definition, js, native) {
         ]),
       ),
     ) === comparisonIdentity(importMappings);
-  const matchesJsFailure = statement
-    ? details?.graph === statement.graph &&
+  let matchesJsFailure;
+  if (collisionIdentities) {
+    matchesJsFailure =
+      details?.reason === expected.js.reason &&
+      Array.isArray(jsLoad.collisionIdentities) &&
+      comparisonIdentity(
+        jsLoad.collisionIdentities.map(comparisonIdentity).sort(),
+      ) ===
+        comparisonIdentity(
+          collisionIdentities.map(comparisonIdentity).sort(),
+        ) &&
+      resolvedMappedImports;
+  } else if (statement) {
+    matchesJsFailure =
+      details?.graph === statement.graph &&
       details.subject === statement.subject &&
       details.predicate === statement.predicate &&
       typeof details.object === "string" &&
       sha256(details.object) === statement.objectSha256 &&
-      resolvedMappedImports
-    : details?.resource === expected.js.resource &&
+      resolvedMappedImports;
+  } else {
+    matchesJsFailure =
+      details?.resource === expected.js.resource &&
       details?.limit === expected.js.limit &&
       details?.observed > expected.js.limit &&
       js.importRequests?.length === 0;
+  }
   const matchesJs = identity
     ? jsLoad?.status === "completed" &&
       jsLoad.identity?.ontologyIRI === identity.ontologyIRI &&
@@ -303,6 +319,13 @@ function matchesExpectedLoadOutcomes(definition, js, native) {
     javaFailure.category === expected.java.category &&
     javaFailure.diagnosticCode === expected.java.diagnosticCode &&
     javaFailure.resource === expected.java.resource &&
+    (!collisionIdentities ||
+      (javaFailure.collisionIdentity &&
+        collisionIdentities.some(
+          ({ ontologyIRI, versionIRI }) =>
+            javaFailure.collisionIdentity.ontologyIRI === ontologyIRI &&
+            javaFailure.collisionIdentity.versionIRI === versionIRI,
+        ))) &&
     [
       "jdk.xml.entityExpansionLimit",
       "jdk.xml.totalEntitySizeLimit",

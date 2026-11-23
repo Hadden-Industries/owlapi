@@ -577,6 +577,8 @@ class RdfGraphInterpreter {
   #execution;
   #individualIris = new Set();
   #javaAssertionObjectPropertyIris;
+  #defersJavaRdfOntologyId = false;
+  #javaRdfOntologyIdCandidates;
   #listOwners = new Map();
   #objectPropertyExpressionCache = new Map();
   #objectPropertyExpressionStack = new Set();
@@ -2256,8 +2258,24 @@ class RdfGraphInterpreter {
       this.#consume(currentQuad);
     }
 
+    const headerQuads = this.#outgoing(ontologyNode);
+    const javaRdfHeaderImports =
+      this.#configuration.parsingMode === "compatible" &&
+      this.#rdfReconstructionPolicy
+        .filtersJavaRdfOntologyIdentityByAnnotations &&
+      allOntologyTypeQuads.length === 1 &&
+      ontologyIRI &&
+      headerQuads.some(
+        ({ predicate, object }) =>
+          this.#annotationPropertyIris.has(predicate.value) &&
+          object.termType === "NamedNode" &&
+          object.value === ontologyIRI.value,
+      )
+        ? this.#javaRdfHeaderImports(ontologyNode, importQuads)
+        : undefined;
+    this.#defersJavaRdfOntologyId = Boolean(javaRdfHeaderImports);
     if (!includeAnnotations) return;
-    for (const currentQuad of this.#outgoing(ontologyNode)) {
+    for (const currentQuad of headerQuads) {
       if (this.#isConsumed(currentQuad)) continue;
       const literalVersion =
         retainsLiteralVersionAsAnnotation &&
@@ -2274,10 +2292,82 @@ class RdfGraphInterpreter {
         this.#transaction.addAnnotation(annotation);
       }
     }
+    if (javaRdfHeaderImports)
+      await this.#setJavaRdfOntologyIdentity(headerQuads, javaRdfHeaderImports);
     {
       const yielded = this.#execution.cooperate();
       if (yielded) await yielded;
     }
+  }
+
+  #javaRdfHeaderImports(ontologyNode, imports) {
+    const imported = new Map(
+      imports.map(({ object }) => [object.value, object]),
+    );
+    imported.delete(ontologyNode.value);
+    // A single candidate is assigned before the native annotation filter.
+    if (imported.size === 0) return undefined;
+    const headerKey = termKey(ontologyNode);
+    // The released consumer also creates candidates from other imports statements.
+    // This recovery applies to the sole declared header's own import starts.
+    if (
+      this.#read.quads.some(
+        ({ predicate, subject }) =>
+          predicate.value === OWL_VOCABULARY.imports &&
+          termKey(subject) !== headerKey,
+      )
+    )
+      return undefined;
+    return imported;
+  }
+
+  async #setJavaRdfOntologyIdentity(headerQuads, imported) {
+    const annotationIRIs = new Set();
+    const isResourceAnnotation = ({ predicate, object }) =>
+      this.#annotationPropertyIris.has(predicate.value) &&
+      object.termType === "NamedNode";
+    for (const quad of headerQuads) {
+      if (isResourceAnnotation(quad)) annotationIRIs.add(quad.object.value);
+    }
+    // The native imports handler marks both ends as ontology resources.
+    for (const term of imported.values()) {
+      for (const quad of this.#outgoing(term)) {
+        if (this.#isConsumed(quad) || !isResourceAnnotation(quad)) continue;
+        annotationIRIs.add(quad.object.value);
+        const annotation = await this.#annotationFromQuad(quad, 0);
+        if (annotation) this.#transaction.addAnnotation(annotation);
+      }
+    }
+    const candidates = [];
+    for (const [iri, term] of imported) {
+      if (annotationIRIs.has(iri)) continue;
+      const versions = this.#outgoing(term, OWL_VOCABULARY.versionIRI);
+      if (
+        versions.length > 1 ||
+        (versions[0] && versions[0].object.termType !== "NamedNode")
+      )
+        return;
+      candidates.push(
+        this.#dataFactory.getOWLOntologyID(
+          IRI.create(iri),
+          versions[0] ? IRI.create(versions[0].object.value) : undefined,
+        ),
+      );
+    }
+    this.#javaRdfOntologyIdCandidates = Object.freeze(candidates);
+    if (candidates.length <= 1) {
+      this.#transaction.setOntologyID(
+        candidates[0] ?? this.#dataFactory.getOWLOntologyID(),
+      );
+    }
+  }
+
+  javaRdfOntologyIdCandidates() {
+    return this.#javaRdfOntologyIdCandidates;
+  }
+
+  defersJavaRdfOntologyId() {
+    return this.#defersJavaRdfOntologyId;
   }
 
   #indexReifications() {
@@ -5511,6 +5601,7 @@ export class RdfToOwlTranslator {
     input.execution.pause();
     return {
       declarations,
+      deferOntologyIdentity: interpreter.defersJavaRdfOntologyId(),
       sourceComplete: input.sourceComplete,
       sourceRoles: interpreter.sourceStructure().roles,
       ontology,
@@ -5577,11 +5668,14 @@ export class RdfToOwlTranslator {
     });
     await interpreter.interpret();
     const loaderMetaData = await interpreter.parserMetaData();
+    const javaRdfOntologyIdCandidates =
+      interpreter.javaRdfOntologyIdCandidates();
     input.execution.check();
 
     return transaction.commit({
       diagnostics,
       loaderMetaData,
+      ...(javaRdfOntologyIdCandidates ? { javaRdfOntologyIdCandidates } : {}),
       ...(input.configuration.parsingMode === "preserve"
         ? { sourceStructure: interpreter.sourceStructure() }
         : {}),

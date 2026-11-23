@@ -41,6 +41,7 @@ const originalIdmp = comparisonCatalogue.fixtures.find(
   ({ id }) => id === "pistoia-idmp",
 );
 const ifcowlInputId = "building-smart-ifcowl";
+const brickInputId = "brick-only";
 const nativeClosureControls = new Set([
   "eu-epo-core",
   "entsoe-cgmes-eq",
@@ -218,6 +219,7 @@ const pinnedScenarioInputs = (() => {
   );
   const scopedIds = [
     originalIdmp.id,
+    brickInputId,
     ...nativeClosureControls,
     ...julyComparisonFixtures.map(({ id }) => id),
   ];
@@ -503,20 +505,38 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
         let expectedLoadRefusals;
         if (
           (scenario === "direct-load" || scenario === "closure-roundtrip") &&
-          input.id === originalIdmp.id &&
-          exactRecordedInputs &&
-          request.javaXml !== "historical-idmp"
+          exactRecordedInputs
         ) {
-          if (
+          const compatibleJava =
             profile.behaviorProfileId === javaProfile &&
-            profile.parsingMode === "compatible"
+            profile.parsingMode === "compatible";
+          if (
+            input.id === originalIdmp.id &&
+            request.javaXml !== "historical-idmp"
           ) {
-            expectedLoadRefusals = stockIdmpRefusal;
-          } else if (profile.behaviorProfileId === normativeProfile) {
-            expectedLoadRefusals =
-              profile.parsingMode === "strict"
-                ? strictIdmpRefusal
-                : compatibleIdmpNativeLimit;
+            if (compatibleJava) expectedLoadRefusals = stockIdmpRefusal;
+            else if (profile.behaviorProfileId === normativeProfile)
+              expectedLoadRefusals =
+                profile.parsingMode === "strict"
+                  ? strictIdmpRefusal
+                  : compatibleIdmpNativeLimit;
+          } else if (
+            input.id === brickInputId &&
+            compatibleJava &&
+            !request.javaTurtle
+          ) {
+            expectedLoadRefusals = {
+              dependentStageReason: "expected-rdf-header-id-collision",
+              js: {
+                category: "ONTOLOGY_STATE_INVALID",
+                reason: "RDF_HEADER_ID_COLLISION",
+                collisionIdentities: imports.map(([ontologyIRI]) => ({
+                  ontologyIRI,
+                  versionIRI: null,
+                })),
+              },
+              java: { category: "OWLOntologyAlreadyExistsException" },
+            };
           }
         }
         const definition = {
