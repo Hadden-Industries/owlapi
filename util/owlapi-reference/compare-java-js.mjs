@@ -51,6 +51,7 @@ import { loadPublicationComparisonCase } from "./comparison-load-publication.mjs
 import { storageComparisonCases } from "./comparison-storage.mjs";
 import { literalConstructionComparisonCase } from "./comparison-literal-construction.mjs";
 import { queryComparisonCases } from "./comparison-query.mjs";
+import { parserBehaviorComparisonCases } from "./comparison-parser-behavior.mjs";
 import {
   julyTimeDifferenceScope,
   reconcileJulyTimeLoad,
@@ -110,6 +111,8 @@ const comparisonInputs = [
   "./OntologyLiteralComparison.java",
   "./comparison-query.mjs",
   "./OntologyQueryComparison.java",
+  "./comparison-parser-behavior.mjs",
+  "./OntologyParserBehaviorComparison.java",
   "./comparison-july-differences.mjs",
   "./reconcile-structural-differences.mjs",
   "../../docs/compatibility/expected-differences.json",
@@ -149,6 +152,7 @@ const normativeObservation = {
   storage: "normativeStorage",
   literalConstruction: "normativeLiteralConstruction",
   queryBehavior: "normativeQueryBehavior",
+  parserBehavior: "normativeParserBehavior",
 };
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
@@ -336,6 +340,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       ...storageComparisonCases(),
       literalConstructionComparisonCase(),
       ...queryComparisonCases(),
+      ...parserBehaviorComparisonCases(),
     ];
   if (selectsWriter(request)) return writerComparisonCases(request);
   if (selectsVowl(request))
@@ -647,6 +652,11 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       behaviorField !== "literalConstruction" ||
       (Array.isArray(js.literalConstruction) &&
         comparisonIdentity(js.literalConstruction) === recipe.javaRowsSha256);
+    const matchesRecordedParserBehavior =
+      behaviorField !== "parserBehavior" ||
+      (Array.isArray(js.parserBehavior) &&
+        comparisonIdentity(js.parserBehavior) ===
+          comparisonIdentity(recipe.javaRows));
     const recordedStorageBytes =
       behaviorField !== "storage" ||
       [js, native].every(
@@ -671,6 +681,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       native.javaLoad?.status === "completed" &&
       matchedExpected &&
       matchesRecordedLiterals &&
+      matchesRecordedParserBehavior &&
       recordedStorageBytes &&
       js[behaviorField] &&
       native[behaviorField] &&

@@ -106,6 +106,8 @@ public final class RunOntologyComparisonCase {
                     OntologyStorageComparison.observe(request.required("storage"), result);
                 } else if (request.path("queryBehavior").isObject()) {
                     result.put("queryBehavior", OntologyQueryComparison.observe(request.required("queryBehavior")));
+                } else if (request.path("parserBehavior").isObject()) {
+                    result.put("parserBehavior", OntologyParserBehaviorComparison.observe(request.required("parserBehavior")));
                 } else {
                     result.put("literalConstruction", OntologyLiteralComparison.observe(request.required("literalConstruction")));
                 }

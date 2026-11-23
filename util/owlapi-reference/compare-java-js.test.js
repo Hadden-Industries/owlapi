@@ -311,6 +311,26 @@ test("query behavior registers deferred search and closure snapshots independent
   ).toEqual(["BEHAVIOR-SEARCH-CONSUMPTION", "BEHAVIOR-CLOSURE-PROVIDER"]);
 });
 
+test("parser behavior binds witnessed selection, metadata, enumeration and datatype cases", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "public-api-behavior",
+  });
+  expect(
+    cases
+      .filter(({ parserBehavior }) => parserBehavior)
+      .map(({ parserBehavior }) => [
+        parserBehavior.decisionId,
+        parserBehavior.rows.length,
+      ]),
+  ).toEqual([
+    ["BEHAVIOR-PARSER-SELECTION", 2],
+    ["BEHAVIOR-RDF-METADATA", 7],
+    ["BEHAVIOR-INDIVIDUAL-ENUMERATION", 4],
+    ["BEHAVIOR-NAMED-DATATYPE-RESTRICTION", 2],
+  ]);
+});
+
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
   const subject = {
     tarballSha256: "1".repeat(64),
