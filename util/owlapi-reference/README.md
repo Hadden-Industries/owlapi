@@ -64,6 +64,7 @@ The `public-api-behavior` suite includes loader and writer configuration default
 It compares the supported settings with released Java and checks the default JavaScript writer's copy policy separately.
 It also observes enacted mutations, same-profile foreign manager changes and the model state after a rejected operation.
 The ontology copy case records whether the destination is visible to its provider and which declarations survive a provider failure.
+The load publication case records import visibility and retained state after a syntax failure, followed by a successful retry on the same manager.
 
 Use `--measure performance` for fresh-process working-set and warmed load samples.
 A ratio requires equivalent untimed structural evidence on the same profile and input.

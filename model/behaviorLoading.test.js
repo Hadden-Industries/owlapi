@@ -2,6 +2,10 @@ import { OWLManager } from "../apibinding/index.js";
 import { IRI } from "./index.js";
 import { OWLDocumentFormats } from "../formats/owlDocumentFormats.js";
 import { StringDocumentSource } from "../io/stringDocumentSource.js";
+import {
+  loadPublicationComparisonCase,
+  observeLoadPublication,
+} from "../util/owlapi-reference/comparison-load-publication.mjs";
 
 const source = (text) =>
   new StringDocumentSource(text, { format: OWLDocumentFormats.FUNCTIONAL });
@@ -117,28 +121,23 @@ describe("profile-specific load publication", () => {
   test.each(["java-owlapi-5.5.1", "normative-v1"])(
     "%s handles a syntax failure after an import at the parser boundary",
     async (behaviorProfileId) => {
-      let requests = 0;
-      const manager = OWLManager.createOWLOntologyManager({
-        behaviorProfileId,
-        documentLoader: {
-          async load() {
-            requests++;
-            return source(child);
-          },
-        },
-      });
-      await expect(
-        manager.loadOntologyFromOntologyDocument(
-          source(
-            "Ontology(<urn:loading:root> Import(<urn:loading:child>) NOT_SYNTAX)",
-          ),
-        ),
-      ).rejects.toThrow();
-      expect(requests).toBe(behaviorProfileId === "java-owlapi-5.5.1" ? 1 : 0);
-      expect(Boolean(manager.getOntology(id(manager, "child")))).toBe(
-        behaviorProfileId === "java-owlapi-5.5.1",
+      const { caseId, definition } = loadPublicationComparisonCase();
+      const observed = await observeLoadPublication(
+        { OWLManager, IRI, OWLDocumentFormats, StringDocumentSource },
+        { ...definition, caseId },
       );
-      expect(manager.getOntology(id(manager, "root"))).toBeUndefined();
+      const compatible = behaviorProfileId === "java-owlapi-5.5.1";
+      const result = compatible
+        ? observed.loadPublication
+        : observed.normativeLoadPublication;
+      expect(observed.loadPublicationFailures[compatible ? 0 : 1]).toBe(
+        compatible ? "UNPARSABLE_ONTOLOGY" : "OWL_SYNTAX_ERROR",
+      );
+      expect(result.failed).toEqual({
+        imports: compatible ? [0] : [],
+        retainedRoot: false,
+        retainedChild: compatible,
+      });
     },
   );
 });

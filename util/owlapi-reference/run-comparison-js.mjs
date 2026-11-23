@@ -11,6 +11,7 @@ import {
 import { loadPublicApi } from "./qualify-universal-ontology.mjs";
 import { observeConfiguration } from "./comparison-configuration.mjs";
 import { observeMutation } from "./comparison-mutation.mjs";
+import { observeLoadPublication } from "./comparison-load-publication.mjs";
 
 const iriValue = (iri) => iri?.value ?? null;
 const ontologyIdentity = (ontology) => ({
@@ -449,7 +450,7 @@ async function observe(request, directory) {
   const includeManchesterRenderer =
     request.scenario === "large-literal-rendering";
   const api = await loadPublicApi({ ...request, includeManchesterRenderer });
-  if (request.configuration || request.mutation) {
+  if (request.configuration || request.mutation || request.loadPublication) {
     const networkRequests = [];
     globalThis.fetch = async (input) => {
       networkRequests.push(String(input));
@@ -457,8 +458,10 @@ async function observe(request, directory) {
     };
     const observe = request.configuration
       ? observeConfiguration
-      : observeMutation;
-    return { ...observe(api, request), networkRequests };
+      : request.mutation
+        ? observeMutation
+        : observeLoadPublication;
+    return { ...(await observe(api, request)), networkRequests };
   }
   if (includeManchesterRenderer) return observeManchesterLiteral(api, request);
   if (request.literal) return observeLargeLiteral(api, request);

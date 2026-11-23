@@ -248,6 +248,22 @@ test("public mutation cases register batch publication, foreign ownership and co
   expect(new Set(mutationCases.map(({ caseId }) => caseId)).size).toBe(3);
 });
 
+test("the load publication case records distinct failure and retry documents", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "public-api-behavior",
+  });
+  const loading = cases.find((item) => item.loadPublication);
+  expect(loading).toMatchObject({
+    input: { id: "loading/syntax-failure-and-retry" },
+    loadPublication: { decisionId: "BEHAVIOR-LOAD-PUBLICATION" },
+  });
+  expect(loading.loadPublication.failedDocumentIRI).not.toBe(
+    loading.loadPublication.retryDocumentIRI,
+  );
+  expect(loading.loadPublication.failedText).toContain("NOT_SYNTAX");
+});
+
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
   const subject = {
     tarballSha256: "1".repeat(64),

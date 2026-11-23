@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.util.HexFormat;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +37,14 @@ import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyWriterConfiguration;
 import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider;
 import org.semanticweb.owlapi.util.OWLOntologyMerger;
+import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.semanticweb.owlapi.util.VersionInfo;
 import org.xml.sax.SAXParseException;
 
@@ -89,13 +92,17 @@ public final class RunOntologyComparisonCase {
             throw new IllegalArgumentException("Unexpected OWLAPI implementation version " + version);
         }
         result.put("oracleVersion", version);
-        if (request.path("configuration").isObject() || request.path("mutation").isObject()) {
+        if (request.path("configuration").isObject() || request.path("mutation").isObject() ||
+            request.path("loadPublication").isObject()) {
             OntologyReferenceContract.configureOfflineDocumentLoading(Map.of());
             try {
                 if (request.path("configuration").isObject()) {
                     result.put("configuration", observeConfiguration(request.required("configuration")));
-                } else {
+                } else if (request.path("mutation").isObject()) {
                     result.put("mutation", observeMutation(request.required("mutation")));
+                } else {
+                    observeLoadPublication(request.required("loadPublication"),
+                        resultPath.resolveSibling("publication-child.ofn"), result);
                 }
                 result.put("javaLoad", Map.of("status", "completed"));
             } catch (Exception failure) {
@@ -269,6 +276,43 @@ public final class RunOntologyComparisonCase {
         }
         Files.move(pending, resultPath.resolveSibling("native-source-load.json"),
             StandardCopyOption.ATOMIC_MOVE);
+    }
+
+    private static void observeLoadPublication(JsonNode recipe, Path childPath,
+        Map<String, Object> result) throws Exception {
+        Files.writeString(childPath, recipe.required("childText").asText(), StandardOpenOption.CREATE_NEW);
+        result.put("loadPublicationFixture", Map.of("status", "completed", "artifact", pin(childPath)));
+        var manager = OWLManager.createOWLOntologyManager();
+        var rootId = new OWLOntologyID(IRI.create(recipe.required("rootIRI").asText()));
+        var childIRI = IRI.create(recipe.required("childIRI").asText());
+        var childId = new OWLOntologyID(childIRI);
+        manager.getIRIMappers().clear();
+        manager.getIRIMappers().add(new SimpleIRIMapper(childIRI, IRI.create(childPath.toFile())));
+        List<Integer> imports = new ArrayList<>();
+        manager.addOntologyLoaderListener(new OWLOntologyLoaderListener() {
+            @Override public void startedLoadingOntology(LoadingStartedEvent event) {
+                if (event.isImported()) {
+                    var root = manager.getOntology(rootId);
+                    imports.add(root == null ? null : root.getAxiomCount());
+                }
+            }
+            @Override public void finishedLoadingOntology(LoadingFinishedEvent event) {}
+        });
+        String failure = null;
+        try {
+            manager.loadOntologyFromOntologyDocument(new StringDocumentSource(recipe.required("failedText").asText(),
+                IRI.create(recipe.required("failedDocumentIRI").asText()), new FunctionalSyntaxDocumentFormat(), null));
+        } catch (Exception error) {
+            failure = error.getClass().getSimpleName();
+        }
+        result.put("loadPublicationFailure", failure);
+        var failed = Map.of("imports", new ArrayList<>(imports),
+            "retainedRoot", manager.contains(rootId), "retainedChild", manager.contains(childId));
+        imports.clear();
+        var retry = manager.loadOntologyFromOntologyDocument(new StringDocumentSource(recipe.required("retryText").asText(),
+            IRI.create(recipe.required("retryDocumentIRI").asText()), new FunctionalSyntaxDocumentFormat(), null));
+        result.put("loadPublication", Map.of("failed", failed, "retry", Map.of("imports", imports,
+            "axioms", retry.getAxiomCount(), "closureSize", manager.getImportsClosure(retry).size())));
     }
 
     // The original mutation probe exercises the public single-axiom removal boundary.

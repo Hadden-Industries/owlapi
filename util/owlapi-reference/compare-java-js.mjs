@@ -47,6 +47,7 @@ import {
 import { runWindowsComparisonJob } from "./comparison-job.mjs";
 import { configurationComparisonCases } from "./comparison-configuration.mjs";
 import { mutationComparisonCases } from "./comparison-mutation.mjs";
+import { loadPublicationComparisonCase } from "./comparison-load-publication.mjs";
 import {
   julyTimeDifferenceScope,
   reconcileJulyTimeLoad,
@@ -99,6 +100,7 @@ const comparisonInputs = [
   "./RunOWL2DLProfile.java",
   "./comparison-configuration.mjs",
   "./comparison-mutation.mjs",
+  "./comparison-load-publication.mjs",
   "./comparison-july-differences.mjs",
   "./reconcile-structural-differences.mjs",
   "../../docs/compatibility/expected-differences.json",
@@ -131,6 +133,11 @@ const selectsVowl = ({ suite, scenario }) =>
   suite === "canonical-vowl-dl" || scenario === "canonical-vowl-dl";
 const selectsPublicBehavior = ({ suite, scenario }) =>
   suite === "public-api-behavior" || scenario === "public-api-behavior";
+const normativeObservation = {
+  configuration: "normativeCopy",
+  mutation: "normativeMutation",
+  loadPublication: "normativeLoadPublication",
+};
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
 
@@ -313,6 +320,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
     return [
       ...configurationComparisonCases(request),
       ...mutationComparisonCases(),
+      loadPublicationComparisonCase(),
     ];
   if (selectsWriter(request)) return writerComparisonCases(request);
   if (selectsVowl(request))
@@ -610,39 +618,33 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     js.effectiveSettings?.behaviorProfileId === definition.behaviorProfileId &&
     js.effectiveSettings?.parsingMode === definition.parsingMode &&
     js.effectiveSettings?.defaultBehaviorProfileId === normativeProfile;
-  if (definition.configuration) {
-    const expectedCopy = definition.configuration.normativeCopy;
+  const behaviorField = Object.keys(normativeObservation).find(
+    (field) => definition[field],
+  );
+  if (behaviorField) {
+    const recipe = definition[behaviorField];
+    const expectedNormative = recipe.normative ?? recipe.normativeCopy;
+    const observedNormative = js[normativeObservation[behaviorField]];
+    const matchedFailure =
+      behaviorField !== "loadPublication" ||
+      (native.loadPublicationFailure === recipe.javaFailure &&
+        Array.isArray(js.loadPublicationFailures) &&
+        comparisonIdentity(js.loadPublicationFailures) ===
+          comparisonIdentity(recipe.jsFailures));
     const accepted =
       matchedProfiles &&
       offline &&
       js.load?.status === "completed" &&
       native.javaLoad?.status === "completed" &&
-      js.configuration &&
-      native.configuration &&
-      comparisonIdentity(js.configuration) ===
-        comparisonIdentity(native.configuration) &&
-      (!expectedCopy ||
-        (js.normativeCopy &&
-          comparisonIdentity(js.normativeCopy) ===
-            comparisonIdentity(expectedCopy)));
-    return {
-      measures: { behavior: accepted ? "observed" : "incomplete" },
-      status: accepted ? "passed" : "failed",
-      offline,
-    };
-  }
-  if (definition.mutation) {
-    const accepted =
-      matchedProfiles &&
-      offline &&
-      js.load?.status === "completed" &&
-      native.javaLoad?.status === "completed" &&
-      js.mutation &&
-      native.mutation &&
-      js.normativeMutation &&
-      comparisonIdentity(js.mutation) === comparisonIdentity(native.mutation) &&
-      comparisonIdentity(js.normativeMutation) ===
-        comparisonIdentity(definition.mutation.normative);
+      js[behaviorField] &&
+      native[behaviorField] &&
+      matchedFailure &&
+      comparisonIdentity(js[behaviorField]) ===
+        comparisonIdentity(native[behaviorField]) &&
+      (!expectedNormative ||
+        (observedNormative &&
+          comparisonIdentity(observedNormative) ===
+            comparisonIdentity(expectedNormative)));
     return {
       measures: { behavior: accepted ? "observed" : "incomplete" },
       status: accepted ? "passed" : "failed",
@@ -851,7 +853,7 @@ async function observeCase(entry, environment, directory, java, measurements) {
       "Load performance requires a direct-load or strict-first scenario",
     );
   }
-  const operation = ["configuration", "literal", "mutation"].find(
+  const operation = [...Object.keys(normativeObservation), "literal"].find(
     (field) => definition[field],
   );
   const input = operation
@@ -1088,6 +1090,7 @@ async function verifyWorkerArtifacts(directory, js, native) {
     js.rdfXmlReload?.functional,
     native.javaModel,
     native.javaRdfXmlRoundTrip?.write,
+    native.loadPublicationFixture,
   ];
   for (const output of outputs) {
     if (!output || (output.status !== "completed" && !output.prefix)) continue;
