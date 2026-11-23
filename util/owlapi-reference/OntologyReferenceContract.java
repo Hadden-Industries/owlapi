@@ -76,13 +76,22 @@ final class OntologyReferenceContract {
     }
 
     private static void configureOfflineDocumentLoading() {
+        configureOfflineDocumentLoading(Collections.emptyMap());
+    }
+
+    /** Route only admitted URLs to exact local bytes inside an isolated Java process. */
+    static void configureOfflineDocumentLoading(Map<String, Path> documents) {
         // JSON-LD loaders use HTTP clients that do not consult URL stream handlers.
         // Configure their supported policies before constructing any parser.
         System.setProperty(JSONLDSettings.SECURE_MODE.getKey(), "true");
         System.setProperty(JSONLDSettings.WHITELIST.getKey(), "[]");
         System.setProperty(DocumentLoader.DISALLOW_REMOTE_CONTEXT_LOADING, "true");
         URL.setURLStreamHandlerFactory(protocol -> NETWORK_PROTOCOLS.contains(protocol)
-            ? new DeniedNetworkURLStreamHandler(protocol) : null);
+            ? new OfflineDocumentURLStreamHandler(protocol, documents) : null);
+    }
+
+    static int networkAccessAttemptCount() {
+        return NETWORK_ACCESS_ATTEMPT_COUNT.get();
     }
 
     private static Map<String, Object> evaluateContract(Invocation invocation, ComparisonKind comparisonKind) {
@@ -508,15 +517,32 @@ final class OntologyReferenceContract {
         }
     }
 
-    private static final class DeniedNetworkURLStreamHandler extends URLStreamHandler {
+    private static final class OfflineDocumentURLStreamHandler extends URLStreamHandler {
         private final String protocol;
+        private final Map<String, Path> documents;
 
-        private DeniedNetworkURLStreamHandler(String protocol) {
+        private OfflineDocumentURLStreamHandler(String protocol, Map<String, Path> documents) {
             this.protocol = protocol;
+            this.documents = documents;
         }
 
         @Override
         protected URLConnection openConnection(URL url) throws IOException {
+            Path document = documents.get(url.toExternalForm());
+            if (document != null) {
+                return new URLConnection(url) {
+                    @Override
+                    public void connect() {
+                        connected = true;
+                    }
+
+                    @Override
+                    public java.io.InputStream getInputStream() throws IOException {
+                        connect();
+                        return Files.newInputStream(document);
+                    }
+                };
+            }
             NETWORK_ACCESS_ATTEMPT_COUNT.incrementAndGet();
             throw new IOException("Network protocol is disabled by the oracle: " + protocol);
         }

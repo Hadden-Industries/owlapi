@@ -233,7 +233,17 @@ export const materializePinnedOntologySources = async (
     const documentPath = join(outputDirectory, ...path.split("/"));
     await mkdir(dirname(documentPath), { recursive: true });
     await writeFile(documentPath, bytes, { flag: "wx" });
-    documents.push({ path, sha256: sha256(bytes), bytes: bytes.length });
+    const digest = sha256(bytes);
+    const pin = manifest.originals?.[path];
+    if (
+      manifest.originals &&
+      (pin?.sha256 !== digest || pin?.byteLength !== bytes.length)
+    ) {
+      throw new Error(
+        `Pinned July document differs from the original bytes: ${path}`,
+      );
+    }
+    documents.push({ path, sha256: digest, bytes: bytes.length });
   }
   const locate = (entry) => ({
     ...entry,
@@ -248,13 +258,21 @@ export const materializePinnedOntologySources = async (
 };
 
 /** Resolve only the approved package exports, for source and installed candidates alike. */
-const loadPublicApi = async ({ packageDirectory, consumerDirectory }) => {
+export const loadPublicApi = async ({
+  packageDirectory,
+  consumerDirectory,
+  includeManchesterRenderer = false,
+  includeProfiles = false,
+}) => {
   const require = createRequire(
     join(consumerDirectory ?? packageDirectory, "package.json"),
   );
   const dependencyName = consumerDirectory ? "owlapi" : PACKAGE_NAME;
+  const subpaths = ["apibinding", "formats", "io", "model", "util"];
+  if (includeManchesterRenderer) subpaths.push("manchestersyntax/renderer");
+  if (includeProfiles) subpaths.push("profiles");
   const modules = await Promise.all(
-    ["apibinding", "formats", "io", "model", "util"].map((subpath) => {
+    subpaths.map((subpath) => {
       const path = require.resolve(`${dependencyName}/${subpath}`);
       if (
         !isStrictDescendantPath(
@@ -433,7 +451,7 @@ export const generateOntologyEvidence = async ({
 };
 
 /** Native npm installs only the verified retained tarball; Java never enters runtime deps. */
-const installCandidate = async (candidateDirectory, outputDirectory) => {
+export const installCandidate = async (candidateDirectory, outputDirectory) => {
   const candidate = JSON.parse(
     await readFile(join(candidateDirectory, "candidate-manifest.json"), "utf8"),
   );

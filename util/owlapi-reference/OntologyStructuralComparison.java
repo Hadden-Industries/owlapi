@@ -9,11 +9,13 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -58,27 +60,16 @@ final class OntologyStructuralComparison {
 
         // A connected anonymous graph is indivisible: matching its statements separately
         // could hide a change in sharing across axioms and ontology annotations.
-        List<List<StructuralStatement>> expectedGraphs = anonymousGraphs(expected);
-        List<List<StructuralStatement>> remainingActualGraphs = anonymousGraphs(actual);
-        boolean hasAnonymousGraphs = !expectedGraphs.isEmpty() || !remainingActualGraphs.isEmpty();
+        List<List<StructuralStatement>> expectedGraphs = anonymousGraphs(anonymousStatements(expected));
+        List<List<StructuralStatement>> actualGraphs = anonymousGraphs(anonymousStatements(actual));
+        boolean hasAnonymousGraphs = !expectedGraphs.isEmpty() || !actualGraphs.isEmpty();
+        GraphComparison graphComparison = compareGraphs(expectedGraphs, actualGraphs, comparisonManager);
         List<Map<String, Object>> javaOnly = new ArrayList<>();
-        for (List<StructuralStatement> graph : expectedGraphs) {
-            int matchedIndex = -1;
-            for (int index = 0; index < remainingActualGraphs.size(); index++) {
-                if (new AnonymousIndividualBijectionMatcher(comparisonManager, graph,
-                    remainingActualGraphs.get(index)).match().matches) {
-                    matchedIndex = index;
-                    break;
-                }
-            }
-            if (matchedIndex >= 0) {
-                remainingActualGraphs.remove(matchedIndex);
-            } else {
-                javaOnly.add(describeAnonymousGraph(graph, comparisonManager));
-            }
+        for (List<StructuralStatement> graph : graphComparison.expectedOnly()) {
+            javaOnly.add(describeAnonymousGraph(graph, comparisonManager));
         }
         List<Map<String, Object>> jsOnly = new ArrayList<>();
-        for (List<StructuralStatement> graph : remainingActualGraphs) {
+        for (List<StructuralStatement> graph : graphComparison.actualOnly()) {
             jsOnly.add(describeAnonymousGraph(graph, comparisonManager));
         }
         Comparator<Map<String, Object>> byStatements = Comparator.comparing(
@@ -109,30 +100,105 @@ final class OntologyStructuralComparison {
         return differences;
     }
 
-    private static List<List<StructuralStatement>> anonymousGraphs(OWLOntology ontology) {
+    private static List<StructuralStatement> anonymousStatements(OWLOntology ontology) {
         List<StructuralStatement> statements = new ArrayList<>();
         ontology.axioms().filter(axiom -> !axiom.getAnonymousIndividuals().isEmpty())
             .forEach(axiom -> statements.add(new StructuralStatement(StatementCategory.AXIOM, axiom)));
         ontology.annotations().filter(annotation -> !annotation.getAnonymousIndividuals().isEmpty())
             .forEach(annotation -> statements.add(new StructuralStatement(
                 StatementCategory.ONTOLOGY_ANNOTATION, annotation)));
+        return statements;
+    }
+
+    private static List<List<StructuralStatement>> anonymousGraphs(List<StructuralStatement> statements) {
+        Map<OWLAnonymousIndividual, List<Integer>> incident = new HashMap<>();
+        for (int index = 0; index < statements.size(); index++) {
+            for (OWLAnonymousIndividual individual : statements.get(index).value.getAnonymousIndividuals()) {
+                incident.computeIfAbsent(individual, key -> new ArrayList<>()).add(index);
+            }
+        }
         List<List<StructuralStatement>> graphs = new ArrayList<>();
-        List<Set<OWLAnonymousIndividual>> graphIndividuals = new ArrayList<>();
-        for (StructuralStatement statement : statements) {
+        boolean[] visited = new boolean[statements.size()];
+        for (int root = 0; root < statements.size(); root++) {
+            if (visited[root]) continue;
             List<StructuralStatement> graph = new ArrayList<>();
-            graph.add(statement);
-            Set<OWLAnonymousIndividual> individuals = new HashSet<>(
-                statement.value.getAnonymousIndividuals());
-            for (int index = graphs.size() - 1; index >= 0; index--) {
-                if (!Collections.disjoint(individuals, graphIndividuals.get(index))) {
-                    graph.addAll(graphs.remove(index));
-                    individuals.addAll(graphIndividuals.remove(index));
+            Deque<Integer> pending = new ArrayDeque<>();
+            pending.add(root);
+            visited[root] = true;
+            while (!pending.isEmpty()) {
+                StructuralStatement statement = statements.get(pending.remove());
+                graph.add(statement);
+                for (OWLAnonymousIndividual individual : statement.value.getAnonymousIndividuals()) {
+                    List<Integer> linked = incident.remove(individual);
+                    if (linked == null) continue;
+                    for (int index : linked) {
+                        if (!visited[index]) {
+                            visited[index] = true;
+                            pending.add(index);
+                        }
+                    }
                 }
             }
             graphs.add(graph);
-            graphIndividuals.add(individuals);
         }
         return graphs;
+    }
+
+    private record StatementShape(StatementCategory category, int individuals, OWLObject skeleton) {}
+
+    private record GraphComparison(List<List<StructuralStatement>> expectedOnly,
+        List<List<StructuralStatement>> actualOnly, int matchedIndividuals) {
+        boolean matches() {
+            return expectedOnly.isEmpty() && actualOnly.isEmpty();
+        }
+    }
+
+    /** Buckets only eliminate impossible candidates. Equality still requires a bijection. */
+    private static GraphComparison compareGraphs(List<List<StructuralStatement>> expected,
+        List<List<StructuralStatement>> actual, OWLOntologyManager manager) {
+        OWLDataFactory factory = manager.getOWLDataFactory();
+        OWLObjectDuplicator skeleton = new OWLObjectDuplicator(
+            Collections.<OWLEntity, IRI>emptyMap(), Collections.<OWLLiteral, OWLLiteral>emptyMap(), manager,
+            new FixedIndividualProvider(factory, factory.getOWLAnonymousIndividual("comparison-shape")));
+        Map<Map<StatementShape, Long>, List<List<StructuralStatement>>> candidates = new HashMap<>();
+        for (List<StructuralStatement> graph : actual) {
+            candidates.computeIfAbsent(graphShape(graph, skeleton), key -> new LinkedList<>()).add(graph);
+        }
+        List<List<StructuralStatement>> expectedOnly = new ArrayList<>();
+        int matchedIndividuals = 0;
+        for (List<StructuralStatement> graph : expected) {
+            List<List<StructuralStatement>> bucket = candidates.getOrDefault(
+                graphShape(graph, skeleton), Collections.emptyList());
+            boolean matched = false;
+            boolean limited = false;
+            var iterator = bucket.iterator();
+            while (iterator.hasNext()) {
+                try {
+                    ComparisonOutcome outcome =
+                        new AnonymousIndividualBijectionMatcher(manager, graph, iterator.next()).match();
+                    if (outcome.matches) {
+                        matched = true;
+                        matchedIndividuals += outcome.anonymousIndividualBijectionSize;
+                        iterator.remove();
+                        break;
+                    }
+                } catch (AnonymousIndividualComparisonLimitException failure) {
+                    limited = true;
+                }
+            }
+            if (!matched && limited) throw new AnonymousIndividualComparisonLimitException();
+            if (!matched) expectedOnly.add(graph);
+        }
+        List<List<StructuralStatement>> actualOnly = candidates.values().stream()
+            .flatMap(List::stream).collect(Collectors.toList());
+        return new GraphComparison(expectedOnly, actualOnly, matchedIndividuals);
+    }
+
+    private static Map<StatementShape, Long> graphShape(List<StructuralStatement> graph,
+        OWLObjectDuplicator skeleton) {
+        return graph.stream().collect(Collectors.groupingBy(statement -> new StatementShape(
+            statement.category, statement.value.getAnonymousIndividuals().size(),
+            skeleton.duplicateObject(statement.value)), Collectors.counting()));
     }
 
     /** Stable diagnostic labels do not participate in the native equality decision. */
@@ -200,6 +266,11 @@ final class OntologyStructuralComparison {
 
     static ComparisonOutcome compareOntologies(OWLOntology expected,
         OWLOntology actual, OWLOntologyManager comparisonManager) {
+        return compareOntologies(expected, actual, comparisonManager, null);
+    }
+
+    static ComparisonOutcome compareOntologies(OWLOntology expected,
+        OWLOntology actual, OWLOntologyManager comparisonManager, Map<String, Long> elapsed) {
         if (!ontologyIdentity(expected.getOntologyID()).equals(
             ontologyIdentity(actual.getOntologyID()))) {
             return ComparisonOutcome.mismatch("ONTOLOGY_ID", "ontology.id");
@@ -208,47 +279,64 @@ final class OntologyStructuralComparison {
             return ComparisonOutcome.mismatch("IMPORTS", "ontology.imports");
         }
 
-        List<StructuralStatement> expectedAnnotations = expected.annotations()
-            .map(annotation -> new StructuralStatement(StatementCategory.ONTOLOGY_ANNOTATION,
-                annotation)).collect(Collectors.toList());
-        List<StructuralStatement> actualAnnotations = actual.annotations()
-            .map(annotation -> new StructuralStatement(StatementCategory.ONTOLOGY_ANNOTATION,
-                annotation)).collect(Collectors.toList());
-        if (expectedAnnotations.size() != actualAnnotations.size()) {
+        long start = System.nanoTime();
+        Statements expectedAnnotations = split(expected.annotations(), StatementCategory.ONTOLOGY_ANNOTATION);
+        Statements actualAnnotations = split(actual.annotations(), StatementCategory.ONTOLOGY_ANNOTATION);
+        if (!expectedAnnotations.hasSameGroundStatements(actualAnnotations)) {
             return ComparisonOutcome.mismatch("ONTOLOGY_ANNOTATIONS",
                 "ontology.annotations");
         }
 
-        List<StructuralStatement> expectedAxioms = expected.axioms()
-            .map(axiom -> new StructuralStatement(StatementCategory.AXIOM, axiom))
-            .collect(Collectors.toList());
-        List<StructuralStatement> actualAxioms = actual.axioms()
-            .map(axiom -> new StructuralStatement(StatementCategory.AXIOM, axiom))
-            .collect(Collectors.toList());
-        if (expectedAxioms.size() != actualAxioms.size()) {
+        Statements expectedAxioms = split(expected.axioms(), StatementCategory.AXIOM);
+        Statements actualAxioms = split(actual.axioms(), StatementCategory.AXIOM);
+        boolean sameGroundAxioms = expectedAxioms.hasSameGroundStatements(actualAxioms);
+        if (elapsed != null) elapsed.put("groundComparison", System.nanoTime() - start);
+        if (!sameGroundAxioms) {
             return ComparisonOutcome.mismatch("AXIOMS", "ontology.axioms");
         }
 
-        if (!new AnonymousIndividualBijectionMatcher(comparisonManager, expectedAnnotations,
-            actualAnnotations).match().matches) {
-            return ComparisonOutcome.mismatch("ONTOLOGY_ANNOTATIONS",
-                "ontology.annotations");
-        }
-        if (!new AnonymousIndividualBijectionMatcher(comparisonManager, expectedAxioms,
-            actualAxioms).match().matches) {
-            return ComparisonOutcome.mismatch("AXIOMS", "ontology.axioms");
-        }
-
-        List<StructuralStatement> expectedStatements = new ArrayList<>(expectedAnnotations);
-        expectedStatements.addAll(expectedAxioms);
-        List<StructuralStatement> actualStatements = new ArrayList<>(actualAnnotations);
-        actualStatements.addAll(actualAxioms);
-        ComparisonOutcome combined = new AnonymousIndividualBijectionMatcher(comparisonManager,
-            expectedStatements, actualStatements).match();
-        if (!combined.matches) {
+        List<StructuralStatement> expectedStatements = new ArrayList<>(expectedAnnotations.anonymous());
+        expectedStatements.addAll(expectedAxioms.anonymous());
+        List<StructuralStatement> actualStatements = new ArrayList<>(actualAnnotations.anonymous());
+        actualStatements.addAll(actualAxioms.anonymous());
+        if (expectedStatements.isEmpty() && actualStatements.isEmpty()) return ComparisonOutcome.match(0);
+        try {
+            start = System.nanoTime();
+            var expectedGraphs = anonymousGraphs(expectedStatements);
+            var actualGraphs = anonymousGraphs(actualStatements);
+            if (elapsed != null) elapsed.put("componentConstruction", System.nanoTime() - start);
+            start = System.nanoTime();
+            GraphComparison combined = compareGraphs(expectedGraphs, actualGraphs, comparisonManager);
+            if (elapsed != null) elapsed.put("bijection", System.nanoTime() - start);
+            if (combined.matches()) return ComparisonOutcome.match(combined.matchedIndividuals());
+            if (!compareGraphs(anonymousGraphs(expectedAnnotations.anonymous()),
+                anonymousGraphs(actualAnnotations.anonymous()), comparisonManager).matches()) {
+                return ComparisonOutcome.mismatch("ONTOLOGY_ANNOTATIONS", "ontology.annotations");
+            }
+            if (!compareGraphs(anonymousGraphs(expectedAxioms.anonymous()),
+                anonymousGraphs(actualAxioms.anonymous()), comparisonManager).matches()) {
+                return ComparisonOutcome.mismatch("AXIOMS", "ontology.axioms");
+            }
             return ComparisonOutcome.mismatch("ANONYMOUS_INDIVIDUAL_BIJECTION", "ontology");
+        } catch (AnonymousIndividualComparisonLimitException limit) {
+            return ComparisonOutcome.mismatch("COMPARISON_LIMIT", "ontology");
         }
-        return combined;
+    }
+
+    private record Statements(Set<OWLObject> ground, List<StructuralStatement> anonymous) {
+        boolean hasSameGroundStatements(Statements other) {
+            return ground.equals(other.ground) && anonymous.size() == other.anonymous.size();
+        }
+    }
+
+    private static Statements split(Stream<? extends OWLObject> values, StatementCategory category) {
+        Set<OWLObject> ground = new HashSet<>();
+        List<StructuralStatement> anonymous = new ArrayList<>();
+        values.forEach(value -> {
+            if (value.getAnonymousIndividuals().isEmpty()) ground.add(value);
+            else anonymous.add(new StructuralStatement(category, value));
+        });
+        return new Statements(ground, anonymous);
     }
 
     static Map<String, Object> ontologyCounts(OWLOntology ontology) {

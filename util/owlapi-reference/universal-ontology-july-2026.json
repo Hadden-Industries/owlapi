@@ -47,5 +47,42 @@
       "ontologyIRI": "http://www.w3.org/2006/time",
       "path": "src/external/time.rdf"
     }
-  ]
+  ],
+  "originals": {
+    "src/iso-iec/11179/-3/ed-4/20260714": {
+      "byteLength": 559036,
+      "sha256": "cf348907763d9522a1214fb2b570ef89500136831458393617d1e6a63aae4d06",
+      "syntax": "rdfxml"
+    },
+    "src/universal/reference-data/20260714": {
+      "byteLength": 1112426,
+      "sha256": "02190521ed2c20b301097f87ce7ab39d6128e8c0a0487650e97c37796cd79fcc",
+      "syntax": "rdfxml"
+    },
+    "src/universal/core/20260714": {
+      "byteLength": 364744,
+      "sha256": "9cb764f62461835c2ea9d309a9a4d8aca362d464cd3aa43145c3a1d01a8ee228",
+      "syntax": "rdfxml"
+    },
+    "src/universal/extended/20260714": {
+      "byteLength": 713305,
+      "sha256": "d28a04e7be294aa66356d7ada8dd0ebb42284dc8db1d5b5440aff874b68b1039",
+      "syntax": "rdfxml"
+    },
+    "src/external/skos.rdf": {
+      "byteLength": 28966,
+      "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+      "syntax": "rdfxml"
+    },
+    "src/external/time-gregorian.ttl": {
+      "byteLength": 7221,
+      "sha256": "90ba0b3298ed7dddc56f623c82e820c775a5a20c59e8bbd4af8b2bef62e54162",
+      "syntax": "turtle"
+    },
+    "src/external/time.rdf": {
+      "byteLength": 135256,
+      "sha256": "5c824ae62d1ba2d987bb3ed1129755e0b33b7504ebe045b29af26bd7cacd26db",
+      "syntax": "rdfxml"
+    }
+  }
 }

@@ -5,10 +5,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { promisify } from "node:util";
 import { DOMParser } from "@xmldom/xmldom";
-import { OWLManager } from "../../apibinding/index.js";
-import { OWLOntologyWriterConfiguration } from "../../model/index.js";
-import { RDFXMLDocumentFormat } from "../../formats/index.js";
-import { StringDocumentSource, StringDocumentTarget } from "../../io/index.js";
+import { loadPublicApi } from "./qualify-universal-ontology.mjs";
 import {
   compileOntologyReferenceOracles,
   resolvePinnedReferenceEnvironment,
@@ -17,7 +14,7 @@ import { executeOntologyParsingOracle } from "./run-ontology-parsing-contract.mj
 
 const executeFile = promisify(execFile);
 const referenceDirectory = fileURLToPath(new URL("./", import.meta.url));
-const modes = [
+export const writerModes = Object.freeze([
   "defaults",
   "no-banners",
   "two-spaces",
@@ -25,7 +22,11 @@ const modes = [
   "labels",
   "save-ids",
   "force-string",
-];
+]);
+export const writerFixturePath = join(
+  referenceDirectory,
+  "fixtures/storage/rdfxml-refinements.ofn",
+);
 const rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 const xml = "http://www.w3.org/XML/1998/namespace";
 const xmlns = "http://www.w3.org/2000/xmlns/";
@@ -123,10 +124,18 @@ export const observeRdfXmlPresentation = (text) => {
 };
 
 /** Reuses the pinned launcher and Java structural oracle; adds layout probes only. */
-export const runWriterConfigurationContract = async ({ outputDirectory }) => {
+export const runWriterConfigurationContract = async ({
+  outputDirectory,
+  sourceCheckoutPath,
+  executeProcess,
+  packageDirectory = resolve(referenceDirectory, "../.."),
+  consumerDirectory,
+}) => {
   const output = resolve(outputDirectory);
   await mkdir(output, { recursive: false });
-  const environment = await resolvePinnedReferenceEnvironment();
+  const environment = await resolvePinnedReferenceEnvironment({
+    sourceCheckoutPath,
+  });
   const extended = {
     ...environment,
     oracleSources: [
@@ -135,33 +144,43 @@ export const runWriterConfigurationContract = async ({ outputDirectory }) => {
     ],
   };
   const classes = join(output, "classes");
-  const compilation = await compileOntologyReferenceOracles(extended, classes);
+  const compilation = await compileOntologyReferenceOracles(extended, classes, {
+    executeProcess,
+  });
   await writeFile(join(output, "compile.log"), compilation.stderr);
-  const input = join(
-    referenceDirectory,
-    "fixtures/storage/rdfxml-refinements.ofn",
-  );
+  const input = writerFixturePath;
   const source = await readFile(input, "utf8");
   const javaDirectory = join(output, "java");
-  const javaRun = await executeFile(
-    "java",
-    [
-      "-cp",
-      classes,
-      "RunWithClasspath",
-      environment.classpathFile,
-      classes,
-      "RunWriterConfigurationContract",
-      input,
-      javaDirectory,
-    ],
-    { encoding: "utf8", maxBuffer: 8 * 1024 * 1024 },
-  );
+  const args = [
+    "-cp",
+    classes,
+    "RunWithClasspath",
+    environment.classpathFile,
+    classes,
+    "RunWriterConfigurationContract",
+    input,
+    javaDirectory,
+  ];
+  const javaRun = executeProcess
+    ? await executeProcess("java", args)
+    : await executeFile("java", args, {
+        encoding: "utf8",
+        maxBuffer: 8 * 1024 * 1024,
+      });
   await writeFile(join(output, "java.log"), javaRun.stdout + javaRun.stderr);
+  if (javaRun.exitCode)
+    throw new Error("Native RDF/XML writer did not complete");
+  const {
+    OWLManager,
+    OWLOntologyWriterConfiguration,
+    RDFXMLDocumentFormat,
+    StringDocumentSource,
+    StringDocumentTarget,
+  } = await loadPublicApi({ packageDirectory, consumerDirectory });
   const javascriptDirectory = join(output, "javascript");
   await mkdir(javascriptDirectory);
   const observations = [];
-  for (const mode of modes) {
+  for (const mode of writerModes) {
     const manager = OWLManager.createOWLOntologyManager();
     const ontology = await manager.loadOntologyFromOntologyDocument(
       new StringDocumentSource(source, { format: "functional" }),
@@ -198,6 +217,7 @@ export const runWriterConfigurationContract = async ({ outputDirectory }) => {
         verifyOutputPath: path,
       },
       environment,
+      { executeProcess },
     );
     await writeFile(
       join(output, `${mode}-structural.json`),
