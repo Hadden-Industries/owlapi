@@ -50,7 +50,12 @@ async function observeWorkingSet(pid) {
 }
 
 /** A worker suspends outside the load clock until its parent has observed each checkpoint. */
-export async function measureComparisonWorker(worker, caseId, mode, timeoutMs) {
+export async function measureComparisonWorker(
+  worker,
+  { caseId, executionId },
+  mode,
+  timeoutMs,
+) {
   const child = spawn(worker.file, worker.args, {
     ...worker.options,
     windowsHide: true,
@@ -75,7 +80,11 @@ export async function measureComparisonWorker(worker, caseId, mode, timeoutMs) {
   try {
     for await (const line of lines) {
       const message = JSON.parse(line);
-      if (message.caseId !== caseId || result)
+      if (
+        message.caseId !== caseId ||
+        message.executionId !== executionId ||
+        result
+      )
         throw new Error("Worker changed its performance case identity");
       if (message.kind === "checkpoint") {
         const phase = checkpoints.length === 0 ? "before" : "after";
@@ -141,35 +150,63 @@ export function loadPerformanceReport({
   samples,
   sameOperation,
   expectedCounts,
+  protocol,
 }) {
-  const allCompleted = Object.entries(samples).every(
-    ([engine, { cold, warm }]) => {
-      const expected = expectedCounts[engine];
-      return (
-        cold.every(
-          (sample) =>
-            sample.status === "completed" &&
-            sample.axioms === expected &&
-            sample.networkAttempts === 0,
-        ) &&
-        warm.status === "completed" &&
-        warm.axioms === expected &&
-        warm.networkAttempts === 0
-      );
-    },
-  );
+  const engines = ["js", "java"];
+  if (
+    Object.keys(samples ?? {}).length !== engines.length ||
+    engines.some(
+      (engine) =>
+        !Array.isArray(samples[engine]?.cold) ||
+        samples[engine].cold.length !== protocol.coldSamples,
+    )
+  ) {
+    throw new Error(
+      "The performance report lacks the requested cold sample count",
+    );
+  }
+  const hasTimings = (sample, repetitions) =>
+    sample?.status === "completed" &&
+    Array.isArray(sample.wallNanos) &&
+    sample.wallNanos.length === repetitions &&
+    sample.wallNanos.every((nanos) => Number.isSafeInteger(nanos) && nanos > 0);
+  const hasMeasurements = (sample) =>
+    hasTimings(sample, 1) &&
+    sample.checkpoints?.length === 2 &&
+    sample.checkpoints.every(
+      ({ phase, rssBytes, peakRssBytes }, index) =>
+        phase === ["before", "after"][index] &&
+        Number.isSafeInteger(rssBytes) &&
+        rssBytes > 0 &&
+        Number.isSafeInteger(peakRssBytes) &&
+        peakRssBytes >= rssBytes,
+    );
+  const allCompleted = engines.every((engine) => {
+    const { cold, warm } = samples[engine];
+    const expected = expectedCounts[engine];
+    const matches = (sample) =>
+      Number.isSafeInteger(expected) &&
+      sample.axioms === expected &&
+      sample.networkAttempts === 0;
+    return (
+      cold.every((sample) => hasMeasurements(sample) && matches(sample)) &&
+      hasTimings(warm, protocol.repetitions) &&
+      matches(warm)
+    );
+  });
   const comparable = sameOperation && allCompleted;
   const summary = Object.fromEntries(
     Object.entries(samples).map(([engine, { cold, warm }]) => [
       engine,
       {
-        coldPeakBytes: cold.every((item) => item.status === "completed")
+        coldPeakBytes: cold.every(hasMeasurements)
           ? median(
               cold.map(({ checkpoints }) => checkpoints.at(-1).peakRssBytes),
             )
           : null,
-        warmMedianNanos:
-          warm.status === "completed" ? median(warm.wallNanos) : null,
+        warmMedianNanos: hasTimings(warm, protocol.repetitions)
+          ? median(warm.wallNanos)
+          : null,
       },
     ]),
   );

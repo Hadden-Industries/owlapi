@@ -207,6 +207,7 @@ const originalIdmp = comparisonCatalogue.fixtures.find(
   ({ id }) => id === "pistoia-idmp",
 );
 const stockIdmpRefusal = {
+  dependentStageReason: "expected-xml-entity-limit",
   js: {
     category: "RESOURCE_LIMIT_EXCEEDED",
     resource: "maxTotalEntityCodeUnits",
@@ -538,7 +539,10 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           profile.behaviorProfileId === javaProfile &&
           profile.parsingMode === "compatible" &&
           request.javaXml !== "historical-idmp"
-            ? { expectedLoadRefusals: structuredClone(stockIdmpRefusal) }
+            ? {
+                measurements: ["behavior"],
+                expectedLoadRefusals: structuredClone(stockIdmpRefusal),
+              }
             : {}),
           ...profile,
         };
@@ -591,6 +595,7 @@ async function observeJs(request, directory, environment) {
   }
   return readCompletedComparisonFile({
     caseId: request.caseId,
+    executionId: request.executionId,
     stage: "js-load",
     resultPath,
     stdout: process.stdout,
@@ -629,6 +634,17 @@ function matchesExpectedLoadRefusals(definition, js, native) {
   );
 }
 
+function completedClosureStages(js, native) {
+  return (
+    js.merge?.status === "completed" &&
+    native.merge?.status === "completed" &&
+    js.rdfXmlWrite?.status === "completed" &&
+    js.rdfXmlReload?.status === "completed" &&
+    native.javaRdfXmlRoundTrip?.write?.status === "completed" &&
+    native.javaRdfXmlRoundTrip?.reload?.status === "completed"
+  );
+}
+
 function compareClosureStages(js, native) {
   const javaRoundTrip = native.javaRdfXmlRoundTrip;
   const comparisons = native.documentComparisons ?? [];
@@ -639,12 +655,7 @@ function compareClosureStages(js, native) {
   ];
   if (verdicts.includes("mismatch")) return "mismatch";
   const completed =
-    js.merge?.status === "completed" &&
-    native.merge?.status === "completed" &&
-    js.rdfXmlWrite?.status === "completed" &&
-    js.rdfXmlReload?.status === "completed" &&
-    javaRoundTrip?.write?.status === "completed" &&
-    javaRoundTrip?.reload?.status === "completed" &&
+    completedClosureStages(js, native) &&
     comparisons.length > 0 &&
     comparisons.length === js.documentModels?.length &&
     verdicts.every((verdict) => verdict === "match");
@@ -803,11 +814,15 @@ async function caseVerdict(definition, measurements, js, native, performance) {
   const matchedLoadSequence =
     definition.scenario !== "strict-first" ||
     matchesStrictFirstAttempts(js.loadAttempts);
+  const completedRequestedStages =
+    definition.scenario !== "closure-roundtrip" ||
+    completedClosureStages(js, native);
   const behavior =
     matchedProfiles &&
     matchedDocument &&
     matchedLoader &&
     matchedLoadSequence &&
+    completedRequestedStages &&
     expectedLoad &&
     offline
       ? "observed"
@@ -821,15 +836,23 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     : definition.expectedDifferences && native.structure?.status === "match"
       ? "mismatch"
       : (native.structure?.status ?? "inconclusive");
-  const structure =
-    definition.scenario === "closure-roundtrip" && sourceStructure === "match"
+  const inapplicable =
+    behavior === "observed" &&
+    definition.expectedLoadRefusals &&
+    native.structure?.status === "blocked"
+      ? { structure: definition.expectedLoadRefusals.dependentStageReason }
+      : null;
+  const structure = inapplicable
+    ? "not-applicable"
+    : definition.scenario === "closure-roundtrip" && sourceStructure === "match"
       ? compareClosureStages(js, native)
       : sourceStructure;
   const accepted =
     behavior === "observed" &&
     (!measurements.includes("structure") ||
       structure === "match" ||
-      structure === "reconciled");
+      structure === "reconciled" ||
+      structure === "not-applicable");
   return {
     measures: Object.fromEntries(
       measurements.map((measurement) => [
@@ -853,11 +876,35 @@ async function caseVerdict(definition, measurements, js, native, performance) {
             ? "failed"
             : "incomplete",
     offline,
+    ...(inapplicable ? { inapplicable } : {}),
     ...(reconciledRuleIds ? { reconciledRuleIds } : {}),
   };
 }
 
+function summarizeLoadPerformance(definition, js, native, samples, protocol) {
+  const nativeLoad = native.javaLoad?.ontology;
+  const sameOperation =
+    definition.scenario === "direct-load" &&
+    definition.behaviorProfileId === javaProfile &&
+    definition.parsingMode === "compatible" &&
+    native.structure?.status === "match" &&
+    native.networkAttempts === 0 &&
+    nativeLoad?.unparsedRdf?.length === 0 &&
+    js.networkRequests?.length === 0 &&
+    js.load?.imports?.length === 0 &&
+    nativeLoad?.imports?.length === 0 &&
+    js.load?.closure?.length === 1 &&
+    nativeLoad?.closure?.length === 1;
+  return loadPerformanceReport({
+    samples,
+    sameOperation,
+    protocol,
+    expectedCounts: { js: js.load?.axioms, java: nativeLoad?.counts?.axioms },
+  });
+}
+
 async function observeLoadPerformance({
+  definition,
   directory,
   environment,
   java,
@@ -866,7 +913,7 @@ async function observeLoadPerformance({
   js,
   native,
 }) {
-  const { caseId, behaviorProfileId, parsingMode } = jsRequest;
+  const { caseId, executionId } = jsRequest;
   const protocol = environment.performanceProtocol;
   const sample = async (engine, mode, index) => {
     const name = `${engine}-${mode}-${index}`;
@@ -893,7 +940,7 @@ async function observeLoadPerformance({
       }
       return await measureComparisonWorker(
         worker,
-        caseId,
+        { caseId, executionId },
         mode,
         environment.timeoutMs ?? 120_000,
       );
@@ -909,23 +956,8 @@ async function observeLoadPerformance({
     }
     samples[engine] = { cold, warm: await sample(engine, "warm", 0) };
   }
-  const sameOperation =
-    jsRequest.scenario === "direct-load" &&
-    behaviorProfileId === javaProfile &&
-    parsingMode === "compatible" &&
-    native.structure?.status === "match" &&
-    native.networkAttempts === 0 &&
-    native.javaLoad?.ontology?.unparsedRdf.length === 0 &&
-    js.networkRequests?.length === 0;
   return {
-    ...loadPerformanceReport({
-      samples,
-      sameOperation,
-      expectedCounts: {
-        js: js.load.axioms,
-        java: native.javaLoad?.ontology?.counts.axioms,
-      },
-    }),
+    ...summarizeLoadPerformance(definition, js, native, samples, protocol),
     ...(jsRequest.scenario === "strict-first"
       ? {
           boundary: "strict-then-compatible-load",
@@ -933,14 +965,24 @@ async function observeLoadPerformance({
         }
       : {}),
     caseId,
+    executionId,
     protocol,
   };
 }
 
-async function observeCase(entry, environment, directory, java, measurements) {
+async function observeCase(
+  entry,
+  environment,
+  directory,
+  java,
+  measurements,
+  executionId,
+) {
   const { caseId, definition } = entry;
   const compareStructure =
-    measurements.includes("structure") || measurements.includes("performance");
+    definition.scenario === "closure-roundtrip" ||
+    measurements.includes("structure") ||
+    measurements.includes("performance");
   if (
     measurements.includes("performance") &&
     !["direct-load", "strict-first"].includes(definition.scenario)
@@ -957,6 +999,7 @@ async function observeCase(entry, environment, directory, java, measurements) {
     : await resolvedDocuments(entry, environment, false);
   const jsRequest = {
     caseId,
+    executionId,
     ...input,
     input: entry.input.id,
     compareStructure,
@@ -996,6 +1039,7 @@ async function observeCase(entry, environment, directory, java, measurements) {
   const nativeRequest = {
     schemaVersion: 1,
     caseId,
+    executionId,
     oracleVersion: java.identity.version,
     ...(java.identity.kind === "pinned-source"
       ? { oracleVersionLine: true }
@@ -1065,6 +1109,7 @@ async function observeCase(entry, environment, directory, java, measurements) {
   let performanceEvidence;
   if (measurements.includes("performance")) {
     performance = await observeLoadPerformance({
+      definition,
       directory,
       environment,
       java,
@@ -1153,7 +1198,7 @@ async function captureInstalledIdentity(candidateDirectory, consumerDirectory) {
   };
 }
 
-async function readEvidence(directory, pin, name, caseId) {
+async function readEvidence(directory, pin, name, caseId, executionId) {
   if (
     pin?.name !== name ||
     !Number.isSafeInteger(pin.byteLength) ||
@@ -1172,8 +1217,14 @@ async function readEvidence(directory, pin, name, caseId) {
     throw new Error(`Comparison receipt changed while reading: ${name}`);
   }
   const value = JSON.parse(bytes.toString("utf8"));
-  if (value.caseId !== caseId || value.schemaVersion !== 1) {
-    throw new Error(`Comparison file belongs to a different case: ${name}`);
+  if (
+    value.caseId !== caseId ||
+    value.executionId !== executionId ||
+    value.schemaVersion !== 1
+  ) {
+    throw new Error(
+      `Comparison file belongs to a different case or execution: ${name}`,
+    );
   }
   return value;
 }
@@ -1258,6 +1309,12 @@ async function verifyComparison(entries, measurements, options) {
     comparisonIdentity(candidate) !== comparisonIdentity(expectedCandidate) ||
     comparisonIdentity(attempt.measurements) !==
       comparisonIdentity(measurements) ||
+    comparisonIdentity(protocols.performance ?? null) !==
+      comparisonIdentity(
+        measurements.includes("performance")
+          ? options.performanceProtocol
+          : null,
+      ) ||
     comparisonIdentity(attempt.required) !== comparisonIdentity(expectedIds) ||
     !Array.isArray(report.cases) ||
     report.cases.length !== entries.length
@@ -1290,18 +1347,21 @@ async function verifyComparison(entries, measurements, options) {
         row.receipt,
         "result.json",
         caseId,
+        executionId,
       );
       const js = await readEvidence(
         caseDirectory,
         receipt.js?.evidence,
         "js-load.json",
         caseId,
+        executionId,
       );
       const native = await readEvidence(
         caseDirectory,
         receipt.java?.evidence,
         "native-result.json",
         caseId,
+        executionId,
       );
       await verifyWorkerArtifacts(caseDirectory, js, native);
       const performance = measurements.includes("performance")
@@ -1310,8 +1370,30 @@ async function verifyComparison(entries, measurements, options) {
             receipt.performance,
             "performance.json",
             caseId,
+            executionId,
           )
         : null;
+      if (performance) {
+        const rebuilt = summarizeLoadPerformance(
+          definition,
+          js,
+          native,
+          performance.samples,
+          options.performanceProtocol,
+        );
+        if (
+          comparisonIdentity(performance.protocol) !==
+            comparisonIdentity(options.performanceProtocol) ||
+          comparisonIdentity(performance.summary) !==
+            comparisonIdentity(rebuilt.summary) ||
+          comparisonIdentity(performance.comparison) !==
+            comparisonIdentity(rebuilt.comparison)
+        ) {
+          throw new Error(
+            "Performance comparison disagrees with the requested protocol and retained samples",
+          );
+        }
+      }
       const verdict = await caseVerdict(
         definition,
         measurements,
@@ -1323,6 +1405,7 @@ async function verifyComparison(entries, measurements, options) {
         status: receipt.status,
         offline: receipt.offline,
         measures: receipt.measures,
+        ...(receipt.inapplicable ? { inapplicable: receipt.inapplicable } : {}),
         ...(receipt.reconciledRuleIds
           ? { reconciledRuleIds: receipt.reconciledRuleIds }
           : {}),
@@ -1729,7 +1812,7 @@ async function executeComparison(request, environment = {}) {
     protocols: {
       comparison: 1,
       case: 1,
-      worker: 1,
+      worker: 2,
       ...(measurements.includes("performance")
         ? { performance: options.performanceProtocol }
         : {}),
@@ -1758,7 +1841,14 @@ async function executeComparison(request, environment = {}) {
     });
     let result;
     try {
-      result = await observeCase(entry, options, directory, java, measurements);
+      result = await observeCase(
+        entry,
+        options,
+        directory,
+        java,
+        measurements,
+        executionId,
+      );
     } catch (error) {
       result = { caseId: entry.caseId, ...errorRecord(error) };
     }
@@ -1780,6 +1870,19 @@ async function executeComparison(request, environment = {}) {
   }
   if ((await captureHarnessIdentity()) !== harnessSha256) {
     throw new Error("Comparison harness changed during execution");
+  }
+  const confirmedClasspath = await admitCaseClasspath(entries, options);
+  const { jdk: confirmedJdk } = comparisonJavaTools(
+    options,
+    options.outputDirectory,
+  );
+  if (
+    comparisonIdentity(confirmedClasspath.identity) !==
+      comparisonIdentity(classpath.identity) ||
+    comparisonIdentity(confirmedJdk.identity) !==
+      comparisonIdentity(java.identity.jdk)
+  ) {
+    throw new Error("Java oracle bytes changed during comparison");
   }
   const report = { schemaVersion: 2, action: "run", executionId, cases };
   await publishComparisonJson(options.outputDirectory, "report.json", report);

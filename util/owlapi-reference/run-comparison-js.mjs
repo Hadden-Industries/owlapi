@@ -262,7 +262,10 @@ async function sampleLoad(
 ) {
   const { caseId, performance: protocol } = request;
   const emit = (message) =>
-    process.stdout.write(JSON.stringify({ caseId, ...message }) + "\n");
+    process.stdout.write(
+      JSON.stringify({ caseId, executionId: request.executionId, ...message }) +
+        "\n",
+    );
   const checkpoint = async (phase) => {
     const waiting = once(process.stdin, "data");
     emit({
@@ -652,17 +655,21 @@ async function observe(request, directory) {
 
 const [requestPath, resultPath] = process.argv.slice(2);
 const request = JSON.parse(await readFile(requestPath, "utf8"));
+const { executionId, caseId } = request;
+if (![executionId, caseId].every((value) => /^[0-9a-f]{64}$/u.test(value)))
+  throw new Error("Invalid comparison execution or case identity");
 const result = await observe(request, dirname(resultPath));
 if (result !== null) {
   const artifact = await publishComparisonJson(
     dirname(resultPath),
     basename(resultPath),
-    result,
+    { ...result, executionId },
   );
   process.stdout.write(
     JSON.stringify({
       schemaVersion: 1,
-      caseId: request.caseId,
+      caseId,
+      executionId,
       stage: "js-load",
       byteLength: artifact.byteLength,
       sha256: artifact.sha256,

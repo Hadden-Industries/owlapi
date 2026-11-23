@@ -58,7 +58,9 @@ public final class RunOntologyComparisonCase {
         if (args.length != 2) throw new IllegalArgumentException("Expected request and result paths");
         JsonNode request = JSON.readTree(Path.of(args[0]).toFile());
         String caseId = request.required("caseId").asText();
-        if (request.required("schemaVersion").asInt() != 1 || !caseId.matches("[0-9a-f]{64}")) {
+        String executionId = request.required("executionId").asText();
+        if (request.required("schemaVersion").asInt() != 1 || !caseId.matches("[0-9a-f]{64}") ||
+                !executionId.matches("[0-9a-f]{64}")) {
             throw new IllegalArgumentException("Unsupported comparison request");
         }
         Path resultPath = Path.of(args[1]);
@@ -66,6 +68,7 @@ public final class RunOntologyComparisonCase {
         if (request.path("performance").isObject()) return;
         result.put("schemaVersion", 1);
         result.put("caseId", caseId);
+        result.put("executionId", executionId);
 
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         try (DigestOutputStream output = new DigestOutputStream(
@@ -73,7 +76,7 @@ public final class RunOntologyComparisonCase {
             JSON.writeValue(output, result);
         }
         System.out.println(JSON.writeValueAsString(Map.of(
-            "schemaVersion", 1, "caseId", caseId, "stage", "native-comparison",
+            "schemaVersion", 1, "caseId", caseId, "executionId", executionId, "stage", "native-comparison",
             "byteLength", Files.size(resultPath), "sha256", HexFormat.of().formatHex(digest.digest()))));
         Map<?, ?> structure = (Map<?, ?>) result.get("structure");
         Map<?, ?> load = (Map<?, ?>) result.get("javaLoad");
@@ -304,6 +307,7 @@ public final class RunOntologyComparisonCase {
         var stage = new LinkedHashMap<>(result);
         stage.put("schemaVersion", 1);
         stage.put("caseId", request.required("caseId").asText());
+        stage.put("executionId", request.required("executionId").asText());
         stage.put("stage", "native-source-load");
         stage.put("importRequests", importRequests);
         stage.put("networkAttempts", OntologyReferenceContract.networkAccessAttemptCount());
@@ -526,6 +530,7 @@ public final class RunOntologyComparisonCase {
         JsonNode protocol = request.required("performance");
         JsonNode document = request.required("document");
         String caseId = request.required("caseId").asText();
+        String executionId = request.required("executionId").asText();
         boolean cold = "cold".equals(protocol.required("mode").asText());
         int warmups = cold ? 0 : protocol.required("warmups").asInt();
         int repetitions = cold ? 1 : protocol.required("repetitions").asInt();
@@ -533,6 +538,7 @@ public final class RunOntologyComparisonCase {
         OWLOntology ontology = null;
         Map<String, Object> observation = new LinkedHashMap<>();
         observation.put("caseId", caseId);
+        observation.put("executionId", executionId);
         observation.put("kind", "sample");
         observation.put("wallNanos", wallNanos);
         try {
@@ -544,11 +550,11 @@ public final class RunOntologyComparisonCase {
                     StreamDocumentSource source = new StreamDocumentSource(stream,
                         IRI.create(document.required("documentIRI").asText()),
                         sourceFormat(request), null);
-                    if (cold) observeCheckpoint(caseId, "before");
+                    if (cold) observeCheckpoint(caseId, executionId, "before");
                     long start = System.nanoTime();
                     ontology = manager.loadOntologyFromOntologyDocument(source, configuration);
                     long elapsed = System.nanoTime() - start;
-                    if (cold) observeCheckpoint(caseId, "after");
+                    if (cold) observeCheckpoint(caseId, executionId, "after");
                     if (index >= warmups) wallNanos.add(elapsed);
                 }
             }
@@ -561,9 +567,9 @@ public final class RunOntologyComparisonCase {
         System.out.println(JSON.writeValueAsString(observation));
     }
 
-    private static void observeCheckpoint(String caseId, String phase) throws Exception {
+    private static void observeCheckpoint(String caseId, String executionId, String phase) throws Exception {
         Runtime runtime = Runtime.getRuntime();
-        System.out.println(JSON.writeValueAsString(Map.of("caseId", caseId, "kind", "checkpoint",
+        System.out.println(JSON.writeValueAsString(Map.of("caseId", caseId, "executionId", executionId, "kind", "checkpoint",
             "phase", phase, "pid", ProcessHandle.current().pid(),
             "heapUsedBytes", runtime.totalMemory() - runtime.freeMemory())));
         if (System.in.read() != '.') throw new IllegalStateException("Working-set observer disconnected");

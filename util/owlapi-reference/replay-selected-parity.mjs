@@ -17,6 +17,7 @@ export function replaySelectedParity({
   outputDirectory,
   java = "java",
   selection,
+  javaHeapMiB,
 }) {
   if (!classpathFile || !outputDirectory)
     throw new Error(
@@ -115,6 +116,7 @@ export function replaySelectedParity({
       java,
       arguments: args,
       outputDirectory: output,
+      javaHeapMiB,
     });
     const expectedUrnRoundTripFailure =
       name === "RunRC2Storage" && args[1] === "OWL_XML" && args.length === 3;

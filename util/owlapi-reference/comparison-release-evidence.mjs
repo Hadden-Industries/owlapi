@@ -44,6 +44,7 @@ export function corpusQualificationRoster(comparisonCases) {
   );
   const held = new Map();
   const cells = [];
+  const inapplicable = [];
   const registeredDecisions = new Set();
   for (const entry of cases) {
     const { input, definition, caseId } = entry;
@@ -67,6 +68,15 @@ export function corpusQualificationRoster(comparisonCases) {
     const measurements =
       definition.measurements ??
       (definition.literal ? ["behavior"] : ["behavior", "structure"]);
+    if (definition.expectedLoadRefusals) {
+      inapplicable.push({
+        caseId,
+        input: input.id,
+        measurement: "structure",
+        prerequisite: "load",
+        reason: definition.expectedLoadRefusals.dependentStageReason,
+      });
+    }
     let behaviorDecisionId = entry.behaviorDecisionId;
     if (definition.scenario === "public-api-behavior") {
       const witnesses = Object.values(definition).filter(
@@ -117,6 +127,7 @@ export function corpusQualificationRoster(comparisonCases) {
   return {
     schemaVersion: 1,
     cells,
+    inapplicable,
     held: [...held.values()],
     behaviorLedgerSha256: sha256(ledgerBytes),
     unregisteredBehaviorDecisions: requiredDecisions.filter(
@@ -230,6 +241,7 @@ export async function reconcileCorpusReceipts(
     missing,
     rejected,
     holds: roster.held,
+    inapplicable: roster.inapplicable,
     unregisteredBehaviorDecisions: roster.unregisteredBehaviorDecisions,
   };
 }

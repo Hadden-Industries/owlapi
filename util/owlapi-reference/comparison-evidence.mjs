@@ -42,6 +42,7 @@ export const publishComparisonJson = (directory, name, value) =>
 /** Read a completed worker artifact under the consumer's own byte limit. */
 export async function readCompletedComparisonFile({
   caseId,
+  executionId,
   stage,
   resultPath,
   stdout,
@@ -57,7 +58,9 @@ export async function readCompletedComparisonFile({
   }
   if (
     header?.schemaVersion !== 1 ||
+    !/^[0-9a-f]{64}$/u.test(executionId) ||
     header.caseId !== caseId ||
+    header.executionId !== executionId ||
     header.stage !== stage ||
     !Number.isSafeInteger(header.byteLength) ||
     header.byteLength < 1 ||
@@ -81,8 +84,14 @@ export async function readCompletedComparisonFile({
     throw new Error("Native comparison result digest differs from its header");
   }
   const result = JSON.parse(bytes.toString("utf8"));
-  if (result.schemaVersion !== 1 || result.caseId !== caseId) {
-    throw new Error("Comparison artifact contains a different case identity");
+  if (
+    result.schemaVersion !== 1 ||
+    result.caseId !== caseId ||
+    result.executionId !== executionId
+  ) {
+    throw new Error(
+      "Comparison artifact belongs to a different case or execution",
+    );
   }
   return { result, bytes };
 }

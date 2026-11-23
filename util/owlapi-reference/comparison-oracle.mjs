@@ -320,6 +320,7 @@ export async function compileComparisonOracle(
       try {
         const admitted = await readNativeComparisonResult({
           caseId: request.caseId,
+          executionId: request.executionId,
           resultPath: worker.resultPath,
           stdout: process.stdout,
           exitCode: process.exitCode,

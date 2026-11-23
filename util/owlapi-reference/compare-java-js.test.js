@@ -15,6 +15,7 @@ import {
   resolveComparisonFixture,
 } from "./comparison-fixtures.mjs";
 import { readNativeComparisonResult, sha256 } from "./comparison-evidence.mjs";
+import { loadPerformanceReport } from "./comparison-performance.mjs";
 
 async function withScratch(run) {
   const directory = await mkdtemp(join(tmpdir(), "owlapi-comparison-test-"));
@@ -627,6 +628,40 @@ test("a requested Node heap must fit within the Windows job budget", async () =>
   ).rejects.toThrow("smaller than the comparison job budget");
 });
 
+test("a performance result requires every requested cold sample and warm repetition", () => {
+  const timings = {
+    status: "completed",
+    axioms: 1,
+    networkAttempts: 0,
+    wallNanos: [123],
+  };
+  const checkpoint = (phase) => ({ phase, rssBytes: 100, peakRssBytes: 101 });
+  const cold = {
+    ...timings,
+    checkpoints: [checkpoint("before"), checkpoint("after")],
+  };
+  const samples = { cold: [cold], warm: { ...timings, checkpoints: [] } };
+  const request = {
+    samples: { js: samples, java: samples },
+    sameOperation: true,
+    expectedCounts: { js: 1, java: 1 },
+    protocol: { coldSamples: 1, repetitions: 1 },
+  };
+  expect(loadPerformanceReport(request).comparison.status).toBe("qualified");
+  expect(() =>
+    loadPerformanceReport({
+      ...request,
+      protocol: { coldSamples: 2, repetitions: 1 },
+    }),
+  ).toThrow("cold sample");
+  expect(
+    loadPerformanceReport({
+      ...request,
+      protocol: { coldSamples: 1, repetitions: 2 },
+    }).comparison.status,
+  ).toBe("diagnostic-only");
+});
+
 test("an explicit unguarded comparison reaches the normal run boundary", async () => {
   await expect(
     runComparison(
@@ -642,6 +677,21 @@ test("only the exact stock IDMP direct load expects the typed XML limit", () => 
   expect(stock.definition.expectedLoadRefusals).toMatchObject({
     js: { category: "RESOURCE_LIMIT_EXCEEDED", limit: 100_000 },
     java: { diagnosticCode: "JAXP00010004" },
+  });
+  const roster = corpusQualificationRoster(comparisonCases);
+  const stockCells = roster.cells.filter(
+    ({ caseId }) => caseId === stock.caseId,
+  );
+  expect(stockCells.map(({ measurement }) => measurement)).toEqual([
+    "behavior",
+    "behavior",
+  ]);
+  expect(roster.inapplicable).toContainEqual({
+    caseId: stock.caseId,
+    input: "pistoia-idmp",
+    measurement: "structure",
+    prerequisite: "load",
+    reason: "expected-xml-entity-limit",
   });
   for (const changes of [
     { javaXml: "historical-idmp" },
@@ -771,9 +821,11 @@ test("concurrent preparations admit one object, and an altered cache hit fails o
 test("a multi-megabyte completed diff is usable and a partial result is refused", () =>
   withScratch(async (directory) => {
     const caseId = "1".repeat(64);
+    const executionId = "7".repeat(64);
     const resultPath = join(directory, "oracle.json");
     const result = {
       caseId,
+      executionId,
       schemaVersion: 1,
       structure: {
         status: "mismatch",
@@ -784,6 +836,7 @@ test("a multi-megabyte completed diff is usable and a partial result is refused"
     await writeFile(resultPath, bytes);
     const header = {
       caseId,
+      executionId,
       schemaVersion: 1,
       stage: "native-comparison",
       byteLength: bytes.length,
@@ -791,6 +844,7 @@ test("a multi-megabyte completed diff is usable and a partial result is refused"
     };
     const request = {
       caseId,
+      executionId,
       resultPath,
       exitCode: 1,
       stdout: JSON.stringify(header),
@@ -799,6 +853,17 @@ test("a multi-megabyte completed diff is usable and a partial result is refused"
     await expect(readNativeComparisonResult(request)).resolves.toMatchObject({
       result,
     });
+    const otherAttempt = "8".repeat(64);
+    await expect(
+      readNativeComparisonResult({ ...request, executionId: otherAttempt }),
+    ).rejects.toThrow("completion header");
+    await expect(
+      readNativeComparisonResult({
+        ...request,
+        executionId: otherAttempt,
+        stdout: JSON.stringify({ ...header, executionId: otherAttempt }),
+      }),
+    ).rejects.toThrow("different case or execution");
     await expect(
       readNativeComparisonResult({ ...request, stdout: "" }),
     ).rejects.toThrow("completion header");
