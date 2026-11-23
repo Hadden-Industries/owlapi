@@ -6783,6 +6783,141 @@
       "reportedLength": null
     },
     {
+      "id": "obo-ogg-archive-base",
+      "collection": "obo",
+      "suite": "ogg-archive",
+      "syntax": "rdfxml",
+      "byteLength": 539356,
+      "sha256": "c1086c83e58281487f4c13de2afe1a1e9b04f5b477cf7f9372a84bb3f5a93ba6",
+      "documentIRI": "http://purl.obolibrary.org/obo/ogg-base.owl",
+      "basePolicy": "archived-ontology",
+      "source": {
+        "kind": "https",
+        "url": "https://svn.code.sf.net/p/ogg/code/!svn/bc/67/trunk/src/ontology/ogg-base.owl",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "root",
+      "licenseLead": "CC BY 3.0 in the pinned file",
+      "licenseSource": "http://creativecommons.org/licenses/by/3.0/",
+      "releaseEvidence": "https://sourceforge.net/p/ogg/code/67/tree/trunk/src/ontology/ogg-base.owl",
+      "declaredVersion": "Vision Release: 1.0.53",
+      "imports": [
+        "obo-ogg-archive-taxon-base"
+      ]
+    },
+    {
+      "id": "obo-ogg-archive-taxon-base",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 16017,
+      "sha256": "fe33dabd6ae5abfa4a3a5d60d293d48e1b049557033f9a8c126b7bb780ce9481",
+      "documentIRI": "http://purl.obolibrary.org/obo/ogg/NCBITaxon_import_base.owl",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ogg/NCBITaxon_import_base.owl",
+      "basePolicy": "archived-ontology",
+      "source": {
+        "kind": "https",
+        "url": "https://svn.code.sf.net/p/ogg/code/!svn/bc/67/trunk/src/ontology/NCBITaxon_import_base.owl",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "module",
+      "licenseLead": "Archived OGG subset of NCBI Taxonomy (upstream CC0 1.0)",
+      "licenseSource": "https://obofoundry.org/ontology/ncbitaxon.html",
+      "releaseEvidence": "https://sourceforge.net/p/ogg/code/67/tree/trunk/src/ontology/NCBITaxon_import_base.owl"
+    },
+    {
+      "id": "obo-ogg-archive-ce",
+      "collection": "obo",
+      "suite": "ogg-archive",
+      "syntax": "rdfxml",
+      "byteLength": 57678709,
+      "sha256": "7bc02652ff7b592c6a1ba8880accc3e9f3cc80e44c9dba67c4c8938a3924026f",
+      "documentIRI": "http://purl.obolibrary.org/obo/ogg-ce.owl",
+      "basePolicy": "archived-ontology",
+      "source": {
+        "kind": "https",
+        "url": "https://svn.code.sf.net/p/ogg/code/!svn/bc/67/trunk/src/ontology/ogg-ce.owl",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "root",
+      "licenseLead": "CC BY 3.0 in the pinned file",
+      "licenseSource": "http://creativecommons.org/licenses/by/3.0/",
+      "releaseEvidence": "https://sourceforge.net/p/ogg/code/67/tree/trunk/src/ontology/ogg-ce.owl",
+      "declaredVersion": "Vision Release: 1.0.59",
+      "imports": [
+        "obo-ogg-archive-taxon-ce"
+      ]
+    },
+    {
+      "id": "obo-ogg-archive-taxon-ce",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 6580,
+      "sha256": "40570e64c55d685aa20fc38359a121ec870d02d442587fe4e8343e0e8122b791",
+      "documentIRI": "http://purl.obolibrary.org/obo/ogg/NCBITaxon_import_Ce.owl",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ogg/NCBITaxon_import_Ce.owl",
+      "basePolicy": "archived-ontology",
+      "source": {
+        "kind": "https",
+        "url": "https://svn.code.sf.net/p/ogg/code/!svn/bc/67/trunk/src/ontology/NCBITaxon_import_Ce.owl",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "module",
+      "licenseLead": "Archived OGG subset of NCBI Taxonomy (upstream CC0 1.0)",
+      "licenseSource": "https://obofoundry.org/ontology/ncbitaxon.html",
+      "releaseEvidence": "https://sourceforge.net/p/ogg/code/67/tree/trunk/src/ontology/NCBITaxon_import_Ce.owl"
+    },
+    {
+      "id": "obo-ogg-archive-dm",
+      "collection": "obo",
+      "suite": "ogg-archive",
+      "syntax": "rdfxml",
+      "byteLength": 49423909,
+      "sha256": "c57615fc39c80d4063f0c0d54a20bc943682d79b9a86d2919fd7e24ce701a5d4",
+      "documentIRI": "http://purl.obolibrary.org/obo/ogg-dm.owl",
+      "basePolicy": "archived-ontology",
+      "source": {
+        "kind": "https",
+        "url": "https://svn.code.sf.net/p/ogg/code/!svn/bc/67/trunk/src/ontology/ogg-dm.owl",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "root",
+      "licenseLead": "CC BY 3.0 in the pinned file",
+      "licenseSource": "http://creativecommons.org/licenses/by/3.0/",
+      "releaseEvidence": "https://sourceforge.net/p/ogg/code/67/tree/trunk/src/ontology/ogg-dm.owl",
+      "declaredVersion": "Vision Release: 1.0.61",
+      "imports": [
+        "obo-ogg-archive-taxon-dm"
+      ]
+    },
+    {
+      "id": "obo-ogg-archive-taxon-dm",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 6587,
+      "sha256": "3f183362f2ef17daff2f9bc43e08b8bf7bfa74618085bfaeadd3c5f27dbd29d6",
+      "documentIRI": "http://purl.obolibrary.org/obo/ogg/NCBITaxon_import_Dm.owl",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ogg/NCBITaxon_import_Dm.owl",
+      "basePolicy": "archived-ontology",
+      "source": {
+        "kind": "https",
+        "url": "https://svn.code.sf.net/p/ogg/code/!svn/bc/67/trunk/src/ontology/NCBITaxon_import_Dm.owl",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "module",
+      "licenseLead": "Archived OGG subset of NCBI Taxonomy (upstream CC0 1.0)",
+      "licenseSource": "https://obofoundry.org/ontology/ncbitaxon.html",
+      "releaseEvidence": "https://sourceforge.net/p/ogg/code/67/tree/trunk/src/ontology/NCBITaxon_import_Dm.owl"
+    },
+    {
       "id": "obo-pcl",
       "collection": "obo",
       "suite": "wider",

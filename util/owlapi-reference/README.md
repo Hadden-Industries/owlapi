@@ -55,6 +55,14 @@ GAZ's verified Zenodo archive declares `http://purl.obolibrary.org/obo/TEMP` in 
 GAZ remains available for authorized local replay because the shared HTTPS client receives HTTP 403 from Zenodo.
 The OGG publisher's merged OWL download still returns HTTP 404.
 
+Use `--suite ogg-archive --profile java-owlapi-5.5.1 --imports mapped` to compare the archived OGG base, worm and fruit-fly source documents.
+Each case pins the OGG file and its own NCBI Taxonomy import from [SourceForge revision 67](https://sourceforge.net/p/ogg/code/67/tree/trunk/src/ontology/).
+The two subset cases verify both engines' stock XML entity-limit refusals.
+The base case requires a structural comparison.
+The archive cases have independent IDs, while the recorded merged OGG document has its own acquisition record.
+The OGG sources credit Yongqun He, Yue Liu and Bin Zhao under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+The imported taxonomic material comes from [NCBI Taxonomy](https://obofoundry.org/ontology/ncbitaxon.html).
+
 This corpus uses the Human Phenotype Ontology Consortium's HPO release of 2026-09-01.
 Credit [Köhler et al. (2014)](https://doi.org/10.1093/nar/gkt1026) and the [HPO licence](https://human-phenotype-ontology.github.io/license.html).
 

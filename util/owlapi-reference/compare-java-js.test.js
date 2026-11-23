@@ -1162,6 +1162,79 @@ test("only the pinned recorded Brick case admits a typed Java header collision",
   ).toBeUndefined();
 });
 
+test("archived OGG binds the stock XML refusals to the original imported bytes", () => {
+  const stockJava = {
+    profile: "java-owlapi-5.5.1",
+    parsingMode: "compatible",
+    imports: "mapped",
+    scenario: "direct-load",
+  };
+  const [base, worm, fly] = comparisonCases({
+    ...stockJava,
+    suite: "ogg-archive",
+  });
+  expect([base, worm, fly].map(({ input }) => input.id)).toEqual([
+    "obo-ogg-archive-base",
+    "obo-ogg-archive-ce",
+    "obo-ogg-archive-dm",
+  ]);
+  expect([base, worm, fly].map(({ imports }) => imports[0][1].id)).toEqual([
+    "obo-ogg-archive-taxon-base",
+    "obo-ogg-archive-taxon-ce",
+    "obo-ogg-archive-taxon-dm",
+  ]);
+  expect(base.definition.expectedLoadRefusals).toBeUndefined();
+  for (const { definition } of [worm, fly]) {
+    expect(definition.measurements).toEqual(["behavior"]);
+    expect(definition.expectedLoadRefusals).toMatchObject({
+      dependentStageReason: "expected-xml-entity-limit",
+      js: { resource: "maxTotalEntityCodeUnits", limit: 100_000 },
+      java: { diagnosticCode: "JAXP00010004" },
+    });
+  }
+  expect(corpusQualificationRoster(comparisonCases).held).toContainEqual({
+    input: "obo-ogg",
+    unavailable: "obo-ogg",
+    reason: "HTTP 404",
+  });
+  const request = { ...stockJava, input: worm.input.id };
+  for (const variant of [
+    { imports: "recorded" },
+    { imports: "none" },
+    { profile: "normative-v1" },
+    { scenario: "closure-roundtrip" },
+  ]) {
+    expect(
+      comparisonCases({ ...request, ...variant })[0].definition
+        .expectedLoadRefusals,
+    ).toBeUndefined();
+  }
+  for (const [changedId, replacement] of [
+    [worm.input.id, { sha256: "0".repeat(64) }],
+    [worm.imports[0][1].id, { sha256: "0".repeat(64) }],
+    [
+      worm.input.id,
+      {
+        source: {
+          ...worm.input.source,
+          url: "https://example.test/ogg-ce.owl",
+        },
+      },
+    ],
+  ]) {
+    const changedCatalogue = {
+      ...comparisonCatalogue,
+      fixtures: comparisonCatalogue.fixtures.map((row) =>
+        row.id === changedId ? { ...row, ...replacement } : row,
+      ),
+    };
+    expect(
+      comparisonCases(request, changedCatalogue)[0].definition
+        .expectedLoadRefusals,
+    ).toBeUndefined();
+  }
+});
+
 test("strict stock IDMP binds the refused annotation in direct and closure cases", () => {
   const request = {
     input: "pistoia-idmp",

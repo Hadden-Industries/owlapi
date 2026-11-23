@@ -79,7 +79,19 @@ const normativeRdfXmlWriteRefusals = new Map([
     },
   ],
 ]);
-const stockIdmpRefusal = {
+// Observed revision 67 root and mapped import identities, including their
+// acquisition sources. Catalogue edits require fresh stock-refusal evidence.
+const oggArchiveXmlRefusalInputs = new Map([
+  [
+    "obo-ogg-archive-ce",
+    "9440b8efe562eed517863941f096c338339681d1e99893a6c7fdd39b45988e38",
+  ],
+  [
+    "obo-ogg-archive-dm",
+    "814ec3dfec735b3e4925ef69a888fec84e8bd7a6f3595113f866021a4c616f05",
+  ],
+]);
+const stockXmlEntityLimitRefusal = {
   dependentStageReason: "expected-xml-entity-limit",
   js: {
     category: "RESOURCE_LIMIT_EXCEEDED",
@@ -107,7 +119,7 @@ const strictIdmpRefusal = {
         "0ed2555127f346563de17f2d2b15ffed67bfd9b42f4484cb0f0083776b3c3386",
     },
   },
-  java: stockIdmpRefusal.java,
+  java: stockXmlEntityLimitRefusal.java,
 };
 const compatibleIdmpNativeLimit = {
   dependentStageReason: "expected-native-xml-entity-limit",
@@ -125,7 +137,7 @@ const compatibleIdmpNativeLimit = {
       iri: "http://purl.org/dc/terms/abstract",
     },
   },
-  java: stockIdmpRefusal.java,
+  java: stockXmlEntityLimitRefusal.java,
 };
 const profileSelections = [
   { behaviorProfileId: javaProfile, parsingMode: "compatible" },
@@ -503,18 +515,36 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
               profile.behaviorProfileId === javaProfile &&
               profile.parsingMode === "compatible"));
         let expectedLoadRefusals;
+        const compatibleJava =
+          profile.behaviorProfileId === javaProfile &&
+          profile.parsingMode === "compatible";
+        const oggArchivePin = oggArchiveXmlRefusalInputs.get(input.id);
         if (
+          scenario === "direct-load" &&
+          compatibleJava &&
+          policy === "mapped" &&
+          !request.javaTurtle &&
+          oggArchivePin !== undefined &&
+          oggArchivePin ===
+            comparisonIdentity({
+              ...admittedInputs,
+              sources: [
+                input.source,
+                ...imports.map(([, document]) => document.source),
+              ],
+            })
+        ) {
+          expectedLoadRefusals = stockXmlEntityLimitRefusal;
+        } else if (
           (scenario === "direct-load" || scenario === "closure-roundtrip") &&
           exactRecordedInputs
         ) {
-          const compatibleJava =
-            profile.behaviorProfileId === javaProfile &&
-            profile.parsingMode === "compatible";
           if (
             input.id === originalIdmp.id &&
             request.javaXml !== "historical-idmp"
           ) {
-            if (compatibleJava) expectedLoadRefusals = stockIdmpRefusal;
+            if (compatibleJava)
+              expectedLoadRefusals = stockXmlEntityLimitRefusal;
             else if (profile.behaviorProfileId === normativeProfile)
               expectedLoadRefusals =
                 profile.parsingMode === "strict"
