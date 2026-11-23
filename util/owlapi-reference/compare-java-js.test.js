@@ -1,4 +1,4 @@
-import { expect, test } from "@jest/globals";
+import { expect, jest, test } from "@jest/globals";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, relative, resolve, sep } from "node:path";
@@ -15,6 +15,7 @@ import {
 import {
   comparisonCatalogue,
   comparisonWitnesses,
+  fetchPinnedBytes,
   generatedFixture,
   resolveComparisonFixture,
 } from "./comparison-fixtures.mjs";
@@ -35,6 +36,120 @@ async function withScratch(run) {
     await rm(directory, { recursive: true, force: true });
   }
 }
+
+test("publisher acquisition continues past a minute while bytes keep arriving", async () => {
+  jest.useFakeTimers({ doNotFake: ["nextTick", "setImmediate"] });
+  const oldStyleDeadline = jest
+    .spyOn(AbortSignal, "timeout")
+    .mockImplementation((milliseconds) => {
+      const abort = new AbortController();
+      setTimeout(
+        () => abort.abort(new Error("Absolute download deadline")),
+        milliseconds,
+      );
+      return abort.signal;
+    });
+  try {
+    const stream = await fetchPinnedBytes(
+      { url: "https://publisher.example.test/input.owl", redirects: [] },
+      {
+        fetchImpl: async (_url, { signal }) =>
+          new Response(
+            new ReadableStream({
+              start(body) {
+                const encoder = new TextEncoder();
+                let index = 0;
+                const timer = setInterval(() => {
+                  body.enqueue(
+                    encoder.encode(["part1", "part2", "part3"][index++]),
+                  );
+                  if (index === 3) {
+                    clearInterval(timer);
+                    signal.removeEventListener("abort", stop);
+                    body.close();
+                  }
+                }, 30_000);
+                function stop() {
+                  clearInterval(timer);
+                  body.error(signal.reason);
+                }
+                signal.addEventListener("abort", stop, { once: true });
+              },
+            }),
+          ),
+      },
+    );
+    const result = (async () => {
+      const chunks = [];
+      for await (const chunk of stream) chunks.push(chunk);
+      return Buffer.concat(chunks).toString();
+    })().catch((error) => error.message);
+    await jest.advanceTimersByTimeAsync(90_000);
+    await expect(result).resolves.toBe("part1part2part3");
+  } finally {
+    oldStyleDeadline.mockRestore();
+    jest.useRealTimers();
+  }
+});
+
+test("a stalled publisher response is aborted while waiting for bytes", async () => {
+  jest.useFakeTimers({ doNotFake: ["nextTick", "setImmediate"] });
+  try {
+    let networkSignal;
+    const stream = await fetchPinnedBytes(
+      { url: "https://publisher.example.test/input.owl", redirects: [] },
+      {
+        fetchImpl: async (_url, { signal }) => {
+          networkSignal = signal;
+          return new Response(new ReadableStream());
+        },
+      },
+    );
+    const outcome = (async () => {
+      for await (const chunk of stream) return chunk;
+      return "empty";
+    })().catch((error) => error.message);
+    await jest.advanceTimersByTimeAsync(59_999);
+    expect(networkSignal.aborted).toBe(false);
+    await jest.advanceTimersByTimeAsync(1);
+    expect(networkSignal.aborted).toBe(true);
+    await expect(outcome).resolves.toMatch(/no network progress/i);
+  } finally {
+    jest.useRealTimers();
+  }
+});
+
+test.each([302, 503])(
+  "a stalled publisher response disposal is bounded for HTTP %i",
+  async (status) => {
+    jest.useFakeTimers({ doNotFake: ["nextTick", "setImmediate"] });
+    try {
+      let networkSignal;
+      const outcome = fetchPinnedBytes(
+        { url: "https://publisher.example.test/input.owl", redirects: [] },
+        {
+          fetchImpl: async (_url, { signal }) => {
+            networkSignal = signal;
+            return new Response(
+              new ReadableStream({
+                cancel: () =>
+                  new Promise((resolve) =>
+                    signal.addEventListener("abort", resolve, { once: true }),
+                  ),
+              }),
+              { status, headers: { Location: "/next.owl" } },
+            );
+          },
+        },
+      ).catch((error) => error.message);
+      await jest.advanceTimersByTimeAsync(60_000);
+      expect(networkSignal.aborted).toBe(true);
+      await expect(outcome).resolves.toMatch(/no network progress/i);
+    } finally {
+      jest.useRealTimers();
+    }
+  },
+);
 
 test("a writer failure retains the precise RDF statement reported by its parser", () => {
   const statement = {

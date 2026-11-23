@@ -340,6 +340,73 @@ export async function publishPinnedBytes(path, pin, openInput) {
   }
 }
 
+async function withFixtureNetworkDeadline(abort, operation) {
+  let timer;
+  try {
+    return await Promise.race([
+      operation(),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => {
+          const error = new Error(
+            "Fixture retrieval stopped after 60 seconds with no network progress",
+          );
+          abort.abort(error);
+          reject(error);
+        }, 60_000);
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function fixtureBodyStream(body, abort) {
+  const reader = body.getReader();
+  let closed = false;
+  async function cancel(reason) {
+    if (closed) return;
+    closed = true;
+    abort.abort(reason);
+    try {
+      await withFixtureNetworkDeadline(abort, () => reader.cancel(reason));
+    } catch {
+      // Aborting the request can already have errored its response stream.
+    } finally {
+      reader.releaseLock();
+    }
+  }
+  return Readable.fromWeb(
+    new ReadableStream(
+      {
+        async pull(destination) {
+          try {
+            const { done, value } = await withFixtureNetworkDeadline(
+              abort,
+              () => reader.read(),
+            );
+            if (closed) return;
+            if (done) {
+              closed = true;
+              reader.releaseLock();
+              destination.close();
+            } else {
+              destination.enqueue(value);
+            }
+          } catch (error) {
+            if (closed) return;
+            destination.error(error);
+            await cancel(error);
+          }
+        },
+        cancel,
+      },
+      // Each waiting read has a deadline. Downstream disk backpressure is
+      // outside the network deadline because it has not requested new bytes.
+      { highWaterMark: 0 },
+    ),
+  );
+}
+
 export async function fetchPinnedBytes(
   source,
   { fetchImpl = globalThis.fetch, accept } = {},
@@ -351,7 +418,7 @@ export async function fetchPinnedBytes(
     ...(origin === oboPublisher ? oboGitHubRedirects : []),
   ]);
   let url = new URL(source.url);
-  const signal = AbortSignal.timeout(60_000);
+  const abort = new AbortController();
   for (let redirects = 0; redirects <= 5; redirects++) {
     if (
       url.protocol !== "https:" ||
@@ -361,13 +428,18 @@ export async function fetchPinnedBytes(
     ) {
       throw new Error(`Redirect to an unapproved source origin: ${url.origin}`);
     }
-    const response = await fetchImpl(url, {
-      redirect: "manual",
-      signal,
-      ...(accept ? { headers: { Accept: accept } } : {}),
-    });
-    if (response.status >= 300 && response.status < 400) {
-      await response.body?.cancel();
+    const response = await withFixtureNetworkDeadline(abort, () =>
+      fetchImpl(url, {
+        redirect: "manual",
+        signal: abort.signal,
+        ...(accept ? { headers: { Accept: accept } } : {}),
+      }),
+    );
+    const redirect = response.status >= 300 && response.status < 400;
+    if ((redirect || !response.ok) && response.body) {
+      await withFixtureNetworkDeadline(abort, () => response.body.cancel());
+    }
+    if (redirect) {
       const location = response.headers.get("location");
       if (!location)
         throw new Error("Fixture retrieval redirect lacks a Location");
@@ -375,12 +447,11 @@ export async function fetchPinnedBytes(
       continue;
     }
     if (!response.ok || !response.body) {
-      await response.body?.cancel();
       throw new Error(
         `Fixture retrieval returned HTTP ${response.status} from ${url.origin}`,
       );
     }
-    return Readable.fromWeb(response.body);
+    return fixtureBodyStream(response.body, abort);
   }
   throw new Error("Fixture retrieval exceeded the redirect limit");
 }
