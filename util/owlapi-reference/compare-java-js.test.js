@@ -3,6 +3,7 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
+import { gzipSync } from "node:zlib";
 import { comparisonCases, runComparison } from "./compare-java-js.mjs";
 import { runWindowsComparisonJob } from "./comparison-job.mjs";
 import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
@@ -148,6 +149,60 @@ test.each([302, 503])(
     } finally {
       jest.useRealTimers();
     }
+  },
+);
+
+test.each(["matching pins", "changed archive", "invalid pin type"])(
+  "publisher gzip requires matching archive and member pins (%s)",
+  async (variant) => {
+    await withScratch(async (cacheDirectory) => {
+      const original = Buffer.from("published RDF/XML fixture\n");
+      const archive = gzipSync(original);
+      const delivered = Buffer.from(archive);
+      if (variant === "changed archive")
+        delivered[9] = (delivered[9] + 1) % 256;
+      const pin = {
+        id: "archived-owl-fixture",
+        documentIRI: "https://publisher.example.test/fixture.owl",
+        syntax: "rdfxml",
+        acquisition: "publisher",
+        byteLength: original.length,
+        sha256: sha256(original),
+        source: {
+          kind: "https",
+          url: "https://publisher.example.test/fixture.owl.gz",
+          redirects: [],
+          archive: {
+            format: "gzip",
+            byteLength: archive.length,
+            sha256:
+              variant === "invalid pin type"
+                ? [sha256(archive)]
+                : sha256(archive),
+          },
+        },
+      };
+      const restored = resolveComparisonFixture(
+        pin,
+        {
+          cacheDirectory,
+          fetchImpl: async () => new Response(delivered),
+        },
+        true,
+      );
+      if (variant !== "matching pins") {
+        await expect(restored).rejects.toThrow(
+          variant === "invalid pin type"
+            ? /invalid publisher archive pin/iu
+            : /gzip archive/iu,
+        );
+        await expect(
+          readFile(join(cacheDirectory, "objects", pin.sha256)),
+        ).rejects.toMatchObject({ code: "ENOENT" });
+      } else {
+        expect(await readFile(await restored)).toEqual(original);
+      }
+    });
   },
 );
 

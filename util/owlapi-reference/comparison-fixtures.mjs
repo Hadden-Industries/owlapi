@@ -4,6 +4,7 @@ import { link, lstat, mkdir, rm } from "node:fs/promises";
 import { dirname, isAbsolute, join, resolve } from "node:path";
 import { Readable, Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
+import { createGunzip } from "node:zlib";
 import { sha256 } from "./comparison-evidence.mjs";
 
 export const comparisonCatalogue = JSON.parse(
@@ -274,6 +275,18 @@ function assertFixturePin(fixture) {
   if (!["http:", "https:", "urn:"].includes(documentIRI.protocol)) {
     throw new Error(`Unsupported document IRI for ${fixture.id}`);
   }
+  const archive = fixture.source.archive;
+  if (
+    archive !== undefined &&
+    (fixture.source.kind !== "https" ||
+      archive?.format !== "gzip" ||
+      !Number.isSafeInteger(archive.byteLength) ||
+      archive.byteLength < 1 ||
+      typeof archive.sha256 !== "string" ||
+      !/^[0-9a-f]{64}$/u.test(archive.sha256))
+  ) {
+    throw new Error(`Invalid publisher archive pin for ${fixture.id}`);
+  }
 }
 
 export async function verifyPinnedFile(path, pin) {
@@ -301,14 +314,10 @@ export async function verifyPinnedFile(path, pin) {
   return true;
 }
 
-/** Admit native runtime JARs and ontology inputs without replacing existing objects. */
-export async function publishPinnedBytes(path, pin, openInput) {
-  if (await verifyPinnedFile(path, pin)) return path;
-  await mkdir(dirname(path), { recursive: true });
-  const pending = `${path}.${randomUUID()}.pending`;
+function pinnedByteStream(pin) {
   const digest = createHash("sha256");
   let byteLength = 0;
-  const checkBytes = new Transform({
+  return new Transform({
     transform(chunk, encoding, callback) {
       byteLength += chunk.length;
       if (byteLength > pin.byteLength) {
@@ -318,16 +327,33 @@ export async function publishPinnedBytes(path, pin, openInput) {
       digest.update(chunk);
       callback(null, chunk);
     },
+    flush(callback) {
+      if (
+        byteLength !== pin.byteLength ||
+        digest.digest("hex") !== pin.sha256
+      ) {
+        callback(
+          new Error(`Acquired bytes differ from the original for ${pin.id}`),
+        );
+      } else {
+        callback();
+      }
+    },
   });
+}
+
+/** Admit native runtime JARs and ontology inputs without replacing existing objects. */
+export async function publishPinnedBytes(path, pin, openInput, createDecoders) {
+  if (await verifyPinnedFile(path, pin)) return path;
+  await mkdir(dirname(path), { recursive: true });
+  const pending = `${path}.${randomUUID()}.pending`;
   try {
     await pipeline(
       await openInput(),
-      checkBytes,
+      ...(createDecoders?.() ?? []),
+      pinnedByteStream(pin),
       createWriteStream(pending, { flags: "wx" }),
     );
-    if (byteLength !== pin.byteLength || digest.digest("hex") !== pin.sha256) {
-      throw new Error(`Acquired bytes differ from the original for ${pin.id}`);
-    }
     try {
       await link(pending, path);
     } catch (error) {
@@ -492,12 +518,24 @@ export async function resolveComparisonFixture(
   if (!seed && fixture.acquisition === "local-only") {
     throw new Error(`An authorized local seed is required for ${fixture.id}`);
   }
-  return publishPinnedBytes(path, fixture, () =>
-    seed
-      ? createReadStream(seed)
-      : fetchPinnedBytes(fixture.source, {
-          fetchImpl: environment.fetchImpl,
-          accept: comparisonSyntaxes[fixture.syntax].mime,
-        }),
+  const archive = seed ? undefined : fixture.source.archive;
+  return publishPinnedBytes(
+    path,
+    fixture,
+    () =>
+      seed
+        ? createReadStream(seed)
+        : fetchPinnedBytes(fixture.source, {
+            fetchImpl: environment.fetchImpl,
+            accept: archive
+              ? "application/gzip"
+              : comparisonSyntaxes[fixture.syntax].mime,
+          }),
+    archive
+      ? () => [
+          pinnedByteStream({ ...archive, id: `${fixture.id} gzip archive` }),
+          createGunzip(),
+        ]
+      : undefined,
   );
 }

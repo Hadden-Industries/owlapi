@@ -11,6 +11,8 @@ Historical observations below retain their original JDK identities.
 Use `npm run compare:java-js -- list --suite smoke` to inspect the published CGMES and SAREF inputs and the reduced witness.
 `prepare` restores and verifies fixture and JAR bytes.
 Publisher retrieval allows long transfers and stops after one minute without network progress.
+Publisher gzip archives have a separate byte pin.
+The cache stores the verified decoded fixture.
 `run` uses the verified cache and records the source load, Functional Syntax transport, and native verdict for each case.
 `verify` checks the original worker artifacts against the same requested case set.
 
