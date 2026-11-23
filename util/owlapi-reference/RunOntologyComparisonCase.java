@@ -115,6 +115,8 @@ public final class RunOntologyComparisonCase {
                         "factoryReused", factory == manager.getOWLDataFactory(),
                         "connectionTimeout", manager.getOntologyLoaderConfiguration().getConnectionTimeout(),
                         "writerIndentSize", manager.getOntologyWriterConfiguration().getIndentSize()));
+                } else if (request.path("localityBehavior").isObject()) {
+                    result.put("localityBehavior", OntologyLocalityComparison.observe(request.required("localityBehavior")));
                 } else {
                     result.put("literalConstruction", OntologyLiteralComparison.observe(request.required("literalConstruction")));
                 }

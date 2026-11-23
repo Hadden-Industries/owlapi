@@ -53,6 +53,7 @@ import { literalConstructionComparisonCase } from "./comparison-literal-construc
 import { queryComparisonCases } from "./comparison-query.mjs";
 import { parserBehaviorComparisonCases } from "./comparison-parser-behavior.mjs";
 import { profileIdentityComparisonCase } from "./comparison-profile-identity.mjs";
+import { localityBehaviorComparisonCase } from "./comparison-locality.mjs";
 import {
   julyTimeDifferenceScope,
   reconcileJulyTimeLoad,
@@ -115,6 +116,8 @@ const comparisonInputs = [
   "./comparison-parser-behavior.mjs",
   "./OntologyParserBehaviorComparison.java",
   "./comparison-profile-identity.mjs",
+  "./comparison-locality.mjs",
+  "./OntologyLocalityComparison.java",
   "./comparison-july-differences.mjs",
   "./reconcile-structural-differences.mjs",
   "../../docs/compatibility/expected-differences.json",
@@ -156,6 +159,7 @@ const normativeObservation = {
   queryBehavior: "normativeQueryBehavior",
   parserBehavior: "normativeParserBehavior",
   profileIdentity: "profileBindings",
+  localityBehavior: "normativeLocalityBehavior",
 };
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
@@ -346,6 +350,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       ...queryComparisonCases(),
       ...parserBehaviorComparisonCases(),
       profileIdentityComparisonCase(),
+      localityBehaviorComparisonCase(),
     ];
   if (selectsWriter(request)) return writerComparisonCases(request);
   if (selectsVowl(request))

@@ -353,6 +353,22 @@ test("profile identity is explicit and existing resource and language profile ca
   }
 });
 
+test("locality behavior binds exact seed and filter inputs", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "public-api-behavior",
+  });
+  const locality = cases.find(({ localityBehavior }) => localityBehavior);
+  expect(locality).toMatchObject({
+    input: { id: "locality/filtered-forward-chain" },
+    localityBehavior: { decisionId: "BEHAVIOR-LOCALITY", seed: "urn:module:A" },
+  });
+  expect(locality.localityBehavior.excluded).toEqual([
+    "urn:module:B",
+    "urn:module:C",
+  ]);
+});
+
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
   const subject = {
     tarballSha256: "1".repeat(64),

@@ -17,6 +17,7 @@ import { observeLiteralConstruction } from "./comparison-literal-construction.mj
 import { observeQueryBehavior } from "./comparison-query.mjs";
 import { observeParserBehavior } from "./comparison-parser-behavior.mjs";
 import { observeProfileIdentity } from "./comparison-profile-identity.mjs";
+import { observeLocalityBehavior } from "./comparison-locality.mjs";
 
 const iriValue = (iri) => iri?.value ?? null;
 const ontologyIdentity = (ontology) => ({
@@ -458,6 +459,7 @@ async function observe(request, directory) {
     ...request,
     includeManchesterRenderer,
     includeSearch: Boolean(request.queryBehavior),
+    includeLocality: Boolean(request.localityBehavior),
   });
   const publicObservers = {
     configuration: observeConfiguration,
@@ -468,6 +470,7 @@ async function observe(request, directory) {
     queryBehavior: observeQueryBehavior,
     parserBehavior: observeParserBehavior,
     profileIdentity: observeProfileIdentity,
+    localityBehavior: observeLocalityBehavior,
   };
   const publicOperation = Object.keys(publicObservers).find(
     (key) => request[key],

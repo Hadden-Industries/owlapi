@@ -264,6 +264,7 @@ export const loadPublicApi = async ({
   includeManchesterRenderer = false,
   includeProfiles = false,
   includeSearch = false,
+  includeLocality = false,
 }) => {
   const require = createRequire(
     join(consumerDirectory ?? packageDirectory, "package.json"),
@@ -273,6 +274,7 @@ export const loadPublicApi = async ({
   if (includeManchesterRenderer) subpaths.push("manchestersyntax/renderer");
   if (includeProfiles) subpaths.push("profiles");
   if (includeSearch) subpaths.push("search");
+  if (includeLocality) subpaths.push("modularity/locality");
   const modules = await Promise.all(
     subpaths.map((subpath) => {
       const path = require.resolve(`${dependencyName}/${subpath}`);
