@@ -1907,6 +1907,13 @@ const validateManualRelease = (fileName, workflow, violations) => {
                   required: true,
                   default: false,
                 },
+                corpus_qualification_artifact: {
+                  description:
+                    "Retained corpus descriptor artifact ID and SHA-256 for promoted qualification",
+                  type: "string",
+                  required: false,
+                  default: "",
+                },
               },
             },
           }
@@ -1937,6 +1944,15 @@ const validateManualRelease = (fileName, workflow, violations) => {
       preflight?.env?.OWLAPI_QUALIFICATION_ONLY ===
         "${{ inputs.qualification_only }}",
       `${fileName}: preflight must bind qualification-only admission to dispatch input`,
+    );
+    const qualificationManifest = steps(workflow.jobs?.required).find(
+      (step) => step.run === "node scripts/release-qualification-manifest.mjs",
+    );
+    add(
+      violations,
+      qualificationManifest?.env?.CORPUS_QUALIFICATION_ARTIFACT ===
+        "${{ inputs.corpus_qualification_artifact }}",
+      `${fileName}: corpus evidence must use the selected qualification descriptor`,
     );
   }
   requireFields(

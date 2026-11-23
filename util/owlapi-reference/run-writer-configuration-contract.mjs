@@ -5,6 +5,10 @@ import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { promisify } from "node:util";
 import { DOMParser } from "@xmldom/xmldom";
+import {
+  writerFixturePath,
+  writerModes,
+} from "./comparison-writer-fixtures.mjs";
 import { loadPublicApi } from "./qualify-universal-ontology.mjs";
 import {
   compileOntologyReferenceOracles,
@@ -14,19 +18,7 @@ import { executeOntologyParsingOracle } from "./run-ontology-parsing-contract.mj
 
 const executeFile = promisify(execFile);
 const referenceDirectory = fileURLToPath(new URL("./", import.meta.url));
-export const writerModes = Object.freeze([
-  "defaults",
-  "no-banners",
-  "two-spaces",
-  "no-indent",
-  "labels",
-  "save-ids",
-  "force-string",
-]);
-export const writerFixturePath = join(
-  referenceDirectory,
-  "fixtures/storage/rdfxml-refinements.ofn",
-);
+export { writerFixturePath, writerModes };
 const rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 const xml = "http://www.w3.org/XML/1998/namespace";
 const xmlns = "http://www.w3.org/2000/xmlns/";

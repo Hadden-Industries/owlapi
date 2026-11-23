@@ -20,6 +20,10 @@ import {
   createRepositoryReader,
   readAcknowledgedInventory,
 } from "./github-evidence-reader.mjs";
+import {
+  parseCorpusArtifactLocator,
+  sealCorpusQualification,
+} from "./corpus-qualification-manifest.mjs";
 
 export { repository };
 const main = "refs/heads/main";
@@ -73,7 +77,43 @@ export async function validateReleaseCoordinate({
   }
 }
 
-function writeQualification(manifest) {
+async function writeQualification(manifest, env, read) {
+  const selected = env.CORPUS_QUALIFICATION_ARTIFACT;
+  const sameRunInput = env.CORPUS_QUALIFICATION_INPUT;
+  assert.ok(
+    !(selected && sameRunInput),
+    "Choose one source of corpus qualification evidence",
+  );
+  if (selected) {
+    const { readCorpusQualificationInput } =
+      await import("./release-corpus-artifacts.mjs");
+    const { GitHubReleaseClient } = await import("./github-release.mjs");
+    const { downloadReleaseArtifact } = await import("./release-approvals.mjs");
+    const client = new GitHubReleaseClient({
+      repository,
+      token: env.GH_TOKEN,
+      reader: read,
+    });
+    const input = await readCorpusQualificationInput(
+      parseCorpusArtifactLocator(selected),
+      {
+        read,
+        download: (artifact, maxBytes) =>
+          downloadReleaseArtifact(client, artifact, maxBytes),
+      },
+    );
+    manifest = await sealCorpusQualification(manifest, input, { env });
+  }
+  if (sameRunInput) {
+    const input = JSON.parse(readFileSync(sameRunInput, "utf8"));
+    assert.equal(input.source.route, "fresh");
+    assert.equal(
+      input.source.runId,
+      Number(manifest.runId),
+      "Fresh corpus proof requires the same run",
+    );
+    manifest = await sealCorpusQualification(manifest, input, { env });
+  }
   mkdirSync(".release/qualification-manifest", { recursive: true });
   writeFileSync(
     ".release/qualification-manifest/manifest.json",
@@ -286,6 +326,18 @@ export async function recordQualification(env = process.env) {
     requestLimit: 96,
   });
   const mode = needs.release_admission?.outputs?.mode;
+  if (env.CORPUS_QUALIFICATION_ARTIFACT)
+    assert.equal(
+      mode,
+      "reuse",
+      "A retained corpus artifact requires promoted qualification",
+    );
+  if (env.CORPUS_QUALIFICATION_INPUT)
+    assert.equal(
+      mode,
+      "fresh",
+      "A same-run corpus descriptor requires fresh qualification",
+    );
   if (mode === "reuse") {
     assert.ok(FROZEN_RUNTIME_MATRIX, "Missing release runtime matrix");
     const ci = JSON.parse(needs.release_admission.outputs.evidence);
@@ -313,27 +365,31 @@ export async function recordQualification(env = process.env) {
       (await read("/git/ref/heads/main")).object.sha,
       env.GITHUB_SHA,
     );
-    return writeQualification({
-      schemaVersion: 2,
-      repository,
-      workflow: qualificationWorkflow,
-      commit: env.GITHUB_SHA,
-      runId: env.GITHUB_RUN_ID,
-      attempt: env.GITHUB_RUN_ATTEMPT,
-      candidateId: String(ci.candidate.id),
-      candidateDigest: ci.candidate.digest.slice("sha256:".length),
-      package: ci.package,
-      assets: ci.assets,
-      integrity: ci.integrity,
-      packedConfig: ci.packedConfig,
-      runtimeMatrix: FROZEN_RUNTIME_MATRIX,
-      ci,
-      security,
-      inputs,
-      qualification: Object.fromEntries(
-        Object.entries(needs).map(([name, value]) => [name, value.result]),
-      ),
-    });
+    return writeQualification(
+      {
+        schemaVersion: 2,
+        repository,
+        workflow: qualificationWorkflow,
+        commit: env.GITHUB_SHA,
+        runId: env.GITHUB_RUN_ID,
+        attempt: env.GITHUB_RUN_ATTEMPT,
+        candidateId: String(ci.candidate.id),
+        candidateDigest: ci.candidate.digest.slice("sha256:".length),
+        package: ci.package,
+        assets: ci.assets,
+        integrity: ci.integrity,
+        packedConfig: ci.packedConfig,
+        runtimeMatrix: FROZEN_RUNTIME_MATRIX,
+        ci,
+        security,
+        inputs,
+        qualification: Object.fromEntries(
+          Object.entries(needs).map(([name, value]) => [name, value.result]),
+        ),
+      },
+      env,
+      read,
+    );
   }
   assert.ok(
     ["fresh", "legacy"].includes(mode),
@@ -392,7 +448,7 @@ export async function recordQualification(env = process.env) {
     inputs: inputHashes(),
     qualification: needs,
   };
-  writeQualification(manifest);
+  await writeQualification(manifest, env, read);
 }
 
 /** The upload action returns hex while the GitHub artifact record includes its algorithm. */

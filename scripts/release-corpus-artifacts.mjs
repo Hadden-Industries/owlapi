@@ -25,6 +25,7 @@ import {
   corpusQualificationShards,
   reconcileCorpusReceipts,
 } from "../util/owlapi-reference/comparison-release-evidence.mjs";
+import { comparisonCases } from "../util/owlapi-reference/comparison-cases.mjs";
 
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
 const digest = (value) =>
@@ -43,10 +44,32 @@ const producerName = (shardId) => `Corpus shadow / ${shardId}`;
 const decode = (bytes) =>
   JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
 
+/** Read the exact descriptor archive. Its enclosed result artifacts still need independent verification. */
+export async function readCorpusQualificationInput(
+  locator,
+  { read, download, now = Date.now() },
+) {
+  assert.ok(positive(locator.id) && digest(locator.sha256));
+  const artifact = await read(`/actions/artifacts/${locator.id}`, {
+    retryArtifact404: true,
+  });
+  assert.ok(
+    artifact.id === locator.id &&
+      artifact.digest === `sha256:${locator.sha256}` &&
+      artifact.expired === false &&
+      Date.parse(artifact.expires_at) > now &&
+      artifact.workflow_run?.repository_id === REPOSITORY_ID &&
+      artifact.workflow_run.head_repository_id === REPOSITORY_ID,
+    "Corpus descriptor does not match the retained artifact",
+  );
+  const name = "corpus-qualification-input.json";
+  const files = await readQualifiedZip(download, artifact, 256 * 1024, [name]);
+  return decode(files.get(name));
+}
+
 /** A release caller supplies the candidate identity admitted by its own package boundary. */
 export async function reconcileHostedCorpus({
   input,
-  comparisonCases,
   read,
   download,
   now = Date.now(),
@@ -361,7 +384,7 @@ export async function reconcileHostedCorpus({
   };
 }
 
-export function readHostedCorpus(input, comparisonCases, env = process.env) {
+export function readHostedCorpus(input, env = process.env) {
   const budgetMs = 600_000;
   const deadline = performance.now() + budgetMs;
   const read = createRepositoryReader({
@@ -379,5 +402,5 @@ export function readHostedCorpus(input, comparisonCases, env = process.env) {
   });
   const download = (artifact, maxBytes) =>
     downloadReleaseArtifact(client, artifact, maxBytes, { deadline });
-  return reconcileHostedCorpus({ input, comparisonCases, read, download });
+  return reconcileHostedCorpus({ input, read, download });
 }

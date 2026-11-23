@@ -1,7 +1,16 @@
 import { expect, test } from "@jest/globals";
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { reconcileHostedCorpus } from "./release-corpus-artifacts.mjs";
+import { execFileSync } from "node:child_process";
+import {
+  readCorpusQualificationInput,
+  reconcileHostedCorpus,
+} from "./release-corpus-artifacts.mjs";
+import {
+  qualificationBaseSchema,
+  sealCorpusQualification,
+  verifyCorpusQualification,
+} from "./corpus-qualification-manifest.mjs";
 import { zipArchive } from "./fixtures/zip-archive.mjs";
 import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
 import { PACKAGE_FILE_STEM, PACKAGE_VERSION } from "./package-identity.mjs";
@@ -24,14 +33,69 @@ import {
 const now = Date.parse("2026-11-23T04:00:04Z");
 const hex = (character) => character.repeat(64);
 const roster = corpusQualificationRoster(comparisonCases);
-const shard = corpusQualificationShards(comparisonCases, roster)
+const plannedShards = corpusQualificationShards(comparisonCases, roster);
+const shard = plannedShards
   .filter(
     ({ platform, selection }) =>
       platform === "win32" && selection.suite === "public-api-behavior",
   )
   .at(-1);
 
-function fixture(route) {
+test("the release corpus artifact reader loads before npm dependencies are installed", () => {
+  const program = `
+    import { registerHooks } from "node:module";
+    const dependencies = new URL("./node_modules/", import.meta.url).href;
+    registerHooks({ resolve(specifier, context, resolve) {
+      const result = resolve(specifier, context);
+      if (result.url.startsWith(dependencies))
+        throw new Error("Cold corpus reader imported a project dependency: " + specifier);
+      return result;
+    } });
+    await import("./scripts/release-corpus-artifacts.mjs");
+  `;
+  expect(() =>
+    execFileSync(process.execPath, ["--input-type=module", "--eval", program], {
+      cwd: new URL("../", import.meta.url),
+      stdio: "pipe",
+      timeout: 10_000,
+    }),
+  ).not.toThrow();
+});
+
+test("the exact descriptor archive must match the selected locator and closed inventory", async () => {
+  const input = { schemaVersion: 1, artifacts: [] };
+  const archive = zipArchive([
+    {
+      path: "corpus-qualification-input.json",
+      content: JSON.stringify(input),
+    },
+  ]);
+  const locator = { id: 25, sha256: sha256(archive) };
+  const artifact = {
+    id: locator.id,
+    digest: "sha256:" + locator.sha256,
+    size_in_bytes: archive.length,
+    expired: false,
+    expires_at: "2027-02-01T00:00:00Z",
+    workflow_run: {
+      repository_id: REPOSITORY_ID,
+      head_repository_id: REPOSITORY_ID,
+    },
+  };
+  const options = {
+    now,
+    read: async () => artifact,
+    download: async () => archive,
+  };
+  await expect(readCorpusQualificationInput(locator, options)).resolves.toEqual(
+    input,
+  );
+  await expect(
+    readCorpusQualificationInput({ ...locator, sha256: hex("b") }, options),
+  ).rejects.toThrow("does not match the retained artifact");
+});
+
+function fixture(route, selectedShards = [shard]) {
   const repo = { id: REPOSITORY_ID, full_name: REPOSITORY };
   const run = {
     id: 84,
@@ -113,66 +177,97 @@ function fixture(route) {
     version: oracleVersion,
     lockSha256: sha256(readFileSync(oracleLockPath)),
   };
-  const cases = shard.caseIds.map((caseId) => ({
-    caseId,
-    input: roster.cells.find((cell) => cell.caseId === caseId).input,
-    measures: { behavior: "observed" },
-    status: "passed",
-    receipt: { sha256: hex("6") },
-  }));
-  const report = {
-    schemaVersion: 2,
-    action: "run",
-    executionId: hex("5"),
-    cases,
-  };
-  const reportBytes = Buffer.from(JSON.stringify(report));
-  const proof = {
-    ...report,
-    action: "verify",
-    shard,
-    rosterSha256: comparisonIdentity(roster),
-    reportSha256: sha256(reportBytes),
-    candidate: {
-      mode: "INSTALLED_CANDIDATE",
-      contentSha256: hex("7"),
-      ...subject,
-    },
-    oracle,
-    cases: [...cases],
-  };
-  const job = {
-    id: 19,
-    name: `Corpus shadow / ${shard.shardId}`,
-    run_id: 84,
-    run_attempt: 2,
-    head_sha: run.head_sha,
-    status: "completed",
-    conclusion: "success",
-    labels: ["windows-2025-vs2026"],
-    steps: [
-      {
-        name: "Upload the verified corpus shard",
-        status: "completed",
-        conclusion: "success",
-        started_at: "2026-11-23T04:00:00Z",
-        completed_at: "2026-11-23T04:00:03Z",
-      },
-    ],
-  };
-  const artifact = {
-    ...metadata(run),
-    id: 20,
-    name: `corpus-84-2-${shard.shardId}`,
-    created_at: "2026-11-23T04:00:02Z",
-  };
-  const verify = () => {
-    const archive = zipArchive([
-      { path: "verification.json", content: JSON.stringify(proof) },
-      { path: "report.json", content: reportBytes },
-    ]);
-    artifact.size_in_bytes = archive.length;
-    artifact.digest = "sha256:" + sha256(archive);
+  const rosterSha256 = comparisonIdentity(roster);
+  const producers = selectedShards.map((shard, index) => {
+    const cells = roster.cells.filter(
+      (cell) => cell.platform === shard.platform,
+    );
+    const cases = shard.caseIds.map((caseId) => {
+      const required = cells.filter((cell) => cell.caseId === caseId);
+      const structure = required.find(
+        ({ measurement }) => measurement === "structure",
+      );
+      const rules = structure?.expectedDifferenceRules;
+      return {
+        caseId,
+        input: required[0].input,
+        measures: {
+          behavior: "observed",
+          ...(structure ? { structure: rules ? "reconciled" : "match" } : {}),
+        },
+        ...(rules ? { reconciledRuleIds: rules } : {}),
+        status: "passed",
+        receipt: { sha256: hex("6") },
+      };
+    });
+    const pinned = cells.find(
+      (cell) => cell.caseId === shard.caseIds[0],
+    )?.oracle;
+    const report = {
+      schemaVersion: 2,
+      action: "run",
+      executionId: sha256(shard.shardId),
+      cases,
+    };
+    const reportBytes = Buffer.from(JSON.stringify(report));
+    const proof = {
+      ...report,
+      action: "verify",
+      shard,
+      rosterSha256,
+      reportSha256: sha256(reportBytes),
+      candidate: { mode: "INSTALLED_CANDIDATE", ...subject },
+      oracle: pinned
+        ? {
+            ...pinned,
+            classpathSha256: hex("a"),
+            jars: [{ file: "owlapi.jar", byteLength: 37, sha256: hex("b") }],
+          }
+        : oracle,
+      cases: [...cases],
+    };
+    const job = {
+      id: 19 + index * 2,
+      name: `Corpus shadow / ${shard.shardId}`,
+      run_id: 84,
+      run_attempt: 2,
+      head_sha: run.head_sha,
+      status: "completed",
+      conclusion: "success",
+      labels: [
+        shard.platform === "linux" ? UBUNTU.label : "windows-2025-vs2026",
+      ],
+      steps: [
+        { ...candidateJob.steps[0], name: "Upload the verified corpus shard" },
+      ],
+    };
+    const artifact = {
+      ...metadata(run),
+      id: 20 + index * 2,
+      name: `corpus-84-2-${shard.shardId}`,
+      created_at: "2026-11-23T04:00:02Z",
+    };
+    return { shard, job, artifact, proof, reportBytes };
+  });
+  const { proof, job } = producers[0];
+  const request = () => {
+    const archives = new Map([[candidate.id, original]]);
+    const artifacts = producers.map(({ artifact, job, proof, reportBytes }) => {
+      const archive = zipArchive([
+        { path: "verification.json", content: JSON.stringify(proof) },
+        { path: "report.json", content: reportBytes },
+      ]);
+      const sha = sha256(archive);
+      artifact.size_in_bytes = archive.length;
+      artifact.digest = "sha256:" + sha;
+      archives.set(artifact.id, archive);
+      return {
+        id: artifact.id,
+        sha256: sha,
+        shardId: proof.shard.shardId,
+        jobId: job.id,
+      };
+    });
     const input = {
       schemaVersion: 1,
       subject,
@@ -188,35 +283,45 @@ function fixture(route) {
         candidateJobId: candidateJob.id,
         candidateCommit: origin.head_sha,
       },
-      artifacts: [
-        {
-          id: artifact.id,
-          sha256: sha256(archive),
-          shardId: shard.shardId,
-          jobId: job.id,
-        },
-      ],
+      artifacts,
     };
     const responses = {
       "/actions/runs/84": run,
       "/actions/runs/82": origin,
       "/actions/artifacts/14": candidate,
-      "/actions/jobs/19": job,
       "/actions/jobs/18": candidateJob,
-      "/actions/runs/84/artifacts?per_page=100&page=1": {
-        total_count: 1,
-        artifacts: [artifact],
-      },
+      ...Object.fromEntries(
+        producers.map(({ job }) => [`/actions/jobs/${job.id}`, job]),
+      ),
     };
-    return reconcileHostedCorpus({
+    return {
       input,
-      comparisonCases,
       now,
-      read: async (path) => responses[path],
-      download: async ({ id }) => (id === candidate.id ? original : archive),
-    });
+      read: async (path) => {
+        const page =
+          /^\/actions\/runs\/84\/artifacts\?per_page=100&page=(\d+)$/u.exec(
+            path,
+          );
+        if (!page) return responses[path];
+        const start = 100 * (Number(page[1]) - 1);
+        return {
+          total_count: producers.length,
+          artifacts: producers
+            .slice(start, start + 100)
+            .map(({ artifact }) => artifact),
+        };
+      },
+      download: async ({ id }) => archives.get(id),
+    };
   };
-  return { proof, job, subject, candidateJob, verify };
+  return {
+    proof,
+    job,
+    subject,
+    candidateJob,
+    request,
+    verify: () => reconcileHostedCorpus(request()),
+  };
 }
 
 test.each(["fresh", "promoted"])(
@@ -267,3 +372,74 @@ test("requires the candidate uploaded by its exact original producing job", asyn
   model.candidateJob.run_attempt = 3;
   await expect(model.verify()).rejects.toThrow("original producing attempt");
 });
+
+test("authenticates a complete simulated two-platform roster across inventory pages", async () => {
+  const complete = await fixture("fresh", plannedShards).verify();
+  expect(complete.status).toBe("complete");
+  expect(complete.requiredCount).toBe(roster.cells.length);
+  expect(complete.artifacts).toHaveLength(plannedShards.length);
+  expect(complete.missing).toEqual([]);
+  const missingLastShard = await fixture(
+    "promoted",
+    plannedShards.slice(0, -1),
+  ).verify();
+  expect(missingLastShard.status).toBe("incomplete");
+  expect(missingLastShard.rejected).toEqual([]);
+  expect(missingLastShard.missing.length).toBeGreaterThan(0);
+});
+
+test.each(["fresh", "promoted"])(
+  "%s qualification seals and revalidates the complete roster at staging",
+  async (route) => {
+    const replay = fixture(route, plannedShards).request();
+    const { source, subject } = replay.input;
+    const baseManifest = {
+      schemaVersion: route === "fresh" ? 1 : 2,
+      runId: String(source.runId),
+      attempt: String(source.attempt),
+      commit: source.commit,
+      candidateId: subject.artifactId,
+      candidateDigest: subject.artifactSha256,
+      integrity: subject.integrity,
+      assets: { tarball: { sha256: subject.tarballSha256 } },
+      ...(route === "promoted"
+        ? {
+            ci: {
+              build: {
+                runId: source.candidateRunId,
+                producingAttempt: source.candidateAttempt,
+                providerHead: source.candidateCommit,
+                producerJob: source.candidateJobId,
+              },
+            },
+          }
+        : {}),
+    };
+    const options = {
+      authenticate: (input) => reconcileHostedCorpus({ ...replay, input }),
+    };
+    const manifest = await sealCorpusQualification(
+      baseManifest,
+      replay.input,
+      options,
+    );
+    expect(manifest.schemaVersion).toBe(3);
+    expect(qualificationBaseSchema(manifest)).toBe(baseManifest.schemaVersion);
+    expect(manifest.corpus.requiredCount).toBe(roster.cells.length);
+    expect(manifest.corpus.input.artifacts).toHaveLength(plannedShards.length);
+    expect((await verifyCorpusQualification(manifest, options)).status).toBe(
+      "complete",
+    );
+    const changedCandidate = {
+      ...manifest,
+      assets: { tarball: { sha256: hex("9") } },
+    };
+    await expect(
+      verifyCorpusQualification(changedCandidate, options),
+    ).rejects.toThrow("tarball differs from qualification");
+    await expect(
+      verifyCorpusQualification(baseManifest, options),
+    ).rejects.toThrow("corpus-bound qualification manifest is required");
+  },
+  15_000,
+);

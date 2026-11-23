@@ -4,10 +4,9 @@ import { join } from "node:path";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
 import { pinnedSourceOracle } from "./comparison-oracle.mjs";
 import {
-  compareRdfXmlPresentation,
   writerFixturePath,
   writerModes,
-} from "./run-writer-configuration-contract.mjs";
+} from "./comparison-writer-fixtures.mjs";
 
 /** Bind each existing writer configuration to the same fixture and source oracle. */
 export function writerComparisonCases(request) {
@@ -55,6 +54,8 @@ export function writerComparisonCases(request) {
 
 /** Re-evaluate both boundaries against the original native and JS writer outputs. */
 export async function verifyWriterStages(directory, entries, measurements) {
+  const { compareRdfXmlPresentation } =
+    await import("./run-writer-configuration-contract.mjs");
   const bytes = await readFile(join(directory, "report.json"));
   const report = JSON.parse(bytes);
   if (

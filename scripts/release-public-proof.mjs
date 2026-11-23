@@ -1,4 +1,5 @@
 import { REPOSITORY as repo } from "./release-identity.mjs";
+import { qualificationBaseSchema } from "./corpus-qualification-manifest.mjs";
 import assert from "node:assert/strict";
 import { crc32 } from "node:zlib";
 import { sameJobExecution } from "./github-job-execution.mjs";
@@ -28,7 +29,7 @@ export function qualificationRuntimeMatrix(manifest) {
     manifest.runtimeMatrix ??
       JSON.parse(manifest.qualification.runtime_matrix.outputs.matrix),
   );
-  if (manifest.schemaVersion === 2)
+  if (qualificationBaseSchema(manifest) === 2)
     assert.equal(runtimeDigest(matrix), manifest.ci.matrixSha256);
   return matrix;
 }

@@ -95,10 +95,16 @@ List the frozen shard IDs with `compare:java-js list --suite release-semantics`.
 Use `prepare`, `run`, or `verify` with `--shard ID` on the listed platform.
 A shard run uses the same installed candidate and Java classpath admission as its individual cases.
 The shard verifier retains the installed subject, oracle identity, roster hash and original report digest.
+Release tooling derives the same roster before npm dependencies are installed.
 It binds the candidate dependency to the verified tarball so the same installed graph compares across producer paths.
 Upload that verification JSON and the original `report.json` together under the exact producing job and attempt.
 The authenticated reader uses `verify --suite release-semantics --corpus-artifacts PATH` to recheck the original archive, admitted candidate and case coverage with read-only GitHub access.
 Record the candidate's original producing job and attempt, including when a later partial rerun retained that package.
+Promoted qualification can select a retained descriptor using the `corpus_qualification_artifact` dispatch input with its ID and SHA-256 joined by a colon.
+The archive contains only `corpus-qualification-input.json`.
+Fresh qualification consumes the descriptor produced in its own run through `CORPUS_QUALIFICATION_INPUT`.
+A complete authenticated roster produces qualification manifest schema 3, whose original artifacts and coverage are rechecked at staging.
+Mandatory corpus coverage begins after the full hosted shadow checks pass on both release routes.
 Its verifier consumes receipts after the producer artifacts and installed candidate have been authenticated.
 Accepted public behavior decisions without a registered case hold shadow qualification.
 The stock IDMP direct and closure cases each require the typed XML refusals from both runtimes and the recorded import behavior.

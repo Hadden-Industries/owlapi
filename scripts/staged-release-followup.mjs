@@ -1,6 +1,7 @@
 import { PACKAGE_FILE_STEM, REPOSITORY as repo } from "./release-identity.mjs";
 import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
 import assert from "node:assert/strict";
+import { qualificationBaseSchema } from "./corpus-qualification-manifest.mjs";
 import { execFileSync } from "node:child_process";
 import {
   appendFileSync,
@@ -685,7 +686,7 @@ async function verifyQualificationDisclosure(
     assert.equal("sha256:" + hash(original), artifact.digest);
     assert.equal(original.length, artifact.bytes);
   };
-  if (manifest.schemaVersion === 1) {
+  if (qualificationBaseSchema(manifest) === 1) {
     for (const artifact of manifest.artifacts) verify(artifact);
     return;
   }

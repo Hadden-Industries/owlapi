@@ -1,5 +1,9 @@
 import { REPOSITORY as repo } from "./release-identity.mjs";
 import {
+  qualificationBaseSchema,
+  verifyCorpusQualification,
+} from "./corpus-qualification-manifest.mjs";
+import {
   readReleaseSecurity,
   verifyPromotedAdmission,
 } from "./release-qualification-manifest.mjs";
@@ -81,10 +85,8 @@ export function checkStageBytes(bytes, manifest) {
   );
 }
 function subject(manifest) {
-  assert.ok(
-    [1, 2].includes(manifest.schemaVersion),
-    "Unknown release qualification manifest",
-  );
+  const schema = qualificationBaseSchema(manifest);
+  assert.ok([1, 2].includes(schema), "Unknown release qualification manifest");
   assert.equal(manifest.repository, repo);
   assert.equal(manifest.workflow, ".github/workflows/release.yml");
   assert.equal(manifest.package.name, PACKAGE_NAME);
@@ -103,14 +105,19 @@ function subject(manifest) {
     tag: "pilot",
   });
   assert.match(manifest.commit, /^[a-f0-9]{40}$/u);
-  if (manifest.schemaVersion === 1)
+  if (schema === 1)
     assert.ok(
       !Object.hasOwn(manifest, "ci") &&
         !Object.hasOwn(manifest, "runtimeMatrix"),
       "A fresh manifest cannot carry cross-run CI promotion fields",
     );
-  if (manifest.schemaVersion === 2) {
+  if (schema === 2) {
     const ci = manifest.ci;
+    if (manifest.schemaVersion === 3)
+      assert.ok(
+        manifest.runtimeMatrix,
+        "Corpus promotion requires the frozen runtime matrix",
+      );
     const recorded = Date.parse(manifest.security?.observedAt);
     assert.ok(
       Number.isFinite(recorded) && recorded <= Date.now(),
@@ -586,7 +593,7 @@ export async function originalManifest(client, env, checkpoint) {
     env.QUALIFIED_VERSION ?? PACKAGE_VERSION,
   );
   const ciProducer =
-    manifest.schemaVersion === 2 ? manifest.ci.build : undefined;
+    qualificationBaseSchema(manifest) === 2 ? manifest.ci.build : undefined;
   const runId = ciProducer ? String(ciProducer.runId) : manifest.runId;
   const attempt = ciProducer
     ? String(ciProducer.producingAttempt)
@@ -617,6 +624,8 @@ export async function originalManifest(client, env, checkpoint) {
       "Promoted candidate size changed",
     );
   }
+  if (manifest.schemaVersion === 3)
+    await verifyCorpusQualification(manifest, { env });
   return { manifest, candidate, manifestBytes: bytes };
 }
 export async function stageOnce({
@@ -926,7 +935,7 @@ async function preflight(client, env, checkpoint, intent, manifest) {
     reviewed,
     benchmark: checkpoint.files.get("benchmark-disposition.json"),
   });
-  if (manifest.schemaVersion === 2)
+  if (qualificationBaseSchema(manifest) === 2)
     await verifyPromotedAdmission({
       read: (path) => client.read(path),
       ci: manifest.ci,

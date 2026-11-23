@@ -4,10 +4,6 @@ import {
   exactComparedDocuments,
   sha256,
 } from "./comparison-evidence.mjs";
-import {
-  reconcileStructuralDifferences,
-  reconcileUnparsedRdf,
-} from "./reconcile-structural-differences.mjs";
 
 const rulesBytes = readFileSync(
   new URL(
@@ -60,6 +56,8 @@ export async function reconcileJulyTimeLoad(definition, native) {
     ...scope,
     rules: rules.filter((rule) => scope.ruleIds.includes(rule.id)),
   };
+  const { reconcileStructuralDifferences, reconcileUnparsedRdf } =
+    await import("./reconcile-structural-differences.mjs");
   const structure = reconcileStructuralDifferences(
     native.structure.differences,
     context,

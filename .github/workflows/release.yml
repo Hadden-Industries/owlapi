@@ -18,6 +18,11 @@ on:
         type: boolean
         required: true
         default: false
+      corpus_qualification_artifact:
+        description: Retained corpus descriptor artifact ID and SHA-256 for promoted qualification
+        type: string
+        required: false
+        default: ""
 
 permissions: {}
 
@@ -1142,7 +1147,7 @@ jobs:
       - owl_contract
       - quality_windows
     runs-on: ubuntu-26.04
-    timeout-minutes: 10
+    timeout-minutes: 25
     permissions:
       contents: read
       actions: read
@@ -1182,11 +1187,12 @@ jobs:
       - name: Bind exact managed CodeQL analyses and distributed inputs
         env:
           GH_TOKEN: ${{ github.token }}
+          CORPUS_QUALIFICATION_ARTIFACT: ${{ inputs.corpus_qualification_artifact }}
           CANDIDATE_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
           REQUIRED_JOB_RESULTS_JSON: ${{ toJSON(needs) }}
         run: node scripts/release-qualification-manifest.mjs
-        timeout-minutes: 2
+        timeout-minutes: ${{ inputs.corpus_qualification_artifact != '' && 12 || 2 }}
       - name: Retain release qualification manifest
         uses: ./.github/actions/retain-artifact
         with:

@@ -363,6 +363,55 @@ test.each([true, false])(
     expect(result.candidate.workflow_run.id).toBe(77);
     expect(result.candidate.archivedBytes).toEqual(candidateZip);
     expect(result.manifest.runtimeMatrix).toEqual(runtimeMatrix);
+    if (embedded) {
+      const faulty = {
+        ...record,
+        schemaVersion: 3,
+        corpus: {
+          baseSchemaVersion: 2,
+          input: {
+            source: {
+              route: "promoted",
+              commit: record.commit,
+              candidateRunId: record.ci.build.runId,
+              candidateAttempt: record.ci.build.producingAttempt,
+              candidateCommit: record.ci.build.providerHead,
+              candidateJobId: record.ci.build.producerJob,
+            },
+            subject: {
+              artifactId: record.candidateId,
+              artifactSha256: record.candidateDigest,
+              tarballSha256: "c".repeat(64),
+              integrity: record.integrity,
+            },
+          },
+        },
+      };
+      const faultyBytes = Buffer.from(canonicalJson(faulty));
+      const faultyZip = zipArchive([
+        { path: "manifest.json", content: faultyBytes },
+      ]);
+      checkpoint.files.set("artifact-91.zip", faultyZip);
+      checkpoint.files.set(
+        "origin-10-1-release-qualification-10-1.json",
+        Buffer.from(
+          JSON.stringify({
+            run: releaseRun,
+            artifact: archived(
+              descriptor(91, qualifiedName, faultyZip),
+              releaseRun,
+            ),
+          }),
+        ),
+      );
+      await expect(
+        originalManifest(
+          client,
+          { ...env, MANIFEST_SHA256: hash(faultyBytes) },
+          checkpoint,
+        ),
+      ).rejects.toThrow("tarball differs from qualification");
+    }
   },
 );
 function run(version, channel, command) {

@@ -14,11 +14,6 @@ import {
   publishPinnedBytes,
   verifyPinnedFile,
 } from "./comparison-fixtures.mjs";
-import {
-  compileOntologyReferenceOracles,
-  resolvePinnedReferenceEnvironment,
-} from "./run-import-closure-contract.mjs";
-import { validateReleasedOracle } from "./validate-released-oracle.mjs";
 
 const profiles = new URL(
   "../../docs/compatibility/profiles/java-owlapi-5.5.1/",
@@ -59,6 +54,8 @@ export function pinnedSourceOracle() {
 
 /** Record the exact ordered JAR bytes admitted under the historical source pin. */
 export async function admitPinnedSourceClasspath(sourceCheckoutPath) {
+  const { resolvePinnedReferenceEnvironment } =
+    await import("./run-import-closure-contract.mjs");
   const reference = await resolvePinnedReferenceEnvironment({
     sourceCheckoutPath,
   });
@@ -90,6 +87,8 @@ export async function admitPinnedSourceClasspath(sourceCheckoutPath) {
 
 /** Admit only the exact ordered runtime closure of released Java OWLAPI. */
 export async function admitReleasedClasspath(environment, prepare = false) {
+  const { validateReleasedOracle } =
+    await import("./validate-released-oracle.mjs");
   validateReleasedOracle();
   const lockBytes = await readFile(oracleLockPath);
   const { artifacts, orderedExecutionClasspath } = JSON.parse(lockBytes);
@@ -242,6 +241,8 @@ export async function compileComparisonOracle(
   directory,
   classpath,
 ) {
+  const { compileOntologyReferenceOracles } =
+    await import("./run-import-closure-contract.mjs");
   const { jdk, env, timeout, heapMiB, executeProcess } = comparisonJavaTools(
     environment,
     directory,

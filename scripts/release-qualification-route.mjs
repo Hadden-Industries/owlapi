@@ -3,6 +3,7 @@ import { REPOSITORY } from "./release-identity.mjs";
 import assert from "node:assert/strict";
 import { appendFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
+import { parseCorpusArtifactLocator } from "./corpus-qualification-manifest.mjs";
 
 export function releaseQualificationMode(inputs) {
   assert.ok(inputs && typeof inputs === "object" && !Array.isArray(inputs));
@@ -10,22 +11,35 @@ export function releaseQualificationMode(inputs) {
     qualification_only: true,
     rc3_recovery: false,
     fresh_qualification: false,
+    corpus_qualification_artifact: "",
   };
   for (const [name, value] of Object.entries(inputs)) {
     assert.ok(
-      Object.hasOwn(defaults, name) && typeof value === "boolean",
-      "Unknown or non-boolean release input",
+      Object.hasOwn(defaults, name) && typeof value === typeof defaults[name],
+      "Unknown or incorrectly typed release input",
     );
   }
   const {
     qualification_only: readOnly,
     rc3_recovery: rc3,
     fresh_qualification: fresh,
+    corpus_qualification_artifact: corpus,
   } = { ...defaults, ...inputs };
   assert.ok(
     !(rc3 && readOnly) && !(fresh && !readOnly),
     "Incompatible fresh, qualification-only or rc.3 recovery selections",
   );
+  if (corpus) {
+    assert.ok(
+      readOnly,
+      "Corpus shadow evidence requires qualification-only dispatch",
+    );
+    assert.ok(
+      !fresh,
+      "Fresh corpus evidence is produced in the same release run",
+    );
+    parseCorpusArtifactLocator(corpus);
+  }
   return rc3 ? "rc3" : !readOnly ? "legacy" : fresh ? "fresh" : "reuse";
 }
 
