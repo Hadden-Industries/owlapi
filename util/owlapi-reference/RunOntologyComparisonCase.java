@@ -34,6 +34,7 @@ import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyWriterConfiguration;
 import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider;
 import org.semanticweb.owlapi.util.OWLOntologyMerger;
@@ -84,6 +85,18 @@ public final class RunOntologyComparisonCase {
             throw new IllegalArgumentException("Unexpected OWLAPI implementation version " + version);
         }
         result.put("oracleVersion", version);
+        if (request.path("configuration").isObject()) {
+            OntologyReferenceContract.configureOfflineDocumentLoading(Map.of());
+            try {
+                result.put("configuration", observeConfiguration(request.required("configuration")));
+                result.put("javaLoad", Map.of("status", "completed"));
+            } catch (Exception failure) {
+                result.put("javaLoad", failure("public-configuration", failure));
+            }
+            result.put("networkAttempts", OntologyReferenceContract.networkAccessAttemptCount());
+            result.put("structure", Map.of("status", "not-requested"));
+            return result;
+        }
         if (request.path("literal").isObject()) {
             OntologyReferenceContract.configureOfflineDocumentLoading(Map.of());
             JsonNode recipe = request.required("literal");
@@ -248,6 +261,45 @@ public final class RunOntologyComparisonCase {
         }
         Files.move(pending, resultPath.resolveSibling("native-source-load.json"),
             StandardCopyOption.ATOMIC_MOVE);
+    }
+
+    private static Map<String, Object> observeConfiguration(JsonNode recipe) {
+        String kind = recipe.required("kind").asText();
+        if ("loader".equals(kind)) {
+            var original = new OWLOntologyLoaderConfiguration();
+            int timeout = recipe.required("timeout").asInt();
+            var chain = original.setConnectionTimeout(timeout).setRetriesToAttempt(recipe.required("retries").asInt())
+                .setStrict(true).setLoadAnnotationAxioms(false).setEntityExpansionLimit(recipe.required("entityLimit").asText());
+            var noOp = List.of(original == original.setConnectionTimeout(original.getConnectionTimeout()),
+                original == original.setLoadAnnotationAxioms(true), original == original.setStrict(false),
+                original == original.setAuthorizationValue(""), original == original.setAcceptingHTTPCompression(true));
+            var retained = original.setAuthorizationValue(recipe.required("authorization").asText())
+                .setAcceptingHTTPCompression(false).setConnectionTimeout(timeout);
+            return Map.of("original", loaderState(original), "chain", loaderState(chain),
+                "noOp", noOp, "retained", loaderState(retained));
+        }
+        if ("writer".equals(kind)) {
+            var original = new OWLOntologyWriterConfiguration();
+            int indentSize = recipe.required("indentSize").asInt();
+            var chain = original.withIndentSize(indentSize).withBannersEnabled(false).withIndenting(false);
+            var noOp = List.of(original == original.withIndentSize(original.getIndentSize()));
+            var retained = original.withIndentSize(indentSize).withBannersEnabled(true);
+            return Map.of("original", writerState(original), "chain", writerState(chain),
+                "noOp", noOp, "retained", writerState(retained));
+        }
+        throw new IllegalArgumentException("Unknown configuration kind " + kind);
+    }
+
+    private static List<Object> loaderState(OWLOntologyLoaderConfiguration configuration) {
+        return List.of(configuration.getConnectionTimeout(), configuration.getRetriesToAttempt(),
+            configuration.isFollowRedirects(), configuration.getEntityExpansionLimit(), configuration.isStrict(),
+            configuration.isLoadAnnotationAxioms(), configuration.getAuthorizationValue(),
+            configuration.isAcceptingHTTPCompression());
+    }
+
+    private static List<Object> writerState(OWLOntologyWriterConfiguration configuration) {
+        return List.of(configuration.isIndenting(), configuration.getIndentSize(), configuration.shouldUseBanners(),
+            configuration.isLabelsAsBanner(), configuration.shouldSaveIdsForAllAnonymousIndividuals());
     }
 
     private static Map<String, Object> renderLargeLiteral(JsonNode recipe) throws Exception {

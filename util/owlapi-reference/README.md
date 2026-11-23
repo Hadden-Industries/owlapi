@@ -60,6 +60,9 @@ The `format-performance` suite runs the 14 JavaScript format and mapping program
 Use `--input` to select a program such as `rdfxml`.
 The suite retains the original samples and reports each program's result independently.
 
+The `public-api-behavior` suite includes loader and writer configuration defaults, no-op identity and chained copies.
+It compares the supported settings with released Java and checks the default JavaScript writer's copy policy separately.
+
 Use `--measure performance` for fresh-process working-set and warmed load samples.
 A ratio requires equivalent untimed structural evidence on the same profile and input.
 Mixed or incomplete loads retain their diagnostic observations.

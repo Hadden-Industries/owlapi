@@ -214,6 +214,26 @@ test("the format performance suite registers all 14 programs and their sampling 
   ]);
 });
 
+test("public configuration behavior cases bind the supported loader and writer operations", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "public-api-behavior",
+  });
+  expect(cases.map(({ input }) => input.id)).toEqual([
+    "configuration/loader",
+    "configuration/writer",
+  ]);
+  expect(cases.map(({ configuration }) => configuration.decisionId)).toEqual([
+    "BEHAVIOR-LOADER-CONFIGURATION",
+    "BEHAVIOR-WRITER-CONFIGURATION",
+  ]);
+  expect(
+    cases.every(
+      ({ behaviorProfileId }) => behaviorProfileId === "java-owlapi-5.5.1",
+    ),
+  ).toBe(true);
+});
+
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
   const subject = {
     tarballSha256: "1".repeat(64),

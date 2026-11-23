@@ -45,6 +45,7 @@ import {
   reconcileCorpusReceipts,
 } from "./comparison-release-evidence.mjs";
 import { runWindowsComparisonJob } from "./comparison-job.mjs";
+import { configurationComparisonCases } from "./comparison-configuration.mjs";
 import {
   julyTimeDifferenceScope,
   reconcileJulyTimeLoad,
@@ -95,6 +96,7 @@ const comparisonInputs = [
   "./comparison-profile.mjs",
   "./run-profile-contract.mjs",
   "./RunOWL2DLProfile.java",
+  "./comparison-configuration.mjs",
   "./comparison-july-differences.mjs",
   "./reconcile-structural-differences.mjs",
   "../../docs/compatibility/expected-differences.json",
@@ -125,6 +127,8 @@ const selectsWriter = ({ suite, scenario }) =>
   suite === "rdfxml-writer" || scenario === "rdfxml-writer";
 const selectsVowl = ({ suite, scenario }) =>
   suite === "canonical-vowl-dl" || scenario === "canonical-vowl-dl";
+const selectsConfiguration = ({ suite, scenario }) =>
+  suite === "public-api-behavior" || scenario === "public-api-behavior";
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
 
@@ -303,6 +307,8 @@ function literalCases(request) {
 /** Expand named inputs, operations and exact loader settings independently of run evidence. */
 export function comparisonCases(request, catalogue = comparisonCatalogue) {
   if (literalScenarios.includes(request.scenario)) return literalCases(request);
+  if (selectsConfiguration(request))
+    return configurationComparisonCases(request);
   if (selectsWriter(request)) return writerComparisonCases(request);
   if (selectsVowl(request))
     return profileComparisonCases(request, pinnedSourceOracle());
@@ -599,6 +605,27 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     js.effectiveSettings?.behaviorProfileId === definition.behaviorProfileId &&
     js.effectiveSettings?.parsingMode === definition.parsingMode &&
     js.effectiveSettings?.defaultBehaviorProfileId === normativeProfile;
+  if (definition.configuration) {
+    const expectedCopy = definition.configuration.normativeCopy;
+    const accepted =
+      matchedProfiles &&
+      offline &&
+      js.load?.status === "completed" &&
+      native.javaLoad?.status === "completed" &&
+      js.configuration &&
+      native.configuration &&
+      comparisonIdentity(js.configuration) ===
+        comparisonIdentity(native.configuration) &&
+      (!expectedCopy ||
+        (js.normativeCopy &&
+          comparisonIdentity(js.normativeCopy) ===
+            comparisonIdentity(expectedCopy)));
+    return {
+      measures: { behavior: accepted ? "observed" : "incomplete" },
+      status: accepted ? "passed" : "failed",
+      offline,
+    };
+  }
   if (definition.literal) {
     const { length, literalSha256 } = definition.literal;
     const normative = js.literal?.normative;
@@ -801,9 +828,11 @@ async function observeCase(entry, environment, directory, java, measurements) {
       "Load performance requires a direct-load or strict-first scenario",
     );
   }
-  const input = definition.literal
-    ? { literal: definition.literal }
-    : await resolvedDocuments(entry, environment, false);
+  const input = definition.configuration
+    ? { configuration: definition.configuration }
+    : definition.literal
+      ? { literal: definition.literal }
+      : await resolvedDocuments(entry, environment, false);
   const jsRequest = {
     caseId,
     ...input,
@@ -1440,6 +1469,7 @@ async function executeComparison(request, environment = {}) {
   if (!["prepare", "run", "verify"].includes(request.action))
     throw new Error(`Unknown comparison action ${request.action}`);
   const isLiteral = literalScenarios.includes(request.scenario);
+  const behaviorOnly = isLiteral || selectsConfiguration(request);
   // The released Turtle parser grows its literal buffer incrementally. Give
   // this explicitly selected stress case the same wall-time as the old probe.
   if (
@@ -1455,7 +1485,7 @@ async function executeComparison(request, environment = {}) {
   const measurements = [
     ...new Set(
       request.measurements ??
-        (isLiteral ? ["behavior"] : ["structure", "behavior"]),
+        (behaviorOnly ? ["behavior"] : ["structure", "behavior"]),
     ),
   ].sort();
   if (
@@ -1468,10 +1498,10 @@ async function executeComparison(request, environment = {}) {
     throw new Error("Unknown comparison measurement");
   }
   if (
-    isLiteral &&
+    behaviorOnly &&
     (measurements.length !== 1 || measurements[0] !== "behavior")
   ) {
-    throw new Error("The large-literal scenarios supply behavior evidence");
+    throw new Error("The selected scenarios supply only behavior evidence");
   }
   options.performanceProtocol = {
     coldSamples: 3,
@@ -1515,7 +1545,7 @@ async function executeComparison(request, environment = {}) {
     }
     for (const entry of entries) {
       try {
-        if (!entry.definition.literal)
+        if (!entry.definition.literal && !entry.definition.configuration)
           await resolvedDocuments(entry, options, true);
         cases.push({
           caseId: entry.caseId,

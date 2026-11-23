@@ -10,6 +10,7 @@ const releaseSuites = [
   { scenario: "large-literal-rendering" },
   { suite: "rdfxml-writer" },
   { suite: "canonical-vowl-dl" },
+  { suite: "public-api-behavior" },
 ];
 const platform = ["linux", "win32"];
 const validDigest = (value) =>

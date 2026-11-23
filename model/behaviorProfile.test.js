@@ -7,6 +7,10 @@ import {
 import { OWLDocumentFormats } from "../formats/index.js";
 import { OWL2DLProfile } from "../profiles/index.js";
 import { OWLDataFactory } from "./owlDataFactory.js";
+import {
+  configurationComparisonCases,
+  observeConfiguration,
+} from "../util/owlapi-reference/comparison-configuration.mjs";
 
 describe("manager behavior profile contract", () => {
   test("configuration copies retain the private profile instead of an overridden public identity", () => {
@@ -233,25 +237,16 @@ describe("native configuration within an explicitly selected behavior profile", 
 
   test("writer Java copy quirks and normative value preservation are intentionally different", () => {
     const java = new OWLOntologyWriterConfiguration(javaOptions);
-    expect(java.withIndentSize(4)).toBe(java);
-    const javaChain = java
-      .withIndentSize(2)
-      .withBannersEnabled(false)
-      .withIndenting(false);
-    const normativeChain = new OWLOntologyWriterConfiguration()
-      .withIndentSize(2)
-      .withBannersEnabled(false)
-      .withIndenting(false);
-    expect([
-      javaChain.isIndenting(),
-      javaChain.getIndentSize(),
-      javaChain.shouldUseBanners(),
-    ]).toEqual([false, 4, true]);
-    expect([
-      normativeChain.isIndenting(),
-      normativeChain.getIndentSize(),
-      normativeChain.shouldUseBanners(),
-    ]).toEqual([false, 2, false]);
+    const { definition, caseId } = configurationComparisonCases({
+      suite: "public-api-behavior",
+    }).find(({ input }) => input.id === "configuration/writer");
+    const observed = observeConfiguration(
+      { OWLOntologyWriterConfiguration },
+      { ...definition, caseId },
+    );
+    expect(observed.configuration.noOp).toEqual([true]);
+    expect(observed.configuration.chain.slice(0, 3)).toEqual([false, 4, true]);
+    expect(observed.normativeCopy.slice(0, 3)).toEqual([false, 2, false]);
     expect(java.withIndentSize(-1).getIndentSize()).toBe(-1);
     expect(() =>
       new OWLOntologyWriterConfiguration().withIndentSize(-1),

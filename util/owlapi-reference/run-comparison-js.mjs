@@ -9,6 +9,7 @@ import {
   strictRetryCategories,
 } from "./comparison-evidence.mjs";
 import { loadPublicApi } from "./qualify-universal-ontology.mjs";
+import { observeConfiguration } from "./comparison-configuration.mjs";
 
 const iriValue = (iri) => iri?.value ?? null;
 const ontologyIdentity = (ontology) => ({
@@ -447,6 +448,7 @@ async function observe(request, directory) {
   const includeManchesterRenderer =
     request.scenario === "large-literal-rendering";
   const api = await loadPublicApi({ ...request, includeManchesterRenderer });
+  if (request.configuration) return observeConfiguration(api, request);
   if (includeManchesterRenderer) return observeManchesterLiteral(api, request);
   if (request.literal) return observeLargeLiteral(api, request);
   const importRequests = [];
