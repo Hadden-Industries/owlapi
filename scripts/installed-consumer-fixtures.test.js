@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { writeInstalledConsumerFixtures } from "./installed-consumer-fixtures.mjs";
 
-test("transported consumer fixtures use the same pure JSON encoder without checkout imports", async () => {
+test("transported consumer helpers resolve from outside the checkout", async () => {
   const directory = mkdtempSync(join(tmpdir(), "owlapi-consumer-json-"));
   try {
     writeInstalledConsumerFixtures(directory);
@@ -16,6 +16,12 @@ test("transported consumer fixtures use the same pure JSON encoder without check
         .href
     );
     expect(typeof createPublicContract).toBe("function");
+    const { documentationExampleModules } = await import(
+      pathToFileURL(
+        join(directory, "documentation", "documentation-examples.mjs"),
+      ).href
+    );
+    expect(typeof documentationExampleModules).toBe("function");
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }

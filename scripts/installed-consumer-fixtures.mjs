@@ -59,6 +59,8 @@ export const writeInstalledConsumerFixtures = (
     "documentation-examples.mjs",
     "release-documentation.mjs",
     "release-artifacts.mjs",
+    "release-file-utils.mjs",
+    "release-identity.mjs",
   ])
     copyFileSync(
       new URL(name, import.meta.url),
