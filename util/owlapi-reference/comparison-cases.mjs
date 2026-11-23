@@ -42,6 +42,7 @@ const originalIdmp = comparisonCatalogue.fixtures.find(
 );
 const nativeClosureControls = new Set([
   "eu-epo-core",
+  "entsoe-cgmes-eq",
   "iof-core",
   "esco-model",
 ]);

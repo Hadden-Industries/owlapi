@@ -886,7 +886,7 @@ test("the exact stock IDMP load gates both direct and closure observations", () 
   }
 });
 
-test.each(["eu-epo-core", "iof-core", "esco-model"])(
+test.each(["eu-epo-core", "entsoe-cgmes-eq", "iof-core", "esco-model"])(
   "%s observes the native default alongside the exact Java-profile closure save",
   (input) => {
     const selection = {
