@@ -93,6 +93,23 @@ export function exactComparedDocuments(models, comparisons) {
   );
 }
 
+/** A writer observation includes its reload disposition or the phase that failed. */
+export function recordedNativeRdfXmlRoundTrip(stages) {
+  const { write, reload, comparison } = stages ?? {};
+  const failedAt = (stage, phase) =>
+    stage?.status === "failed" &&
+    stage.phase === phase &&
+    typeof stage.category === "string";
+  if (failedAt(write, "rdfxml-write"))
+    return reload === undefined && comparison === undefined;
+  if (write?.status !== "completed" || !write.artifact) return false;
+  if (failedAt(reload, "rdfxml-reload")) return comparison === undefined;
+  return (
+    reload?.status === "completed" &&
+    ["match", "mismatch"].includes(comparison?.status)
+  );
+}
+
 export const strictRetryCategories = Object.freeze([
   "OWL_SYNTAX_ERROR",
   "UNSUPPORTED_CONSTRUCT",

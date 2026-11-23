@@ -14,12 +14,14 @@ import {
 import {
   comparisonCatalogue,
   comparisonWitnesses,
+  generatedFixture,
   resolveComparisonFixture,
 } from "./comparison-fixtures.mjs";
 import {
   comparisonStageFailure,
   exactComparedDocuments,
   readNativeComparisonResult,
+  recordedNativeRdfXmlRoundTrip,
   sha256,
 } from "./comparison-evidence.mjs";
 import { loadPerformanceReport } from "./comparison-performance.mjs";
@@ -59,6 +61,31 @@ test("a writer failure retains the precise RDF statement reported by its parser"
       },
     ],
   });
+});
+
+test("a completed native write still requires a reload disposition", () => {
+  const write = {
+    status: "completed",
+    artifact: { name: "java-default-closure.rdf" },
+  };
+  expect(recordedNativeRdfXmlRoundTrip({ write })).toBe(false);
+  expect(
+    recordedNativeRdfXmlRoundTrip({
+      write,
+      reload: { status: "completed" },
+      comparison: { status: "mismatch" },
+    }),
+  ).toBe(true);
+  expect(
+    recordedNativeRdfXmlRoundTrip({
+      write,
+      reload: {
+        status: "failed",
+        phase: "rdfxml-reload",
+        category: "UnparsableOntologyException",
+      },
+    }),
+  ).toBe(true);
 });
 
 test("the reviewed roster preserves all original, closure and held cases", async () => {
@@ -882,6 +909,57 @@ test.each(["eu-epo-core", "iof-core", "esco-model"])(
     }
   },
 );
+
+test("recorded refusals and writer controls require their frozen import bytes", () => {
+  const profile = "java-owlapi-5.5.1";
+  const scenario = "closure-roundtrip";
+  const request = { input: "pistoia-idmp", profile, scenario };
+  const [stock] = comparisonCases(request);
+  const [[iri, original]] = stock.imports;
+  const changed = generatedFixture(
+    original.id,
+    original.documentIRI,
+    "functional",
+    `Ontology(<${iri}> Declaration(Class(<urn:owlapi:substituted>)))\n`,
+  );
+  const withImports = (input, extraImports) => ({
+    ...comparisonCatalogue,
+    fixtures: [
+      ...comparisonCatalogue.fixtures.map((fixture) =>
+        fixture.id === input
+          ? {
+              ...fixture,
+              imports: [...(fixture.imports ?? []), ...extraImports],
+            }
+          : fixture,
+      ),
+      changed,
+    ],
+    standIns: comparisonCatalogue.standIns.filter((item) => item.iri !== iri),
+  });
+  const [alternative] = comparisonCases(
+    request,
+    withImports(request.input, [changed.id]),
+  );
+  expect(
+    alternative.definition.imports.map(({ ontologyIRI, documentIRI }) => [
+      ontologyIRI,
+      documentIRI,
+    ]),
+  ).toEqual(
+    stock.definition.imports.map(({ ontologyIRI, documentIRI }) => [
+      ontologyIRI,
+      documentIRI,
+    ]),
+  );
+  expect(alternative.definition.expectedLoadRefusals).toBeUndefined();
+  const ePo = { input: "eu-epo-core", profile, scenario };
+  const [differentClosure] = comparisonCases(
+    ePo,
+    withImports(ePo.input, [changed.id]),
+  );
+  expect(differentClosure.definition.javaRdfXml).toBeUndefined();
+});
 
 test("July closure propagation uses the OWL-Time approval only on its exact imported document", () => {
   const selection = {

@@ -18,6 +18,7 @@ import {
   publishComparisonFile,
   publishComparisonJson,
   readCompletedComparisonFile,
+  recordedNativeRdfXmlRoundTrip,
   sha256,
   strictRetryCategories,
 } from "./comparison-evidence.mjs";
@@ -214,11 +215,11 @@ const matchesNativeVersion = (version, oracle) =>
 const originalIdmp = comparisonCatalogue.fixtures.find(
   ({ id }) => id === "pistoia-idmp",
 );
-const nativeClosureControls = new Map(
-  comparisonCatalogue.fixtures
-    .filter(({ id }) => ["eu-epo-core", "iof-core", "esco-model"].includes(id))
-    .map((input) => [input.id, input]),
-);
+const nativeClosureControls = new Set([
+  "eu-epo-core",
+  "iof-core",
+  "esco-model",
+]);
 const stockIdmpRefusal = {
   dependentStageReason: "expected-xml-entity-limit",
   js: {
@@ -302,6 +303,46 @@ const documentIdentity = ({ id, sha256, byteLength, syntax, documentIRI }) => ({
   syntax: syntax ?? null,
   documentIRI,
 });
+
+const importIdentities = (imports) =>
+  imports.map(([ontologyIRI, document]) => ({
+    ontologyIRI,
+    ...documentIdentity(document),
+  }));
+
+const recordedScenarioInputs = (() => {
+  const canonicalInputs = new Map(
+    [
+      ...comparisonCatalogue.fixtures,
+      ...comparisonWitnesses,
+      ...julyComparisonFixtures,
+    ].map((input) => [input.id, input]),
+  );
+  const scopedIds = [
+    originalIdmp.id,
+    ...nativeClosureControls,
+    ...julyComparisonFixtures.map(({ id }) => id),
+  ];
+  return new Map(
+    scopedIds.map((id) => {
+      const input = canonicalInputs.get(id);
+      return [
+        id,
+        comparisonIdentity({
+          input: documentIdentity(input),
+          imports: importIdentities(
+            importedDocuments(
+              input,
+              canonicalInputs,
+              comparisonCatalogue.standIns,
+              "recorded",
+            ),
+          ),
+        }),
+      ];
+    }),
+  );
+})();
 
 function literalCases(request) {
   const rendering = request.scenario === "large-literal-rendering";
@@ -488,6 +529,15 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
   return selected.flatMap((input) => {
     const oracle = input.suite === "july" ? pinnedSourceOracle() : null;
     const imports = importedDocuments(input, all, catalogue.standIns, policy);
+    const admittedInputs = {
+      input: documentIdentity(input),
+      imports: importIdentities(imports),
+    };
+    const frozenInputs = recordedScenarioInputs.get(input.id);
+    const exactRecordedInputs =
+      policy === "recorded" &&
+      frozenInputs !== undefined &&
+      frozenInputs === comparisonIdentity(admittedInputs);
     const hasMappedHttpImports = imports.some(([, document]) =>
       /^https?:/u.test(document.documentIRI),
     );
@@ -503,7 +553,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
         let expectedDifferences;
         const normativeJuly =
           oracle &&
-          policy === "recorded" &&
+          exactRecordedInputs &&
           profile.behaviorProfileId === normativeProfile &&
           profile.parsingMode === "compatible";
         if (normativeJuly) {
@@ -532,16 +582,13 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             };
           }
         }
-        const nativeClosure = nativeClosureControls.get(input.id);
         // The exact round trip preserves the admitted axiom set. Keep the
         // unconfigured native writer result as a separate observation.
         const checkExactClosureWriter =
           scenario === "closure-roundtrip" &&
           ((normativeJuly && input.closure) ||
-            (nativeClosure &&
-              input.sha256 === nativeClosure.sha256 &&
-              input.documentIRI === nativeClosure.documentIRI &&
-              policy === "recorded" &&
+            (nativeClosureControls.has(input.id) &&
+              exactRecordedInputs &&
               profile.behaviorProfileId === javaProfile &&
               profile.parsingMode === "compatible"));
         const definition = {
@@ -556,12 +603,8 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
                 : "merged-closure-roundtrip",
           ...(strictFirst ? { loadSequence: ["strict", "compatible"] } : {}),
           ...(oracle ? { oracle } : {}),
-          input: documentIdentity(input),
+          ...admittedInputs,
           importPolicy: policy,
-          imports: imports.map(([ontologyIRI, document]) => ({
-            ontologyIRI,
-            ...documentIdentity(document),
-          })),
           ...(hasMappedHttpImports &&
           profile.behaviorProfileId === normativeProfile
             ? {
@@ -582,9 +625,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           ...((scenario === "direct-load" ||
             scenario === "closure-roundtrip") &&
           input.id === originalIdmp.id &&
-          input.sha256 === originalIdmp.sha256 &&
-          input.documentIRI === originalIdmp.documentIRI &&
-          policy === "recorded" &&
+          exactRecordedInputs &&
           profile.behaviorProfileId === javaProfile &&
           profile.parsingMode === "compatible" &&
           request.javaXml !== "historical-idmp"
@@ -693,6 +734,10 @@ function matchesExpectedLoadRefusals(definition, js, native) {
       native.documentComparisons,
       native.merge,
       native.javaRdfXmlRoundTrip,
+      native.javaDefaultRdfXmlRoundTrip,
+      native.functionalReparse,
+      native.jsRdfXmlRoundTrip,
+      native.closurePropagation,
     ].every((stage) => stage === undefined) &&
     comparisonIdentity(native.importRequests ?? {}) ===
       comparisonIdentity(importMappings) &&
@@ -890,7 +935,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     (native.javaRdfXmlRoundTrip?.addMissingTypes ===
       definition.javaRdfXml.addMissingTypes &&
       native.javaDefaultRdfXmlRoundTrip?.addMissingTypes === true &&
-      typeof native.javaDefaultRdfXmlRoundTrip.write?.status === "string");
+      recordedNativeRdfXmlRoundTrip(native.javaDefaultRdfXmlRoundTrip));
   const behavior =
     matchedProfiles &&
     matchedDocument &&
