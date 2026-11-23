@@ -830,6 +830,30 @@ test("the exact stock IDMP load gates both direct and closure observations", () 
   }
 });
 
+test.each(["eu-epo-core", "iof-core", "esco-model"])(
+  "%s observes the native default alongside the exact Java-profile closure save",
+  (input) => {
+    const selection = {
+      input,
+      profile: "java-owlapi-5.5.1",
+      scenario: "closure-roundtrip",
+    };
+    const [closure] = comparisonCases(selection);
+    expect(closure.definition.javaRdfXml).toEqual({
+      addMissingTypes: false,
+      observeDefault: true,
+    });
+    for (const changes of [
+      { scenario: "direct-load" },
+      { profile: "normative-v1" },
+      { imports: "none" },
+    ]) {
+      const [alternative] = comparisonCases({ ...selection, ...changes });
+      expect(alternative.definition.javaRdfXml).toBeUndefined();
+    }
+  },
+);
+
 test("July closure propagation uses the OWL-Time approval only on its exact imported document", () => {
   const selection = {
     input: "july/core",

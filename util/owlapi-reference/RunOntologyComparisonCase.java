@@ -219,6 +219,8 @@ public final class RunOntologyComparisonCase {
             sampleLoad(request, configuration, imports);
             return result;
         }
+        Path absent = resultPath.resolveSibling("absent-functional-import");
+        if (Files.exists(absent)) throw new IllegalStateException("Import sentinel already exists");
         try {
             OWLOntology expected;
             try {
@@ -228,6 +230,7 @@ public final class RunOntologyComparisonCase {
                 result.put("javaLoad", sourceLoadFailure(failure));
                 result.put("structure", blocked("Java source load failed"));
                 publishLoadStage(request, result, resultPath, requestedImports);
+                observeJsModels(request, absent, configuration, result);
                 return result;
             }
             publishLoadStage(request, result, resultPath, requestedImports);
@@ -235,8 +238,6 @@ public final class RunOntologyComparisonCase {
                 result.put("structure", Map.of("status", "not-requested"));
                 return result;
             }
-            Path absent = resultPath.resolveSibling("absent-functional-import");
-            if (Files.exists(absent)) throw new IllegalStateException("Import sentinel already exists");
             Map<String, OWLOntology> comparedModels = request.path("propagateClosure").asBoolean()
                 ? new LinkedHashMap<>() : null;
             boolean compareLoadedDocuments = request.path("compareLoadedDocuments").asBoolean()
@@ -255,6 +256,7 @@ public final class RunOntologyComparisonCase {
                 } catch (Exception failure) {
                     result.put("merge", failure("merge", failure));
                     result.put("structure", blocked("Java closure merge failed"));
+                    observeJsModels(request, absent, configuration, result);
                     return result;
                 }
                 var writer = new RDFXMLDocumentFormat();
@@ -285,13 +287,8 @@ public final class RunOntologyComparisonCase {
                 result.put("structure", blocked("JS Functional model is unavailable"));
                 return result;
             }
-            OWLOntology actual;
-            try {
-                actual = loadFunctional(Path.of(request.required("functionalPath").asText()), absent, configuration);
-                result.put("functionalReparse", Map.of("status", "completed", "ontology",
-                    summarize(actual.getOWLOntologyManager(), actual)));
-            } catch (Exception failure) {
-                result.put("functionalReparse", failure("functional-reparse", failure));
+            OWLOntology actual = observeJsModels(request, absent, configuration, result);
+            if (actual == null) {
                 result.put("structure", blocked("Native Functional reparse failed"));
                 return result;
             }
@@ -304,20 +301,37 @@ public final class RunOntologyComparisonCase {
                     result.put("closurePropagation", failure("native-model-propagation", failure));
                 }
             }
-            if (request.path("jsReloadPath").isTextual()) {
-                try {
-                    OWLOntology reloaded = loadFunctional(Path.of(request.required("jsReloadPath").asText()),
-                        absent, configuration);
-                    result.put("jsRdfXmlRoundTrip", compare(actual, reloaded));
-                } catch (Exception failure) {
-                    result.put("jsRdfXmlRoundTrip", failure("js-writer-functional-reparse", failure));
-                }
-            }
             return result;
         } finally {
             result.put("importRequests", requestedImports);
             result.put("networkAttempts", OntologyReferenceContract.networkAccessAttemptCount());
         }
+    }
+
+    /** The two JS models are comparable even when the Java source or merge is unavailable. */
+    private static OWLOntology observeJsModels(JsonNode request, Path absent,
+        OWLOntologyLoaderConfiguration configuration, Map<String, Object> result) {
+        JsonNode before = request.path("functionalPath");
+        if (!before.isTextual()) return null;
+        OWLOntology actual;
+        try {
+            actual = loadFunctional(Path.of(before.asText()), absent, configuration);
+            result.put("functionalReparse", Map.of("status", "completed", "ontology",
+                summarize(actual.getOWLOntologyManager(), actual)));
+        } catch (Exception failure) {
+            result.put("functionalReparse", failure("functional-reparse", failure));
+            return null;
+        }
+        JsonNode after = request.path("jsReloadPath");
+        if (after.isTextual()) {
+            try {
+                OWLOntology reloaded = loadFunctional(Path.of(after.asText()), absent, configuration);
+                result.put("jsRdfXmlRoundTrip", compare(actual, reloaded));
+            } catch (Exception failure) {
+                result.put("jsRdfXmlRoundTrip", failure("js-writer-functional-reparse", failure));
+            }
+        }
+        return actual;
     }
 
     private static OWLOntology load(OWLOntologyManager manager, JsonNode document,
@@ -802,8 +816,7 @@ public final class RunOntologyComparisonCase {
     private static boolean isTotalEntityLimit(Throwable error) {
         for (Throwable cause = error; cause != null; cause = cause.getCause()) {
             if (cause instanceof SAXParseException && cause.getMessage() != null &&
-                cause.getMessage().startsWith("JAXP00010004:") &&
-                cause.getMessage().contains("jdk.xml.totalEntitySizeLimit")) {
+                cause.getMessage().startsWith("JAXP00010004:")) {
                 return true;
             }
         }

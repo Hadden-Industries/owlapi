@@ -214,6 +214,11 @@ const matchesNativeVersion = (version, oracle) =>
 const originalIdmp = comparisonCatalogue.fixtures.find(
   ({ id }) => id === "pistoia-idmp",
 );
+const nativeClosureControls = new Map(
+  comparisonCatalogue.fixtures
+    .filter(({ id }) => ["eu-epo-core", "iof-core", "esco-model"].includes(id))
+    .map((input) => [input.id, input]),
+);
 const stockIdmpRefusal = {
   dependentStageReason: "expected-xml-entity-limit",
   js: {
@@ -527,6 +532,18 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             };
           }
         }
+        const nativeClosure = nativeClosureControls.get(input.id);
+        // The exact round trip preserves the admitted axiom set. Keep the
+        // unconfigured native writer result as a separate observation.
+        const checkExactClosureWriter =
+          scenario === "closure-roundtrip" &&
+          ((normativeJuly && input.closure) ||
+            (nativeClosure &&
+              input.sha256 === nativeClosure.sha256 &&
+              input.documentIRI === nativeClosure.documentIRI &&
+              policy === "recorded" &&
+              profile.behaviorProfileId === javaProfile &&
+              profile.parsingMode === "compatible"));
         const definition = {
           schemaVersion: 1,
           scenario,
@@ -559,7 +576,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             : {}),
           ...(request.javaTurtle ? { javaTurtle: request.javaTurtle } : {}),
           ...(expectedDifferences ? { expectedDifferences } : {}),
-          ...(normativeJuly && input.closure && scenario === "closure-roundtrip"
+          ...(checkExactClosureWriter
             ? { javaRdfXml: { addMissingTypes: false, observeDefault: true } }
             : {}),
           ...((scenario === "direct-load" ||

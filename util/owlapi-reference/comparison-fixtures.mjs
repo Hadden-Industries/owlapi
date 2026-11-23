@@ -131,6 +131,22 @@ function propertyRoleWitnesses() {
 
 export const comparisonWitnesses = Object.freeze([
   generatedFixture(
+    "js-closure-after-native-refusal",
+    "urn:owlapi:xml-total-control",
+    "rdfxml",
+    `
+<!DOCTYPE rdf:RDF [
+<!ENTITY a "${"a".repeat(52_000)}">
+<!ENTITY b "${"b".repeat(52_000)}">
+]>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#">
+  <owl:Ontology rdf:about="urn:owlapi:xml-total-control"/>
+  <owl:Class rdf:about="urn:owlapi:xml-total-control#Kept"/>
+</rdf:RDF>
+`,
+  ),
+  generatedFixture(
     "cgmes-range-less",
     "https://owlapi.example.test/comparison/cgmes.rdf",
     "rdfxml",
