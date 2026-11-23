@@ -92,8 +92,7 @@ public final class RunOntologyComparisonCase {
             throw new IllegalArgumentException("Unexpected OWLAPI implementation version " + version);
         }
         result.put("oracleVersion", version);
-        if (request.path("configuration").isObject() || request.path("mutation").isObject() ||
-            request.path("loadPublication").isObject() || request.path("storage").isObject()) {
+        if ("public-api-behavior".equals(request.path("scenario").asText())) {
             OntologyReferenceContract.configureOfflineDocumentLoading(Map.of());
             try {
                 if (request.path("configuration").isObject()) {
@@ -103,8 +102,10 @@ public final class RunOntologyComparisonCase {
                 } else if (request.path("loadPublication").isObject()) {
                     observeLoadPublication(request.required("loadPublication"),
                         resultPath.resolveSibling("publication-child.ofn"), result);
-                } else {
+                } else if (request.path("storage").isObject()) {
                     OntologyStorageComparison.observe(request.required("storage"), result);
+                } else {
+                    result.put("literalConstruction", OntologyLiteralComparison.observe(request.required("literalConstruction")));
                 }
                 result.put("javaLoad", Map.of("status", "completed"));
             } catch (Exception failure) {

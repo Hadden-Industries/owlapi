@@ -282,6 +282,23 @@ test("storage behavior registers reuse and parameter observation for all four fo
   }
 });
 
+test("literal construction binds every recorded typed and language input", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "public-api-behavior",
+  });
+  const literal = cases.find((item) => item.literalConstruction);
+  expect(literal).toMatchObject({
+    input: { id: "factory/literal-construction" },
+    literalConstruction: {
+      decisionId: "BEHAVIOR-LITERAL-CONSTRUCTION",
+      typedCount: 672,
+      languageCount: 6,
+    },
+  });
+  expect(literal.literalConstruction.javaRowsSha256).toMatch(/^[0-9a-f]{64}$/u);
+});
+
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
   const subject = {
     tarballSha256: "1".repeat(64),

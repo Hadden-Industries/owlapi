@@ -1,31 +1,13 @@
-import { readFileSync } from "node:fs";
 import { OWLManager } from "../apibinding/index.js";
 import { IRI } from "./index.js";
-
-const observation = JSON.parse(
-  readFileSync(
-    new URL(
-      "../docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
-      import.meta.url,
-    ),
-    "utf8",
-  ),
-).observations.find(
-  ({ probeId }) => probeId === "ObserveLanguageProfileSemantics",
-);
-const fields = (prefix) =>
-  observation.stdout
-    .split("\n")
-    .filter((line) => line.startsWith(prefix + "\t"))
-    .map((line) => line.split("\t").slice(1));
+import { readLiteralFactoryRows } from "../util/owlapi-reference/comparison-literal-construction.mjs";
 const decode = (text) => Buffer.from(text, "base64").toString("utf8");
 const factory = OWLManager.createOWLOntologyManager({
   behaviorProfileId: "java-owlapi-5.5.1",
 }).getOWLDataFactory();
 const normativeFactory =
   OWLManager.createOWLOntologyManager().getOWLDataFactory();
-const literalRows = fields("factory-literal");
-const languageRows = fields("factory-language");
+const { literalRows, languageRows } = readLiteralFactoryRows();
 
 test("the independent factory observation covers lexical, datatype, language and numeric boundaries", () => {
   expect(literalRows).toHaveLength(8 * 52 + 256);
