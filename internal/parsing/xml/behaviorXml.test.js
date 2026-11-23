@@ -2,6 +2,7 @@ import { OWLManager } from "../../../apibinding/index.js";
 import { OWLDocumentFormats } from "../../../formats/index.js";
 import { StringDocumentSource } from "../../../io/index.js";
 import { OWLOntologyLoaderConfiguration } from "../../../model/index.js";
+import { xmlProviderDocument } from "../../../util/owlapi-reference/comparison-xml-provider.mjs";
 
 test("XML policy retains the selected identity when a configuration overrides its public getter", async () => {
   class MisreportedConfiguration extends OWLOntologyLoaderConfiguration {
@@ -34,7 +35,7 @@ const load = (
     .setEntityExpansionLimit(expansionLimit);
   return manager.loadOntologyFromOntologyDocument(
     new StringDocumentSource(
-      `<!DOCTYPE Ontology [${subset}]><Ontology xmlns="http://www.w3.org/2002/07/owl#"><Annotation><AnnotationProperty IRI="urn:xml:p"/><Literal ${literalAttributes}>${content}</Literal></Annotation></Ontology>`,
+      xmlProviderDocument(subset, content, literalAttributes),
       { format: OWLDocumentFormats.OWL_XML },
     ),
     configuration,

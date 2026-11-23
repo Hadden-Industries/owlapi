@@ -369,6 +369,16 @@ test("locality behavior binds exact seed and filter inputs", async () => {
   ]);
 });
 
+test("the XML provider case declares the original finite expansion limits", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "public-api-behavior",
+  });
+  const xml = cases.find(({ xmlProvider }) => xmlProvider);
+  expect(xml?.xmlProvider.decisionId).toBe("BEHAVIOR-XML-PROVIDER");
+  expect(xml.xmlProvider.limits).toEqual(["0", "1", "2", "-1", "bad"]);
+});
+
 test("release shadow coverage rejects a different oracle, source evidence and duplicate cells", async () => {
   const subject = {
     tarballSha256: "1".repeat(64),

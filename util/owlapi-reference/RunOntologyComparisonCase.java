@@ -117,6 +117,8 @@ public final class RunOntologyComparisonCase {
                         "writerIndentSize", manager.getOntologyWriterConfiguration().getIndentSize()));
                 } else if (request.path("localityBehavior").isObject()) {
                     result.put("localityBehavior", OntologyLocalityComparison.observe(request.required("localityBehavior")));
+                } else if (request.path("xmlProvider").isObject()) {
+                    OntologyXmlProviderComparison.observe(request.required("xmlProvider"), result);
                 } else {
                     result.put("literalConstruction", OntologyLiteralComparison.observe(request.required("literalConstruction")));
                 }

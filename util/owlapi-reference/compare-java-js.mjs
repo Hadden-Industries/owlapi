@@ -54,6 +54,7 @@ import { queryComparisonCases } from "./comparison-query.mjs";
 import { parserBehaviorComparisonCases } from "./comparison-parser-behavior.mjs";
 import { profileIdentityComparisonCase } from "./comparison-profile-identity.mjs";
 import { localityBehaviorComparisonCase } from "./comparison-locality.mjs";
+import { xmlProviderComparisonCase } from "./comparison-xml-provider.mjs";
 import {
   julyTimeDifferenceScope,
   reconcileJulyTimeLoad,
@@ -118,6 +119,8 @@ const comparisonInputs = [
   "./comparison-profile-identity.mjs",
   "./comparison-locality.mjs",
   "./OntologyLocalityComparison.java",
+  "./comparison-xml-provider.mjs",
+  "./OntologyXmlProviderComparison.java",
   "./comparison-july-differences.mjs",
   "./reconcile-structural-differences.mjs",
   "../../docs/compatibility/expected-differences.json",
@@ -160,6 +163,7 @@ const normativeObservation = {
   parserBehavior: "normativeParserBehavior",
   profileIdentity: "profileBindings",
   localityBehavior: "normativeLocalityBehavior",
+  xmlProvider: "normativeXmlProvider",
 };
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
@@ -351,6 +355,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       ...parserBehaviorComparisonCases(),
       profileIdentityComparisonCase(),
       localityBehaviorComparisonCase(),
+      xmlProviderComparisonCase(),
     ];
   if (selectsWriter(request)) return writerComparisonCases(request);
   if (selectsVowl(request))
@@ -662,10 +667,10 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       behaviorField !== "literalConstruction" ||
       (Array.isArray(js.literalConstruction) &&
         comparisonIdentity(js.literalConstruction) === recipe.javaRowsSha256);
-    const matchesRecordedParserBehavior =
-      behaviorField !== "parserBehavior" ||
-      (Array.isArray(js.parserBehavior) &&
-        comparisonIdentity(js.parserBehavior) ===
+    const matchesRecordedRows =
+      !recipe.javaRows ||
+      (Array.isArray(js[behaviorField]) &&
+        comparisonIdentity(js[behaviorField]) ===
           comparisonIdentity(recipe.javaRows));
     const recordedStorageBytes =
       behaviorField !== "storage" ||
@@ -691,7 +696,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       native.javaLoad?.status === "completed" &&
       matchedExpected &&
       matchesRecordedLiterals &&
-      matchesRecordedParserBehavior &&
+      matchesRecordedRows &&
       recordedStorageBytes &&
       js[behaviorField] &&
       native[behaviorField] &&
