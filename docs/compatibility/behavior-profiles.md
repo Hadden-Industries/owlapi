@@ -198,6 +198,11 @@ Normative compatible mode preserves the named restriction as a definition under 
 Strict mapping has no such recovery.
 The Java annotation-loading setting still controls whether recovered annotations are retained.
 
+For resource assertions, Java compatible mode uses the predicate roles available before class restrictions are reconstructed.
+A property expression recovered inside a restriction can coexist with an annotation assertion using the same IRI.
+An object-property declaration in the document or its imports, an explicit inverse-property link, or a known class range can still identify an object-property assertion.
+An `owl:equivalentProperty` link requires an established role on both sides and remains in the unparsed RDF metadata when a role is missing.
+
 EntitySearcher results are deferred and single-use in both profiles; materialize once when repeat traversal is needed.
 Closure providers query current membership on each call and return that call's defensive snapshot.
 The ledger and public API registry distinguish these timing contracts from Java/JS collection shapes.

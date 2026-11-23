@@ -55,6 +55,123 @@ describe("bounded RDF consumer compatibility", () => {
     ]).toEqual([]);
     expect([...ontology.getIndividualsInSignature()]).toEqual([]);
   });
+
+  it.each(["restriction", "declared", "imported", "inverse", "class range"])(
+    "uses the Java resource assertion role supplied by %s",
+    async (evidence) => {
+      const manager = OWLManager.createOWLOntologyManager({
+        behaviorProfileId: "java-owlapi-5.5.1",
+        documentLoader: {
+          load: async (iri) =>
+            source(
+              ":types a owl:Ontology . :p a owl:ObjectProperty .",
+              iri.value,
+            ),
+        },
+      });
+      const declaration = {
+        restriction: "",
+        declared: ":p a owl:ObjectProperty .",
+        imported: ":root owl:imports :types .",
+        inverse: ":p owl:inverseOf :inverse .",
+        "class range": ":p rdfs:range :D .",
+      }[evidence];
+      const ontology = await manager.loadOntologyFromOntologyDocument(
+        source(`:root a owl:Ontology . ${declaration}
+          :C a owl:Class; rdfs:subClassOf [ a owl:Restriction;
+            owl:onProperty :p; owl:someValuesFrom :D ] .
+          :D a owl:Class .
+          :subject a owl:NamedIndividual; :p :target .
+          :target a owl:NamedIndividual .`),
+        { parsingMode: "compatible" },
+      );
+      const df = manager.getOWLDataFactory();
+      const property = IRI.create("urn:consumer:p");
+      const subject = IRI.create("urn:consumer:subject");
+      const target = IRI.create("urn:consumer:target");
+      const objectProperty = df.getOWLObjectProperty(property);
+      expect(
+        ontology.containsAxiom(
+          df.getOWLSubClassOfAxiom(
+            df.getOWLClass(IRI.create("urn:consumer:C")),
+            df.getOWLObjectSomeValuesFrom(
+              objectProperty,
+              df.getOWLClass(IRI.create("urn:consumer:D")),
+            ),
+          ),
+        ),
+      ).toBe(true);
+      expect(
+        ontology.containsAxiom(
+          df.getOWLAnnotationAssertionAxiom(
+            df.getOWLAnnotationProperty(property),
+            subject,
+            target,
+          ),
+        ),
+      ).toBe(evidence === "restriction");
+      expect(
+        ontology.containsAxiom(
+          df.getOWLObjectPropertyAssertionAxiom(
+            objectProperty,
+            df.getOWLNamedIndividual(subject),
+            df.getOWLNamedIndividual(target),
+          ),
+        ),
+      ).toBe(evidence !== "restriction");
+    },
+  );
+
+  it.each([false, true])(
+    "requires roles on both Java equivalent properties when other end declared is %s",
+    async (typedOtherEnd) => {
+      const manager = OWLManager.createOWLOntologyManager({
+        behaviorProfileId: "java-owlapi-5.5.1",
+      });
+      const ontology = await manager.loadOntologyFromOntologyDocument(
+        source(`:root a owl:Ontology . :p a owl:ObjectProperty; owl:equivalentProperty :q .
+          [] a owl:Axiom; owl:annotatedSource :p; owl:annotatedProperty owl:equivalentProperty;
+            owl:annotatedTarget :q; rdfs:comment "Evidence" .
+          ${typedOtherEnd ? ":q a owl:ObjectProperty ." : ""}`),
+        { parsingMode: "compatible" },
+      );
+      expect(
+        ontology.getAxiomsByType(K.EQUIVALENT_OBJECT_PROPERTIES_AXIOM).size,
+      ).toBe(Number(typedOtherEnd));
+      expect(
+        manager
+          .getOntologyFormat(ontology)
+          .getOntologyLoaderMetaData()
+          .getUnparsedTriples(),
+      ).toHaveLength(typedOtherEnd ? 0 : 2);
+      if (typedOtherEnd) {
+        const [equivalence] = ontology.getAxiomsByType(
+          K.EQUIVALENT_OBJECT_PROPERTIES_AXIOM,
+        );
+        expect(equivalence.annotations).toHaveLength(1);
+      }
+    },
+  );
+  it("leaves an unclaimed resource on a negative assertion node in RDF metadata", async () => {
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    });
+    const ontology = await manager.loadOntologyFromOntologyDocument(
+      source(`:root a owl:Ontology . :p a owl:ObjectProperty .
+        [] a owl:NegativePropertyAssertion; owl:sourceIndividual :a;
+          owl:assertionProperty :p; owl:targetIndividual :b; :unclaimed :value .
+        :C a owl:Class . [] a :C; :metadata :value .`),
+      { parsingMode: "compatible" },
+    );
+    const [annotation] = ontology.getAxiomsByType(K.ANNOTATION_ASSERTION_AXIOM);
+    expect(annotation.property.iri.value).toBe("urn:consumer:metadata");
+    expect(
+      manager
+        .getOntologyFormat(ontology)
+        .getOntologyLoaderMetaData()
+        .getUnparsedTriples(),
+    ).toHaveLength(1);
+  });
   it("leaves range-only untyped properties unparsed when a datatype is imported", async () => {
     const manager = OWLManager.createOWLOntologyManager({
       documentLoader: {

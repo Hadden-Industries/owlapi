@@ -66,21 +66,24 @@ const OBJECT_ONLY_CHARACTERISTICS = new Set([
   OWL_VOCABULARY.SymmetricProperty,
   OWL_VOCABULARY.TransitiveProperty,
 ]);
-const NON_ASSERTION_TYPES = new Set([
+const RDF_AXIOM_NODE_TYPES = new Set([
   OWL_VOCABULARY.AllDifferent,
   OWL_VOCABULARY.AllDisjointClasses,
   OWL_VOCABULARY.AllDisjointProperties,
   OWL_VOCABULARY.Annotation,
+  OWL_VOCABULARY.Axiom,
+  OWL_VOCABULARY.NegativePropertyAssertion,
+]);
+const NON_ASSERTION_TYPES = new Set([
+  ...RDF_AXIOM_NODE_TYPES,
   OWL_VOCABULARY.AnnotationProperty,
   OWL_VOCABULARY.AsymmetricProperty,
-  OWL_VOCABULARY.Axiom,
   OWL_VOCABULARY.Class,
   OWL_VOCABULARY.DatatypeProperty,
   OWL_VOCABULARY.FunctionalProperty,
   OWL_VOCABULARY.InverseFunctionalProperty,
   OWL_VOCABULARY.IrreflexiveProperty,
   OWL_VOCABULARY.NamedIndividual,
-  OWL_VOCABULARY.NegativePropertyAssertion,
   OWL_VOCABULARY.ObjectProperty,
   OWL_VOCABULARY.Ontology,
   OWL_VOCABULARY.ReflexiveProperty,
@@ -572,6 +575,7 @@ class RdfGraphInterpreter {
   #recoveredAnnotationPropertyIris = new Set();
   #execution;
   #individualIris = new Set();
+  #javaAssertionObjectPropertyIris;
   #listOwners = new Map();
   #objectPropertyExpressionCache = new Map();
   #objectPropertyExpressionStack = new Set();
@@ -1180,6 +1184,14 @@ class RdfGraphInterpreter {
     if (this.#configuration.parsingMode === "preserve")
       await this.#discoverOwlUseRoles();
     await this.#propagateRdfsRoles();
+    if (
+      this.#configuration.parsingMode === "compatible" &&
+      this.#rdfReconstructionPolicy.usesJavaResourcePropertyTyping
+    ) {
+      // Java dispatches resource assertions before translating restrictions.
+      // A property expression recovered inside a restriction does not type the predicate.
+      this.#javaAssertionObjectPropertyIris = new Set(this.#objectPropertyIris);
+    }
     await this.#readOntologyHeader();
     await this.#readExpressionDefinitions();
     await this.#readNamedDatatypeRestrictions();
@@ -2715,7 +2727,11 @@ class RdfGraphInterpreter {
         continue;
       const selectedCategory = this.#preservedAxiomCategory(currentQuad);
       let axiom;
-      const annotations = await this.#axiomAnnotations(currentQuad);
+      const annotations =
+        this.#javaAssertionObjectPropertyIris &&
+        predicate === OWL_VOCABULARY.equivalentProperty
+          ? undefined
+          : await this.#axiomAnnotations(currentQuad);
       if (predicate === RDFS_VOCABULARY.subPropertyOf) {
         // Strict mode is left to the dispatch below, whose strict accessors
         // already reject the document and say more precisely why. Only the
@@ -2782,23 +2798,32 @@ class RdfGraphInterpreter {
           annotations,
         );
       } else if (predicate === OWL_VOCABULARY.equivalentProperty) {
-        if (this.#isDataPropertyTerm(currentQuad.subject, selectedCategory)) {
+        const javaTyping = this.#javaAssertionObjectPropertyIris;
+        if (
+          this.#isDataPropertyTerm(currentQuad.subject, selectedCategory) &&
+          (!javaTyping || this.#isDataPropertyTerm(currentQuad.object))
+        ) {
           axiom = this.#dataFactory.getOWLEquivalentDataPropertiesAxiom(
             [
               this.#dataProperty(currentQuad.subject),
               this.#dataProperty(currentQuad.object),
             ],
-            annotations,
+            annotations ?? (await this.#axiomAnnotations(currentQuad)),
           );
         } else if (
-          this.#isObjectPropertyTerm(currentQuad.subject, selectedCategory)
+          this.#isObjectPropertyTerm(currentQuad.subject, selectedCategory) &&
+          (!javaTyping ||
+            [currentQuad.subject, currentQuad.object].every(
+              (term) =>
+                term.termType === "BlankNode" || javaTyping.has(term.value),
+            ))
         ) {
           axiom = this.#dataFactory.getOWLEquivalentObjectPropertiesAxiom(
             [
               await this.#objectPropertyExpression(currentQuad.subject, 0),
               await this.#objectPropertyExpression(currentQuad.object, 0),
             ],
-            annotations,
+            annotations ?? (await this.#axiomAnnotations(currentQuad)),
           );
         } else {
           continue;
@@ -3182,9 +3207,26 @@ class RdfGraphInterpreter {
         OWL_VOCABULARY.sameAs,
         OWL_VOCABULARY.differentFrom,
       ].includes(predicate);
+      const javaAnnotationFallback =
+        this.#javaAssertionObjectPropertyIris &&
+        currentQuad.object.termType !== "Literal" &&
+        !this.#javaAssertionObjectPropertyIris.has(predicate) &&
+        !this.#dataPropertyIris.has(predicate) &&
+        ![RDF_NAMESPACE, RDFS_NAMESPACE, OWL_NAMESPACE, XSD_NAMESPACE].some(
+          (namespace) => predicate.startsWith(namespace),
+        ) &&
+        !this.#outgoing(currentQuad.subject, RDF_VOCABULARY.type).some(
+          ({ object }) =>
+            object.termType === "NamedNode" &&
+            RDF_AXIOM_NODE_TYPES.has(object.value),
+        );
       const annotationAssertion =
         !builtInAssertion &&
-        this.#isAnnotationPropertyTerm(currentQuad.predicate, selectedCategory);
+        (javaAnnotationFallback ||
+          this.#isAnnotationPropertyTerm(
+            currentQuad.predicate,
+            selectedCategory,
+          ));
       if (
         (predicate === RDF_VOCABULARY.type &&
           currentQuad.object.termType === "NamedNode" &&
@@ -3257,7 +3299,9 @@ class RdfGraphInterpreter {
           continue;
         }
         const groups = await this.#annotationAssertionGroups(currentQuad);
-        const property = this.#annotationProperty(currentQuad.predicate);
+        const property = javaAnnotationFallback
+          ? this.#dataFactory.getOWLAnnotationProperty(IRI.create(predicate))
+          : this.#annotationProperty(currentQuad.predicate);
         const subject = this.#annotationSubject(currentQuad.subject);
         const value = this.#annotationValue(currentQuad.object);
         for (const group of groups) {
@@ -3479,6 +3523,9 @@ class RdfGraphInterpreter {
       this.#objectPropertyIris,
     ];
     const relatedByIri = new Map();
+    const supportsEquivalenceInference =
+      this.#configuration.parsingMode !== "compatible" ||
+      !this.#rdfReconstructionPolicy.usesJavaResourcePropertyTyping;
     const relate = (left, right) => {
       if (!relatedByIri.has(left)) {
         relatedByIri.set(left, new Set());
@@ -3489,10 +3536,11 @@ class RdfGraphInterpreter {
       if (
         quad.subject.termType !== "NamedNode" ||
         quad.object.termType !== "NamedNode" ||
-        ![
-          RDFS_VOCABULARY.subPropertyOf,
-          OWL_VOCABULARY.equivalentProperty,
-        ].includes(quad.predicate.value)
+        (quad.predicate.value !== RDFS_VOCABULARY.subPropertyOf &&
+          !(
+            supportsEquivalenceInference &&
+            quad.predicate.value === OWL_VOCABULARY.equivalentProperty
+          ))
       ) {
         continue;
       }
@@ -3593,6 +3641,14 @@ class RdfGraphInterpreter {
         quad.predicate.value === RDF_VOCABULARY.type &&
         OBJECT_ONLY_CHARACTERISTICS.has(quad.object.value)
       ) {
+        mark(quad.subject, "object");
+      } else if (
+        this.#rdfReconstructionPolicy.usesJavaResourcePropertyTyping &&
+        quad.predicate.value === RDFS_VOCABULARY.range &&
+        quad.object.termType === "NamedNode" &&
+        this.#classIris.has(quad.object.value)
+      ) {
+        // The native consumer resolves a named class range before resource assertions.
         mark(quad.subject, "object");
       }
       {
