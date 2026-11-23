@@ -203,6 +203,11 @@ A property expression recovered inside a restriction can coexist with an annotat
 An object-property declaration in the document or its imports, an explicit inverse-property link, or a known class range can still identify an object-property assertion.
 An `owl:equivalentProperty` link requires an established role on both sides and remains in the unparsed RDF metadata when a role is missing.
 
+Compatible RDF parsing retains subclass annotations when an exporter repeats a flat existential or qualified minimum-cardinality restriction under `owl:annotatedTarget`.
+The repeated target must be used only by the reification and match exactly one asserted restriction on the same named subclass.
+Missing, ambiguous and different targets remain visible as unparsed RDF.
+Strict mapping requires the original RDF term identity specified in [Table 17 of the OWL 2 RDF mapping](https://www.w3.org/TR/owl2-mapping-to-rdf/#Parsing_of_Annotated_Axioms).
+
 EntitySearcher results are deferred and single-use in both profiles; materialize once when repeat traversal is needed.
 Closure providers query current membership on each call and return that call's defensive snapshot.
 The ledger and public API registry distinguish these timing contracts from Java/JS collection shapes.

@@ -33,6 +33,10 @@ Use `--imports recorded` for the historical EXPRESS stand-in.
 - [EXPRESS publication](https://pi.pauwel.be/evoc/express_W3ID/20151211/index.html)
 - [LIST publication](https://pi.pauwel.be/evoc/list_W3ID/20151211/index.html)
 
+Use `--input pistoia-idmp --imports mapped --java-xml historical-idmp` for the same original IDMP document with the publisher's Commons and LCC imports.
+The catalogue pins 22 direct dependencies and the transitive LCC LanguageRepresentation ontology to [Commons 1.3](https://www.omg.org/spec/Commons/1.3/) and [LCC 1.2](https://www.omg.org/spec/LCC/1.2/).
+The mapped cases have separate IDs and leave the recorded stand-in cases in the qualification roster.
+
 Set `--cache` and `--output` to absolute paths outside the checkout.
 Select the complete JDK with `--java-home`.
 Local qualification of Temurin `25.0.5.1+2-LTS` uses `--java-selection 25.0.5+1.2`.

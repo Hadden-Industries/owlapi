@@ -172,6 +172,87 @@ describe("bounded RDF consumer compatibility", () => {
         .getUnparsedTriples(),
     ).toHaveLength(1);
   });
+
+  it.each([
+    ["unique existential", "owl:someValuesFrom :C", "owl:someValuesFrom :C", 1],
+    [
+      "qualified minimum",
+      'owl:onClass :C; owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger',
+      'owl:onClass :C; owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger',
+      1,
+    ],
+    ["ambiguous source", "owl:someValuesFrom :C", "owl:someValuesFrom :C", 2],
+    [
+      "different filler",
+      "owl:someValuesFrom :Other",
+      "owl:someValuesFrom :C",
+      1,
+    ],
+    ["different operator", "owl:allValuesFrom :C", "owl:someValuesFrom :C", 1],
+    ["missing source", "owl:someValuesFrom :C", "owl:someValuesFrom :C", 0],
+  ])(
+    "attaches detached subclass annotations only to an exact asserted target for %s",
+    async (label, asserted, reified, baseCount) => {
+      const manager = OWLManager.createOWLOntologyManager();
+      const restriction = (body) =>
+        `[ a owl:Restriction; owl:onProperty :p; ${body} ]`;
+      const document = source(`:root a owl:Ontology .
+        :p a owl:ObjectProperty . :C a owl:Class . :Other a owl:Class . :Sub a owl:Class .
+        ${Array.from({ length: baseCount }, () => `:Sub rdfs:subClassOf ${restriction(asserted)} .`).join("\n")}
+        [] a owl:Axiom; owl:annotatedSource :Sub; owl:annotatedProperty rdfs:subClassOf;
+          owl:annotatedTarget ${restriction(reified)}; rdfs:comment "Evidence" .`);
+      const ontology = await manager.loadOntologyFromOntologyDocument(
+        document,
+        { parsingMode: "compatible" },
+      );
+      const [subclass] = ontology.getAxiomsByType(K.SUBCLASS_OF_AXIOM);
+      const matched =
+        label === "unique existential" || label === "qualified minimum";
+      if (baseCount) expect(subclass.annotations).toHaveLength(Number(matched));
+      else expect(subclass).toBeUndefined();
+      const unparsed = manager
+        .getOntologyFormat(ontology)
+        .getOntologyLoaderMetaData()
+        .getUnparsedTriples();
+      expect(
+        unparsed.some(
+          ({ predicate }) =>
+            predicate.value === "http://www.w3.org/2000/01/rdf-schema#comment",
+        ),
+      ).toBe(!matched);
+    },
+  );
+
+  it.each(["shared target", "annotations disabled", "strict", "preserve"])(
+    "keeps detached targets outside compatible recovery for %s",
+    async (mode) => {
+      const manager = OWLManager.createOWLOntologyManager();
+      const document = source(`:root a owl:Ontology .
+        :p a owl:ObjectProperty . :C a owl:Class . :Sub a owl:Class .
+        :Sub rdfs:subClassOf [ a owl:Restriction; owl:onProperty :p; owl:someValuesFrom :C ] .
+        _:target a owl:Restriction; owl:onProperty :p; owl:someValuesFrom :C .
+        [] a owl:Axiom; owl:annotatedSource :Sub; owl:annotatedProperty rdfs:subClassOf;
+          owl:annotatedTarget _:target; rdfs:comment "Evidence" .
+        ${mode === "shared target" ? ":Other a owl:Class; rdfs:subClassOf _:target ." : ""}`);
+      const load = manager.loadOntologyFromOntologyDocument(document, {
+        parsingMode:
+          mode === "strict" || mode === "preserve" ? mode : "compatible",
+        loadAnnotationAxioms: mode !== "annotations disabled",
+      });
+      if (mode === "strict" || mode === "preserve") {
+        await expect(load).rejects.toMatchObject({
+          code: "UNSUPPORTED_CONSTRUCT",
+        });
+        return;
+      }
+      const ontology = await load;
+      const subclassAxioms = [...ontology.getAxiomsByType(K.SUBCLASS_OF_AXIOM)];
+      expect(subclassAxioms).toHaveLength(mode === "shared target" ? 2 : 1);
+      expect(
+        subclassAxioms.every(({ annotations }) => annotations.length === 0),
+      ).toBe(true);
+    },
+  );
   it("leaves range-only untyped properties unparsed when a datatype is imported", async () => {
     const manager = OWLManager.createOWLOntologyManager({
       documentLoader: {

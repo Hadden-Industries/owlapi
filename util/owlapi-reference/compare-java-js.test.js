@@ -1191,6 +1191,39 @@ test("the fully mapped ifcOWL case uses the two published imports and exact Java
   ]);
 });
 
+test("mapped IDMP resolves its published imports without replacing the recorded closure", () => {
+  const request = {
+    input: "pistoia-idmp",
+    profile: "normative-v1",
+    parsingMode: "compatible",
+    scenario: "direct-load",
+    javaXml: "historical-idmp",
+  };
+  const [recorded] = comparisonCases(request);
+  const [mapped] = comparisonCases({ ...request, imports: "mapped" });
+  expect(mapped.definition.input).toEqual(recorded.definition.input);
+  expect(recorded.caseId).toBe(
+    "8ee36ca898e6c938cbfca68e14d8ad2f55eac35b3430d2687804b866bf914745",
+  );
+  expect(mapped.caseId).not.toBe(recorded.caseId);
+  expect(recorded.imports).toHaveLength(22);
+  expect(
+    recorded.imports.every(
+      ([, fixture]) => fixture.source.kind === "generated",
+    ),
+  ).toBe(true);
+  expect(new Set(mapped.imports.map(([, fixture]) => fixture.id)).size).toBe(
+    23,
+  );
+  expect(mapped.imports).toHaveLength(46);
+  expect(
+    mapped.imports.every(([, fixture]) => fixture.source.kind === "https"),
+  ).toBe(true);
+  expect(mapped.imports.map(([iri]) => iri)).toContain(
+    "https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/",
+  );
+});
+
 test("July closure propagation uses the OWL-Time approval only on its exact imported document", () => {
   const selection = {
     input: "july/core",

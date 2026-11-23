@@ -545,6 +545,7 @@ class RdfGraphInterpreter {
   #annotationPropertyIris = new Set(BUILT_IN_ANNOTATION_PROPERTIES);
   #implicitAnnotationDomainIris;
   #axiomReifications = new Map();
+  #detachedSubclassRestrictions = new Map();
   #propertyChainReifications = new Map();
   #retainedAxiomAnnotationBases = new Set();
   #retainedAnnotationBases = new Set();
@@ -2280,12 +2281,16 @@ class RdfGraphInterpreter {
   }
 
   #indexReifications() {
-    const recoversDetachedChains =
+    const recoversDetachedRestrictions =
       this.#configuration.parsingMode === "compatible" &&
-      this.#configuration.loadAnnotationAxioms &&
+      this.#configuration.loadAnnotationAxioms;
+    const recoversDetachedChains =
+      recoversDetachedRestrictions &&
       this.#rdfReconstructionPolicy.recoversDetachedPropertyChainAnnotations;
     const explicitChains = new Set();
     const chainReifications = [];
+    const subclassTargetsBySource = new Map();
+    const checkedSubclassTargets = new Set();
     for (const currentQuad of this.#read.quads) {
       if (
         recoversDetachedChains &&
@@ -2324,8 +2329,27 @@ class RdfGraphInterpreter {
         property.object,
         "owl:annotatedProperty requires an IRI object",
       );
-      const key = tripleKey(source.object, property.object, target.object);
-      this.#reificationNodes.add(termKey(currentQuad.subject));
+      const nodeKey = termKey(currentQuad.subject);
+      const detachedRestriction =
+        recoversDetachedRestrictions &&
+        currentQuad.object.value === OWL_VOCABULARY.Axiom &&
+        property.object.value === RDFS_VOCABULARY.subClassOf &&
+        source.object.termType === "NamedNode"
+          ? this.#findDetachedSubclassRestriction(
+              source.object,
+              target.object,
+              subclassTargetsBySource,
+              checkedSubclassTargets,
+            )
+          : undefined;
+      const key = tripleKey(
+        source.object,
+        property.object,
+        detachedRestriction?.baseTarget ?? target.object,
+      );
+      if (detachedRestriction)
+        this.#detachedSubclassRestrictions.set(nodeKey, detachedRestriction);
+      this.#reificationNodes.add(nodeKey);
       const index =
         currentQuad.object.value === OWL_VOCABULARY.Axiom
           ? this.#axiomReifications
@@ -2361,6 +2385,74 @@ class RdfGraphInterpreter {
       entries.push({ baseKey, cells: chain.cells, node });
       this.#propertyChainReifications.set(signature, entries);
     }
+  }
+
+  #findDetachedSubclassRestriction(
+    source,
+    target,
+    subclassTargetsBySource,
+    checkedSubclassTargets,
+  ) {
+    if (
+      target.termType !== "BlankNode" ||
+      checkedSubclassTargets.has(target.value)
+    )
+      return undefined;
+    checkedSubclassTargets.add(target.value);
+    if (this.#dataset.match(null, null, target, null).size !== 1)
+      return undefined;
+    const targetQuads = this.#outgoing(target);
+    const signature = this.#flatRestrictionSignature(targetQuads);
+    if (signature === undefined) return undefined;
+    // An RDF/XML exporter can repeat a restriction under owl:annotatedTarget.
+    // Attach its annotations only when one asserted subclass triple has that shape.
+    let bySignature = subclassTargetsBySource.get(source.value);
+    if (!bySignature) {
+      bySignature = new Map();
+      for (const { object } of this.#outgoing(
+        source,
+        RDFS_VOCABULARY.subClassOf,
+      )) {
+        if (object.termType !== "BlankNode") continue;
+        const shape = this.#flatRestrictionSignature(this.#outgoing(object));
+        if (shape !== undefined)
+          bySignature.set(shape, bySignature.has(shape) ? null : object);
+      }
+      subclassTargetsBySource.set(source.value, bySignature);
+    }
+    const baseTarget = bySignature.get(signature);
+    return baseTarget ? { baseTarget, targetQuads, source } : undefined;
+  }
+
+  #flatRestrictionSignature(quads) {
+    if (quads.length !== 3 && quads.length !== 4) return undefined;
+    const terms = new Map(
+      quads.map(({ predicate, object }) => [predicate.value, object]),
+    );
+    const type = terms.get(RDF_VOCABULARY.type);
+    if (
+      terms.size !== quads.length ||
+      type?.termType !== "NamedNode" ||
+      type.value !== OWL_VOCABULARY.Restriction ||
+      terms.get(OWL_VOCABULARY.onProperty)?.termType !== "NamedNode"
+    ) {
+      return undefined;
+    }
+    const hasNamedExistential =
+      quads.length === 3 &&
+      terms.get(OWL_VOCABULARY.someValuesFrom)?.termType === "NamedNode";
+    const cardinality = terms.get(OWL_VOCABULARY.minQualifiedCardinality);
+    const hasNamedMinimumCardinality =
+      quads.length === 4 &&
+      terms.get(OWL_VOCABULARY.onClass)?.termType === "NamedNode" &&
+      cardinality?.termType === "Literal" &&
+      cardinality.datatype.value === `${XSD_NAMESPACE}nonNegativeInteger`;
+    if (!hasNamedExistential && !hasNamedMinimumCardinality) return undefined;
+    return JSON.stringify(
+      [...terms]
+        .map(([predicate, object]) => [predicate, termKey(object)])
+        .sort(),
+    );
   }
 
   #readNamedPropertyChain(head) {
@@ -2439,7 +2531,20 @@ class RdfGraphInterpreter {
   async #axiomAnnotations(baseQuad) {
     const annotations = [];
     for (const node of this.#axiomReificationNodes(baseQuad)) {
-      annotations.push(...(await this.#nodeAnnotations(node, 0)));
+      const nested = await this.#nodeAnnotations(node, 0);
+      annotations.push(...nested);
+      const detached = this.#detachedSubclassRestrictions.get(termKey(node));
+      if (!detached || !nested.length) continue;
+      for (const quad of detached.targetQuads) this.#consume(quad);
+      if (this.#configuration.collectWarnings) {
+        this.#diagnostics.push({
+          code: "RDF_DETACHED_SUBCLASS_ANNOTATION",
+          message:
+            "A repeated restriction was matched to its asserted subclass axiom",
+          severity: "warning",
+          subject: detached.source.value,
+        });
+      }
     }
     return annotations;
   }
