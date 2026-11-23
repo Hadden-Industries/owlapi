@@ -86,7 +86,7 @@ async function writeQualification(manifest, env, read) {
     const finalRead = createRepositoryReader({
       repository,
       token: env.GH_TOKEN,
-      requestLimit: 8,
+      requestLimit: 12,
     });
     await validateReleaseCoordinate({
       read: finalRead,
