@@ -6,6 +6,7 @@ import {
   mkdtempSync,
   readFileSync,
   realpathSync,
+  rmSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
@@ -76,6 +77,30 @@ function execute(command, args, options = {}) {
   };
 }
 const run = (command, args, options) => execute(command, args, options).stdout;
+
+function runJavaProfileProbe(javac, java, classpath) {
+  const buildDirectory = mkdtempSync(
+    join(tmpdir(), "owlapi-profile-contract-"),
+  );
+  try {
+    const env = {
+      ...javaProcessEnvironment(),
+      CLASSPATH: buildDirectory + delimiter + classpath,
+    };
+    const compilation = execute(javac, ["-d", buildDirectory, harness], {
+      env,
+    });
+    const javaExecution = execute(
+      java,
+      ["-Xlog:class+load=info:stderr", "RunOWL2DLProfile", fixture],
+      { env },
+    );
+    return { buildDirectory, compilation, javaExecution };
+  } finally {
+    rmSync(buildDirectory, { recursive: true, force: true, maxRetries: 3 });
+  }
+}
+
 const gitHead = (cwd) => run("git", ["rev-parse", "HEAD"], { cwd }).trim();
 const gitStatus = (cwd) =>
   run("git", ["status", "--porcelain=v1", "--untracked-files=all"], { cwd });
@@ -262,20 +287,10 @@ export async function runCanonicalVowlProfileContract({
   );
 
   // Only the project-owned probe is compiled. Existing reference JARs are not rebuilt.
-  const buildDirectory = mkdtempSync(
-    join(tmpdir(), "owlapi-profile-contract-"),
-  );
-  const environment = {
-    ...javaProcessEnvironment(),
-    CLASSPATH: buildDirectory + delimiter + classpath,
-  };
-  const compilation = execute(javac, ["-d", buildDirectory, harness], {
-    env: environment,
-  });
-  const javaExecution = execute(
+  const { buildDirectory, compilation, javaExecution } = runJavaProfileProbe(
+    javac,
     java,
-    ["-Xlog:class+load=info:stderr", "RunOWL2DLProfile", fixture],
-    { env: environment },
+    classpath,
   );
   const javaOutput = JSON.parse(javaExecution.stdout);
   assert.equal(javaOutput.version, pin.owlapiVersionLine);

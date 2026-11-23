@@ -11,6 +11,8 @@ The source policy can qualify original constructor arity and unambiguous typed
 use only; it cannot waive datatype, category, simplicity or imported failures.
 
 The runner compiles only the project-owned Java probe in a temporary directory.
+It removes that directory after compilation and execution, including on failure.
+The receipt records the build directory path for provenance.
 It executes existing OWLAPI 5.5.1 JARs at the pinned source revision, captures both
 version-output streams, hashes every classpath JAR, records JVM class-load origins,
 and rechecks the candidate, tools, inputs and reference artifacts afterward.
