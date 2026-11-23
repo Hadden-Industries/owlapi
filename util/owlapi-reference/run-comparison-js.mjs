@@ -19,6 +19,10 @@ import { observeParserBehavior } from "./comparison-parser-behavior.mjs";
 import { observeProfileIdentity } from "./comparison-profile-identity.mjs";
 import { observeLocalityBehavior } from "./comparison-locality.mjs";
 import { observeXmlProvider } from "./comparison-xml-provider.mjs";
+import {
+  observeJsonLdContextProvider,
+  observeJsonLdFirstStructure,
+} from "./comparison-jsonld.mjs";
 
 const iriValue = (iri) => iri?.value ?? null;
 const ontologyIdentity = (ontology) => ({
@@ -473,6 +477,8 @@ async function observe(request, directory) {
     profileIdentity: observeProfileIdentity,
     localityBehavior: observeLocalityBehavior,
     xmlProvider: observeXmlProvider,
+    jsonLdFirstStructure: observeJsonLdFirstStructure,
+    jsonLdContextProvider: observeJsonLdContextProvider,
   };
   const publicOperation = Object.keys(publicObservers).find(
     (key) => request[key],

@@ -501,6 +501,35 @@ test("release shadow preserves the separately pinned writer and VOWL source case
   expect(admitted.status).toBe("incomplete");
 });
 
+test("JSON-LD provider and parser behavior each bind a distinct required witness", () => {
+  const cases = comparisonCases({ suite: "public-api-behavior" });
+  const roster = corpusQualificationRoster(comparisonCases);
+  for (const [input, decisionId] of [
+    ["jsonld/context-provider", "BEHAVIOR-JSONLD-CONTEXT-PROVIDER"],
+    ["jsonld/first-structure", "BEHAVIOR-JSONLD-FIRST-STRUCTURE"],
+  ]) {
+    const entry = cases.find(({ input: fixture }) => fixture.id === input);
+    expect(entry).toBeDefined();
+    expect(
+      roster.cells.filter(({ caseId }) => caseId === entry.caseId),
+    ).toEqual([
+      expect.objectContaining({
+        input,
+        platform: "linux",
+        measurement: "behavior",
+        behaviorDecisionId: decisionId,
+      }),
+      expect.objectContaining({
+        input,
+        platform: "win32",
+        measurement: "behavior",
+        behaviorDecisionId: decisionId,
+      }),
+    ]);
+    expect(roster.unregisteredBehaviorDecisions).not.toContain(decisionId);
+  }
+});
+
 test("all registered receipts still hold shadow qualification when a behavior decision lacks a case", async () => {
   const subject = {
     tarballSha256: "1".repeat(64),

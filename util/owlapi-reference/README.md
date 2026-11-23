@@ -72,6 +72,8 @@ The parser cases check selected parser outcomes, RDF metadata, OWL/XML enumerati
 The profile identity case checks the selected manager, factory and configuration bindings and their state after a mismatched binding is refused.
 The locality case checks exact subclass edges included from a fixed seed, including the effect of filtering a link in the chain.
 The XML provider case verifies the configured expansion limits with a finite internal entity and checks an ordinary literal under the default JavaScript profile.
+The JSON-LD cases compare first-object and first-array parsing with released Java and exercise the provider's recorded context whitelist through the public manager.
+They also verify default context refusal, the normative context count, and authorization and reuse within the same JavaScript host authority.
 
 Use `--measure performance` for fresh-process working-set and warmed load samples.
 A ratio requires equivalent untimed structural evidence on the same profile and input.

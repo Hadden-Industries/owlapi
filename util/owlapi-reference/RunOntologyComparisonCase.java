@@ -93,6 +93,11 @@ public final class RunOntologyComparisonCase {
         }
         result.put("oracleVersion", version);
         if ("public-api-behavior".equals(request.path("scenario").asText())) {
+            // Read the pristine provider settings before the offline guard replaces the whitelist.
+            boolean observeJsonLdWhitelist = request.path("jsonLdContextProvider").isObject();
+            if (observeJsonLdWhitelist) {
+                result.put("jsonLdContextProvider", OntologyJsonLdComparison.observeWhitelist());
+            }
             OntologyReferenceContract.configureOfflineDocumentLoading(Map.of());
             try {
                 if (request.path("configuration").isObject()) {
@@ -119,7 +124,10 @@ public final class RunOntologyComparisonCase {
                     result.put("localityBehavior", OntologyLocalityComparison.observe(request.required("localityBehavior")));
                 } else if (request.path("xmlProvider").isObject()) {
                     OntologyXmlProviderComparison.observe(request.required("xmlProvider"), result);
-                } else {
+                } else if (request.path("jsonLdFirstStructure").isObject()) {
+                    result.put("jsonLdFirstStructure", OntologyJsonLdComparison.observeFirstStructure(
+                        request.required("jsonLdFirstStructure")));
+                } else if (!observeJsonLdWhitelist) {
                     result.put("literalConstruction", OntologyLiteralComparison.observe(request.required("literalConstruction")));
                 }
                 result.put("javaLoad", Map.of("status", "completed"));

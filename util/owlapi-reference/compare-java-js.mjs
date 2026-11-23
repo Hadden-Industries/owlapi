@@ -55,6 +55,7 @@ import { parserBehaviorComparisonCases } from "./comparison-parser-behavior.mjs"
 import { profileIdentityComparisonCase } from "./comparison-profile-identity.mjs";
 import { localityBehaviorComparisonCase } from "./comparison-locality.mjs";
 import { xmlProviderComparisonCase } from "./comparison-xml-provider.mjs";
+import { jsonLdComparisonCases } from "./comparison-jsonld.mjs";
 import {
   julyTimeDifferenceScope,
   reconcileJulyTimeLoad,
@@ -121,6 +122,9 @@ const comparisonInputs = [
   "./OntologyLocalityComparison.java",
   "./comparison-xml-provider.mjs",
   "./OntologyXmlProviderComparison.java",
+  "./comparison-jsonld.mjs",
+  "./OntologyJsonLdComparison.java",
+  "../../docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
   "./comparison-july-differences.mjs",
   "./reconcile-structural-differences.mjs",
   "../../docs/compatibility/expected-differences.json",
@@ -164,6 +168,8 @@ const normativeObservation = {
   profileIdentity: "profileBindings",
   localityBehavior: "normativeLocalityBehavior",
   xmlProvider: "normativeXmlProvider",
+  jsonLdFirstStructure: "normativeJsonLdFirstStructure",
+  jsonLdContextProvider: "normativeJsonLdContextProvider",
 };
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
@@ -356,6 +362,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       profileIdentityComparisonCase(),
       localityBehaviorComparisonCase(),
       xmlProviderComparisonCase(),
+      ...jsonLdComparisonCases(),
     ];
   if (selectsWriter(request)) return writerComparisonCases(request);
   if (selectsVowl(request))
@@ -660,6 +667,12 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     const recipe = definition[behaviorField];
     const expectedNormative = recipe.normative ?? recipe.normativeCopy;
     const observedNormative = js[normativeObservation[behaviorField]];
+    const observedControls = js[`${behaviorField}Controls`];
+    const matchedAdapter =
+      !recipe.adapterControls ||
+      (observedControls &&
+        comparisonIdentity(observedControls) ===
+          comparisonIdentity(recipe.adapterControls));
     const matchedExpected = Object.entries(recipe.expected ?? {}).every(
       ([key, value]) => js[behaviorField]?.[key] === value,
     );
@@ -695,6 +708,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       js.load?.status === "completed" &&
       native.javaLoad?.status === "completed" &&
       matchedExpected &&
+      matchedAdapter &&
       matchesRecordedLiterals &&
       matchesRecordedRows &&
       recordedStorageBytes &&

@@ -3,37 +3,14 @@ import { OWLManager } from "../../../apibinding/index.js";
 import { OWLDocumentFormats } from "../../../formats/index.js";
 import { StringDocumentSource } from "../../../io/index.js";
 import { OWLOntologyLoaderConfiguration } from "../../../model/index.js";
+import {
+  jsonLdFirstStructureDocuments,
+  recordedJsonLdContexts,
+} from "../../../util/owlapi-reference/comparison-jsonld.mjs";
 import processor from "./provider/jsonld.js";
 
 const behaviorProfileId = "java-owlapi-5.5.1";
-// Independent constants observed from the released RDF4J provider.
-const allowed = [
-  "http://schema.org/",
-  "http://www.w3.org/ns/activitystreams.jsonld",
-  "http://www.w3.org/ns/anno.jsonld",
-  "http://www.w3.org/ns/hydra/context.jsonld",
-  "http://www.w3.org/ns/ldp.jsonld",
-  "http://www.w3.org/ns/oa.jsonld",
-  "http://xmlns.com/foaf/spec/index.jsonld",
-  "https://auto.schema.org/",
-  "https://bib.schema.org/",
-  "https://geojson.org/geojson-ld/geojson-context.jsonld",
-  "https://health-lifesci.schema.org/",
-  "https://pending.schema.org/",
-  "https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld",
-  "https://schema.org/",
-  "https://schema.org/docs/jsonldcontext.jsonld",
-  "https://schema.org/version/latest/schemaorg-all-http.jsonld",
-  "https://schema.org/version/latest/schemaorg-all-https.jsonld",
-  "https://schema.org/version/latest/schemaorg-all.jsonld",
-  "https://schema.org/version/latest/schemaorg-current-http.jsonld",
-  "https://schema.org/version/latest/schemaorg-current-https.jsonld",
-  "https://schema.org/version/latest/schemaorg-current.jsonld",
-  "https://w3c.github.io/json-ld-rc/context.jsonld",
-  "https://w3id.org/security/v1",
-  "https://www.w3.org/2018/credentials/v1",
-  "https://www.w3.org/2019/wot/td/v1",
-];
+const allowed = recordedJsonLdContexts();
 const context = {
   "@vocab": "urn:jsonld:",
   owl: "http://www.w3.org/2002/07/owl#",
@@ -54,8 +31,9 @@ const load = (loader, document = source()) =>
   }).loadOntologyFromOntologyDocument(document);
 
 test("Java consumes the first complete JSON structure while normative rejects trailing content", async () => {
-  const text =
-    '{"@id":"urn:jsonld:A","@type":"http://www.w3.org/2002/07/owl#Class"} trailing-content';
+  const { text } = jsonLdFirstStructureDocuments.find(
+    ({ id }) => id === "trailing-text",
+  );
   const document = new StringDocumentSource(text, {
     format: OWLDocumentFormats.JSON_LD,
   });
@@ -68,7 +46,10 @@ test("Java consumes the first complete JSON structure while normative rejects tr
 });
 
 test("Java rejects malformed JSON inside its first structure even when trailing content is ignored", async () => {
-  const document = new StringDocumentSource('{"@id": "urn:jsonld:A",} {}', {
+  const { text } = jsonLdFirstStructureDocuments.find(
+    ({ id }) => id === "invalid-first-object",
+  );
+  const document = new StringDocumentSource(text, {
     format: OWLDocumentFormats.JSON_LD,
   });
   await expect(load(undefined, document)).rejects.toThrow();
