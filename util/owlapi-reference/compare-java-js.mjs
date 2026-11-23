@@ -44,6 +44,7 @@ import {
 import {
   corpusQualificationRoster,
   corpusQualificationShards,
+  installedDependencyGraphIdentity,
   reconcileCorpusReceipts,
 } from "./comparison-release-evidence.mjs";
 import { runWindowsComparisonJob } from "./comparison-job.mjs";
@@ -1248,7 +1249,8 @@ async function captureInstalledIdentity(candidateDirectory, consumerDirectory) {
   const basename = candidate.tarball.fileName;
   if (!/^[A-Za-z0-9_.-]+\.tgz$/u.test(basename))
     throw new Error("Invalid candidate tarball name");
-  const tarball = await readFile(join(candidateDirectory, basename));
+  const tarballPath = resolve(candidateDirectory, basename);
+  const tarball = await readFile(tarballPath);
   const tarballSha256 = sha256(tarball);
   const integrity = `sha512-${createHash("sha512").update(tarball).digest("base64")}`;
   if (tarballSha256 !== candidate.tarball.sha256)
@@ -1256,21 +1258,32 @@ async function captureInstalledIdentity(candidateDirectory, consumerDirectory) {
   const dependencyLock = await readFile(
     join(consumerDirectory, "package-lock.json"),
   );
-  const installed =
-    JSON.parse(dependencyLock).packages?.["node_modules/owlapi"];
-  if (
-    installed?.integrity !== integrity ||
-    (candidate.tarball.integrity && candidate.tarball.integrity !== integrity)
-  )
+  if (candidate.tarball.integrity && candidate.tarball.integrity !== integrity)
     throw new Error(
       "Installed consumer integrity differs from the candidate tarball",
     );
+  const dependencyGraphSha256 = installedDependencyGraphIdentity(
+    JSON.parse(dependencyLock),
+    {
+      consumerDirectory,
+      tarballPath,
+      tarballSha256,
+      integrity,
+    },
+  );
   const files = [];
   async function visit(relative) {
     for (const entry of await readdir(join(consumerDirectory, relative), {
       withFileTypes: true,
     })) {
       if (entry.name === ".bin" && entry.isDirectory()) continue;
+      // npm's private install cache repeats the host-relative candidate alias.
+      if (
+        relative === "node_modules" &&
+        entry.name === ".package-lock.json" &&
+        entry.isFile()
+      )
+        continue;
       const child = relative + "/" + entry.name;
       if (entry.isDirectory()) await visit(child);
       else {
@@ -1290,7 +1303,7 @@ async function captureInstalledIdentity(candidateDirectory, consumerDirectory) {
     candidate,
     tarballSha256,
     integrity,
-    dependencyGraphSha256: sha256(dependencyLock),
+    dependencyGraphSha256,
     importMapSha256: sha256(
       await readFile(
         new URL(

@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
 import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
 
@@ -20,6 +21,38 @@ const behaviorLedger = new URL(
   "../../docs/compatibility/java-api-parity-decisions.json",
   import.meta.url,
 );
+
+/** Bind npm's candidate alias to admitted bytes instead of an installation path. */
+export function installedDependencyGraphIdentity(
+  lock,
+  { consumerDirectory, tarballPath, tarballSha256, integrity },
+) {
+  const root = lock.packages?.[""];
+  const installed = lock.packages?.["node_modules/owlapi"];
+  const location = pathToFileURL(tarballPath).href;
+  if (
+    lock.lockfileVersion !== 3 ||
+    root?.dependencies?.owlapi !== location ||
+    installed?.integrity !== integrity ||
+    typeof installed.resolved !== "string" ||
+    !installed.resolved.startsWith("file:") ||
+    new URL(installed.resolved, pathToFileURL(`${consumerDirectory}/`)).href !==
+      location
+  ) {
+    throw new Error(
+      "Installed consumer lock does not resolve the admitted candidate tarball",
+    );
+  }
+  const admitted = `sha256:${tarballSha256}`;
+  return comparisonIdentity({
+    ...lock,
+    packages: {
+      ...lock.packages,
+      "": { ...root, dependencies: { ...root.dependencies, owlapi: admitted } },
+      "node_modules/owlapi": { ...installed, resolved: admitted },
+    },
+  });
+}
 
 /** Derive required cells from the reviewed checkout. A producer cannot select its own denominator. */
 export function corpusQualificationRoster(comparisonCases) {

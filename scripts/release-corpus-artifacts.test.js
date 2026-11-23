@@ -5,6 +5,8 @@ import { reconcileHostedCorpus } from "./release-corpus-artifacts.mjs";
 import { zipArchive } from "./fixtures/zip-archive.mjs";
 import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
 import { PACKAGE_FILE_STEM, PACKAGE_VERSION } from "./package-identity.mjs";
+import { UBUNTU } from "./ubuntu-runner.mjs";
+import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import { comparisonCases } from "../util/owlapi-reference/compare-java-js.mjs";
 import {
   comparisonIdentity,
@@ -45,7 +47,7 @@ function fixture(route) {
       : {
           ...run,
           id: 82,
-          run_attempt: 1,
+          run_attempt: 3,
           head_sha: "b".repeat(40),
           path: ".github/workflows/ci.yml",
         };
@@ -60,6 +62,7 @@ function fixture(route) {
     },
   });
   const stem = `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}`;
+  const candidateAttempt = route === "fresh" ? run.run_attempt : 1;
   const tarball = Buffer.from("exact retained candidate bytes");
   const original = zipArchive([
     { path: "SHA256SUMS", content: "fixture inventory" },
@@ -71,6 +74,30 @@ function fixture(route) {
     id: 14,
     digest: "sha256:" + sha256(original),
     size_in_bytes: original.length,
+    name: `${stem}-candidate-${origin.id}-${candidateAttempt}`,
+    created_at: "2026-11-23T04:00:01Z",
+  };
+  const candidateJob = {
+    id: 18,
+    run_id: origin.id,
+    run_attempt: candidateAttempt,
+    head_sha: origin.head_sha,
+    name:
+      (route === "fresh"
+        ? "Release / retained candidate"
+        : CI_JOB_NAMES.candidate) + " / Produce",
+    status: "completed",
+    conclusion: "success",
+    labels: [UBUNTU.label],
+    steps: [
+      {
+        name: "Upload the exact same-run candidate",
+        status: "completed",
+        conclusion: "success",
+        started_at: "2026-11-23T04:00:00Z",
+        completed_at: "2026-11-23T04:00:03Z",
+      },
+    ],
   };
   const subject = {
     artifactId: "14",
@@ -157,7 +184,8 @@ function fixture(route) {
         attempt: run.run_attempt,
         commit: run.head_sha,
         candidateRunId: origin.id,
-        candidateAttempt: origin.run_attempt,
+        candidateAttempt,
+        candidateJobId: candidateJob.id,
         candidateCommit: origin.head_sha,
       },
       artifacts: [
@@ -174,6 +202,7 @@ function fixture(route) {
       "/actions/runs/82": origin,
       "/actions/artifacts/14": candidate,
       "/actions/jobs/19": job,
+      "/actions/jobs/18": candidateJob,
       "/actions/runs/84/artifacts?per_page=100&page=1": {
         total_count: 1,
         artifacts: [artifact],
@@ -187,7 +216,7 @@ function fixture(route) {
       download: async ({ id }) => (id === candidate.id ? original : archive),
     });
   };
-  return { proof, job, subject, verify };
+  return { proof, job, subject, candidateJob, verify };
 }
 
 test.each(["fresh", "promoted"])(
@@ -231,4 +260,10 @@ test("rejects a substituted case and a producer from a prior attempt", async () 
   await expect(stale.verify()).rejects.toThrow(
     "outside the successful original attempt",
   );
+});
+
+test("requires the candidate uploaded by its exact original producing job", async () => {
+  const model = fixture("promoted");
+  model.candidateJob.run_attempt = 3;
+  await expect(model.verify()).rejects.toThrow("original producing attempt");
 });

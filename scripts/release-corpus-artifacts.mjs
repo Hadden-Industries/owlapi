@@ -8,6 +8,11 @@ import {
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { downloadReleaseArtifact } from "./release-approvals.mjs";
 import { readQualifiedZip, requireSameUpload } from "./release-ci-package.mjs";
+import { CI_JOB_NAMES } from "./ci-qualification.mjs";
+import {
+  artifactProducingAttempt,
+  matchesLogicalArtifact,
+} from "../tooling/artifact-transport/identity.mjs";
 import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
 import { UBUNTU } from "./ubuntu-runner.mjs";
 import { PACKAGE_FILE_STEM, PACKAGE_VERSION } from "./package-identity.mjs";
@@ -57,6 +62,7 @@ export async function reconcileHostedCorpus({
       revision(source.candidateCommit) &&
       positive(source.candidateRunId) &&
       positive(source.candidateAttempt) &&
+      positive(source.candidateJobId) &&
       digest(subject?.importMapSha256) &&
       digest(subject.contentSha256) &&
       digest(subject.artifactSha256) &&
@@ -84,11 +90,19 @@ export async function reconcileHostedCorpus({
     artifacts.length <= planned.size,
     "Too many corpus producer artifact references",
   );
-  const readRun = async (id, attempt, commit, paths) => {
+  const readRun = async (
+    id,
+    attempt,
+    commit,
+    paths,
+    allowPriorAttempt = false,
+  ) => {
     const run = await read(`/actions/runs/${id}`);
     assert.ok(
       run.id === id &&
-        run.run_attempt === attempt &&
+        (allowPriorAttempt
+          ? run.run_attempt >= attempt
+          : run.run_attempt === attempt) &&
         run.head_sha === commit &&
         paths.includes(run.path) &&
         run.repository?.id === source.repositoryId &&
@@ -117,6 +131,7 @@ export async function reconcileHostedCorpus({
           source.candidateAttempt,
           source.candidateCommit,
           [ciWorkflow],
+          true,
         );
   const candidate = await read(`/actions/artifacts/${subject.artifactId}`, {
     retryArtifact404: true,
@@ -124,6 +139,14 @@ export async function reconcileHostedCorpus({
   assert.ok(
     candidate.id === Number(subject.artifactId) &&
       candidate.digest === `sha256:${subject.artifactSha256}` &&
+      artifactProducingAttempt(
+        candidate.name,
+        `${packageStem}-candidate-${origin.id}-`,
+        {
+          run: origin.id,
+          attempt: origin.run_attempt,
+        },
+      ) === source.candidateAttempt &&
       candidate.expired === false &&
       Date.parse(candidate.expires_at) > now &&
       candidate.workflow_run?.id === origin.id &&
@@ -131,6 +154,29 @@ export async function reconcileHostedCorpus({
       candidate.workflow_run.repository_id === source.repositoryId &&
       candidate.workflow_run.head_repository_id === source.repositoryId,
     "Corpus candidate differs from the admitted original artifact",
+  );
+  const candidateJob = await read(`/actions/jobs/${source.candidateJobId}`);
+  const candidateJobName =
+    origin.path === ciWorkflow
+      ? CI_JOB_NAMES.candidate
+      : "Release / retained candidate";
+  assert.ok(
+    candidateJob.id === source.candidateJobId &&
+      candidateJob.name === candidateJobName + " / Produce" &&
+      candidateJob.run_id === origin.id &&
+      candidateJob.run_attempt === source.candidateAttempt &&
+      candidateJob.head_sha === origin.head_sha &&
+      candidateJob.status === "completed" &&
+      candidateJob.conclusion === "success" &&
+      candidateJob.labels?.includes(UBUNTU.label),
+    "Corpus candidate job disagrees with the original producing attempt",
+  );
+  requireSameUpload(
+    candidate,
+    origin,
+    candidateJob,
+    "Upload the exact same-run candidate",
+    now,
   );
   const retained = await readQualifiedZip(
     download,
@@ -194,7 +240,15 @@ export async function reconcileHostedCorpus({
     assert.ok(
       artifact?.id === descriptor.id &&
         artifact.digest === `sha256:${descriptor.sha256}` &&
-        artifact.name === `corpus-${run.id}-${source.attempt}-${shard.shardId}`,
+        matchesLogicalArtifact(
+          artifact.name,
+          `corpus-${run.id}-${source.attempt}-${shard.shardId}`,
+          {
+            run: run.id,
+            attempt: source.attempt,
+            legacy: true,
+          },
+        ),
       "Corpus shard archive differs from its acknowledged artifact",
     );
     requireSameUpload(artifact, run, job, uploadStep, now);

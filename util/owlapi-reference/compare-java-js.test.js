@@ -1,12 +1,14 @@
 import { expect, test } from "@jest/globals";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, relative, resolve, sep } from "node:path";
+import { pathToFileURL } from "node:url";
 import { comparisonCases, runComparison } from "./compare-java-js.mjs";
 import { runWindowsComparisonJob } from "./comparison-job.mjs";
 import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
 import {
   corpusQualificationRoster,
+  installedDependencyGraphIdentity,
   reconcileCorpusReceipts,
 } from "./comparison-release-evidence.mjs";
 import {
@@ -640,6 +642,47 @@ test("every required case belongs to one deterministic shard per platform", asyn
       { memoryGuard: false },
     ),
   ).rejects.toThrow("an installed candidate");
+});
+
+test("installed graph identity is portable across producer directories", () => {
+  const makeLock = (root, nested) => {
+    const consumerDirectory = resolve(root, ...nested);
+    const tarballPath = resolve(root, "approved candidate", "owlapi.tgz");
+    const integrity = "sha512-AAAA";
+    const tarballSha256 = "1".repeat(64);
+    const lock = {
+      lockfileVersion: 3,
+      packages: {
+        "": { dependencies: { owlapi: pathToFileURL(tarballPath).href } },
+        "node_modules/owlapi": {
+          integrity,
+          resolved:
+            "file:" +
+            relative(consumerDirectory, tarballPath).split(sep).join("/"),
+        },
+        "node_modules/dependency": { integrity: "sha512-BBBB" },
+      },
+    };
+    return {
+      lock,
+      options: { consumerDirectory, tarballPath, integrity, tarballSha256 },
+    };
+  };
+  const { lock, options } = makeLock("fresh", ["consumer"]);
+  const promoted = makeLock("promoted", ["proof", "consumer"]);
+  const expected = installedDependencyGraphIdentity(lock, options);
+  expect(
+    installedDependencyGraphIdentity(promoted.lock, promoted.options),
+  ).toBe(expected);
+  promoted.lock.packages["node_modules/dependency"].integrity = "sha512-CCCC";
+  expect(
+    installedDependencyGraphIdentity(promoted.lock, promoted.options),
+  ).not.toBe(expected);
+  promoted.lock.packages["node_modules/owlapi"].resolved =
+    "file:other/owlapi.tgz";
+  expect(() =>
+    installedDependencyGraphIdentity(promoted.lock, promoted.options),
+  ).toThrow("does not resolve the admitted candidate");
 });
 
 test("a requested Node heap must fit within the Windows job budget", async () => {
