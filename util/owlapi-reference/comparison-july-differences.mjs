@@ -80,3 +80,42 @@ export async function reconcileJulyTimeLoad(definition, native) {
   }
   return ruleIds;
 }
+
+/** A closure reuses the exact direct-member verdict and requires native propagation. */
+export async function reconcileJulyTimeClosure(definition, js, native) {
+  const scope = definition.expectedDifferences;
+  const comparisons = native.documentComparisons;
+  const observed = js.documentModels;
+  if (
+    !scope?.memberDocumentIRI ||
+    native.closurePropagation?.status !== "match" ||
+    !Array.isArray(comparisons) ||
+    !Array.isArray(observed) ||
+    observed.some(({ status }) => status !== "completed")
+  ) {
+    return null;
+  }
+  const documents = comparisons.map(({ documentIRI }) => documentIRI).sort();
+  if (
+    new Set(documents).size !== documents.length ||
+    comparisonIdentity(documents) !==
+      comparisonIdentity(
+        observed.map(({ documentIRI }) => documentIRI).sort(),
+      ) ||
+    comparisons.some(
+      ({ documentIRI, comparison, unparsedRdf }) =>
+        documentIRI !== scope.memberDocumentIRI &&
+        (comparison.status !== "match" || unparsedRdf?.length !== 0),
+    )
+  ) {
+    return null;
+  }
+  const time = comparisons.find(
+    ({ documentIRI }) => documentIRI === scope.memberDocumentIRI,
+  );
+  if (!time) return null;
+  return reconcileJulyTimeLoad(definition, {
+    structure: time.comparison,
+    javaLoad: { ontology: { unparsedRdf: time.unparsedRdf } },
+  });
+}

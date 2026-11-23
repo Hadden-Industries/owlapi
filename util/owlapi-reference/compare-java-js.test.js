@@ -705,6 +705,34 @@ test("only the exact stock IDMP direct load expects the typed XML limit", () => 
   }
 });
 
+test("July closure propagation uses the OWL-Time approval only on its exact imported document", () => {
+  const selection = {
+    input: "july/core",
+    profile: "normative-v1",
+    scenario: "closure-roundtrip",
+  };
+  const [selected] = comparisonCases(selection);
+  const [time] = comparisonCases({
+    ...selection,
+    input: "july/time.rdf",
+    scenario: "direct-load",
+  });
+  expect(selected.definition.expectedDifferences).toEqual({
+    ...time.definition.expectedDifferences,
+    memberDocumentIRI: "http://www.w3.org/2006/time",
+  });
+  for (const variant of [
+    { input: "july/reference-data" },
+    { profile: "java-owlapi-5.5.1" },
+    { parsingMode: "strict" },
+    { imports: "none" },
+    { scenario: "direct-load" },
+  ]) {
+    const [alternate] = comparisonCases({ ...selection, ...variant });
+    expect(alternate.definition.expectedDifferences).toBeUndefined();
+  }
+});
+
 test("the approved July Time differences bind only the exact normative compatible direct load", () => {
   const request = { input: "july/time.rdf", profile: "normative-v1" };
   const [compatible] = comparisonCases(request);

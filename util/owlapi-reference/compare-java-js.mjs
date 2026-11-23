@@ -62,6 +62,7 @@ import {
 } from "./comparison-transport.mjs";
 import {
   julyTimeDifferenceScope,
+  reconcileJulyTimeClosure,
   reconcileJulyTimeLoad,
 } from "./comparison-july-differences.mjs";
 import { runFormatPerformance } from "./comparison-format-performance.mjs";
@@ -166,6 +167,8 @@ const selectsVowl = ({ suite, scenario }) =>
   suite === "canonical-vowl-dl" || scenario === "canonical-vowl-dl";
 const selectsPublicBehavior = ({ suite, scenario }) =>
   suite === "public-api-behavior" || scenario === "public-api-behavior";
+const julyTimePath = "src/external/time.rdf";
+const julyTimeClosureRoots = new Set(["july/core", "july/extended"]);
 const normativeObservation = {
   configuration: "normativeCopy",
   mutation: "normativeMutation",
@@ -487,6 +490,38 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
         : [scenarios[0]];
     return selectedScenarios.flatMap((scenario) =>
       profiles.map((profile) => {
+        let expectedDifferences;
+        if (
+          oracle &&
+          policy === "recorded" &&
+          profile.behaviorProfileId === normativeProfile &&
+          profile.parsingMode === "compatible"
+        ) {
+          if (
+            scenario === "direct-load" &&
+            input.source.path === julyTimePath
+          ) {
+            expectedDifferences = julyTimeDifferenceScope(
+              input.source,
+              oracle.revision,
+            );
+          } else if (
+            scenario === "closure-roundtrip" &&
+            julyTimeClosureRoots.has(input.id)
+          ) {
+            const time = imports.find(
+              ([, document]) => document.source.path === julyTimePath,
+            )?.[1];
+            if (!time)
+              throw new Error(
+                "The pinned July closure is missing its OWL-Time mapping",
+              );
+            expectedDifferences = {
+              ...julyTimeDifferenceScope(time.source, oracle.revision),
+              memberDocumentIRI: time.documentIRI,
+            };
+          }
+        }
         const definition = {
           schemaVersion: 1,
           scenario,
@@ -518,19 +553,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             ? { javaXml: request.javaXml }
             : {}),
           ...(request.javaTurtle ? { javaTurtle: request.javaTurtle } : {}),
-          ...(scenario === "direct-load" &&
-          input.suite === "july" &&
-          input.source.path === "src/external/time.rdf" &&
-          policy === "recorded" &&
-          profile.behaviorProfileId === normativeProfile &&
-          profile.parsingMode === "compatible"
-            ? {
-                expectedDifferences: julyTimeDifferenceScope(
-                  input.source,
-                  oracle.revision,
-                ),
-              }
-            : {}),
+          ...(expectedDifferences ? { expectedDifferences } : {}),
           ...(scenario === "direct-load" &&
           input.id === originalIdmp.id &&
           input.sha256 === originalIdmp.sha256 &&
@@ -645,13 +668,15 @@ function completedClosureStages(js, native) {
   );
 }
 
-function compareClosureStages(js, native) {
+function compareClosureStages(js, native, reconciledMember) {
   const javaRoundTrip = native.javaRdfXmlRoundTrip;
   const comparisons = native.documentComparisons ?? [];
   const verdicts = [
     javaRoundTrip?.comparison?.status,
     native.jsRdfXmlRoundTrip?.status,
-    ...comparisons.map(({ comparison }) => comparison.status),
+    ...comparisons.map(({ documentIRI, comparison }) =>
+      documentIRI === reconciledMember ? "match" : comparison.status,
+    ),
   ];
   if (verdicts.includes("mismatch")) return "mismatch";
   const completed =
@@ -829,7 +854,9 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       : "incomplete";
   const reconciledRuleIds =
     behavior === "observed" && measurements.includes("structure")
-      ? await reconcileJulyTimeLoad(definition, native)
+      ? definition.expectedDifferences?.memberDocumentIRI
+        ? await reconcileJulyTimeClosure(definition, js, native)
+        : await reconcileJulyTimeLoad(definition, native)
       : null;
   const sourceStructure = reconciledRuleIds
     ? "reconciled"
@@ -842,11 +869,20 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     native.structure?.status === "blocked"
       ? { structure: definition.expectedLoadRefusals.dependentStageReason }
       : null;
-  const structure = inapplicable
-    ? "not-applicable"
-    : definition.scenario === "closure-roundtrip" && sourceStructure === "match"
-      ? compareClosureStages(js, native)
-      : sourceStructure;
+  let structure = sourceStructure;
+  if (inapplicable) structure = "not-applicable";
+  else if (definition.scenario === "closure-roundtrip") {
+    if (sourceStructure === "match")
+      structure = compareClosureStages(js, native);
+    if (sourceStructure === "reconciled") {
+      const stages = compareClosureStages(
+        js,
+        native,
+        definition.expectedDifferences.memberDocumentIRI,
+      );
+      structure = stages === "match" ? "reconciled" : stages;
+    }
+  }
   const accepted =
     behavior === "observed" &&
     (!measurements.includes("structure") ||
@@ -1047,6 +1083,9 @@ async function observeCase(
     ...input,
     scenario: definition.scenario,
     compareStructure,
+    ...(definition.expectedDifferences?.memberDocumentIRI
+      ? { propagateClosure: true }
+      : {}),
     ...(definition.javaXml ? { javaXml: definition.javaXml } : {}),
     ...(definition.javaTurtle ? { javaTurtle: definition.javaTurtle } : {}),
   };

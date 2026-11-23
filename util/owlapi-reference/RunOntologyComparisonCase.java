@@ -237,9 +237,11 @@ public final class RunOntologyComparisonCase {
             }
             Path absent = resultPath.resolveSibling("absent-functional-import");
             if (Files.exists(absent)) throw new IllegalStateException("Import sentinel already exists");
+            Map<String, OWLOntology> comparedModels = request.path("propagateClosure").asBoolean()
+                ? new LinkedHashMap<>() : null;
             if ("closure-roundtrip".equals(request.required("scenario").asText())) {
                 result.put("documentComparisons", compareDocuments(
-                    request.required("sourceModels"), manager, expected, configuration, absent));
+                    request.required("sourceModels"), manager, expected, configuration, absent, comparedModels));
                 OWLOntologyManager merger = OWLManager.createOWLOntologyManager();
                 try {
                     expected = merge(manager, expected, merger);
@@ -277,6 +279,14 @@ public final class RunOntologyComparisonCase {
                 return result;
             }
             result.put("structure", compare(expected, actual));
+            if (comparedModels != null) {
+                var rootIRI = request.required("document").required("documentIRI").asText();
+                try {
+                    result.put("closurePropagation", propagateClosure(comparedModels, rootIRI, actual));
+                } catch (Exception failure) {
+                    result.put("closurePropagation", failure("native-model-propagation", failure));
+                }
+            }
             if (request.path("jsReloadPath").isTextual()) {
                 try {
                     OWLOntology reloaded = loadFunctional(Path.of(request.required("jsReloadPath").asText()),
@@ -589,7 +599,7 @@ public final class RunOntologyComparisonCase {
 
     private static List<Map<String, Object>> compareDocuments(JsonNode sourceModels,
         OWLOntologyManager manager, OWLOntology root, OWLOntologyLoaderConfiguration configuration,
-        Path absent) {
+        Path absent, Map<String, OWLOntology> comparedModels) {
         Map<String, Path> models = new LinkedHashMap<>();
         for (JsonNode model : sourceModels) {
             String documentIRI = model.required("documentIRI").asText();
@@ -597,19 +607,43 @@ public final class RunOntologyComparisonCase {
                 throw new IllegalArgumentException("Repeated source model for " + documentIRI);
             }
         }
-        return manager.importsClosure(root).map(document -> {
+        List<Map<String, Object>> results = manager.importsClosure(root).map(document -> {
             String documentIRI = manager.getOntologyDocumentIRI(document).toString();
             Path model = models.get(documentIRI);
             Map<String, Object> verdict = blocked("JS direct model is unavailable");
             if (model != null) {
                 try {
-                    verdict = compare(document, loadFunctional(model, absent, configuration));
+                    OWLOntology parsed = loadFunctional(model, absent, configuration);
+                    verdict = compare(document, parsed);
+                    if (comparedModels != null && comparedModels.putIfAbsent(documentIRI, parsed) != null)
+                        throw new IllegalArgumentException("Repeated native document in closure");
                 } catch (Exception failure) {
                     verdict = failure("direct-functional-reparse", failure);
                 }
             }
-            return Map.<String, Object>of("documentIRI", documentIRI, "comparison", verdict);
+            Map<String, Object> observation = new LinkedHashMap<>();
+            observation.put("documentIRI", documentIRI);
+            observation.put("comparison", verdict);
+            if (comparedModels != null) observation.put("unparsedRdf", unparsedRdf(manager, document));
+            return observation;
         }).toList();
+        if (comparedModels != null &&
+                (comparedModels.size() != results.size() || !comparedModels.keySet().equals(models.keySet()))) {
+            comparedModels.clear();
+        }
+        return results;
+    }
+
+    private static Map<String, Object> propagateClosure(Map<String, OWLOntology> models,
+        String rootIRI, OWLOntology actual) throws Exception {
+        OWLOntology root = models.get(rootIRI);
+        if (root == null) return blocked("Compared models do not cover the native closure");
+        OWLOntologyManager target = OWLManager.createOWLOntologyManager();
+        OWLOntology merged = new OWLOntologyMerger(() -> models.values().stream(), false)
+            .createMergedOntology(target, null);
+        target.applyChange(new SetOntologyID(merged, root.getOntologyID()));
+        root.annotations().forEach(annotation -> target.applyChange(new AddOntologyAnnotation(merged, annotation)));
+        return compare(merged, actual);
     }
 
     private static OWLOntology merge(OWLOntologyManager source, OWLOntology root,
@@ -693,10 +727,14 @@ public final class RunOntologyComparisonCase {
         result.put("closure", manager.importsClosure(ontology).map(member ->
             OntologyStructuralComparison.ontologyIdentity(member.getOntologyID()))
             .sorted(OntologyStructuralComparison::compareOntologyIdentity).collect(Collectors.toList()));
-        result.put("unparsedRdf", manager.getOntologyFormat(ontology).getOntologyLoaderMetaData()
-            .map(metadata -> metadata.getUnparsedTriples().map(Object::toString).sorted().toList())
-            .orElse(List.of()));
+        result.put("unparsedRdf", unparsedRdf(manager, ontology));
         return result;
+    }
+
+    private static List<String> unparsedRdf(OWLOntologyManager manager, OWLOntology ontology) {
+        return manager.getOntologyFormat(ontology).getOntologyLoaderMetaData()
+            .map(metadata -> metadata.getUnparsedTriples().map(Object::toString).sorted().toList())
+            .orElse(List.of());
     }
 
     private static Map<String, Object> compare(OWLOntology expected, OWLOntology actual) {
