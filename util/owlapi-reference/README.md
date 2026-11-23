@@ -74,6 +74,8 @@ The locality case checks exact subclass edges included from a fixed seed, includ
 The XML provider case verifies the configured expansion limits with a finite internal entity and checks an ordinary literal under the default JavaScript profile.
 The JSON-LD cases compare first-object and first-array parsing with released Java and exercise the provider's recorded context whitelist through the public manager.
 They also verify default context refusal, the normative context count, and authorization and reuse within the same JavaScript host authority.
+The transport cases run released Java and the selected Node package against owned loopback HTTP fixtures and an owned file.
+They compare redirect and attempt behavior, document base, compression fixtures, and JSON-LD context media, links and encodings, with separate host authorization checks.
 
 Use `--measure performance` for fresh-process working-set and warmed load samples.
 A ratio requires equivalent untimed structural evidence on the same profile and input.

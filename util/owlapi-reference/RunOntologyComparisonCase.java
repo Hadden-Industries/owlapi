@@ -92,6 +92,17 @@ public final class RunOntologyComparisonCase {
             throw new IllegalArgumentException("Unexpected OWLAPI implementation version " + version);
         }
         result.put("oracleVersion", version);
+        if ("public-api-behavior".equals(request.path("scenario").asText()) &&
+                request.path("transport").isObject()) {
+            // These preserved probes supply every destination themselves. No request URL
+            // from the comparison request reaches the released loader.
+            result.put("transportCapture", OntologyTransportComparison.observe(
+                request.required("transport"), resultPath.getParent()));
+            result.put("javaLoad", Map.of("status", "completed"));
+            result.put("networkBoundary", "owned-loopback");
+            result.put("structure", Map.of("status", "not-requested"));
+            return result;
+        }
         if ("public-api-behavior".equals(request.path("scenario").asText())) {
             // Read the pristine provider settings before the offline guard replaces the whitelist.
             boolean observeJsonLdWhitelist = request.path("jsonLdContextProvider").isObject();

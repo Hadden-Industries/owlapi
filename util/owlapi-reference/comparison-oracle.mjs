@@ -38,6 +38,10 @@ const oracleSources = [
   "OntologyLocalityComparison.java",
   "OntologyXmlProviderComparison.java",
   "OntologyJsonLdComparison.java",
+  "OntologyTransportComparison.java",
+  "ObserveNetworkContracts.java",
+  "ObserveCompressionContracts.java",
+  "ObserveJsonLdTransport.java",
   "RunOntologyComparisonCase.java",
 ].map(sourceFile);
 const referencePin = new URL("./pinned-version.json", import.meta.url);
@@ -271,6 +275,10 @@ export async function compileComparisonOracle(
       ...(heapMiB === undefined ? [] : [`-Xmx${heapMiB}m`]),
       "-Djavax.xml.accessExternalDTD=",
       "-Djavax.xml.accessExternalSchema=",
+      // Java's ZIP fixture encodes the timezone in its extended timestamp.
+      ...(request.transport?.kind === "compression"
+        ? ["-Duser.timezone=UTC"]
+        : []),
       ...(request.javaXml === "historical-idmp"
         ? [
             "-Djdk.xml.entityExpansionLimit=64000",

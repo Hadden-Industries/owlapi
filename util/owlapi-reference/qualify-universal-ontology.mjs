@@ -265,6 +265,7 @@ export const loadPublicApi = async ({
   includeProfiles = false,
   includeSearch = false,
   includeLocality = false,
+  includeNodeTransport = false,
 }) => {
   const require = createRequire(
     join(consumerDirectory ?? packageDirectory, "package.json"),
@@ -275,6 +276,7 @@ export const loadPublicApi = async ({
   if (includeProfiles) subpaths.push("profiles");
   if (includeSearch) subpaths.push("search");
   if (includeLocality) subpaths.push("modularity/locality");
+  if (includeNodeTransport) subpaths.push("io/node");
   const modules = await Promise.all(
     subpaths.map((subpath) => {
       const path = require.resolve(`${dependencyName}/${subpath}`);

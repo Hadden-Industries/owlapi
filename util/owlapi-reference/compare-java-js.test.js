@@ -531,6 +531,10 @@ test("JSON-LD provider and parser behavior each bind a distinct required witness
 });
 
 test("all registered receipts still hold shadow qualification when a behavior decision lacks a case", async () => {
+  const incompleteRegistry = (selection) =>
+    comparisonCases(selection).filter(
+      ({ input }) => !input.id.startsWith("node-transport/"),
+    );
   const subject = {
     tarballSha256: "1".repeat(64),
     dependencyGraphSha256: "2".repeat(64),
@@ -542,7 +546,7 @@ test("all registered receipts still hold shadow qualification when a behavior de
     lockSha256: sha256(await readFile(oracleLockPath)),
     version: oracleVersion,
   };
-  const roster = corpusQualificationRoster(comparisonCases);
+  const roster = corpusQualificationRoster(incompleteRegistry);
   const receipts = roster.cells.map((cell) => ({
     ...cell,
     subject,
@@ -575,7 +579,7 @@ test("all registered receipts still hold shadow qualification when a behavior de
   }));
   const result = await reconcileCorpusReceipts(
     { subject, oracle, receipts },
-    comparisonCases,
+    incompleteRegistry,
   );
   expect(result.missing).toHaveLength(0);
   expect(result.rejected).toHaveLength(0);
@@ -586,6 +590,28 @@ test("all registered receipts still hold shadow qualification when a behavior de
     "BEHAVIOR-STORAGE-TARGET",
   );
   expect(result.status).toBe("incomplete");
+});
+
+test("the shadow roster requires the socket, compression and context acquisition witnesses", () => {
+  const roster = corpusQualificationRoster(comparisonCases);
+  for (const [input, decision] of [
+    ["node-transport/loopback", "BEHAVIOR-NODE-TRANSPORT"],
+    ["node-transport/compression", "BEHAVIOR-NODE-TRANSPORT"],
+    ["jsonld/context-transport", "BEHAVIOR-JSONLD-CONTEXT-PROVIDER"],
+  ]) {
+    expect(
+      roster.cells
+        .filter(({ input: id }) => id === input)
+        .map(({ platform, behaviorDecisionId }) => [
+          platform,
+          behaviorDecisionId,
+        ]),
+    ).toEqual([
+      ["linux", decision],
+      ["win32", decision],
+    ]);
+  }
+  expect(roster.unregisteredBehaviorDecisions).toEqual([]);
 });
 
 test("a requested Node heap must fit within the Windows job budget", async () => {

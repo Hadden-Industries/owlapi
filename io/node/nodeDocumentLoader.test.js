@@ -1,5 +1,4 @@
 import { createServer } from "node:http";
-import { readFileSync } from "node:fs";
 import { mkdtemp, realpath, writeFile, unlink, rmdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -8,6 +7,10 @@ import { gzipSync, deflateRawSync } from "node:zlib";
 import { OWLManager } from "../../apibinding/index.js";
 import { NodeDocumentLoader } from "./index.js";
 import { IRI, OWLOntologyLoaderConfiguration } from "../../model/index.js";
+import {
+  recordedCompressionVectors,
+  recordedContextVectors,
+} from "../../util/owlapi-reference/comparison-transport.mjs";
 
 let server;
 let redirectDestination;
@@ -18,49 +21,8 @@ let fileDirectory;
 let ownedFile;
 let ownedFileURL;
 let signalOpenResponse;
-const javaObservations = JSON.parse(
-  readFileSync(
-    new URL(
-      "../../docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
-      import.meta.url,
-    ),
-    "utf8",
-  ),
-).observations;
-const contextDocumentVectors = javaObservations
-  .find(({ probeId }) => probeId === "ObserveJsonLdTransport")
-  .stdout.trimEnd()
-  .split("\n")
-  .filter((line) => line.startsWith("document-"))
-  .map((line) => {
-    const [name, outcome, requestCount, , bytes, contentType, link, encoding] =
-      line.split("\t");
-    return {
-      name: name.substring(9),
-      outcome,
-      requestCount: Number(requestCount),
-      bytes: Buffer.from(bytes, "base64"),
-      contentType,
-      link,
-      encoding,
-    };
-  });
-const compressionVectors = javaObservations
-  .find(({ probeId }) => probeId === "ObserveCompressionContracts")
-  .stdout.trimEnd()
-  .split("\n")
-  .map((line) => {
-    const [name, suffix, encoding, disposition, base64, outcome] =
-      line.split("\t");
-    return {
-      name,
-      suffix,
-      encoding,
-      disposition,
-      bytes: Buffer.from(base64, "base64"),
-      outcome,
-    };
-  });
+const contextDocumentVectors = recordedContextVectors();
+const compressionVectors = recordedCompressionVectors();
 beforeAll(async () => {
   // Alias guards refuse 8.3 temp spellings such as RUNNER~1.
   fileDirectory = await realpath(
@@ -336,7 +298,7 @@ function javaConfiguration() {
 
 test.each(contextDocumentVectors)(
   "Java context document $name preserves native acceptance, base and requests",
-  async ({ name, outcome, requestCount }) => {
+  async ({ name, outcome, requests }) => {
     const loader = new NodeDocumentLoader({ authorize: () => true });
     const loading = loader.load(IRI.create(`${base}/document/${name}`), {
       config: javaConfiguration(),
@@ -353,7 +315,7 @@ test.each(contextDocumentVectors)(
         documentPath.substring(5),
       );
     }
-    expect(events).toHaveLength(requestCount);
+    expect(events).toHaveLength(requests);
   },
 );
 

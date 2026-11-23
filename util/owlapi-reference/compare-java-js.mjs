@@ -57,6 +57,10 @@ import { localityBehaviorComparisonCase } from "./comparison-locality.mjs";
 import { xmlProviderComparisonCase } from "./comparison-xml-provider.mjs";
 import { jsonLdComparisonCases } from "./comparison-jsonld.mjs";
 import {
+  normalizeTransportCapture,
+  transportComparisonCases,
+} from "./comparison-transport.mjs";
+import {
   julyTimeDifferenceScope,
   reconcileJulyTimeLoad,
 } from "./comparison-july-differences.mjs";
@@ -124,6 +128,11 @@ const comparisonInputs = [
   "./OntologyXmlProviderComparison.java",
   "./comparison-jsonld.mjs",
   "./OntologyJsonLdComparison.java",
+  "./comparison-transport.mjs",
+  "./OntologyTransportComparison.java",
+  "./ObserveNetworkContracts.java",
+  "./ObserveCompressionContracts.java",
+  "./ObserveJsonLdTransport.java",
   "../../docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
   "./comparison-july-differences.mjs",
   "./reconcile-structural-differences.mjs",
@@ -170,6 +179,7 @@ const normativeObservation = {
   xmlProvider: "normativeXmlProvider",
   jsonLdFirstStructure: "normativeJsonLdFirstStructure",
   jsonLdContextProvider: "normativeJsonLdContextProvider",
+  transport: "normativeTransport",
 };
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
@@ -363,6 +373,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       localityBehaviorComparisonCase(),
       xmlProviderComparisonCase(),
       ...jsonLdComparisonCases(),
+      ...transportComparisonCases(),
     ];
   if (selectsWriter(request)) return writerComparisonCases(request);
   if (selectsVowl(request))
@@ -655,7 +666,11 @@ function matchesStrictFirstAttempts(attempts) {
 
 async function caseVerdict(definition, measurements, js, native, performance) {
   const offline =
-    js.networkRequests?.length === 0 && native.networkAttempts === 0;
+    js.networkRequests?.length === 0 &&
+    (definition.transport
+      ? js.networkBoundary === "owned-loopback" &&
+        native.networkBoundary === "owned-loopback"
+      : native.networkAttempts === 0);
   const matchedProfiles =
     js.effectiveSettings?.behaviorProfileId === definition.behaviorProfileId &&
     js.effectiveSettings?.parsingMode === definition.parsingMode &&
@@ -665,6 +680,11 @@ async function caseVerdict(definition, measurements, js, native, performance) {
   );
   if (behaviorField) {
     const recipe = definition[behaviorField];
+    const nativeRows = definition.transport
+      ? typeof native.transportCapture === "string" &&
+        sha256(native.transportCapture) === recipe.nativeCaptureSha256 &&
+        normalizeTransportCapture(recipe.kind, native.transportCapture)
+      : native[behaviorField];
     const expectedNormative = recipe.normative ?? recipe.normativeCopy;
     const observedNormative = js[normativeObservation[behaviorField]];
     const observedControls = js[`${behaviorField}Controls`];
@@ -713,10 +733,10 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       matchesRecordedRows &&
       recordedStorageBytes &&
       js[behaviorField] &&
-      native[behaviorField] &&
+      nativeRows &&
       matchedFailure &&
       comparisonIdentity(js[behaviorField]) ===
-        comparisonIdentity(native[behaviorField]) &&
+        comparisonIdentity(nativeRows) &&
       (!expectedNormative ||
         (observedNormative &&
           comparisonIdentity(observedNormative) ===

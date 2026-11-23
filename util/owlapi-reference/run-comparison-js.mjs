@@ -23,6 +23,7 @@ import {
   observeJsonLdContextProvider,
   observeJsonLdFirstStructure,
 } from "./comparison-jsonld.mjs";
+import { observeTransport } from "./comparison-transport.mjs";
 
 const iriValue = (iri) => iri?.value ?? null;
 const ontologyIdentity = (ontology) => ({
@@ -465,6 +466,7 @@ async function observe(request, directory) {
     includeManchesterRenderer,
     includeSearch: Boolean(request.queryBehavior),
     includeLocality: Boolean(request.localityBehavior),
+    includeNodeTransport: Boolean(request.transport),
   });
   const publicObservers = {
     configuration: observeConfiguration,
@@ -479,6 +481,7 @@ async function observe(request, directory) {
     xmlProvider: observeXmlProvider,
     jsonLdFirstStructure: observeJsonLdFirstStructure,
     jsonLdContextProvider: observeJsonLdContextProvider,
+    transport: observeTransport,
   };
   const publicOperation = Object.keys(publicObservers).find(
     (key) => request[key],
@@ -490,7 +493,7 @@ async function observe(request, directory) {
       throw new Error("Comparison workers run offline");
     };
     return {
-      ...(await publicObservers[publicOperation](api, request)),
+      ...(await publicObservers[publicOperation](api, request, directory)),
       networkRequests,
     };
   }
