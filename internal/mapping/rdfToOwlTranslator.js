@@ -2305,7 +2305,10 @@ class RdfGraphInterpreter {
         recoversDetachedChains &&
         currentQuad.object.value === OWL_VOCABULARY.Axiom &&
         source.object.termType === "NamedNode" &&
-        property.object.value === OWL_VOCABULARY.propertyChainAxiom
+        property.object.value === OWL_VOCABULARY.propertyChainAxiom &&
+        !this.#outgoing(source.object, property.object.value).some(
+          ({ object }) => termKey(object) === termKey(target.object),
+        )
       ) {
         const chain = this.#readNamedPropertyChain(target.object);
         if (chain) {
@@ -2375,17 +2378,11 @@ class RdfGraphInterpreter {
     }
     // The Java RDF/XML writer can serialize the reified target as a second list.
     // Match its ordered named properties before consuming that list's triples.
-    const key = tripleKey(
-      baseQuad.subject,
-      baseQuad.predicate,
-      baseQuad.object,
-    );
     const signature = JSON.stringify([
       baseQuad.subject.value,
       ...chain.map(({ iri }) => iri.value),
     ]);
     for (const entry of this.#propertyChainReifications.get(signature) ?? []) {
-      if (entry.baseKey === key) continue;
       this.#retainedAxiomAnnotationBases.add(entry.baseKey);
       for (const cell of entry.cells) this.#consume(cell);
       annotations.push(...(await this.#nodeAnnotations(entry.node, 0)));

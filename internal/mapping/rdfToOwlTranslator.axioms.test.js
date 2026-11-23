@@ -136,6 +136,46 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
     },
   );
 
+  it("keeps annotations on their explicit property-chain triples in the Java profile", async () => {
+    const members = [nn(`${EX}first`), nn(`${EX}second`)];
+    const superProperty = nn(`${EX}superProperty`);
+    const predicate = nn(`${OWL}propertyChainAxiom`);
+    const source = datasetOf(
+      [...members, superProperty].map((term) =>
+        declaration(term, `${OWL}ObjectProperty`),
+      ),
+      ...["first source", "second source"].map((label, index) => {
+        const list = rdfList(`chain-${index}`, members);
+        const node = bn(`annotation-${index}`);
+        return [
+          q(superProperty, predicate, list.head),
+          ...list.quads,
+          declaration(node, `${OWL}Axiom`),
+          q(node, nn(`${OWL}annotatedSource`), superProperty),
+          q(node, nn(`${OWL}annotatedProperty`), predicate),
+          q(node, nn(`${OWL}annotatedTarget`), list.head),
+          q(node, nn(`${RDFS}label`), literal(label)),
+        ];
+      }),
+    );
+    const behaviorProfileId = "java-owlapi-5.5.1";
+    const { ontology } = await new RdfToOwlTranslator({
+      dataFactory: new OWLDataFactory({ behaviorProfileId }),
+    }).translate(source, {
+      configuration: new OWLOntologyLoaderConfiguration({
+        behaviorProfileId,
+        parsingMode: "compatible",
+      }),
+    });
+    expect(
+      [...ontology.getAxiomsByType(OWLObjectKind.SUB_PROPERTY_CHAIN_AXIOM)]
+        .map(({ annotations }) =>
+          annotations.map(({ value }) => value.lexicalForm).sort(),
+        )
+        .sort(),
+    ).toEqual([["first source"], ["second source"]]);
+  });
+
   it("removes the redundant OWL 1 declaration and list types from strict input", async () => {
     const owlClass = nn(`${EX}LegacyClass`);
     const property = nn(`${EX}legacyProperty`);
