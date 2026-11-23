@@ -2,13 +2,14 @@ import { readFileSync } from "node:fs";
 import { comparisonIdentity } from "./comparison-evidence.mjs";
 
 const classIRI = "http://www.w3.org/2002/07/owl#Class";
-const classDocument = JSON.stringify({
-  "@id": "urn:jsonld:A",
-  "@type": classIRI,
-});
+const firstClass = "urn:jsonld:A";
+const classDocumentFor = (iri) =>
+  JSON.stringify({ "@id": iri, "@type": classIRI });
+const classDocument = classDocumentFor(firstClass);
 const classContext = JSON.stringify({ "@context": { Class: classIRI } });
 
 const returned = { status: "return", axioms: 1 };
+const firstStructure = { ...returned, classes: [firstClass] };
 const refused = { status: "refused" };
 const syntaxRefusal = { ...refused, category: "OWL_SYNTAX_ERROR" };
 const policyRefusal = { ...refused, category: "SECURITY_POLICY_VIOLATION" };
@@ -16,7 +17,10 @@ export const jsonLdFirstStructureDocuments = [
   { id: "object", text: classDocument },
   { id: "array", text: `[${classDocument}]` },
   { id: "trailing-text", text: `${classDocument} trailing-content` },
-  { id: "trailing-document", text: `[${classDocument}] {}` },
+  {
+    id: "trailing-document",
+    text: `[${classDocument}] ${classDocumentFor("urn:jsonld:Trailing")}`,
+  },
   { id: "invalid-first-object", text: '{"@id":"urn:jsonld:A",} {}' },
 ];
 
@@ -44,13 +48,19 @@ export function recordedJsonLdContexts() {
 }
 
 export function jsonLdComparisonCases() {
-  const firstStructure = {
+  const firstStructureRecipe = {
     decisionId: "BEHAVIOR-JSONLD-FIRST-STRUCTURE",
     documents: jsonLdFirstStructureDocuments,
-    javaRows: [returned, returned, returned, returned, refused],
+    javaRows: [
+      firstStructure,
+      firstStructure,
+      firstStructure,
+      firstStructure,
+      refused,
+    ],
     normative: [
-      returned,
-      returned,
+      firstStructure,
+      firstStructure,
       syntaxRefusal,
       syntaxRefusal,
       syntaxRefusal,
@@ -80,7 +90,7 @@ export function jsonLdComparisonCases() {
     },
   };
   return [
-    ["first-structure", "jsonLdFirstStructure", firstStructure],
+    ["first-structure", "jsonLdFirstStructure", firstStructureRecipe],
     ["context-provider", "jsonLdContextProvider", contextProvider],
   ].map(([name, field, recipe]) => {
     const input = { id: `jsonld/${name}` };
@@ -103,7 +113,13 @@ export function jsonLdComparisonCases() {
   });
 }
 
-async function loadDocument(api, manager, text, configuration) {
+async function loadDocument(
+  api,
+  manager,
+  text,
+  configuration,
+  includeClasses = false,
+) {
   try {
     const ontology = await manager.loadOntologyFromOntologyDocument(
       new api.StringDocumentSource(text, {
@@ -112,7 +128,17 @@ async function loadDocument(api, manager, text, configuration) {
       }),
       configuration,
     );
-    return { status: "return", axioms: ontology.getAxiomCount() };
+    return {
+      status: "return",
+      axioms: ontology.getAxiomCount(),
+      ...(includeClasses
+        ? {
+            classes: [...ontology.getClassesInSignature()]
+              .map(({ iri }) => iri.value)
+              .sort(),
+          }
+        : {}),
+    };
   } catch (failure) {
     return failure instanceof api.UnparsableOntologyException
       ? { status: "refused" }
@@ -139,7 +165,7 @@ export async function observeJsonLdFirstStructure(api, request) {
     let manager;
     for (const { text } of request.jsonLdFirstStructure.documents) {
       manager = api.OWLManager.createOWLOntologyManager(options);
-      rows.push(await loadDocument(api, manager, text));
+      rows.push(await loadDocument(api, manager, text, undefined, true));
     }
     return { manager, rows };
   };
@@ -162,7 +188,11 @@ async function observeNormativeContexts(api) {
   let count = 0;
   let calls = 0;
   const documentLoader = {
-    load(iri) {
+    load(iri, options) {
+      if (options?.purpose !== "jsonld-context")
+        throw new Error(
+          "The manager did not identify a JSON-LD context request",
+        );
       calls++;
       const index = Number(iri.value.split("/").at(-1)) + 1;
       if (!Number.isSafeInteger(index) || index < 1 || index > count) {
@@ -225,7 +255,11 @@ export async function observeJsonLdContextProvider(api, request) {
     });
   const calls = [];
   const compatible = makeManager({
-    load(iri) {
+    load(iri, options) {
+      if (options?.purpose !== "jsonld-context")
+        throw new Error(
+          "The manager did not identify a JSON-LD context request",
+        );
       calls.push(iri.value);
       const next = whitelist.indexOf(iri.value) + 1;
       if (next === 0 || calls.length > whitelist.length) {

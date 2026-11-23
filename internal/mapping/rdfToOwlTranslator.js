@@ -2306,9 +2306,8 @@ class RdfGraphInterpreter {
         currentQuad.object.value === OWL_VOCABULARY.Axiom &&
         source.object.termType === "NamedNode" &&
         property.object.value === OWL_VOCABULARY.propertyChainAxiom &&
-        !this.#outgoing(source.object, property.object.value).some(
-          ({ object }) => termKey(object) === termKey(target.object),
-        )
+        this.#dataset.match(source.object, property.object, target.object, null)
+          .size === 0
       ) {
         const chain = this.#readNamedPropertyChain(target.object);
         if (chain) {

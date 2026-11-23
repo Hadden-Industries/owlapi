@@ -23,7 +23,8 @@ final class OntologyJsonLdComparison {
                 IRI.create("urn:owlapi:comparison:jsonld"), new RDFJsonLDDocumentFormat(), null);
             try {
                 var ontology = manager.loadOntologyFromOntologyDocument(source);
-                outcomes.add(Map.of("status", "return", "axioms", ontology.getAxiomCount()));
+                var classes = ontology.classesInSignature().map(entity -> entity.getIRI().toString()).sorted().toList();
+                outcomes.add(Map.of("status", "return", "axioms", ontology.getAxiomCount(), "classes", classes));
             } catch (UnparsableOntologyException refusal) {
                 outcomes.add(Map.of("status", "refused"));
             }

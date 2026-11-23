@@ -22,7 +22,7 @@ const token = "Bearer owned-test-token";
 const redirectedDocument =
   "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' xmlns:owl='http://www.w3.org/2002/07/owl#'><owl:Class rdf:about='C'/></rdf:RDF>";
 const matchedNetwork =
-  /^(?:attempts-|connect-timeout-|redirect-|status-503$|encoding-deflate$)/u;
+  /^(?:attempts-|connect-timeout-|redirect-|cross-port-|status-503$|encoding-deflate$)/u;
 const contextBase = "application/ld+json";
 
 const returned = (text) => ({ status: "return", text });
@@ -366,6 +366,12 @@ function networkQuery(id, config) {
         .setAuthorizationValue(token),
     ];
   }
+  if (id.startsWith("cross-port-")) {
+    return [
+      `/crossport/${id.slice("cross-port-".length)}`,
+      config.setAuthorizationValue(token),
+    ];
+  }
   const paths = {
     "redirect-relative": "/relative",
     "redirect-loop": "/loop",
@@ -398,6 +404,34 @@ async function networkObservations(api, request, config, normative, directory) {
   await writeFile(file, "owned-file", { flag: "wx" });
   const fileIRI = pathToFileURL(file).href;
   const events = [];
+  return withOwnedServer(
+    (incoming, outgoing) => {
+      if (incoming.url !== "/final") {
+        outgoing.writeHead(404).end();
+        return;
+      }
+      events.push(
+        `/crossport-final[auth=${incoming.headers.authorization ?? "none"}]`,
+      );
+      outgoing.end("ok");
+    },
+    (destination) =>
+      observeOwnedNetwork(api, request, config, normative, {
+        file,
+        fileIRI,
+        events,
+        destination,
+      }),
+  );
+}
+
+function observeOwnedNetwork(
+  api,
+  request,
+  config,
+  normative,
+  { file, fileIRI, events, destination },
+) {
   let origin;
   return withOwnedServer(
     (incoming, outgoing) => {
@@ -417,7 +451,10 @@ async function networkObservations(api, request, config, normative, directory) {
         );
       } else if (path === "/relative")
         redirect(outgoing, 308, "/ok", "redirect-body");
-      else if (path === "/loop")
+      else if (path.startsWith("/crossport/")) {
+        const status = path.slice("/crossport/".length);
+        redirect(outgoing, status, destination + "/final", "redirect-body");
+      } else if (path === "/loop")
         redirect(outgoing, 308, origin + "/loop", "redirect-body");
       else if (path === "/file")
         redirect(outgoing, 308, fileIRI, "redirect-body");
@@ -441,7 +478,9 @@ async function networkObservations(api, request, config, normative, directory) {
     async (base) => {
       origin = base;
       const isOwned = (iri) =>
-        iri.value.startsWith(base + "/") || iri.value === fileIRI;
+        iri.value.startsWith(base + "/") ||
+        iri.value === destination + "/final" ||
+        iri.value === fileIRI;
       const loader = new api.NodeDocumentLoader({ authorize: isOwned });
       const rows = [];
       for (const { id } of request.transport.javaRows) {
@@ -533,6 +572,44 @@ function contextQuery(id) {
   return `/${id.slice(8)}`;
 }
 
+async function observeManagerContext(api, loader, destination, config) {
+  const contextIRI = "https://schema.org/";
+  const declaration = "urn:owlapi:comparison:context-class";
+  const manager = api.OWLManager.createOWLOntologyManager({
+    behaviorProfileId: config.getBehaviorProfileId(),
+    documentLoader: {
+      async load(iri, options) {
+        if (iri.value !== contextIRI)
+          throw new Error("Unexpected context fixture IRI");
+        const source = await loader.load(api.IRI.create(destination), options);
+        return new api.StringDocumentSource(source.getText(), {
+          documentIRI: contextIRI,
+        });
+      },
+    },
+  });
+  const document = new api.StringDocumentSource(
+    JSON.stringify({
+      "@context": contextIRI,
+      "@id": declaration,
+      "@type": "Class",
+    }),
+    { format: api.OWLDocumentFormats.JSON_LD },
+  );
+  const ontology = await manager.loadOntologyFromOntologyDocument(
+    document,
+    config,
+  );
+  const classes = [...ontology.getClassesInSignature()];
+  return returned(
+    ontology.getAxiomCount() === 1 &&
+      classes.length === 1 &&
+      classes[0].iri.value === declaration
+      ? "1"
+      : "unexpected",
+  );
+}
+
 function contextObservations(api, config, recipe) {
   const fixtures = recordedContextVectors();
   const events = [];
@@ -593,13 +670,36 @@ function contextObservations(api, config, recipe) {
       for (const { id } of recipe.javaRows) {
         events.length = 0;
         const path = contextQuery(id);
-        const { source, error } = await loadSource(
-          api,
-          loader,
-          base + path,
-          id === "context-native-settings" ? independent : config,
-          "jsonld-context",
-        );
+        let outcome;
+        if (id === "context-native-settings") {
+          outcome = await observeManagerContext(
+            api,
+            loader,
+            base + path,
+            independent,
+          );
+        } else {
+          const { source, error } = await loadSource(
+            api,
+            loader,
+            base + path,
+            config,
+            "jsonld-context",
+          );
+          if (error) outcome = comparableFailure(error);
+          else {
+            const document = JSON.parse(source.getText());
+            const finalPath = new URL(source.getDocumentIRI().value).pathname;
+            outcome = id.startsWith("document-")
+              ? { status: "return", document, path: finalPath }
+              : returned(
+                  document["@context"]?.Class === owlClass &&
+                    finalPath === events.at(-1)?.path
+                    ? "1"
+                    : "unexpected",
+                );
+          }
+        }
         if (
           events.some(
             ({ authorization, encoding }) => authorization || encoding,
@@ -608,20 +708,6 @@ function contextObservations(api, config, recipe) {
           throw new Error(
             "Context retrieval inherited ontology transport headers",
           );
-        let outcome;
-        if (error) outcome = comparableFailure(error);
-        else {
-          const document = JSON.parse(source.getText());
-          const finalPath = new URL(source.getDocumentIRI().value).pathname;
-          outcome = id.startsWith("document-")
-            ? { status: "return", document, path: finalPath }
-            : returned(
-                document["@context"]?.Class === owlClass &&
-                  finalPath === events.at(-1)?.path
-                  ? "1"
-                  : "unexpected",
-              );
-        }
         rows.push({
           id,
           outcome,
