@@ -711,22 +711,56 @@ class RdfGraphInterpreter {
 
   async parserMetaData() {
     const guessedDeclarations = [];
+    const guessedIrisByKind = new Map();
     const visited = new Set();
-    const pending = [...this.#transaction.structuralValues()];
-    while (pending.length) {
-      const value = pending.pop();
-      if (value && typeof value === "object" && !visited.has(value)) {
-        visited.add(value);
-        const type = RDF_ROLE_BY_ENTITY_KIND.get(value.kind);
-        if (type && !this.#knownRoles.get(type)?.has(value.iri.value))
-          guessedDeclarations.push({ iri: value.iri, entityType: value.kind });
-        // Scalars cannot contain entity declarations. Preserve object/array
-        // traversal order and the checkpoint on every visited graph node,
-        // without scheduling a second visit for each immutable scalar field.
-        for (const child of Object.values(value))
-          if (child && typeof child === "object") pending.push(child);
+    const cachedVisits = new WeakMap();
+    for (const cache of [
+      this.#classExpressionCache,
+      this.#dataRangeCache,
+      this.#objectPropertyExpressionCache,
+    ])
+      for (const expression of cache.values()) {
+        cachedVisits.set(expression, false);
+        const yielded = this.#execution.cooperate();
+        if (yielded) await yielded;
       }
-      {
+    const roots = [...this.#transaction.structuralValues()];
+    const pending = [];
+    // Visit each immutable root in the previous order. Identity tracking is
+    // local to one axiom or annotation. A cached anonymous expression can be
+    // shared by many axioms, so remember those subtrees across roots.
+    while (roots.length) {
+      pending.push(roots.pop());
+      visited.clear();
+      while (pending.length) {
+        const value = pending.pop();
+        const cached = cachedVisits.get(value);
+        if (
+          value &&
+          typeof value === "object" &&
+          cached !== true &&
+          !visited.has(value)
+        ) {
+          if (cached === false) cachedVisits.set(value, true);
+          else visited.add(value);
+          const type = RDF_ROLE_BY_ENTITY_KIND.get(value.kind);
+          if (type && !this.#knownRoles.get(type)?.has(value.iri.value)) {
+            let guessedIris = guessedIrisByKind.get(value.kind);
+            if (!guessedIris) {
+              guessedIris = new Set();
+              guessedIrisByKind.set(value.kind, guessedIris);
+            }
+            if (!guessedIris.has(value.iri.value)) {
+              guessedIris.add(value.iri.value);
+              guessedDeclarations.push({
+                iri: value.iri,
+                entityType: value.kind,
+              });
+            }
+          }
+          for (const child of Object.values(value))
+            if (child && typeof child === "object") pending.push(child);
+        }
         const yielded = this.#execution.cooperate();
         if (yielded) await yielded;
       }
