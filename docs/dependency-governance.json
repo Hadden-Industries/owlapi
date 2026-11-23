@@ -3,12 +3,12 @@
   "schemaVersion": 2,
   "package": {
     "name": "@hadden-industries/owlapi",
-    "version": "0.1.0-rc.3"
+    "version": "0.1.0"
   },
-  "recordedOn": "2026-11-09",
+  "recordedOn": "2026-11-23",
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "4474251db9a9108d7071adbf7783785b4f727c64fcf45b7ca3059a50b0008cbc",
+    "factsSha256": "3b833fa6b7522103ddfffd00f00daafc6c9293f5268a806cb31c009fc0948823",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -16,7 +16,7 @@
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "productionAudit": {
-    "performedOn": "2026-11-09",
+    "performedOn": "2026-11-23",
     "command": "npm audit --omit=dev --json",
     "npmVersion": "12.2.2",
     "productionPackageCount": 48,

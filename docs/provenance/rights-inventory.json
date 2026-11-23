@@ -3,17 +3,17 @@
   "schemaVersion": 2,
   "package": {
     "name": "@hadden-industries/owlapi",
-    "version": "0.1.0-rc.3",
+    "version": "0.1.0",
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 198,
-      "sourceManifestSha256": "4188a3deecf3561f05a3821627d1dabb48fe7c89a0f12da632553bdb2aad69ad"
+      "sourceManifestSha256": "f87ab7dd2bee55e8586522b9850a5f2e8db51c8ecdf11204c3e41d39122e6438"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "17b5a6e2b067748fdfdb976b08b8eabb6201a8fb2c1be87f1c7d402e0c678b6f",
+    "factsSha256": "2dc327883331a8c4765993a3cd720fe59641cfb8cc9096ac02d91457e191852d",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -152,7 +152,7 @@
   "externalDependencies": {
     "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "d4c4fbe4b38a245127f776d0e395f4c3a19e222d7ae53ddcb9eac7543a83bdbf",
+    "inventoryFactsSha256": "37452874b076a8de732e4cadd3498abacb0c07efe8315acb9bf0f6f4ce69cd6c",
     "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],
