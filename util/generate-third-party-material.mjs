@@ -11,6 +11,7 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import parseSpdxExpression from "spdx-expression-parse";
+import semver from "semver";
 import { format as formatWithPrettier } from "prettier";
 import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
 import {
@@ -492,12 +493,16 @@ const createQualityToolingFacts = () => {
   const manifest = readJson(packageJsonPath);
   const lock = readJson(lockfilePath);
   const markdown = lock.packages[`node_modules/${markdownName}`];
+  const minimum = manifest.devDependencies?.[markdownName];
   const installed = readJson(
     resolve(repositoryRoot, "node_modules", markdownName, "package.json"),
   );
   if (
-    manifest.devDependencies?.[markdownName] !== ">=3.0.1" ||
-    lock.packages[""].devDependencies?.[markdownName] !== ">=3.0.1" ||
+    typeof minimum !== "string" ||
+    !minimum.startsWith(">=") ||
+    !semver.valid(minimum.slice(2)) ||
+    lock.packages[""].devDependencies?.[markdownName] !== minimum ||
+    !semver.satisfies(markdown?.version, minimum) ||
     installed.name !== markdownName ||
     installed.version !== markdown?.version ||
     !markdown.resolved?.startsWith("https://registry.npmjs.org/") ||
