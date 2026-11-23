@@ -1567,9 +1567,14 @@
           "https://raw.githubusercontent.com"
         ]
       },
-      "acquisition": "local-only",
+      "acquisition": "publisher",
       "licenseLead": "Verify with publisher",
-      "role": "root"
+      "role": "root",
+      "rightsClearance": {
+        "date": "2026-11-23",
+        "authority": "OwlAPI project owner",
+        "scope": "Automated fixture retrieval, temporary runner caching, and retention of test reports"
+      }
     },
     {
       "id": "cidoc-crm",
@@ -2058,9 +2063,14 @@
           "https://raw.githubusercontent.com"
         ]
       },
-      "acquisition": "local-only",
+      "acquisition": "publisher",
       "licenseLead": "Verify with publisher",
-      "role": "root"
+      "role": "root",
+      "rightsClearance": {
+        "date": "2026-11-23",
+        "authority": "OwlAPI project owner",
+        "scope": "Automated fixture retrieval, temporary runner caching, and retention of test reports"
+      }
     },
     {
       "id": "nfdicore",
@@ -2119,14 +2129,19 @@
           "https://www.gleif.org"
         ]
       },
-      "acquisition": "local-only",
+      "acquisition": "publisher",
       "licenseLead": "Module-specific terms to verify",
       "role": "module",
       "ontologyIRI": "https://www.gleif.org/ontology/Base/",
       "imports": [
         "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
       ],
-      "closure": true
+      "closure": true,
+      "rightsClearance": {
+        "date": "2026-11-23",
+        "authority": "OwlAPI project owner",
+        "scope": "Automated fixture retrieval, temporary runner caching, and retention of test reports"
+      }
     },
     {
       "id": "gleif-lei/01",
@@ -2144,7 +2159,7 @@
           "https://www.gleif.org"
         ]
       },
-      "acquisition": "local-only",
+      "acquisition": "publisher",
       "licenseLead": "Module-specific terms to verify",
       "role": "module",
       "ontologyIRI": "https://www.gleif.org/ontology/L1/",
@@ -2153,7 +2168,12 @@
         "gleif-lei/04",
         "gleif-lei/05"
       ],
-      "closure": true
+      "closure": true,
+      "rightsClearance": {
+        "date": "2026-11-23",
+        "authority": "OwlAPI project owner",
+        "scope": "Automated fixture retrieval, temporary runner caching, and retention of test reports"
+      }
     },
     {
       "id": "gleif-lei/02",
@@ -2171,7 +2191,7 @@
           "https://www.gleif.org"
         ]
       },
-      "acquisition": "local-only",
+      "acquisition": "publisher",
       "licenseLead": "Module-specific terms to verify",
       "role": "module",
       "ontologyIRI": "https://www.gleif.org/ontology/L2/",
@@ -2179,7 +2199,12 @@
         "gleif-lei/00",
         "gleif-lei/01"
       ],
-      "closure": true
+      "closure": true,
+      "rightsClearance": {
+        "date": "2026-11-23",
+        "authority": "OwlAPI project owner",
+        "scope": "Automated fixture retrieval, temporary runner caching, and retention of test reports"
+      }
     },
     {
       "id": "gleif-lei/03",
@@ -2197,7 +2222,7 @@
           "https://www.gleif.org"
         ]
       },
-      "acquisition": "local-only",
+      "acquisition": "publisher",
       "licenseLead": "Module-specific terms to verify",
       "role": "module",
       "ontologyIRI": "https://www.gleif.org/ontology/L2Parent/",
@@ -2205,7 +2230,12 @@
         "gleif-lei/00",
         "gleif-lei/01"
       ],
-      "closure": true
+      "closure": true,
+      "rightsClearance": {
+        "date": "2026-11-23",
+        "authority": "OwlAPI project owner",
+        "scope": "Automated fixture retrieval, temporary runner caching, and retention of test reports"
+      }
     },
     {
       "id": "gleif-lei/04",
@@ -2223,7 +2253,7 @@
           "https://www.gleif.org"
         ]
       },
-      "acquisition": "local-only",
+      "acquisition": "publisher",
       "licenseLead": "Module-specific terms to verify",
       "role": "module",
       "ontologyIRI": "https://www.gleif.org/ontology/EntityLegalForm/",
@@ -2231,7 +2261,12 @@
         "gleif-lei/00",
         "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
       ],
-      "closure": true
+      "closure": true,
+      "rightsClearance": {
+        "date": "2026-11-23",
+        "authority": "OwlAPI project owner",
+        "scope": "Automated fixture retrieval, temporary runner caching, and retention of test reports"
+      }
     },
     {
       "id": "gleif-lei/05",
@@ -2249,7 +2284,7 @@
           "https://www.gleif.org"
         ]
       },
-      "acquisition": "local-only",
+      "acquisition": "publisher",
       "licenseLead": "Module-specific terms to verify",
       "role": "module",
       "ontologyIRI": "https://www.gleif.org/ontology/RegistrationAuthority/",
@@ -2257,7 +2292,12 @@
         "gleif-lei/00",
         "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
       ],
-      "closure": true
+      "closure": true,
+      "rightsClearance": {
+        "date": "2026-11-23",
+        "authority": "OwlAPI project owner",
+        "scope": "Automated fixture retrieval, temporary runner caching, and retention of test reports"
+      }
     },
     {
       "id": "gleif-lei/06",
@@ -2275,7 +2315,7 @@
           "https://www.gleif.org"
         ]
       },
-      "acquisition": "local-only",
+      "acquisition": "publisher",
       "licenseLead": "Module-specific terms to verify",
       "role": "module",
       "ontologyIRI": "https://www.gleif.org/ontology/ReportingException/",
@@ -2283,7 +2323,12 @@
         "gleif-lei/01",
         "gleif-lei/02"
       ],
-      "closure": true
+      "closure": true,
+      "rightsClearance": {
+        "date": "2026-11-23",
+        "authority": "OwlAPI project owner",
+        "scope": "Automated fixture retrieval, temporary runner caching, and retention of test reports"
+      }
     },
     {
       "id": "gleif-lei/07",
@@ -2301,7 +2346,7 @@
           "https://www.gleif.org"
         ]
       },
-      "acquisition": "local-only",
+      "acquisition": "publisher",
       "licenseLead": "Module-specific terms to verify",
       "role": "module",
       "ontologyIRI": "https://www.gleif.org/ontology/Geocoding/",
@@ -2309,7 +2354,12 @@
         "gleif-lei/00",
         "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
       ],
-      "closure": true
+      "closure": true,
+      "rightsClearance": {
+        "date": "2026-11-23",
+        "authority": "OwlAPI project owner",
+        "scope": "Automated fixture retrieval, temporary runner caching, and retention of test reports"
+      }
     },
     {
       "id": "esco-model",

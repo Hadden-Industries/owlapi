@@ -41,6 +41,10 @@ The pinned Brick case in the Java profile verifies a duplicate ontology ID durin
 The receipt requires the same recorded import mappings, the complete JavaScript collision candidate set and a native exception naming one of those IDs.
 Structural and writer comparisons are inapplicable after that load failure.
 
+The ten previously local-only prospect inputs use publisher retrieval under the 2026-11-23 project-owner clearance recorded in the catalogue.
+The clearance covers automated fixture retrieval, temporary runner caching and retained test reports.
+The recorded source bytes, document IRIs and import mappings identify those cases.
+
 Set `--cache` and `--output` to absolute paths outside the checkout.
 Select the complete JDK with `--java-home`.
 Local qualification of Temurin `25.0.5.1+2-LTS` uses `--java-selection 25.0.5+1.2`.
