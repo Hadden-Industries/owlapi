@@ -85,15 +85,20 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
   );
 
   it.each([
-    ["java-owlapi-5.5.1", ["defining chain"]],
-    ["normative-v1", []],
+    ["java-owlapi-5.5.1", "ordinary RDF terms", ["defining chain"]],
+    ["java-owlapi-5.5.1", "a foreign predicate identifier", ["defining chain"]],
+    ["normative-v1", "ordinary RDF terms", []],
   ])(
-    "applies %s property-chain reification semantics",
-    async (behaviorProfileId, expected) => {
+    "applies %s property-chain reification semantics with %s",
+    async (behaviorProfileId, representation, expected) => {
       const first = nn(`${EX}first`);
       const second = nn(`${EX}second`);
       const superProperty = nn(`${EX}superProperty`);
       const propertyChain = nn(`${OWL}propertyChainAxiom`);
+      const reifiedProperty = nn(propertyChain.value);
+      const foreignPredicate = nn(`${EX}unrelated-property`);
+      if (representation === "a foreign predicate identifier")
+        reifiedProperty.id = foreignPredicate.value;
       const chain = rdfList("base-chain", [first, second]);
       const detached = rdfList("annotation-chain", [first, second]);
       const reversed = rdfList("different-chain", [second, first]);
@@ -102,7 +107,7 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
         return [
           declaration(node, `${OWL}Axiom`),
           q(node, nn(`${OWL}annotatedSource`), superProperty),
-          q(node, nn(`${OWL}annotatedProperty`), propertyChain),
+          q(node, nn(`${OWL}annotatedProperty`), reifiedProperty),
           q(node, nn(`${OWL}annotatedTarget`), list.head),
           q(node, nn(`${RDFS}label`), literal(label)),
           ...list.quads,
@@ -116,6 +121,9 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
         chain.quads,
         reification("matching-reification", detached, "defining chain"),
         reification("mismatching-reification", reversed, "different order"),
+        ...(reifiedProperty.id === foreignPredicate.value
+          ? [q(superProperty, foreignPredicate, detached.head)]
+          : []),
       );
       const translator = new RdfToOwlTranslator({
         dataFactory: new OWLDataFactory({ behaviorProfileId }),

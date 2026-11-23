@@ -2266,7 +2266,21 @@ class RdfGraphInterpreter {
       this.#configuration.parsingMode === "compatible" &&
       this.#configuration.loadAnnotationAxioms &&
       this.#rdfReconstructionPolicy.recoversDetachedPropertyChainAnnotations;
+    const explicitChains = new Set();
+    const chainReifications = [];
     for (const currentQuad of this.#read.quads) {
+      if (
+        recoversDetachedChains &&
+        currentQuad.predicate.value === OWL_VOCABULARY.propertyChainAxiom
+      ) {
+        explicitChains.add(
+          tripleKey(
+            currentQuad.subject,
+            currentQuad.predicate,
+            currentQuad.object,
+          ),
+        );
+      }
       if (
         currentQuad.predicate.value !== RDF_VOCABULARY.type ||
         currentQuad.object.termType !== "NamedNode" ||
@@ -2305,29 +2319,29 @@ class RdfGraphInterpreter {
         recoversDetachedChains &&
         currentQuad.object.value === OWL_VOCABULARY.Axiom &&
         source.object.termType === "NamedNode" &&
-        property.object.value === OWL_VOCABULARY.propertyChainAxiom &&
-        this.#dataset.match(source.object, property.object, target.object, null)
-          .size === 0
+        property.object.value === OWL_VOCABULARY.propertyChainAxiom
       ) {
-        const chain = this.#readNamedPropertyChain(target.object);
-        if (chain) {
-          const signature = JSON.stringify([
-            source.object.value,
-            ...chain.members,
-          ]);
-          const entries = this.#propertyChainReifications.get(signature) ?? [];
-          entries.push({
-            baseKey: key,
-            cells: chain.cells,
-            node: currentQuad.subject,
-          });
-          this.#propertyChainReifications.set(signature, entries);
-        }
+        chainReifications.push({
+          baseKey: key,
+          superProperty: source.object.value,
+          head: target.object,
+          node: currentQuad.subject,
+        });
       }
       this.#consume(currentQuad);
       this.#consume(source);
       this.#consume(property);
       this.#consume(target);
+    }
+    // Use RDF term identity for the base, even when a dataset indexes provider IDs.
+    for (const { baseKey, superProperty, head, node } of chainReifications) {
+      if (explicitChains.has(baseKey)) continue;
+      const chain = this.#readNamedPropertyChain(head);
+      if (!chain) continue;
+      const signature = JSON.stringify([superProperty, ...chain.members]);
+      const entries = this.#propertyChainReifications.get(signature) ?? [];
+      entries.push({ baseKey, cells: chain.cells, node });
+      this.#propertyChainReifications.set(signature, entries);
     }
   }
 
