@@ -105,6 +105,9 @@ const comparisonInputs = [
   "./comparison-job.mjs",
   "./run-comparison-job.ps1",
   "./comparison-oracle.mjs",
+  "./java-helper-build-cache.mjs",
+  "./historical-reference-distribution.mjs",
+  "./reference-publication-catalogue.json",
   "./OntologyReferenceContract.java",
   "./OntologyStructuralComparison.java",
   "./RunOntologyComparisonCase.java",
@@ -187,6 +190,8 @@ const normativeObservation = {
 };
 const referenceCheckout = (options) =>
   options.referenceCheckout ?? process.env.OWLAPI_REFERENCE_CHECKOUT;
+const referenceDistribution = (options) =>
+  options.referenceDistribution ?? process.env.OWLAPI_REFERENCE_DISTRIBUTION;
 
 async function admitCaseClasspath(entries, options, prepare = false) {
   const usesPinnedSource = Boolean(entries[0].definition.oracle);
@@ -198,7 +203,9 @@ async function admitCaseClasspath(entries, options, prepare = false) {
     throw new Error("Select cases that use the same Java oracle in one run");
   }
   return usesPinnedSource
-    ? admitPinnedSourceClasspath(referenceCheckout(options))
+    ? admitPinnedSourceClasspath(referenceCheckout(options), {
+        referenceDistributionPath: referenceDistribution(options),
+      })
     : admitReleasedClasspath(options, prepare);
 }
 
@@ -1555,8 +1562,13 @@ async function executePinnedSourceComparison(request, options, entries) {
     );
   }
   const sourceCheckoutPath = referenceCheckout(options);
+  const referenceDistributionPath = referenceDistribution(options);
   const observeReference = async () =>
-    (await admitPinnedSourceClasspath(sourceCheckoutPath)).identity;
+    (
+      await admitPinnedSourceClasspath(sourceCheckoutPath, {
+        referenceDistributionPath,
+      })
+    ).identity;
   const reference = await observeReference();
   const { jdk, selection, executeProcess } = comparisonJavaTools(
     options,
@@ -1608,6 +1620,7 @@ async function executePinnedSourceComparison(request, options, entries) {
         java: jdk.javaPath,
         javac: jdk.javacPath,
         javaSelection: selection,
+        javaBuildCacheDirectory: options.javaBuildCacheDirectory,
         publicApi,
       });
       await publishComparisonJson(workerDirectory, "report.json", observation);
@@ -1615,6 +1628,8 @@ async function executePinnedSourceComparison(request, options, entries) {
       await runWriterConfigurationContract({
         outputDirectory: workerDirectory,
         sourceCheckoutPath,
+        referenceDistributionPath,
+        javaBuildCacheDirectory: options.javaBuildCacheDirectory,
         executeProcess,
         packageDirectory,
         consumerDirectory,
@@ -1786,6 +1801,7 @@ async function executeComparison(request, environment = {}) {
       if (action === "prepare" && historical) {
         const oracle = await admitPinnedSourceClasspath(
           referenceCheckout(options),
+          { referenceDistributionPath: referenceDistribution(options) },
         );
         return { schemaVersion: 1, action, shard, oracle: oracle.identity };
       }
@@ -2206,6 +2222,8 @@ const optionNames = [
   "classpath-file",
   "ontology-repository",
   "reference-checkout",
+  "reference-distribution",
+  "java-build-cache",
   "candidate",
   "java-xml",
   "java-turtle",
@@ -2276,6 +2294,8 @@ function parseComparisonArguments([action, ...args]) {
       classpathFile: values["classpath-file"],
       ontologyRepository: values["ontology-repository"],
       referenceCheckout: values["reference-checkout"],
+      referenceDistribution: values["reference-distribution"],
+      javaBuildCacheDirectory: values["java-build-cache"],
       candidateDirectory: values.candidate,
       benchmarkMode: values["benchmark-mode"],
       corpusReceipts: values["corpus-receipts"],

@@ -25,6 +25,11 @@ import {
   javaProcessEnvironment,
   observeCurrentJavaToolchain,
 } from "../../scripts/java-toolchain.mjs";
+import {
+  ensureCachedJavaHelperBuild,
+  probeJavaCompilerIdentity,
+  resolveJavaHelperBuildCacheDirectory,
+} from "./java-helper-build-cache.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repository = resolve(here, "../..");
@@ -78,27 +83,87 @@ function execute(command, args, options = {}) {
 }
 const run = (command, args, options) => execute(command, args, options).stdout;
 
-function runJavaProfileProbe(javac, java, classpath) {
-  const buildDirectory = mkdtempSync(
-    join(tmpdir(), "owlapi-profile-contract-"),
+async function runJavaProfileProbe(
+  javac,
+  java,
+  classpath,
+  classpathEntries,
+  javaBuildCacheDirectory,
+) {
+  const cacheDirectory = resolveJavaHelperBuildCacheDirectory(
+    javaBuildCacheDirectory,
   );
-  try {
-    const env = {
-      ...javaProcessEnvironment(),
-      CLASSPATH: buildDirectory + delimiter + classpath,
-    };
-    const compilation = execute(javac, ["-d", buildDirectory, harness], {
-      env,
-    });
-    const javaExecution = execute(
-      java,
-      ["-Xlog:class+load=info:stderr", "RunOWL2DLProfile", fixture],
-      { env },
+  if (!cacheDirectory) {
+    const buildDirectory = mkdtempSync(
+      join(tmpdir(), "owlapi-profile-contract-"),
     );
-    return { buildDirectory, compilation, javaExecution };
-  } finally {
-    rmSync(buildDirectory, { recursive: true, force: true, maxRetries: 3 });
+    try {
+      const env = {
+        ...javaProcessEnvironment(),
+        CLASSPATH: buildDirectory + delimiter + classpath,
+      };
+      const compilation = execute(javac, ["-d", buildDirectory, harness], {
+        env,
+      });
+      const javaExecution = execute(
+        java,
+        ["-Xlog:class+load=info:stderr", "RunOWL2DLProfile", fixture],
+        { env },
+      );
+      return { buildDirectory, compilation, javaExecution };
+    } finally {
+      rmSync(buildDirectory, { recursive: true, force: true, maxRetries: 3 });
+    }
   }
+
+  const compilerIdentity = await probeJavaCompilerIdentity({
+    executeProcess: async (program, args) => {
+      const executable = program === "javac" ? javac : java;
+      const result = execute(executable, args, {
+        env: javaProcessEnvironment(),
+      });
+      return {
+        exitCode: result.status,
+        stdout: result.stdout,
+        stderr: result.stderr,
+      };
+    },
+  });
+  let compilationOutput = { stdout: "", stderr: "", status: 0, signal: null };
+  const cached = await ensureCachedJavaHelperBuild({
+    cacheDirectory,
+    compilerIdentity,
+    compilerOptions: ["-encoding", "UTF-8"],
+    oracleSources: [harness],
+    classpathEntries,
+    requiredOutputs: ["RunOWL2DLProfile.class"],
+    compileIntoDirectory: async (stagingClasses) => {
+      const compileEnv = {
+        ...javaProcessEnvironment(),
+        CLASSPATH: classpath,
+      };
+      compilationOutput = execute(
+        javac,
+        ["-encoding", "UTF-8", "-d", stagingClasses, harness],
+        { env: compileEnv },
+      );
+      return compilationOutput;
+    },
+  });
+  const env = {
+    ...javaProcessEnvironment(),
+    CLASSPATH: cached.compiledOracleDirectory + delimiter + classpath,
+  };
+  const javaExecution = execute(
+    java,
+    ["-Xlog:class+load=info:stderr", "RunOWL2DLProfile", fixture],
+    { env },
+  );
+  return {
+    buildDirectory: cached.compiledOracleDirectory,
+    compilation: compilationOutput,
+    javaExecution,
+  };
 }
 
 const gitHead = (cwd) => run("git", ["rev-parse", "HEAD"], { cwd }).trim();
@@ -142,6 +207,7 @@ function parseArguments(args) {
         "--output",
         "--java-only",
         "--prior-runner",
+        "--java-build-cache",
       ].includes(key),
       "Unknown option: " + key,
     );
@@ -168,6 +234,7 @@ export async function runCanonicalVowlProfileContract({
   outputPath,
   javaOnly = false,
   priorRunnerPath,
+  javaBuildCacheDirectory,
   publicApi,
 }) {
   assert.ok(
@@ -287,11 +354,14 @@ export async function runCanonicalVowlProfileContract({
   );
 
   // Only the project-owned probe is compiled. Existing reference JARs are not rebuilt.
-  const { buildDirectory, compilation, javaExecution } = runJavaProfileProbe(
-    javac,
-    java,
-    classpath,
-  );
+  const { buildDirectory, compilation, javaExecution } =
+    await runJavaProfileProbe(
+      javac,
+      java,
+      classpath,
+      referencePaths,
+      javaBuildCacheDirectory,
+    );
   const javaOutput = JSON.parse(javaExecution.stdout);
   assert.equal(javaOutput.version, pin.owlapiVersionLine);
   assert.deepEqual(
@@ -487,6 +557,7 @@ if (
     outputPath,
     javaOnly: options.has("--java-only"),
     priorRunnerPath: options.get("--prior-runner"),
+    javaBuildCacheDirectory: options.get("--java-build-cache"),
   });
   if (options.has("--java-only")) {
     process.stdout.write(JSON.stringify(result, null, 2) + "\n");

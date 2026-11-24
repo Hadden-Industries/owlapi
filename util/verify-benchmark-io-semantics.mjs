@@ -18,6 +18,10 @@ import {
   observeSelectedJavaJdk,
 } from "../scripts/java-toolchain.mjs";
 import { admitReleasedClasspath } from "./owlapi-reference/comparison-oracle.mjs";
+import {
+  ensureCachedJavaHelperBuild,
+  resolveJavaHelperBuildCacheDirectory,
+} from "./owlapi-reference/java-helper-build-cache.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const harnessPath = "util/owlapi-reference/VerifyBenchmarkIoSemantics.java";
@@ -81,6 +85,7 @@ export async function verifyBenchmarkIoSemantics({
   classpathFile,
   javaHome,
   javaSelection,
+  javaBuildCacheDirectory,
 }) {
   // Resolve once in the caller's context; native children run at repository root.
   // Observation, hashing and execution must refer to the same admitted files.
@@ -97,6 +102,7 @@ export async function verifyBenchmarkIoSemantics({
   );
   const fixtures = prepareSharedFixtureDirectory();
   const scratch = mkdtempSync(join(tmpdir(), "owlapi-io-semantics-"));
+  let compiledClassDirectory = scratch;
   const native = (program, args) => {
     const result = spawnSync(
       program === "java" ? jdk.javaPath : jdk.javacPath,
@@ -130,7 +136,7 @@ export async function verifyBenchmarkIoSemantics({
     writeFileSync(request, JSON.stringify({ inputs }));
     native("java", [
       "-cp",
-      `${scratch}${delimiter}${classpath}`,
+      `${compiledClassDirectory}${delimiter}${classpath}`,
       "VerifyBenchmarkIoSemantics",
       request,
       output,
@@ -168,7 +174,40 @@ export async function verifyBenchmarkIoSemantics({
     return { manager, ontology };
   };
   try {
-    native("javac", ["-cp", classpath, "-d", scratch, join(root, harnessPath)]);
+    const cacheDirectory = resolveJavaHelperBuildCacheDirectory(
+      javaBuildCacheDirectory,
+    );
+    if (cacheDirectory) {
+      const cached = await ensureCachedJavaHelperBuild({
+        cacheDirectory,
+        compilerIdentity: jdk.identity,
+        compilerOptions: ["-encoding", "UTF-8"],
+        oracleSources: [join(root, harnessPath)],
+        classpathEntries: jars,
+        requiredOutputs: ["VerifyBenchmarkIoSemantics.class"],
+        compileIntoDirectory: async (stagingClasses) => {
+          native("javac", [
+            "-encoding",
+            "UTF-8",
+            "-cp",
+            classpath,
+            "-d",
+            stagingClasses,
+            join(root, harnessPath),
+          ]);
+          return { stderr: "" };
+        },
+      });
+      compiledClassDirectory = cached.compiledOracleDirectory;
+    } else {
+      native("javac", [
+        "-cp",
+        classpath,
+        "-d",
+        scratch,
+        join(root, harnessPath),
+      ]);
+    }
     runJava(
       [
         ...loads.map((name) =>
@@ -270,6 +309,7 @@ if (
       "classpath-file": { type: "string" },
       "java-home": { type: "string" },
       "java-selection": { type: "string" },
+      "java-build-cache": { type: "string" },
       output: { type: "string" },
     },
     strict: true,
@@ -280,6 +320,7 @@ if (
     classpathFile: values["classpath-file"],
     javaHome: values["java-home"],
     javaSelection: values["java-selection"],
+    javaBuildCacheDirectory: values["java-build-cache"],
   });
   writeFileSync(
     values.output,

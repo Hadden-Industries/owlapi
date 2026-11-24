@@ -119,6 +119,8 @@ export const observeRdfXmlPresentation = (text) => {
 export const runWriterConfigurationContract = async ({
   outputDirectory,
   sourceCheckoutPath,
+  referenceDistributionPath,
+  javaBuildCacheDirectory,
   executeProcess,
   packageDirectory = resolve(referenceDirectory, "../.."),
   consumerDirectory,
@@ -127,6 +129,7 @@ export const runWriterConfigurationContract = async ({
   await mkdir(output, { recursive: false });
   const environment = await resolvePinnedReferenceEnvironment({
     sourceCheckoutPath,
+    referenceDistributionPath,
   });
   const extended = {
     ...environment,
@@ -138,17 +141,19 @@ export const runWriterConfigurationContract = async ({
   const classes = join(output, "classes");
   const compilation = await compileOntologyReferenceOracles(extended, classes, {
     executeProcess,
+    cacheDirectory: javaBuildCacheDirectory,
   });
+  const compiledOracleDirectory = compilation.compiledOracleDirectory;
   await writeFile(join(output, "compile.log"), compilation.stderr);
   const input = writerFixturePath;
   const source = await readFile(input, "utf8");
   const javaDirectory = join(output, "java");
   const args = [
     "-cp",
-    classes,
+    compiledOracleDirectory,
     "RunWithClasspath",
     environment.classpathFile,
-    classes,
+    compiledOracleDirectory,
     "RunWriterConfigurationContract",
     input,
     javaDirectory,
@@ -203,7 +208,7 @@ export const runWriterConfigurationContract = async ({
     const structural = await executeOntologyParsingOracle(
       {
         catalogMappings: [],
-        compiledOracleDirectory: classes,
+        compiledOracleDirectory,
         rootPath: input,
         sourceDocumentPath: input,
         verifyOutputPath: path,

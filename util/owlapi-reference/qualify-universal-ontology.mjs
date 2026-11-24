@@ -165,6 +165,8 @@ export const parseQualificationArguments = (args) => {
       output: { type: "string" },
       candidate: { type: "string" },
       "registry-version": { type: "string" },
+      "reference-distribution": { type: "string" },
+      "java-build-cache": { type: "string" },
     },
   });
   if (!values["ontology-repository"] || !values.output) {
@@ -185,6 +187,12 @@ export const parseQualificationArguments = (args) => {
     ...(values.candidate ? { candidateDirectory: values.candidate } : {}),
     ...(values["registry-version"]
       ? { registryVersion: values["registry-version"] }
+      : {}),
+    ...(values["reference-distribution"]
+      ? { referenceDistribution: values["reference-distribution"] }
+      : {}),
+    ...(values["java-build-cache"]
+      ? { javaBuildCacheDirectory: values["java-build-cache"] }
       : {}),
   };
 };
@@ -666,6 +674,8 @@ export const qualifyUniversalOntology = async ({
   outputDirectory,
   candidateDirectory,
   registryVersion,
+  referenceDistribution,
+  javaBuildCacheDirectory,
 }) => {
   if (candidateDirectory && registryVersion)
     throw new Error(
@@ -689,7 +699,9 @@ export const qualifyUniversalOntology = async ({
       );
   } else if (!candidateDirectory)
     assertSourceQualificationOutputDirectory(REPOSITORY_ROOT, output);
-  const reference = await resolvePinnedReferenceEnvironment();
+  const reference = await resolvePinnedReferenceEnvironment({
+    referenceDistributionPath: referenceDistribution,
+  });
   const manifest = JSON.parse(await readFile(MANIFEST_URL, "utf8"));
   const registry = JSON.parse(await readFile(EXPECTED_DIFFERENCES_URL, "utf8"));
   await mkdir(output);
@@ -716,6 +728,7 @@ export const qualifyUniversalOntology = async ({
   const compilation = await compileOntologyReferenceOracles(
     reference,
     join(output, "java"),
+    { cacheDirectory: javaBuildCacheDirectory },
   );
   const parsingResults = [];
   const closureResults = [];
@@ -858,6 +871,19 @@ export const qualifyUniversalOntology = async ({
     java: {
       revision: reference.pinnedRevision,
       version: reference.owlapiVersion,
+      ...(reference.distributionKind
+        ? { distributionKind: reference.distributionKind }
+        : {}),
+      ...(reference.distributionManifestSha256
+        ? { distributionManifestSha256: reference.distributionManifestSha256 }
+        : {}),
+      ...(compilation.cacheStatus
+        ? {
+            helperBuildCacheStatus: compilation.cacheStatus,
+            helperBuildKey: compilation.buildKey,
+            helperBuildManifestSha256: compilation.manifestSha256,
+          }
+        : {}),
     },
     parsingResults,
     closureResults,

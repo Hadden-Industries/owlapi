@@ -14,6 +14,7 @@ import {
   publishPinnedBytes,
   verifyPinnedFile,
 } from "./comparison-fixtures.mjs";
+import { resolveJavaHelperBuildCacheDirectory } from "./java-helper-build-cache.mjs";
 
 const profiles = new URL(
   "../../docs/compatibility/profiles/java-owlapi-5.5.1/",
@@ -53,11 +54,15 @@ export function pinnedSourceOracle() {
 }
 
 /** Record the exact ordered JAR bytes admitted under the historical source pin. */
-export async function admitPinnedSourceClasspath(sourceCheckoutPath) {
+export async function admitPinnedSourceClasspath(
+  sourceCheckoutPath,
+  { referenceDistributionPath } = {},
+) {
   const { resolvePinnedReferenceEnvironment } =
     await import("./run-import-closure-contract.mjs");
   const reference = await resolvePinnedReferenceEnvironment({
     sourceCheckoutPath,
+    referenceDistributionPath,
   });
   const bytes = await readFile(reference.classpathFile);
   const entries = bytes.toString("utf8").trim().split(delimiter);
@@ -79,6 +84,12 @@ export async function admitPinnedSourceClasspath(sourceCheckoutPath) {
       kind: "pinned-source",
       revision: reference.pinnedRevision,
       version: reference.owlapiVersion,
+      ...(reference.distributionKind === "verified-local-distribution"
+        ? {
+            distributionKind: reference.distributionKind,
+            distributionManifestSha256: reference.distributionManifestSha256,
+          }
+        : {}),
       classpathSha256: sha256(bytes),
       jars: digests,
     },
@@ -274,19 +285,30 @@ export async function compileComparisonOracle(
     environment,
     directory,
   );
+  const javaBuildCacheDirectory = resolveJavaHelperBuildCacheDirectory(
+    environment.javaBuildCacheDirectory ??
+      (environment.cacheDirectory
+        ? join(environment.cacheDirectory, "java-helper-builds")
+        : undefined),
+  );
   const classpathFile = join(directory, "locked-java-classpath");
   await writeFile(classpathFile, classpath.jars.join(delimiter), {
     flag: "wx",
   });
-  const { compiledOracleDirectory } = await compileOntologyReferenceOracles(
+  const compilation = await compileOntologyReferenceOracles(
     {
       launcherSource: sourceFile("RunWithClasspath.java"),
       classpathFile,
       oracleSources,
     },
     join(directory, "java-classes"),
-    { executeProcess },
+    {
+      executeProcess,
+      cacheDirectory: javaBuildCacheDirectory,
+      compilerIdentity: jdk.identity,
+    },
   );
+  const { compiledOracleDirectory } = compilation;
   const harnessDigests = await Promise.all(
     [...oracleSources, sourceFile("RunWithClasspath.java")].map(async (item) =>
       sha256(await readFile(item)),
@@ -347,6 +369,12 @@ export async function compileComparisonOracle(
   };
   return {
     identity: { ...classpath.identity, jdk: jdk.identity, harnessDigests },
+    helperBuild: {
+      compiledOracleDirectory,
+      cacheStatus: compilation.cacheStatus ?? "uncached",
+      buildKey: compilation.buildKey ?? null,
+      manifestSha256: compilation.manifestSha256 ?? null,
+    },
     performanceWorker: invocation,
     async run(request, caseDirectory) {
       const worker = await invocation(request, caseDirectory, "native");

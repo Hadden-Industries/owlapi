@@ -61,6 +61,11 @@ export async function runBenchmarkIoComparison(request, environment) {
     classpathFile,
     javaHome: environment.javaHome,
     javaSelection: environment.javaSelection,
+    javaBuildCacheDirectory:
+      environment.javaBuildCacheDirectory ??
+      (environment.cacheDirectory
+        ? join(environment.cacheDirectory, "java-helper-builds")
+        : undefined),
   });
   if (
     comparisonIdentity(Object.keys(result.observations).sort()) !==

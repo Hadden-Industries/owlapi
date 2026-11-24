@@ -13,6 +13,13 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { DOMParser, onWarningStopParsing } from "@xmldom/xmldom";
 
+import { verifyLocalHistoricalReferenceDistribution } from "./historical-reference-distribution.mjs";
+import {
+  ensureCachedJavaHelperBuild,
+  probeJavaCompilerIdentity,
+  resolveJavaHelperBuildCacheDirectory,
+} from "./java-helper-build-cache.mjs";
+
 const OASIS_XML_CATALOG_NAMESPACE =
   "urn:oasis:names:tc:entity:xmlns:xml:catalog";
 const XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
@@ -415,7 +422,9 @@ const defaultExecuteProcess = (
 export const resolvePinnedReferenceEnvironment = async ({
   executeProcess = defaultExecuteProcess,
   pinnedVersionPath = PINNED_VERSION_PATH,
-  sourceCheckoutPath = process.env.OWLAPI_REFERENCE_CHECKOUT,
+  sourceCheckoutPath,
+  referenceDistributionPath,
+  cataloguePath,
 } = {}) => {
   let pinned;
   try {
@@ -442,13 +451,100 @@ export const resolvePinnedReferenceEnvironment = async ({
     );
   }
 
-  if (typeof sourceCheckoutPath !== "string" || !sourceCheckoutPath.trim()) {
+  const hasExplicitCheckout = sourceCheckoutPath !== undefined;
+  const hasExplicitDistribution = referenceDistributionPath !== undefined;
+  const explicitCheckoutValue =
+    typeof sourceCheckoutPath === "string" ? sourceCheckoutPath.trim() : "";
+  const explicitDistributionValue =
+    typeof referenceDistributionPath === "string"
+      ? referenceDistributionPath.trim()
+      : "";
+
+  if (explicitCheckoutValue && explicitDistributionValue) {
     throw launcherError(
-      "Set OWLAPI_REFERENCE_CHECKOUT to a built checkout of the pinned Java OWLAPI revision",
+      "Cannot specify both sourceCheckoutPath and referenceDistributionPath",
+      "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_INVALID",
+    );
+  }
+
+  let selectedCheckout = "";
+  let selectedDistribution = "";
+  if (!hasExplicitCheckout && !hasExplicitDistribution) {
+    const envCheckout = (process.env.OWLAPI_REFERENCE_CHECKOUT ?? "").trim();
+    const envDistribution = (
+      process.env.OWLAPI_REFERENCE_DISTRIBUTION ?? ""
+    ).trim();
+    if (envCheckout && envDistribution) {
+      throw launcherError(
+        "Set either OWLAPI_REFERENCE_CHECKOUT or OWLAPI_REFERENCE_DISTRIBUTION, not both",
+        "ONTOLOGY_REFERENCE_ORACLE_REFERENCE_ENVIRONMENT_UNAVAILABLE",
+      );
+    }
+    selectedCheckout = envCheckout;
+    selectedDistribution = envDistribution;
+  } else if (hasExplicitDistribution && explicitDistributionValue) {
+    selectedDistribution = explicitDistributionValue;
+  } else if (hasExplicitCheckout) {
+    selectedCheckout = explicitCheckoutValue;
+  } else {
+    selectedCheckout = (process.env.OWLAPI_REFERENCE_CHECKOUT ?? "").trim();
+  }
+
+  const launcherSource = join(REFERENCE_DIRECTORY, "RunWithClasspath.java");
+  const oracleSources = [
+    "RunImportClosureContract.java",
+    "RunOntologyParsingContract.java",
+    "OntologyReferenceContract.java",
+    "OntologyStructuralComparison.java",
+  ].map((name) => join(REFERENCE_DIRECTORY, name));
+
+  if (selectedDistribution) {
+    let verified;
+    try {
+      verified = await verifyLocalHistoricalReferenceDistribution(
+        selectedDistribution,
+        {
+          pinnedVersionPath,
+          ...(cataloguePath ? { cataloguePath } : {}),
+        },
+      );
+    } catch (cause) {
+      throw launcherError(
+        `Invalid local historical OWLAPI reference distribution: ${cause.message}`,
+        "ONTOLOGY_REFERENCE_ORACLE_REFERENCE_ENVIRONMENT_UNAVAILABLE",
+        { cause, referenceDistribution: selectedDistribution },
+      );
+    }
+    const environment = {
+      classpathFile: verified.classpathFile,
+      distributionKind: "verified-local-distribution",
+      distributionManifestSha256: verified.manifestSha256,
+      launcherSource,
+      oracleSources,
+      owlapiVersion,
+      pinnedRevision,
+      referenceDistribution: verified.distributionDirectory,
+    };
+    for (const path of [
+      environment.classpathFile,
+      environment.launcherSource,
+      ...environment.oracleSources,
+    ]) {
+      await requireRegularFile(
+        path,
+        "ONTOLOGY_REFERENCE_ORACLE_REFERENCE_ENVIRONMENT_UNAVAILABLE",
+      );
+    }
+    return Object.freeze(environment);
+  }
+
+  if (!selectedCheckout) {
+    throw launcherError(
+      "Set OWLAPI_REFERENCE_CHECKOUT to a built checkout of the pinned Java OWLAPI revision or OWLAPI_REFERENCE_DISTRIBUTION to a verified local distribution",
       "ONTOLOGY_REFERENCE_ORACLE_REFERENCE_ENVIRONMENT_UNAVAILABLE",
     );
   }
-  const sourceCheckout = resolve(sourceCheckoutPath);
+  const sourceCheckout = resolve(selectedCheckout);
 
   const environment = {
     classpathFile: join(
@@ -457,13 +553,9 @@ export const resolvePinnedReferenceEnvironment = async ({
       "target",
       "owlapi-runtime-classpath.txt",
     ),
-    launcherSource: join(REFERENCE_DIRECTORY, "RunWithClasspath.java"),
-    oracleSources: [
-      "RunImportClosureContract.java",
-      "RunOntologyParsingContract.java",
-      "OntologyReferenceContract.java",
-      "OntologyStructuralComparison.java",
-    ].map((name) => join(REFERENCE_DIRECTORY, name)),
+    distributionKind: "source-checkout",
+    launcherSource,
+    oracleSources,
     owlapiVersion,
     pinnedRevision,
     sourceCheckout,
@@ -531,21 +623,23 @@ const requireSuccessfulCompilation = (execution, stage) => {
   }
 };
 
-export const compileOntologyReferenceOracles = async (
+const DEFAULT_LAUNCHER_COMPILER_FLAGS = Object.freeze(["-encoding", "UTF-8"]);
+const DEFAULT_ORACLE_COMPILER_FLAGS = Object.freeze(["-encoding", "UTF-8"]);
+
+const compileOraclesDirectly = async (
   referenceEnvironment,
-  outputDirectory,
-  { executeProcess = defaultExecuteProcess } = {},
+  targetDirectory,
+  { executeProcess, launcherFlags, oracleFlags },
 ) => {
-  const absoluteOutputDirectory = resolve(outputDirectory);
-  await mkdir(absoluteOutputDirectory, { recursive: true });
+  const absoluteTargetDirectory = resolve(targetDirectory);
+  await mkdir(absoluteTargetDirectory, { recursive: true });
 
   let launcherCompilation;
   try {
     launcherCompilation = await executeProcess("javac", [
-      "-encoding",
-      "UTF-8",
+      ...launcherFlags,
       "-d",
-      absoluteOutputDirectory,
+      absoluteTargetDirectory,
       referenceEnvironment.launcherSource,
     ]);
   } catch (cause) {
@@ -561,15 +655,14 @@ export const compileOntologyReferenceOracles = async (
   try {
     oracleCompilation = await executeProcess("java", [
       "-cp",
-      absoluteOutputDirectory,
+      absoluteTargetDirectory,
       "RunWithClasspath",
       referenceEnvironment.classpathFile,
-      absoluteOutputDirectory,
+      absoluteTargetDirectory,
       "com.sun.tools.javac.Main",
-      "-encoding",
-      "UTF-8",
+      ...oracleFlags,
       "-d",
-      absoluteOutputDirectory,
+      absoluteTargetDirectory,
       ...referenceEnvironment.oracleSources,
     ]);
   } catch (cause) {
@@ -582,7 +675,7 @@ export const compileOntologyReferenceOracles = async (
   requireSuccessfulCompilation(oracleCompilation, "oracle-source");
 
   return {
-    compiledOracleDirectory: absoluteOutputDirectory,
+    compiledOracleDirectory: absoluteTargetDirectory,
     stderr: [
       launcherCompilation.stderr,
       launcherCompilation.stdout,
@@ -592,6 +685,52 @@ export const compileOntologyReferenceOracles = async (
       .filter(Boolean)
       .join("\n"),
   };
+};
+
+export const compileOntologyReferenceOracles = async (
+  referenceEnvironment,
+  outputDirectory,
+  {
+    executeProcess = defaultExecuteProcess,
+    cacheDirectory,
+    compilerIdentity,
+    compilerOptions,
+  } = {},
+) => {
+  const launcherFlags =
+    compilerOptions?.launcher ?? DEFAULT_LAUNCHER_COMPILER_FLAGS;
+  const oracleFlags = compilerOptions?.oracles ?? DEFAULT_ORACLE_COMPILER_FLAGS;
+  const resolvedCacheDirectory =
+    resolveJavaHelperBuildCacheDirectory(cacheDirectory);
+
+  if (!resolvedCacheDirectory) {
+    return compileOraclesDirectly(referenceEnvironment, outputDirectory, {
+      executeProcess,
+      launcherFlags,
+      oracleFlags,
+    });
+  }
+
+  const resolvedCompilerIdentity =
+    compilerIdentity ?? (await probeJavaCompilerIdentity({ executeProcess }));
+  return ensureCachedJavaHelperBuild({
+    cacheDirectory: resolvedCacheDirectory,
+    compilerIdentity: resolvedCompilerIdentity,
+    compilerOptions: {
+      launcher: [...launcherFlags],
+      oracles: [...oracleFlags],
+    },
+    launcherSource: referenceEnvironment.launcherSource,
+    oracleSources: referenceEnvironment.oracleSources,
+    classpathFile: referenceEnvironment.classpathFile,
+    requiredOutputs: ["RunWithClasspath.class"],
+    compileIntoDirectory: (stagingClasses) =>
+      compileOraclesDirectly(referenceEnvironment, stagingClasses, {
+        executeProcess,
+        launcherFlags,
+        oracleFlags,
+      }),
+  });
 };
 
 const parseJavaResult = (execution) => {
@@ -746,7 +885,13 @@ export const executeImportClosureOracle = (
   );
 
 export const runImportClosureContract = async (
-  { catalogPath, rootPath, verifyOutputPath },
+  {
+    catalogPath,
+    rootPath,
+    verifyOutputPath,
+    referenceDistributionPath,
+    javaBuildCacheDirectory,
+  },
   { executeProcess = defaultExecuteProcess } = {},
 ) => {
   const resolvedPaths = {
@@ -770,20 +915,24 @@ export const runImportClosureContract = async (
   const catalogMappings = await parseOasisXmlCatalog(resolvedPaths.catalogPath);
   const referenceEnvironment = await resolvePinnedReferenceEnvironment({
     executeProcess,
+    referenceDistributionPath,
   });
-  const compiledOracleDirectory = await mkdtemp(
-    join(tmpdir(), "owlapi-import-closure-oracle-"),
+  const activeCacheDirectory = resolveJavaHelperBuildCacheDirectory(
+    javaBuildCacheDirectory,
   );
+  const temporaryCompileDirectory = activeCacheDirectory
+    ? null
+    : await mkdtemp(join(tmpdir(), "owlapi-import-closure-oracle-"));
   try {
     const compilation = await compileOntologyReferenceOracles(
       referenceEnvironment,
-      compiledOracleDirectory,
-      { executeProcess },
+      temporaryCompileDirectory ?? tmpdir(),
+      { executeProcess, cacheDirectory: activeCacheDirectory },
     );
     const execution = await executeImportClosureOracle(
       {
         catalogMappings,
-        compiledOracleDirectory,
+        compiledOracleDirectory: compilation.compiledOracleDirectory,
         rootPath: resolvedPaths.rootPath,
         verifyOutputPath: resolvedPaths.verifyOutputPath,
       },
@@ -795,7 +944,9 @@ export const runImportClosureContract = async (
       stderr: [compilation.stderr, execution.stderr].filter(Boolean).join("\n"),
     };
   } finally {
-    await rm(compiledOracleDirectory, { force: true, recursive: true });
+    if (temporaryCompileDirectory) {
+      await rm(temporaryCompileDirectory, { force: true, recursive: true });
+    }
   }
 };
 

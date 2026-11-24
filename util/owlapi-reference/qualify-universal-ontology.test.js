@@ -210,6 +210,23 @@ test("requires a source repository and fresh output, not an arbitrary candidate"
       "result",
     ]),
   ).toEqual({ ontologyRepository: "corpus", outputDirectory: "result" });
+  expect(
+    parseQualificationArguments([
+      "--ontology-repository",
+      "corpus",
+      "--output",
+      "result",
+      "--reference-distribution",
+      "dist-dir",
+      "--java-build-cache",
+      "cache-dir",
+    ]),
+  ).toEqual({
+    ontologyRepository: "corpus",
+    outputDirectory: "result",
+    referenceDistribution: "dist-dir",
+    javaBuildCacheDirectory: "cache-dir",
+  });
   expect(() =>
     parseQualificationArguments(["--verify-output", "old-full"]),
   ).toThrow();

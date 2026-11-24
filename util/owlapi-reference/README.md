@@ -407,8 +407,10 @@ Regression tests route an otherwise default-allowed context URL through a loopba
 
 Set `OWLAPI_REFERENCE_CHECKOUT` to an isolated checkout of the exact revision recorded in `pinned-version.json`.
 Its `sourcePathForPhase0Evidence` remains historical provenance and is not runtime configuration.
-The launcher verifies the configured checkout with Git before compiling the oracle.
-An explicitly configured missing build or mismatched revision fails; it is never treated as a skipped Java test.
+Alternatively, after building or restoring the verified pinned OWLAPI `5.5.1` (`b61ebe2da`) runtime closure once with `historical-reference-distribution.mjs materialize --reactor-targets <targets-dir> --maven-repository <m2-dir> --output <dist-dir>`, pass `--reference-distribution <dist-dir>` (or set `OWLAPI_REFERENCE_DISTRIBUTION`) so subsequent import-closure, Universal Ontology, and writer-configuration checks verify the SHA-256-sealed JARs directly without touching another active Java branch/checkout.
+Set `OWLAPI_JAVA_BUILD_CACHE` or pass `--java-build-cache <dir>` (and `compare-java-js.mjs --java-build-cache <dir>`) to share one SHA-256-verified compiled helper class directory across processes while keeping per-run outputs, logs, and fresh JVMs isolated.
+The launcher verifies the configured checkout or distribution before compiling or reusing the helper oracle.
+An explicitly configured missing build, tampered JAR, ambiguous environment configuration, or mismatched revision fails; it is never treated as a skipped Java test.
 
 Build the reference and its runtime classpath with Maven from that checkout:
 
