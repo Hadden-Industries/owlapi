@@ -1,5 +1,10 @@
 import { OWLObjectKind as K } from "../../model/kinds.js";
+import {
+  EMPTY_STRUCTURAL_SET,
+  isFactoryStructuralObject,
+} from "../../model/structural.js";
 import { readSnapshotAxioms } from "../model/ontologyState.js";
+import { structuralFields } from "../model/structuralFields.js";
 import { hasValidatedStructuralSnapshot } from "../model/structuralValidation.js";
 
 const forbidsAnonymous = new Set([
@@ -11,9 +16,95 @@ const forbidsAnonymous = new Set([
   K.OBJECT_HAS_VALUE,
 ]);
 
-/** Reuse a single cursor frame per depth. Consumers process a frame before
- * advancing this iterator and copy any values they need to retain. */
-export function* profileSteps(member, sourceRoots, policy) {
+const FIELDS_BY_KIND = Object.create(null);
+for (const [kind, fieldList] of structuralFields) {
+  FIELDS_BY_KIND[kind] = fieldList;
+}
+
+const createFramePool = (scope, sourceVerified) => {
+  const frames = [];
+  return {
+    frames,
+    frame(depth) {
+      return (frames[depth] ??= {
+        depth,
+        scope,
+        sourceVerified,
+        value: undefined,
+        parent: undefined,
+        field: undefined,
+        definition: undefined,
+        anonymousForbidden: undefined,
+        annotationContext: false,
+        trusted: false,
+        entered: false,
+        skipped: false,
+        sequence: false,
+        virtual: false,
+        fields: undefined,
+        index: 0,
+      });
+    },
+    release() {},
+  };
+};
+
+const pooledFrames = [];
+let pooledFramesBusy = false;
+
+const createPooledFramePool = (scope, sourceVerified) => {
+  if (pooledFramesBusy) return createFramePool(scope, sourceVerified);
+  pooledFramesBusy = true;
+  return {
+    frames: pooledFrames,
+    frame(depth) {
+      let item = pooledFrames[depth];
+      if (!item) {
+        item = pooledFrames[depth] = {
+          depth,
+          scope,
+          sourceVerified,
+          value: undefined,
+          parent: undefined,
+          field: undefined,
+          definition: undefined,
+          anonymousForbidden: undefined,
+          annotationContext: false,
+          trusted: false,
+          entered: false,
+          skipped: false,
+          sequence: false,
+          virtual: false,
+          fields: undefined,
+          index: 0,
+        };
+      } else {
+        item.depth = depth;
+        item.scope = scope;
+        item.sourceVerified = sourceVerified;
+        item.value = undefined;
+        item.parent = undefined;
+        item.field = undefined;
+        item.definition = undefined;
+        item.anonymousForbidden = undefined;
+        item.annotationContext = false;
+        item.trusted = false;
+        item.entered = false;
+        item.skipped = false;
+        item.sequence = false;
+        item.virtual = false;
+        item.fields = undefined;
+        item.index = 0;
+      }
+      return item;
+    },
+    release() {
+      pooledFramesBusy = false;
+    },
+  };
+};
+
+const prepareMemberRoots = (member, sourceRoots) => {
   const { snapshot, scope } = member;
   const stored = readSnapshotAxioms(snapshot);
   const trusted = hasValidatedStructuralSnapshot(snapshot);
@@ -25,91 +116,207 @@ export function* profileSteps(member, sourceRoots, policy) {
   ];
   const firstExtra = roots.length;
   for (const root of sourceRoots.get(scope) ?? []) roots.push(root);
-  const frames = [];
-  function frame(depth) {
-    return (frames[depth] ??= {
-      depth,
-      scope,
-      sourceVerified: member.status === "verified",
-      value: undefined,
-      parent: undefined,
-      field: undefined,
-      definition: undefined,
-      anonymousForbidden: undefined,
-      annotationContext: false,
-      trusted: false,
-      entered: false,
-      skipped: false,
-      sequence: false,
-      virtual: false,
-      fields: undefined,
-      index: 0,
-    });
+  return { stored, trusted, roots, firstExtra };
+};
+
+const enterStep = (current, stored, policy) => {
+  const value = current.value;
+  current.entered = true;
+  current.virtual = value === stored;
+  current.sequence = current.virtual || Array.isArray(value);
+  current.skipped =
+    !value ||
+    typeof value !== "object" ||
+    (!policy.inspectsAnnotationValues &&
+      current.annotationContext &&
+      (value.kind === K.LITERAL || value.kind === K.ANONYMOUS_INDIVIDUAL));
+  return value;
+};
+
+const setupChildren = (current, value) => {
+  if (
+    value === EMPTY_STRUCTURAL_SET ||
+    (current.trusted && value.kind === K.IRI)
+  ) {
+    current.index = -1;
+    return;
   }
-  for (let root = roots.length - 1; root >= 0; root--) {
-    let depth = 0;
-    const first = frame(0);
-    first.value = roots[root];
-    first.trusted = root < firstExtra && trusted;
-    first.entered = false;
-    while (depth >= 0) {
-      const current = frames[depth],
-        value = current.value;
-      if (!current.entered) {
-        current.entered = true;
-        current.virtual = value === stored;
-        current.sequence = current.virtual || Array.isArray(value);
-        current.skipped =
-          !value ||
-          typeof value !== "object" ||
-          (!policy.inspectsAnnotationValues &&
-            current.annotationContext &&
-            (value.kind === K.LITERAL ||
-              value.kind === K.ANONYMOUS_INDIVIDUAL));
-        // Shape admission happens before enumerating any untrusted fields.
-        yield current;
-        if (current.skipped) {
+  current.fields = current.sequence
+    ? undefined
+    : current.trusted && isFactoryStructuralObject(value)
+      ? (FIELDS_BY_KIND[value.kind] ?? Object.keys(value))
+      : Object.keys(value);
+  current.index = (current.sequence ? value.length : current.fields.length) - 1;
+};
+
+const pushNextChild = (
+  current,
+  value,
+  stored,
+  depth,
+  frame,
+  skipEmptySequences = false,
+) => {
+  const index = current.index--;
+  const field = current.sequence ? current.field : current.fields[index];
+  const child = current.virtual
+    ? stored.valueAt(index)
+    : value[current.sequence ? index : field];
+  if (!current.sequence) {
+    if (!child || typeof child !== "object") return depth;
+    if (skipEmptySequences && Array.isArray(child) && child.length === 0) {
+      return depth;
+    }
+  }
+  const next = frame(++depth);
+  next.value = child;
+  next.parent = current.sequence ? current.parent : value;
+  next.field = field;
+  next.trusted = current.trusted;
+  next.entered = false;
+  next.annotationContext =
+    current.annotationContext ||
+    (!current.sequence &&
+      (value.kind === K.ANNOTATION ||
+        (value.kind === K.ANNOTATION_ASSERTION_AXIOM && field === "value")));
+  next.anonymousForbidden =
+    current.anonymousForbidden ??
+    (!current.sequence && forbidsAnonymous.has(value.kind)
+      ? value.kind
+      : undefined);
+  next.definition =
+    !current.sequence &&
+    value.kind === K.DATATYPE_DEFINITION_AXIOM &&
+    field === "dataRange"
+      ? value.datatype
+      : current.definition;
+  return depth;
+};
+
+/** Synchronous cursor reusing one frame per depth without generator frames. */
+export function createProfileStepCursor(
+  member,
+  sourceRoots,
+  policy,
+  { pooled = false, skipEmptySequences = false } = {},
+) {
+  const { stored, trusted, roots, firstExtra } = prepareMemberRoots(
+    member,
+    sourceRoots,
+  );
+  const { frames, frame, release } = pooled
+    ? createPooledFramePool(member.scope, member.status === "verified")
+    : createFramePool(member.scope, member.status === "verified");
+  let root = roots.length;
+  let depth = -1;
+  let needsSetup = false;
+
+  return {
+    next() {
+      if (needsSetup) {
+        needsSetup = false;
+        const prev = frames[depth];
+        if (prev.skipped) {
+          depth--;
+        } else {
+          setupChildren(prev, prev.value);
+        }
+      }
+      for (;;) {
+        while (depth < 0) {
+          root--;
+          if (root < 0) {
+            release();
+            return undefined;
+          }
+          depth = 0;
+          const first = frame(0);
+          first.value = roots[root];
+          first.trusted = root < firstExtra && trusted;
+          first.entered = false;
+          enterStep(first, stored, policy);
+          needsSetup = true;
+          return first;
+        }
+        const current = frames[depth];
+        if (!current.entered) {
+          enterStep(current, stored, policy);
+          if (current.trusted && current.value.kind === K.IRI) {
+            current.index = -1;
+          } else {
+            needsSetup = true;
+          }
+          return current;
+        }
+        if (current.index < 0) {
           depth--;
           continue;
         }
-        current.fields = current.sequence ? undefined : Object.keys(value);
-        current.index =
-          (current.sequence ? value.length : current.fields.length) - 1;
+        depth = pushNextChild(
+          current,
+          current.value,
+          stored,
+          depth,
+          frame,
+          skipEmptySequences,
+        );
       }
-      if (current.index < 0) {
-        depth--;
-        continue;
+    },
+    close: release,
+  };
+}
+
+/** Synchronous cursor over non-skipped, non-sequence scoped profile nodes. */
+export function createScopedNodeCursor(members, sourceRoots, policy) {
+  let memberIndex = 0;
+  let cursor =
+    members.length > 0
+      ? createProfileStepCursor(members[0], sourceRoots, policy, {
+          pooled: true,
+          skipEmptySequences: true,
+        })
+      : undefined;
+
+  return {
+    next() {
+      while (cursor !== undefined) {
+        for (
+          let step = cursor.next();
+          step !== undefined;
+          step = cursor.next()
+        ) {
+          if (!step.skipped && !step.sequence) return step;
+        }
+        cursor.close();
+        memberIndex++;
+        cursor =
+          memberIndex < members.length
+            ? createProfileStepCursor(
+                members[memberIndex],
+                sourceRoots,
+                policy,
+                { pooled: true, skipEmptySequences: true },
+              )
+            : undefined;
       }
-      const index = current.index--;
-      const field = current.sequence ? current.field : current.fields[index];
-      const child = current.virtual
-        ? stored.valueAt(index)
-        : value[current.sequence ? index : field];
-      if (!current.sequence && (!child || typeof child !== "object")) continue;
-      const next = frame(++depth);
-      next.value = child;
-      next.parent = current.sequence ? current.parent : value;
-      next.field = field;
-      next.trusted = current.trusted;
-      next.entered = false;
-      next.annotationContext =
-        current.annotationContext ||
-        (!current.sequence &&
-          (value.kind === K.ANNOTATION ||
-            (value.kind === K.ANNOTATION_ASSERTION_AXIOM &&
-              field === "value")));
-      next.anonymousForbidden =
-        current.anonymousForbidden ??
-        (!current.sequence && forbidsAnonymous.has(value.kind)
-          ? value.kind
-          : undefined);
-      next.definition =
-        !current.sequence &&
-        value.kind === K.DATATYPE_DEFINITION_AXIOM &&
-        field === "dataRange"
-          ? value.datatype
-          : current.definition;
-    }
+      return undefined;
+    },
+    close() {
+      if (cursor !== undefined) {
+        cursor.close();
+        cursor = undefined;
+      }
+    },
+  };
+}
+
+/** Reuse a single cursor frame per depth. Consumers process a frame before
+ * advancing this iterator and copy any values they need to retain. */
+export function* profileSteps(member, sourceRoots, policy) {
+  const cursor = createProfileStepCursor(member, sourceRoots, policy);
+  for (let step = cursor.next(); step !== undefined; step = cursor.next()) {
+    // Shape admission happens before enumerating any untrusted fields.
+    yield step;
   }
 }
 

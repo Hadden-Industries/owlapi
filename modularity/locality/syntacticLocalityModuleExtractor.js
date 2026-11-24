@@ -4,7 +4,11 @@ import {
   OWL_OBJECT_KINDS,
   OWLObjectKind,
 } from "../../model/kinds.js";
-import { isFactoryStructuralObject } from "../../model/structural.js";
+import {
+  EMPTY_STRUCTURAL_SET,
+  isFactoryStructuralObject,
+  usesNativeStructuralKeys,
+} from "../../model/structural.js";
 import { StructuralHashTable } from "../../internal/collections/structuralHashTable.js";
 import { captureStructuralKey } from "../../internal/collections/structuralProjection.js";
 import { DenseBitSet } from "../../internal/collections/denseBitSet.js";
@@ -18,7 +22,123 @@ import { LocalityClass } from "./localityClass.js";
 
 const kinds = new Set(OWL_OBJECT_KINDS),
   axioms = new Set(AXIOM_KINDS),
-  entities = new Set(ENTITY_KINDS);
+  entities = new Set(ENTITY_KINDS),
+  classes = new Set([
+    OWLObjectKind.CLASS,
+    OWLObjectKind.OBJECT_INTERSECTION_OF,
+    OWLObjectKind.OBJECT_UNION_OF,
+    OWLObjectKind.OBJECT_COMPLEMENT_OF,
+    OWLObjectKind.OBJECT_ONE_OF,
+    OWLObjectKind.OBJECT_SOME_VALUES_FROM,
+    OWLObjectKind.OBJECT_ALL_VALUES_FROM,
+    OWLObjectKind.OBJECT_HAS_VALUE,
+    OWLObjectKind.OBJECT_HAS_SELF,
+    OWLObjectKind.OBJECT_MIN_CARDINALITY,
+    OWLObjectKind.OBJECT_MAX_CARDINALITY,
+    OWLObjectKind.OBJECT_EXACT_CARDINALITY,
+    OWLObjectKind.DATA_SOME_VALUES_FROM,
+    OWLObjectKind.DATA_ALL_VALUES_FROM,
+    OWLObjectKind.DATA_HAS_VALUE,
+    OWLObjectKind.DATA_MIN_CARDINALITY,
+    OWLObjectKind.DATA_MAX_CARDINALITY,
+    OWLObjectKind.DATA_EXACT_CARDINALITY,
+  ]),
+  EMPTY_CLASS_ORDER = Object.freeze([]);
+
+function createClassOrderCollector() {
+  const seen = new Set(),
+    nodes = [],
+    positions = [],
+    fields = [];
+  const visitRoot = (root, order) => {
+    if (seen.has(root)) return;
+    if (root.kind === OWLObjectKind.CLASS) {
+      seen.add(root);
+      order.push(root);
+      return;
+    }
+    seen.add(root);
+    nodes.length = 1;
+    positions.length = 1;
+    fields.length = 1;
+    nodes[0] = root;
+    positions[0] = 0;
+    fields[0] = structuralFields.get(root.kind);
+    while (nodes.length) {
+      const level = nodes.length - 1,
+        node = nodes[level],
+        names = fields[level],
+        index = positions[level];
+      const length = names ? names.length : node.length;
+      if (index < length) {
+        positions[level]++;
+        const child = node[names ? names[index] : index];
+        if (
+          child &&
+          typeof child === "object" &&
+          !seen.has(child) &&
+          (Array.isArray(child) || classes.has(child.kind))
+        ) {
+          if (child === EMPTY_STRUCTURAL_SET) continue;
+          if (Array.isArray(child)) {
+            seen.add(child);
+            nodes.push(child);
+            positions.push(0);
+            fields.push(undefined);
+          } else if (child.kind === OWLObjectKind.CLASS) {
+            seen.add(child);
+            order.push(child);
+          } else {
+            seen.add(child);
+            nodes.push(child);
+            positions.push(0);
+            fields.push(structuralFields.get(child.kind));
+          }
+        }
+        continue;
+      }
+      nodes.pop();
+      positions.pop();
+      fields.pop();
+      if (!Array.isArray(node)) {
+        order.push(node);
+      }
+    }
+  };
+  return (axiom) => {
+    switch (axiom.kind) {
+      case OWLObjectKind.SUBCLASS_OF_AXIOM:
+        if (
+          axiom.subClass.kind === OWLObjectKind.CLASS &&
+          axiom.superClass.kind === OWLObjectKind.CLASS
+        ) {
+          return EMPTY_CLASS_ORDER;
+        }
+        break;
+      case OWLObjectKind.CLASS_ASSERTION_AXIOM:
+      case OWLObjectKind.DISJOINT_CLASSES_AXIOM:
+      case OWLObjectKind.EQUIVALENT_CLASSES_AXIOM:
+      case OWLObjectKind.OBJECT_PROPERTY_DOMAIN_AXIOM:
+      case OWLObjectKind.OBJECT_PROPERTY_RANGE_AXIOM:
+        break;
+      default:
+        return EMPTY_CLASS_ORDER;
+    }
+    seen.clear();
+    const order = [];
+    if (axiom.subClass) visitRoot(axiom.subClass, order);
+    if (axiom.superClass) visitRoot(axiom.superClass, order);
+    if (axiom.classExpression) visitRoot(axiom.classExpression, order);
+    if (axiom.domain) visitRoot(axiom.domain, order);
+    if (axiom.range) visitRoot(axiom.range, order);
+    if (axiom.classExpressions) {
+      for (let i = 0; i < axiom.classExpressions.length; i++) {
+        visitRoot(axiom.classExpressions[i], order);
+      }
+    }
+    return order;
+  };
+}
 function admit(value) {
   try {
     return inspectStructuralGraph(value, kinds);
@@ -79,7 +199,29 @@ function traversalWorkspace(measure) {
         if (child && typeof child === "object") {
           const previous = seen.get(child);
           if (previous === undefined) {
-            enter(child);
+            if (child === EMPTY_STRUCTURAL_SET) {
+              const ordinal = order.length;
+              seen.set(child, ordinal);
+              order.push(child);
+              if (measure) {
+                depths[ordinal] = 0;
+                annotations[ordinal] = 0;
+                facts.work += 1;
+                includeChild(level, 0, 0);
+              }
+            } else if (child.kind === OWLObjectKind.IRI) {
+              const ordinal = order.length;
+              seen.set(child, ordinal);
+              order.push(child);
+              if (measure) {
+                depths[ordinal] = 0;
+                annotations[ordinal] = 0;
+                facts.work += 2;
+                includeChild(level, 0, 0);
+              }
+            } else {
+              enter(child);
+            }
           } else if (measure) {
             includeChild(level, depths[previous], annotations[previous]);
           }
@@ -119,11 +261,40 @@ export class SyntacticLocalityModuleExtractor {
   #mode;
   #base = new StructuralHashTable();
   #entities = new StructuralHashTable();
+  #entityIds = new WeakMap();
   #index;
   #depth;
   #annotationDepth;
   #work;
-  #explicitSignatures;
+  #nodeCounts;
+  #entityOffsets;
+  #entityEntries;
+  #classOrders;
+  #classOrderCollector;
+  #entityIdOf(entity) {
+    if (isFactoryStructuralObject(entity) && usesNativeStructuralKeys()) {
+      const cached = this.#entityIds.get(entity);
+      if (cached !== undefined) {
+        return cached;
+      }
+      const id = this.#entities.idOf(entity);
+      if (id >= 0) {
+        this.#entityIds.set(entity, id);
+      }
+      return id;
+    }
+    return this.#entities.idOf(entity);
+  }
+  #classOrderOf(id, axiom) {
+    let order = this.#classOrders[id];
+    if (order === undefined) {
+      order = (this.#classOrderCollector ??= createClassOrderCollector())(
+        axiom,
+      );
+      this.#classOrders[id] = order;
+    }
+    return order;
+  }
   constructor(localityClass, axiomIterable) {
     if (!Object.values(LocalityClass).includes(localityClass)) {
       throw new TypeError("Unknown locality class");
@@ -138,42 +309,106 @@ export class SyntacticLocalityModuleExtractor {
     const depths = [],
       annotationDepths = [],
       work = [],
+      nodeCounts = [],
+      sigOffsets = [0],
+      sigEntities = [],
       keys = [];
     const inspectFactoryGraph = traversalWorkspace(true);
+    const useNativeEntities = usesNativeStructuralKeys();
+    const factoryEntityIds = new Map();
+    const resolveNativeEntity = (entity) => {
+      let eid = factoryEntityIds.get(entity);
+      if (eid === undefined) {
+        eid = this.#entities.add(entity);
+        factoryEntityIds.set(entity, eid);
+        this.#entityIds.set(entity, eid);
+      }
+      return eid;
+    };
     this.#index = collectPostings(this.#entities, (emit) => {
       for (const axiom of axiomIterable) {
         if (!axioms.has(axiom?.kind)) {
           throw new TypeError("Axiom base must contain OWL axioms");
         }
-        const facts = isFactoryStructuralObject(axiom)
-            ? inspectFactoryGraph(axiom)
-            : admit(axiom),
+        const factoryAxiom = isFactoryStructuralObject(axiom);
+        const nonFactoryFacts = factoryAxiom ? undefined : admit(axiom),
           size = this.#base.size,
           id = this.#base.add(axiom);
         if (id < size) {
           continue;
         }
-        keys.length = 0;
-        let explicit = false;
-        for (const value of facts.order) {
-          if (entities.has(value.kind)) {
-            const key = captureStructuralKey(value);
-            if (key !== value) {
-              explicit = true;
+        if (
+          factoryAxiom &&
+          useNativeEntities &&
+          axiom.annotations === EMPTY_STRUCTURAL_SET
+        ) {
+          if (
+            axiom.kind === OWLObjectKind.DECLARATION_AXIOM &&
+            entities.has(axiom.entity.kind)
+          ) {
+            const eid = resolveNativeEntity(axiom.entity);
+            if (emit.id(eid, id)) {
+              sigEntities.push(eid);
             }
-            if (emit(value, id, key)) {
-              keys.push(key);
+            sigOffsets.push(sigEntities.length);
+            nodeCounts.push(4);
+            depths.push(2);
+            annotationDepths.push(0);
+            work.push(9);
+            continue;
+          }
+          if (
+            axiom.kind === OWLObjectKind.SUBCLASS_OF_AXIOM &&
+            axiom.subClass.kind === OWLObjectKind.CLASS &&
+            axiom.superClass.kind === OWLObjectKind.CLASS &&
+            axiom.subClass !== axiom.superClass &&
+            axiom.subClass.iri !== axiom.superClass.iri
+          ) {
+            const eid1 = resolveNativeEntity(axiom.subClass);
+            if (emit.id(eid1, id)) {
+              sigEntities.push(eid1);
+            }
+            const eid2 = resolveNativeEntity(axiom.superClass);
+            if (emit.id(eid2, id)) {
+              sigEntities.push(eid2);
+            }
+            sigOffsets.push(sigEntities.length);
+            nodeCounts.push(6);
+            depths.push(2);
+            annotationDepths.push(0);
+            work.push(15);
+            continue;
+          }
+        }
+        const facts = factoryAxiom
+          ? inspectFactoryGraph(axiom)
+          : nonFactoryFacts;
+        keys.length = 0;
+        const order = facts.order;
+        for (let i = 0; i < order.length; i++) {
+          const value = order[i];
+          if (entities.has(value.kind)) {
+            if (useNativeEntities && factoryAxiom) {
+              const eid = resolveNativeEntity(value);
+              if (emit.id(eid, id)) {
+                keys.push(eid);
+                sigEntities.push(eid);
+              }
+            } else {
+              const key = captureStructuralKey(value);
+              if (emit(value, id, key)) {
+                keys.push(key);
+                sigEntities.push(
+                  key === value
+                    ? this.#entities.idOf(value)
+                    : this.#entities.idOfCapturedKey(key),
+                );
+              }
             }
           }
         }
-        if (explicit) {
-          (this.#explicitSignatures ??= new Map()).set(
-            id,
-            Uint32Array.from(keys, (key) =>
-              this.#entities.idOfCapturedKey(key),
-            ),
-          );
-        }
+        sigOffsets.push(sigEntities.length);
+        nodeCounts.push(order.length);
         depths.push(facts.depth);
         annotationDepths.push(facts.annotations);
         work.push(facts.work + keys.length);
@@ -182,6 +417,10 @@ export class SyntacticLocalityModuleExtractor {
     this.#depth = Uint32Array.from(depths);
     this.#annotationDepth = Uint32Array.from(annotationDepths);
     this.#work = Float64Array.from(work);
+    this.#nodeCounts = Uint32Array.from(nodeCounts);
+    this.#entityOffsets = Int32Array.from(sigOffsets);
+    this.#entityEntries = Uint32Array.from(sigEntities);
+    this.#classOrders = new Array(this.#base.size);
   }
 
   /** Defensive eager copy of all captured axioms, including nonlogical axioms. */
@@ -278,10 +517,13 @@ export class SyntacticLocalityModuleExtractor {
       const signature = seedBits.clone(),
         queue = seeds.slice(),
         mask = new DenseBitSet(this.#base.size),
-        order = [];
-      const contains = (entity) => signature.has(this.#entities.idOf(entity));
-      const seenEntities = new Set();
+        order = [],
+        localityResults = new Map();
+      const contains = (entity) => signature.has(this.#entityIdOf(entity));
       const { offsets, entries } = this.#index;
+      const nodeCounts = this.#nodeCounts;
+      const entityOffsets = this.#entityOffsets;
+      const entityEntries = this.#entityEntries;
       for (let cursor = 0; cursor < queue.length; cursor++) {
         budget.check();
         const entity = queue[cursor];
@@ -298,23 +540,26 @@ export class SyntacticLocalityModuleExtractor {
           if (!isLogicalAxiom(axiom)) {
             continue;
           }
-          const nodes = orderedNodes(axiom);
-          if (isSyntacticallyLocal(axiom, nodes, contains, mode, budget)) {
+          const classOrder = this.#classOrderOf(id, axiom);
+          if (
+            isSyntacticallyLocal(
+              axiom,
+              classOrder,
+              contains,
+              mode,
+              budget,
+              localityResults,
+              nodeCounts[id] + 1,
+            )
+          ) {
             continue;
           }
           mask.add(id);
           order.push(id);
-          const explicit = this.#explicitSignatures?.get(id);
-          seenEntities.clear();
-          if (!explicit) {
-            for (const value of nodes) {
-              if (entities.has(value.kind)) {
-                seenEntities.add(this.#entities.idOfCapturedKey(value));
-              }
-            }
-          }
-          for (const member of explicit ?? seenEntities) {
+          const sigEnd = entityOffsets[id + 1];
+          for (let s = entityOffsets[id]; s < sigEnd; s++) {
             budget.check();
+            const member = entityEntries[s];
             if (signature.add(member)) {
               queue.push(member);
             }

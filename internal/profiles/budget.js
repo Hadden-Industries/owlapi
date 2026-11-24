@@ -56,27 +56,36 @@ export const createProfileBudget = (
   let lastYieldAt = started;
   let work = 0;
   let yieldChecks = 0;
-  const check = (amount = 1) => {
-    work += amount;
-    if (
-      configuration.signal !== undefined &&
-      aborted.call(configuration.signal)
-    )
-      throw new DOMException("Profile check aborted", "AbortError");
-    if (work > configuration.maxWork)
-      throw new ResourceLimitError("OWL profile work limit exceeded", {
-        resource: "profileWork",
-        limit: configuration.maxWork,
-      });
-    if (
-      configuration.timeoutMs !== null &&
-      performance.now() - started > configuration.timeoutMs
-    )
-      throw new ResourceLimitError("OWL profile deadline exceeded", {
-        resource: "profileTimeoutMs",
-        limit: configuration.timeoutMs,
-      });
-  };
+  const maxWork = configuration.maxWork;
+  const signal = configuration.signal;
+  const timeoutMs = configuration.timeoutMs;
+  const check =
+    signal === undefined && timeoutMs === null
+      ? maxWork === Infinity
+        ? () => {}
+        : (amount = 1) => {
+            work += amount;
+            if (work > maxWork)
+              throw new ResourceLimitError("OWL profile work limit exceeded", {
+                resource: "profileWork",
+                limit: maxWork,
+              });
+          }
+      : (amount = 1) => {
+          work += amount;
+          if (signal !== undefined && aborted.call(signal))
+            throw new DOMException("Profile check aborted", "AbortError");
+          if (work > maxWork)
+            throw new ResourceLimitError("OWL profile work limit exceeded", {
+              resource: "profileWork",
+              limit: maxWork,
+            });
+          if (timeoutMs !== null && performance.now() - started > timeoutMs)
+            throw new ResourceLimitError("OWL profile deadline exceeded", {
+              resource: "profileTimeoutMs",
+              limit: timeoutMs,
+            });
+        };
   // Sample the clock once per 256 synchronous steps; yielding is time-based.
   const shouldYield = () => {
     yieldChecks = (yieldChecks + 1) % 256;

@@ -1,10 +1,12 @@
 import { OWLObjectKind as K } from "../../model/kinds.js";
+import { readSnapshotAxioms } from "../model/ontologyState.js";
 
 export const inspectAnonymousGraph = async (
   axioms,
   anonymousNodes,
   budget,
   violation,
+  members,
 ) => {
   const parents = new Map(),
     namedEdges = new Map(),
@@ -25,10 +27,8 @@ export const inspectAnonymousGraph = async (
     }
     return current;
   };
-  for (const { value, scope } of axioms) {
-    budget.check();
-    if (budget.shouldYield()) await budget.yieldTurn();
-    if (value.kind !== K.OBJECT_PROPERTY_ASSERTION_AXIOM) continue;
+  const visitAssertion = (value, scope) => {
+    if (value.kind !== K.OBJECT_PROPERTY_ASSERTION_AXIOM) return;
     const leftAnonymous = value.subject.kind === K.ANONYMOUS_INDIVIDUAL;
     const rightAnonymous = value.value.kind === K.ANONYMOUS_INDIVIDUAL;
     if (leftAnonymous && rightAnonymous) {
@@ -45,6 +45,23 @@ export const inspectAnonymousGraph = async (
     } else if (leftAnonymous || rightAnonymous) {
       const item = key(leftAnonymous ? value.subject : value.value, scope);
       namedEdges.set(item, (namedEdges.get(item) ?? 0) + 1);
+    }
+  };
+  if (members) {
+    for (let m = 0; m < members.length; m++) {
+      const { scope, snapshot } = members[m];
+      const stored = readSnapshotAxioms(snapshot);
+      for (let i = 0; i < stored.length; i++) {
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+        visitAssertion(stored.valueAt(i), scope);
+      }
+    }
+  } else {
+    for (const { value, scope } of axioms) {
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      visitAssertion(value, scope);
     }
   }
   const trees = new Set(),

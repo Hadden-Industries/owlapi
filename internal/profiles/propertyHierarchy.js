@@ -1,4 +1,5 @@
 import { OWLObjectKind as K } from "../../model/kinds.js";
+import { readSnapshotAxioms } from "../model/ontologyState.js";
 import { OWL_NAMESPACE as OWL } from "../rdfjs/vocabulary.js";
 
 export const propertyKey = (property) =>
@@ -27,7 +28,12 @@ export const reachable = async (graph, start, budget, reflexive = true) => {
   return seen;
 };
 
-export const inspectPropertyHierarchy = async (axioms, budget, violation) => {
+export const inspectPropertyHierarchy = async (
+  axioms,
+  budget,
+  violation,
+  members,
+) => {
   const hierarchy = new Map(),
     order = new Map();
   const composite = new Set([
@@ -48,10 +54,7 @@ export const inspectPropertyHierarchy = async (axioms, budget, violation) => {
     composite.add(inverse(key));
   };
   const chains = [];
-  for (const entry of axioms) {
-    budget.check();
-    if (budget.shouldYield()) await budget.yieldTurn();
-    const axiom = entry.value;
+  const handleAxiom = (axiom) => {
     switch (axiom.kind) {
       case K.SUB_OBJECT_PROPERTY_AXIOM:
         inclusion(
@@ -60,9 +63,12 @@ export const inspectPropertyHierarchy = async (axioms, budget, violation) => {
         );
         break;
       case K.EQUIVALENT_OBJECT_PROPERTIES_AXIOM:
-        for (const property of axiom.properties) {
+        for (let i = 0; i < axiom.properties.length; i++) {
           budget.check();
-          equivalent(propertyKey(axiom.properties[0]), propertyKey(property));
+          equivalent(
+            propertyKey(axiom.properties[0]),
+            propertyKey(axiom.properties[i]),
+          );
         }
         break;
       case K.INVERSE_OBJECT_PROPERTIES_AXIOM:
@@ -82,17 +88,33 @@ export const inspectPropertyHierarchy = async (axioms, budget, violation) => {
         break;
       case K.SUB_PROPERTY_CHAIN_AXIOM:
         markComposite(axiom.superProperty);
-        chains.push(entry);
+        chains.push(axiom);
         break;
+    }
+  };
+  if (members) {
+    for (let m = 0; m < members.length; m++) {
+      const stored = readSnapshotAxioms(members[m].snapshot);
+      for (let i = 0; i < stored.length; i++) {
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+        handleAxiom(stored.valueAt(i));
+      }
+    }
+  } else {
+    for (const entry of axioms) {
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      handleAxiom(entry.value);
     }
   }
   const nonsimple = new Set();
   for (const start of composite)
     for (const key of await reachable(hierarchy, start, budget))
       nonsimple.add(key);
-  for (const entry of chains) {
-    const head = propertyKey(entry.value.superProperty),
-      chain = entry.value.chain.map(propertyKey);
+  for (const chainAxiom of chains) {
+    const head = propertyKey(chainAxiom.superProperty),
+      chain = chainAxiom.chain.map(propertyKey);
     if (
       head === `0${OWL}topObjectProperty` ||
       (chain.length === 2 && chain.every((key) => key === head))

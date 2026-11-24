@@ -40,47 +40,100 @@ const named = (property) =>
  * both equivalence tests; preserve these observed rules rather than substitute
  * a different literature evaluator. No recursive visitor or depth cap is used.
  */
-export const isSyntacticallyLocal = (axiom, order, contains, mode, budget) => {
-  const bottomMode = mode === "BOTTOM",
-    results = new Map();
-  const absent = (property) => !contains(named(property));
-  const bottom = (value) => results.get(value) % 2 === 1;
-  const top = (value) => results.get(value) >= 2;
-  for (const value of order) {
-    budget.check();
+export const isSyntacticallyLocal = (
+  axiom,
+  order,
+  contains,
+  mode,
+  budget,
+  results = new Map(),
+  checkCount = order.length + 1,
+) => {
+  const bottomMode = mode === "BOTTOM";
+  if (
+    axiom.kind === K.SUBCLASS_OF_AXIOM &&
+    axiom.subClass.kind === K.CLASS &&
+    axiom.superClass.kind === K.CLASS
+  ) {
+    budget.check(checkCount);
+    const sub = axiom.subClass;
+    const subIri = sub.iri.value;
+    if (
+      subIri === OWL + "Nothing" ||
+      (bottomMode && subIri !== OWL + "Thing" && !contains(sub))
+    ) {
+      return true;
+    }
+    const sup = axiom.superClass;
+    const supIri = sup.iri.value;
+    return (
+      supIri === OWL + "Thing" ||
+      (!bottomMode && supIri !== OWL + "Nothing" && !contains(sup))
+    );
+  }
+  budget.check(checkCount);
+  if (order.length > 0) {
+    results.clear();
+  }
+  for (let o = 0; o < order.length; o++) {
+    const value = order[o];
     if (!classes.has(value.kind)) continue;
     let b = false,
       t = false;
-    const outside = value.property
-      ? absent(value.property)
-      : value.properties
-        ? value.properties.every(absent)
-        : false;
+    let outside = false;
+    if (value.property) {
+      outside = !contains(named(value.property));
+    } else if (value.properties) {
+      const props = value.properties;
+      outside = true;
+      for (let i = 0; i < props.length; i++) {
+        if (contains(named(props[i]))) {
+          outside = false;
+          break;
+        }
+      }
+    }
     const n = value.cardinality,
       filler = value.filler;
     switch (value.kind) {
-      case K.CLASS:
+      case K.CLASS: {
+        const iri = value.iri.value;
         b =
-          value.iri.value === OWL + "Nothing" ||
-          (bottomMode && value.iri.value !== OWL + "Thing" && !contains(value));
+          iri === OWL + "Nothing" ||
+          (bottomMode && iri !== OWL + "Thing" && !contains(value));
         t =
-          value.iri.value === OWL + "Thing" ||
-          (!bottomMode &&
-            value.iri.value !== OWL + "Nothing" &&
-            !contains(value));
+          iri === OWL + "Thing" ||
+          (!bottomMode && iri !== OWL + "Nothing" && !contains(value));
         break;
-      case K.OBJECT_INTERSECTION_OF:
-        b = !value.operands.some(bottom);
-        t = !value.operands.some(top);
+      }
+      case K.OBJECT_INTERSECTION_OF: {
+        const operands = value.operands;
+        b = true;
+        t = true;
+        for (let i = 0; i < operands.length; i++) {
+          const code = results.get(operands[i]);
+          if (code % 2 === 1) b = false;
+          if (code >= 2) t = false;
+          if (!b && !t) break;
+        }
         break;
-      case K.OBJECT_UNION_OF:
-        b = value.operands.some(bottom);
-        t = value.operands.some(top);
+      }
+      case K.OBJECT_UNION_OF: {
+        const operands = value.operands;
+        for (let i = 0; i < operands.length; i++) {
+          const code = results.get(operands[i]);
+          if (code % 2 === 1) b = true;
+          if (code >= 2) t = true;
+          if (b && t) break;
+        }
         break;
-      case K.OBJECT_COMPLEMENT_OF:
-        b = top(value.operand);
-        t = bottom(value.operand);
+      }
+      case K.OBJECT_COMPLEMENT_OF: {
+        const opCode = results.get(value.operand);
+        b = opCode >= 2;
+        t = opCode % 2 === 1;
         break;
+      }
       case K.OBJECT_ONE_OF:
         b = value.individuals.length === 0;
         break;
@@ -89,28 +142,41 @@ export const isSyntacticallyLocal = (axiom, order, contains, mode, budget) => {
         b = bottomMode && outside;
         t = !bottomMode && outside;
         break;
-      case K.OBJECT_SOME_VALUES_FROM:
-        b = bottomMode ? outside || bottom(filler) : bottom(filler);
-        t = !bottomMode && outside && top(filler);
+      case K.OBJECT_SOME_VALUES_FROM: {
+        const fCode = results.get(filler);
+        const fBottom = fCode % 2 === 1;
+        b = bottomMode ? outside || fBottom : fBottom;
+        t = !bottomMode && outside && fCode >= 2;
         break;
-      case K.OBJECT_ALL_VALUES_FROM:
-        b = !bottomMode && outside && bottom(filler);
-        t = bottomMode ? outside || top(filler) : top(filler);
+      }
+      case K.OBJECT_ALL_VALUES_FROM: {
+        const fCode = results.get(filler);
+        const fTop = fCode >= 2;
+        b = !bottomMode && outside && fCode % 2 === 1;
+        t = bottomMode ? outside || fTop : fTop;
         break;
-      case K.OBJECT_MIN_CARDINALITY:
-        b = n > 0 && (bottomMode ? outside || bottom(filler) : bottom(filler));
-        t = n === 0 || (!bottomMode && outside && top(filler));
+      }
+      case K.OBJECT_MIN_CARDINALITY: {
+        const fCode = results.get(filler);
+        const fBottom = fCode % 2 === 1;
+        b = n > 0 && (bottomMode ? outside || fBottom : fBottom);
+        t = n === 0 || (!bottomMode && outside && fCode >= 2);
         break;
-      case K.OBJECT_MAX_CARDINALITY:
-        b = !bottomMode && n > 0 && outside && top(filler);
-        t = bottom(filler) || (bottomMode && outside);
+      }
+      case K.OBJECT_MAX_CARDINALITY: {
+        const fCode = results.get(filler);
+        b = !bottomMode && n > 0 && outside && fCode >= 2;
+        t = fCode % 2 === 1 || (bottomMode && outside);
         break;
-      case K.OBJECT_EXACT_CARDINALITY:
+      }
+      case K.OBJECT_EXACT_CARDINALITY: {
+        const fCode = results.get(filler);
+        const fBottom = fCode % 2 === 1;
         b =
-          n > 0 &&
-          (bottom(filler) || (bottomMode ? outside : outside && top(filler)));
-        t = n === 0 && (bottom(filler) || (bottomMode && outside));
+          n > 0 && (fBottom || (bottomMode ? outside : outside && fCode >= 2));
+        t = n === 0 && (fBottom || (bottomMode && outside));
         break;
+      }
       case K.DATA_HAS_VALUE:
         b = bottomMode && outside;
         t = !bottomMode && outside;
@@ -143,34 +209,54 @@ export const isSyntacticallyLocal = (axiom, order, contains, mode, budget) => {
     }
     results.set(value, Number(b) + 2 * Number(t));
   }
-  budget.check();
   switch (axiom.kind) {
     case K.DATATYPE_DEFINITION_AXIOM:
     case K.HAS_KEY_AXIOM:
       return true;
     case K.SUBCLASS_OF_AXIOM:
-      return bottom(axiom.subClass) || top(axiom.superClass);
-    case K.CLASS_ASSERTION_AXIOM:
-      return top(axiom.classExpression);
-    case K.DISJOINT_CLASSES_AXIOM:
       return (
-        axiom.classExpressions.filter((value) => !bottom(value)).length <= 1
+        results.get(axiom.subClass) % 2 === 1 ||
+        results.get(axiom.superClass) >= 2
       );
+    case K.CLASS_ASSERTION_AXIOM:
+      return results.get(axiom.classExpression) >= 2;
+    case K.DISJOINT_CLASSES_AXIOM: {
+      const exprs = axiom.classExpressions;
+      let nonBottom = 0;
+      for (let i = 0; i < exprs.length; i++) {
+        if (results.get(exprs[i]) % 2 !== 1 && ++nonBottom > 1) return false;
+      }
+      return true;
+    }
     case K.EQUIVALENT_CLASSES_AXIOM: {
       const values = axiom.classExpressions;
-      return (
-        values.length < 2 ||
-        (bottom(values[0]) ? values.every(bottom) : values.every(top))
-      );
+      if (values.length < 2) return true;
+      const checkBottom = results.get(values[0]) % 2 === 1;
+      for (let i = 0; i < values.length; i++) {
+        const code = results.get(values[i]);
+        if (checkBottom ? code % 2 !== 1 : !(code >= 2)) return false;
+      }
+      return true;
     }
     case K.EQUIVALENT_OBJECT_PROPERTIES_AXIOM:
-    case K.EQUIVALENT_DATA_PROPERTIES_AXIOM:
-      return axiom.properties.length < 2 || axiom.properties.every(absent);
-    case K.INVERSE_OBJECT_PROPERTIES_AXIOM:
-      return axiom.properties.every(absent);
+    case K.EQUIVALENT_DATA_PROPERTIES_AXIOM: {
+      const props = axiom.properties;
+      if (props.length < 2) return true;
+      for (let i = 0; i < props.length; i++) {
+        if (contains(named(props[i]))) return false;
+      }
+      return true;
+    }
+    case K.INVERSE_OBJECT_PROPERTIES_AXIOM: {
+      const props = axiom.properties;
+      for (let i = 0; i < props.length; i++) {
+        if (contains(named(props[i]))) return false;
+      }
+      return true;
+    }
     case K.SYMMETRIC_OBJECT_PROPERTY_AXIOM:
     case K.TRANSITIVE_OBJECT_PROPERTY_AXIOM:
-      return absent(axiom.property);
+      return !contains(named(axiom.property));
     case K.ASYMMETRIC_OBJECT_PROPERTY_AXIOM:
     case K.FUNCTIONAL_OBJECT_PROPERTY_AXIOM:
     case K.INVERSE_FUNCTIONAL_OBJECT_PROPERTY_AXIOM:
@@ -178,31 +264,50 @@ export const isSyntacticallyLocal = (axiom, order, contains, mode, budget) => {
     case K.FUNCTIONAL_DATA_PROPERTY_AXIOM:
     case K.NEGATIVE_OBJECT_PROPERTY_ASSERTION_AXIOM:
     case K.NEGATIVE_DATA_PROPERTY_ASSERTION_AXIOM:
-      return bottomMode && absent(axiom.property);
+      return bottomMode && !contains(named(axiom.property));
     case K.REFLEXIVE_OBJECT_PROPERTY_AXIOM:
     case K.OBJECT_PROPERTY_ASSERTION_AXIOM:
     case K.DATA_PROPERTY_ASSERTION_AXIOM:
-      return !bottomMode && absent(axiom.property);
+      return !bottomMode && !contains(named(axiom.property));
     case K.OBJECT_PROPERTY_DOMAIN_AXIOM:
-      return top(axiom.domain) || (bottomMode && absent(axiom.property));
-    case K.OBJECT_PROPERTY_RANGE_AXIOM:
-      return top(axiom.range) || (bottomMode && absent(axiom.property));
-    case K.SUB_OBJECT_PROPERTY_AXIOM:
-      return absent(bottomMode ? axiom.subProperty : axiom.superProperty);
-    case K.SUB_PROPERTY_CHAIN_AXIOM:
-      return bottomMode
-        ? axiom.chain.some(absent)
-        : absent(axiom.superProperty);
-    case K.DISJOINT_OBJECT_PROPERTIES_AXIOM:
-    case K.DISJOINT_DATA_PROPERTIES_AXIOM:
-      // The pinned visitor tests direct named members, not inverse expressions.
       return (
-        bottomMode &&
-        axiom.properties.filter(
-          (property) =>
-            property.kind !== K.OBJECT_INVERSE_OF && !absent(property),
-        ).length <= 1
+        results.get(axiom.domain) >= 2 ||
+        (bottomMode && !contains(named(axiom.property)))
       );
+    case K.OBJECT_PROPERTY_RANGE_AXIOM:
+      return (
+        results.get(axiom.range) >= 2 ||
+        (bottomMode && !contains(named(axiom.property)))
+      );
+    case K.SUB_OBJECT_PROPERTY_AXIOM:
+      return !contains(
+        named(bottomMode ? axiom.subProperty : axiom.superProperty),
+      );
+    case K.SUB_PROPERTY_CHAIN_AXIOM: {
+      if (!bottomMode) return !contains(named(axiom.superProperty));
+      const chain = axiom.chain;
+      for (let i = 0; i < chain.length; i++) {
+        if (!contains(named(chain[i]))) return true;
+      }
+      return false;
+    }
+    case K.DISJOINT_OBJECT_PROPERTIES_AXIOM:
+    case K.DISJOINT_DATA_PROPERTIES_AXIOM: {
+      // The pinned visitor tests direct named members, not inverse expressions.
+      if (!bottomMode) return false;
+      const props = axiom.properties;
+      let presentNamed = 0;
+      for (let i = 0; i < props.length; i++) {
+        const property = props[i];
+        if (
+          property.kind !== K.OBJECT_INVERSE_OF &&
+          contains(named(property))
+        ) {
+          if (++presentNamed > 1) return false;
+        }
+      }
+      return true;
+    }
     // These logical axioms retain the native visitor's non-local default.
     case K.DISJOINT_UNION_AXIOM:
     case K.SUB_DATA_PROPERTY_AXIOM:

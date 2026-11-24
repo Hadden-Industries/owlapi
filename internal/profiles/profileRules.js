@@ -9,6 +9,8 @@ import {
   RDFS_NAMESPACE as RDFS,
   XSD_NAMESPACE as XSD,
 } from "../rdfjs/vocabulary.js";
+import { readSnapshotAxioms } from "../model/ontologyState.js";
+import { createScopedNodeCursor } from "./modelTraversal.js";
 
 const classKinds = new Set(CLASS_EXPRESSION_KINDS);
 const dataKinds = new Set(DATA_RANGE_KINDS);
@@ -110,36 +112,43 @@ const forbiddenAxioms = {
 const thing = (value) =>
   value?.kind === K.CLASS && value.iri.value === OWL_THING;
 
-/** W3C profile productions are position dependent. Evaluate them as a finite
- * state grammar, not a list of globally forbidden expression kinds. The shared
- * assessment budget bounds every expansion, including repeated DAG paths.
- */
-const expressionAllowed = (root, profile, position, budget) => {
-  // Common shape admission has already proved an immutable data-only kind.
-  // Atomic classes need the same charges, without a temporary traversal frame.
-  if (root.kind === K.CLASS) {
+const exprValues = [];
+const exprPositions = [];
+const exprDepths = [];
+let exprBusy = false;
+const excludedDatatypesByPolicy = new WeakMap();
+
+const expressionAllowedFromStack = (
+  pendingValues,
+  pendingPositions,
+  pendingDepths,
+  profile,
+  budget,
+) => {
+  while (pendingValues.length) {
     budget.check();
-    budget.depth(0);
-    return profile !== "RL" || !thing(root);
-  }
-  const pending = [{ value: root, position, depth: 0 }];
-  while (pending.length) {
-    budget.check();
-    const { value, position: at, depth } = pending.pop();
+    const value = pendingValues.pop();
+    const at = pendingPositions.pop();
+    const depth = pendingDepths.pop();
     budget.depth(depth);
-    const push = (child, next = at) =>
-      pending.push({ value: child, position: next, depth: depth + 1 });
     if (value.kind === K.CLASS) {
       if (profile === "RL" && thing(value)) return false;
       continue;
     }
     if (profile === "QL") {
       if (at === "super" && value.kind === K.OBJECT_INTERSECTION_OF) {
-        for (const child of value.operands) push(child);
+        const operands = value.operands;
+        for (let i = 0; i < operands.length; i++) {
+          pendingValues.push(operands[i]);
+          pendingPositions.push(at);
+          pendingDepths.push(depth + 1);
+        }
         continue;
       }
       if (at === "super" && value.kind === K.OBJECT_COMPLEMENT_OF) {
-        push(value.operand, "sub");
+        pendingValues.push(value.operand);
+        pendingPositions.push("sub");
+        pendingDepths.push(depth + 1);
         continue;
       }
       if (
@@ -154,7 +163,12 @@ const expressionAllowed = (root, profile, position, budget) => {
       value.kind === K.OBJECT_INTERSECTION_OF ||
       (at === "sub" && value.kind === K.OBJECT_UNION_OF)
     ) {
-      for (const child of value.operands) push(child);
+      const operands = value.operands;
+      for (let i = 0; i < operands.length; i++) {
+        pendingValues.push(operands[i]);
+        pendingPositions.push(at);
+        pendingDepths.push(depth + 1);
+      }
       continue;
     }
     if (value.kind === K.OBJECT_HAS_VALUE || value.kind === K.DATA_HAS_VALUE)
@@ -166,17 +180,25 @@ const expressionAllowed = (root, profile, position, budget) => {
       )
         continue;
       if (value.kind === K.OBJECT_SOME_VALUES_FROM) {
-        if (!thing(value.filler)) push(value.filler);
+        if (!thing(value.filler)) {
+          pendingValues.push(value.filler);
+          pendingPositions.push(at);
+          pendingDepths.push(depth + 1);
+        }
         continue;
       }
     }
     if (at === "super") {
       if (value.kind === K.OBJECT_COMPLEMENT_OF) {
-        push(value.operand, "sub");
+        pendingValues.push(value.operand);
+        pendingPositions.push("sub");
+        pendingDepths.push(depth + 1);
         continue;
       }
       if (value.kind === K.OBJECT_ALL_VALUES_FROM) {
-        push(value.filler);
+        pendingValues.push(value.filler);
+        pendingPositions.push(at);
+        pendingDepths.push(depth + 1);
         continue;
       }
       if (value.kind === K.DATA_ALL_VALUES_FROM) continue;
@@ -189,8 +211,11 @@ const expressionAllowed = (root, profile, position, budget) => {
           value.kind === K.OBJECT_MAX_CARDINALITY &&
           value.filler &&
           !thing(value.filler)
-        )
-          push(value.filler, "sub");
+        ) {
+          pendingValues.push(value.filler);
+          pendingPositions.push("sub");
+          pendingDepths.push(depth + 1);
+        }
         continue;
       }
     }
@@ -199,39 +224,114 @@ const expressionAllowed = (root, profile, position, budget) => {
   return true;
 };
 
-const inspectELRanges = async (axioms, budget, violate, validationPolicy) => {
+/** W3C profile productions are position dependent. Evaluate them as a finite
+ * state grammar, not a list of globally forbidden expression kinds. The shared
+ * assessment budget bounds every expansion, including repeated DAG paths.
+ */
+const expressionAllowed = (root, profile, position, budget) => {
+  // Common shape admission has already proved an immutable data-only kind.
+  // Atomic classes need the same charges, without a temporary traversal frame.
+  if (root.kind === K.CLASS) {
+    budget.check();
+    budget.depth(0);
+    return profile !== "RL" || !thing(root);
+  }
+  if (exprBusy) {
+    return expressionAllowedFromStack([root], [position], [0], profile, budget);
+  }
+  exprBusy = true;
+  exprValues.length = 0;
+  exprPositions.length = 0;
+  exprDepths.length = 0;
+  exprValues.push(root);
+  exprPositions.push(position);
+  exprDepths.push(0);
+  try {
+    return expressionAllowedFromStack(
+      exprValues,
+      exprPositions,
+      exprDepths,
+      profile,
+      budget,
+    );
+  } finally {
+    exprValues.length = 0;
+    exprPositions.length = 0;
+    exprDepths.length = 0;
+    exprBusy = false;
+  }
+};
+
+const elKey = (value, nativeKeys) => {
+  if (nativeKeys && value.kind === K.OBJECT_PROPERTY) {
+    return "P:" + value.iri.value;
+  }
+  if (nativeKeys && value.kind === K.CLASS) {
+    return "C:" + value.iri.value;
+  }
+  return value.structuralKey();
+};
+
+const inspectELRanges = async (
+  axioms,
+  budget,
+  violate,
+  validationPolicy,
+  members,
+  nativeKeys = false,
+) => {
   // RC2-PRF-DIFF-003: imposed ranges follow zero or more subproperty steps;
   // equivalence contributes both directions. Cycles never restart traversal.
   const ranges = new Map(),
+    rangeNodes = new Map(),
     parents = new Map(),
     imposed = new Map();
   const edge = (sub, sup) => {
-    const key = sub.structuralKey();
-    if (!parents.has(key)) parents.set(key, new Set());
-    parents.get(key).add(sup.structuralKey());
+    const key = elKey(sub, nativeKeys);
+    let set = parents.get(key);
+    if (!set) {
+      set = new Set();
+      parents.set(key, set);
+    }
+    set.add(elKey(sup, nativeKeys));
   };
-  for (const { value } of axioms) {
-    budget.check();
-    if (budget.shouldYield()) await budget.yieldTurn();
-    if (value.kind === K.SUB_OBJECT_PROPERTY_AXIOM)
-      edge(value.subProperty, value.superProperty);
-    if (value.kind === K.EQUIVALENT_OBJECT_PROPERTIES_AXIOM) {
-      // A bidirectional star represents the same transitive equivalence closure
-      // with linear storage instead of a quadratic complete edge inventory.
-      for (const property of value.properties) {
-        budget.check();
-        if (budget.shouldYield()) await budget.yieldTurn();
-        edge(property, value.properties[0]);
-        edge(value.properties[0], property);
+  let hasSubChains = false;
+  for (let m = 0; m < members.length; m++) {
+    const stored = readSnapshotAxioms(members[m].snapshot);
+    for (let a = 0; a < stored.length; a++) {
+      const value = stored.valueAt(a);
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      const kind = value.kind;
+      if (kind === K.SUB_PROPERTY_CHAIN_AXIOM) {
+        hasSubChains = true;
+      } else if (kind === K.SUB_OBJECT_PROPERTY_AXIOM) {
+        edge(value.subProperty, value.superProperty);
+      } else if (kind === K.EQUIVALENT_OBJECT_PROPERTIES_AXIOM) {
+        // A bidirectional star represents the same transitive equivalence closure
+        // with linear storage instead of a quadratic complete edge inventory.
+        const props = value.properties;
+        for (let i = 0; i < props.length; i++) {
+          budget.check();
+          if (budget.shouldYield()) await budget.yieldTurn();
+          edge(props[i], props[0]);
+          edge(props[0], props[i]);
+        }
+      } else if (kind === K.OBJECT_PROPERTY_RANGE_AXIOM) {
+        const key = elKey(value.property, nativeKeys);
+        let set = ranges.get(key);
+        if (!set) {
+          set = new Set();
+          ranges.set(key, set);
+        }
+        const rKey = elKey(value.range, nativeKeys);
+        set.add(rKey);
+        if (!rangeNodes.has(rKey)) rangeNodes.set(rKey, value.range);
       }
     }
-    if (value.kind !== K.OBJECT_PROPERTY_RANGE_AXIOM) continue;
-    const key = value.property.structuralKey();
-    if (!ranges.has(key)) ranges.set(key, new Set());
-    ranges.get(key).add(value.range.structuralKey());
   }
   const imposedRanges = async (property) => {
-    const key = property.structuralKey();
+    const key = elKey(property, nativeKeys);
     if (imposed.has(key)) return imposed.get(key);
     const result = new Set(),
       visited = new Set(),
@@ -256,23 +356,35 @@ const inspectELRanges = async (axioms, budget, violate, validationPolicy) => {
     imposed.set(key, result);
     return result;
   };
-  for (const { value, scope } of axioms) {
-    budget.check();
-    if (budget.shouldYield()) await budget.yieldTurn();
-    if (value.kind !== K.SUB_PROPERTY_CHAIN_AXIOM) continue;
-    const headRanges = await imposedRanges(value.superProperty);
-    const lastRanges = validationPolicy.elLastChainPropertyInheritsRanges
-      ? await imposedRanges(value.chain.at(-1))
-      : (ranges.get(value.chain.at(-1).structuralKey()) ?? new Set());
-    for (const range of headRanges) {
+  for (let m = 0; m < members.length; m++) {
+    const { scope, snapshot } = members[m];
+    const stored = readSnapshotAxioms(snapshot);
+    if (!hasSubChains) {
+      for (let a = 0; a < stored.length; a++) {
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+      }
+      continue;
+    }
+    for (let a = 0; a < stored.length; a++) {
+      const value = stored.valueAt(a);
       budget.check();
       if (budget.shouldYield()) await budget.yieldTurn();
-      if (!lastRanges.has(range))
-        violate("EL_CHAIN_RANGE_NOT_IMPOSED_ON_LAST_PROPERTY", {
-          profile: "EL",
-          scope,
-          range,
-        });
+      if (value.kind !== K.SUB_PROPERTY_CHAIN_AXIOM) continue;
+      const headRanges = await imposedRanges(value.superProperty);
+      const lastRanges = validationPolicy.elLastChainPropertyInheritsRanges
+        ? await imposedRanges(value.chain.at(-1))
+        : (ranges.get(elKey(value.chain.at(-1), nativeKeys)) ?? new Set());
+      for (const range of headRanges) {
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+        if (!lastRanges.has(range))
+          violate("EL_CHAIN_RANGE_NOT_IMPOSED_ON_LAST_PROPERTY", {
+            profile: "EL",
+            scope,
+            range: rangeNodes.get(range)?.structuralKey() ?? range,
+          });
+      }
     }
   }
 };
@@ -287,14 +399,19 @@ export const inspectProfileRules = async (
   budget,
   violate,
   validationPolicy,
+  context,
 ) => {
   const datatypes = profile === "RL" ? rlDatatypes : elqlDatatypes;
-  const excludedDatatypes =
-    profile === "RL"
-      ? new Set(
-          validationPolicy.rlExcludedDatatypeNames.map((name) => XSD + name),
-        )
-      : undefined;
+  let excludedDatatypes;
+  if (profile === "RL") {
+    excludedDatatypes = excludedDatatypesByPolicy.get(validationPolicy);
+    if (!excludedDatatypes) {
+      excludedDatatypes = new Set(
+        validationPolicy.rlExcludedDatatypeNames.map((name) => XSD + name),
+      );
+      excludedDatatypesByPolicy.set(validationPolicy, excludedDatatypes);
+    }
+  }
   const nodeViolation = (code, value, scope, extra) =>
     violate(code, { profile, scope, kind: value.kind, ...extra });
   const check = (expression, position, scope, kind) => {
@@ -307,107 +424,139 @@ export const inspectProfileRules = async (
         expressionKind: expression.kind,
       });
   };
-  for (const { value, scope, annotationContext } of nodes) {
-    budget.check();
-    if (budget.shouldYield()) await budget.yieldTurn();
-    // Annotation values retain the common lexical/structural checks, but are
-    // outside the logical profile's data-range and individual productions.
-    if (annotationContext || value.kind === K.IRI) continue;
-    // RC2-PRF-DIFF-002: the RL property production excludes all four built-ins.
-    if (
-      profile === "RL" &&
-      !validationPolicy.rlAllowsTopAndBottomProperties &&
-      ((value.kind === K.OBJECT_PROPERTY &&
-        rlForbiddenObjectProperties.has(value.iri.value)) ||
-        (value.kind === K.DATA_PROPERTY &&
-          rlForbiddenDataProperties.has(value.iri.value)))
-    )
-      nodeViolation("PROFILE_PROPERTY_NOT_ALLOWED", value, scope, {
-        iri: value.iri.value,
-      });
-    if (
-      value.kind === K.DATATYPE &&
-      (!datatypes.has(value.iri.value) ||
-        (profile === "RL" && excludedDatatypes.has(value.iri.value)))
-    )
-      nodeViolation("PROFILE_DATATYPE_NOT_ALLOWED", value, scope, {
-        iri: value.iri.value,
-      });
-    if (
-      dataKinds.has(value.kind) &&
-      value.kind !== K.DATATYPE &&
-      value.kind !== K.DATA_INTERSECTION_OF &&
-      !(profile === "EL" && value.kind === K.DATA_ONE_OF)
-    )
-      nodeViolation("PROFILE_DATA_RANGE_NOT_ALLOWED", value, scope);
-    if (
-      profile === "EL" &&
-      value.kind === K.DATA_ONE_OF &&
-      value.values.length !== 1
-    )
-      nodeViolation("PROFILE_DATA_ENUMERATION_NOT_SINGLETON", value, scope);
-    if (profile !== "RL" && value.kind === K.ANONYMOUS_INDIVIDUAL)
-      nodeViolation("PROFILE_ANONYMOUS_INDIVIDUAL_NOT_ALLOWED", value, scope);
-    if (profile === "EL") {
-      if (value.kind === K.OBJECT_INVERSE_OF)
-        nodeViolation("PROFILE_INVERSE_PROPERTY_NOT_ALLOWED", value, scope);
-      if (classKinds.has(value.kind) && !elClasses.has(value.kind))
-        nodeViolation("PROFILE_CLASS_EXPRESSION_NOT_ALLOWED", value, scope);
-      if (value.kind === K.OBJECT_ONE_OF && value.individuals.length !== 1)
-        nodeViolation("PROFILE_OBJECT_ENUMERATION_NOT_SINGLETON", value, scope);
-    }
-  }
-  for (const { value, scope } of axioms) {
-    budget.check();
-    if (budget.shouldYield()) await budget.yieldTurn();
-    if (forbiddenAxioms[profile].has(value.kind))
-      nodeViolation("PROFILE_AXIOM_NOT_ALLOWED", value, scope);
-    if (profile === "EL") continue;
-    switch (value.kind) {
-      case K.SUBCLASS_OF_AXIOM:
-        check(value.subClass, "sub", scope, value.kind);
-        check(value.superClass, "super", scope, value.kind);
-        break;
-      case K.EQUIVALENT_CLASSES_AXIOM:
-        for (const expression of value.classExpressions)
-          check(
-            expression,
-            profile === "RL" ? "equiv" : "sub",
+  const nodeCursor = createScopedNodeCursor(
+    context.members,
+    context.sourceRoots,
+    validationPolicy,
+  );
+  try {
+    for (
+      let node = nodeCursor.next();
+      node !== undefined;
+      node = nodeCursor.next()
+    ) {
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      const { value, scope, annotationContext } = node;
+      // Annotation values retain the common lexical/structural checks, but are
+      // outside the logical profile's data-range and individual productions.
+      if (
+        annotationContext ||
+        value.kind === K.IRI ||
+        value.kind === K.CLASS ||
+        value.kind === K.NAMED_INDIVIDUAL
+      )
+        continue;
+      // RC2-PRF-DIFF-002: the RL property production excludes all four built-ins.
+      if (
+        profile === "RL" &&
+        !validationPolicy.rlAllowsTopAndBottomProperties &&
+        ((value.kind === K.OBJECT_PROPERTY &&
+          rlForbiddenObjectProperties.has(value.iri.value)) ||
+          (value.kind === K.DATA_PROPERTY &&
+            rlForbiddenDataProperties.has(value.iri.value)))
+      )
+        nodeViolation("PROFILE_PROPERTY_NOT_ALLOWED", value, scope, {
+          iri: value.iri.value,
+        });
+      if (
+        value.kind === K.DATATYPE &&
+        (!datatypes.has(value.iri.value) ||
+          (profile === "RL" && excludedDatatypes.has(value.iri.value)))
+      )
+        nodeViolation("PROFILE_DATATYPE_NOT_ALLOWED", value, scope, {
+          iri: value.iri.value,
+        });
+      if (
+        dataKinds.has(value.kind) &&
+        value.kind !== K.DATATYPE &&
+        value.kind !== K.DATA_INTERSECTION_OF &&
+        !(profile === "EL" && value.kind === K.DATA_ONE_OF)
+      )
+        nodeViolation("PROFILE_DATA_RANGE_NOT_ALLOWED", value, scope);
+      if (
+        profile === "EL" &&
+        value.kind === K.DATA_ONE_OF &&
+        value.values.length !== 1
+      )
+        nodeViolation("PROFILE_DATA_ENUMERATION_NOT_SINGLETON", value, scope);
+      if (profile !== "RL" && value.kind === K.ANONYMOUS_INDIVIDUAL)
+        nodeViolation("PROFILE_ANONYMOUS_INDIVIDUAL_NOT_ALLOWED", value, scope);
+      if (profile === "EL") {
+        if (value.kind === K.OBJECT_INVERSE_OF)
+          nodeViolation("PROFILE_INVERSE_PROPERTY_NOT_ALLOWED", value, scope);
+        if (classKinds.has(value.kind) && !elClasses.has(value.kind))
+          nodeViolation("PROFILE_CLASS_EXPRESSION_NOT_ALLOWED", value, scope);
+        if (value.kind === K.OBJECT_ONE_OF && value.individuals.length !== 1)
+          nodeViolation(
+            "PROFILE_OBJECT_ENUMERATION_NOT_SINGLETON",
+            value,
             scope,
-            value.kind,
           );
-        break;
-      case K.DISJOINT_CLASSES_AXIOM:
-        for (const expression of value.classExpressions)
-          check(
-            expression,
+      }
+    }
+  } finally {
+    nodeCursor.close();
+  }
+  for (let m = 0; m < context.members.length; m++) {
+    const { scope, snapshot } = context.members[m];
+    const stored = readSnapshotAxioms(snapshot);
+    for (let a = 0; a < stored.length; a++) {
+      const value = stored.valueAt(a);
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      if (forbiddenAxioms[profile].has(value.kind))
+        nodeViolation("PROFILE_AXIOM_NOT_ALLOWED", value, scope);
+      if (profile === "EL") continue;
+      switch (value.kind) {
+        case K.SUBCLASS_OF_AXIOM:
+          check(value.subClass, "sub", scope, value.kind);
+          check(value.superClass, "super", scope, value.kind);
+          break;
+        case K.EQUIVALENT_CLASSES_AXIOM: {
+          const exprs = value.classExpressions;
+          const pos = profile === "RL" ? "equiv" : "sub";
+          for (let i = 0; i < exprs.length; i++)
+            check(exprs[i], pos, scope, value.kind);
+          break;
+        }
+        case K.DISJOINT_CLASSES_AXIOM: {
+          const exprs = value.classExpressions;
+          const pos =
             profile === "RL"
               ? validationPolicy.rlDisjointOperandPosition
-              : "sub",
-            scope,
-            value.kind,
-          );
-        break;
-      case K.OBJECT_PROPERTY_DOMAIN_AXIOM:
-      case K.DATA_PROPERTY_DOMAIN_AXIOM:
-        check(value.domain, "super", scope, value.kind);
-        break;
-      case K.OBJECT_PROPERTY_RANGE_AXIOM:
-        check(value.range, "super", scope, value.kind);
-        break;
-      case K.CLASS_ASSERTION_AXIOM:
-        if (profile === "QL") {
-          if (value.classExpression.kind !== K.CLASS)
-            nodeViolation("PROFILE_CLASS_ASSERTION_NOT_ATOMIC", value, scope);
-        } else check(value.classExpression, "super", scope, value.kind);
-        break;
-      case K.HAS_KEY_AXIOM:
-        if (profile === "RL")
-          check(value.classExpression, "sub", scope, value.kind);
-        break;
+              : "sub";
+          for (let i = 0; i < exprs.length; i++)
+            check(exprs[i], pos, scope, value.kind);
+          break;
+        }
+        case K.OBJECT_PROPERTY_DOMAIN_AXIOM:
+        case K.DATA_PROPERTY_DOMAIN_AXIOM:
+          check(value.domain, "super", scope, value.kind);
+          break;
+        case K.OBJECT_PROPERTY_RANGE_AXIOM:
+          check(value.range, "super", scope, value.kind);
+          break;
+        case K.CLASS_ASSERTION_AXIOM:
+          if (profile === "QL") {
+            if (value.classExpression.kind !== K.CLASS)
+              nodeViolation("PROFILE_CLASS_ASSERTION_NOT_ATOMIC", value, scope);
+          } else check(value.classExpression, "super", scope, value.kind);
+          break;
+        case K.HAS_KEY_AXIOM:
+          if (profile === "RL")
+            check(value.classExpression, "sub", scope, value.kind);
+          break;
+      }
     }
-    if (budget.shouldYield()) await budget.yieldTurn();
   }
   if (profile === "EL")
-    await inspectELRanges(axioms, budget, violate, validationPolicy);
+    await inspectELRanges(
+      axioms,
+      budget,
+      violate,
+      validationPolicy,
+      context.members,
+      context.allTrusted === true,
+    );
 };

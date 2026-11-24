@@ -17,10 +17,11 @@ import {
 } from "../rdfjs/vocabulary.js";
 import { createProfileBudget } from "./budget.js";
 import {
-  profileSteps,
+  createProfileStepCursor,
+  createScopedNodeCursor,
   scopedProfileAxioms,
-  scopedProfileNodes,
 } from "./modelTraversal.js";
+import { usesNativeStructuralKeys } from "../../model/structural.js";
 import { readSnapshotAxioms } from "../model/ontologyState.js";
 import { inspectProfileRules } from "./profileRules.js";
 import { defaultBehaviorProfileDefinition } from "../behavior/ontologyBehaviorContext.js";
@@ -108,6 +109,14 @@ const isValidProfileIri = (iriString) => {
   }
 };
 
+const ENTITY_BITS = new Map([
+  [K.CLASS, 1],
+  [K.DATATYPE, 2],
+  [K.OBJECT_PROPERTY, 4],
+  [K.DATA_PROPERTY, 8],
+  [K.ANNOTATION_PROPERTY, 16],
+]);
+
 const checkModel = async (
   ontology,
   budget,
@@ -131,6 +140,7 @@ const checkModel = async (
   const axioms = scopedProfileAxioms(members);
   const anonymous = [];
   const declarations = new Set(),
+    declaredObjects = new Set(),
     entities = new Map(),
     definitions = new Map(),
     datatypeDependencies = new Map();
@@ -139,7 +149,6 @@ const checkModel = async (
     const sourceRoots = includeSource
       ? await inspectSourceStructure(members, budget, violate)
       : new Map();
-    const nodes = scopedProfileNodes(members, sourceRoots, validationPolicy);
     let nodeCount = 0;
     const untrusted = [];
     for (const member of members) {
@@ -148,154 +157,213 @@ const checkModel = async (
         budget.check();
         if (budget.shouldYield()) await budget.yieldTurn();
       }
-      for (const step of profileSteps(member, sourceRoots, validationPolicy)) {
-        budget.check();
-        if (budget.shouldYield()) await budget.yieldTurn();
-        if (step.skipped) continue;
-        budget.depth(step.depth);
-        if (!step.trusted && !step.virtual) validateStructuralShape(step.value);
-        if (step.sequence) {
-          for (let i = 0; i < step.value.length; i++) budget.check();
-          continue;
+      const stepCursor = createProfileStepCursor(
+        member,
+        sourceRoots,
+        validationPolicy,
+        { pooled: true },
+      );
+      try {
+        for (
+          let step = stepCursor.next();
+          step !== undefined;
+          step = stepCursor.next()
+        ) {
+          budget.check();
+          if (budget.shouldYield()) await budget.yieldTurn();
+          if (step.skipped) continue;
+          budget.depth(step.depth);
+          if (!step.trusted && !step.virtual)
+            validateStructuralShape(step.value);
+          if (step.sequence) {
+            for (let i = 0; i < step.value.length; i++) budget.check();
+            continue;
+          }
+          if (!step.trusted)
+            untrusted.push({ index: nodeCount, value: step.value });
+          nodeCount++;
+          if (
+            step.value.kind === K.LITERAL &&
+            typeof step.value.lexicalForm === "string" &&
+            step.value.lexicalForm.length >
+              budget.configuration.maxLiteralLength
+          )
+            throw new ResourceLimitError(
+              "Literal validation size limit exceeded",
+              {
+                resource: "profileLiteralLength",
+                limit: budget.configuration.maxLiteralLength,
+              },
+            );
         }
-        if (!step.trusted)
-          untrusted.push({ index: nodeCount, value: step.value });
-        nodeCount++;
-        if (
-          step.value.kind === K.LITERAL &&
-          typeof step.value.lexicalForm === "string" &&
-          step.value.lexicalForm.length > budget.configuration.maxLiteralLength
-        )
-          throw new ResourceLimitError(
-            "Literal validation size limit exceeded",
-            {
-              resource: "profileLiteralLength",
-              limit: budget.configuration.maxLiteralLength,
-            },
-          );
+      } finally {
+        stepCursor.close();
       }
     }
     // Preserve reverse admission and cancellation points. Factory-proven
     // snapshots need no retained per-node validation records.
     const validateStructure = createStructuralValidator();
-    for (let index = nodeCount - 1; index >= 0; index--) {
-      budget.check();
-      if (budget.shouldYield()) await budget.yieldTurn();
-      if (untrusted.at(-1)?.index === index)
-        validateStructure(untrusted.pop().value);
+    if (untrusted.length > 0) {
+      for (let index = nodeCount - 1; index >= 0; index--) {
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+        if (untrusted.at(-1)?.index === index)
+          validateStructure(untrusted.pop().value);
+      }
+    } else {
+      for (let index = nodeCount - 1; index >= 0; index--) {
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+      }
     }
+    const allTrusted = untrusted.length === 0 && usesNativeStructuralKeys();
+    const entityLookupKey = (entity) =>
+      allTrusted
+        ? `${entity.kind}\0${entity.iri.value}`
+        : entity.structuralKey();
+    const literalLookupKey = (literal) =>
+      allTrusted
+        ? `${literal.datatype.iri.value}\0${literal.language}\0${literal.lexicalForm}`
+        : literal.structuralKey();
     if (profile !== "DL")
       await inspectProfileRules(
         profile,
         axioms,
-        nodes,
+        undefined,
         budget,
         violate,
         validationPolicy,
+        { members, sourceRoots, allTrusted },
       );
-    for (const { value: axiom } of axioms) {
-      budget.check();
-      if (budget.shouldYield()) await budget.yieldTurn();
-      if (axiom.kind === K.DECLARATION_AXIOM)
-        declarations.add(axiom.entity.structuralKey());
-      if (axiom.kind === K.DATATYPE_DEFINITION_AXIOM) {
-        const iri = axiom.datatype.iri.value;
-        if (!definitions.has(iri)) definitions.set(iri, new Set());
-        definitions.get(iri).add(axiom.structuralKey());
+    for (let m = 0; m < members.length; m++) {
+      const stored = readSnapshotAxioms(members[m].snapshot);
+      for (let i = 0; i < stored.length; i++) {
+        const axiom = stored.valueAt(i);
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+        if (axiom.kind === K.DECLARATION_AXIOM) {
+          if (allTrusted) declaredObjects.add(axiom.entity);
+          declarations.add(entityLookupKey(axiom.entity));
+        }
+        if (axiom.kind === K.DATATYPE_DEFINITION_AXIOM) {
+          const iri = axiom.datatype.iri.value;
+          if (!definitions.has(iri)) definitions.set(iri, new Set());
+          definitions.get(iri).add(axiom.structuralKey());
+        }
       }
     }
-    for (const node of nodes) {
-      budget.check();
-      if (budget.shouldYield()) await budget.yieldTurn();
-      const { value, scope } = node;
-      if (value.kind === K.ONTOLOGY_ID)
-        for (const iri of [value.ontologyIRI, value.versionIRI]) {
-          if (iri && reserved(iri.value))
-            violate("RESERVED_ONTOLOGY_IRI", { scope, iri: iri.value });
+    const firstNodeCursor = createScopedNodeCursor(
+      members,
+      sourceRoots,
+      validationPolicy,
+    );
+    try {
+      for (
+        let node = firstNodeCursor.next();
+        node !== undefined;
+        node = firstNodeCursor.next()
+      ) {
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+        const { value, scope } = node;
+        if (value.kind === K.ONTOLOGY_ID) {
+          if (value.ontologyIRI && reserved(value.ontologyIRI.value))
+            violate("RESERVED_ONTOLOGY_IRI", {
+              scope,
+              iri: value.ontologyIRI.value,
+            });
+          if (value.versionIRI && reserved(value.versionIRI.value))
+            violate("RESERVED_ONTOLOGY_IRI", {
+              scope,
+              iri: value.versionIRI.value,
+            });
         }
-      if (value.kind === K.IRI) {
-        if (!isValidProfileIri(value.value)) violate("IRI_INVALID", { scope });
-        continue;
-      }
-      if (entityKinds.has(value.kind)) {
-        const iri = value.iri.value;
-        if (!entities.has(iri)) entities.set(iri, new Set());
-        entities.get(iri).add(value.kind);
-        if (
-          reserved(iri) &&
-          !builtin(value) &&
-          !(
-            value.kind === K.DATATYPE &&
-            validationPolicy.allowsUnknownXsdDatatypes &&
-            iri.startsWith(XSD)
+        if (value.kind === K.IRI) {
+          if (!isValidProfileIri(value.value))
+            violate("IRI_INVALID", { scope });
+          continue;
+        }
+        if (entityKinds.has(value.kind)) {
+          const iri = value.iri.value;
+          const bit = ENTITY_BITS.get(value.kind);
+          const prev = entities.get(iri) ?? 0;
+          if (Math.floor(prev / bit) % 2 === 0) entities.set(iri, prev + bit);
+          if (
+            reserved(iri) &&
+            !builtin(value) &&
+            !(
+              value.kind === K.DATATYPE &&
+              validationPolicy.allowsUnknownXsdDatatypes &&
+              iri.startsWith(XSD)
+            )
           )
-        )
-          violate("RESERVED_ENTITY_IRI", { scope, iri, kind: value.kind });
-        if (value.kind === K.DATATYPE && node.definition) {
-          const definition = node.definition.iri.value;
-          if (!datatypeDependencies.has(definition))
-            datatypeDependencies.set(definition, new Set());
-          datatypeDependencies.get(definition).add(iri);
+            violate("RESERVED_ENTITY_IRI", { scope, iri, kind: value.kind });
+          if (value.kind === K.DATATYPE && node.definition) {
+            const definition = node.definition.iri.value;
+            if (!datatypeDependencies.has(definition))
+              datatypeDependencies.set(definition, new Set());
+            datatypeDependencies.get(definition).add(iri);
+          }
         }
-      }
-      if (value.kind === K.ANONYMOUS_INDIVIDUAL) {
-        if (validationPolicy.checksAnonymousStructure)
-          anonymous.push({ value, scope });
+        if (value.kind === K.ANONYMOUS_INDIVIDUAL) {
+          if (validationPolicy.checksAnonymousStructure)
+            anonymous.push({ value, scope });
+          if (
+            validationPolicy.checksAnonymousStructure &&
+            node.anonymousForbidden
+          )
+            violate("ANONYMOUS_INDIVIDUAL_POSITION", {
+              scope,
+              kind: node.anonymousForbidden,
+            });
+        }
+        const setField = minimumTwoSetFields.get(value.kind);
+        if (value.kind === K.OBJECT_ONE_OF && value.individuals.length === 0)
+          violate("SET_CONSTRUCTOR_ARITY", { scope, kind: value.kind });
+        if (setField && value[setField].length < 2) {
+          const original = readSourceArity(value);
+          violate(
+            "SET_CONSTRUCTOR_ARITY",
+            { scope, kind: value.kind },
+            node.sourceVerified &&
+              original?.field === setField &&
+              original.originalCount >= original.minimum,
+          );
+        }
         if (
-          validationPolicy.checksAnonymousStructure &&
-          node.anonymousForbidden
+          value.kind === K.DATA_PROPERTY &&
+          value.iri.value === OWL + "topDataProperty" &&
+          (validationPolicy.topDataPropertyRestriction === "not-sub-property"
+            ? node.parent?.kind === K.SUB_DATA_PROPERTY_AXIOM &&
+              node.field === "subProperty"
+            : !(
+                node.parent?.kind === K.SUB_DATA_PROPERTY_AXIOM &&
+                node.field === "superProperty"
+              ))
         )
-          violate("ANONYMOUS_INDIVIDUAL_POSITION", {
-            scope,
-            kind: node.anonymousForbidden,
-          });
+          violate("TOP_DATA_PROPERTY_POSITION", { scope });
+        if (
+          validationPolicy.requiresUnaryDataRanges &&
+          (value.kind === K.DATA_SOME_VALUES_FROM ||
+            value.kind === K.DATA_ALL_VALUES_FROM) &&
+          value.properties.length !== 1
+        )
+          violate("DATA_RANGE_ARITY", { scope, kind: value.kind });
       }
-      const setField = minimumTwoSetFields.get(value.kind);
-      if (value.kind === K.OBJECT_ONE_OF && value.individuals.length === 0)
-        violate("SET_CONSTRUCTOR_ARITY", { scope, kind: value.kind });
-      if (setField && value[setField].length < 2) {
-        const original = readSourceArity(value);
-        violate(
-          "SET_CONSTRUCTOR_ARITY",
-          { scope, kind: value.kind },
-          node.sourceVerified &&
-            original?.field === setField &&
-            original.originalCount >= original.minimum,
-        );
-      }
-      if (
-        value.kind === K.DATA_PROPERTY &&
-        value.iri.value === OWL + "topDataProperty" &&
-        (validationPolicy.topDataPropertyRestriction === "not-sub-property"
-          ? node.parent?.kind === K.SUB_DATA_PROPERTY_AXIOM &&
-            node.field === "subProperty"
-          : !(
-              node.parent?.kind === K.SUB_DATA_PROPERTY_AXIOM &&
-              node.field === "superProperty"
-            ))
-      )
-        violate("TOP_DATA_PROPERTY_POSITION", { scope });
-      if (
-        validationPolicy.requiresUnaryDataRanges &&
-        (value.kind === K.DATA_SOME_VALUES_FROM ||
-          value.kind === K.DATA_ALL_VALUES_FROM) &&
-        value.properties.length !== 1
-      )
-        violate("DATA_RANGE_ARITY", { scope, kind: value.kind });
+    } finally {
+      firstNodeCursor.close?.();
     }
-    for (const [iri, kinds] of entities) {
+    for (const [iri, mask] of entities) {
       budget.check();
       if (budget.shouldYield()) await budget.yieldTurn();
-      if (
-        Number(kinds.has(K.OBJECT_PROPERTY)) +
-          Number(kinds.has(K.DATA_PROPERTY)) +
-          Number(kinds.has(K.ANNOTATION_PROPERTY)) >
-        1
-      )
+      const hasObject = mask % 8 >= 4;
+      const hasData = mask % 16 >= 8;
+      const hasAnnotation = mask >= 16;
+      if (Number(hasObject) + Number(hasData) + Number(hasAnnotation) > 1)
         violate("PROPERTY_CATEGORY_COLLISION", { iri });
-      if (kinds.has(K.CLASS) && kinds.has(K.DATATYPE))
+      if (mask % 2 === 1 && mask % 4 >= 2)
         violate("CLASS_DATATYPE_COLLISION", { iri });
-      if (kinds.has(K.DATATYPE)) {
+      if (mask % 4 >= 2) {
         const count = definitions.get(iri)?.size ?? 0;
         if (
           validationPolicy.requiresUniqueDatatypeDefinition
@@ -312,108 +380,144 @@ const checkModel = async (
         (await reachable(datatypeDependencies, from, budget, false)).has(from)
       )
         violate("CYCLIC_DATATYPE_DEFINITION", { iri: from });
-    const nonsimple = await inspectPropertyHierarchy(axioms, budget, violate);
+    const nonsimple = await inspectPropertyHierarchy(
+      axioms,
+      budget,
+      violate,
+      members,
+    );
     const checkedLiterals = new Set(),
       checkedEntities = new Set();
-    for (const node of nodes) {
-      budget.check();
-      if (budget.shouldYield()) await budget.yieldTurn();
-      const { value, scope } = node;
-      if (value.kind === K.IRI) continue;
-      if (
-        entityKinds.has(value.kind) &&
-        value.kind !== K.NAMED_INDIVIDUAL &&
-        !builtin(value) &&
-        !declarations.has(value.structuralKey())
+    const secondNodeCursor = createScopedNodeCursor(
+      members,
+      sourceRoots,
+      validationPolicy,
+    );
+    try {
+      for (
+        let node = secondNodeCursor.next();
+        node !== undefined;
+        node = secondNodeCursor.next()
       ) {
-        const key = `${scope}:${value.structuralKey()}`;
-        if (!checkedEntities.has(key))
-          violate(
-            "UNDECLARED_ENTITY",
-            { scope, iri: value.iri.value, kind: value.kind },
-            node.sourceVerified,
-          );
-        checkedEntities.add(key);
-      }
-      if (needsSimple.has(value.kind)) {
-        for (const property of value.properties ?? [value.property]) {
-          if (nonsimple.has(propertyKey(property)))
-            violate("NONSIMPLE_OBJECT_PROPERTY", {
-              scope,
-              kind: value.kind,
-              property: propertyKey(property),
-            });
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+        const { value, scope } = node;
+        if (value.kind === K.IRI) continue;
+        if (
+          entityKinds.has(value.kind) &&
+          value.kind !== K.NAMED_INDIVIDUAL &&
+          !(allTrusted && declaredObjects.has(value)) &&
+          !builtin(value)
+        ) {
+          const eKey = entityLookupKey(value);
+          if (!declarations.has(eKey)) {
+            const key = `${scope}:${eKey}`;
+            if (!checkedEntities.has(key))
+              violate(
+                "UNDECLARED_ENTITY",
+                { scope, iri: value.iri.value, kind: value.kind },
+                node.sourceVerified,
+              );
+            checkedEntities.add(key);
+          }
         }
-      }
-      if (
-        value.kind === K.LITERAL &&
-        !checkedLiterals.has(value.structuralKey())
-      ) {
-        checkedLiterals.add(value.structuralKey());
-        if (definitions.has(value.datatype.iri.value))
-          violate("DEFINED_DATATYPE_LITERAL", {
-            scope,
-            datatype: value.datatype.iri.value,
-          });
-        else {
-          let result =
-            validationPolicy.literalValidation === "java-pattern"
-              ? inspectJavaLiteral(value)
-              : inspectLiteral(value, budget.configuration, budget);
-          // Inspectors return an own status record or asynchronous XML work.
-          // The global Promise constructor can be replaced by instrumentation.
-          if (!Object.hasOwn(result, "status")) result = await result;
-          if (result.status === "invalid")
-            violate(result.rule, { scope, datatype: value.datatype.iri.value });
-          if (result.status === "unverified")
-            unresolved(result.rule, {
+        if (nonsimple.size > 0 && needsSimple.has(value.kind)) {
+          if (value.properties) {
+            for (let i = 0; i < value.properties.length; i++) {
+              const pKey = propertyKey(value.properties[i]);
+              if (nonsimple.has(pKey))
+                violate("NONSIMPLE_OBJECT_PROPERTY", {
+                  scope,
+                  kind: value.kind,
+                  property: pKey,
+                });
+            }
+          } else {
+            const pKey = propertyKey(value.property);
+            if (nonsimple.has(pKey))
+              violate("NONSIMPLE_OBJECT_PROPERTY", {
+                scope,
+                kind: value.kind,
+                property: pKey,
+              });
+          }
+        }
+        if (value.kind === K.LITERAL) {
+          const lKey = literalLookupKey(value);
+          if (!checkedLiterals.has(lKey)) {
+            checkedLiterals.add(lKey);
+            if (definitions.has(value.datatype.iri.value)) {
+              violate("DEFINED_DATATYPE_LITERAL", {
+                scope,
+                datatype: value.datatype.iri.value,
+              });
+            } else {
+              let result =
+                validationPolicy.literalValidation === "java-pattern"
+                  ? inspectJavaLiteral(value)
+                  : inspectLiteral(value, budget.configuration, budget);
+              // Inspectors return an own status record or asynchronous XML work.
+              // The global Promise constructor can be replaced by instrumentation.
+              if (!Object.hasOwn(result, "status")) result = await result;
+              if (result.status === "invalid")
+                violate(result.rule, {
+                  scope,
+                  datatype: value.datatype.iri.value,
+                });
+              if (result.status === "unverified")
+                unresolved(result.rule, {
+                  scope,
+                  datatype: value.datatype.iri.value,
+                });
+            }
+          }
+        }
+        if (value.kind === K.DATATYPE_RESTRICTION) {
+          if (
+            !isBuiltinDatatype(value.datatype.iri.value) &&
+            validationPolicy.definedDatatypeRestrictionOutcome === "exception"
+          )
+            throw new RangeError(
+              "The restricted datatype is not a built in datatype",
+            );
+          if (!isBuiltinDatatype(value.datatype.iri.value)) {
+            violate("DEFINED_DATATYPE_RESTRICTION", {
               scope,
               datatype: value.datatype.iri.value,
             });
+          } else {
+            for (const facet of value.facetRestrictions) {
+              budget.check();
+              if (budget.shouldYield()) await budget.yieldTurn();
+              const result = validationPolicy.checksFacetValueSpace
+                ? await inspectFacet(
+                    value.datatype,
+                    facet,
+                    budget.configuration,
+                    budget,
+                  )
+                : inspectJavaFacet(value.datatype, facet);
+              if (result.status === "invalid")
+                violate(result.rule, {
+                  scope,
+                  datatype: value.datatype.iri.value,
+                  facet: facet.facet.value,
+                });
+              if (result.status === "unverified")
+                unresolved(result.rule, {
+                  scope,
+                  datatype: value.datatype.iri.value,
+                  facet: facet.facet.value,
+                });
+            }
+          }
         }
       }
-      if (value.kind === K.DATATYPE_RESTRICTION) {
-        if (
-          !isBuiltinDatatype(value.datatype.iri.value) &&
-          validationPolicy.definedDatatypeRestrictionOutcome === "exception"
-        )
-          throw new RangeError(
-            "The restricted datatype is not a built in datatype",
-          );
-        if (!isBuiltinDatatype(value.datatype.iri.value))
-          violate("DEFINED_DATATYPE_RESTRICTION", {
-            scope,
-            datatype: value.datatype.iri.value,
-          });
-        else
-          for (const facet of value.facetRestrictions) {
-            budget.check();
-            if (budget.shouldYield()) await budget.yieldTurn();
-            const result = validationPolicy.checksFacetValueSpace
-              ? await inspectFacet(
-                  value.datatype,
-                  facet,
-                  budget.configuration,
-                  budget,
-                )
-              : inspectJavaFacet(value.datatype, facet);
-            if (result.status === "invalid")
-              violate(result.rule, {
-                scope,
-                datatype: value.datatype.iri.value,
-                facet: facet.facet.value,
-              });
-            if (result.status === "unverified")
-              unresolved(result.rule, {
-                scope,
-                datatype: value.datatype.iri.value,
-                facet: facet.facet.value,
-              });
-          }
-      }
+    } finally {
+      secondNodeCursor.close();
     }
     if (validationPolicy.checksAnonymousStructure)
-      await inspectAnonymousGraph(axioms, anonymous, budget, violate);
+      await inspectAnonymousGraph(axioms, anonymous, budget, violate, members);
     await budget.checkpoint(0);
   } catch (error) {
     if (error instanceof StructuralValidationError)
