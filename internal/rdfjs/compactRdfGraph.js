@@ -11,6 +11,24 @@ const indexColumns = [
   [2, 0, 1],
 ];
 
+// A keyed linear hash in the largest 32-bit prime field. Four 18-bit
+// multipliers keep the complete sum exact for all Uint32 term identifiers.
+// Buckets hold only rowId + 1; equal hashes still compare every SPOG column.
+const rowHashFactors = globalThis.crypto
+  .getRandomValues(new Uint32Array(4))
+  .map((value) => 2 * (value % 131_071) + 1);
+const rowHash = (s, p, o, g) => {
+  const hash =
+    (s * rowHashFactors[0] +
+      p * rowHashFactors[1] +
+      o * rowHashFactors[2] +
+      g * rowHashFactors[3]) %
+    4_294_967_291;
+  // The table grows by powers of two. Fold the high bits down so RDF term
+  // IDs that advance in lockstep do not populate just a subset of buckets.
+  return hash + Math.floor(hash / 65_536);
+};
+
 /** Only package-allocated graphs can take the integer cursor path. */
 export const isCompactRdfGraph = (value) => graphs.has(value);
 
@@ -58,6 +76,7 @@ export class CompactRdfGraph {
   #graphRanks;
   #graphRanges;
   #rowCount = 0;
+  #buckets;
   #orders;
   #ranks;
   #replay;
@@ -100,8 +119,51 @@ export class CompactRdfGraph {
     return this.#terms.length;
   }
 
+  #findBucket(buckets, s, p, o, g) {
+    let slot = rowHash(s, p, o, g) % buckets.length;
+    while (buckets[slot]) {
+      const row = buckets[slot] - 1;
+      if (
+        this.#term(row, 0) === s &&
+        this.#term(row, 1) === p &&
+        this.#term(row, 2) === o &&
+        this.#term(row, 3) === g
+      )
+        break;
+      if (++slot === buckets.length) slot = 0;
+    }
+    return slot;
+  }
+
+  #growBuckets() {
+    const grown = new Uint32Array(this.#buckets.length * 2);
+    for (let row = 0; row < this.#rowCount; row++) {
+      const slot = this.#findBucket(
+        grown,
+        this.#term(row, 0),
+        this.#term(row, 1),
+        this.#term(row, 2),
+        this.#term(row, 3),
+      );
+      grown[slot] = row + 1;
+    }
+    return (this.#buckets = grown);
+  }
+
   add(quad) {
     if (this.#orders) throw new TypeError("The parsed RDF graph is sealed");
+    const s = this.#termId(quad.subject, true);
+    const p = this.#termId(quad.predicate, true);
+    const o = this.#termId(quad.object, true);
+    const graph = quad.graph;
+    const g = this.#termId(graph, true);
+    let buckets = (this.#buckets ??= new Uint32Array(64));
+    let bucket = this.#findBucket(buckets, s, p, o, g);
+    if (buckets[bucket]) return this;
+    if (this.#rowCount >= buckets.length * 0.75) {
+      buckets = this.#growBuckets();
+      bucket = this.#findBucket(buckets, s, p, o, g);
+    }
     const blockIndex = Math.floor(this.#rowCount / rowsPerBlock);
     const slot = this.#rowCount % rowsPerBlock;
     const offset = slot * width;
@@ -118,28 +180,27 @@ export class CompactRdfGraph {
         this.#graphBlocks[blockIndex] = graphColumn;
       }
     }
-    block[offset] = this.#termId(quad.subject, true);
-    block[offset + 1] = this.#termId(quad.predicate, true);
-    block[offset + 2] = this.#termId(quad.object, true);
-    const graph = quad.graph;
-    if (graph.termType !== "DefaultGraph") {
+    block[offset] = s;
+    block[offset + 1] = p;
+    block[offset + 2] = o;
+    if (g !== 0) {
       if (!this.#graphBlocks) {
         this.#graphBlocks = [];
         this.#graphIdsByKey = Object.create(null);
         if (this.#rowCount) this.#graphIdsByKey[""] = 0;
       }
-      const id = this.#termId(graph, true);
       const key =
         graph.termType === "BlankNode" ? "_:" + graph.value : graph.value;
-      this.#graphIdsByKey[key] = id;
+      this.#graphIdsByKey[key] = g;
       const column = (this.#graphBlocks[blockIndex] ??= new Uint32Array(
         block.length / width,
       ));
-      column[slot] = id;
+      column[slot] = g;
     } else if (this.#graphIdsByKey) {
       this.#graphIdsByKey[""] = 0;
     }
     this.#rowCount += 1;
+    buckets[bucket] = this.#rowCount;
     return this;
   }
 
@@ -193,6 +254,19 @@ export class CompactRdfGraph {
 
   seal() {
     if (this.#orders) return this;
+    // Source occurrence counts belong to the adapter. Only the first distinct
+    // SPOG owns a physical row and mark. Drop the ingestion index and any
+    // spare capacity in the final block before building the read indexes.
+    this.#buckets = undefined;
+    const tail = this.#rowCount % rowsPerBlock;
+    if (tail) {
+      const last = this.#blocks.length - 1;
+      if (this.#blocks[last].length !== tail * width) {
+        this.#blocks[last] = this.#blocks[last].slice(0, tail * width);
+        if (this.#graphBlocks?.[last])
+          this.#graphBlocks[last] = this.#graphBlocks[last].slice(0, tail);
+      }
+    }
     const rows = new Uint32Array(this.#rowCount);
     for (let row = 0; row < rows.length; row += 1) rows[row] = row;
     if (this.#graphBlocks) {
@@ -205,26 +279,20 @@ export class CompactRdfGraph {
       this.#graphRanges = new Map();
     }
     const bySubject = this.#sort(rows, this.#columns(0), this.#ranks);
-    let distinct = 0;
-    for (const row of bySubject) {
-      const previous = bySubject[distinct - 1];
-      const graph = this.#term(row, 3);
-      if (
-        previous !== undefined &&
-        this.#term(previous, 0) === this.#term(row, 0) &&
-        this.#term(previous, 1) === this.#term(row, 1) &&
-        this.#term(previous, 2) === this.#term(row, 2) &&
-        this.#term(previous, 3) === graph
-      )
-        continue;
-      if (this.#graphRanges) {
-        const range = this.#graphRanges.get(graph);
-        if (range) range[1] = distinct + 1;
-        else this.#graphRanges.set(graph, [distinct, distinct + 1]);
+    if (this.#graphRanges) {
+      for (let start = 0; start < bySubject.length;) {
+        const graph = this.#term(bySubject[start], 3);
+        let end = start + 1;
+        while (
+          end < bySubject.length &&
+          this.#term(bySubject[end], 3) === graph
+        )
+          end++;
+        this.#graphRanges.set(graph, [start, end]);
+        start = end;
       }
-      bySubject[distinct++] = row;
     }
-    this.#orders = [bySubject.subarray(0, distinct)];
+    this.#orders = [bySubject];
     return this;
   }
 
@@ -246,6 +314,7 @@ export class CompactRdfGraph {
    * references to shared blocks, while this graph relinquishes every index.
    */
   release() {
+    this.#buckets = undefined;
     this.#terms = this.#termIds = this.#blocks = undefined;
     this.#graphBlocks =
       this.#graphIdsByKey =

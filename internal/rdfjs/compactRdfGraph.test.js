@@ -4,6 +4,104 @@ import { CompactRdfGraph, isCompactRdfGraph } from "./compactRdfGraph.js";
 import { createRdfReadView } from "../mapping/rdfReadView.js";
 import { selectOntologyGraph } from "./graphPolicy.js";
 
+test.each([
+  ["default", data.defaultGraph()],
+  ["named", data.namedNode("urn:graph")],
+])(
+  "%s graph retains one dense row for 512 equal statement occurrences",
+  (_name, graph) => {
+    const packed = new CompactRdfGraph();
+    const statement = () =>
+      data.quad(
+        data.namedNode("urn:s"),
+        data.namedNode("urn:p"),
+        data.literal("hello", "en"),
+        graph,
+      );
+    for (let i = 0; i < 512; i++) packed.add(statement());
+    packed.seal();
+    expect(packed.size).toBe(1);
+    expect(packed.createRowMarks()).toHaveLength(1);
+    expect(packed.rowOf(statement())).toBe(0);
+    // The final packed column itself ends at its only representative.
+    expect(packed.rowTermId(1, 0)).toBeUndefined();
+    for (const projected of [packed.project(graph), packed.project()]) {
+      expect(projected.createRowMarks()).toHaveLength(1);
+      expect([...projected]).toEqual([
+        data.quad(
+          statement().subject,
+          statement().predicate,
+          statement().object,
+        ),
+      ]);
+    }
+  },
+);
+
+test("interleaved duplicate occurrences leave dense IDs in first insertion order across graphs", () => {
+  const s = data.namedNode("urn:s"),
+    p = data.namedNode("urn:p"),
+    g = data.blankNode("g");
+  const lit = data.literal("same"),
+    lang = data.literal("same", "fr");
+  const representatives = [
+    data.quad(s, p, lit, g),
+    data.quad(s, p, lit),
+    data.quad(s, p, lang, g),
+    data.quad(s, p, lang),
+  ];
+  const packed = new CompactRdfGraph();
+  const provider = rdfDatasetFactory.dataset();
+  for (let end = 1; end <= representatives.length; end++) {
+    for (let i = 0; i < 512; i++) {
+      const q = representatives[i % end];
+      packed.add(q);
+      provider.add(q);
+    }
+  }
+  packed.seal();
+  expect([...packed]).toEqual([...provider]);
+  expect(packed.createRowMarks()).toHaveLength(4);
+  for (const [id, q] of representatives.entries())
+    expect(packed.rowOf(q)).toBe(id);
+  expect([...packed.match(s, p)]).toEqual([...provider.match(s, p)]);
+  for (const policy of [
+    { rdfDatasetGraphPolicy: "merge" },
+    { rdfDatasetGraphPolicy: "selectGraph", selectedGraph: g },
+  ]) {
+    expect([...selectOntologyGraph(packed, policy).dataset]).toEqual([
+      ...selectOntologyGraph(provider, policy).dataset,
+    ]);
+  }
+});
+
+test("keeps representatives through ingestion-index growth and later equal occurrences", () => {
+  const s = data.namedNode("urn:repeat:s"),
+    p = data.namedNode("urn:repeat:p");
+  const make = (i) =>
+    data.quad(
+      s,
+      p,
+      data.literal("value-" + Math.floor(i / 2)),
+      i % 2 ? data.blankNode("partition") : data.defaultGraph(),
+    );
+  const packed = new CompactRdfGraph();
+  const provider = rdfDatasetFactory.dataset();
+  for (let i = 0; i < 257; i++) {
+    packed.add(make(i));
+    provider.add(make(i));
+    packed.add(make(Math.floor(i / 3)));
+  }
+  for (let i = 256; i >= 0; i--) packed.add(make(i));
+  packed.seal();
+  expect(packed.createRowMarks()).toHaveLength(257);
+  for (let i = 0; i < 257; i++) expect(packed.rowOf(make(i))).toBe(i);
+  expect([...packed]).toEqual([...provider]);
+  expect([...packed.match(s, p, null, data.blankNode("partition"))]).toEqual([
+    ...provider.match(s, p, null, data.blankNode("partition")),
+  ]);
+});
+
 test("keeps provider projection, deduplication and query order with packed rows", () => {
   const [a, b, c, p, q, r] = "abc pqr"
     .replace(" ", "")
