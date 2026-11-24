@@ -2,6 +2,7 @@ import { jest } from "@jest/globals";
 
 import {
   OWLOntologyLoaderConfiguration,
+  StreamDocumentSource,
   StringDocumentSource,
 } from "../../../index.js";
 
@@ -24,6 +25,27 @@ const configuration = (values = {}) =>
   });
 
 describe("JSON-LD remote-context resource safety", () => {
+  it("counts a streamed remote context before attempting to decode or cache it", async () => {
+    let opened = 0;
+    const adapter = new JsonLdSyntaxAdapter({
+      documentLoader: {
+        load: () =>
+          new StreamDocumentSource(() => {
+            opened++;
+            return [Uint8Array.of(255, 255)];
+          }),
+      },
+    });
+    await expect(
+      adapter.parse(source(), configuration({ maxRemoteDocumentBytes: 1 })),
+    ).rejects.toMatchObject({
+      code: "RESOURCE_LIMIT_EXCEEDED",
+      resource: "maxRemoteDocumentBytes",
+      limit: 1,
+      observed: 2,
+    });
+    expect(opened).toBe(1);
+  });
   it("enforces the remote document byte limit", async () => {
     const adapter = new JsonLdSyntaxAdapter({
       documentLoader: { load: async () => contextDocument },

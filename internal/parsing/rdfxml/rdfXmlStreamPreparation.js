@@ -1,6 +1,6 @@
 import { ResourceLimitError, XmlParseError } from "../../../io/errors.js";
 import { RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
-import { DEFAULT_CHUNK_SIZE } from "../rdf/streamPrimitives.js";
+import { decodeStreamText } from "../streamByteReader.js";
 import { createXmlEntityPreparation } from "../xml/xmlEntityPolicy.js";
 import { XmlChunkTokens } from "../xml/xmlChunkTokens.js";
 import { xmlProcessingPolicy } from "../xml/xmlProcessingPolicy.js";
@@ -11,10 +11,6 @@ const attributes = /\s+([^\s=/>]+)\s*=\s*(["'])([\s\S]*?)\2/gu;
 const literalDatatype = RDF_NAMESPACE + "XMLLiteral";
 const rdfWrapper = '<owlapiRdf:RDF xmlns:owlapiRdf="' + RDF_NAMESPACE + '">';
 const encoder = new TextEncoder();
-const typedArray = Object.getOwnPropertyDescriptors(
-  Object.getPrototypeOf(Uint8Array.prototype),
-);
-
 function resolve(value, baseIRI) {
   try {
     return new URL(value, baseIRI || undefined).href;
@@ -138,17 +134,6 @@ function checkBytes(resource, limit, observed) {
   }
 }
 
-function untilAbort(operation, signal) {
-  return new Promise((resolve, reject) => {
-    const abort = () => reject(signal.reason);
-    signal.addEventListener("abort", abort, { once: true });
-    Promise.resolve(operation)
-      .then(resolve, reject)
-      .finally(() => signal.removeEventListener("abort", abort));
-    if (signal.aborted) abort();
-  });
-}
-
 /** Prepare an RDF/XML byte stream for the same quad parser used by string sources. */
 export async function* prepareRdfXmlStream({
   source,
@@ -159,14 +144,12 @@ export async function* prepareRdfXmlStream({
   noteLiteral,
 }) {
   const documentIRI = source.getDocumentIRI()?.value;
-  const decoder = new TextDecoder("utf-8", { fatal: true });
   const tokens = new XmlChunkTokens();
   const elements = [];
   let rootSeen = false;
   let wrapped = false;
   let prepareEntities;
   let literal;
-  let inputBytes = 0;
   let expandedBytes = 0;
   let output = [];
   let xmlLiteralProbe = "";
@@ -337,68 +320,17 @@ export async function* prepareRdfXmlStream({
     return output.join("");
   }
 
-  let iterator;
-  let closing = false;
-  let done = false;
-  const close = () => {
-    Promise.resolve()
-      .then(() => iterator?.return?.())
-      .catch(() => {});
-  };
-  const decode = (bytes, stream) => {
-    try {
-      return decoder.decode(bytes, { stream });
-    } catch (cause) {
-      throw new XmlParseError("The RDF/XML source is not valid UTF-8", {
-        cause,
-      });
-    }
-  };
-  try {
-    signal.throwIfAborted();
-    await untilAbort(
-      Promise.resolve(source.openBytes(signal)).then((bytes) => {
-        iterator =
-          bytes?.[Symbol.asyncIterator]?.() ?? bytes?.[Symbol.iterator]?.();
-        if (closing) close();
-        if (!iterator)
-          throw new TypeError("The RDF/XML source must open a byte iterable");
-      }),
-      signal,
-    );
-    for (;;) {
-      signal.throwIfAborted();
-      const next = await untilAbort(iterator.next(), signal);
-      if (next.done) {
-        done = true;
-        break;
-      }
-      const chunk = next.value;
-      if (typedArray[Symbol.toStringTag].get.call(chunk) !== "Uint8Array")
-        throw new TypeError("The RDF/XML source must yield Uint8Array chunks");
-      const length = typedArray.byteLength.get.call(chunk);
-      const buffer = typedArray.buffer.get.call(chunk);
-      const offset = typedArray.byteOffset.get.call(chunk);
-      inputBytes += length;
-      checkBytes("maxInputBytes", configuration.maxInputBytes, inputBytes);
-      for (let start = 0; start < length; start += DEFAULT_CHUNK_SIZE) {
-        const bytes = new Uint8Array(
-          buffer,
-          offset + start,
-          Math.min(DEFAULT_CHUNK_SIZE, length - start),
-        );
-        const prepared = await prepareChunk(decode(bytes, true));
-        if (prepared) yield prepared;
-      }
-    }
-    const last = await prepareChunk(decode(undefined, false), true);
-    if (last) yield last;
-  } finally {
-    if (!done) {
-      // Abort is also passed to the producer. A stalled read must not hold
-      // the caller indefinitely while the iterator processes its return.
-      closing = true;
-      if (iterator) close();
-    }
+  const invalidEncoding = (cause) =>
+    new XmlParseError("The RDF/XML source is not valid UTF-8", { cause });
+  for await (const text of decodeStreamText(
+    source,
+    configuration,
+    signal,
+    invalidEncoding,
+  )) {
+    const prepared = await prepareChunk(text);
+    if (prepared) yield prepared;
   }
+  const last = await prepareChunk("", true);
+  if (last) yield last;
 }

@@ -6,18 +6,26 @@ import { crc32 } from "./crc32.js";
 import { DocumentLoadError, ResourceLimitError } from "../errors.js";
 
 /** Count bytes at the specific resource boundary, including decoded output. */
-export async function readDocumentBytes(stream, resource, maximumBytes) {
-  const chunks = [];
-  let byteLength = 0;
+async function* boundedChunks(stream, resource, maximumBytes) {
+  let observed = 0;
   for await (const chunk of stream) {
-    byteLength += chunk.length;
-    if (byteLength > maximumBytes)
+    observed += chunk.length;
+    if (observed > maximumBytes)
       throw new ResourceLimitError("The document byte limit was exceeded", {
         resource,
         limit: maximumBytes,
-        observed: byteLength,
+        observed,
       });
+    yield chunk;
+  }
+}
+
+export async function readDocumentBytes(stream, resource, maximumBytes) {
+  const chunks = [];
+  let byteLength = 0;
+  for await (const chunk of boundedChunks(stream, resource, maximumBytes)) {
     chunks.push(chunk);
+    byteLength += chunk.length;
   }
   return Buffer.concat(chunks, byteLength);
 }
@@ -222,7 +230,7 @@ const decoderFor = (encoding) => {
  * The no-known-content-encoding branch alone applies DocumentSources.wrap's BOM
  * removal. Keep this observed order; normalizing it would change Java bytes.
  */
-export async function readDecodedDocumentBytes(
+export async function* streamDecodedDocumentBytes(
   source,
   {
     encoding,
@@ -234,19 +242,8 @@ export async function readDecodedDocumentBytes(
     maximumRawBytes = config.maxInputBytes,
   },
 ) {
-  const countRawBytes = async function* (chunks) {
-    let observed = 0;
-    for await (const chunk of chunks) {
-      observed += chunk.length;
-      if (observed > maximumRawBytes)
-        throw new ResourceLimitError("The document byte limit was exceeded", {
-          resource: rawByteResource,
-          limit: maximumRawBytes,
-          observed,
-        });
-      yield chunk;
-    }
-  };
+  const countRawBytes = (chunks) =>
+    boundedChunks(chunks, rawByteResource, maximumRawBytes);
   const contentDecoder = decoderFor(encoding);
   const fileName =
     /.*filename="([^\s;]*)".*/u.exec(disposition ?? "")?.[1] ??
@@ -261,44 +258,60 @@ export async function readDecodedDocumentBytes(
     signal: AbortSignal.any([signal, producerCancellation.signal]),
   });
   producing.catch(() => {});
-  let bytes;
   try {
-    bytes =
-      suffix === "zip"
-        ? await readFirstZipEntry(stream, config)
-        : await readDocumentBytes(stream, "inputBytes", config.maxInputBytes);
-    // A first ZIP entry has its own EOF. Stop the unused HTTP/archive tail,
-    // while ordinary decoding must await native finalization and its checks.
-    if (suffix === "zip") {
-      producerCancellation.abort();
-      await producing.catch(() => {});
-    } else await producing;
+    const decoded =
+      suffix === "zip" ? [await readFirstZipEntry(stream, config)] : stream;
+    const chunks = boundedChunks(decoded, "inputBytes", config.maxInputBytes);
+    if (contentDecoder) yield* chunks;
+    else yield* stripDocumentBom(chunks);
+    if (suffix !== "zip") await producing;
   } finally {
     producerCancellation.abort();
     await producing.catch(() => {});
   }
-  if (!contentDecoder) {
-    for (const bom of [
-      [0, 0, 254, 255],
-      [255, 254, 0, 0],
-      [239, 187, 191],
-      [254, 255],
-      [255, 254],
-    ]) {
-      if (
-        bytes.length >= bom.length &&
-        bom.every((byte, index) => bytes[index] === byte)
-      ) {
-        bytes = bytes.subarray(bom.length);
-        break;
-      }
-    }
+}
+
+function withoutBom(bytes) {
+  for (const bom of [
+    [0, 0, 254, 255],
+    [255, 254, 0, 0],
+    [239, 187, 191],
+    [254, 255],
+    [255, 254],
+  ]) {
+    if (
+      bytes.length >= bom.length &&
+      bom.every((byte, index) => bytes[index] === byte)
+    )
+      return bytes.subarray(bom.length);
   }
-  if (bytes.length > config.maxInputBytes)
-    throw new ResourceLimitError("The document byte limit was exceeded", {
-      resource: "inputBytes",
-      limit: config.maxInputBytes,
-      observed: bytes.length,
-    });
   return bytes;
 }
+
+async function* stripDocumentBom(chunks) {
+  let head = Buffer.alloc(0);
+  for await (const chunk of chunks) {
+    if (head === undefined) {
+      yield chunk;
+      continue;
+    }
+    const take = Math.min(4 - head.length, chunk.length);
+    head = Buffer.concat([head, chunk.subarray(0, take)]);
+    if (head.length < 4) continue;
+    const prefix = withoutBom(head);
+    if (prefix.length) yield prefix;
+    head = undefined;
+    if (chunk.length > take) yield chunk.subarray(take);
+  }
+  if (head) {
+    const prefix = withoutBom(head);
+    if (prefix.length) yield prefix;
+  }
+}
+
+export const readDecodedDocumentBytes = (source, options) =>
+  readDocumentBytes(
+    streamDecodedDocumentBytes(source, options),
+    "inputBytes",
+    options.config.maxInputBytes,
+  );

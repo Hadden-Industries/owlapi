@@ -3,11 +3,60 @@ import { OWLDocumentFormat } from "../../model/index.js";
 import {
   OWLOntologyStorageError,
   OWLStorerNotFoundError,
+  StreamDocumentTarget,
   StringDocumentTarget,
 } from "../../io/index.js";
 import { replaceStringDocumentTargetText } from "../../io/stringDocumentTarget.js";
 import { OntologyState } from "../model/ontologyState.js";
 import { StorerRegistry } from "./storerRegistry.js";
+import { utf8Chunks } from "./utf8ChunkWriter.js";
+
+test("byte rendering coalesces fragments and preserves a surrogate pair split across two writes", () => {
+  const fragments = [
+    "a".repeat(65_535),
+    "\ud83d",
+    "",
+    "\udc08",
+    "é".repeat(100_000),
+    "\ud800",
+  ];
+  const bytes = [...utf8Chunks(fragments)];
+  expect(
+    bytes.every((chunk) => chunk.length <= 65_536 && chunk.length > 0),
+  ).toBe(true);
+  expect(Buffer.concat(bytes)).toEqual(Buffer.from(fragments.join("")));
+});
+
+test("a partial asynchronous byte sink closes its suspended renderer", async () => {
+  let closed = false;
+  const registry = new StorerRegistry([
+    {
+      formatKey: "functional",
+      render: () => "",
+      async *renderBytes() {
+        try {
+          yield Uint8Array.of(1);
+          yield Uint8Array.of(2);
+        } finally {
+          closed = true;
+        }
+      },
+    },
+  ]);
+  const target = new StreamDocumentTarget(async (chunks) => {
+    for await (const chunk of chunks) {
+      expect(chunk).toEqual(Uint8Array.of(1));
+      break;
+    }
+  });
+  await expect(
+    registry.store({}, OWLDocumentFormats.FUNCTIONAL, target),
+  ).rejects.toMatchObject({
+    code: "ONTOLOGY_STORAGE_FAILED",
+    cause: { message: "The sink must consume the complete ontology document" },
+  });
+  expect(closed).toBe(true);
+});
 
 describe("package-private storer selection", () => {
   it("selects only the exact format key and snapshots the descriptor", () => {

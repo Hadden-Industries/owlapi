@@ -213,21 +213,38 @@ const classes = ontology.getClassesInSignature();
 Use the [public imports above](#public-imports-and-behavior-profiles).
 The [API reference](./API.md) lists supported members, call shapes, and errors for each binding.
 
-On Node.js, pass a factory that opens a UTF-8 RDF/XML stream.
+Use a byte stream to load a UTF-8 ontology from a Node.js file or a browser `Blob`.
 
 ```js
 import { createReadStream } from "node:fs";
-import { RDFXMLStreamDocumentSource } from "owlapi/io";
+import { StreamDocumentSource, StreamDocumentTarget } from "owlapi/io";
+import { OWLDocumentFormats } from "owlapi/formats";
 
-const source = new RDFXMLStreamDocumentSource(
+const source = new StreamDocumentSource(
   (signal) => createReadStream("ontology.owl", { signal }),
   { documentIRI: "https://example.com/ontology.owl" },
 );
 const ontology = await manager.loadOntologyFromOntologyDocument(source);
+const target = new StreamDocumentTarget(async (chunks) => {
+  for await (const chunk of chunks) await destination.write(chunk);
+});
+await manager.saveOntology(ontology, OWLDocumentFormats.FUNCTIONAL, target);
 ```
 
-The factory opens a fresh stream on each load.
-RDF/XML parsing consumes chunks while the manager builds the RDF graph and OWL model in memory.
+Each parser attempt opens a fresh stream.
+In a browser, pass `() => blob.stream()`.
+The optional `format`, `contentType`, `fileName`, and `documentIRI` fields have the same meanings as on `StringDocumentSource`.
+The manager enforces `maxInputBytes` before decoding each chunk.
+RDF/XML, Turtle, TriG, N-Triples, and N-Quads feed their parsers incrementally. Functional Syntax and OWL/XML read one top-level production at a time.
+Other parsers currently read the admitted text into one JavaScript string.
+The sink receives UTF-8 `Uint8Array` chunks and must consume them to the end before it resolves.
+In the example, `destination` is a writer supplied by the application.
+The sink owns the destination and can stage its writes when the final document must appear atomically.
+
+A manager configured with a `NodeDocumentLoader` can also load an explicit document `IRI` directly.
+The Node loader streams ontology files larger than 64 KiB, HTTP bodies with a declared length above 64 KiB, and unknown-length HTTP bodies with a recognized ontology media type.
+Each open reauthorizes the resolved file or pinned HTTP destination.
+Explicit JSON-LD context requests use the context loader and its existing byte limits.
 
 `owlapi/profiles` exposes the asynchronous `OWL2DLProfile` checker and immutable `OWLProfileReport`.
 Use `checkOntology(ontology, {sourceAssessment: true})` after loading with `parsingMode: "preserve"` to assess retained source structures as well as the formal OWL model across the managed import closure.

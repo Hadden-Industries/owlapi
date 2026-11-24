@@ -209,6 +209,51 @@ const exerciseProfile = async () => {
   };
 };
 
+async function exercisePrivateFileStream(manager, ontology) {
+  let rootDirectory;
+  try {
+    rootDirectory = await navigator.storage.getDirectory();
+  } catch (error) {
+    // Report the host capability before invoking either OwlAPI transport.
+    return {
+      status: "unavailable",
+      operation: "getDirectory",
+      error: error.name,
+    };
+  }
+  const name = `owlapi-stream-${crypto.randomUUID()}.ofn`;
+  const file = await rootDirectory.getFileHandle(name, { create: true });
+  try {
+    const target = new io.StreamDocumentTarget(async (bytes) => {
+      const writer = await file.createSyncAccessHandle();
+      try {
+        for await (const chunk of bytes) {
+          if (writer.write(chunk) !== chunk.length)
+            throw new Error("Incomplete worker file write");
+        }
+        writer.flush();
+      } finally {
+        writer.close();
+      }
+    });
+    const format = formats.OWLDocumentFormats.FUNCTIONAL;
+    await manager.saveOntology(ontology, format, target);
+    const source = new io.StreamDocumentSource(
+      async () => (await file.getFile()).stream(),
+      { format },
+    );
+    const reloaded =
+      await apibinding.OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+        source,
+      );
+    if (reloaded.getAxiomCount() !== ontology.getAxiomCount())
+      throw new Error("The worker's private file failed the stream round-trip");
+  } finally {
+    await rootDirectory.removeEntry(name);
+  }
+  return { status: "passed" };
+}
+
 /**
  * Exercise only documented package specifiers so the fixture cannot pass by
  * reaching through the tarball boundary. The returned value intentionally uses
@@ -221,7 +266,8 @@ export const exerciseInstalledPackage = async () => {
     formats: root.OWLDocumentFormats === formats.OWLDocumentFormats,
     io:
       root.StringDocumentSource === io.StringDocumentSource &&
-      root.RDFXMLStreamDocumentSource === io.RDFXMLStreamDocumentSource &&
+      root.StreamDocumentSource === io.StreamDocumentSource &&
+      root.StreamDocumentTarget === io.StreamDocumentTarget &&
       root.RDFParserMetaData === io.RDFParserMetaData &&
       root.RDFOntologyHeaderStatus === io.RDFOntologyHeaderStatus,
     model:
@@ -251,19 +297,49 @@ export const exerciseInstalledPackage = async () => {
   }
 
   const documents = {};
+  let privateFile;
   for (const document of DOCUMENTS) {
     const manager = apibinding.OWLManager.createOWLOntologyManager();
-    const source =
-      document.key === "rdfxml"
-        ? new io.RDFXMLStreamDocumentSource(
-            () => new Blob([document.text]).stream(),
-            { documentIRI: document.documentIRI },
-          )
-        : new io.StringDocumentSource(document.text, {
-            contentType: document.contentType,
-            documentIRI: document.documentIRI,
-          });
+    const blob = new Blob([document.text]);
+    const source = new io.StreamDocumentSource(() => blob.stream(), {
+      contentType: document.contentType,
+      documentIRI: document.documentIRI,
+    });
     const ontology = await manager.loadOntologyFromOntologyDocument(source);
+    if (document.key === "functional") {
+      for (const key of ["FUNCTIONAL", "OWL_XML", "RDF_XML", "TURTLE"]) {
+        const format = formats.OWLDocumentFormats[key];
+        const chunks = [];
+        await manager.saveOntology(
+          ontology,
+          format,
+          new io.StreamDocumentTarget(async (bytes) => {
+            for await (const chunk of bytes) {
+              if (!(chunk instanceof Uint8Array))
+                throw new Error("A stream storer emitted a non-byte chunk");
+              chunks.push(chunk);
+            }
+          }),
+        );
+        const saved = new File(chunks, document.key + ".owl");
+        const reopened =
+          await apibinding.OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+            new io.StreamDocumentSource(() => saved.stream(), { format }),
+          );
+        if (
+          reopened.getAxiomCount() !== ontology.getAxiomCount() ||
+          [...ontology.getAxioms()].some(
+            (axiom) => !reopened.containsAxiom(axiom),
+          )
+        )
+          throw new Error(`The ${key} stream lost an axiom during reload`);
+      }
+      if (
+        typeof globalThis.WorkerGlobalScope === "function" &&
+        globalThis instanceof globalThis.WorkerGlobalScope
+      )
+        privateFile = await exercisePrivateFileStream(manager, ontology);
+    }
     const outputManager = apibinding.OWLManager.createOWLOntologyManager();
     const loadedFormat = manager.getOntologyFormat(ontology);
     if (loadedFormat.isRdf) {
@@ -295,6 +371,7 @@ export const exerciseInstalledPackage = async () => {
     await exerciseImportClosureStorage(closureDocuments);
   return {
     bindingIdentity,
+    privateFile,
     documentation: await exerciseDocumentation(),
     rc2: await exerciseRC2PublicContract(root),
     documents,

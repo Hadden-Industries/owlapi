@@ -98,7 +98,6 @@
         "model.dispatchOwlObject",
         "io.AmbiguousRdfDatasetError",
         "io.DocumentLoadError",
-        "io.FunctionalSyntaxStreamDocumentTarget",
         "io.GraphSelectionError",
         "io.MissingImportError",
         "io.OWLAPIError",
@@ -111,9 +110,10 @@
         "io.ParserMismatchError",
         "io.RDFOntologyHeaderStatus",
         "io.RDFParserMetaData",
-        "io.RDFXMLStreamDocumentSource",
         "io.ResourceLimitError",
         "io.SecurityPolicyError",
+        "io.StreamDocumentSource",
+        "io.StreamDocumentTarget",
         "io.StringDocumentSource",
         "io.StringDocumentTarget",
         "io.UnloadableImportError",
@@ -208,7 +208,6 @@
       "ownedBindingIds": [
         "io.AmbiguousRdfDatasetError",
         "io.DocumentLoadError",
-        "io.FunctionalSyntaxStreamDocumentTarget",
         "io.GraphSelectionError",
         "io.MissingImportError",
         "io.OWLAPIError",
@@ -221,9 +220,10 @@
         "io.ParserMismatchError",
         "io.RDFOntologyHeaderStatus",
         "io.RDFParserMetaData",
-        "io.RDFXMLStreamDocumentSource",
         "io.ResourceLimitError",
         "io.SecurityPolicyError",
+        "io.StreamDocumentSource",
+        "io.StreamDocumentTarget",
         "io.StringDocumentSource",
         "io.StringDocumentTarget",
         "io.UnloadableImportError",
@@ -2232,47 +2232,6 @@
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
     },
     {
-      "id": "io.FunctionalSyntaxStreamDocumentTarget",
-      "jsExport": "FunctionalSyntaxStreamDocumentTarget",
-      "kind": "CLASS",
-      "summary": "A Functional Syntax document target with a caller-owned chunk sink.",
-      "capabilityIds": [
-        "storer.functional"
-      ],
-      "capabilityStatus": "REQUIRED_V1",
-      "progress": "COMPLETE",
-      "exposure": "PUBLIC",
-      "stability": "PRERELEASE",
-      "firstPublicReleaseTarget": "0.1.0",
-      "publicSpecifier": "@hadden-industries/owlapi/io",
-      "sourceModule": "io/functionalSyntaxStreamDocumentTarget.js",
-      "javaPackage": "org.semanticweb.owlapi.io",
-      "javaType": null,
-      "closestJavaAuthority": "org.semanticweb.owlapi.io.StreamDocumentTarget",
-      "relationship": "JS_EXTENSION",
-      "compatibility": "NOT_APPLICABLE",
-      "callShapes": [
-        "new FunctionalSyntaxStreamDocumentTarget(sink)"
-      ],
-      "supportedMembers": [
-        "prototype.writeChunks"
-      ],
-      "omittedMembers": [],
-      "publicErrors": [
-        "TypeError"
-      ],
-      "semanticQualifications": [
-        "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.",
-        "The sink receives an iterable of strings for one Functional Syntax save and must consume it to completion.",
-        "The sink owns its output lifecycle and can stage its writes before publication."
-      ],
-      "verification": [
-        "internal/parsing/rdfxml/rdfXmlStream.test.js",
-        "test/package-boundary.test.mjs"
-      ],
-      "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
-    },
-    {
       "id": "io.GraphSelectionError",
       "jsExport": "GraphSelectionError",
       "kind": "CLASS",
@@ -2762,50 +2721,6 @@
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
-      "id": "io.RDFXMLStreamDocumentSource",
-      "jsExport": "RDFXMLStreamDocumentSource",
-      "kind": "CLASS",
-      "summary": "An explicit UTF-8 RDF/XML document source backed by a byte stream.",
-      "capabilityIds": [
-        "parser.rdfxml",
-        "loading.abort-signal"
-      ],
-      "capabilityStatus": "REQUIRED_V1",
-      "progress": "COMPLETE",
-      "exposure": "PUBLIC",
-      "stability": "PRERELEASE",
-      "firstPublicReleaseTarget": "0.1.0",
-      "publicSpecifier": "@hadden-industries/owlapi/io",
-      "sourceModule": "io/rdfXmlStreamDocumentSource.js",
-      "javaPackage": "org.semanticweb.owlapi.io",
-      "javaType": null,
-      "closestJavaAuthority": "org.semanticweb.owlapi.io.StreamDocumentSource",
-      "relationship": "JS_EXTENSION",
-      "compatibility": "NOT_APPLICABLE",
-      "callShapes": [
-        "new RDFXMLStreamDocumentSource(open, { documentIRI }?)"
-      ],
-      "supportedMembers": [
-        "prototype.getDocumentIRI",
-        "prototype.getFormat",
-        "prototype.openBytes"
-      ],
-      "omittedMembers": [],
-      "publicErrors": [
-        "TypeError"
-      ],
-      "semanticQualifications": [
-        "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.",
-        "The factory receives an AbortSignal and opens a fresh iterable of Uint8Array chunks for each load of a UTF-8 RDF/XML document.",
-        "The document IRI supplies the retrieval base. An authored root xml:base determines the document's own base."
-      ],
-      "verification": [
-        "internal/parsing/rdfxml/rdfXmlStream.test.js",
-        "test/package-boundary.test.mjs"
-      ],
-      "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
-    },
-    {
       "id": "io.ResourceLimitError",
       "jsExport": "ResourceLimitError",
       "kind": "CLASS",
@@ -2877,6 +2792,101 @@
       ],
       "verification": [
         "io/io.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
+    },
+    {
+      "id": "io.StreamDocumentSource",
+      "jsExport": "StreamDocumentSource",
+      "kind": "CLASS",
+      "summary": "A format-independent UTF-8 ontology document source backed by a replayable byte stream.",
+      "capabilityIds": [
+        "parser.rdfxml",
+        "parser.owlxml",
+        "parser.functional",
+        "parser.turtle",
+        "loading.abort-signal"
+      ],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicReleaseTarget": "0.1.0",
+      "publicSpecifier": "@hadden-industries/owlapi/io",
+      "sourceModule": "io/streamDocumentSource.js",
+      "javaPackage": "org.semanticweb.owlapi.io",
+      "javaType": null,
+      "closestJavaAuthority": "org.semanticweb.owlapi.io.StreamDocumentSource",
+      "relationship": "JS_EXTENSION",
+      "compatibility": "NOT_APPLICABLE",
+      "callShapes": [
+        "new StreamDocumentSource(open, { contentType, documentIRI, fileName, format }?)"
+      ],
+      "supportedMembers": [
+        "prototype.getContentType",
+        "prototype.getDocumentIRI",
+        "prototype.getFileName",
+        "prototype.getFormat",
+        "prototype.openBytes"
+      ],
+      "omittedMembers": [],
+      "publicErrors": [
+        "TypeError"
+      ],
+      "semanticQualifications": [
+        "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.",
+        "The factory receives an AbortSignal and opens a fresh synchronous or asynchronous iterable of UTF-8 Uint8Array chunks, or a ReadableStream, for each sniff or parser attempt.",
+        "Metadata and format selection follow StringDocumentSource. The manager counts bytes before decoding and releases the reader on parser failure or cancellation."
+      ],
+      "verification": [
+        "io/streamDocument.test.js",
+        "io/node/nodeDocumentLoaderStream.test.js",
+        "internal/parsing/rdfxml/rdfXmlStream.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
+    },
+    {
+      "id": "io.StreamDocumentTarget",
+      "jsExport": "StreamDocumentTarget",
+      "kind": "CLASS",
+      "summary": "A format-independent ontology document target with a caller-owned UTF-8 byte sink.",
+      "capabilityIds": [
+        "storer.functional",
+        "storer.owlxml",
+        "storer.rdfxml",
+        "storer.turtle"
+      ],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicReleaseTarget": "0.1.0",
+      "publicSpecifier": "@hadden-industries/owlapi/io",
+      "sourceModule": "io/streamDocumentTarget.js",
+      "javaPackage": "org.semanticweb.owlapi.io",
+      "javaType": null,
+      "closestJavaAuthority": "org.semanticweb.owlapi.io.StreamDocumentTarget",
+      "relationship": "JS_EXTENSION",
+      "compatibility": "NOT_APPLICABLE",
+      "callShapes": [
+        "new StreamDocumentTarget(sink)"
+      ],
+      "supportedMembers": [
+        "constructor"
+      ],
+      "omittedMembers": [],
+      "publicErrors": [
+        "TypeError"
+      ],
+      "semanticQualifications": [
+        "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.",
+        "The sink receives one single-pass iterable of UTF-8 Uint8Array chunks in the selected storage format and must consume it to completion.",
+        "The sink owns its output lifecycle and can stage its writes before publication."
+      ],
+      "verification": [
+        "io/streamDocument.test.js",
         "test/package-boundary.test.mjs"
       ],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
@@ -3271,7 +3281,7 @@
       "semanticQualifications": [
         "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.",
         "Construct with { authorize(resourceIRI, context) }. The callback must return true for each requested operation; receiving a loader never silently grants access to a new destination.",
-        "load(IRI, { config, purpose, signal }) returns a Promise for a StringDocumentSource. The configuration fixes each operation's behavior profile. Native ontology-document settings and the separate Java JSON-LD context provider settings are consumed by their actual transport boundaries.",
+        "load(IRI, { config, purpose, signal }) returns a Promise for a StringDocumentSource or a replayable StreamDocumentSource. The manager accepts a document IRI when configured with a loader. The configuration fixes each operation's behavior profile. Native ontology-document settings and the separate Java JSON-LD context provider settings are consumed by their actual transport boundaries.",
         "The Node-only adapter authorizes hostname resolution, the pinned IP address, redirects, credentials, resolved local file paths and file reads. It does not use ambient URL credentials or automatically enable network access in a manager.",
         "The read-file context requiresStablePathAncestors=true means its grant also guarantees trusted, stable parent directories throughout acquisition. Attacker-writable directory trees require a caller-owned loader with platform-specific file-handle authorization; portable Node pathname checks cannot provide that containment.",
         "Java ontology documents retain the requested parsing base; contexts use the final document URL. Gzip, raw DEFLATE, XZ and first-entry ZIP input follow the qualified Java provider. Native dependencies, permission decisions and caller cancellation remain host capabilities.",

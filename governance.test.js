@@ -642,7 +642,7 @@ describe("owlapi governance artifacts", () => {
     ).toBe(true);
   });
 
-  it("maps the approved Phase 21 bindings and separately authorized RDF metadata", async () => {
+  it("maps the approved Phase 21 bindings and subsequent public additions", async () => {
     const ledger = readJson(
       "./docs/compatibility/java-api-parity-decisions.json",
     );
@@ -861,6 +861,8 @@ describe("owlapi governance artifacts", () => {
           ...ledger.phase21.publicBindings,
           "io.RDFOntologyHeaderStatus",
           "io.RDFParserMetaData",
+          "io.StreamDocumentSource",
+          "io.StreamDocumentTarget",
           "profiles.OWL2DLProfile",
           "profiles.OWLProfileReport",
           "model.OWLOntologyWriterConfiguration",

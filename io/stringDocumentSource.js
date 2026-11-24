@@ -1,31 +1,15 @@
-import { IRI } from "../model/structural.js";
-import { validateFormatSelection } from "../internal/parsing/formatSelection.js";
-
-const optionalString = (value, name) => {
-  if (value !== undefined && typeof value !== "string") {
-    throw new TypeError(`${name} must be a string when provided`);
-  }
-  return value;
-};
+import { documentSourceMetadata } from "./documentSourceMetadata.js";
 
 export class StringDocumentSource {
-  #contentType;
-  #documentIRI;
-  #fileName;
-  #format;
+  #metadata;
   #text;
 
-  constructor(text, { contentType, documentIRI, fileName, format } = {}) {
+  constructor(text, metadata) {
     if (typeof text !== "string") {
       throw new TypeError("text must be a string");
     }
     this.#text = text;
-    this.#documentIRI =
-      documentIRI === undefined ? undefined : IRI.create(documentIRI);
-    this.#contentType = optionalString(contentType, "contentType");
-    this.#fileName = optionalString(fileName, "fileName");
-    validateFormatSelection(format);
-    this.#format = format;
+    this.#metadata = documentSourceMetadata(metadata);
     Object.freeze(this);
   }
 
@@ -34,18 +18,18 @@ export class StringDocumentSource {
   }
 
   getDocumentIRI() {
-    return this.#documentIRI;
+    return this.#metadata.documentIRI;
   }
 
   getContentType() {
-    return this.#contentType;
+    return this.#metadata.contentType;
   }
 
   getFileName() {
-    return this.#fileName;
+    return this.#metadata.fileName;
   }
 
   getFormat() {
-    return this.#format;
+    return this.#metadata.format;
   }
 }

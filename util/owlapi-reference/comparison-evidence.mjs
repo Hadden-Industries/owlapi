@@ -171,7 +171,7 @@ export async function publishComparisonChunks(directory, name, chunks) {
   let byteLength = 0;
   try {
     try {
-      for (const bytes of chunks) {
+      for await (const bytes of chunks) {
         await handle.writeFile(bytes);
         digest.update(bytes);
         byteLength += Buffer.byteLength(bytes);

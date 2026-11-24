@@ -8,13 +8,17 @@ import { fileURLToPath } from "node:url";
 import {
   readDocumentBytes,
   readDecodedDocumentBytes,
+  streamDecodedDocumentBytes,
 } from "./documentBytes.js";
 import { DocumentLoadError, ResourceLimitError } from "../errors.js";
 import { StringDocumentSource } from "../stringDocumentSource.js";
+import { StreamDocumentSource } from "../streamDocumentSource.js";
+import { OWLDocumentFormats } from "../../formats/owlDocumentFormats.js";
 import { IRI } from "../../model/structural.js";
 import { OWLOntologyLoaderConfiguration } from "../../model/owlOntologyLoaderConfiguration.js";
 import { assertDocumentLoaderAuthorization } from "../../internal/loading/documentLoaderAuthorization.js";
 import { awaitAbortableOperation } from "../../internal/loading/awaitAbortableOperation.js";
+import { scheduleOperationDeadline } from "../../internal/loading/operationDeadline.js";
 import { OntologyBehaviorContext } from "../../internal/behavior/ontologyBehaviorContext.js";
 import {
   jsonLdAlternateDocument,
@@ -24,22 +28,76 @@ import {
 const defaultAcceptHeader =
   "application/rdf+xml, application/xml; q=0.7, text/xml; q=0.6, text/plain; q=0.1, */*; q=0.09";
 
-/** Node timers overflow above a signed 32-bit delay. Keep the caller's actual
- * deadline and schedule bounded waits; never turn a long limit into 1 ms.
- */
-const scheduleOperationDeadline = (timeoutMilliseconds, callback) => {
-  if (!Number.isFinite(timeoutMilliseconds)) return () => {};
-  const expiresAt = performance.now() + timeoutMilliseconds;
-  let timer;
-  const schedule = () => {
-    const remainingMilliseconds = expiresAt - performance.now();
-    if (remainingMilliseconds <= 0) callback();
-    else
-      timer = setTimeout(schedule, Math.min(remainingMilliseconds, 2147483647));
+const inMemoryBytes = 65_536;
+const ontologyMediaTypes = new Set(
+  Object.values(OWLDocumentFormats).flatMap((format) => format.mediaTypes),
+);
+
+/** Adapt foreign/profile signals to the native Node transport once per acquisition. */
+function acquisitionScope(config, signals) {
+  const controller = new AbortController();
+  const listeners = new Map();
+  for (const signal of new Set(signals.filter(Boolean))) {
+    const abort = () => controller.abort(signal.reason);
+    if (signal.aborted) abort();
+    else {
+      signal.addEventListener("abort", abort, { once: true });
+      listeners.set(signal, abort);
+    }
+  }
+  const cancelDeadline = scheduleOperationDeadline(config.timeoutMs, () =>
+    controller.abort(
+      new ResourceLimitError("The document acquisition deadline was exceeded", {
+        resource: "deadline",
+        limit: config.timeoutMs,
+      }),
+    ),
+  );
+  return {
+    signal: controller.signal,
+    close() {
+      cancelDeadline();
+      controller.abort();
+      for (const [signal, listener] of listeners)
+        signal.removeEventListener?.("abort", listener);
+    },
   };
-  schedule();
-  return () => clearTimeout(timer);
-};
+}
+
+function replayableDocument(metadata, { config, ownerSignal }, open) {
+  return new StreamDocumentSource(async function* (readerSignal) {
+    const scope = acquisitionScope(config, [ownerSignal, readerSignal]);
+    let iterator;
+    let done = false;
+    try {
+      scope.signal.throwIfAborted();
+      iterator = open(scope.signal);
+      for (;;) {
+        scope.signal.throwIfAborted();
+        const result = await awaitAbortableOperation(
+          iterator.next(),
+          scope.signal,
+        );
+        scope.signal.throwIfAborted();
+        if (result.done) {
+          done = true;
+          break;
+        }
+        yield result.value;
+      }
+    } catch (cause) {
+      if (scope.signal.aborted) throw scope.signal.reason;
+      throw cause;
+    } finally {
+      const aborted = scope.signal.aborted;
+      scope.close();
+      if (iterator && !done) {
+        const closing = iterator.return().catch(() => {});
+        if (!aborted) await closing;
+      }
+    }
+  }, metadata);
+}
 
 /** Request one already authorized, pinned address. Node owns HTTP/TLS parsing;
  * disabling pooling ensures a later request cannot reuse an earlier access grant.
@@ -142,29 +200,8 @@ export class NodeDocumentLoader {
       throw new RangeError(
         "connection timeout must not be negative at resource acquisition",
       );
-    const deadline = new AbortController();
-    const effectiveSignal = deadline.signal;
-    const deadlineError = () =>
-      new ResourceLimitError("The document acquisition deadline was exceeded", {
-        resource: "deadline",
-        limit: config.timeoutMs,
-      });
-    if (config.timeoutMs === 0) throw deadlineError();
-    // Configuration accepts the AbortSignal interface across realms and host
-    // adapters. Core Node receives our native controller, not that foreign object.
-    const onAbort = () =>
-      deadline.abort(
-        signal.reason ??
-          new DOMException(
-            "The document acquisition was aborted",
-            "AbortError",
-          ),
-      );
-    if (signal?.aborted) onAbort();
-    else signal?.addEventListener("abort", onAbort, { once: true });
-    const cancelDeadline = scheduleOperationDeadline(config.timeoutMs, () =>
-      deadline.abort(deadlineError()),
-    );
+    const scope = acquisitionScope(config, [signal]);
+    const effectiveSignal = scope.signal;
     try {
       effectiveSignal.throwIfAborted();
       return await awaitAbortableOperation(
@@ -172,6 +209,7 @@ export class NodeDocumentLoader {
           config,
           purpose,
           signal: effectiveSignal,
+          ownerSignal: signal,
           policy,
           connectionTimeoutMilliseconds,
         }),
@@ -181,14 +219,20 @@ export class NodeDocumentLoader {
       if (effectiveSignal.aborted) throw effectiveSignal.reason;
       throw error;
     } finally {
-      cancelDeadline();
-      signal?.removeEventListener?.("abort", onAbort);
+      scope.close();
     }
   }
 
   async #loadDocument(
     documentIRI,
-    { config, purpose, signal, policy, connectionTimeoutMilliseconds },
+    {
+      config,
+      purpose,
+      signal,
+      ownerSignal,
+      policy,
+      connectionTimeoutMilliseconds,
+    },
   ) {
     let url = new URL(documentIRI.value);
     const sourceIRI = (resolvedIRI) =>
@@ -221,6 +265,7 @@ export class NodeDocumentLoader {
           config,
           purpose,
           signal,
+          ownerSignal,
           redirectFrom,
           policy,
           headers: Object.freeze({}),
@@ -360,32 +405,112 @@ export class NodeDocumentLoader {
             },
           );
         }
+        const metadata = {
+          documentIRI: sourceIRI(iri),
+          contentType: response.headers["content-type"],
+        };
+        const envelope = {
+          encoding: response.headers["content-encoding"],
+          disposition: response.headers["content-disposition"],
+          documentIRI,
+          config,
+          signal,
+          rawByteResource: "remoteDocumentBytes",
+          maximumRawBytes: config.maxRemoteDocumentBytes,
+        };
+        const length = Number(response.headers["content-length"]);
+        if (
+          purpose !== "jsonld-context" &&
+          (length > inMemoryBytes ||
+            (!Number.isFinite(length) &&
+              ontologyMediaTypes.has(
+                metadata.contentType?.split(";")[0].trim().toLowerCase(),
+              )))
+        ) {
+          if (length > config.maxRemoteDocumentBytes)
+            throw new ResourceLimitError(
+              "The document byte limit was exceeded",
+              {
+                resource: "remoteDocumentBytes",
+                limit: config.maxRemoteDocumentBytes,
+                observed: length,
+              },
+            );
+          // Leave no socket owned by an unused source. Each read obtains a fresh
+          // authorization and DNS pin for the originally approved destination.
+          const representation = {
+            status,
+            contentType: metadata.contentType,
+            length: response.headers["content-length"],
+            etag: response.headers.etag,
+            modified: response.headers["last-modified"],
+          };
+          const reopen = (readSignal) =>
+            this.#readHttpStream(
+              url,
+              {
+                config,
+                purpose,
+                signal: readSignal,
+                headers,
+                redirectFrom,
+                connectionTimeoutMilliseconds,
+              },
+              { ...envelope, signal: readSignal },
+              representation,
+            );
+          return replayableDocument(metadata, { config, ownerSignal }, reopen);
+        }
         const bytes = policy.usesDocumentEnvelopeDecoding
-          ? await readDecodedDocumentBytes(response, {
-              encoding: response.headers["content-encoding"],
-              disposition: response.headers["content-disposition"],
-              documentIRI,
-              config,
-              signal,
-              rawByteResource: "remoteDocumentBytes",
-              maximumRawBytes: config.maxRemoteDocumentBytes,
-            })
+          ? await readDecodedDocumentBytes(response, envelope)
           : await readDocumentBytes(
               response,
               "remoteDocumentBytes",
               config.maxRemoteDocumentBytes,
             );
-        return new StringDocumentSource(bytes.toString("utf8"), {
-          documentIRI: sourceIRI(iri),
-          contentType: response.headers["content-type"],
-        });
+        return new StringDocumentSource(bytes.toString("utf8"), metadata);
       } finally {
         response.destroy();
       }
     }
   }
 
-  async #readFile(url, context) {
+  async *#readHttpStream(url, context, envelope, representation) {
+    const { etag, modified } = representation;
+    const headers =
+      etag && !etag.startsWith("W/")
+        ? Object.freeze({ ...context.headers, "If-Match": etag })
+        : modified
+          ? Object.freeze({
+              ...context.headers,
+              "If-Unmodified-Since": modified,
+            })
+          : context.headers;
+    const response = await this.#request(url, { ...context, headers });
+    try {
+      if (
+        response.statusCode !== representation.status ||
+        response.headers["content-type"] !== representation.contentType ||
+        response.headers["content-length"] !== representation.length ||
+        response.headers["last-modified"] !== modified ||
+        response.headers["content-encoding"] !== envelope.encoding ||
+        response.headers["content-disposition"] !== envelope.disposition ||
+        response.headers.etag !== etag
+      )
+        throw new DocumentLoadError(
+          "The HTTP document changed before its stream could be read",
+          {
+            phase: "response",
+            statusCode: response.statusCode,
+          },
+        );
+      yield* streamDecodedDocumentBytes(response, envelope);
+    } finally {
+      response.destroy();
+    }
+  }
+
+  async #openFile(url, context) {
     if (url.hostname)
       throw new DocumentLoadError(
         "The Node file capability supports local files only",
@@ -418,6 +543,35 @@ export class NodeDocumentLoader {
     const file = await open(resolvedFilePath, openFlags);
     try {
       signal.throwIfAborted();
+      const stat = await file.stat();
+      signal.throwIfAborted();
+      if (!stat.isFile())
+        throw new DocumentLoadError(
+          "The authorized document is not a regular file",
+          { phase: "read-file" },
+        );
+      if (stat.size > config.maxInputBytes)
+        throw new ResourceLimitError("The document byte limit was exceeded", {
+          resource: "inputBytes",
+          limit: config.maxInputBytes,
+          observed: stat.size,
+        });
+      return { file, stat };
+    } catch (error) {
+      await file.close();
+      throw error;
+    }
+  }
+
+  async #readFile(url, context) {
+    const { config, signal, sourceIRI: documentIRI } = context;
+    const { file, stat } = await this.#openFile(url, context);
+    try {
+      if (stat.size > inMemoryBytes && context.purpose !== "jsonld-context") {
+        const reopen = (signal) =>
+          this.#readFileStream(url, { ...context, signal }, stat);
+        return replayableDocument({ documentIRI }, context, reopen);
+      }
       const stream = file.createReadStream({ autoClose: false, signal });
       if (context.policy.readsJavaJsonDocument)
         return new StringDocumentSource(
@@ -437,6 +591,31 @@ export class NodeDocumentLoader {
         : await readDocumentBytes(stream, "inputBytes", config.maxInputBytes);
       return new StringDocumentSource(bytes.toString("utf8"), {
         documentIRI: context.sourceIRI,
+      });
+    } finally {
+      await file.close();
+    }
+  }
+
+  async *#readFileStream(url, context, original) {
+    const { file, stat } = await this.#openFile(url, context);
+    try {
+      if (
+        stat.dev !== original.dev ||
+        stat.ino !== original.ino ||
+        stat.size !== original.size ||
+        stat.mtimeMs !== original.mtimeMs
+      )
+        throw new DocumentLoadError(
+          "The file changed before its stream could be read",
+          { phase: "read-file" },
+        );
+      const { config, signal, sourceIRI: documentIRI } = context;
+      const stream = file.createReadStream({ autoClose: false, signal });
+      yield* streamDecodedDocumentBytes(stream, {
+        config,
+        signal,
+        documentIRI,
       });
     } finally {
       await file.close();

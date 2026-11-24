@@ -67,21 +67,6 @@ function cgmesWitnesses(ontology, input) {
   return witnesses;
 }
 
-function* batchFunctionalLines(lines) {
-  let pending = [];
-  let length = 0;
-  for (const line of lines) {
-    pending.push(line);
-    length += line.length;
-    if (length >= 128 * 1024) {
-      yield pending.join("");
-      pending = [];
-      length = 0;
-    }
-  }
-  if (pending.length) yield pending.join("");
-}
-
 async function storeModel(
   api,
   manager,
@@ -91,20 +76,11 @@ async function storeModel(
   directory,
   streamed = false,
 ) {
-  if (
-    streamed &&
-    typeof api.FunctionalSyntaxStreamDocumentTarget === "function"
-  ) {
+  if (streamed && typeof api.StreamDocumentTarget === "function") {
     let artifact;
-    const target = new api.FunctionalSyntaxStreamDocumentTarget(
-      async (lines) => {
-        artifact = await publishComparisonChunks(
-          directory,
-          name,
-          batchFunctionalLines(lines),
-        );
-      },
-    );
+    const target = new api.StreamDocumentTarget(async (chunks) => {
+      artifact = await publishComparisonChunks(directory, name, chunks);
+    });
     try {
       await manager.saveOntology(
         ontology,
@@ -600,13 +576,12 @@ async function observe(request, directory) {
     definitionByIri.set(entry.ontologyIRI, entry.documentIRI);
     documentByIri.set(entry.documentIRI, entry);
   }
-  const usesRdfXmlStream = (document) =>
-    document.syntax === "rdfxml" &&
+  const usesByteStream = (document) =>
     (request.sourceTransport === "stream" ||
       (request.sourceTransport !== "string" &&
         document.byteLength > bufferLimits.MAX_STRING_LENGTH)) &&
-    typeof api.RDFXMLStreamDocumentSource === "function";
-  const loadMemory = usesRdfXmlStream(request.document) ? [] : null;
+    typeof api.StreamDocumentSource === "function";
+  const loadMemory = usesByteStream(request.document) ? [] : null;
   let ingressRecorded = false;
   const measureLoadPhase = (phase) => {
     if (loadMemory) {
@@ -621,8 +596,8 @@ async function observe(request, directory) {
   };
   const openDocument = async (document) => {
     const { format, mime } = comparisonSyntaxes[document.syntax];
-    if (usesRdfXmlStream(document)) {
-      return new api.RDFXMLStreamDocumentSource(
+    if (usesByteStream(document)) {
+      return new api.StreamDocumentSource(
         async function* (signal) {
           const digest = createHash("sha256");
           let inputBytes = 0;
@@ -635,11 +610,13 @@ async function observe(request, directory) {
           }
           const sha256 = digest.digest("hex");
           if (inputBytes !== document.byteLength || sha256 !== document.sha256)
-            throw new Error("Streamed RDF/XML input no longer matches its pin");
+            throw new Error(
+              "Streamed ontology input no longer matches its pin",
+            );
           if (document === request.document && !request.performance) {
             measureLoadPhase("input-consumed");
             if (!ingressRecorded) {
-              await publishComparisonJson(directory, "js-rdfxml-ingress.json", {
+              await publishComparisonJson(directory, "js-stream-ingress.json", {
                 caseId: request.caseId,
                 executionId: request.executionId,
                 inputBytes,
@@ -650,7 +627,11 @@ async function observe(request, directory) {
             }
           }
         },
-        { documentIRI: api.IRI.create(document.documentIRI) },
+        {
+          documentIRI: api.IRI.create(document.documentIRI),
+          contentType: mime,
+          format: api.OWLDocumentFormats[format],
+        },
       );
     }
     const text = new TextDecoder("utf-8", { fatal: true }).decode(
@@ -809,7 +790,7 @@ async function observe(request, directory) {
       "FUNCTIONAL",
       "js-model.ofn",
       directory,
-      usesRdfXmlStream(request.document),
+      usesByteStream(request.document),
     );
   }
   return result;

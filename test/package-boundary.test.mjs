@@ -7,7 +7,6 @@ const EXPECTED_EXPORTS = Object.freeze({
   io: [
     "AmbiguousRdfDatasetError",
     "DocumentLoadError",
-    "FunctionalSyntaxStreamDocumentTarget",
     "GraphSelectionError",
     "MissingImportError",
     "OWLAPIError",
@@ -20,9 +19,10 @@ const EXPECTED_EXPORTS = Object.freeze({
     "ParserMismatchError",
     "RDFOntologyHeaderStatus",
     "RDFParserMetaData",
-    "RDFXMLStreamDocumentSource",
     "ResourceLimitError",
     "SecurityPolicyError",
+    "StreamDocumentSource",
+    "StreamDocumentTarget",
     "StringDocumentSource",
     "StringDocumentTarget",
     "UnloadableImportError",
@@ -173,6 +173,18 @@ test("the parity target has no public writer or replacement helper", async () =>
     ["constructor", "toString"],
   );
   for (const namespace of [io, root]) {
+    assert.deepEqual(
+      Reflect.ownKeys(namespace.StreamDocumentTarget.prototype),
+      ["constructor"],
+    );
+    for (const name of [
+      "RDFXMLStreamDocumentSource",
+      "FunctionalSyntaxStreamDocumentTarget",
+      "isStreamDocumentTarget",
+      "writeStreamDocumentTarget",
+    ]) {
+      assert.equal(Object.hasOwn(namespace, name), false);
+    }
     assert.equal(namespace.UnrepresentableOntologyError, undefined);
     assert.equal(namespace.replaceStringDocumentTargetText, undefined);
   }

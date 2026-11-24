@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 
 import {
   OWLOntologyLoaderConfiguration,
-  RDFXMLStreamDocumentSource,
+  StreamDocumentSource,
   StringDocumentSource,
 } from "../../../index.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
@@ -65,7 +65,7 @@ const sources = ({ source, baseIRI: documentIRI }) => {
   const bytes = new TextEncoder().encode(source);
   return [
     new StringDocumentSource(source, { documentIRI }),
-    new RDFXMLStreamDocumentSource(
+    new StreamDocumentSource(
       function* () {
         for (let start = 0; start < bytes.length; start += 29)
           yield bytes.subarray(start, start + 29);

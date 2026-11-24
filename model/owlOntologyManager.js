@@ -6,6 +6,7 @@ import {
   ParserMismatchError,
   ResourceLimitError,
   SecurityPolicyError,
+  DocumentLoadError,
   UnloadableImportError,
   UnparsableOntologyException,
   OWLOntologyStateError,
@@ -13,7 +14,8 @@ import {
   UnsupportedConstructError,
 } from "../io/errors.js";
 import { StringDocumentSource } from "../io/stringDocumentSource.js";
-import { RDFXMLStreamDocumentSource } from "../io/rdfXmlStreamDocumentSource.js";
+import { StreamDocumentSource } from "../io/streamDocumentSource.js";
+import { readDocumentSourceMetadata } from "../io/documentSourceMetadata.js";
 import { ManagedOntologyIndex } from "../internal/loading/managedOntologyIndex.js";
 import { materializeAxiomIterable } from "../internal/model/axiomSemantics.js";
 import { readOntologyChange } from "../internal/model/ontologyChangeRecord.js";
@@ -37,6 +39,7 @@ import { nTriplesParserDescriptor } from "../internal/parsing/ntriples/descripto
 import { owlXmlParserDescriptor } from "../internal/parsing/owlxml/descriptor.js";
 import { OWLParserRegistry } from "../internal/parsing/parserRegistry.js";
 import { prepareRdfDocument } from "../internal/parsing/rdf/rdfDocumentPreparation.js";
+import { streamTextSource } from "../internal/parsing/streamByteReader.js";
 import { rdfXmlParserDescriptor } from "../internal/parsing/rdfxml/descriptor.js";
 import { triGParserDescriptor } from "../internal/parsing/trig/descriptor.js";
 import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js";
@@ -93,18 +96,21 @@ const reverseChangeDescriptor = (descriptor) =>
         value: descriptor.value ?? descriptor.annotation,
         annotation: descriptor.annotation ?? descriptor.value,
       };
-const builtinDescriptors = new Set([
+const byteStreamDescriptors = new Set([
   owlXmlParserDescriptor,
-  jsonLdParserDescriptor,
+  functionalSyntaxParserDescriptor,
   rdfXmlParserDescriptor,
   nQuadsParserDescriptor,
   nTriplesParserDescriptor,
   triGParserDescriptor,
   turtleParserDescriptor,
+]);
+const builtinDescriptors = new Set([
+  ...byteStreamDescriptors,
+  jsonLdParserDescriptor,
   dlSyntaxParserDescriptor,
   krss1ParserDescriptor,
   krss2ParserDescriptor,
-  functionalSyntaxParserDescriptor,
   manchesterSyntaxParserDescriptor,
 ]);
 
@@ -429,19 +435,12 @@ const normalizeSource = (source, documentIRI) => {
   if (typeof source === "string") {
     return new StringDocumentSource(source, { documentIRI });
   }
-  if (source instanceof RDFXMLStreamDocumentSource) {
-    return new RDFXMLStreamDocumentSource(
-      (signal) => source.openBytes(signal),
-      {
-        documentIRI: source.getDocumentIRI() ?? documentIRI,
-      },
-    );
-  }
+  const streamed = source instanceof StreamDocumentSource;
   for (const method of [
     "getContentType",
     "getDocumentIRI",
     "getFileName",
-    "getText",
+    streamed ? "openBytes" : "getText",
   ]) {
     if (typeof source?.[method] !== "function") {
       throw new TypeError(
@@ -449,16 +448,29 @@ const normalizeSource = (source, documentIRI) => {
       );
     }
   }
-  return new StringDocumentSource(source.getText(), {
-    contentType: source.getContentType(),
-    documentIRI: source.getDocumentIRI() ?? documentIRI,
-    fileName: source.getFileName(),
-    format: source.getFormat?.(),
-  });
+  const text = streamed ? undefined : source.getText();
+  const metadata = readDocumentSourceMetadata(source);
+  metadata.documentIRI ??= documentIRI;
+  return streamed
+    ? new StreamDocumentSource((signal) => source.openBytes(signal), metadata)
+    : new StringDocumentSource(text, metadata);
 };
 
-const sourceWithDocumentIRI = (source, documentIRI) =>
-  normalizeSource(source, documentIRI);
+async function loadAuthorizedDocument(loader, documentIRI, context) {
+  await assertDocumentLoaderAuthorization(loader, documentIRI, context);
+  const loaded = await loader.load(documentIRI, context);
+  const finalIRI = loaded?.getDocumentIRI?.();
+  if (finalIRI && finalIRI.value !== documentIRI.value)
+    await assertDocumentLoaderAuthorization(
+      loader,
+      finalIRI,
+      Object.freeze({
+        ...context,
+        requestedDocumentIRI: documentIRI,
+      }),
+    );
+  return loaded;
+}
 
 const isHttpIRI = (iri) => {
   try {
@@ -893,7 +905,31 @@ export class OWLOntologyManager {
       this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId,
     );
     this.#throwIfAborted(normalizedConfiguration);
-    const normalizedSource = normalizeSource(source);
+    let documentIRI;
+    if (source instanceof IRI) {
+      documentIRI = IRI.create(source);
+      if (!this.#documentLoader)
+        throw new DocumentLoadError(
+          "Loading a document IRI requires a document loader",
+          { documentIRI },
+        );
+      source = await loadAuthorizedDocument(
+        this.#documentLoader,
+        documentIRI,
+        Object.freeze({
+          config: normalizedConfiguration,
+          purpose: "ontology-document",
+          signal: normalizedConfiguration.signal,
+        }),
+      );
+      this.#throwIfAborted(normalizedConfiguration);
+      if (source === undefined || source === null)
+        throw new DocumentLoadError(
+          "The loader did not resolve the ontology document",
+          { documentIRI },
+        );
+    }
+    const normalizedSource = normalizeSource(source, documentIRI);
 
     if (
       this.#behaviorContext.behaviorProfileDefinition.ontologyLoadingPolicy
@@ -1186,7 +1222,8 @@ export class OWLOntologyManager {
 
   async #loadDocument(source, configuration, session, depth) {
     this.#throwIfAborted(configuration);
-    this.#checkInputSize(source, configuration);
+    if (source instanceof StringDocumentSource)
+      this.#checkTextInputSize(source.getText(), configuration);
 
     if (!session.managedOntologyIndexSession)
       return this.#loadPublishedDocument(source, configuration, session, depth);
@@ -1340,23 +1377,11 @@ export class OWLOntologyManager {
         importingDocumentIRI: importingEntry.context.documentIRI,
         signal: configuration.signal,
       });
-      await assertDocumentLoaderAuthorization(
+      loaded = await loadAuthorizedDocument(
         this.#documentLoader,
         documentIRI,
         requestContext,
       );
-      loaded = await this.#documentLoader.load(documentIRI, requestContext);
-      const finalDocumentIRI = loaded?.getDocumentIRI?.();
-      if (finalDocumentIRI && finalDocumentIRI.value !== documentIRI.value) {
-        await assertDocumentLoaderAuthorization(
-          this.#documentLoader,
-          finalDocumentIRI,
-          Object.freeze({
-            ...requestContext,
-            requestedDocumentIRI: documentIRI,
-          }),
-        );
-      }
     } catch (error) {
       if (configuration.signal?.aborted) {
         this.#throwIfAborted(configuration);
@@ -1393,17 +1418,11 @@ export class OWLOntologyManager {
 
     let importedSource;
     try {
-      importedSource = sourceWithDocumentIRI(loaded, documentIRI);
+      importedSource = normalizeSource(loaded, documentIRI);
     } catch (error) {
       throw new UnloadableImportError(
         "The ontology document loader returned an unreadable source",
         { cause: error, documentIRI, importIRI },
-      );
-    }
-    if (!importedSource || typeof importedSource.getText !== "function") {
-      throw new UnloadableImportError(
-        "The ontology document loader returned an invalid source",
-        { documentIRI, importIRI },
       );
     }
     importedOntology = await this.#loadDocument(
@@ -2037,8 +2056,18 @@ export class OWLOntologyManager {
     if (sourceFormat !== undefined) {
       configuration = configuration.withFormat(sourceFormat);
     }
-    const candidates = this.#registry.resolveCandidates(source, configuration);
     const explicitFormat = configuration.format !== undefined;
+    const streamed = source instanceof StreamDocumentSource;
+    const { parserSelectionPolicy } =
+      this.#behaviorContext.behaviorProfileDefinition;
+    const detectionSource =
+      streamed && !explicitFormat && !parserSelectionPolicy.factoryOrder
+        ? await streamTextSource(source, configuration, true)
+        : source;
+    const candidates = this.#registry.resolveCandidates(
+      detectionSource,
+      configuration,
+    );
     const mismatches = [];
 
     for (const candidate of candidates) {
@@ -2062,15 +2091,19 @@ export class OWLOntologyManager {
       );
 
       try {
+        const parserSource =
+          streamed && !byteStreamDescriptors.has(candidate.descriptor)
+            ? await streamTextSource(source, configuration)
+            : source;
         const prepared = await prepareRdfDocument(
           parser,
-          source,
+          parserSource,
           transaction,
           configuration,
         );
         const returnedFormat = prepared
           ? undefined
-          : await parser.parse(source, transaction, configuration);
+          : await parser.parse(parserSource, transaction, configuration);
         this.#throwIfAborted(configuration);
         if (returnedFormat && !transaction.getDocumentFormat()) {
           transaction.setDocumentFormat(returnedFormat);
@@ -2111,10 +2144,9 @@ export class OWLOntologyManager {
     throw new UnparsableOntologyException(mismatches);
   }
 
-  #checkInputSize(source, configuration) {
-    // The RDF/XML adapter counts streamed input before decoding it.
-    if (source instanceof RDFXMLStreamDocumentSource) return;
-    const inputBytes = new TextEncoder().encode(source.getText()).byteLength;
+  #checkTextInputSize(text, configuration) {
+    if (text.length * 3 <= configuration.maxInputBytes) return;
+    const inputBytes = new TextEncoder().encode(text).byteLength;
     if (inputBytes > configuration.maxInputBytes) {
       throw new ResourceLimitError(
         "The ontology input byte limit was exceeded",

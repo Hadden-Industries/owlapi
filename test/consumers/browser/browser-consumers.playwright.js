@@ -55,6 +55,19 @@ const runConsumer = async (page, mode) => {
   });
 
   const result = await page.evaluate(() => globalThis.__OWLAPI_RESULT);
+  if (mode === "worker") {
+    const accepted = [{ status: "passed" }];
+    if (process.platform === "win32" && test.info().project.name === "webkit") {
+      // Windows Playwright WebKit's ephemeral context refuses native OPFS.
+      // Blob and File byte round trips are required on this engine as well.
+      accepted.push({
+        status: "unavailable",
+        operation: "getDirectory",
+        error: "UnknownError",
+      });
+    }
+    expect(accepted).toContainEqual(result.privateFile);
+  }
   expect(result.documentation).toEqual({ examples: 2 });
   expect(result.bindingIdentity).toEqual({
     apibinding: true,

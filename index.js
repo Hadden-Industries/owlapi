@@ -3,7 +3,6 @@ export { OWLDocumentFormats } from "./formats/index.js";
 export {
   AmbiguousRdfDatasetError,
   DocumentLoadError,
-  FunctionalSyntaxStreamDocumentTarget,
   GraphSelectionError,
   MissingImportError,
   OWLAPIError,
@@ -17,8 +16,9 @@ export {
   ResourceLimitError,
   RDFParserMetaData,
   RDFOntologyHeaderStatus,
-  RDFXMLStreamDocumentSource,
   SecurityPolicyError,
+  StreamDocumentSource,
+  StreamDocumentTarget,
   StringDocumentSource,
   StringDocumentTarget,
   UnloadableImportError,

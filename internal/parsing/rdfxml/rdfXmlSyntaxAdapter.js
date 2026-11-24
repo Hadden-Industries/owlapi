@@ -20,7 +20,7 @@ import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
 import { prepareXml } from "../xml/xmlEntityPolicy.js";
 import { xmlParserAdapter } from "../xml/xmlParserAdapter.js";
 import { recordSourceStatementCount } from "../../rdfjs/sourceStatementCount.js";
-import { RDFXMLStreamDocumentSource } from "../../../io/rdfXmlStreamDocumentSource.js";
+import { StreamDocumentSource } from "../../../io/streamDocumentSource.js";
 import {
   prepareRdfXmlStream,
   rdfXmlRootMetadata,
@@ -874,7 +874,7 @@ export class RdfXmlSyntaxAdapter {
   }
 
   async parse(source, configuration = {}) {
-    const streamed = source instanceof RDFXMLStreamDocumentSource;
+    const streamed = source instanceof StreamDocumentSource;
     if (
       (!streamed && typeof source?.getText !== "function") ||
       typeof source?.getDocumentIRI !== "function"

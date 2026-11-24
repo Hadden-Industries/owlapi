@@ -11,6 +11,8 @@ import { RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { OntologyBehaviorContext } from "../../behavior/ontologyBehaviorContext.js";
 import { assertDocumentLoaderAuthorization } from "../../loading/documentLoaderAuthorization.js";
 import { parseJavaJsonStructure } from "./javaJsonStructure.js";
+import { StreamDocumentSource } from "../../../io/streamDocumentSource.js";
+import { decodeUtf8Chunks, readStreamBytes } from "../streamByteReader.js";
 import { recordSourceStatementCount } from "../../rdfjs/sourceStatementCount.js";
 
 import {
@@ -40,8 +42,31 @@ const freezeJson = (value) => {
 // A document-loader object is the host's authority. Never share cached data
 // across different authorities. Revocable authorities implement authorize().
 const contextCachesByAuthority = new WeakMap();
-const readContextDocument = (loaded, requestedIRI, policy) => {
-  const text = typeof loaded === "string" ? loaded : loaded?.getText?.();
+const readContextDocument = async (
+  loaded,
+  requestedIRI,
+  policy,
+  configuration,
+) => {
+  let text;
+  let utf8ByteLength;
+  if (loaded instanceof StreamDocumentSource) {
+    utf8ByteLength = 0;
+    const bytes = async function* () {
+      for await (const chunk of readStreamBytes(
+        loaded,
+        configuration,
+        configuration.signal,
+        "maxRemoteDocumentBytes",
+      )) {
+        utf8ByteLength += chunk.length;
+        yield chunk;
+      }
+    };
+    const parts = [];
+    for await (const part of decodeUtf8Chunks(bytes())) parts.push(part);
+    text = parts.join("");
+  } else text = typeof loaded === "string" ? loaded : loaded?.getText?.();
   if (typeof text !== "string")
     throw new TypeError(
       "The JSON-LD context loader must return a string or document source",
@@ -52,7 +77,7 @@ const readContextDocument = (loaded, requestedIRI, policy) => {
         ? parseJavaJsonStructure(text)
         : JSON.parse(text),
     ),
-    utf8ByteLength: textEncoder.encode(text).byteLength,
+    utf8ByteLength: utf8ByteLength ?? textEncoder.encode(text).byteLength,
     documentUrl: loaded?.getDocumentIRI?.()?.value ?? requestedIRI.value,
   });
 };
@@ -61,7 +86,9 @@ const loadCachedContext = (authority, iri, options, policy) => {
   const acquire = () =>
     Promise.resolve()
       .then(() => authority.load(iri, options))
-      .then((loaded) => readContextDocument(loaded, iri, policy));
+      .then((loaded) =>
+        readContextDocument(loaded, iri, policy, options.config),
+      );
   if (!lifetimeMilliseconds) return acquire();
   let cache = contextCachesByAuthority.get(authority);
   if (!cache) {

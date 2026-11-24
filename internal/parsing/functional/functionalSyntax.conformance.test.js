@@ -1,7 +1,10 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 
-import { OWLOntologyLoaderConfiguration } from "../../../index.js";
+import {
+  OWLOntologyLoaderConfiguration,
+  StreamDocumentSource,
+} from "../../../index.js";
 import { OWLManager } from "../../../index.js";
 
 const UPSTREAM_MANIFEST_URL = new URL(
@@ -149,9 +152,25 @@ describe("pinned W3C OWL 2 Functional documents", () => {
 
       for (const [property, document] of Object.entries(testCase.documents)) {
         const manager = OWLManager.createOWLOntologyManager();
-        await expect(
-          manager.loadOntologyFromOntologyDocument(document, configuration),
-        ).resolves.toBeDefined();
+        const expected = await manager.loadOntologyFromOntologyDocument(
+          document,
+          configuration,
+        );
+        const bytes = new TextEncoder().encode(document);
+        const streamed = new StreamDocumentSource(
+          function* () {
+            for (let i = 0; i < bytes.length; i += 29)
+              yield bytes.subarray(i, i + 29);
+          },
+          { format: "functional" },
+        );
+        const actual =
+          await OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+            streamed,
+            configuration,
+          );
+        expect(actual.getAxiomCount()).toBe(expected.getAxiomCount());
+        expect(actual.getOntologyID()).toEqual(expected.getOntologyID());
         expect(property).toMatch(
           /^fs(?:Premise|Conclusion|NonConclusion|Input)Ontology$/u,
         );

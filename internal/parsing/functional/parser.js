@@ -18,6 +18,8 @@ import { OntologyBehaviorContext } from "../../behavior/ontologyBehaviorContext.
 
 import { decodePrefixedLocalName } from "../lexicalNames.js";
 import { FunctionalSyntaxLexer } from "./lexer.js";
+import { FunctionalStreamLexer } from "./streamLexer.js";
+import { StreamDocumentSource } from "../../../io/streamDocumentSource.js";
 
 import { STANDARD_PARSER_PREFIXES as STANDARD_PREFIXES } from "../../rdfjs/vocabulary.js";
 
@@ -48,6 +50,7 @@ export class OWLFunctionalSyntaxOWLParser {
   #documentScope;
   #checkpoint;
   #lexer;
+  #stream;
   #prefixes;
   #transaction;
   #owlSyntaxPolicy;
@@ -63,9 +66,23 @@ export class OWLFunctionalSyntaxOWLParser {
     this.#documentScope =
       source.getDocumentIRI()?.value ??
       `urn:owlapi-js:functional-document:${++anonymousDocumentSequence}`;
-    this.#lexer = new FunctionalSyntaxLexer(source.getText(), configuration);
+    this.#stream =
+      source instanceof StreamDocumentSource
+        ? new FunctionalStreamLexer(source, configuration)
+        : undefined;
+    this.#lexer =
+      this.#stream ??
+      new FunctionalSyntaxLexer(source.getText(), configuration);
     this.#checkpoint = new CooperativeCheckpoint(monotonicNow());
+    try {
+      return await this.#parseDocument(configuration);
+    } finally {
+      if (this.#stream) await this.#stream.close();
+    }
+  }
 
+  async #parseDocument(configuration) {
+    if (this.#stream) await this.#stream.readAhead(1);
     const first = this.#lexer.peek();
     if (
       first.type !== "WORD" ||
@@ -78,15 +95,18 @@ export class OWLFunctionalSyntaxOWLParser {
     }
 
     while (this.#isWord("Prefix")) {
+      if (this.#stream) await this.#stream.readForm();
       this.#parsePrefixDeclaration();
       const yieldRequest = this.#cooperate();
       if (yieldRequest) {
         await yieldRequest;
       }
+      if (this.#stream) await this.#stream.readAhead(1);
     }
     await this.#parseOntology();
+    if (this.#stream) await this.#stream.readAhead(1);
     this.#expectType("EOF");
-    transaction.setDocumentFormat(OWLDocumentFormats.FUNCTIONAL);
+    this.#transaction.setDocumentFormat(OWLDocumentFormats.FUNCTIONAL);
     return OWLDocumentFormats.FUNCTIONAL;
   }
 
@@ -131,6 +151,7 @@ export class OWLFunctionalSyntaxOWLParser {
   }
 
   async #parseOntology() {
+    if (this.#stream) await this.#stream.readAhead(5);
     this.#expectWord("Ontology");
     this.#expectType("(");
 
@@ -147,20 +168,25 @@ export class OWLFunctionalSyntaxOWLParser {
     );
 
     while (this.#isWord("Import")) {
+      if (this.#stream) await this.#stream.readForm();
       await this.#parseImport();
       const yieldRequest = this.#cooperate();
       if (yieldRequest) {
         await yieldRequest;
       }
+      if (this.#stream) await this.#stream.readAhead(1);
     }
     while (this.#isWord("Annotation")) {
+      if (this.#stream) await this.#stream.readForm();
       this.#transaction.addAnnotation(this.#parseAnnotation(1));
       const yieldRequest = this.#cooperate();
       if (yieldRequest) {
         await yieldRequest;
       }
+      if (this.#stream) await this.#stream.readAhead(1);
     }
     while (this.#lexer.peek().type !== ")") {
+      if (this.#stream) await this.#stream.readForm();
       const axiom = this.#parseAxiom();
       if (
         this.#configuration.loadAnnotationAxioms ||
@@ -172,6 +198,7 @@ export class OWLFunctionalSyntaxOWLParser {
       if (yieldRequest) {
         await yieldRequest;
       }
+      if (this.#stream) await this.#stream.readAhead(1);
     }
     this.#expectType(")");
   }

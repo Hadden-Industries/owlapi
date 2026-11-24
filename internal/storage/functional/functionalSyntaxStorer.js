@@ -4,6 +4,7 @@ import {
   renderFunctionalSyntaxChunks,
 } from "./functionalSyntaxRenderer.js";
 import { defaultDocumentStoragePolicy } from "../../behavior/ontologyBehaviorContext.js";
+import { utf8Chunks } from "../utf8ChunkWriter.js";
 import {
   readStorageFormatParameters,
   readForceStringDatatype,
@@ -29,10 +30,9 @@ export const functionalSyntaxStorer = Object.freeze({
   ) {
     return renderFunctionalSyntax(snapshot, rendererOptions(format, policy));
   },
-  renderChunks(snapshot, format, policy) {
-    return renderFunctionalSyntaxChunks(
-      snapshot,
-      rendererOptions(format, policy),
+  renderBytes(snapshot, format, _writerContext, policy) {
+    return utf8Chunks(
+      renderFunctionalSyntaxChunks(snapshot, rendererOptions(format, policy)),
     );
   },
 });

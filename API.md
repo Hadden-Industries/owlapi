@@ -1,4 +1,4 @@
-<!-- registry-sha256: 87855de8d3e70ef1c0ce9e80ed26f985305f1ce2d2e1a15edd11872de10e356c -->
+<!-- registry-sha256: 255b28b62a8a39cdf05fa4005edbe484f22e95a53fbf5858caea9de0ffe68b9d -->
 
 # owlapi API reference
 
@@ -684,24 +684,6 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
 
-## `FunctionalSyntaxStreamDocumentTarget`
-
-A Functional Syntax document target with a caller-owned chunk sink.
-
-- Import: `owlapi/io`
-- Kind: CLASS
-- Java authority: org.semanticweb.owlapi.io.StreamDocumentTarget
-- Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- First public release target: `0.1.0`
-- Call shape: new FunctionalSyntaxStreamDocumentTarget(sink)
-- Supported members: prototype.writeChunks
-- Omitted Java members: none recorded
-- Public errors: TypeError
-- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation. The sink receives an iterable of strings for one Functional Syntax save and must consume it to completion. The sink owns its output lifecycle and can stage its writes before publication.
-- Evidence: internal/parsing/rdfxml/rdfXmlStream.test.js, test/package-boundary.test.mjs
-
-Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
-
 ## `GraphSelectionError`
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
@@ -918,24 +900,6 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
-## `RDFXMLStreamDocumentSource`
-
-An explicit UTF-8 RDF/XML document source backed by a byte stream.
-
-- Import: `owlapi/io`
-- Kind: CLASS
-- Java authority: org.semanticweb.owlapi.io.StreamDocumentSource
-- Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- First public release target: `0.1.0`
-- Call shape: new RDFXMLStreamDocumentSource(open, { documentIRI }?)
-- Supported members: prototype.getDocumentIRI; prototype.getFormat; prototype.openBytes
-- Omitted Java members: none recorded
-- Public errors: TypeError
-- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation. The factory receives an AbortSignal and opens a fresh iterable of Uint8Array chunks for each load of a UTF-8 RDF/XML document. The document IRI supplies the retrieval base. An authored root xml:base determines the document's own base.
-- Evidence: internal/parsing/rdfxml/rdfXmlStream.test.js, test/package-boundary.test.mjs
-
-Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
-
 ## `ResourceLimitError`
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
@@ -969,6 +933,42 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Public errors: none specific
 - Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.
 - Evidence: io/io.test.js, test/package-boundary.test.mjs
+
+Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
+## `StreamDocumentSource`
+
+A format-independent UTF-8 ontology document source backed by a replayable byte stream.
+
+- Import: `owlapi/io`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.io.StreamDocumentSource
+- Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
+- First public release target: `0.1.0`
+- Call shape: new StreamDocumentSource(open, { contentType, documentIRI, fileName, format }?)
+- Supported members: prototype.getContentType; prototype.getDocumentIRI; prototype.getFileName; prototype.getFormat; prototype.openBytes
+- Omitted Java members: none recorded
+- Public errors: TypeError
+- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation. The factory receives an AbortSignal and opens a fresh synchronous or asynchronous iterable of UTF-8 Uint8Array chunks, or a ReadableStream, for each sniff or parser attempt. Metadata and format selection follow StringDocumentSource. The manager counts bytes before decoding and releases the reader on parser failure or cancellation.
+- Evidence: io/streamDocument.test.js, io/node/nodeDocumentLoaderStream.test.js, internal/parsing/rdfxml/rdfXmlStream.test.js, test/package-boundary.test.mjs
+
+Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
+## `StreamDocumentTarget`
+
+A format-independent ontology document target with a caller-owned UTF-8 byte sink.
+
+- Import: `owlapi/io`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.io.StreamDocumentTarget
+- Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
+- First public release target: `0.1.0`
+- Call shape: new StreamDocumentTarget(sink)
+- Supported members: constructor
+- Omitted Java members: none recorded
+- Public errors: TypeError
+- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation. The sink receives one single-pass iterable of UTF-8 Uint8Array chunks in the selected storage format and must consume it to completion. The sink owns its output lifecycle and can stage its writes before publication.
+- Evidence: io/streamDocument.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
 
@@ -1129,7 +1129,7 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 - Supported members: prototype.authorize; prototype.load
 - Omitted Java members: none recorded
 - Public errors: DocumentLoadError; ResourceLimitError; SecurityPolicyError; TypeError; RangeError
-- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation. Construct with { authorize(resourceIRI, context) }. The callback must return true for each requested operation; receiving a loader never silently grants access to a new destination. load(IRI, { config, purpose, signal }) returns a Promise for a StringDocumentSource. The configuration fixes each operation's behavior profile. Native ontology-document settings and the separate Java JSON-LD context provider settings are consumed by their actual transport boundaries. The Node-only adapter authorizes hostname resolution, the pinned IP address, redirects, credentials, resolved local file paths and file reads. It does not use ambient URL credentials or automatically enable network access in a manager. The read-file context requiresStablePathAncestors=true means its grant also guarantees trusted, stable parent directories throughout acquisition. Attacker-writable directory trees require a caller-owned loader with platform-specific file-handle authorization; portable Node pathname checks cannot provide that containment. Java ontology documents retain the requested parsing base; contexts use the final document URL. Gzip, raw DEFLATE, XZ and first-entry ZIP input follow the qualified Java provider. Native dependencies, permission decisions and caller cancellation remain host capabilities. Browser document parsing remains supported; browser external transport parity is not qualified. See docs/compatibility/profiles/java-owlapi-5.5.1/transport-decision.md and its live qualification status.
+- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation. Construct with { authorize(resourceIRI, context) }. The callback must return true for each requested operation; receiving a loader never silently grants access to a new destination. load(IRI, { config, purpose, signal }) returns a Promise for a StringDocumentSource or a replayable StreamDocumentSource. The manager accepts a document IRI when configured with a loader. The configuration fixes each operation's behavior profile. Native ontology-document settings and the separate Java JSON-LD context provider settings are consumed by their actual transport boundaries. The Node-only adapter authorizes hostname resolution, the pinned IP address, redirects, credentials, resolved local file paths and file reads. It does not use ambient URL credentials or automatically enable network access in a manager. The read-file context requiresStablePathAncestors=true means its grant also guarantees trusted, stable parent directories throughout acquisition. Attacker-writable directory trees require a caller-owned loader with platform-specific file-handle authorization; portable Node pathname checks cannot provide that containment. Java ontology documents retain the requested parsing base; contexts use the final document URL. Gzip, raw DEFLATE, XZ and first-entry ZIP input follow the qualified Java provider. Native dependencies, permission decisions and caller cancellation remain host capabilities. Browser document parsing remains supported; browser external transport parity is not qualified. See docs/compatibility/profiles/java-owlapi-5.5.1/transport-decision.md and its live qualification status.
 - Evidence: io/node/nodeDocumentLoader.test.js
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.

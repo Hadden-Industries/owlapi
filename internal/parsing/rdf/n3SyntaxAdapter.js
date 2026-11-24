@@ -6,6 +6,8 @@ import {
   blankNodeKeys,
 } from "./streamPrimitives.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
+import { StreamDocumentSource } from "../../../io/streamDocumentSource.js";
+import { decodeStreamText } from "../streamByteReader.js";
 import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
 import { recordSourceStatementCount } from "../../rdfjs/sourceStatementCount.js";
@@ -401,9 +403,10 @@ export class N3SyntaxAdapter {
   }
 
   async parse(source, configuration = {}) {
+    const streamed = source instanceof StreamDocumentSource;
     if (
       !source ||
-      typeof source.getText !== "function" ||
+      (!streamed && typeof source.getText !== "function") ||
       typeof source.getDocumentIRI !== "function"
     ) {
       throw new TypeError(
@@ -417,13 +420,16 @@ export class N3SyntaxAdapter {
       this.#syntaxName,
     );
     execution.check();
-    const sourceText = source.getText();
-    if (typeof sourceText !== "string") {
+    const sourceText = streamed ? undefined : source.getText();
+    if (!streamed && typeof sourceText !== "string") {
       throw new TypeError(`${this.#syntaxName} source text must be a string`);
     }
     // A UTF-16 code unit occupies at most three UTF-8 bytes. Only allocate an
     // encoding when that conservative bound cannot prove input admission.
-    if (sourceText.length * 3 > normalizedConfiguration.maxInputBytes) {
+    if (
+      !streamed &&
+      sourceText.length * 3 > normalizedConfiguration.maxInputBytes
+    ) {
       const inputBytes = textEncoder.encode(sourceText).byteLength;
       if (inputBytes > normalizedConfiguration.maxInputBytes) {
         resourceLimit(
@@ -474,6 +480,7 @@ export class N3SyntaxAdapter {
     const blankNodes = new Set();
     let emittedQuads = 0;
     let adapterFailure;
+    const streamAbort = streamed ? new AbortController() : undefined;
     const completion = new Promise((resolve, reject) => {
       parser.on("data", (quad) => {
         if (adapterFailure) {
@@ -542,7 +549,10 @@ export class N3SyntaxAdapter {
           prefixes[prefix] = iri.value;
         }
       });
-      parser.once("error", reject);
+      parser.once("error", (cause) => {
+        streamAbort?.abort(cause);
+        reject(cause);
+      });
       parser.once("end", resolve);
     });
     completion.catch(() => {});
@@ -563,6 +573,7 @@ export class N3SyntaxAdapter {
           return;
         }
         adapterFailure = execution.timeoutError();
+        streamAbort?.abort(adapterFailure);
         parser.destroy(adapterFailure);
       }, delay);
     };
@@ -570,13 +581,18 @@ export class N3SyntaxAdapter {
     const onAbort = () => {
       if (!adapterFailure) {
         adapterFailure = abortError(signal, this.#syntaxName);
+        streamAbort?.abort(adapterFailure);
         parser.destroy(adapterFailure);
       }
     };
     signal?.addEventListener("abort", onAbort, { once: true });
 
     try {
-      for (const chunk of chunksOf(sourceText, this.#chunkSize)) {
+      execution.check();
+      const input = streamed
+        ? decodeStreamText(source, normalizedConfiguration, streamAbort.signal)
+        : chunksOf(sourceText, this.#chunkSize);
+      for await (const chunk of input) {
         execution.check();
         if (!parser.write(chunk)) {
           await waitForDrain(parser);
@@ -604,6 +620,7 @@ export class N3SyntaxAdapter {
         this.#syntaxName,
       );
     } finally {
+      streamAbort?.abort();
       globalThis.clearTimeout(timeoutId);
       signal?.removeEventListener("abort", onAbort);
     }

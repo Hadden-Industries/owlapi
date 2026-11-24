@@ -8,9 +8,10 @@ import {
   StringDocumentTarget,
 } from "../../io/stringDocumentTarget.js";
 import {
-  FunctionalSyntaxStreamDocumentTarget,
-  isFunctionalSyntaxStreamDocumentTarget,
-} from "../../io/functionalSyntaxStreamDocumentTarget.js";
+  isStreamDocumentTarget,
+  writeStreamDocumentTarget,
+} from "../../io/streamDocumentTarget.js";
+import { utf8Chunks } from "./utf8ChunkWriter.js";
 import {
   OWLDocumentFormat,
   readDocumentFormatParameters,
@@ -39,11 +40,12 @@ export class StorerRegistry {
   /** Capture immutable descriptors; one format can have exactly one storer. */
   constructor(storers) {
     for (const storer of storers) {
-      const { formatKey, render, renderChunks } = storer ?? {};
+      const { formatKey, render, renderBytes } = storer ?? {};
       if (
         typeof formatKey !== "string" ||
         formatKey.length === 0 ||
-        typeof render !== "function"
+        typeof render !== "function" ||
+        (renderBytes !== undefined && typeof renderBytes !== "function")
       ) {
         throw new TypeError(
           "Each storer must have a nonempty formatKey and render function",
@@ -56,7 +58,7 @@ export class StorerRegistry {
       }
       this.#storersByFormatKey.set(
         formatKey,
-        Object.freeze({ formatKey, render, renderChunks }),
+        Object.freeze({ formatKey, render, renderBytes }),
       );
     }
     Object.freeze(this);
@@ -84,12 +86,9 @@ export class StorerRegistry {
   ) {
     const { documentStoragePolicy } = behaviorProfileDefinition;
     requireDocumentFormat(format);
-    const streamed = isFunctionalSyntaxStreamDocumentTarget(target);
+    const streamed = isStreamDocumentTarget(target);
     if (!streamed) StringDocumentTarget.prototype.toString.call(target);
     const storer = this.select(format);
-    if (streamed && !storer.renderChunks) {
-      throw new TypeError("The stream target requires Functional Syntax");
-    }
     try {
       if (
         ontologySnapshot.documentMetadata?.sourceStructure?.statements?.length
@@ -129,16 +128,15 @@ export class StorerRegistry {
             },
           );
       }
-      if (streamed) {
-        const chunks = storer.renderChunks(
+      if (streamed && storer.renderBytes) {
+        const chunks = await storer.renderBytes(
           ontologySnapshot,
           format,
+          writerContext,
           documentStoragePolicy,
+          behaviorProfileDefinition,
         );
-        await FunctionalSyntaxStreamDocumentTarget.prototype.writeChunks.call(
-          target,
-          chunks,
-        );
+        await writeStreamDocumentTarget(target, chunks);
         return;
       }
       const completeText = await storer.render(
@@ -148,7 +146,9 @@ export class StorerRegistry {
         documentStoragePolicy,
         behaviorProfileDefinition,
       );
-      if (documentStoragePolicy.targetPublication === "append")
+      if (streamed)
+        await writeStreamDocumentTarget(target, utf8Chunks([completeText]));
+      else if (documentStoragePolicy.targetPublication === "append")
         appendStringDocumentTargetText(target, completeText);
       else replaceStringDocumentTargetText(target, completeText);
     } catch (cause) {

@@ -2,8 +2,8 @@ import { test, expect } from "@jest/globals";
 import { runInNewContext } from "node:vm";
 import { IRI, OWLDocumentFormats, OWLManager } from "../../../index.js";
 import {
-  FunctionalSyntaxStreamDocumentTarget,
-  RDFXMLStreamDocumentSource,
+  StreamDocumentTarget,
+  StreamDocumentSource,
   StringDocumentSource,
   StringDocumentTarget,
 } from "../../../io/index.js";
@@ -14,13 +14,13 @@ const documentIRI = "https://retrieval.example.org/pinned.owl";
 
 function streamSource(text, chunkBytes = 1) {
   const bytes = new TextEncoder().encode(text);
-  return new RDFXMLStreamDocumentSource(
+  return new StreamDocumentSource(
     async function* () {
       for (let offset = 0; offset < bytes.length; offset += chunkBytes) {
         yield bytes.subarray(offset, offset + chunkBytes);
       }
     },
-    { documentIRI },
+    { documentIRI, format: "rdfxml" },
   );
 }
 
@@ -98,13 +98,16 @@ test("rejects an over-limit comment while its delimiter is still pending", async
     "<!--" + "x".repeat(600) + "--><RDF/>",
   );
   let read = 0;
-  const source = new RDFXMLStreamDocumentSource(function* () {
-    for (let offset = 0; offset < bytes.length; offset += 14) {
-      const chunk = bytes.subarray(offset, offset + 14);
-      read += chunk.length;
-      yield chunk;
-    }
-  });
+  const source = new StreamDocumentSource(
+    function* () {
+      for (let offset = 0; offset < bytes.length; offset += 14) {
+        const chunk = bytes.subarray(offset, offset + 14);
+        read += chunk.length;
+        yield chunk;
+      }
+    },
+    { format: "rdfxml" },
+  );
   await expect(
     OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
       source,
@@ -127,7 +130,7 @@ test("cancels the iterator when a source opens after abort", async () => {
   const released = new Promise((resolve) => {
     closed = resolve;
   });
-  const source = new RDFXMLStreamDocumentSource(() => {
+  const source = new StreamDocumentSource(() => {
     opened();
     return new Promise((resolve) => {
       finishOpen = resolve;
@@ -155,7 +158,7 @@ test("accepts UTF-8 bytes created in another realm", async () => {
   const input = new TextEncoder().encode('<rdf:RDF xmlns:rdf="' + rdf + '"/>');
   const bytes = runInNewContext("new Uint8Array(input)", { input });
   expect(bytes instanceof Uint8Array).toBe(false);
-  const source = new RDFXMLStreamDocumentSource(() => [bytes]);
+  const source = new StreamDocumentSource(() => [bytes]);
   await expect(
     OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
       source,
@@ -197,15 +200,14 @@ test("writes the same Functional Syntax in chunks for structural comparison", as
   await manager.saveOntology(
     ontology,
     OWLDocumentFormats.FUNCTIONAL,
-    new FunctionalSyntaxStreamDocumentTarget((chunks) => {
+    new StreamDocumentTarget((chunks) => {
       observed.push(...chunks);
     }),
   );
-  expect(observed.length).toBeGreaterThan(2);
-  expect(observed.join("")).toBe(complete.toString());
+  expect(Buffer.concat(observed)).toEqual(Buffer.from(complete.toString()));
   for (const invalid of [
-    Object.create(FunctionalSyntaxStreamDocumentTarget.prototype),
-    new Proxy(new FunctionalSyntaxStreamDocumentTarget(() => {}), {}),
+    Object.create(StreamDocumentTarget.prototype),
+    new Proxy(new StreamDocumentTarget(() => {}), {}),
   ]) {
     await expect(
       manager.saveOntology(ontology, OWLDocumentFormats.FUNCTIONAL, invalid),
@@ -215,7 +217,7 @@ test("writes the same Functional Syntax in chunks for structural comparison", as
     manager.saveOntology(
       ontology,
       OWLDocumentFormats.FUNCTIONAL,
-      new FunctionalSyntaxStreamDocumentTarget(() => {}),
+      new StreamDocumentTarget(() => {}),
     ),
   ).rejects.toMatchObject({ code: "ONTOLOGY_STORAGE_FAILED" });
 });

@@ -24,6 +24,8 @@ import { xmlParserAdapter } from "../xml/xmlParserAdapter.js";
 import { OntologyBehaviorContext } from "../../behavior/ontologyBehaviorContext.js";
 
 import { OWLXML_GRAMMAR } from "./grammar.js";
+import { StreamDocumentSource } from "../../../io/streamDocumentSource.js";
+import { owlXmlDocuments } from "./streamDocument.js";
 
 const COOPERATIVE_YIELD_INTERVAL_MS = 50;
 const LANGUAGE_TAG = /^[A-Za-z]{1,8}(?:-[A-Za-z0-9]{1,8})*$/u;
@@ -197,6 +199,8 @@ export class OWLXMLParser {
   #source;
   #startedAt;
   #transaction;
+  #fragment;
+  #rootLocation;
   #owlSyntaxPolicy;
   #individualEnumerationPolicy;
 
@@ -217,13 +221,45 @@ export class OWLXMLParser {
       `urn:owlapi-js:owlxml-document:${++anonymousDocumentSequence}`;
     this.#checkExecutionBudget();
 
-    const document = await xmlParserAdapter.parseXml(
-      source.getText(),
-      configuration,
-    );
-    this.#checkExecutionBudget();
-    await this.#validateXmlTree(document);
-    const root = document.documentElement;
+    if (source instanceof StreamDocumentSource) {
+      // Document publication may follow imports during parsing. Validate XML
+      // before the first such effect, as the string provider does.
+      if (definition.ontologyLoadingPolicy.publication === "document") {
+        for await (const { document } of owlXmlDocuments(
+          source,
+          configuration,
+        )) {
+          this.#checkExecutionBudget();
+          await this.#validateXmlTree(document);
+        }
+      }
+      let phase = 0;
+      for await (const frame of owlXmlDocuments(source, configuration)) {
+        this.#checkExecutionBudget();
+        this.#fragment = frame;
+        await this.#validateXmlTree(frame.document);
+        const root = frame.document.documentElement;
+        if (frame.header) {
+          this.#rootLocation = frame.location;
+          this.#parseHeader(root);
+        } else phase = await this.#parseChildren(root, phase);
+        this.#fragment = undefined;
+      }
+    } else {
+      const document = await xmlParserAdapter.parseXml(
+        source.getText(),
+        configuration,
+      );
+      this.#checkExecutionBudget();
+      await this.#validateXmlTree(document);
+      this.#parseHeader(document.documentElement);
+      await this.#parseChildren(document.documentElement, 0);
+    }
+    transaction.setDocumentFormat(OWLDocumentFormats.OWL_XML);
+    return OWLDocumentFormats.OWL_XML;
+  }
+
+  #parseHeader(root) {
     if (root.localName !== "Ontology" || root.namespaceURI !== OWL_NAMESPACE) {
       throw new ParserMismatchError(
         "The XML document root is not an OWL/XML Ontology element",
@@ -245,50 +281,44 @@ export class OWLXMLParser {
         attribute: "versionIRI",
       });
     }
-    transaction.setOntologyID(
+    this.#transaction.setOntologyID(
       this.#dataFactory.getOWLOntologyID(ontologyIri, versionIri),
     );
+  }
 
-    const children = this.#children(root);
-    let offset = 0;
-    while (children[offset]?.localName === "Prefix") {
-      this.#parsePrefix(children[offset]);
-      offset += 1;
-    }
-    while (children[offset]?.localName === "Import") {
-      await this.#parseImport(children[offset]);
-      offset += 1;
-    }
-    while (children[offset]?.localName === "Annotation") {
-      transaction.addAnnotation(this.#parseAnnotation(children[offset], 1));
-      offset += 1;
-    }
-    while (offset < children.length) {
-      const element = children[offset];
-      if (
-        element.localName === "Prefix" ||
-        element.localName === "Import" ||
-        element.localName === "Annotation"
-      ) {
+  async #parseChildren(root, phase) {
+    for (const element of this.#children(root)) {
+      const name = element.localName;
+      const next =
+        name === "Prefix"
+          ? 0
+          : name === "Import"
+            ? 1
+            : name === "Annotation"
+              ? 2
+              : 3;
+      if (next < phase)
         this.#syntax(
-          `OWL/XML element ${element.localName} appears out of ontology sequence`,
+          `OWL/XML element ${name} appears out of ontology sequence`,
           element,
-          { construct: element.localName },
+          { construct: name },
         );
+      phase = next;
+      if (name === "Prefix") this.#parsePrefix(element);
+      else if (name === "Import") await this.#parseImport(element);
+      else if (name === "Annotation")
+        this.#transaction.addAnnotation(this.#parseAnnotation(element, 1));
+      else {
+        const axiom = this.#parseAxiom(element);
+        if (
+          this.#configuration.loadAnnotationAxioms ||
+          !ANNOTATION_AXIOM_ELEMENTS.has(name)
+        )
+          this.#transaction.addAxiom(axiom);
+        await this.#cooperate();
       }
-      const axiom = this.#parseAxiom(element);
-      if (
-        configuration.loadAnnotationAxioms ||
-        !ANNOTATION_AXIOM_ELEMENTS.has(element.localName)
-      ) {
-        transaction.addAxiom(axiom);
-      }
-      offset += 1;
-      await this.#cooperate();
     }
-
-    transaction.setDocumentFormat(OWLDocumentFormats.OWL_XML);
-    return OWLDocumentFormats.OWL_XML;
+    return phase;
   }
 
   #parsePrefix(element) {
@@ -1707,13 +1737,21 @@ export class OWLXMLParser {
     if (!this.#configuration.sourceLocations) {
       return details;
     }
+    let line = node?.lineNumber;
+    let column = node?.columnNumber;
+    if (this.#fragment && Number.isSafeInteger(line)) {
+      const root = node === this.#fragment.document.documentElement;
+      const origin = root ? { line: 1, column: 1 } : this.#fragment.origin;
+      const location = root ? this.#rootLocation : this.#fragment.location;
+      if (location && origin) {
+        if (line === origin.line && Number.isSafeInteger(column))
+          column += location.column - origin.column;
+        line += location.line - origin.line;
+      }
+    }
     return {
-      ...(Number.isSafeInteger(node?.columnNumber)
-        ? { column: node.columnNumber }
-        : {}),
-      ...(Number.isSafeInteger(node?.lineNumber)
-        ? { line: node.lineNumber }
-        : {}),
+      ...(Number.isSafeInteger(column) ? { column } : {}),
+      ...(Number.isSafeInteger(line) ? { line } : {}),
       ...details,
     };
   }

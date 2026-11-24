@@ -20,6 +20,8 @@ export class FunctionalSyntaxLexer {
   #startedAt;
   #text;
   #tokenCount = 0;
+  #windowOffset = 0;
+  #inComment = false;
 
   constructor(text, configuration) {
     if (typeof text !== "string") {
@@ -40,6 +42,14 @@ export class FunctionalSyntaxLexer {
     const token = this.peek();
     this.#lookahead = undefined;
     return token;
+  }
+
+  /** Advance to a lexically complete input window while retaining document budgets and positions. */
+  nextWindow(text) {
+    this.#windowOffset += this.#cursor.offset;
+    this.#cursor.offset = 0;
+    this.#text = text;
+    this.#lookahead = undefined;
   }
 
   checkExecutionBudget() {
@@ -95,6 +105,16 @@ export class FunctionalSyntaxLexer {
 
   #skipTrivia() {
     while (this.#cursor.offset < this.#text.length) {
+      if (this.#inComment) {
+        while (
+          this.#cursor.offset < this.#text.length &&
+          this.#text[this.#cursor.offset] !== "\n" &&
+          this.#text[this.#cursor.offset] !== "\r"
+        )
+          this.#advance();
+        if (this.#cursor.offset === this.#text.length) return;
+        this.#inComment = false;
+      }
       if (WHITESPACE.has(this.#text[this.#cursor.offset])) {
         this.#advance();
         continue;
@@ -102,13 +122,7 @@ export class FunctionalSyntaxLexer {
       if (this.#text[this.#cursor.offset] !== "#") {
         return;
       }
-      while (
-        this.#cursor.offset < this.#text.length &&
-        this.#text[this.#cursor.offset] !== "\n" &&
-        this.#text[this.#cursor.offset] !== "\r"
-      ) {
-        this.#advance();
-      }
+      this.#inComment = true;
     }
   }
 
@@ -139,6 +153,7 @@ export class FunctionalSyntaxLexer {
   #readToken() {
     this.#skipTrivia();
     const location = this.#cursor.location();
+    location.offset += this.#windowOffset;
     if (this.#cursor.offset === this.#text.length) {
       return this.#emit("EOF", "", location, 0);
     }
