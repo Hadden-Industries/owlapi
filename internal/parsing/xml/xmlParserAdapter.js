@@ -104,7 +104,7 @@ export class XmlParserAdapter {
   async parsePreparedXml(
     preparedText,
     configuration,
-    { syntheticRoot = false } = {},
+    { syntheticRoot = false, observeAttributes } = {},
   ) {
     const parser = browserParser() || (await nodeParser());
     let document;
@@ -143,6 +143,7 @@ export class XmlParserAdapter {
         policy,
       );
       if (limit) throw limit;
+      observeAttributes?.(attributes);
       for (const child of Array.from(element.childNodes))
         if (child.nodeType === 1) pending.push(child);
     }

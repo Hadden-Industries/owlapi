@@ -37,6 +37,7 @@ const PROCESSING_INSTRUCTION_NODE = 7;
 
 const RDF_XML_LITERAL = `${RDF_NAMESPACE}XMLLiteral`;
 const RDF_NON_LITERAL_PARSE_TYPES = new Set(["Collection", "Resource"]);
+const validationBatchLength = 65_536;
 const TASK_YIELD_CHUNKS = 16;
 const TEXT_NODE = 3;
 
@@ -365,13 +366,32 @@ const closingTagIdentity = (text, start, end, configuration) => {
   return match[1];
 };
 
-const validateXmlStructure = (text, configuration, execution) => {
+const validateXmlStructure = (
+  text,
+  configuration,
+  execution,
+  batchValidation = false,
+) => {
   const elements = [];
   const startTags = [];
   let parseTypeOffset = text.indexOf("parseType");
   let offset = 0;
   let root;
   let rootCount = 0;
+  const validationEnds = [];
+  let rootClosingStart;
+
+  // At this point the original balanced-tag scan has closed a complete
+  // direct child. A validation copy can end here without splitting text,
+  // a namespace scope or an RDF property.
+  function completeChild(end) {
+    if (
+      batchValidation &&
+      elements.length === 1 &&
+      end - (validationEnds.at(-1) ?? root.end + 1) >= validationBatchLength
+    )
+      validationEnds.push(end);
+  }
 
   while (offset < text.length) {
     execution.check();
@@ -457,8 +477,10 @@ const validateXmlStructure = (text, configuration, execution) => {
           { expectedElement: expected.name, observedElement: actual },
         );
       }
+      if (elements.length === 1) rootClosingStart = offset;
       elements.pop();
       offset = end + 1;
+      completeChild(offset);
       continue;
     }
     if (text.startsWith("<!", offset)) {
@@ -508,6 +530,7 @@ const validateXmlStructure = (text, configuration, execution) => {
       }
     }
     offset = end + 1;
+    if (identity.selfClosing) completeChild(offset);
   }
 
   if (elements.length > 0) {
@@ -523,7 +546,7 @@ const validateXmlStructure = (text, configuration, execution) => {
   if (rootCount === 0) {
     xmlError("The XML document has no root element", text, 0, configuration);
   }
-  return { ...root, startTags };
+  return { ...root, startTags, validationEnds, rootClosingStart };
 };
 
 const parseTypeAttributeRanges = (text, startTags) => {
@@ -566,6 +589,64 @@ const normalizeOtherParseTypes = (text, startTags, parseTypeAttributes) => {
   }
   return normalized;
 };
+
+/** Keep the string provider's XML preflight while discarding each checked DOM
+ * before the next batch. Ambiguous input and all errors use the original
+ * whole-document provider so its diagnostic, location and ordering survive.
+ */
+async function ordinaryParseTypesValidated(text, structure, configuration) {
+  const { start, end, rootClosingStart, validationEnds, startTags } = structure;
+  if (
+    !validationEnds.length ||
+    rootClosingStart === undefined ||
+    text.slice(start, end + 1).includes("parseType")
+  )
+    return false;
+  const prefix = text.slice(0, end + 1),
+    suffix = text.slice(rootClosingStart);
+  if (prefix.length + suffix.length > validationBatchLength) return false;
+  const ranges = parseTypeAttributeRanges(text, startTags);
+  if (
+    !ranges.length ||
+    !ranges.every(({ start, end }) =>
+      RDF_NON_LITERAL_PARSE_TYPES.has(text.slice(start, end)),
+    )
+  )
+    return false;
+  // The established string metadata path performs entity preparation before
+  // its native XML check. A second transformation requires the original path.
+  if (prepareXml(text, configuration) !== text) return false;
+  let begin = end + 1,
+    observed = 0,
+    ordinary = true;
+  const observeAttributes = (attributes) => {
+    for (const attribute of attributes) {
+      if ((attribute.localName || attribute.name) !== "parseType") continue;
+      observed++;
+      if (
+        attribute.namespaceURI === RDF_NAMESPACE &&
+        !RDF_NON_LITERAL_PARSE_TYPES.has(attribute.value)
+      )
+        ordinary = false;
+    }
+  };
+  try {
+    for (const boundary of [...validationEnds, rootClosingStart]) {
+      if (boundary === begin) continue;
+      const frame = prefix + text.slice(begin, boundary) + suffix;
+      // One indivisible child may exceed the batch target. Its DOM is still
+      // released before the next root child group is examined.
+      await xmlParserAdapter.parsePreparedXml(frame, configuration, {
+        observeAttributes,
+      });
+      if (!ordinary) return false;
+      begin = boundary;
+    }
+  } catch {
+    return false;
+  }
+  return observed === ranges.length;
+}
 
 const parsedPrefixes = new WeakMap();
 const documentBases = new WeakMap();
@@ -848,20 +929,36 @@ export class RdfXmlSyntaxAdapter {
       preparedText,
       normalizedConfiguration,
       execution,
+      this.#loadImplementation === defaultImplementationLoader &&
+        preparedText.length > validationBatchLength * 2 &&
+        preparedText.includes("parseType") &&
+        !preparedText.includes("XMLLiteral"),
     );
     execution.check();
     const documentIRI = source.getDocumentIRI();
-    const { classifications, parseTypeAttributes } =
-      await collectXmlLiteralMetadata(
+    const metadataIRI = documentIRI?.value;
+    let classifications = [],
+      parseTypeNormalizedText = preparedText;
+    if (
+      !root.validationEnds.length ||
+      !(await ordinaryParseTypesValidated(
         preparedText,
-        documentIRI?.value,
+        root,
+        normalizedConfiguration,
+      ))
+    ) {
+      const metadata = await collectXmlLiteralMetadata(
+        preparedText,
+        metadataIRI,
         normalizedConfiguration,
       );
-    const parseTypeNormalizedText = normalizeOtherParseTypes(
-      preparedText,
-      root.startTags,
-      parseTypeAttributes,
-    );
+      classifications = metadata.classifications;
+      parseTypeNormalizedText = normalizeOtherParseTypes(
+        preparedText,
+        root.startTags,
+        metadata.parseTypeAttributes,
+      );
+    }
     const identity = rdfXmlRootMetadata(
       preparedText.slice(root.start, root.end + 1),
       documentIRI?.value,
