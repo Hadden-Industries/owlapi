@@ -340,6 +340,93 @@ test("the benchmark registry accounts for all 70 workloads under both profiles",
   ).toHaveLength(70);
 });
 
+test("the api-semantics suite registers all 70 workloads across both profiles", async () => {
+  const { cases } = await runComparison({
+    action: "list",
+    suite: "api-semantics",
+  });
+  expect(cases).toHaveLength(140);
+  expect(new Set(cases.map(({ input }) => input)).size).toBe(70);
+  expect(new Set(cases.map(({ caseId }) => caseId)).size).toBe(140);
+  expect(cases[0].scenario).toBe("api-semantics");
+});
+
+test("api-semantics verify rejects stale harness, sink, or fixture generator evidence", async () => {
+  await withScratch(async (outputDirectory) => {
+    const { cases: definitions } = await runComparison({
+      action: "list",
+      suite: "api-semantics",
+      input: "model.IRI.create",
+    });
+    const harnessSha256 = sha256(
+      await readFile(
+        new URL("./VerifyBenchmarkApiSemantics.java", import.meta.url),
+      ),
+    );
+    const sinkSha256 = sha256(
+      await readFile(
+        new URL("../verify-benchmark-api-semantics.mjs", import.meta.url),
+      ),
+    );
+    const fixtureGeneratorSha256 = sha256(
+      await readFile(
+        new URL("../generate-owlapi-benchmark-fixtures.cjs", import.meta.url),
+      ),
+    );
+    const validReport = {
+      schemaVersion: 1,
+      action: "run",
+      scenario: "api-semantics",
+      definitions,
+      evidence: {
+        harnessSha256,
+        sinkSha256,
+        fixtureGeneratorSha256,
+        summary: {
+          totalRows: definitions.length,
+          passed: definitions.length,
+          observed: 0,
+          failed: 0,
+        },
+      },
+      cases: definitions.map((definition) => ({
+        caseId: definition.caseId,
+        status: "passed",
+      })),
+    };
+    const reportPath = join(outputDirectory, "api-semantics.json");
+    await writeFile(
+      reportPath,
+      JSON.stringify({
+        ...validReport,
+        evidence: { ...validReport.evidence, sinkSha256: "0".repeat(64) },
+      }),
+      "utf8",
+    );
+    await expect(
+      runComparison(
+        {
+          action: "verify",
+          suite: "api-semantics",
+          input: "model.IRI.create",
+        },
+        { outputDirectory },
+      ),
+    ).rejects.toThrow(/API semantic evidence/u);
+
+    await writeFile(reportPath, JSON.stringify(validReport), "utf8");
+    const verified = await runComparison(
+      {
+        action: "verify",
+        suite: "api-semantics",
+        input: "model.IRI.create",
+      },
+      { outputDirectory },
+    );
+    expect(verified.cases).toHaveLength(2);
+  });
+});
+
 test("Manchester literal rendering owns a separate behavior-only release case", async () => {
   const scenario = "large-literal-rendering";
   const { cases } = await runComparison({ action: "list", scenario });

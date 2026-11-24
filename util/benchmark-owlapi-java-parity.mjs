@@ -1168,10 +1168,15 @@ export const runJsProfileBenchmarks = async (
       null,
     );
     utilManager.addAxioms(utilOntology, utilAxioms);
-    const utilSeedEntities = [...utilOntology.getClassesInSignature()].slice(
-      0,
-      20,
-    );
+    const utilSeedEntities = [...utilOntology.getClassesInSignature()]
+      .sort((left, right) =>
+        left.iri.value < right.iri.value
+          ? -1
+          : left.iri.value > right.iri.value
+            ? 1
+            : 0,
+      )
+      .slice(0, 20);
 
     const objVisitorHandlers = Object.freeze(
       Object.fromEntries(OWL_OBJECT_KINDS.map((kind) => [kind, () => 1])),

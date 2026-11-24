@@ -36,6 +36,7 @@ import {
   measureComparisonWorker,
 } from "./comparison-performance.mjs";
 import {
+  runBenchmarkApiSemanticsComparison,
   runBenchmarkComparison,
   runBenchmarkIoComparison,
 } from "./comparison-benchmarks.mjs";
@@ -113,6 +114,9 @@ const comparisonInputs = [
   "./RunOntologyComparisonCase.java",
   "./RunWithClasspath.java",
   "./comparison-performance.mjs",
+  "./comparison-benchmarks.mjs",
+  "../verify-benchmark-api-semantics.mjs",
+  "./VerifyBenchmarkApiSemantics.java",
   "./comparison-release-evidence.mjs",
   "./qualify-universal-ontology.mjs",
   "./run-import-closure-contract.mjs",
@@ -1730,6 +1734,21 @@ async function executeComparison(request, environment = {}) {
       );
     }
     return runRdfXmlCorpusComparison(request, environment, repository);
+  }
+  if (
+    request.suite === "api-semantics" ||
+    request.scenario === "api-semantics"
+  ) {
+    if (
+      request.action !== "list" &&
+      isAbsolute(environment.outputDirectory ?? "")
+    ) {
+      assertSourceQualificationOutputDirectory(
+        repository,
+        environment.outputDirectory,
+      );
+    }
+    return runBenchmarkApiSemanticsComparison(request, environment);
   }
   if (request.suite === "io-admission" || request.scenario === "io-admission") {
     if (
