@@ -150,7 +150,7 @@ Use `--source-transport string` or `--source-transport stream` to exercise an ex
 The `-load.heapprofile` sample captures the live ontology after the load checkpoint.
 The other profile comes from process exit.
 On Windows the load-only route requires the memory job and records the selected heap and commit budgets.
-Run `node --test util/owlapi-reference/comparison-job.windows.test.mjs` on Windows to exercise the actual process-tree cap with a bounded allocation.
+Run `node --test util/owlapi-reference/qualify-windows-memory-job.mjs` on Windows to exercise the actual process-tree cap with a bounded allocation.
 
 On Windows, run `node --test util/owlapi-reference/qualify-oversized-streams.mjs` to verify streaming input above the current V8 single-string limit.
 This opt-in transport test loads Functional Syntax, OWL/XML, RDF/XML and Turtle in sequential 512 MiB Jobs with a 160 MiB Node heap.

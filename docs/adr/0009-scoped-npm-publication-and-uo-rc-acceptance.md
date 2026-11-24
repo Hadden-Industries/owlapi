@@ -58,9 +58,19 @@ Historical observations remain unchanged, and exact consumer pins do not move wh
 
 ### Staged successor releases, accepted 13 November 2026
 
-A new tarball defaults to `pilot`. At stage admission the owner can explicitly select `latest` for a stable version or an RC. The tag controls unversioned npm installs. A completed stable designation controls production security support. Every candidate is initially archived as a GitHub prerelease; stable promotion changes the classification of that same verified release ID.
+A new tarball defaults to `pilot`.
+At stage admission the owner can explicitly select `latest` for a stable version or an RC.
+The tag controls unversioned npm installs.
+A completed stable designation controls production security support.
+Every candidate is initially archived as a GitHub prerelease; stable promotion changes the classification of that same verified release ID.
 
-Before the first stable promotion, `next` follows the security-supported RC after public qualification and immutable verification. Removing stale `next` after first stable is a separate decision. The owner opens each later preview line once. A verified successor on that line can advance `next`. Withdrawal restores each affected label to an independently qualified predecessor or removes it under explicit approval. The release tag and immutable package bytes remain addressable. [Staged operations](../release/staged-operations.md)
+Before the first stable promotion, `next` follows the security-supported RC after public qualification and immutable verification.
+Removing stale `next` after first stable is a separate decision.
+The owner opens each later preview line once.
+A verified successor on that line can advance `next`.
+Withdrawal restores each affected label to an independently qualified predecessor or removes it under explicit approval.
+The release tag and immutable package bytes remain addressable.
+[Staged operations](../release/staged-operations.md)
 
 ## Consequences
 

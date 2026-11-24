@@ -29,6 +29,7 @@ export function includeFileDependencies(
   };
   const edges = new Map();
   for (const { from, to, kind, evidence } of relationships) {
+    // json-identity-contract: ordered-tuple; owner: dependency graph; reason: source, destination and edge kind are positional, individually escaped strings.
     const key = JSON.stringify([from, to, kind]);
     let edge = edges.get(key);
     if (!edge) {

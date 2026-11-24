@@ -50,6 +50,7 @@ Resources loaded at runtime and legitimate standalone tools can be absent from s
 The graph uses dependency-cruiser 18.6 or later at the exact root lockfile resolution.
 It resolves Node source imports and package exports.
 Builtins and external packages remain endpoints without scanning their implementations.
+
 ### File inputs and outputs
 
 The exporter derives file relationships from authored code and workflow steps on each run.
