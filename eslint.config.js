@@ -90,6 +90,11 @@ export default [
   },
   prettier,
   {
+    // Packed ordinals, bitsets and seeded integer hashes use 32-bit arithmetic.
+    files: ["internal/collections/**/*.js"],
+    rules: { "no-bitwise": "off" },
+  },
+  {
     // Import attributes bind producer-only JSON authorities; consumer syntax
     // retains its existing target.
     files: ["tooling/artifact-transport/*.mjs", "scripts/ci-qualification.mjs"],

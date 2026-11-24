@@ -3,6 +3,9 @@ import { ResourceLimitError } from "../../io/errors.js";
 import {
   IRI,
   OWLStructuralObject,
+  isFactoryStructuralObject,
+  isPackageStructuralObject,
+  nativeStructuralMethods,
   structuralKey,
 } from "../../model/structural.js";
 import { RDF_NAMESPACE } from "../rdfjs/vocabulary.js";
@@ -20,18 +23,34 @@ const fail = () => {
     "Not an immutable package structural model",
   );
 };
-const key = (object) =>
-  OWLStructuralObject.prototype.structuralKey.call(object);
+const key = (object) => nativeStructuralMethods.structuralKey.call(object);
 
 const validatedShapes = new WeakSet();
 /** Read an existing data-only shape proof without attempting new admission. */
 export const hasValidatedStructuralShape = (value) =>
-  validatedShapes.has(value);
+  isFactoryStructuralObject(value) || validatedShapes.has(value);
 const validatedStructureNodes = new WeakSet();
 const validatedGraphs = new WeakMap();
+const validatedSnapshots = new WeakSet();
+
+/** OntologyState supplies its sealed set and immutable snapshot together.
+ * A generic constructor or foreign operand keeps the snapshot on full admission. */
+export const registerStructuralSnapshot = (snapshot, axioms) => {
+  if (
+    axioms.isFactoryValidated &&
+    isFactoryStructuralObject(snapshot.ontologyID) &&
+    snapshot.directOntologyAnnotations.every(isFactoryStructuralObject) &&
+    snapshot.authoredImportDeclarations.every(isFactoryStructuralObject)
+  ) {
+    validatedSnapshots.add(snapshot);
+  }
+  return snapshot;
+};
+export const hasValidatedStructuralSnapshot = (snapshot) =>
+  validatedSnapshots.has(snapshot);
 
 export const validateStructuralShape = (value) => {
-  if (validatedShapes.has(value)) return;
+  if (hasValidatedStructuralShape(value)) return;
   if (!Object.isFrozen(value)) return fail();
   if (Array.isArray(value)) {
     if (Object.getPrototypeOf(value) !== Array.prototype) return fail();
@@ -66,22 +85,18 @@ export const validateStructuralShape = (value) => {
       )
     )
       return fail();
-  try {
-    key(value);
-  } catch {
-    return fail();
-  }
+  if (!isPackageStructuralObject(value)) return fail();
   validatedShapes.add(value);
 };
 
 // Structural authenticity accepts values from either supported factory.
 // OWL-language semantics, including empty enumerations, are checked separately.
-const sharedValidationFactory = createSourcePreservingDataFactory(
-  new OWLDataFactory({ behaviorProfileId: "java-owlapi-5.5.1" }),
-);
+const newValidationFactory = () =>
+  createSourcePreservingDataFactory(
+    new OWLDataFactory({ behaviorProfileId: "java-owlapi-5.5.1" }),
+  );
 
-const sharedStructuralValidator = (value) => {
-  if (validatedStructureNodes.has(value)) return;
+const validateExplicitStructure = (value, factory) => {
   let rebuilt;
   try {
     if (value.kind === K.IRI) rebuilt = IRI.create(value.value);
@@ -108,7 +123,7 @@ const sharedStructuralValidator = (value) => {
       return;
     } else if (value.kind === K.INVERSE_OBJECT_PROPERTIES_AXIOM) {
       if (value.properties.length !== 2) return fail();
-      rebuilt = sharedValidationFactory.getOWLInverseObjectPropertiesAxiom(
+      rebuilt = factory.getOWLInverseObjectPropertiesAxiom(
         value.properties[0],
         value.properties[1],
         value.annotations,
@@ -127,7 +142,7 @@ const sharedStructuralValidator = (value) => {
         .map((field) =>
           field === setField ? repeatSingleton(value[field]) : value[field],
         );
-      rebuilt = sharedValidationFactory[`get${value.kind}`](...args);
+      rebuilt = factory[`get${value.kind}`](...args);
     }
     if (key(rebuilt) !== key(value)) return fail();
     if (validatedShapes.has(value)) validatedStructureNodes.add(value);
@@ -146,14 +161,25 @@ const sharedStructuralValidator = (value) => {
  * has passed the data-only shape check. Public OWLStructuralObject constructors
  * cannot manufacture a false-valid report by supplying different key tuples.
  */
-export const createStructuralValidator = () => sharedStructuralValidator;
+export const createStructuralValidator = () => {
+  let factory;
+  return (value) => {
+    if (
+      isFactoryStructuralObject(value) ||
+      validatedStructureNodes.has(value)
+    ) {
+      return;
+    }
+    validateExplicitStructure(value, (factory ??= newValidationFactory()));
+  };
+};
 
 /** Validate one immutable object graph and return its children-first order.
  * Cached subtree heights enforce limits on every DAG path. Arrays stay active
  * until their children complete, so manufactured cycles cannot evade admission.
  * Callers select a finite supported-kind inventory before invoking callbacks.
  */
-export const validateStructuralGraph = (
+export const inspectStructuralGraph = (
   root,
   supportedKinds,
   maxDepth = Infinity,
@@ -161,7 +187,8 @@ export const validateStructuralGraph = (
 ) => {
   if (!root || Array.isArray(root) || typeof root !== "object")
     throw new TypeError("Expected an OWL object");
-  const cached = validatedGraphs.get(root);
+  const factoryGraph = isFactoryStructuralObject(root);
+  const cached = factoryGraph ? undefined : validatedGraphs.get(root);
   if (
     cached &&
     cached.depth <= maxDepth &&
@@ -171,9 +198,10 @@ export const validateStructuralGraph = (
       if (!supportedKinds.has(kind))
         throw new TypeError("Unsupported structural input kind");
     }
-    return cached.order;
+    return cached;
   }
-  const validate = sharedStructuralValidator;
+  const validate = createStructuralValidator();
+  let work = 0;
   const active = new Set(),
     heights = new Map(),
     order = [],
@@ -198,7 +226,9 @@ export const validateStructuralGraph = (
         kindsInGraph.add(value.kind);
       }
       const height = { depth: 0, annotations: 0 };
-      for (const child of children()) {
+      const childValues = children();
+      work += 1 + childValues.length;
+      for (const child of childValues) {
         const childHeight = heights.get(child);
         if (!childHeight) continue;
         height.depth = Math.max(height.depth, childHeight.depth + 1);
@@ -223,7 +253,7 @@ export const validateStructuralGraph = (
       });
     if (height) continue;
     if (active.has(value)) throw new TypeError("Cyclic structural input");
-    validateStructuralShape(value);
+    if (!factoryGraph) validateStructuralShape(value);
     if (!Array.isArray(value) && !supportedKinds.has(value.kind))
       throw new TypeError("Unsupported structural input kind");
     active.add(value);
@@ -241,12 +271,25 @@ export const validateStructuralGraph = (
   }
   const rootHeight = heights.get(root);
   const frozenOrder = Object.freeze(order);
-  validatedGraphs.set(root, {
+  const facts = {
     depth: rootHeight?.depth ?? 0,
     annotations:
       (rootHeight?.annotations ?? 0) + (root.kind === K.ANNOTATION ? 1 : 0),
     kinds: kindsInGraph,
     order: frozenOrder,
-  });
-  return frozenOrder;
+    work,
+  };
+  if (!factoryGraph) {
+    validatedGraphs.set(root, facts);
+  }
+  return facts;
 };
+
+export const validateStructuralGraph = (
+  root,
+  supportedKinds,
+  maxDepth,
+  maxAnnotationDepth,
+) =>
+  inspectStructuralGraph(root, supportedKinds, maxDepth, maxAnnotationDepth)
+    .order;

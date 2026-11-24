@@ -1,3 +1,4 @@
+import { compareStructuralValues } from "../internal/collections/structuralComparator.js";
 import { OntologyBehaviorContext } from "../internal/behavior/ontologyBehaviorContext.js";
 import { normalizeJavaTypedLiteral } from "../internal/model/javaLiteralConstruction.js";
 import { trimJavaStringWhitespace } from "../internal/model/javaStringTrim.js";
@@ -38,7 +39,9 @@ import {
   IRI,
   isCanonicalStructuralObject,
   normalizeStructuralSet,
-  OWLStructuralObject,
+  createFactoryStructuralObject,
+  isFactoryStructuralObject,
+  EMPTY_STRUCTURAL_SET,
 } from "./structural.js";
 
 const OWL_THING_IRI = OWL_NAMESPACE + "Thing";
@@ -46,7 +49,7 @@ const RDFS_LITERAL_IRI = RDFS_NAMESPACE + "Literal";
 const XSD_STRING_IRI_OBJECT = IRI.create(XSD_NAMESPACE + "string");
 const RDF_LANG_STRING_IRI_OBJECT = IRI.create(RDF_NAMESPACE + "langString");
 const RDFS_LABEL_IRI_OBJECT = IRI.create(RDFS_NAMESPACE + "label");
-const EMPTY_ANNOTATIONS = Object.freeze([]);
+const EMPTY_ANNOTATIONS = EMPTY_STRUCTURAL_SET;
 const IRI_KINDS = Object.freeze([OWLObjectKind.IRI]);
 const DATATYPE_KINDS = Object.freeze([OWLObjectKind.DATATYPE]);
 const ANNOTATION_KINDS = Object.freeze([OWLObjectKind.ANNOTATION]);
@@ -111,6 +114,11 @@ const createCardinality = (kind, cardinality, property, filler) => {
     normalizedCardinality,
     normalizedProperty,
     normalizedFiller,
+    !isFactoryStructuralObject(normalizedFiller) ||
+      (kind.startsWith("OWLData")
+        ? DATA_RANGE_KINDS
+        : CLASS_EXPRESSION_KINDS
+      ).includes(normalizedFiller.kind),
   );
 };
 
@@ -140,16 +148,7 @@ const normalizeUnorderedKindsWithRepetitions = (
   minimum,
 ) => {
   const normalized = normalizeOrderedKinds(values, kinds, name, minimum);
-  return Object.freeze(
-    [...normalized].sort((left, right) => {
-      const leftKey = left.structuralKey();
-      const rightKey = right.structuralKey();
-      if (leftKey < rightKey) {
-        return -1;
-      }
-      return leftKey > rightKey ? 1 : 0;
-    }),
-  );
+  return Object.freeze([...normalized].sort(compareStructuralValues));
 };
 
 const normalizeAnnotations = (annotations) =>
@@ -167,7 +166,7 @@ const createAnnotatedAxiom = (
     annotations === EMPTY_ANNOTATIONS
       ? EMPTY_ANNOTATIONS
       : normalizeAnnotations(annotations);
-  return new OWLStructuralObject(
+  return createFactoryStructuralObject(
     kind,
     { ...fields, annotations: normalizedAnnotations },
     [...components, normalizedAnnotations],
@@ -194,9 +193,12 @@ const createBinaryAxiom = (
   right,
   rightKinds,
   annotations,
+  normalizeRight,
 ) => {
   const normalizedLeft = requireKind(left, leftKinds, leftField);
-  const normalizedRight = requireKind(right, rightKinds, rightField);
+  const normalizedRight = normalizeRight
+    ? normalizeRight(right, rightField)
+    : requireKind(right, rightKinds, rightField);
   return createAnnotatedAxiom(
     kind,
     { [leftField]: normalizedLeft, [rightField]: normalizedRight },
@@ -232,7 +234,7 @@ const createSetConstruct = (
     const components = [...Object.values(leadingFields), normalized];
     object =
       annotations === undefined
-        ? new OWLStructuralObject(kind, fields, components)
+        ? createFactoryStructuralObject(kind, fields, components)
         : createAnnotatedAxiom(kind, fields, components, annotations);
   }
   return original
@@ -255,6 +257,7 @@ export class OWLDataFactory {
   // convenience constructor must preserve the same canonical object and update
   // `factory.required-v1-constructors` plus factory.test.js.
   #entities = new Map();
+  #iris = new Map();
 
   /** Structural values remain profile-neutral; construction follows this contract. */
   constructor({ behaviorProfileId } = {}) {
@@ -268,92 +271,51 @@ export class OWLDataFactory {
     return readDataFactoryBehaviorDefinition(this).behaviorProfileId;
   }
 
+  #internIri(value, name) {
+    const iri = requireIri(value, name);
+    if (!isFactoryStructuralObject(iri)) {
+      return iri;
+    }
+    const existing = this.#iris.get(iri.value);
+    if (existing) {
+      return existing;
+    }
+    this.#iris.set(iri.value, iri);
+    return iri;
+  }
+
+  #entity(kind, input) {
+    const iri = this.#internIri(input, "iri");
+    let entities = this.#entities.get(kind);
+    if (!entities) {
+      entities = new Map();
+      this.#entities.set(kind, entities);
+    }
+    let entity = entities.get(iri.value);
+    if (!entity) {
+      entity = createStructuralUnary(kind, "iri", iri);
+      entities.set(iri.value, entity);
+    }
+    return entity;
+  }
+
   getOWLClass(iri) {
-    const normalizedIri = requireIri(iri, "iri");
-    const key = `${OWLObjectKind.CLASS}:${normalizedIri.value}`;
-    if (!this.#entities.has(key)) {
-      this.#entities.set(
-        key,
-        createStructuralUnary(OWLObjectKind.CLASS, "iri", normalizedIri),
-      );
-    }
-    return this.#entities.get(key);
+    return this.#entity(OWLObjectKind.CLASS, iri);
   }
-
   getOWLAnnotationProperty(iri) {
-    const normalizedIri = requireIri(iri, "iri");
-    const key = `${OWLObjectKind.ANNOTATION_PROPERTY}:${normalizedIri.value}`;
-    if (!this.#entities.has(key)) {
-      this.#entities.set(
-        key,
-        createStructuralUnary(
-          OWLObjectKind.ANNOTATION_PROPERTY,
-          "iri",
-          normalizedIri,
-        ),
-      );
-    }
-    return this.#entities.get(key);
+    return this.#entity(OWLObjectKind.ANNOTATION_PROPERTY, iri);
   }
-
   getOWLDatatype(iri) {
-    const normalizedIri = requireIri(iri, "iri");
-    const key = `${OWLObjectKind.DATATYPE}:${normalizedIri.value}`;
-    if (!this.#entities.has(key)) {
-      this.#entities.set(
-        key,
-        createStructuralUnary(OWLObjectKind.DATATYPE, "iri", normalizedIri),
-      );
-    }
-    return this.#entities.get(key);
+    return this.#entity(OWLObjectKind.DATATYPE, iri);
   }
-
   getOWLObjectProperty(iri) {
-    const normalizedIri = requireIri(iri, "iri");
-    const key = `${OWLObjectKind.OBJECT_PROPERTY}:${normalizedIri.value}`;
-    if (!this.#entities.has(key)) {
-      this.#entities.set(
-        key,
-        createStructuralUnary(
-          OWLObjectKind.OBJECT_PROPERTY,
-          "iri",
-          normalizedIri,
-        ),
-      );
-    }
-    return this.#entities.get(key);
+    return this.#entity(OWLObjectKind.OBJECT_PROPERTY, iri);
   }
-
   getOWLDataProperty(iri) {
-    const normalizedIri = requireIri(iri, "iri");
-    const key = `${OWLObjectKind.DATA_PROPERTY}:${normalizedIri.value}`;
-    if (!this.#entities.has(key)) {
-      this.#entities.set(
-        key,
-        createStructuralUnary(
-          OWLObjectKind.DATA_PROPERTY,
-          "iri",
-          normalizedIri,
-        ),
-      );
-    }
-    return this.#entities.get(key);
+    return this.#entity(OWLObjectKind.DATA_PROPERTY, iri);
   }
-
   getOWLNamedIndividual(iri) {
-    const normalizedIri = requireIri(iri, "iri");
-    const key = `${OWLObjectKind.NAMED_INDIVIDUAL}:${normalizedIri.value}`;
-    if (!this.#entities.has(key)) {
-      this.#entities.set(
-        key,
-        createStructuralUnary(
-          OWLObjectKind.NAMED_INDIVIDUAL,
-          "iri",
-          normalizedIri,
-        ),
-      );
-    }
-    return this.#entities.get(key);
+    return this.#entity(OWLObjectKind.NAMED_INDIVIDUAL, iri);
   }
 
   getOWLAnonymousIndividual(nodeID, documentScope = "") {
@@ -363,7 +325,7 @@ export class OWLDataFactory {
     if (typeof documentScope !== "string") {
       throw new TypeError("documentScope must be a string");
     }
-    return new OWLStructuralObject(
+    return createFactoryStructuralObject(
       OWLObjectKind.ANONYMOUS_INDIVIDUAL,
       { documentScope, nodeID },
       [documentScope, nodeID],
@@ -374,11 +336,11 @@ export class OWLDataFactory {
     const normalizedOntologyIri =
       ontologyIRI === undefined || ontologyIRI === null
         ? undefined
-        : requireIri(ontologyIRI, "ontologyIRI");
+        : this.#internIri(ontologyIRI, "ontologyIRI");
     const normalizedVersionIri =
       versionIRI === undefined || versionIRI === null
         ? undefined
-        : requireIri(versionIRI, "versionIRI");
+        : this.#internIri(versionIRI, "versionIRI");
     if (normalizedVersionIri && !normalizedOntologyIri) {
       throw new TypeError("versionIRI requires an ontologyIRI");
     }
@@ -386,8 +348,8 @@ export class OWLDataFactory {
   }
 
   getOWLImportsDeclaration(iri) {
-    const normalizedIri = requireIri(iri, "iri");
-    return new OWLStructuralObject(
+    const normalizedIri = this.#internIri(iri, "iri");
+    return createFactoryStructuralObject(
       OWLObjectKind.IMPORTS_DECLARATION,
       { iri: normalizedIri },
       [normalizedIri],
@@ -448,7 +410,17 @@ export class OWLDataFactory {
         );
       }
     }
-    return createStructuralLiteral(lexicalForm, language, datatype);
+    const validDatatype =
+      !isFactoryStructuralObject(datatype) ||
+      (datatype.kind === OWLObjectKind.DATATYPE &&
+        (language === "" ||
+          datatype.iri.value === RDF_NAMESPACE + "langString"));
+    return createStructuralLiteral(
+      lexicalForm,
+      language,
+      datatype,
+      validDatatype,
+    );
   }
 
   getOWLAnnotation(property, value, annotations = EMPTY_ANNOTATIONS) {
@@ -461,8 +433,11 @@ export class OWLDataFactory {
       ANNOTATION_PROPERTY_KINDS,
       "property",
     );
-    const normalizedValue = requireKind(value, ANNOTATION_VALUE_KINDS, "value");
-    return new OWLStructuralObject(
+    const normalizedValue =
+      value?.kind === OWLObjectKind.IRI
+        ? this.#internIri(value, "value")
+        : requireKind(value, ANNOTATION_VALUE_KINDS, "value");
+    return createFactoryStructuralObject(
       OWLObjectKind.ANNOTATION,
       {
         annotations: normalizedAnnotations,
@@ -479,7 +454,7 @@ export class OWLDataFactory {
       requireKind(subClass, CLASS_EXPRESSION_KINDS, "subClass"),
       requireKind(superClass, CLASS_EXPRESSION_KINDS, "superClass"),
     ];
-    return new OWLStructuralObject(
+    return createFactoryStructuralObject(
       OWLObjectKind.SUBCLASS_OF_AXIOM,
       {
         annotations: normalizedAnnotations,
@@ -641,7 +616,7 @@ export class OWLDataFactory {
       "properties",
     );
     const normalizedFiller = requireKind(filler, DATA_RANGE_KINDS, "filler");
-    return new OWLStructuralObject(
+    return createFactoryStructuralObject(
       OWLObjectKind.DATA_SOME_VALUES_FROM,
       { filler: normalizedFiller, properties: normalizedProperties },
       [normalizedProperties, normalizedFiller],
@@ -655,7 +630,7 @@ export class OWLDataFactory {
       "properties",
     );
     const normalizedFiller = requireKind(filler, DATA_RANGE_KINDS, "filler");
-    return new OWLStructuralObject(
+    return createFactoryStructuralObject(
       OWLObjectKind.DATA_ALL_VALUES_FROM,
       { filler: normalizedFiller, properties: normalizedProperties },
       [normalizedProperties, normalizedFiller],
@@ -758,7 +733,7 @@ export class OWLDataFactory {
   }
 
   getOWLFacetRestriction(facet, value) {
-    const normalizedFacet = requireIri(facet, "facet");
+    const normalizedFacet = this.#internIri(facet, "facet");
     const normalizedValue = requireKind(
       value,
       [OWLObjectKind.LITERAL],
@@ -1273,6 +1248,7 @@ export class OWLDataFactory {
       domain,
       [OWLObjectKind.IRI],
       annotations,
+      (value, name) => this.#internIri(value, name),
     );
   }
 
@@ -1286,6 +1262,7 @@ export class OWLDataFactory {
       range,
       [OWLObjectKind.IRI],
       annotations,
+      (value, name) => this.#internIri(value, name),
     );
   }
 
@@ -1300,8 +1277,16 @@ export class OWLDataFactory {
     annotations,
   ) {
     const normalizedProperty = requireKind(property, propertyKinds, "property");
-    const normalizedSubject = requireKind(subject, subjectKinds, "subject");
-    const normalizedValue = requireKind(value, valueKinds, "value");
+    const normalizedSubject =
+      subject?.kind === OWLObjectKind.IRI &&
+      subjectKinds.includes(OWLObjectKind.IRI)
+        ? this.#internIri(subject, "subject")
+        : requireKind(subject, subjectKinds, "subject");
+    const normalizedValue =
+      value?.kind === OWLObjectKind.IRI &&
+      valueKinds.includes(OWLObjectKind.IRI)
+        ? this.#internIri(value, "value")
+        : requireKind(value, valueKinds, "value");
     return createAnnotatedAxiom(
       kind,
       {

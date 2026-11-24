@@ -1,6 +1,17 @@
 {
   "forbidden": [
     {
+      "name": "collections-are-leaf-primitives",
+      "severity": "error",
+      "from": {
+        "path": "^internal/collections/",
+        "pathNot": "\\.test\\.js$"
+      },
+      "to": {
+        "pathNot": "^(?:internal/collections/|model/kinds\\.js$|internal/model/structuralFields\\.js$)"
+      }
+    },
+    {
       "name": "no-unresolvable-runtime",
       "severity": "error",
       "from": {},
