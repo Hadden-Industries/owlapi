@@ -146,9 +146,18 @@ Use the separate structural comparison to establish model equivalence.
 Select `--load-engine java` or `--load-engine js` to measure just one runtime.
 Use `--source-transport string` or `--source-transport stream` to exercise an explicit JavaScript source.
 `--materialize-axioms` observes the public axiom collection after the load checkpoint.
-`--load-engine js --allocation-profile` writes a separate V8 allocation profile for each diagnostic sample.
+`--load-engine js --allocation-profile` records two V8 allocation profiles per diagnostic sample.
+The `-load.heapprofile` sample captures the live ontology after the load checkpoint.
+The other profile comes from process exit.
 On Windows the load-only route requires the memory job and records the selected heap and commit budgets.
 Run `node --test util/owlapi-reference/comparison-job.windows.test.mjs` on Windows to exercise the actual process-tree cap with a bounded allocation.
+
+On Windows, run `node --test util/owlapi-reference/qualify-oversized-streams.mjs` to verify streaming input above the current V8 single-string limit.
+This opt-in transport test loads Functional Syntax, OWL/XML, RDF/XML and Turtle in sequential 512 MiB Jobs with a 160 MiB Node heap.
+Each document has two class declarations separated by 64 KiB ASCII chunks.
+The OWL/XML case also writes the same input to a temporary file, loads it through a manager using `NodeDocumentLoader`, and removes the file.
+Allow a little more than 512 MiB of free temporary disk space on the qualified runtime.
+
 A ratio requires equivalent untimed structural evidence on the same profile and input.
 The verifier checks the requested sample counts and calculates the summary from the retained observations.
 Imported loads qualify for ratios only after independent agreement on every model in the loaded closure.

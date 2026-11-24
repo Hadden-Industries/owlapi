@@ -286,6 +286,7 @@ async function sampleLoad(
   createManager,
   configuration,
   networkRequests,
+  directory,
 ) {
   const { caseId, performance: protocol } = request;
   const emit = (message) =>
@@ -376,6 +377,26 @@ async function sampleLoad(
       if (materialized.size !== witness.axioms)
         throw new Error("Materialized axiom set differs from the direct count");
     }
+    let allocationProfile;
+    if (protocol.allocationProfile) {
+      // The CLI's automatic exit profile can run after the model has been
+      // collected. Sample the already-active profiler while the result is live.
+      const { Session } = await import("node:inspector/promises");
+      const session = new Session();
+      session.connect();
+      try {
+        const { profile } = await session.post(
+          "HeapProfiler.getSamplingProfile",
+        );
+        allocationProfile = await publishComparisonJson(
+          directory,
+          protocol.sampleId + "-load.heapprofile",
+          profile,
+        );
+      } finally {
+        session.disconnect();
+      }
+    }
     emit({
       kind: "sample",
       status: "completed",
@@ -383,6 +404,7 @@ async function sampleLoad(
       axioms: ontology.getAxiomCount(),
       networkAttempts: networkRequests.length,
       ...(witness ? { witness, sourceTransport } : {}),
+      ...(allocationProfile ? { allocationProfile } : {}),
       ...(loadSequences ? { loadSequences } : {}),
     });
   } catch (error) {
@@ -687,6 +709,7 @@ async function observe(request, directory) {
       createManager,
       configuration,
       networkRequests,
+      directory,
     );
     return null;
   }

@@ -774,7 +774,11 @@ async function samplePublicLoads({
       mode,
       sampleId: name,
       ...(isolated
-        ? { loadOnly: true, materializeAxioms: isolated.materializeAxioms }
+        ? {
+            loadOnly: true,
+            materializeAxioms: isolated.materializeAxioms,
+            allocationProfile: isolated.allocationProfile,
+          }
         : {}),
     };
     try {
@@ -967,6 +971,13 @@ async function observeCase(
     if (protocol.allocationProfile) {
       for (const [i, sample] of samples.js.cold.entries()) {
         if (sample.status !== "completed") continue;
+        const live = sample.allocationProfile;
+        if (
+          live?.name !== `js-cold-${i}-load.heapprofile` ||
+          !(await verifyPinnedFile(join(directory, live.name), live))
+        )
+          throw new Error("Missing live allocation profile");
+        profiles.push(live);
         const name = `js-cold-${i}.heapprofile`;
         const bytes = await readFile(join(directory, name));
         profiles.push({
@@ -1395,7 +1406,9 @@ async function verifyComparison(entries, measurements, options) {
         });
         const expectedProfiles = expectedProtocol.allocationProfile
           ? raw.samples.js.cold.flatMap((s, i) =>
-              s.status === "completed" ? [`js-cold-${i}.heapprofile`] : [],
+              s.status === "completed"
+                ? [`js-cold-${i}-load.heapprofile`, `js-cold-${i}.heapprofile`]
+                : [],
             )
           : [];
         if (
@@ -1403,6 +1416,18 @@ async function verifyComparison(entries, measurements, options) {
           comparisonIdentity(expectedProfiles)
         )
           throw new Error("Allocation profile roster changed");
+        if (expectedProtocol.allocationProfile) {
+          const live = raw.samples.js.cold
+            .filter((sample) => sample.status === "completed")
+            .map((sample) => sample.allocationProfile);
+          if (
+            comparisonIdentity(live) !==
+            comparisonIdentity(raw.profiles.filter((_, i) => i % 2 === 0))
+          )
+            throw new Error(
+              "Live allocation profile differs from its worker receipt",
+            );
+        }
         for (const pin of raw.profiles)
           if (!(await verifyPinnedFile(join(caseDirectory, pin.name), pin)))
             throw new Error("Allocation profile changed");
