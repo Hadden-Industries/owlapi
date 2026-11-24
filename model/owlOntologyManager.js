@@ -1,5 +1,7 @@
 import { RDFXMLDocumentFormat } from "../formats/rdfXMLDocumentFormat.js";
 import { assertDocumentLoaderAuthorization } from "../internal/loading/documentLoaderAuthorization.js";
+import { awaitAbortableOperation } from "../internal/loading/awaitAbortableOperation.js";
+import { documentAcquisitionScope } from "../internal/loading/operationDeadline.js";
 import { copyDocumentFormatState } from "./owlDocumentFormat.js";
 import {
   MissingImportError,
@@ -457,19 +459,43 @@ const normalizeSource = (source, documentIRI) => {
 };
 
 async function loadAuthorizedDocument(loader, documentIRI, context) {
-  await assertDocumentLoaderAuthorization(loader, documentIRI, context);
-  const loaded = await loader.load(documentIRI, context);
-  const finalIRI = loaded?.getDocumentIRI?.();
-  if (finalIRI && finalIRI.value !== documentIRI.value)
-    await assertDocumentLoaderAuthorization(
-      loader,
-      finalIRI,
-      Object.freeze({
-        ...context,
-        requestedDocumentIRI: documentIRI,
-      }),
+  const scope = documentAcquisitionScope(context.config, [context.signal]);
+  const { signal } = scope;
+  // Existing import adapters receive the caller's original signal by identity.
+  const options =
+    context.purpose === "ontology-document"
+      ? Object.freeze({ ...context, signal })
+      : context;
+  try {
+    signal.throwIfAborted();
+    await awaitAbortableOperation(
+      assertDocumentLoaderAuthorization(loader, documentIRI, options),
+      signal,
     );
-  return loaded;
+    signal.throwIfAborted();
+    const loaded = await awaitAbortableOperation(
+      loader.load(documentIRI, options),
+      signal,
+    );
+    signal.throwIfAborted();
+    const finalIRI = loaded?.getDocumentIRI?.();
+    if (finalIRI && finalIRI.value !== documentIRI.value)
+      await awaitAbortableOperation(
+        assertDocumentLoaderAuthorization(
+          loader,
+          finalIRI,
+          Object.freeze({
+            ...options,
+            requestedDocumentIRI: documentIRI,
+          }),
+        ),
+        signal,
+      );
+    signal.throwIfAborted();
+    return loaded;
+  } finally {
+    scope.close();
+  }
 }
 
 const isHttpIRI = (iri) => {
@@ -941,6 +967,7 @@ export class OWLOntologyManager {
         normalizedConfiguration,
         session,
         0,
+        documentIRI,
       );
       return Object.freeze({
         ontology,
@@ -969,6 +996,7 @@ export class OWLOntologyManager {
         normalizedConfiguration,
         session,
         0,
+        documentIRI,
       );
       // OWL 2 canonical parsing CP 3 runs only after CP 2 has discovered the
       // complete import graph. Keep all provisional objects session-private.
@@ -1231,13 +1259,32 @@ export class OWLOntologyManager {
     });
   }
 
-  async #loadDocument(source, configuration, session, depth) {
+  #rememberExternalDocument(ontology, requested, final) {
+    if (requested && !this.#externalDocumentIRIsByOntology.has(ontology)) {
+      this.#externalDocumentIRIsByOntology.set(
+        ontology,
+        Object.freeze(
+          final && final.value !== requested.value
+            ? [requested, final]
+            : [requested],
+        ),
+      );
+    }
+  }
+
+  async #loadDocument(source, configuration, session, depth, requested) {
     this.#throwIfAborted(configuration);
     if (source instanceof StringDocumentSource)
       this.#checkTextInputSize(source.getText(), configuration);
 
     if (!session.managedOntologyIndexSession)
-      return this.#loadPublishedDocument(source, configuration, session, depth);
+      return this.#loadPublishedDocument(
+        source,
+        configuration,
+        session,
+        depth,
+        requested,
+      );
 
     const sourceDocumentIRI = source.getDocumentIRI?.();
     const existingOntology =
@@ -1247,6 +1294,11 @@ export class OWLOntologyManager {
           )
         : undefined;
     if (existingOntology) {
+      this.#rememberExternalDocument(
+        existingOntology,
+        requested,
+        sourceDocumentIRI,
+      );
       return existingOntology;
     }
 
@@ -1258,6 +1310,11 @@ export class OWLOntologyManager {
     session.managedOntologyIndexSession.stageOntology(committed.ontology, {
       documentIRI: sourceDocumentIRI,
     });
+    this.#rememberExternalDocument(
+      committed.ontology,
+      requested,
+      sourceDocumentIRI,
+    );
 
     const entry = {
       context: committed.context,
@@ -1442,16 +1499,7 @@ export class OWLOntologyManager {
       configuration,
       session,
       depth + 1,
-    );
-    this.#externalDocumentIRIsByOntology.set(
-      importedOntology,
-      Object.freeze([
-        documentIRI,
-        ...(importedSource.getDocumentIRI?.()?.value !== documentIRI.value &&
-        importedSource.getDocumentIRI?.()
-          ? [importedSource.getDocumentIRI()]
-          : []),
-      ]),
+      documentIRI,
     );
     this.#recordLoadedImport(
       session,
@@ -1522,12 +1570,21 @@ export class OWLOntologyManager {
   /** Java exposes the document while its parser resolves imports. A failed
    * document is withdrawn, without withdrawing imports that completed earlier.
    */
-  async #loadPublishedDocument(source, configuration, session, depth) {
+  async #loadPublishedDocument(
+    source,
+    configuration,
+    session,
+    depth,
+    requested,
+  ) {
     const documentIRI = source.getDocumentIRI?.();
     const existing =
       documentIRI &&
       this.#managedOntologyIndex.getOntologyByDocumentIRI(documentIRI);
-    if (existing && depth > 0) return existing;
+    if (existing && depth > 0) {
+      this.#rememberExternalDocument(existing, requested, documentIRI);
+      return existing;
+    }
     let publication;
     const committed = await this.#parseDocument(source, configuration, () => {
       const managedOntology = createManagerOwnedOWLOntology({
@@ -1535,6 +1592,7 @@ export class OWLOntologyManager {
       });
       const { ontology, ontologyState } = managedOntology;
       this.#managedOntologyIndex.registerOntology(ontology, { documentIRI });
+      this.#rememberExternalDocument(ontology, requested, documentIRI);
       this.#managedOntologyStates.set(ontology, ontologyState);
       bindManagedOntology(
         ontology,

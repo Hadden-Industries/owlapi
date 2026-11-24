@@ -36,6 +36,163 @@ const captureOntologyMutationSnapshot = (manager, ontology, ontologyIDs) =>
   });
 
 describe("OWLOntologyManager", () => {
+  it.each(["normative-v1", "java-owlapi-5.5.1"])(
+    "%s rechecks the requested and final document grants when a loaded root becomes an import",
+    async (behaviorProfileId) => {
+      const original = IRI.create("urn:reader:requested");
+      const final = IRI.create("urn:reader:resolved");
+      const checks = [];
+      let grant = true;
+      let loads = 0;
+      const manager = new OWLOntologyManager({
+        behaviorProfileId,
+        documentLoader: {
+          authorize(iri, context) {
+            checks.push([context.purpose, iri.value]);
+            return iri.value !== final.value || grant;
+          },
+          load() {
+            loads++;
+            return new StringDocumentSource("Ontology(<urn:reader:model>)", {
+              documentIRI: final,
+              format: "functional",
+            });
+          },
+        },
+      });
+      const root = await manager.loadOntologyFromOntologyDocument(original);
+      checks.length = 0;
+      grant = false;
+      await expect(
+        manager.loadOntologyFromOntologyDocument(
+          new StringDocumentSource(
+            "Ontology(<urn:reader:consuming> Import(<urn:reader:model>))",
+            { format: "functional" },
+          ),
+        ),
+      ).rejects.toMatchObject({ code: "SECURITY_POLICY_VIOLATION" });
+      expect(checks).toEqual([
+        ["ontology-import", original.value],
+        ["ontology-import", final.value],
+      ]);
+      expect(loads).toBe(1);
+      expect(manager.getOntology(root.getOntologyID())).toBe(root);
+    },
+  );
+
+  it.each(["authorize-requested", "acquire", "authorize-final"])(
+    "cancels a pending %s during root acquisition and ignores its late resolution",
+    async (step) => {
+      const controller = new AbortController();
+      let start, finish;
+      const started = new Promise((resolve) => {
+        start = resolve;
+      });
+      const pending = new Promise((resolve) => {
+        finish = resolve;
+      });
+      const document = new StringDocumentSource(
+        "Ontology(<urn:controlled:root>)",
+        { documentIRI: "urn:controlled:final", format: "functional" },
+      );
+      const calls = [];
+      const manager = new OWLOntologyManager({
+        documentLoader: {
+          authorize(iri) {
+            const phase = iri.value.endsWith(":final")
+              ? "authorize-final"
+              : "authorize-requested";
+            calls.push(phase);
+            if (step === phase) {
+              start();
+              return pending;
+            }
+            return true;
+          },
+          load() {
+            calls.push("acquire");
+            if (step === "acquire") {
+              start();
+              return pending;
+            }
+            return document;
+          },
+        },
+      });
+      const outcome = manager
+        .loadOntologyFromOntologyDocument(
+          IRI.create("urn:controlled:requested"),
+          { signal: controller.signal },
+        )
+        .catch((error) => error);
+      await started;
+      const reason = new Error("stop reading this document");
+      controller.abort(reason);
+      let timer;
+      try {
+        const observed = await Promise.race([
+          outcome,
+          new Promise((resolve) => {
+            timer = setTimeout(() => resolve("pending"), 100);
+          }),
+        ]);
+        expect(observed).toBe(reason);
+      } finally {
+        clearTimeout(timer);
+        finish(step === "acquire" ? document : true);
+        await outcome;
+      }
+      expect(calls).toEqual(
+        ["authorize-requested", "acquire", "authorize-final"].slice(
+          0,
+          ["authorize-requested", "acquire", "authorize-final"].indexOf(step) +
+            1,
+        ),
+      );
+    },
+  );
+
+  it("exposes a deadline signal to a cooperative root loader", async () => {
+    let seen;
+    let finish;
+    const manager = new OWLOntologyManager({
+      documentLoader: {
+        load(_iri, context) {
+          seen = context.signal;
+          return new Promise((resolve) => {
+            finish = resolve;
+            seen?.addEventListener("abort", () => resolve(null), {
+              once: true,
+            });
+          });
+        },
+      },
+    });
+    const outcome = manager
+      .loadOntologyFromOntologyDocument(IRI.create("urn:deadline"), {
+        timeoutMs: 20,
+      })
+      .catch((error) => error);
+    let timer;
+    try {
+      const result = await Promise.race([
+        outcome,
+        new Promise((resolve) => {
+          timer = setTimeout(() => resolve("pending"), 150);
+        }),
+      ]);
+      expect(result).toMatchObject({
+        code: "RESOURCE_LIMIT_EXCEEDED",
+        resource: "deadline",
+        limit: 20,
+      });
+      expect(seen.aborted).toBe(true);
+    } finally {
+      clearTimeout(timer);
+      finish?.(null);
+      await outcome;
+    }
+  });
   it("rejects malformed collaborator seams at construction", () => {
     expect(() => new OWLOntologyManager({ dataFactory: {} })).toThrow(
       /dataFactory must implement getOWLOntologyID/,

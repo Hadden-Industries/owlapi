@@ -85,12 +85,10 @@ async function* windows(source, configuration, lexer) {
   if (state.pending.length) yield state.pending.join("");
 }
 
-/** Buffer only the next production for the synchronous recursive-descent grammar. */
+/** Expose immediate tokens and refill only when the active grammar asks for one. */
 export class FunctionalStreamLexer {
   #lexer;
   #input;
-  #tokens = [];
-  #position = 0;
   #done = false;
 
   constructor(source, configuration) {
@@ -98,45 +96,28 @@ export class FunctionalStreamLexer {
     this.#input = windows(source, configuration, this.#lexer);
   }
 
-  async readAhead(count) {
-    if (this.#position) {
-      this.#tokens = this.#tokens.slice(this.#position);
-      this.#position = 0;
-    }
-    while (this.#tokens.length < count && !this.#done) {
-      let token = this.#lexer.consume();
-      while (token.type === "EOF") {
-        const next = await this.#input.next();
-        if (next.done) {
-          this.#done = true;
-          break;
-        }
-        this.#lexer.nextWindow(next.value);
-        token = this.#lexer.consume();
-      }
-      this.#tokens.push(token);
-    }
+  currentToken() {
+    return this.#lexer.peek();
   }
-
-  async readForm() {
-    await this.readAhead(2);
-    if (this.#tokens[1]?.type !== "(") return;
-    let depth = 1;
-    for (let i = 2; depth; i++) {
-      if (i >= this.#tokens.length) await this.readAhead(i + 1);
-      const type = this.#tokens[i]?.type;
-      if (!type || type === "EOF") break;
-      if (type === "(") depth++;
-      else if (type === ")") depth--;
-    }
-  }
-
   peek() {
-    return this.#tokens[this.#position] ?? this.#tokens.at(-1);
+    const token = this.currentToken();
+    return token.type === "EOF" && !this.#done ? undefined : token;
   }
   consume() {
-    const token = this.peek();
-    this.#position++;
+    if (this.peek()) return this.#lexer.consume();
+    return undefined;
+  }
+  async consumeNext() {
+    await this.refill();
+    return this.#lexer.consume();
+  }
+  async refill() {
+    let token;
+    while (!(token = this.peek())) {
+      const next = await this.#input.next();
+      this.#done = next.done;
+      if (!next.done) this.#lexer.nextWindow(next.value);
+    }
     return token;
   }
   checkExecutionBudget() {

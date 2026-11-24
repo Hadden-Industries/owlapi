@@ -18,7 +18,7 @@ import { IRI } from "../../model/structural.js";
 import { OWLOntologyLoaderConfiguration } from "../../model/owlOntologyLoaderConfiguration.js";
 import { assertDocumentLoaderAuthorization } from "../../internal/loading/documentLoaderAuthorization.js";
 import { awaitAbortableOperation } from "../../internal/loading/awaitAbortableOperation.js";
-import { scheduleOperationDeadline } from "../../internal/loading/operationDeadline.js";
+import { documentAcquisitionScope } from "../../internal/loading/operationDeadline.js";
 import { OntologyBehaviorContext } from "../../internal/behavior/ontologyBehaviorContext.js";
 import {
   jsonLdAlternateDocument,
@@ -29,44 +29,14 @@ const defaultAcceptHeader =
   "application/rdf+xml, application/xml; q=0.7, text/xml; q=0.6, text/plain; q=0.1, */*; q=0.09";
 
 const inMemoryBytes = 65_536;
+const strongEntityTag = /^"[\x21\x23-\x7e\x80-\xff]*"$/u;
 const ontologyMediaTypes = new Set(
   Object.values(OWLDocumentFormats).flatMap((format) => format.mediaTypes),
 );
 
-/** Adapt foreign/profile signals to the native Node transport once per acquisition. */
-function acquisitionScope(config, signals) {
-  const controller = new AbortController();
-  const listeners = new Map();
-  for (const signal of new Set(signals.filter(Boolean))) {
-    const abort = () => controller.abort(signal.reason);
-    if (signal.aborted) abort();
-    else {
-      signal.addEventListener("abort", abort, { once: true });
-      listeners.set(signal, abort);
-    }
-  }
-  const cancelDeadline = scheduleOperationDeadline(config.timeoutMs, () =>
-    controller.abort(
-      new ResourceLimitError("The document acquisition deadline was exceeded", {
-        resource: "deadline",
-        limit: config.timeoutMs,
-      }),
-    ),
-  );
-  return {
-    signal: controller.signal,
-    close() {
-      cancelDeadline();
-      controller.abort();
-      for (const [signal, listener] of listeners)
-        signal.removeEventListener?.("abort", listener);
-    },
-  };
-}
-
 function replayableDocument(metadata, { config, ownerSignal }, open) {
   return new StreamDocumentSource(async function* (readerSignal) {
-    const scope = acquisitionScope(config, [ownerSignal, readerSignal]);
+    const scope = documentAcquisitionScope(config, [ownerSignal, readerSignal]);
     let iterator;
     let done = false;
     try {
@@ -90,7 +60,7 @@ function replayableDocument(metadata, { config, ownerSignal }, open) {
       throw cause;
     } finally {
       const aborted = scope.signal.aborted;
-      scope.close();
+      scope.close(true);
       if (iterator && !done) {
         const closing = iterator.return().catch(() => {});
         if (!aborted) await closing;
@@ -200,7 +170,7 @@ export class NodeDocumentLoader {
       throw new RangeError(
         "connection timeout must not be negative at resource acquisition",
       );
-    const scope = acquisitionScope(config, [signal]);
+    const scope = documentAcquisitionScope(config, [signal]);
     const effectiveSignal = scope.signal;
     try {
       effectiveSignal.throwIfAborted();
@@ -219,7 +189,7 @@ export class NodeDocumentLoader {
       if (effectiveSignal.aborted) throw effectiveSignal.reason;
       throw error;
     } finally {
-      scope.close();
+      scope.close(true);
     }
   }
 
@@ -421,6 +391,7 @@ export class NodeDocumentLoader {
         const length = Number(response.headers["content-length"]);
         if (
           purpose !== "jsonld-context" &&
+          strongEntityTag.test(response.headers.etag ?? "") &&
           (length > inMemoryBytes ||
             (!Number.isFinite(length) &&
               ontologyMediaTypes.has(
@@ -477,15 +448,7 @@ export class NodeDocumentLoader {
 
   async *#readHttpStream(url, context, envelope, representation) {
     const { etag, modified } = representation;
-    const headers =
-      etag && !etag.startsWith("W/")
-        ? Object.freeze({ ...context.headers, "If-Match": etag })
-        : modified
-          ? Object.freeze({
-              ...context.headers,
-              "If-Unmodified-Since": modified,
-            })
-          : context.headers;
+    const headers = Object.freeze({ ...context.headers, "If-Match": etag });
     const response = await this.#request(url, { ...context, headers });
     try {
       if (

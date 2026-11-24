@@ -24,6 +24,8 @@ import { StreamDocumentSource } from "../../../io/streamDocumentSource.js";
 import { STANDARD_PARSER_PREFIXES as STANDARD_PREFIXES } from "../../rdfjs/vocabulary.js";
 
 const IRI_TOKEN_TYPES = new Set(["FULL_IRI", "ABBREVIATED_IRI"]);
+const READ_TOKEN = Symbol("Functional Syntax consume");
+const PEEK_TOKEN = Symbol("Functional Syntax lookahead");
 const ANNOTATION_AXIOM_KEYWORDS = new Set([
   "AnnotationAssertion",
   "SubAnnotationPropertyOf",
@@ -74,16 +76,24 @@ export class OWLFunctionalSyntaxOWLParser {
       this.#stream ??
       new FunctionalSyntaxLexer(source.getText(), configuration);
     this.#checkpoint = new CooperativeCheckpoint(monotonicNow());
+    const grammar = this.#parseDocument(configuration);
     try {
-      return await this.#parseDocument(configuration);
+      let next = grammar.next();
+      while (!next.done) {
+        let pending = next.value;
+        if (pending === READ_TOKEN) pending = this.#stream.consumeNext();
+        else if (pending === PEEK_TOKEN) pending = this.#stream.refill();
+        next = grammar.next(await pending);
+      }
+      return next.value;
     } finally {
+      grammar.return();
       if (this.#stream) await this.#stream.close();
     }
   }
 
-  async #parseDocument(configuration) {
-    if (this.#stream) await this.#stream.readAhead(1);
-    const first = this.#lexer.peek();
+  *#parseDocument(configuration) {
+    const first = this.#lexer.peek() ?? (yield PEEK_TOKEN);
     if (
       first.type !== "WORD" ||
       (first.value !== "Prefix" && first.value !== "Ontology")
@@ -94,29 +104,32 @@ export class OWLFunctionalSyntaxOWLParser {
       );
     }
 
-    while (this.#isWord("Prefix")) {
-      if (this.#stream) await this.#stream.readForm();
-      this.#parsePrefixDeclaration();
+    while (this.#isWord("Prefix", this.#lexer.peek() ?? (yield PEEK_TOKEN))) {
+      yield* this.#parsePrefixDeclaration();
       const yieldRequest = this.#cooperate();
       if (yieldRequest) {
-        await yieldRequest;
+        yield yieldRequest;
       }
-      if (this.#stream) await this.#stream.readAhead(1);
     }
-    await this.#parseOntology();
-    if (this.#stream) await this.#stream.readAhead(1);
-    this.#expectType("EOF");
+    yield* this.#parseOntology();
+    this.#expectType("EOF", this.#lexer.consume() ?? (yield READ_TOKEN));
     this.#transaction.setDocumentFormat(OWLDocumentFormats.FUNCTIONAL);
     return OWLDocumentFormats.FUNCTIONAL;
   }
 
-  #parsePrefixDeclaration() {
-    this.#expectWord("Prefix");
-    this.#expectType("(");
-    const prefix = this.#expectType("PREFIX_NAME");
-    this.#expectType("=");
-    const iri = this.#expectType("FULL_IRI");
-    this.#expectType(")");
+  *#parsePrefixDeclaration() {
+    this.#expectWord("Prefix", this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const prefix = this.#expectType(
+      "PREFIX_NAME",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("=", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const iri = this.#expectType(
+      "FULL_IRI",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     this.#requireAbsoluteIri(iri.value, iri);
 
     if (Object.hasOwn(STANDARD_PREFIXES, prefix.value)) {
@@ -150,44 +163,42 @@ export class OWLFunctionalSyntaxOWLParser {
     this.#prefixes.set(prefix.value, iri.value);
   }
 
-  async #parseOntology() {
-    if (this.#stream) await this.#stream.readAhead(5);
-    this.#expectWord("Ontology");
-    this.#expectType("(");
+  *#parseOntology() {
+    this.#expectWord("Ontology", this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
 
     let ontologyIri;
     let versionIri;
-    if (this.#isIri()) {
-      ontologyIri = this.#parseIri();
-      if (this.#isIri()) {
-        versionIri = this.#parseIri();
+    if (this.#isIri(this.#lexer.peek() ?? (yield PEEK_TOKEN))) {
+      ontologyIri = this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN));
+      if (this.#isIri(this.#lexer.peek() ?? (yield PEEK_TOKEN))) {
+        versionIri = this.#parseIri(
+          this.#lexer.consume() ?? (yield READ_TOKEN),
+        );
       }
     }
     this.#transaction.setOntologyID(
       this.#dataFactory.getOWLOntologyID(ontologyIri, versionIri),
     );
 
-    while (this.#isWord("Import")) {
-      if (this.#stream) await this.#stream.readForm();
-      await this.#parseImport();
+    while (this.#isWord("Import", this.#lexer.peek() ?? (yield PEEK_TOKEN))) {
+      yield yield* this.#parseImport();
       const yieldRequest = this.#cooperate();
       if (yieldRequest) {
-        await yieldRequest;
+        yield yieldRequest;
       }
-      if (this.#stream) await this.#stream.readAhead(1);
     }
-    while (this.#isWord("Annotation")) {
-      if (this.#stream) await this.#stream.readForm();
-      this.#transaction.addAnnotation(this.#parseAnnotation(1));
+    while (
+      this.#isWord("Annotation", this.#lexer.peek() ?? (yield PEEK_TOKEN))
+    ) {
+      this.#transaction.addAnnotation(yield* this.#parseAnnotation(1));
       const yieldRequest = this.#cooperate();
       if (yieldRequest) {
-        await yieldRequest;
+        yield yieldRequest;
       }
-      if (this.#stream) await this.#stream.readAhead(1);
     }
-    while (this.#lexer.peek().type !== ")") {
-      if (this.#stream) await this.#stream.readForm();
-      const axiom = this.#parseAxiom();
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
+      const axiom = yield* this.#parseAxiom();
       if (
         this.#configuration.loadAnnotationAxioms ||
         !ANNOTATION_AXIOM_KEYWORDS.has(axiom.functionalKeyword)
@@ -196,25 +207,24 @@ export class OWLFunctionalSyntaxOWLParser {
       }
       const yieldRequest = this.#cooperate();
       if (yieldRequest) {
-        await yieldRequest;
+        yield yieldRequest;
       }
-      if (this.#stream) await this.#stream.readAhead(1);
     }
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
   }
 
-  #parseImport() {
-    this.#expectWord("Import");
-    this.#expectType("(");
-    const iri = this.#parseIri();
-    this.#expectType(")");
+  *#parseImport() {
+    this.#expectWord("Import", this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const iri = this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return this.#transaction.addImportsDeclaration(
       this.#dataFactory.getOWLImportsDeclaration(iri),
     );
   }
 
-  #parseAxiom() {
-    const keyword = this.#lexer.peek();
+  *#parseAxiom() {
+    const keyword = this.#lexer.peek() ?? (yield PEEK_TOKEN);
     if (keyword.type !== "WORD") {
       this.#syntax("Expected an OWL axiom", keyword, {
         found: keyword.value || keyword.type,
@@ -231,217 +241,217 @@ export class OWLFunctionalSyntaxOWLParser {
     }
     switch (keyword.value) {
       case "Declaration":
-        return this.#parseDeclaration();
+        return yield* this.#parseDeclaration();
       case "SubClassOf":
-        return this.#parseSubClassOf();
+        return yield* this.#parseSubClassOf();
       case "EquivalentClasses":
-        return this.#parseNaryAxiom(
+        return yield* this.#parseNaryAxiom(
           keyword.value,
           "getOWLEquivalentClassesAxiom",
           () => this.#parseClassExpression(0),
         );
       case "DisjointClasses":
-        return this.#parseNaryAxiom(
+        return yield* this.#parseNaryAxiom(
           keyword.value,
           "getOWLDisjointClassesAxiom",
           () => this.#parseClassExpression(0),
         );
       case "DisjointUnion":
-        return this.#parseDisjointUnion();
+        return yield* this.#parseDisjointUnion();
       case "SubObjectPropertyOf":
-        return this.#parseSubObjectPropertyOf();
+        return yield* this.#parseSubObjectPropertyOf();
       case "EquivalentObjectProperties":
-        return this.#parseNaryAxiom(
+        return yield* this.#parseNaryAxiom(
           keyword.value,
           "getOWLEquivalentObjectPropertiesAxiom",
           () => this.#parseObjectPropertyExpression(),
         );
       case "DisjointObjectProperties":
-        return this.#parseNaryAxiom(
+        return yield* this.#parseNaryAxiom(
           keyword.value,
           "getOWLDisjointObjectPropertiesAxiom",
           () => this.#parseObjectPropertyExpression(),
         );
       case "InverseObjectProperties":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLInverseObjectPropertiesAxiom",
           () => this.#parseObjectPropertyExpression(),
           () => this.#parseObjectPropertyExpression(),
         );
       case "ObjectPropertyDomain":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLObjectPropertyDomainAxiom",
           () => this.#parseObjectPropertyExpression(),
           () => this.#parseClassExpression(0),
         );
       case "ObjectPropertyRange":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLObjectPropertyRangeAxiom",
           () => this.#parseObjectPropertyExpression(),
           () => this.#parseClassExpression(0),
         );
       case "FunctionalObjectProperty":
-        return this.#parseUnaryAxiom(
+        return yield* this.#parseUnaryAxiom(
           keyword.value,
           "getOWLFunctionalObjectPropertyAxiom",
           () => this.#parseObjectPropertyExpression(),
         );
       case "InverseFunctionalObjectProperty":
-        return this.#parseUnaryAxiom(
+        return yield* this.#parseUnaryAxiom(
           keyword.value,
           "getOWLInverseFunctionalObjectPropertyAxiom",
           () => this.#parseObjectPropertyExpression(),
         );
       case "ReflexiveObjectProperty":
-        return this.#parseUnaryAxiom(
+        return yield* this.#parseUnaryAxiom(
           keyword.value,
           "getOWLReflexiveObjectPropertyAxiom",
           () => this.#parseObjectPropertyExpression(),
         );
       case "IrreflexiveObjectProperty":
-        return this.#parseUnaryAxiom(
+        return yield* this.#parseUnaryAxiom(
           keyword.value,
           "getOWLIrreflexiveObjectPropertyAxiom",
           () => this.#parseObjectPropertyExpression(),
         );
       case "SymmetricObjectProperty":
-        return this.#parseUnaryAxiom(
+        return yield* this.#parseUnaryAxiom(
           keyword.value,
           "getOWLSymmetricObjectPropertyAxiom",
           () => this.#parseObjectPropertyExpression(),
         );
       case "AsymmetricObjectProperty":
-        return this.#parseUnaryAxiom(
+        return yield* this.#parseUnaryAxiom(
           keyword.value,
           "getOWLAsymmetricObjectPropertyAxiom",
           () => this.#parseObjectPropertyExpression(),
         );
       case "TransitiveObjectProperty":
-        return this.#parseUnaryAxiom(
+        return yield* this.#parseUnaryAxiom(
           keyword.value,
           "getOWLTransitiveObjectPropertyAxiom",
           () => this.#parseObjectPropertyExpression(),
         );
       case "SubDataPropertyOf":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLSubDataPropertyOfAxiom",
           () => this.#parseDataPropertyExpression(),
           () => this.#parseDataPropertyExpression(),
         );
       case "EquivalentDataProperties":
-        return this.#parseNaryAxiom(
+        return yield* this.#parseNaryAxiom(
           keyword.value,
           "getOWLEquivalentDataPropertiesAxiom",
           () => this.#parseDataPropertyExpression(),
         );
       case "DisjointDataProperties":
-        return this.#parseNaryAxiom(
+        return yield* this.#parseNaryAxiom(
           keyword.value,
           "getOWLDisjointDataPropertiesAxiom",
           () => this.#parseDataPropertyExpression(),
         );
       case "DataPropertyDomain":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLDataPropertyDomainAxiom",
           () => this.#parseDataPropertyExpression(),
           () => this.#parseClassExpression(0),
         );
       case "DataPropertyRange":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLDataPropertyRangeAxiom",
           () => this.#parseDataPropertyExpression(),
           () => this.#parseDataRange(0),
         );
       case "FunctionalDataProperty":
-        return this.#parseUnaryAxiom(
+        return yield* this.#parseUnaryAxiom(
           keyword.value,
           "getOWLFunctionalDataPropertyAxiom",
           () => this.#parseDataPropertyExpression(),
         );
       case "DatatypeDefinition":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLDatatypeDefinitionAxiom",
-          () => this.#dataFactory.getOWLDatatype(this.#parseIri()),
+          () => this.#parseDatatype(),
           () => this.#parseDataRange(0),
         );
       case "HasKey":
-        return this.#parseHasKey();
+        return yield* this.#parseHasKey();
       case "SameIndividual":
-        return this.#parseNaryAxiom(
+        return yield* this.#parseNaryAxiom(
           keyword.value,
           "getOWLSameIndividualAxiom",
           () => this.#parseIndividual(),
         );
       case "DifferentIndividuals":
-        return this.#parseNaryAxiom(
+        return yield* this.#parseNaryAxiom(
           keyword.value,
           "getOWLDifferentIndividualsAxiom",
           () => this.#parseIndividual(),
         );
       case "ClassAssertion":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLClassAssertionAxiom",
           () => this.#parseClassExpression(0),
           () => this.#parseIndividual(),
         );
       case "ObjectPropertyAssertion":
-        return this.#parsePropertyAssertion(
+        return yield* this.#parsePropertyAssertion(
           keyword.value,
           "getOWLObjectPropertyAssertionAxiom",
           () => this.#parseObjectPropertyExpression(),
           () => this.#parseIndividual(),
         );
       case "NegativeObjectPropertyAssertion":
-        return this.#parsePropertyAssertion(
+        return yield* this.#parsePropertyAssertion(
           keyword.value,
           "getOWLNegativeObjectPropertyAssertionAxiom",
           () => this.#parseObjectPropertyExpression(),
           () => this.#parseIndividual(),
         );
       case "DataPropertyAssertion":
-        return this.#parsePropertyAssertion(
+        return yield* this.#parsePropertyAssertion(
           keyword.value,
           "getOWLDataPropertyAssertionAxiom",
           () => this.#parseDataPropertyExpression(),
           () => this.#parseLiteral(),
         );
       case "NegativeDataPropertyAssertion":
-        return this.#parsePropertyAssertion(
+        return yield* this.#parsePropertyAssertion(
           keyword.value,
           "getOWLNegativeDataPropertyAssertionAxiom",
           () => this.#parseDataPropertyExpression(),
           () => this.#parseLiteral(),
         );
       case "AnnotationAssertion":
-        return this.#parseAnnotationAssertion();
+        return yield* this.#parseAnnotationAssertion();
       case "SubAnnotationPropertyOf":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLSubAnnotationPropertyOfAxiom",
           () => this.#parseAnnotationProperty(),
           () => this.#parseAnnotationProperty(),
         );
       case "AnnotationPropertyDomain":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLAnnotationPropertyDomainAxiom",
           () => this.#parseAnnotationProperty(),
-          () => this.#parseIri(),
+          () => this.#readIri(),
         );
       case "AnnotationPropertyRange":
-        return this.#parseBinaryAxiom(
+        return yield* this.#parseBinaryAxiom(
           keyword.value,
           "getOWLAnnotationPropertyRangeAxiom",
           () => this.#parseAnnotationProperty(),
-          () => this.#parseIri(),
+          () => this.#readIri(),
         );
       default:
         this.#syntax(
@@ -452,25 +462,28 @@ export class OWLFunctionalSyntaxOWLParser {
     }
   }
 
-  #parseDeclaration() {
-    this.#expectWord("Declaration");
-    this.#expectType("(");
-    const annotations = this.#parseAxiomAnnotations();
-    const entity = this.#parseEntity();
-    this.#expectType(")");
+  *#parseDeclaration() {
+    this.#expectWord(
+      "Declaration",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
+    const entity = yield* this.#parseEntity();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return {
       functionalKeyword: "Declaration",
       value: this.#dataFactory.getOWLDeclarationAxiom(entity, annotations),
     };
   }
 
-  #parseSubClassOf() {
-    this.#expectWord("SubClassOf");
-    this.#expectType("(");
-    const annotations = this.#parseAxiomAnnotations();
-    const subClass = this.#parseClassExpression(0);
-    const superClass = this.#parseClassExpression(0);
-    this.#expectType(")");
+  *#parseSubClassOf() {
+    this.#expectWord("SubClassOf", this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
+    const subClass = yield* this.#parseClassExpression(0);
+    const superClass = yield* this.#parseClassExpression(0);
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return {
       functionalKeyword: "SubClassOf",
       value: this.#dataFactory.getOWLSubClassOfAxiom(
@@ -481,15 +494,18 @@ export class OWLFunctionalSyntaxOWLParser {
     };
   }
 
-  #parseNaryAxiom(keyword, constructor, parseOperand) {
-    const start = this.#expectWord(keyword);
-    this.#expectType("(");
-    const annotations = this.#parseAxiomAnnotations();
+  *#parseNaryAxiom(keyword, constructor, parseOperand) {
+    const start = this.#expectWord(
+      keyword,
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
     const operands = [];
-    while (this.#lexer.peek().type !== ")") {
-      operands.push(parseOperand());
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
+      operands.push(yield* parseOperand());
     }
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     this.#requireMinimum(operands, 2, keyword, start);
     return {
       functionalKeyword: keyword,
@@ -497,41 +513,46 @@ export class OWLFunctionalSyntaxOWLParser {
     };
   }
 
-  #parseUnaryAxiom(keyword, constructor, parseOperand) {
-    this.#expectWord(keyword);
-    this.#expectType("(");
-    const annotations = this.#parseAxiomAnnotations();
-    const operand = parseOperand();
-    this.#expectType(")");
+  *#parseUnaryAxiom(keyword, constructor, parseOperand) {
+    this.#expectWord(keyword, this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
+    const operand = yield* parseOperand();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return {
       functionalKeyword: keyword,
       value: this.#dataFactory[constructor](operand, annotations),
     };
   }
 
-  #parseBinaryAxiom(keyword, constructor, parseFirst, parseSecond) {
-    this.#expectWord(keyword);
-    this.#expectType("(");
-    const annotations = this.#parseAxiomAnnotations();
-    const first = parseFirst();
-    const second = parseSecond();
-    this.#expectType(")");
+  *#parseBinaryAxiom(keyword, constructor, parseFirst, parseSecond) {
+    this.#expectWord(keyword, this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
+    const first = yield* parseFirst();
+    const second = yield* parseSecond();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return {
       functionalKeyword: keyword,
       value: this.#dataFactory[constructor](first, second, annotations),
     };
   }
 
-  #parseDisjointUnion() {
-    const start = this.#expectWord("DisjointUnion");
-    this.#expectType("(");
-    const annotations = this.#parseAxiomAnnotations();
-    const owlClass = this.#dataFactory.getOWLClass(this.#parseIri());
+  *#parseDisjointUnion() {
+    const start = this.#expectWord(
+      "DisjointUnion",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
+    const owlClass = this.#dataFactory.getOWLClass(
+      this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)),
+    );
     const classExpressions = [];
-    while (this.#lexer.peek().type !== ")") {
-      classExpressions.push(this.#parseClassExpression(0));
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
+      classExpressions.push(yield* this.#parseClassExpression(0));
     }
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     this.#requireMinimum(classExpressions, 2, "DisjointUnion", start);
     return {
       functionalKeyword: "DisjointUnion",
@@ -543,14 +564,22 @@ export class OWLFunctionalSyntaxOWLParser {
     };
   }
 
-  #parseSubObjectPropertyOf() {
-    this.#expectWord("SubObjectPropertyOf");
-    this.#expectType("(");
-    const annotations = this.#parseAxiomAnnotations();
-    if (this.#isWord("ObjectPropertyChain")) {
-      const chain = this.#parseObjectPropertyChain();
-      const superProperty = this.#parseObjectPropertyExpression();
-      this.#expectType(")");
+  *#parseSubObjectPropertyOf() {
+    this.#expectWord(
+      "SubObjectPropertyOf",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
+    if (
+      this.#isWord(
+        "ObjectPropertyChain",
+        this.#lexer.peek() ?? (yield PEEK_TOKEN),
+      )
+    ) {
+      const chain = yield* this.#parseObjectPropertyChain();
+      const superProperty = yield* this.#parseObjectPropertyExpression();
+      this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
       return {
         functionalKeyword: "SubObjectPropertyOf",
         value: this.#dataFactory.getOWLSubPropertyChainOfAxiom(
@@ -560,9 +589,9 @@ export class OWLFunctionalSyntaxOWLParser {
         ),
       };
     }
-    const subProperty = this.#parseObjectPropertyExpression();
-    const superProperty = this.#parseObjectPropertyExpression();
-    this.#expectType(")");
+    const subProperty = yield* this.#parseObjectPropertyExpression();
+    const superProperty = yield* this.#parseObjectPropertyExpression();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return {
       functionalKeyword: "SubObjectPropertyOf",
       value: this.#dataFactory.getOWLSubObjectPropertyOfAxiom(
@@ -573,36 +602,42 @@ export class OWLFunctionalSyntaxOWLParser {
     };
   }
 
-  #parseObjectPropertyChain() {
-    const start = this.#expectWord("ObjectPropertyChain");
-    this.#expectType("(");
+  *#parseObjectPropertyChain() {
+    const start = this.#expectWord(
+      "ObjectPropertyChain",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
     const chain = [];
-    while (this.#lexer.peek().type !== ")") {
-      chain.push(this.#parseObjectPropertyExpression());
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
+      chain.push(yield* this.#parseObjectPropertyExpression());
     }
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     this.#requireMinimum(chain, 2, "ObjectPropertyChain", start);
     return chain;
   }
 
-  #parseHasKey() {
-    const start = this.#expectWord("HasKey");
-    this.#expectType("(");
-    const annotations = this.#parseAxiomAnnotations();
-    const classExpression = this.#parseClassExpression(0);
-    this.#expectType("(");
+  *#parseHasKey() {
+    const start = this.#expectWord(
+      "HasKey",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
+    const classExpression = yield* this.#parseClassExpression(0);
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
     const objectProperties = [];
-    while (this.#lexer.peek().type !== ")") {
-      objectProperties.push(this.#parseObjectPropertyExpression());
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
+      objectProperties.push(yield* this.#parseObjectPropertyExpression());
     }
-    this.#expectType(")");
-    this.#expectType("(");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
     const dataProperties = [];
-    while (this.#lexer.peek().type !== ")") {
-      dataProperties.push(this.#parseDataPropertyExpression());
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
+      dataProperties.push(yield* this.#parseDataPropertyExpression());
     }
-    this.#expectType(")");
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     if (objectProperties.length + dataProperties.length === 0) {
       this.#syntax("HasKey requires at least one property", start, {
         construct: "HasKey",
@@ -621,14 +656,14 @@ export class OWLFunctionalSyntaxOWLParser {
     };
   }
 
-  #parsePropertyAssertion(keyword, constructor, parseProperty, parseValue) {
-    this.#expectWord(keyword);
-    this.#expectType("(");
-    const annotations = this.#parseAxiomAnnotations();
-    const property = parseProperty();
-    const subject = this.#parseIndividual();
-    const value = parseValue();
-    this.#expectType(")");
+  *#parsePropertyAssertion(keyword, constructor, parseProperty, parseValue) {
+    this.#expectWord(keyword, this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
+    const property = yield* parseProperty();
+    const subject = yield* this.#parseIndividual();
+    const value = yield* parseValue();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return {
       functionalKeyword: keyword,
       value: this.#dataFactory[constructor](
@@ -640,14 +675,17 @@ export class OWLFunctionalSyntaxOWLParser {
     };
   }
 
-  #parseAnnotationAssertion() {
-    this.#expectWord("AnnotationAssertion");
-    this.#expectType("(");
-    const annotations = this.#parseAxiomAnnotations();
-    const property = this.#parseAnnotationProperty();
-    const subject = this.#parseAnnotationSubject();
-    const value = this.#parseAnnotationValue();
-    this.#expectType(")");
+  *#parseAnnotationAssertion() {
+    this.#expectWord(
+      "AnnotationAssertion",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
+    const property = yield* this.#parseAnnotationProperty();
+    const subject = yield* this.#parseAnnotationSubject();
+    const value = yield* this.#parseAnnotationValue();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return {
       functionalKeyword: "AnnotationAssertion",
       value: this.#dataFactory.getOWLAnnotationAssertionAxiom(
@@ -659,22 +697,26 @@ export class OWLFunctionalSyntaxOWLParser {
     };
   }
 
-  #parseAnnotationProperty() {
-    return this.#dataFactory.getOWLAnnotationProperty(this.#parseIri());
+  *#parseAnnotationProperty() {
+    return this.#dataFactory.getOWLAnnotationProperty(
+      this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)),
+    );
   }
 
-  #parseAnnotationSubject() {
-    return this.#lexer.peek().type === "NODE_ID"
-      ? this.#parseAnonymousIndividual()
-      : this.#parseIri();
+  *#parseAnnotationSubject() {
+    return (this.#lexer.peek() ?? (yield PEEK_TOKEN)).type === "NODE_ID"
+      ? yield* this.#parseAnonymousIndividual()
+      : this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN));
   }
 
-  #parseClassExpression(depth) {
+  *#parseClassExpression(depth) {
     this.#checkExpressionDepth(depth);
-    if (this.#isIri()) {
-      return this.#dataFactory.getOWLClass(this.#parseIri());
+    if (this.#isIri(this.#lexer.peek() ?? (yield PEEK_TOKEN))) {
+      return this.#dataFactory.getOWLClass(
+        this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)),
+      );
     }
-    const keyword = this.#lexer.peek();
+    const keyword = this.#lexer.peek() ?? (yield PEEK_TOKEN);
     if (keyword.type !== "WORD") {
       this.#syntax("Expected a class expression", keyword, {
         found: keyword.value || keyword.type,
@@ -683,94 +725,94 @@ export class OWLFunctionalSyntaxOWLParser {
 
     switch (keyword.value) {
       case "ObjectIntersectionOf":
-        return this.#parseNaryClassExpression(
+        return yield* this.#parseNaryClassExpression(
           keyword.value,
           "getOWLObjectIntersectionOf",
           depth,
         );
       case "ObjectUnionOf":
-        return this.#parseNaryClassExpression(
+        return yield* this.#parseNaryClassExpression(
           keyword.value,
           "getOWLObjectUnionOf",
           depth,
         );
       case "ObjectComplementOf":
-        return this.#parseUnaryClassExpression(
+        return yield* this.#parseUnaryClassExpression(
           keyword.value,
           "getOWLObjectComplementOf",
           depth,
         );
       case "ObjectOneOf":
-        return this.#parseObjectOneOf(depth);
+        return yield* this.#parseObjectOneOf(depth);
       case "ObjectSomeValuesFrom":
-        return this.#parseObjectRestriction(
+        return yield* this.#parseObjectRestriction(
           keyword.value,
           "getOWLObjectSomeValuesFrom",
           depth,
           "class",
         );
       case "ObjectAllValuesFrom":
-        return this.#parseObjectRestriction(
+        return yield* this.#parseObjectRestriction(
           keyword.value,
           "getOWLObjectAllValuesFrom",
           depth,
           "class",
         );
       case "ObjectHasValue":
-        return this.#parseObjectRestriction(
+        return yield* this.#parseObjectRestriction(
           keyword.value,
           "getOWLObjectHasValue",
           depth,
           "individual",
         );
       case "ObjectHasSelf":
-        return this.#parseObjectHasSelf();
+        return yield* this.#parseObjectHasSelf();
       case "ObjectMinCardinality":
-        return this.#parseObjectCardinality(
+        return yield* this.#parseObjectCardinality(
           keyword.value,
           "getOWLObjectMinCardinality",
           depth,
         );
       case "ObjectMaxCardinality":
-        return this.#parseObjectCardinality(
+        return yield* this.#parseObjectCardinality(
           keyword.value,
           "getOWLObjectMaxCardinality",
           depth,
         );
       case "ObjectExactCardinality":
-        return this.#parseObjectCardinality(
+        return yield* this.#parseObjectCardinality(
           keyword.value,
           "getOWLObjectExactCardinality",
           depth,
         );
       case "DataSomeValuesFrom":
-        return this.#parseDataQuantifiedRestriction(
+        return yield* this.#parseDataQuantifiedRestriction(
           keyword.value,
           "getOWLDataSomeValuesFrom",
           depth,
         );
       case "DataAllValuesFrom":
-        return this.#parseDataQuantifiedRestriction(
+        return yield* this.#parseDataQuantifiedRestriction(
           keyword.value,
           "getOWLDataAllValuesFrom",
           depth,
         );
       case "DataHasValue":
-        return this.#parseDataHasValue();
+        return yield* this.#parseDataHasValue();
       case "DataMinCardinality":
-        return this.#parseDataCardinality(
+        return yield* this.#parseDataCardinality(
           keyword.value,
           "getOWLDataMinCardinality",
           depth,
         );
       case "DataMaxCardinality":
-        return this.#parseDataCardinality(
+        return yield* this.#parseDataCardinality(
           keyword.value,
           "getOWLDataMaxCardinality",
           depth,
         );
       case "DataExactCardinality":
-        return this.#parseDataCardinality(
+        return yield* this.#parseDataCardinality(
           keyword.value,
           "getOWLDataExactCardinality",
           depth,
@@ -782,14 +824,17 @@ export class OWLFunctionalSyntaxOWLParser {
     }
   }
 
-  #parseNaryClassExpression(keyword, constructor, depth) {
-    const start = this.#expectWord(keyword);
-    this.#expectType("(");
+  *#parseNaryClassExpression(keyword, constructor, depth) {
+    const start = this.#expectWord(
+      keyword,
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
     const operands = [];
-    while (this.#lexer.peek().type !== ")") {
-      operands.push(this.#parseClassExpression(depth + 1));
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
+      operands.push(yield* this.#parseClassExpression(depth + 1));
     }
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     this.#requireMinimum(operands, 2, keyword, start);
     if (this.#configuration.parsingMode === "strict") {
       requireTwoDistinctBooleanOperands(operands);
@@ -797,88 +842,106 @@ export class OWLFunctionalSyntaxOWLParser {
     return this.#dataFactory[constructor](operands);
   }
 
-  #parseUnaryClassExpression(keyword, constructor, depth) {
-    this.#expectWord(keyword);
-    this.#expectType("(");
-    const operand = this.#parseClassExpression(depth + 1);
-    this.#expectType(")");
+  *#parseUnaryClassExpression(keyword, constructor, depth) {
+    this.#expectWord(keyword, this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const operand = yield* this.#parseClassExpression(depth + 1);
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return this.#dataFactory[constructor](operand);
   }
 
-  #parseObjectOneOf(depth) {
-    const start = this.#expectWord("ObjectOneOf");
-    this.#expectType("(");
+  *#parseObjectOneOf(depth) {
+    const start = this.#expectWord(
+      "ObjectOneOf",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
     const individuals = [];
-    while (this.#lexer.peek().type !== ")") {
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
       this.#checkExpressionDepth(depth + 1);
-      individuals.push(this.#parseIndividual());
+      individuals.push(yield* this.#parseIndividual());
     }
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     this.#requireMinimum(individuals, 1, "ObjectOneOf", start);
     return this.#dataFactory.getOWLObjectOneOf(individuals);
   }
 
-  #parseObjectRestriction(keyword, constructor, depth, fillerType) {
-    this.#expectWord(keyword);
-    this.#expectType("(");
-    const property = this.#parseObjectPropertyExpression();
+  *#parseObjectRestriction(keyword, constructor, depth, fillerType) {
+    this.#expectWord(keyword, this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const property = yield* this.#parseObjectPropertyExpression();
     const filler =
       fillerType === "class"
-        ? this.#parseClassExpression(depth + 1)
-        : this.#parseIndividual();
-    this.#expectType(")");
+        ? yield* this.#parseClassExpression(depth + 1)
+        : yield* this.#parseIndividual();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return this.#dataFactory[constructor](property, filler);
   }
 
-  #parseObjectHasSelf() {
-    this.#expectWord("ObjectHasSelf");
-    this.#expectType("(");
-    const property = this.#parseObjectPropertyExpression();
-    this.#expectType(")");
+  *#parseObjectHasSelf() {
+    this.#expectWord(
+      "ObjectHasSelf",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const property = yield* this.#parseObjectPropertyExpression();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return this.#dataFactory.getOWLObjectHasSelf(property);
   }
 
-  #parseObjectCardinality(keyword, constructor, depth) {
-    this.#expectWord(keyword);
-    this.#expectType("(");
-    const cardinality = this.#parseCardinality();
-    const property = this.#parseObjectPropertyExpression();
+  *#parseObjectCardinality(keyword, constructor, depth) {
+    this.#expectWord(keyword, this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const cardinality = yield* this.#parseCardinality();
+    const property = yield* this.#parseObjectPropertyExpression();
     const filler =
-      this.#lexer.peek().type === ")"
+      (this.#lexer.peek() ?? (yield PEEK_TOKEN)).type === ")"
         ? undefined
-        : this.#parseClassExpression(depth + 1);
-    this.#expectType(")");
+        : yield* this.#parseClassExpression(depth + 1);
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return this.#dataFactory[constructor](cardinality, property, filler);
   }
 
-  #parseObjectPropertyExpression() {
-    if (this.#isWord("ObjectInverseOf")) {
-      this.#expectWord("ObjectInverseOf");
-      this.#expectType("(");
-      const property = this.#dataFactory.getOWLObjectProperty(this.#parseIri());
-      this.#expectType(")");
+  *#parseObjectPropertyExpression() {
+    if (
+      this.#isWord("ObjectInverseOf", this.#lexer.peek() ?? (yield PEEK_TOKEN))
+    ) {
+      this.#expectWord(
+        "ObjectInverseOf",
+        this.#lexer.consume() ?? (yield READ_TOKEN),
+      );
+      this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+      const property = this.#dataFactory.getOWLObjectProperty(
+        this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)),
+      );
+      this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
       return this.#dataFactory.getOWLObjectInverseOf(property);
     }
-    return this.#dataFactory.getOWLObjectProperty(this.#parseIri());
+    return this.#dataFactory.getOWLObjectProperty(
+      this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)),
+    );
   }
 
-  #parseDataQuantifiedRestriction(keyword, constructor, depth) {
-    const start = this.#expectWord(keyword);
-    this.#expectType("(");
+  *#parseDataQuantifiedRestriction(keyword, constructor, depth) {
+    const start = this.#expectWord(
+      keyword,
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
     const iris = [];
-    while (this.#isIri()) {
-      iris.push(this.#parseIri());
+    while (this.#isIri(this.#lexer.peek() ?? (yield PEEK_TOKEN))) {
+      iris.push(this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)));
     }
 
     let filler;
-    if (this.#lexer.peek().type === ")") {
+    if ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type === ")") {
       this.#requireMinimum(iris, 2, keyword, start);
       filler = this.#dataFactory.getOWLDatatype(iris.pop());
     } else {
       this.#requireMinimum(iris, 1, keyword, start);
-      filler = this.#parseDataRange(depth + 1);
+      filler = yield* this.#parseDataRange(depth + 1);
     }
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     const properties = iris.map((iri) =>
       this.#dataFactory.getOWLDataProperty(iri),
     );
@@ -893,34 +956,37 @@ export class OWLFunctionalSyntaxOWLParser {
     return this.#dataFactory[constructor](properties, filler);
   }
 
-  #parseDataHasValue() {
-    this.#expectWord("DataHasValue");
-    this.#expectType("(");
-    const property = this.#parseDataPropertyExpression();
-    const value = this.#parseLiteral();
-    this.#expectType(")");
+  *#parseDataHasValue() {
+    this.#expectWord(
+      "DataHasValue",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const property = yield* this.#parseDataPropertyExpression();
+    const value = yield* this.#parseLiteral();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return this.#dataFactory.getOWLDataHasValue(property, value);
   }
 
-  #parseDataCardinality(keyword, constructor, depth) {
-    this.#expectWord(keyword);
-    this.#expectType("(");
-    const cardinality = this.#parseCardinality();
-    const property = this.#parseDataPropertyExpression();
+  *#parseDataCardinality(keyword, constructor, depth) {
+    this.#expectWord(keyword, this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const cardinality = yield* this.#parseCardinality();
+    const property = yield* this.#parseDataPropertyExpression();
     const filler =
-      this.#lexer.peek().type === ")"
+      (this.#lexer.peek() ?? (yield PEEK_TOKEN)).type === ")"
         ? undefined
-        : this.#parseDataRange(depth + 1);
-    this.#expectType(")");
+        : yield* this.#parseDataRange(depth + 1);
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return this.#dataFactory[constructor](cardinality, property, filler);
   }
 
-  #parseDataRange(depth) {
+  *#parseDataRange(depth) {
     this.#checkExpressionDepth(depth);
-    if (this.#isIri()) {
-      return this.#dataFactory.getOWLDatatype(this.#parseIri());
+    if (this.#isIri(this.#lexer.peek() ?? (yield PEEK_TOKEN))) {
+      return yield* this.#parseDatatype();
     }
-    const keyword = this.#lexer.peek();
+    const keyword = this.#lexer.peek() ?? (yield PEEK_TOKEN);
     if (keyword.type !== "WORD") {
       this.#syntax("Expected a data range", keyword, {
         found: keyword.value || keyword.type,
@@ -928,27 +994,27 @@ export class OWLFunctionalSyntaxOWLParser {
     }
     switch (keyword.value) {
       case "DataIntersectionOf":
-        return this.#parseNaryDataRange(
+        return yield* this.#parseNaryDataRange(
           keyword.value,
           "getOWLDataIntersectionOf",
           depth,
         );
       case "DataUnionOf":
-        return this.#parseNaryDataRange(
+        return yield* this.#parseNaryDataRange(
           keyword.value,
           "getOWLDataUnionOf",
           depth,
         );
       case "DataComplementOf":
-        return this.#parseUnaryDataRange(
+        return yield* this.#parseUnaryDataRange(
           keyword.value,
           "getOWLDataComplementOf",
           depth,
         );
       case "DataOneOf":
-        return this.#parseDataOneOf();
+        return yield* this.#parseDataOneOf();
       case "DatatypeRestriction":
-        return this.#parseDatatypeRestriction(depth);
+        return yield* this.#parseDatatypeRestriction(depth);
       default:
         this.#syntax(`Unknown data range ${keyword.value}`, keyword, {
           found: keyword.value,
@@ -956,67 +1022,89 @@ export class OWLFunctionalSyntaxOWLParser {
     }
   }
 
-  #parseNaryDataRange(keyword, constructor, depth) {
-    const start = this.#expectWord(keyword);
-    this.#expectType("(");
+  *#parseNaryDataRange(keyword, constructor, depth) {
+    const start = this.#expectWord(
+      keyword,
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
     const operands = [];
-    while (this.#lexer.peek().type !== ")") {
-      operands.push(this.#parseDataRange(depth + 1));
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
+      operands.push(yield* this.#parseDataRange(depth + 1));
     }
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     this.#requireMinimum(operands, 2, keyword, start);
     return this.#dataFactory[constructor](operands);
   }
 
-  #parseUnaryDataRange(keyword, constructor, depth) {
-    this.#expectWord(keyword);
-    this.#expectType("(");
-    const operand = this.#parseDataRange(depth + 1);
-    this.#expectType(")");
+  *#parseUnaryDataRange(keyword, constructor, depth) {
+    this.#expectWord(keyword, this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const operand = yield* this.#parseDataRange(depth + 1);
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return this.#dataFactory[constructor](operand);
   }
 
-  #parseDataOneOf() {
-    const start = this.#expectWord("DataOneOf");
-    this.#expectType("(");
+  *#parseDataOneOf() {
+    const start = this.#expectWord(
+      "DataOneOf",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
     const values = [];
-    while (this.#lexer.peek().type !== ")") {
-      values.push(this.#parseLiteral());
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
+      values.push(yield* this.#parseLiteral());
     }
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     this.#requireMinimum(values, 1, "DataOneOf", start);
     return this.#dataFactory.getOWLDataOneOf(values);
   }
 
-  #parseDatatypeRestriction(depth) {
-    const start = this.#expectWord("DatatypeRestriction");
-    this.#expectType("(");
-    const datatype = this.#dataFactory.getOWLDatatype(this.#parseIri());
+  *#parseDatatypeRestriction(depth) {
+    const start = this.#expectWord(
+      "DatatypeRestriction",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const datatype = yield* this.#parseDatatype();
     const restrictions = [];
-    while (this.#lexer.peek().type !== ")") {
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
       this.#checkExpressionDepth(depth + 1);
-      const facet = this.#parseIri();
-      const value = this.#parseLiteral();
+      const facet = this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN));
+      const value = yield* this.#parseLiteral();
       restrictions.push(this.#dataFactory.getOWLFacetRestriction(facet, value));
     }
-    this.#expectType(")");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     this.#requireMinimum(restrictions, 1, "DatatypeRestriction", start);
     return this.#dataFactory.getOWLDatatypeRestriction(datatype, restrictions);
   }
 
-  #parseDataPropertyExpression() {
-    return this.#dataFactory.getOWLDataProperty(this.#parseIri());
+  *#parseDatatype() {
+    return this.#dataFactory.getOWLDatatype(
+      this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)),
+    );
   }
 
-  #parseIndividual() {
-    if (this.#lexer.peek().type === "NODE_ID") {
-      return this.#parseAnonymousIndividual();
+  *#parseDataPropertyExpression() {
+    return this.#dataFactory.getOWLDataProperty(
+      this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)),
+    );
+  }
+
+  *#parseIndividual() {
+    if ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type === "NODE_ID") {
+      return yield* this.#parseAnonymousIndividual();
     }
-    return this.#dataFactory.getOWLNamedIndividual(this.#parseIri());
+    return this.#dataFactory.getOWLNamedIndividual(
+      this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)),
+    );
   }
 
-  #parseCardinality() {
-    const token = this.#expectType("INTEGER");
+  *#parseCardinality() {
+    const token = this.#expectType(
+      "INTEGER",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
     return normalizeCardinality(token.value);
   }
 
@@ -1024,7 +1112,7 @@ export class OWLFunctionalSyntaxOWLParser {
     if (depth <= this.#configuration.maxExpressionDepth) {
       return;
     }
-    const token = this.#lexer.peek();
+    const token = this.#stream?.currentToken() ?? this.#lexer.peek();
     throw new ResourceLimitError(
       "The Functional Syntax expression depth limit was exceeded",
       {
@@ -1050,8 +1138,11 @@ export class OWLFunctionalSyntaxOWLParser {
     }
   }
 
-  #parseEntity() {
-    const keyword = this.#expectType("WORD");
+  *#parseEntity() {
+    const keyword = this.#expectType(
+      "WORD",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
     const constructors = {
       AnnotationProperty: "getOWLAnnotationProperty",
       Class: "getOWLClass",
@@ -1066,23 +1157,25 @@ export class OWLFunctionalSyntaxOWLParser {
         found: keyword.value,
       });
     }
-    this.#expectType("(");
-    const iri = this.#parseIri();
-    this.#expectType(")");
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const iri = this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return this.#dataFactory[constructor](iri);
   }
 
-  #parseAxiomAnnotations() {
+  *#parseAxiomAnnotations() {
     const annotations = [];
-    while (this.#isWord("Annotation")) {
-      annotations.push(this.#parseAnnotation(1));
+    while (
+      this.#isWord("Annotation", this.#lexer.peek() ?? (yield PEEK_TOKEN))
+    ) {
+      annotations.push(yield* this.#parseAnnotation(1));
     }
     return annotations;
   }
 
-  #parseAnnotation(depth) {
+  *#parseAnnotation(depth) {
     if (depth > this.#configuration.maxAnnotationDepth) {
-      const token = this.#lexer.peek();
+      const token = this.#stream?.currentToken() ?? this.#lexer.peek();
       throw new ResourceLimitError(
         "The Functional Syntax annotation depth limit was exceeded",
         {
@@ -1093,47 +1186,58 @@ export class OWLFunctionalSyntaxOWLParser {
         },
       );
     }
-    this.#expectWord("Annotation");
-    this.#expectType("(");
+    this.#expectWord("Annotation", this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
     const annotations = [];
-    while (this.#isWord("Annotation")) {
-      annotations.push(this.#parseAnnotation(depth + 1));
+    while (
+      this.#isWord("Annotation", this.#lexer.peek() ?? (yield PEEK_TOKEN))
+    ) {
+      annotations.push(yield* this.#parseAnnotation(depth + 1));
     }
     const property = this.#dataFactory.getOWLAnnotationProperty(
-      this.#parseIri(),
+      this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)),
     );
-    const value = this.#parseAnnotationValue();
-    this.#expectType(")");
+    const value = yield* this.#parseAnnotationValue();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
     return this.#dataFactory.getOWLAnnotation(property, value, annotations);
   }
 
-  #parseAnnotationValue() {
-    if (this.#lexer.peek().type === "STRING") {
-      return this.#parseLiteral();
+  *#parseAnnotationValue() {
+    if ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type === "STRING") {
+      return yield* this.#parseLiteral();
     }
-    if (this.#lexer.peek().type === "NODE_ID") {
-      return this.#parseAnonymousIndividual();
+    if ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type === "NODE_ID") {
+      return yield* this.#parseAnonymousIndividual();
     }
-    return this.#parseIri();
+    return this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN));
   }
 
-  #parseLiteral() {
-    const lexicalForm = this.#expectType("STRING").value;
-    if (this.#lexer.peek().type === "LANGUAGE") {
+  *#parseLiteral() {
+    const lexicalForm = this.#expectType(
+      "STRING",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    ).value;
+    if ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type === "LANGUAGE") {
       return this.#dataFactory.getOWLLiteral(
         lexicalForm,
-        this.#lexer.consume().value,
+        (this.#lexer.consume() ?? (yield READ_TOKEN)).value,
       );
     }
-    if (this.#lexer.peek().type === "^^") {
-      this.#lexer.consume();
-      return this.#dataFactory.getOWLLiteral(lexicalForm, this.#parseIri());
+    if ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type === "^^") {
+      this.#lexer.consume() ?? (yield READ_TOKEN);
+      return this.#dataFactory.getOWLLiteral(
+        lexicalForm,
+        this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN)),
+      );
     }
     return this.#dataFactory.getOWLLiteral(lexicalForm);
   }
 
-  #parseAnonymousIndividual() {
-    const token = this.#expectType("NODE_ID");
+  *#parseAnonymousIndividual() {
+    const token = this.#expectType(
+      "NODE_ID",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
     if (!this.#anonymousIndividuals.has(token.value)) {
       const observed = this.#anonymousIndividuals.size + 1;
       if (observed > this.#configuration.maxBlankNodes) {
@@ -1162,8 +1266,11 @@ export class OWLFunctionalSyntaxOWLParser {
     return this.#checkpoint.cooperate(lexer);
   }
 
-  #parseIri() {
-    const token = this.#lexer.consume();
+  *#readIri() {
+    return this.#parseIri(this.#lexer.consume() ?? (yield READ_TOKEN));
+  }
+
+  #parseIri(token) {
     if (token.type === "FULL_IRI") {
       this.#requireAbsoluteIri(token.value, token);
       return IRI.create(token.value);
@@ -1195,17 +1302,15 @@ export class OWLFunctionalSyntaxOWLParser {
     }
   }
 
-  #isIri() {
-    return IRI_TOKEN_TYPES.has(this.#lexer.peek().type);
+  #isIri(token) {
+    return IRI_TOKEN_TYPES.has(token.type);
   }
 
-  #isWord(value) {
-    const token = this.#lexer.peek();
+  #isWord(value, token) {
     return token.type === "WORD" && token.value === value;
   }
 
-  #expectWord(value) {
-    const token = this.#lexer.consume();
+  #expectWord(value, token) {
     if (token.type !== "WORD" || token.value !== value) {
       this.#syntax(
         `Expected ${value} but found ${token.value || token.type}`,
@@ -1219,8 +1324,7 @@ export class OWLFunctionalSyntaxOWLParser {
     return token;
   }
 
-  #expectType(type) {
-    const token = this.#lexer.consume();
+  #expectType(type, token) {
     if (token.type !== type) {
       this.#syntax(
         `Expected ${type} but found ${token.value || token.type}`,

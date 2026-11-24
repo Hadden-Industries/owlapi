@@ -116,3 +116,32 @@ test("a streamed HTTP response reopens through authorized pinned requests and st
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test.each([undefined, 'W/"weak"'])(
+  "HTTP with validator %s preserves one authorized representation",
+  async (etag) => {
+    let requests = 0;
+    const server = createServer((_request, response) => {
+      requests++;
+      response.writeHead(200, {
+        "content-type": "application/rdf+xml",
+        "last-modified": "Fri, 20 Nov 2026 12:00:00 GMT",
+        ...(etag ? { etag } : {}),
+      });
+      response.write(text.slice(0, 80_000));
+      response.end(text.slice(80_000));
+    });
+    await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+    try {
+      const loader = new NodeDocumentLoader({ authorize: () => true });
+      const source = await loader.load(
+        IRI.create(`http://127.0.0.1:${server.address().port}/ontology`),
+        { config },
+      );
+      expect(source.getText()).toBe(text);
+      expect(requests).toBe(1);
+    } finally {
+      await new Promise((resolve) => server.close(resolve));
+    }
+  },
+);

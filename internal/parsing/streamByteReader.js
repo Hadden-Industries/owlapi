@@ -178,27 +178,76 @@ export async function* decodeUtf8Chunks(chunks, invalidEncoding) {
   if (tail) yield tail;
 }
 
-/** Text-only parsers receive the original string contract on every attempt. A
- * detector needs only its bounded prefix after leading whitespace/comments. */
-export async function streamTextSource(source, configuration, sniff = false) {
-  const parts = [];
-  let remaining = sniff ? configuration.maxSniffBytes : Infinity;
-  let leadingTrivia = sniff;
-  const state = { inComment: false };
-  if (remaining > 0) {
-    for await (let text of decodeStreamText(source, configuration)) {
-      if (leadingTrivia) {
-        text = text.slice(skipTrivia(text, 0, state));
-        if (!text) continue;
-        leadingTrivia = false;
+const utf8Bom = Uint8Array.of(0xef, 0xbb, 0xbf);
+
+async function* afterInitialBom(chunks, prefixLimit) {
+  let matched = 0;
+  let atStart = true;
+  for await (let chunk of chunks) {
+    if (atStart) {
+      let offset = 0;
+      while (
+        offset < chunk.length &&
+        matched < utf8Bom.length &&
+        chunk[offset] === utf8Bom[matched]
+      ) {
+        matched++;
+        offset++;
       }
-      parts.push(text.slice(0, remaining));
-      remaining -= text.length;
-      if (remaining <= 0) break;
+      if (
+        matched < utf8Bom.length &&
+        offset === chunk.length &&
+        matched < prefixLimit
+      )
+        continue;
+      atStart = false;
+      if (matched < utf8Bom.length && matched)
+        yield utf8Bom.subarray(0, matched);
+      chunk = chunk.subarray(offset);
     }
+    if (chunk.length) yield chunk;
   }
-  return new StringDocumentSource(
-    parts.join(""),
-    readDocumentSourceMetadata(source),
-  );
+  if (atStart && matched) yield utf8Bom.subarray(0, matched);
+}
+
+async function sniffStreamText(source, configuration) {
+  let remaining = configuration.maxSniffBytes;
+  if (!remaining) return "";
+  const parts = [];
+  const state = { inComment: false };
+  let leading = true;
+  const decoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
+  for await (let bytes of afterInitialBom(
+    readStreamBytes(source, configuration),
+    remaining,
+  )) {
+    if (leading) {
+      const offset = skipTrivia(bytes, 0, state);
+      if (offset) decoder.decode(bytes.subarray(0, offset), { stream: true });
+      if (offset === bytes.length) continue;
+      bytes = bytes.subarray(offset);
+      leading = false;
+    }
+    const take = Math.min(bytes.length, remaining);
+    parts.push(decoder.decode(bytes.subarray(0, take), { stream: true }));
+    remaining -= take;
+    // A sniff prefix may end inside a character. Only the full parser
+    // (or actual EOF below) can decide whether an incomplete sequence is invalid.
+    if (!remaining) return parts.join("");
+  }
+  parts.push(decoder.decode());
+  return parts.join("");
+}
+
+/** Provide the existing string contract to detectors and text-only parsers. */
+export async function streamTextSource(source, configuration, sniff = false) {
+  let text;
+  if (sniff) text = await sniffStreamText(source, configuration);
+  else {
+    const parts = [];
+    for await (const chunk of decodeStreamText(source, configuration))
+      parts.push(chunk);
+    text = parts.join("");
+  }
+  return new StringDocumentSource(text, readDocumentSourceMetadata(source));
 }

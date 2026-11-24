@@ -2,6 +2,7 @@ import { OWLManager, OWLDocumentFormats } from "../index.js";
 import { OWLDocumentFormat } from "../model/owlDocumentFormat.js";
 import { OWLParserRegistry } from "../internal/parsing/parserRegistry.js";
 import { functionalSyntaxParserDescriptor } from "../internal/parsing/functional/descriptor.js";
+import { streamTextSource } from "../internal/parsing/streamByteReader.js";
 import {
   StreamDocumentSource,
   ParserMismatchError,
@@ -23,6 +24,51 @@ function byteSource(text, format, chunkBytes) {
     { format, documentIRI: "https://example.test/document" },
   );
 }
+
+test.each([
+  [Uint8Array.of(0xc3, 0xa9), 2, "é"],
+  [Uint8Array.of(0x61, 0xf0, 0x9f), 3, "a"],
+])(
+  "stream format detection stops at the raw UTF-8 boundary",
+  async (first, limit, expected) => {
+    const source = new StreamDocumentSource(function* () {
+      yield first;
+      throw new Error("The sniff requested a byte outside its window");
+    });
+    const sample = await streamTextSource(
+      source,
+      { maxInputBytes: 32, maxSniffBytes: limit, timeoutMs: 1000 },
+      true,
+    );
+    expect(sample.getText()).toBe(expected);
+  },
+);
+
+test.each([
+  ["Ontology(<urn:read> UnknownAxiom(", {}, { code: "OWL_SYNTAX_ERROR" }],
+  [
+    "Ontology(<urn:read> SubClassOf(<urn:A> ObjectComplementOf(ObjectComplementOf(<urn:B> ",
+    { maxExpressionDepth: 0 },
+    { resource: "maxExpressionDepth" },
+  ],
+])(
+  "the Functional grammar reports a decided error before pulling more bytes",
+  async (text, config, error) => {
+    const source = new StreamDocumentSource(
+      function* () {
+        yield new TextEncoder().encode(text);
+        throw new Error("The parser requested a later byte");
+      },
+      { format: "functional" },
+    );
+    await expect(
+      OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+        source,
+        config,
+      ),
+    ).rejects.toMatchObject(error);
+  },
+);
 
 test("auto-detection rejects a factory that returns the same exhausted Web stream", async () => {
   const onlyStream = new Blob([
