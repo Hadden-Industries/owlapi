@@ -50,6 +50,46 @@ test("exact membership captures effective protocol keys at first query", () => {
   expect(ontology.containsAxiom(axiom)).toBe(false);
 });
 
+test("first-query membership observes the public JSON tuple serialization protocol", () => {
+  const axiom = f.getOWLSubClassOfAxiom(a, b);
+  const ontology = new OWLOntology({ axioms: [axiom] });
+  const previous = Object.getOwnPropertyDescriptor(Array.prototype, "toJSON");
+  let observed;
+  try {
+    Object.defineProperty(Array.prototype, "toJSON", {
+      configurable: true,
+      value: () => "query-time identity",
+    });
+    observed = ontology.containsAxiom(axiom);
+  } finally {
+    if (previous) Object.defineProperty(Array.prototype, "toJSON", previous);
+    else delete Array.prototype.toJSON;
+  }
+  expect(observed).toBe(true);
+  expect(ontology.containsAxiom(axiom)).toBe(false);
+});
+
+test("a receiver-sensitive structural key accessor is captured on actual axioms", () => {
+  const axiom = f.getOWLSubClassOfAxiom(a, b);
+  const ontology = new OWLOntology({ axioms: [axiom] });
+  const proto = OWLStructuralObject.prototype;
+  const descriptor = Object.getOwnPropertyDescriptor(proto, "structuralKey");
+  let observed;
+  try {
+    Object.defineProperty(proto, "structuralKey", {
+      configurable: true,
+      get() {
+        return this === proto ? descriptor.value : () => "receiver key";
+      },
+    });
+    observed = ontology.containsAxiom(axiom);
+  } finally {
+    Object.defineProperty(proto, "structuralKey", descriptor);
+  }
+  expect(observed).toBe(true);
+  expect(ontology.containsAxiom(axiom)).toBe(false);
+});
+
 test("counting, filtering by kind and committing a small edit do not flatten the axiom table", () => {
   const manager = new OWLOntologyManager();
   const ontology = manager.createOntology();

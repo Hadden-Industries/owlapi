@@ -180,7 +180,7 @@ export async function* decodeUtf8Chunks(chunks, invalidEncoding) {
 
 const utf8Bom = Uint8Array.of(0xef, 0xbb, 0xbf);
 
-async function* afterInitialBom(chunks, prefixLimit) {
+async function* afterInitialBom(chunks) {
   let matched = 0;
   let atStart = true;
   for await (let chunk of chunks) {
@@ -194,12 +194,7 @@ async function* afterInitialBom(chunks, prefixLimit) {
         matched++;
         offset++;
       }
-      if (
-        matched < utf8Bom.length &&
-        offset === chunk.length &&
-        matched < prefixLimit
-      )
-        continue;
+      if (matched < utf8Bom.length && offset === chunk.length) continue;
       atStart = false;
       if (matched < utf8Bom.length && matched)
         yield utf8Bom.subarray(0, matched);
@@ -219,7 +214,6 @@ async function sniffStreamText(source, configuration) {
   const decoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
   for await (let bytes of afterInitialBom(
     readStreamBytes(source, configuration),
-    remaining,
   )) {
     if (leading) {
       const offset = skipTrivia(bytes, 0, state);

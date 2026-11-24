@@ -280,6 +280,24 @@ async function loadStrictFirst({
   }
 }
 
+async function captureLiveAllocations(directory, sampleId) {
+  // The process-exit profile may observe a collected model. Capture this
+  // sample at public load completion, before inspecting or copying its data.
+  const { Session } = await import("node:inspector/promises");
+  const session = new Session();
+  session.connect();
+  try {
+    const { profile } = await session.post("HeapProfiler.getSamplingProfile");
+    return await publishComparisonJson(
+      directory,
+      sampleId + "-load.heapprofile",
+      profile,
+    );
+  } finally {
+    session.disconnect();
+  }
+}
+
 async function sampleLoad(
   request,
   openDocument,
@@ -322,6 +340,7 @@ async function sampleLoad(
   const loadSequences = request.scenario === "strict-first" ? [] : undefined;
   let ontology;
   let sourceTransport;
+  let allocationProfile;
   try {
     for (let index = 0; index < warmups + repetitions; index++) {
       ontology = null;
@@ -361,6 +380,11 @@ async function sampleLoad(
       }
       const nanos = Math.round((performance.now() - start) * 1e6);
       if (cold) await checkpoint("after");
+      if (protocol.allocationProfile)
+        allocationProfile = await captureLiveAllocations(
+          directory,
+          protocol.sampleId,
+        );
       if (index >= warmups) wallNanos.push(nanos);
     }
     const witness = protocol.loadOnly && {
@@ -376,26 +400,6 @@ async function sampleLoad(
       await checkpoint("materialized");
       if (materialized.size !== witness.axioms)
         throw new Error("Materialized axiom set differs from the direct count");
-    }
-    let allocationProfile;
-    if (protocol.allocationProfile) {
-      // The CLI's automatic exit profile can run after the model has been
-      // collected. Sample the already-active profiler while the result is live.
-      const { Session } = await import("node:inspector/promises");
-      const session = new Session();
-      session.connect();
-      try {
-        const { profile } = await session.post(
-          "HeapProfiler.getSamplingProfile",
-        );
-        allocationProfile = await publishComparisonJson(
-          directory,
-          protocol.sampleId + "-load.heapprofile",
-          profile,
-        );
-      } finally {
-        session.disconnect();
-      }
     }
     emit({
       kind: "sample",

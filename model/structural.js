@@ -31,6 +31,12 @@ export let isFactoryStructuralObject;
 export let isNativeGroundStructuralObject;
 export let nativeStructuralMethods;
 let stableComponent;
+const nativeTupleSerialization = () => !("toJSON" in Array.prototype);
+/** Can a read index reuse keys captured by the native tuple protocol? */
+export const usesNativeStructuralKeys = () =>
+  nativeTupleSerialization() &&
+  Object.getOwnPropertyDescriptor(structuralPrototype, "structuralKey")
+    ?.value === nativeStructuralMethods.structuralKey;
 
 const projectComponents = (values, tuples = new Map()) =>
   values.map((value) => structuralTuple(value, tuples));
@@ -313,7 +319,7 @@ export class OWLStructuralObject {
         : undefined;
     bindStructuralModel({
       projectable: (value) =>
-        branded(value) && value.#flags > 0 && !("toJSON" in Array.prototype),
+        branded(value) && value.#flags > 0 && nativeTupleSerialization(),
       keyMethod: this.prototype.structuralKey,
       bodyMethod: this.prototype.structuralKeyWithoutAnnotations,
     });

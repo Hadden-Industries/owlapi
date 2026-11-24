@@ -25,6 +25,24 @@ function byteSource(text, format, chunkBytes) {
   );
 }
 
+test.each([1, 2])(
+  "the detection prefix excludes a chunk-split UTF-8 BOM at %i bytes",
+  async (limit) => {
+    const bytes = Uint8Array.of(0xef, 0xbb, 0xbf, 0x41, 0x42);
+    for (const chunks of [
+      [bytes],
+      Array.from(bytes, (byte) => Uint8Array.of(byte)),
+    ]) {
+      const part = await streamTextSource(
+        new StreamDocumentSource(() => chunks),
+        { maxInputBytes: bytes.length, maxSniffBytes: limit, timeoutMs: 1000 },
+        true,
+      );
+      expect(part.getText()).toBe("AB".slice(0, limit));
+    }
+  },
+);
+
 test.each([
   [Uint8Array.of(0xc3, 0xa9), 2, "é"],
   [Uint8Array.of(0x61, 0xf0, 0x9f), 3, "a"],

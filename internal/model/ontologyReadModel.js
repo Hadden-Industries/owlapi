@@ -1,7 +1,6 @@
 import { AXIOM_KINDS, ENTITY_KINDS, OWLObjectKind } from "../../model/kinds.js";
 import {
-  nativeStructuralMethods,
-  OWLStructuralObject,
+  usesNativeStructuralKeys,
   structuralKey,
   StructuralSet,
 } from "../../model/structural.js";
@@ -163,11 +162,7 @@ export function readOntologyModel(snapshot) {
       id = marker - 1;
     } else {
       if (!exactMembership) {
-        if (
-          stored.hasNativeKeys &&
-          OWLStructuralObject.prototype.structuralKey ===
-            nativeStructuralMethods.structuralKey
-        ) {
+        if (stored.hasNativeKeys && usesNativeStructuralKeys()) {
           exactMembership = (target) => {
             const ordinal = stored.idOfCapturedKey(target);
             return ordinal < 0
