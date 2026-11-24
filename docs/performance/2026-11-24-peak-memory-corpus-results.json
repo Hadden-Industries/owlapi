@@ -1,0 +1,3207 @@
+{
+  "schemaVersion": 1,
+  "observedDate": "2026-11-24",
+  "productCommit": "2b9a206827b457ff7ae0436e3861be683e814d95",
+  "tarballSha256": "49a5cacac957b580e8f6015a0e711f5d4e4f2fbd9bb4f68223fb5d11815b1265",
+  "host": {
+    "platform": "win32",
+    "release": "10.0.26300",
+    "arch": "x64",
+    "node": "v26.13.1",
+    "v8": "14.6.202.34-node.40",
+    "v8PointerCompression": 0
+  },
+  "method": "Per-engine median of three sequential fresh processes, using Windows PeakWorkingSetSize at public load completion. Public string/stream source construction precedes the clock. Structural verification occurs separately. Heap and job limits are recorded per attempt.",
+  "objective": {
+    "peakRatio": 1.5,
+    "publicSetExceptionRatio": 2,
+    "wallTimeRatio": 1.1
+  },
+  "corpus": [
+    {
+      "input": "obo-cido",
+      "structuralEvidence": {
+        "caseId": "3d17410ca66add8ac6cbb9ce3ba6b0dff790ed22288e11cdbdea8ff955dd3b5b",
+        "executionId": "597b4e20334843a8dd435b080d056df5b4c7d37cd230b373ddc96c59354a4e54",
+        "status": "match"
+      },
+      "modes": {
+        "string": {
+          "before": {
+            "input": {
+              "byteLength": 46951577,
+              "documentIRI": "http://purl.obolibrary.org/obo/cido.owl",
+              "id": "obo-cido",
+              "sha256": "bb17610749edccc346921524ed1836475e91421fa1b391f90b9dc9c37691376a",
+              "syntax": "rdfxml"
+            },
+            "caseId": "3d17410ca66add8ac6cbb9ce3ba6b0dff790ed22288e11cdbdea8ff955dd3b5b",
+            "executionId": "110feadcd42162e659ea9bfe7ea044b04956e90a64931f30591d59f17a7f51be",
+            "harnessSha256": "008da8cdcef5338c0737b2dbf0f614c27128d3eea1d6d8b25109ec8362b77e6c",
+            "rawObservationSha256": "ae378814228022a87d5f91ec2f1a16e58ef086a3421085b6a172afee72b1394f",
+            "tarballSha256": "8fe76f20124ead2bedf32e7405495813fa5443f5a27d03f20637f366481da210",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "string"
+              },
+              "javaHeapMiB": 4096,
+              "nodeHeapMiB": 8448,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 9600,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 411208,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/cido.owl",
+                "versionIRI": "http://purl.obolibrary.org/obo/cido/releases/2024-02-16/cido.owl"
+              },
+              "imports": [],
+              "ontologyAnnotations": 35
+            },
+            "summaryWitnessSha256": [
+              "3649d6e355d32bb1bd7cae5410a0e08113a103e09affd15b8501c46a4b9644ce"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 854405120,
+                  "coldMedianNanos": 2003436600
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2003436600,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55725120,
+                        "peakRssBytes": 118034432,
+                        "phase": "before",
+                        "rssBytes": 118034432
+                      },
+                      {
+                        "heapTotalBytes": 715128832,
+                        "heapUsedBytes": 357079480,
+                        "peakRssBytes": 854405120,
+                        "phase": "after",
+                        "rssBytes": 854405120
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1967208000,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55571024,
+                        "peakRssBytes": 118562816,
+                        "phase": "before",
+                        "rssBytes": 118562816
+                      },
+                      {
+                        "heapTotalBytes": 719323136,
+                        "heapUsedBytes": 358861840,
+                        "peakRssBytes": 858415104,
+                        "phase": "after",
+                        "rssBytes": 858415104
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2121717600,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55725120,
+                        "peakRssBytes": 119418880,
+                        "phase": "before",
+                        "rssBytes": 119418880
+                      },
+                      {
+                        "heapTotalBytes": 698351616,
+                        "heapUsedBytes": 377021232,
+                        "peakRssBytes": 838324224,
+                        "phase": "after",
+                        "rssBytes": 838299648
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 5448785920,
+                  "coldMedianNanos": 15933920200
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 15933920200,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 47278367,
+                        "externalBytes": 98884877,
+                        "heapTotalBytes": 39849984,
+                        "heapUsedBytes": 20796184,
+                        "peakRssBytes": 235286528,
+                        "phase": "before",
+                        "rssBytes": 235286528
+                      },
+                      {
+                        "arrayBufferBytes": 6971098,
+                        "externalBytes": 58499733,
+                        "heapTotalBytes": 5636734976,
+                        "heapUsedBytes": 5572200896,
+                        "peakRssBytes": 6034948096,
+                        "phase": "after",
+                        "rssBytes": 6034948096
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 15762922700,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 48161781,
+                        "externalBytes": 99769399,
+                        "heapTotalBytes": 39325696,
+                        "heapUsedBytes": 26424840,
+                        "peakRssBytes": 236077056,
+                        "phase": "before",
+                        "rssBytes": 234770432
+                      },
+                      {
+                        "arrayBufferBytes": 392326,
+                        "externalBytes": 51933340,
+                        "heapTotalBytes": 4124491776,
+                        "heapUsedBytes": 3683015088,
+                        "peakRssBytes": 5430935552,
+                        "phase": "after",
+                        "rssBytes": 4492976128
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 16626093400,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 47278367,
+                        "externalBytes": 98884877,
+                        "heapTotalBytes": 39325696,
+                        "heapUsedBytes": 20761472,
+                        "peakRssBytes": 234561536,
+                        "phase": "before",
+                        "rssBytes": 234561536
+                      },
+                      {
+                        "arrayBufferBytes": 392326,
+                        "externalBytes": 51920961,
+                        "heapTotalBytes": 4236730368,
+                        "heapUsedBytes": 3703169920,
+                        "peakRssBytes": 5448785920,
+                        "phase": "after",
+                        "rssBytes": 5251792896
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "after": {
+            "input": {
+              "byteLength": 46951577,
+              "documentIRI": "http://purl.obolibrary.org/obo/cido.owl",
+              "id": "obo-cido",
+              "sha256": "bb17610749edccc346921524ed1836475e91421fa1b391f90b9dc9c37691376a",
+              "syntax": "rdfxml"
+            },
+            "caseId": "3d17410ca66add8ac6cbb9ce3ba6b0dff790ed22288e11cdbdea8ff955dd3b5b",
+            "executionId": "ac48e1f47942019217562d2b0bbc924093ec6ac7c354359ea2df0e0a146c9747",
+            "harnessSha256": "51a9ccaf26c425006893ea6e1db5e4ff5e48b1cc03af5f25279be1114e3b0d36",
+            "rawObservationSha256": "ddbeef65adc321edb09c2a10735b7cb3df7035af514a51d7f8f07b737e93979d",
+            "tarballSha256": "49a5cacac957b580e8f6015a0e711f5d4e4f2fbd9bb4f68223fb5d11815b1265",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "string"
+              },
+              "javaHeapMiB": 1536,
+              "nodeHeapMiB": 2048,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 2816,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 411208,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/cido.owl",
+                "versionIRI": "http://purl.obolibrary.org/obo/cido/releases/2024-02-16/cido.owl"
+              },
+              "imports": [],
+              "ontologyAnnotations": 35
+            },
+            "summaryWitnessSha256": [
+              "3649d6e355d32bb1bd7cae5410a0e08113a103e09affd15b8501c46a4b9644ce"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 799490048,
+                  "coldMedianNanos": 1961711000
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1961711000,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52071504,
+                        "peakRssBytes": 119083008,
+                        "phase": "before",
+                        "rssBytes": 119083008
+                      },
+                      {
+                        "heapTotalBytes": 658505728,
+                        "heapUsedBytes": 425102496,
+                        "peakRssBytes": 799490048,
+                        "phase": "after",
+                        "rssBytes": 799485952
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1985540000,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52579392,
+                        "peakRssBytes": 118816768,
+                        "phase": "before",
+                        "rssBytes": 118816768
+                      },
+                      {
+                        "heapTotalBytes": 625999872,
+                        "heapUsedBytes": 427817296,
+                        "peakRssBytes": 763953152,
+                        "phase": "after",
+                        "rssBytes": 763944960
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1927399900,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52579392,
+                        "peakRssBytes": 118239232,
+                        "phase": "before",
+                        "rssBytes": 118005760
+                      },
+                      {
+                        "heapTotalBytes": 683671552,
+                        "heapUsedBytes": 427578888,
+                        "peakRssBytes": 827437056,
+                        "phase": "after",
+                        "rssBytes": 827428864
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 766783488,
+                  "coldMedianNanos": 8445479500
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 8445479500,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 47278367,
+                        "externalBytes": 98909900,
+                        "heapTotalBytes": 40116224,
+                        "heapUsedBytes": 21203352,
+                        "peakRssBytes": 242864128,
+                        "phase": "before",
+                        "rssBytes": 242864128
+                      },
+                      {
+                        "arrayBufferBytes": 23970285,
+                        "externalBytes": 75536322,
+                        "heapTotalBytes": 447451136,
+                        "heapUsedBytes": 291241056,
+                        "peakRssBytes": 796864512,
+                        "phase": "after",
+                        "rssBytes": 717664256
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 8416664700,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 47278367,
+                        "externalBytes": 98909900,
+                        "heapTotalBytes": 41164800,
+                        "heapUsedBytes": 21221176,
+                        "peakRssBytes": 242417664,
+                        "phase": "before",
+                        "rssBytes": 242417664
+                      },
+                      {
+                        "arrayBufferBytes": 23946905,
+                        "externalBytes": 75512942,
+                        "heapTotalBytes": 442470400,
+                        "heapUsedBytes": 285349176,
+                        "peakRssBytes": 764235776,
+                        "phase": "after",
+                        "rssBytes": 687722496
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 8481534900,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 47278367,
+                        "externalBytes": 98909900,
+                        "heapTotalBytes": 40902656,
+                        "heapUsedBytes": 21217424,
+                        "peakRssBytes": 243515392,
+                        "phase": "before",
+                        "rssBytes": 243515392
+                      },
+                      {
+                        "arrayBufferBytes": 23945221,
+                        "externalBytes": 75511258,
+                        "heapTotalBytes": 448499712,
+                        "heapUsedBytes": 283506384,
+                        "peakRssBytes": 766783488,
+                        "phase": "after",
+                        "rssBytes": 687505408
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "jsToJavaPeak": 0.9590907227903355,
+          "jsToJavaColdTime": 4.305159883387512
+        },
+        "stream": {
+          "before": {
+            "input": {
+              "byteLength": 46951577,
+              "documentIRI": "http://purl.obolibrary.org/obo/cido.owl",
+              "id": "obo-cido",
+              "sha256": "bb17610749edccc346921524ed1836475e91421fa1b391f90b9dc9c37691376a",
+              "syntax": "rdfxml"
+            },
+            "caseId": "3d17410ca66add8ac6cbb9ce3ba6b0dff790ed22288e11cdbdea8ff955dd3b5b",
+            "executionId": "8dc9e3a5eea846896781922a7f62995265d5587851234415309bbcba0695108c",
+            "harnessSha256": "008da8cdcef5338c0737b2dbf0f614c27128d3eea1d6d8b25109ec8362b77e6c",
+            "rawObservationSha256": "05fd8218be40b0b58a388186f2581f6ef0e2b8e9aef5abd171f67c56ba23818e",
+            "tarballSha256": "8fe76f20124ead2bedf32e7405495813fa5443f5a27d03f20637f366481da210",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "stream"
+              },
+              "javaHeapMiB": 4096,
+              "nodeHeapMiB": 8448,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 9600,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 411208,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/cido.owl",
+                "versionIRI": "http://purl.obolibrary.org/obo/cido/releases/2024-02-16/cido.owl"
+              },
+              "imports": [],
+              "ontologyAnnotations": 35
+            },
+            "summaryWitnessSha256": [
+              "3649d6e355d32bb1bd7cae5410a0e08113a103e09affd15b8501c46a4b9644ce"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 880861184,
+                  "coldMedianNanos": 2217770600
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2109685900,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55725120,
+                        "peakRssBytes": 119259136,
+                        "phase": "before",
+                        "rssBytes": 119259136
+                      },
+                      {
+                        "heapTotalBytes": 738197504,
+                        "heapUsedBytes": 339683792,
+                        "peakRssBytes": 880861184,
+                        "phase": "after",
+                        "rssBytes": 880852992
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2343759300,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55725120,
+                        "peakRssBytes": 119308288,
+                        "phase": "before",
+                        "rssBytes": 119308288
+                      },
+                      {
+                        "heapTotalBytes": 713031680,
+                        "heapUsedBytes": 368877872,
+                        "peakRssBytes": 849596416,
+                        "phase": "after",
+                        "rssBytes": 849596416
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2217770600,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55725120,
+                        "peakRssBytes": 118804480,
+                        "phase": "before",
+                        "rssBytes": 118804480
+                      },
+                      {
+                        "heapTotalBytes": 748683264,
+                        "heapUsedBytes": 337880672,
+                        "peakRssBytes": 888258560,
+                        "phase": "after",
+                        "rssBytes": 888250368
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 1043668992,
+                  "coldMedianNanos": 25706106000
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 25706106000,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 1144604,
+                        "externalBytes": 6314180,
+                        "heapTotalBytes": 39063552,
+                        "heapUsedBytes": 26525640,
+                        "peakRssBytes": 95211520,
+                        "phase": "before",
+                        "rssBytes": 94912512
+                      },
+                      {
+                        "arrayBufferBytes": 13422185,
+                        "externalBytes": 18013434,
+                        "heapTotalBytes": 923242496,
+                        "heapUsedBytes": 737005680,
+                        "peakRssBytes": 1043668992,
+                        "phase": "after",
+                        "rssBytes": 1043668992
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 30099966600,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 523590,
+                        "externalBytes": 5455905,
+                        "heapTotalBytes": 39849984,
+                        "heapUsedBytes": 27055472,
+                        "peakRssBytes": 93569024,
+                        "phase": "before",
+                        "rssBytes": 93188096
+                      },
+                      {
+                        "arrayBufferBytes": 13422185,
+                        "externalBytes": 18013434,
+                        "heapTotalBytes": 892555264,
+                        "heapUsedBytes": 822704032,
+                        "peakRssBytes": 1055993856,
+                        "phase": "after",
+                        "rssBytes": 1055993856
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 19610285000,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 1144604,
+                        "externalBytes": 6314180,
+                        "heapTotalBytes": 39063552,
+                        "heapUsedBytes": 26799184,
+                        "peakRssBytes": 95834112,
+                        "phase": "before",
+                        "rssBytes": 95424512
+                      },
+                      {
+                        "arrayBufferBytes": 13422185,
+                        "externalBytes": 18001055,
+                        "heapTotalBytes": 874393600,
+                        "heapUsedBytes": 800674064,
+                        "peakRssBytes": 992935936,
+                        "phase": "after",
+                        "rssBytes": 992935936
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "after": {
+            "input": {
+              "byteLength": 46951577,
+              "documentIRI": "http://purl.obolibrary.org/obo/cido.owl",
+              "id": "obo-cido",
+              "sha256": "bb17610749edccc346921524ed1836475e91421fa1b391f90b9dc9c37691376a",
+              "syntax": "rdfxml"
+            },
+            "caseId": "3d17410ca66add8ac6cbb9ce3ba6b0dff790ed22288e11cdbdea8ff955dd3b5b",
+            "executionId": "4cb6cd44ee465609106835d847cc798f4a430df96910b076385289ff2204c805",
+            "harnessSha256": "51a9ccaf26c425006893ea6e1db5e4ff5e48b1cc03af5f25279be1114e3b0d36",
+            "rawObservationSha256": "1feef27ee3daded6aae833c5bf80a04660c801c3e020f7c15cded4239169e3ff",
+            "tarballSha256": "49a5cacac957b580e8f6015a0e711f5d4e4f2fbd9bb4f68223fb5d11815b1265",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "stream"
+              },
+              "javaHeapMiB": 1536,
+              "nodeHeapMiB": 2048,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 2816,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 411208,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/cido.owl",
+                "versionIRI": "http://purl.obolibrary.org/obo/cido/releases/2024-02-16/cido.owl"
+              },
+              "imports": [],
+              "ontologyAnnotations": 35
+            },
+            "summaryWitnessSha256": [
+              "3649d6e355d32bb1bd7cae5410a0e08113a103e09affd15b8501c46a4b9644ce"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 801103872,
+                  "coldMedianNanos": 1940517700
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1931904500,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52579392,
+                        "peakRssBytes": 119549952,
+                        "phase": "before",
+                        "rssBytes": 119549952
+                      },
+                      {
+                        "heapTotalBytes": 706740224,
+                        "heapUsedBytes": 429525120,
+                        "peakRssBytes": 835604480,
+                        "phase": "after",
+                        "rssBytes": 835604480
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1940517700,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52579392,
+                        "peakRssBytes": 118714368,
+                        "phase": "before",
+                        "rssBytes": 118714368
+                      },
+                      {
+                        "heapTotalBytes": 651165696,
+                        "heapUsedBytes": 428818816,
+                        "peakRssBytes": 783773696,
+                        "phase": "after",
+                        "rssBytes": 783773696
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1953286900,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52055104,
+                        "peakRssBytes": 118181888,
+                        "phase": "before",
+                        "rssBytes": 118181888
+                      },
+                      {
+                        "heapTotalBytes": 663748608,
+                        "heapUsedBytes": 428772496,
+                        "peakRssBytes": 801103872,
+                        "phase": "after",
+                        "rssBytes": 801091584
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 474832896,
+                  "coldMedianNanos": 6858275200
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 6797450900,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 946881,
+                        "externalBytes": 5629785,
+                        "heapTotalBytes": 39067648,
+                        "heapUsedBytes": 29199120,
+                        "peakRssBytes": 101564416,
+                        "phase": "before",
+                        "rssBytes": 101416960
+                      },
+                      {
+                        "arrayBufferBytes": 26696829,
+                        "externalBytes": 31313101,
+                        "heapTotalBytes": 350830592,
+                        "heapUsedBytes": 298203632,
+                        "peakRssBytes": 474832896,
+                        "phase": "after",
+                        "rssBytes": 471216128
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 7306963100,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 1160336,
+                        "externalBytes": 5843240,
+                        "heapTotalBytes": 39329792,
+                        "heapUsedBytes": 28574344,
+                        "peakRssBytes": 102354944,
+                        "phase": "before",
+                        "rssBytes": 102207488
+                      },
+                      {
+                        "arrayBufferBytes": 23955417,
+                        "externalBytes": 28571689,
+                        "heapTotalBytes": 305545216,
+                        "heapUsedBytes": 232836856,
+                        "peakRssBytes": 459337728,
+                        "phase": "after",
+                        "rssBytes": 421892096
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 6858275200,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 946881,
+                        "externalBytes": 5629785,
+                        "heapTotalBytes": 39067648,
+                        "heapUsedBytes": 28786584,
+                        "peakRssBytes": 101195776,
+                        "phase": "before",
+                        "rssBytes": 101195776
+                      },
+                      {
+                        "arrayBufferBytes": 28162712,
+                        "externalBytes": 32778984,
+                        "heapTotalBytes": 398553088,
+                        "heapUsedBytes": 358445384,
+                        "peakRssBytes": 526110720,
+                        "phase": "after",
+                        "rssBytes": 524079104
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "jsToJavaPeak": 0.5927232567414179,
+          "jsToJavaColdTime": 3.534250267338453
+        }
+      }
+    },
+    {
+      "input": "obo-iceo",
+      "structuralEvidence": {
+        "caseId": "0f442dff941cc40206e67aa309ad93667ad6fcd55ea2b6f9aaac99092f99f04b",
+        "executionId": "597b4e20334843a8dd435b080d056df5b4c7d37cd230b373ddc96c59354a4e54",
+        "status": "match"
+      },
+      "modes": {
+        "string": {
+          "before": {
+            "input": {
+              "byteLength": 37320151,
+              "documentIRI": "http://purl.obolibrary.org/obo/iceo.owl",
+              "id": "obo-iceo",
+              "sha256": "b647e59b45ce38ddd30c06213058d9a58164b20a73dbf297e7b327a93c8c7f51",
+              "syntax": "rdfxml"
+            },
+            "caseId": "0f442dff941cc40206e67aa309ad93667ad6fcd55ea2b6f9aaac99092f99f04b",
+            "executionId": "110feadcd42162e659ea9bfe7ea044b04956e90a64931f30591d59f17a7f51be",
+            "harnessSha256": "008da8cdcef5338c0737b2dbf0f614c27128d3eea1d6d8b25109ec8362b77e6c",
+            "rawObservationSha256": "b5f551783744c6147da4e5e87c8e96b2a8e1f5c086f0382b4cd88fc43932d293",
+            "tarballSha256": "8fe76f20124ead2bedf32e7405495813fa5443f5a27d03f20637f366481da210",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "string"
+              },
+              "javaHeapMiB": 4096,
+              "nodeHeapMiB": 8448,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 9600,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 366115,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/2019/1/ICEO",
+                "versionIRI": null
+              },
+              "imports": [],
+              "ontologyAnnotations": 12
+            },
+            "summaryWitnessSha256": [
+              "a4c558f70393a38af2de48261fc94454cfb6a9d01e64d014a2cb72150f1c0c30"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 844021760,
+                  "coldMedianNanos": 1877989000
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1801193100,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 47264384,
+                        "peakRssBytes": 112574464,
+                        "phase": "before",
+                        "rssBytes": 112574464
+                      },
+                      {
+                        "heapTotalBytes": 822083584,
+                        "heapUsedBytes": 397683552,
+                        "peakRssBytes": 873312256,
+                        "phase": "after",
+                        "rssBytes": 873295872
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1939525100,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 47185576,
+                        "peakRssBytes": 112308224,
+                        "phase": "before",
+                        "rssBytes": 112308224
+                      },
+                      {
+                        "heapTotalBytes": 692060160,
+                        "heapUsedBytes": 400759648,
+                        "peakRssBytes": 823693312,
+                        "phase": "after",
+                        "rssBytes": 823685120
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1877989000,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 49146008,
+                        "peakRssBytes": 113274880,
+                        "phase": "before",
+                        "rssBytes": 113274880
+                      },
+                      {
+                        "heapTotalBytes": 710934528,
+                        "heapUsedBytes": 390919160,
+                        "peakRssBytes": 844021760,
+                        "phase": "after",
+                        "rssBytes": 844009472
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 8221843456,
+                  "coldMedianNanos": 18169608500
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 17557669800,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 37646941,
+                        "externalBytes": 79623649,
+                        "heapTotalBytes": 40112128,
+                        "heapUsedBytes": 20744200,
+                        "peakRssBytes": 206397440,
+                        "phase": "before",
+                        "rssBytes": 206397440
+                      },
+                      {
+                        "arrayBufferBytes": 392326,
+                        "externalBytes": 42291159,
+                        "heapTotalBytes": 6603710464,
+                        "heapUsedBytes": 4595263648,
+                        "peakRssBytes": 8221843456,
+                        "phase": "after",
+                        "rssBytes": 8184619008
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 18169608500,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 37646941,
+                        "externalBytes": 79623649,
+                        "heapTotalBytes": 39063552,
+                        "heapUsedBytes": 20794456,
+                        "peakRssBytes": 205090816,
+                        "phase": "before",
+                        "rssBytes": 204206080
+                      },
+                      {
+                        "arrayBufferBytes": 392326,
+                        "externalBytes": 42291159,
+                        "heapTotalBytes": 6530445312,
+                        "heapUsedBytes": 4633429296,
+                        "peakRssBytes": 8120860672,
+                        "phase": "after",
+                        "rssBytes": 8093540352
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 18892962500,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 37646941,
+                        "externalBytes": 79623649,
+                        "heapTotalBytes": 38801408,
+                        "heapUsedBytes": 20803560,
+                        "peakRssBytes": 204836864,
+                        "phase": "before",
+                        "rssBytes": 204836864
+                      },
+                      {
+                        "arrayBufferBytes": 392326,
+                        "externalBytes": 42291159,
+                        "heapTotalBytes": 6987948032,
+                        "heapUsedBytes": 4552533552,
+                        "peakRssBytes": 8272572416,
+                        "phase": "after",
+                        "rssBytes": 7348322304
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "after": {
+            "input": {
+              "byteLength": 37320151,
+              "documentIRI": "http://purl.obolibrary.org/obo/iceo.owl",
+              "id": "obo-iceo",
+              "sha256": "b647e59b45ce38ddd30c06213058d9a58164b20a73dbf297e7b327a93c8c7f51",
+              "syntax": "rdfxml"
+            },
+            "caseId": "0f442dff941cc40206e67aa309ad93667ad6fcd55ea2b6f9aaac99092f99f04b",
+            "executionId": "ac48e1f47942019217562d2b0bbc924093ec6ac7c354359ea2df0e0a146c9747",
+            "harnessSha256": "51a9ccaf26c425006893ea6e1db5e4ff5e48b1cc03af5f25279be1114e3b0d36",
+            "rawObservationSha256": "8d25abc9799743b99e5bc42288d36b9431d9ef45a69afe0a9459dc4912114183",
+            "tarballSha256": "49a5cacac957b580e8f6015a0e711f5d4e4f2fbd9bb4f68223fb5d11815b1265",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "string"
+              },
+              "javaHeapMiB": 1536,
+              "nodeHeapMiB": 2048,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 2816,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 366115,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/2019/1/ICEO",
+                "versionIRI": null
+              },
+              "imports": [],
+              "ontologyAnnotations": 12
+            },
+            "summaryWitnessSha256": [
+              "a4c558f70393a38af2de48261fc94454cfb6a9d01e64d014a2cb72150f1c0c30"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 682954752,
+                  "coldMedianNanos": 1709052200
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1709052200,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 46287936,
+                        "peakRssBytes": 112648192,
+                        "phase": "before",
+                        "rssBytes": 112648192
+                      },
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 370429008,
+                        "peakRssBytes": 682954752,
+                        "phase": "after",
+                        "rssBytes": 682938368
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1729024700,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 46030928,
+                        "peakRssBytes": 112889856,
+                        "phase": "before",
+                        "rssBytes": 112889856
+                      },
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 374099024,
+                        "peakRssBytes": 689688576,
+                        "phase": "after",
+                        "rssBytes": 689586176
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1671194600,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 46287936,
+                        "peakRssBytes": 113057792,
+                        "phase": "before",
+                        "rssBytes": 113057792
+                      },
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 366365792,
+                        "peakRssBytes": 670097408,
+                        "phase": "after",
+                        "rssBytes": 670081024
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 541696000,
+                  "coldMedianNanos": 6757540000
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 6757540000,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 37646941,
+                        "externalBytes": 79648672,
+                        "heapTotalBytes": 39854080,
+                        "heapUsedBytes": 21181752,
+                        "peakRssBytes": 214118400,
+                        "phase": "before",
+                        "rssBytes": 214118400
+                      },
+                      {
+                        "arrayBufferBytes": 34683939,
+                        "externalBytes": 76620174,
+                        "heapTotalBytes": 351236096,
+                        "heapUsedBytes": 284396120,
+                        "peakRssBytes": 541167616,
+                        "phase": "after",
+                        "rssBytes": 539447296
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 6829393300,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 37646941,
+                        "externalBytes": 79648672,
+                        "heapTotalBytes": 40378368,
+                        "heapUsedBytes": 21198840,
+                        "peakRssBytes": 212627456,
+                        "phase": "before",
+                        "rssBytes": 212627456
+                      },
+                      {
+                        "arrayBufferBytes": 35413693,
+                        "externalBytes": 77349928,
+                        "heapTotalBytes": 350969856,
+                        "heapUsedBytes": 281788816,
+                        "peakRssBytes": 541888512,
+                        "phase": "after",
+                        "rssBytes": 540917760
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 6705490500,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 37646941,
+                        "externalBytes": 79648672,
+                        "heapTotalBytes": 40902656,
+                        "heapUsedBytes": 21182864,
+                        "peakRssBytes": 213344256,
+                        "phase": "before",
+                        "rssBytes": 213344256
+                      },
+                      {
+                        "arrayBufferBytes": 34985624,
+                        "externalBytes": 76921859,
+                        "heapTotalBytes": 350973952,
+                        "heapUsedBytes": 305599512,
+                        "peakRssBytes": 541696000,
+                        "phase": "after",
+                        "rssBytes": 540057600
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "jsToJavaPeak": 0.7931652842500465,
+          "jsToJavaColdTime": 3.953969340433253
+        },
+        "stream": {
+          "before": {
+            "input": {
+              "byteLength": 37320151,
+              "documentIRI": "http://purl.obolibrary.org/obo/iceo.owl",
+              "id": "obo-iceo",
+              "sha256": "b647e59b45ce38ddd30c06213058d9a58164b20a73dbf297e7b327a93c8c7f51",
+              "syntax": "rdfxml"
+            },
+            "caseId": "0f442dff941cc40206e67aa309ad93667ad6fcd55ea2b6f9aaac99092f99f04b",
+            "executionId": "8dc9e3a5eea846896781922a7f62995265d5587851234415309bbcba0695108c",
+            "harnessSha256": "008da8cdcef5338c0737b2dbf0f614c27128d3eea1d6d8b25109ec8362b77e6c",
+            "rawObservationSha256": "db822ececa1731985db1a1d3e555af33639013a41d9cf77f9feae18914adfe47",
+            "tarballSha256": "8fe76f20124ead2bedf32e7405495813fa5443f5a27d03f20637f366481da210",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "stream"
+              },
+              "javaHeapMiB": 4096,
+              "nodeHeapMiB": 8448,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 9600,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 366115,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/2019/1/ICEO",
+                "versionIRI": null
+              },
+              "imports": [],
+              "ontologyAnnotations": 12
+            },
+            "summaryWitnessSha256": [
+              "a4c558f70393a38af2de48261fc94454cfb6a9d01e64d014a2cb72150f1c0c30"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 863166464,
+                  "coldMedianNanos": 1833597000
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1989570000,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 47336512,
+                        "peakRssBytes": 112537600,
+                        "phase": "before",
+                        "rssBytes": 112537600
+                      },
+                      {
+                        "heapTotalBytes": 721420288,
+                        "heapUsedBytes": 408374376,
+                        "peakRssBytes": 854818816,
+                        "phase": "after",
+                        "rssBytes": 854806528
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1807878500,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 47336512,
+                        "peakRssBytes": 112578560,
+                        "phase": "before",
+                        "rssBytes": 112578560
+                      },
+                      {
+                        "heapTotalBytes": 723517440,
+                        "heapUsedBytes": 403354920,
+                        "peakRssBytes": 863166464,
+                        "phase": "after",
+                        "rssBytes": 863150080
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1833597000,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 47294592,
+                        "peakRssBytes": 112128000,
+                        "phase": "before",
+                        "rssBytes": 112128000
+                      },
+                      {
+                        "heapTotalBytes": 809500672,
+                        "heapUsedBytes": 410757296,
+                        "peakRssBytes": 871804928,
+                        "phase": "after",
+                        "rssBytes": 871776256
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 928628736,
+                  "coldMedianNanos": 19368351600
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 20272565300,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 1144604,
+                        "externalBytes": 6314180,
+                        "heapTotalBytes": 39325696,
+                        "heapUsedBytes": 26529432,
+                        "peakRssBytes": 95440896,
+                        "phase": "before",
+                        "rssBytes": 95059968
+                      },
+                      {
+                        "arrayBufferBytes": 11644588,
+                        "externalBytes": 16223458,
+                        "heapTotalBytes": 786710528,
+                        "heapUsedBytes": 650956296,
+                        "peakRssBytes": 928628736,
+                        "phase": "after",
+                        "rssBytes": 928628736
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 13632150500,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 869083,
+                        "externalBytes": 5526936,
+                        "heapTotalBytes": 38801408,
+                        "heapUsedBytes": 26947248,
+                        "peakRssBytes": 93790208,
+                        "phase": "before",
+                        "rssBytes": 93540352
+                      },
+                      {
+                        "arrayBufferBytes": 11644588,
+                        "externalBytes": 16223458,
+                        "heapTotalBytes": 741363712,
+                        "heapUsedBytes": 666866824,
+                        "peakRssBytes": 921759744,
+                        "phase": "after",
+                        "rssBytes": 921759744
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 19368351600,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 392390,
+                        "externalBytes": 5050501,
+                        "heapTotalBytes": 39325696,
+                        "heapUsedBytes": 25002992,
+                        "peakRssBytes": 92581888,
+                        "phase": "before",
+                        "rssBytes": 92581888
+                      },
+                      {
+                        "arrayBufferBytes": 11644588,
+                        "externalBytes": 16235837,
+                        "heapTotalBytes": 804052992,
+                        "heapUsedBytes": 618135200,
+                        "peakRssBytes": 940191744,
+                        "phase": "after",
+                        "rssBytes": 940191744
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "after": {
+            "input": {
+              "byteLength": 37320151,
+              "documentIRI": "http://purl.obolibrary.org/obo/iceo.owl",
+              "id": "obo-iceo",
+              "sha256": "b647e59b45ce38ddd30c06213058d9a58164b20a73dbf297e7b327a93c8c7f51",
+              "syntax": "rdfxml"
+            },
+            "caseId": "0f442dff941cc40206e67aa309ad93667ad6fcd55ea2b6f9aaac99092f99f04b",
+            "executionId": "4cb6cd44ee465609106835d847cc798f4a430df96910b076385289ff2204c805",
+            "harnessSha256": "51a9ccaf26c425006893ea6e1db5e4ff5e48b1cc03af5f25279be1114e3b0d36",
+            "rawObservationSha256": "13aa32776110fd44fa0cdecc5914fe93096651f51deba7b69e48f262a0ef825c",
+            "tarballSha256": "49a5cacac957b580e8f6015a0e711f5d4e4f2fbd9bb4f68223fb5d11815b1265",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "stream"
+              },
+              "javaHeapMiB": 1536,
+              "nodeHeapMiB": 2048,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 2816,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 366115,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/2019/1/ICEO",
+                "versionIRI": null
+              },
+              "imports": [],
+              "ontologyAnnotations": 12
+            },
+            "summaryWitnessSha256": [
+              "a4c558f70393a38af2de48261fc94454cfb6a9d01e64d014a2cb72150f1c0c30"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 676626432,
+                  "coldMedianNanos": 1724991400
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1736418100,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 46287936,
+                        "peakRssBytes": 112578560,
+                        "phase": "before",
+                        "rssBytes": 112578560
+                      },
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 373050528,
+                        "peakRssBytes": 683114496,
+                        "phase": "after",
+                        "rssBytes": 683098112
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1724991400,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 47079504,
+                        "peakRssBytes": 112701440,
+                        "phase": "before",
+                        "rssBytes": 112701440
+                      },
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 372919360,
+                        "peakRssBytes": 674164736,
+                        "phase": "after",
+                        "rssBytes": 674148352
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 1656220400,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 46030928,
+                        "peakRssBytes": 112304128,
+                        "phase": "before",
+                        "rssBytes": 112304128
+                      },
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 365055040,
+                        "peakRssBytes": 676626432,
+                        "phase": "after",
+                        "rssBytes": 676626432
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 325296128,
+                  "coldMedianNanos": 5302736700
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 5271062200,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 1225936,
+                        "externalBytes": 5908840,
+                        "heapTotalBytes": 39329792,
+                        "heapUsedBytes": 28800232,
+                        "peakRssBytes": 102891520,
+                        "phase": "before",
+                        "rssBytes": 102662144
+                      },
+                      {
+                        "arrayBufferBytes": 19022722,
+                        "externalBytes": 23638994,
+                        "heapTotalBytes": 232628224,
+                        "heapUsedBytes": 163412776,
+                        "peakRssBytes": 324845568,
+                        "phase": "after",
+                        "rssBytes": 323264512
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 5342934400,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 469078,
+                        "externalBytes": 5292295,
+                        "heapTotalBytes": 39329792,
+                        "heapUsedBytes": 26520048,
+                        "peakRssBytes": 99647488,
+                        "phase": "before",
+                        "rssBytes": 99176448
+                      },
+                      {
+                        "arrayBufferBytes": 14865816,
+                        "externalBytes": 19482088,
+                        "heapTotalBytes": 206848000,
+                        "heapUsedBytes": 143408136,
+                        "peakRssBytes": 326397952,
+                        "phase": "after",
+                        "rssBytes": 310145024
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 5302736700,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 1160336,
+                        "externalBytes": 5843240,
+                        "heapTotalBytes": 39591936,
+                        "heapUsedBytes": 28572864,
+                        "peakRssBytes": 103407616,
+                        "phase": "before",
+                        "rssBytes": 103395328
+                      },
+                      {
+                        "arrayBufferBytes": 19022722,
+                        "externalBytes": 23638994,
+                        "heapTotalBytes": 231940096,
+                        "heapUsedBytes": 165572384,
+                        "peakRssBytes": 325296128,
+                        "phase": "after",
+                        "rssBytes": 323170304
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "jsToJavaPeak": 0.4807617802314882,
+          "jsToJavaColdTime": 3.074065586645823
+        }
+      }
+    },
+    {
+      "input": "obo-mro",
+      "structuralEvidence": {
+        "caseId": "65adc61609cf156ae2a1d2fb90904439e56bde9cd238c053d329413e5bf767cb",
+        "executionId": "597b4e20334843a8dd435b080d056df5b4c7d37cd230b373ddc96c59354a4e54",
+        "status": "match"
+      },
+      "modes": {
+        "string": {
+          "before": {
+            "input": {
+              "byteLength": 66923606,
+              "documentIRI": "http://purl.obolibrary.org/obo/mro.owl",
+              "id": "obo-mro",
+              "sha256": "f01d1a64d0e742483f296acc183d0c919cb59fde9f8f3f2ed870be2717331a2f",
+              "syntax": "rdfxml"
+            },
+            "caseId": "65adc61609cf156ae2a1d2fb90904439e56bde9cd238c053d329413e5bf767cb",
+            "executionId": "110feadcd42162e659ea9bfe7ea044b04956e90a64931f30591d59f17a7f51be",
+            "harnessSha256": "008da8cdcef5338c0737b2dbf0f614c27128d3eea1d6d8b25109ec8362b77e6c",
+            "rawObservationSha256": "26397a99618cb0b5b593728436d631a065cb68956fbc6522d128317d81a3dd82",
+            "tarballSha256": "8fe76f20124ead2bedf32e7405495813fa5443f5a27d03f20637f366481da210",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "string"
+              },
+              "javaHeapMiB": 4096,
+              "nodeHeapMiB": 8448,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 9600,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 420165,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/mro.owl",
+                "versionIRI": "http://purl.obolibrary.org/obo/mro/2026-10-20/mro.owl"
+              },
+              "imports": [],
+              "ontologyAnnotations": 14
+            },
+            "summaryWitnessSha256": [
+              "169c8295da7e15e1837e08471a9df99acea123d39cc96d55c2178e61405c7b29"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 970641408,
+                  "coldMedianNanos": 2705147100
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2503230000,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 56660592,
+                        "peakRssBytes": 118190080,
+                        "phase": "before",
+                        "rssBytes": 118190080
+                      },
+                      {
+                        "heapTotalBytes": 968884224,
+                        "heapUsedBytes": 428876480,
+                        "peakRssBytes": 1110777856,
+                        "phase": "after",
+                        "rssBytes": 1110765568
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2774095200,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55725120,
+                        "peakRssBytes": 118398976,
+                        "phase": "before",
+                        "rssBytes": 118398976
+                      },
+                      {
+                        "heapTotalBytes": 1048576000,
+                        "heapUsedBytes": 453502096,
+                        "peakRssBytes": 893943808,
+                        "phase": "after",
+                        "rssBytes": 893931520
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2705147100,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55574184,
+                        "peakRssBytes": 118575104,
+                        "phase": "before",
+                        "rssBytes": 118575104
+                      },
+                      {
+                        "heapTotalBytes": 809500672,
+                        "heapUsedBytes": 593372808,
+                        "peakRssBytes": 970641408,
+                        "phase": "after",
+                        "rssBytes": 955625472
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 8365219840,
+                  "coldMedianNanos": 26768151700
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 26768151700,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 67250396,
+                        "externalBytes": 138897452,
+                        "heapTotalBytes": 39325696,
+                        "heapUsedBytes": 20791832,
+                        "peakRssBytes": 226672640,
+                        "phase": "before",
+                        "rssBytes": 159748096
+                      },
+                      {
+                        "arrayBufferBytes": 392326,
+                        "externalBytes": 71894802,
+                        "heapTotalBytes": 5282066432,
+                        "heapUsedBytes": 5088068120,
+                        "peakRssBytes": 8277168128,
+                        "phase": "after",
+                        "rssBytes": 6815768576
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 25603577400,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 67250396,
+                        "externalBytes": 139649666,
+                        "heapTotalBytes": 40112128,
+                        "heapUsedBytes": 20797360,
+                        "peakRssBytes": 228618240,
+                        "phase": "before",
+                        "rssBytes": 161693696
+                      },
+                      {
+                        "arrayBufferBytes": 392326,
+                        "externalBytes": 71894802,
+                        "heapTotalBytes": 5367914496,
+                        "heapUsedBytes": 5068755512,
+                        "peakRssBytes": 8365219840,
+                        "phase": "after",
+                        "rssBytes": 6671130624
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 28019777400,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 67250396,
+                        "externalBytes": 139649666,
+                        "heapTotalBytes": 40112128,
+                        "heapUsedBytes": 20767792,
+                        "peakRssBytes": 227373056,
+                        "phase": "before",
+                        "rssBytes": 160448512
+                      },
+                      {
+                        "arrayBufferBytes": 392326,
+                        "externalBytes": 71894802,
+                        "heapTotalBytes": 5349830656,
+                        "heapUsedBytes": 5063294528,
+                        "peakRssBytes": 8369729536,
+                        "phase": "after",
+                        "rssBytes": 6672769024
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "after": {
+            "input": {
+              "byteLength": 66923606,
+              "documentIRI": "http://purl.obolibrary.org/obo/mro.owl",
+              "id": "obo-mro",
+              "sha256": "f01d1a64d0e742483f296acc183d0c919cb59fde9f8f3f2ed870be2717331a2f",
+              "syntax": "rdfxml"
+            },
+            "caseId": "65adc61609cf156ae2a1d2fb90904439e56bde9cd238c053d329413e5bf767cb",
+            "executionId": "ac48e1f47942019217562d2b0bbc924093ec6ac7c354359ea2df0e0a146c9747",
+            "harnessSha256": "51a9ccaf26c425006893ea6e1db5e4ff5e48b1cc03af5f25279be1114e3b0d36",
+            "rawObservationSha256": "cb9986db5f386b3049c8d46ea61b4d9b46e0820820826f7530a28b866d51a8d8",
+            "tarballSha256": "49a5cacac957b580e8f6015a0e711f5d4e4f2fbd9bb4f68223fb5d11815b1265",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "string"
+              },
+              "javaHeapMiB": 1536,
+              "nodeHeapMiB": 2048,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 2816,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 420165,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/mro.owl",
+                "versionIRI": "http://purl.obolibrary.org/obo/mro/2026-10-20/mro.owl"
+              },
+              "imports": [],
+              "ontologyAnnotations": 14
+            },
+            "summaryWitnessSha256": [
+              "169c8295da7e15e1837e08471a9df99acea123d39cc96d55c2178e61405c7b29"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 789073920,
+                  "coldMedianNanos": 2409738300
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2412803900,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52322384,
+                        "peakRssBytes": 119869440,
+                        "phase": "before",
+                        "rssBytes": 119869440
+                      },
+                      {
+                        "heapTotalBytes": 662700032,
+                        "heapUsedBytes": 383795216,
+                        "peakRssBytes": 803160064,
+                        "phase": "after",
+                        "rssBytes": 803127296
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2365330100,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 53387360,
+                        "peakRssBytes": 119115776,
+                        "phase": "before",
+                        "rssBytes": 119115776
+                      },
+                      {
+                        "heapTotalBytes": 638582784,
+                        "heapUsedBytes": 503279912,
+                        "peakRssBytes": 789073920,
+                        "phase": "after",
+                        "rssBytes": 789049344
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2409738300,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52579392,
+                        "peakRssBytes": 118288384,
+                        "phase": "before",
+                        "rssBytes": 118288384
+                      },
+                      {
+                        "heapTotalBytes": 637534208,
+                        "heapUsedBytes": 504225272,
+                        "peakRssBytes": 781905920,
+                        "phase": "after",
+                        "rssBytes": 781897728
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 630697984,
+                  "coldMedianNanos": 11752979300
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 11757291500,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 67250396,
+                        "externalBytes": 139624829,
+                        "heapTotalBytes": 40640512,
+                        "heapUsedBytes": 21201072,
+                        "peakRssBytes": 234762240,
+                        "phase": "before",
+                        "rssBytes": 167837696
+                      },
+                      {
+                        "arrayBufferBytes": 36180896,
+                        "externalBytes": 107720774,
+                        "heapTotalBytes": 413290496,
+                        "heapUsedBytes": 367542368,
+                        "peakRssBytes": 622026752,
+                        "phase": "after",
+                        "rssBytes": 599674880
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 11717565100,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 67250396,
+                        "externalBytes": 139690429,
+                        "heapTotalBytes": 40640512,
+                        "heapUsedBytes": 21199272,
+                        "peakRssBytes": 234950656,
+                        "phase": "before",
+                        "rssBytes": 168026112
+                      },
+                      {
+                        "arrayBufferBytes": 36180896,
+                        "externalBytes": 107720774,
+                        "heapTotalBytes": 414289920,
+                        "heapUsedBytes": 350566336,
+                        "peakRssBytes": 709935104,
+                        "phase": "after",
+                        "rssBytes": 604340224
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "string",
+                    "elapsedNanos": 11752979300,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 67250396,
+                        "externalBytes": 139411374,
+                        "heapTotalBytes": 40902656,
+                        "heapUsedBytes": 21327152,
+                        "peakRssBytes": 235536384,
+                        "phase": "before",
+                        "rssBytes": 168611840
+                      },
+                      {
+                        "arrayBufferBytes": 36180896,
+                        "externalBytes": 107720774,
+                        "heapTotalBytes": 413241344,
+                        "heapUsedBytes": 357279296,
+                        "peakRssBytes": 630697984,
+                        "phase": "after",
+                        "rssBytes": 599232512
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "jsToJavaPeak": 0.7992888473617276,
+          "jsToJavaColdTime": 4.877284516746071
+        },
+        "stream": {
+          "before": {
+            "input": {
+              "byteLength": 66923606,
+              "documentIRI": "http://purl.obolibrary.org/obo/mro.owl",
+              "id": "obo-mro",
+              "sha256": "f01d1a64d0e742483f296acc183d0c919cb59fde9f8f3f2ed870be2717331a2f",
+              "syntax": "rdfxml"
+            },
+            "caseId": "65adc61609cf156ae2a1d2fb90904439e56bde9cd238c053d329413e5bf767cb",
+            "executionId": "8dc9e3a5eea846896781922a7f62995265d5587851234415309bbcba0695108c",
+            "harnessSha256": "008da8cdcef5338c0737b2dbf0f614c27128d3eea1d6d8b25109ec8362b77e6c",
+            "rawObservationSha256": "cdc6def234d4f099c64aede793e802e845597841efa9e3799d051faa18b31306",
+            "tarballSha256": "8fe76f20124ead2bedf32e7405495813fa5443f5a27d03f20637f366481da210",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "stream"
+              },
+              "javaHeapMiB": 4096,
+              "nodeHeapMiB": 8448,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 9600,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 420165,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/mro.owl",
+                "versionIRI": "http://purl.obolibrary.org/obo/mro/2026-10-20/mro.owl"
+              },
+              "imports": [],
+              "ontologyAnnotations": 14
+            },
+            "summaryWitnessSha256": [
+              "169c8295da7e15e1837e08471a9df99acea123d39cc96d55c2178e61405c7b29"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 906821632,
+                  "coldMedianNanos": 2740144300
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2634496700,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55725120,
+                        "peakRssBytes": 118095872,
+                        "phase": "before",
+                        "rssBytes": 118095872
+                      },
+                      {
+                        "heapTotalBytes": 799014912,
+                        "heapUsedBytes": 569542600,
+                        "peakRssBytes": 949710848,
+                        "phase": "after",
+                        "rssBytes": 933728256
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2740144300,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55725120,
+                        "peakRssBytes": 118808576,
+                        "phase": "before",
+                        "rssBytes": 118808576
+                      },
+                      {
+                        "heapTotalBytes": 1061158912,
+                        "heapUsedBytes": 443598856,
+                        "peakRssBytes": 893906944,
+                        "phase": "after",
+                        "rssBytes": 893898752
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2774159100,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 55574184,
+                        "peakRssBytes": 118812672,
+                        "phase": "before",
+                        "rssBytes": 118812672
+                      },
+                      {
+                        "heapTotalBytes": 1052770304,
+                        "heapUsedBytes": 446070512,
+                        "peakRssBytes": 906821632,
+                        "phase": "after",
+                        "rssBytes": 888250368
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 1379762176,
+                  "coldMedianNanos": 26993828100
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 26993828100,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 1144604,
+                        "externalBytes": 6314177,
+                        "heapTotalBytes": 39063552,
+                        "heapUsedBytes": 26579800,
+                        "peakRssBytes": 96026624,
+                        "phase": "before",
+                        "rssBytes": 95666176
+                      },
+                      {
+                        "arrayBufferBytes": 22769304,
+                        "externalBytes": 27348174,
+                        "heapTotalBytes": 1204400128,
+                        "heapUsedBytes": 806954792,
+                        "peakRssBytes": 1379762176,
+                        "phase": "after",
+                        "rssBytes": 1379762176
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 24926515300,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 1144604,
+                        "externalBytes": 6314177,
+                        "heapTotalBytes": 39063552,
+                        "heapUsedBytes": 26458120,
+                        "peakRssBytes": 95997952,
+                        "phase": "before",
+                        "rssBytes": 95809536
+                      },
+                      {
+                        "arrayBufferBytes": 22769304,
+                        "externalBytes": 27348174,
+                        "heapTotalBytes": 1200291840,
+                        "heapUsedBytes": 862665528,
+                        "peakRssBytes": 1364078592,
+                        "phase": "after",
+                        "rssBytes": 1364078592
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 28695512800,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 765627,
+                        "externalBytes": 5423477,
+                        "heapTotalBytes": 38539264,
+                        "heapUsedBytes": 27322512,
+                        "peakRssBytes": 94539776,
+                        "phase": "before",
+                        "rssBytes": 94539776
+                      },
+                      {
+                        "arrayBufferBytes": 22769304,
+                        "externalBytes": 27348174,
+                        "heapTotalBytes": 1229910016,
+                        "heapUsedBytes": 856564032,
+                        "peakRssBytes": 1403502592,
+                        "phase": "after",
+                        "rssBytes": 1403502592
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "after": {
+            "input": {
+              "byteLength": 66923606,
+              "documentIRI": "http://purl.obolibrary.org/obo/mro.owl",
+              "id": "obo-mro",
+              "sha256": "f01d1a64d0e742483f296acc183d0c919cb59fde9f8f3f2ed870be2717331a2f",
+              "syntax": "rdfxml"
+            },
+            "caseId": "65adc61609cf156ae2a1d2fb90904439e56bde9cd238c053d329413e5bf767cb",
+            "executionId": "4cb6cd44ee465609106835d847cc798f4a430df96910b076385289ff2204c805",
+            "harnessSha256": "51a9ccaf26c425006893ea6e1db5e4ff5e48b1cc03af5f25279be1114e3b0d36",
+            "rawObservationSha256": "2841ec61bcf86a37716f63e5664bee3a3be375d0ada88c262a45cdbe4b0b8c1c",
+            "tarballSha256": "49a5cacac957b580e8f6015a0e711f5d4e4f2fbd9bb4f68223fb5d11815b1265",
+            "jdk": "25.0.5.1+2-LTS",
+            "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+            "node": "v26.13.1",
+            "protocol": {
+              "case": 1,
+              "comparison": 1,
+              "isolatedLoad": {
+                "allocationProfile": false,
+                "engines": [
+                  "js",
+                  "java"
+                ],
+                "materializeAxioms": false,
+                "sourceTransport": "stream"
+              },
+              "javaHeapMiB": 1536,
+              "nodeHeapMiB": 2048,
+              "performance": {
+                "coldSamples": 3,
+                "repetitions": 1,
+                "warmups": 0
+              },
+              "windowsJobMemoryMiB": 2816,
+              "worker": 3
+            },
+            "witness": {
+              "axioms": 420165,
+              "identity": {
+                "ontologyIRI": "http://purl.obolibrary.org/obo/mro.owl",
+                "versionIRI": "http://purl.obolibrary.org/obo/mro/2026-10-20/mro.owl"
+              },
+              "imports": [],
+              "ontologyAnnotations": 14
+            },
+            "summaryWitnessSha256": [
+              "169c8295da7e15e1837e08471a9df99acea123d39cc96d55c2178e61405c7b29"
+            ],
+            "engines": {
+              "java": {
+                "summary": {
+                  "coldPeakBytes": 822669312,
+                  "coldMedianNanos": 2395130200
+                },
+                "cold": [
+                  {
+                    "sampleId": "java-cold-0",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2395130200,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52322384,
+                        "peakRssBytes": 117493760,
+                        "phase": "before",
+                        "rssBytes": 117493760
+                      },
+                      {
+                        "heapTotalBytes": 679477248,
+                        "heapUsedBytes": 384160576,
+                        "peakRssBytes": 828157952,
+                        "phase": "after",
+                        "rssBytes": 828153856
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-1",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2337970900,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52322384,
+                        "peakRssBytes": 119902208,
+                        "phase": "before",
+                        "rssBytes": 119902208
+                      },
+                      {
+                        "heapTotalBytes": 629145600,
+                        "heapUsedBytes": 501575928,
+                        "peakRssBytes": 763510784,
+                        "phase": "after",
+                        "rssBytes": 763494400
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "java-cold-2",
+                    "sourceTransport": "java-stream",
+                    "elapsedNanos": 2438361100,
+                    "checkpoints": [
+                      {
+                        "heapTotalBytes": 534773760,
+                        "heapUsedBytes": 52579392,
+                        "peakRssBytes": 118669312,
+                        "phase": "before",
+                        "rssBytes": 118669312
+                      },
+                      {
+                        "heapTotalBytes": 649068544,
+                        "heapUsedBytes": 572879536,
+                        "peakRssBytes": 822669312,
+                        "phase": "after",
+                        "rssBytes": 822648832
+                      }
+                    ]
+                  }
+                ]
+              },
+              "js": {
+                "summary": {
+                  "coldPeakBytes": 544034816,
+                  "coldMedianNanos": 9733574400
+                },
+                "cold": [
+                  {
+                    "sampleId": "js-cold-0",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 9733574400,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 946881,
+                        "externalBytes": 5629782,
+                        "heapTotalBytes": 39329792,
+                        "heapUsedBytes": 28770352,
+                        "peakRssBytes": 101986304,
+                        "phase": "before",
+                        "rssBytes": 101670912
+                      },
+                      {
+                        "arrayBufferBytes": 45861062,
+                        "externalBytes": 50477334,
+                        "heapTotalBytes": 407240704,
+                        "heapUsedBytes": 353040704,
+                        "peakRssBytes": 544034816,
+                        "phase": "after",
+                        "rssBytes": 542171136
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-1",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 9505048600,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 1225936,
+                        "externalBytes": 5908837,
+                        "heapTotalBytes": 39329792,
+                        "heapUsedBytes": 28377992,
+                        "peakRssBytes": 102092800,
+                        "phase": "before",
+                        "rssBytes": 101830656
+                      },
+                      {
+                        "arrayBufferBytes": 43864026,
+                        "externalBytes": 48480298,
+                        "heapTotalBytes": 409247744,
+                        "heapUsedBytes": 339975720,
+                        "peakRssBytes": 555413504,
+                        "phase": "after",
+                        "rssBytes": 554176512
+                      }
+                    ]
+                  },
+                  {
+                    "sampleId": "js-cold-2",
+                    "sourceTransport": "stream",
+                    "elapsedNanos": 9828998700,
+                    "checkpoints": [
+                      {
+                        "arrayBufferBytes": 1225936,
+                        "externalBytes": 5908837,
+                        "heapTotalBytes": 39329792,
+                        "heapUsedBytes": 28644184,
+                        "peakRssBytes": 102068224,
+                        "phase": "before",
+                        "rssBytes": 101871616
+                      },
+                      {
+                        "arrayBufferBytes": 44322778,
+                        "externalBytes": 48939050,
+                        "heapTotalBytes": 405213184,
+                        "heapUsedBytes": 341502656,
+                        "peakRssBytes": 542007296,
+                        "phase": "after",
+                        "rssBytes": 538599424
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "jsToJavaPeak": 0.6613043759677765,
+          "jsToJavaColdTime": 4.063901995807994
+        }
+      }
+    }
+  ],
+  "gaz": {
+    "input": {
+      "byteLength": 1308877129,
+      "documentIRI": "http://purl.obolibrary.org/obo/gaz.owl",
+      "id": "obo-gaz",
+      "sha256": "3961bb86e7b2c364d76ed03cf8b36aac3080b99d8bf578d62bcdc27f702bcc6f",
+      "syntax": "rdfxml"
+    },
+    "publicSource": "stream",
+    "java": {
+      "input": {
+        "byteLength": 1308877129,
+        "documentIRI": "http://purl.obolibrary.org/obo/gaz.owl",
+        "id": "obo-gaz",
+        "sha256": "3961bb86e7b2c364d76ed03cf8b36aac3080b99d8bf578d62bcdc27f702bcc6f",
+        "syntax": "rdfxml"
+      },
+      "caseId": "e2dac199710defc8eea4ec9ad21870a78fe23b376d98f44167da0dac1b6d3cb0",
+      "executionId": "bfe8dd6429db5bda491bf86774e463fb77e3c5509e2c74448d1a6aaca3ca3360",
+      "harnessSha256": "008da8cdcef5338c0737b2dbf0f614c27128d3eea1d6d8b25109ec8362b77e6c",
+      "rawObservationSha256": "a3924f0c62f5b243a27bacd18641cb89e57a2aea0b8931bd86123333fcfe797a",
+      "tarballSha256": "8fe76f20124ead2bedf32e7405495813fa5443f5a27d03f20637f366481da210",
+      "jdk": "25.0.5.1+2-LTS",
+      "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+      "node": "v26.13.1",
+      "protocol": {
+        "case": 1,
+        "comparison": 1,
+        "isolatedLoad": {
+          "allocationProfile": false,
+          "engines": [
+            "java"
+          ],
+          "materializeAxioms": false,
+          "sourceTransport": "auto"
+        },
+        "javaHeapMiB": 6144,
+        "nodeHeapMiB": 512,
+        "performance": {
+          "coldSamples": 3,
+          "repetitions": 1,
+          "warmups": 0
+        },
+        "windowsJobMemoryMiB": 8192,
+        "worker": 3
+      },
+      "witness": {
+        "axioms": 7801002,
+        "identity": {
+          "ontologyIRI": "http://purl.obolibrary.org/obo/TEMP",
+          "versionIRI": null
+        },
+        "imports": [],
+        "ontologyAnnotations": 91
+      },
+      "summaryWitnessSha256": [
+        "b44859a0ce95ce547d68d9693ab6d1b36e6be3db19a501a600b7c8b4dfdb5d1b"
+      ],
+      "engines": {
+        "java": {
+          "summary": {
+            "coldPeakBytes": 6783934464,
+            "coldMedianNanos": 40614965900
+          },
+          "cold": [
+            {
+              "sampleId": "java-cold-0",
+              "sourceTransport": "java-stream",
+              "elapsedNanos": 40614965900,
+              "checkpoints": [
+                {
+                  "heapTotalBytes": 536870912,
+                  "heapUsedBytes": 232954960,
+                  "peakRssBytes": 274382848,
+                  "phase": "before",
+                  "rssBytes": 274382848
+                },
+                {
+                  "heapTotalBytes": 6442450944,
+                  "heapUsedBytes": 5625965352,
+                  "peakRssBytes": 6783934464,
+                  "phase": "after",
+                  "rssBytes": 6729588736
+                }
+              ]
+            },
+            {
+              "sampleId": "java-cold-1",
+              "sourceTransport": "java-stream",
+              "elapsedNanos": 40112986300,
+              "checkpoints": [
+                {
+                  "heapTotalBytes": 536870912,
+                  "heapUsedBytes": 234897120,
+                  "peakRssBytes": 274636800,
+                  "phase": "before",
+                  "rssBytes": 274636800
+                },
+                {
+                  "heapTotalBytes": 6442450944,
+                  "heapUsedBytes": 5381199600,
+                  "peakRssBytes": 6757015552,
+                  "phase": "after",
+                  "rssBytes": 6730870784
+                }
+              ]
+            },
+            {
+              "sampleId": "java-cold-2",
+              "sourceTransport": "java-stream",
+              "elapsedNanos": 42519701100,
+              "checkpoints": [
+                {
+                  "heapTotalBytes": 536870912,
+                  "heapUsedBytes": 232954960,
+                  "peakRssBytes": 275308544,
+                  "phase": "before",
+                  "rssBytes": 275308544
+                },
+                {
+                  "heapTotalBytes": 6442450944,
+                  "heapUsedBytes": 5392632304,
+                  "peakRssBytes": 6824857600,
+                  "phase": "after",
+                  "rssBytes": 6743134208
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "js": {
+      "input": {
+        "byteLength": 1308877129,
+        "documentIRI": "http://purl.obolibrary.org/obo/gaz.owl",
+        "id": "obo-gaz",
+        "sha256": "3961bb86e7b2c364d76ed03cf8b36aac3080b99d8bf578d62bcdc27f702bcc6f",
+        "syntax": "rdfxml"
+      },
+      "caseId": "e2dac199710defc8eea4ec9ad21870a78fe23b376d98f44167da0dac1b6d3cb0",
+      "executionId": "51b8b58cc8967623367d8712c74106a049727452db148b8c3e945355f632a752",
+      "harnessSha256": "51a9ccaf26c425006893ea6e1db5e4ff5e48b1cc03af5f25279be1114e3b0d36",
+      "rawObservationSha256": "e1ceee995692476169e2780d1730aa572e103f7675bc6fcbfbf6dde09d82282b",
+      "tarballSha256": "49a5cacac957b580e8f6015a0e711f5d4e4f2fbd9bb4f68223fb5d11815b1265",
+      "jdk": "25.0.5.1+2-LTS",
+      "javaJarLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+      "node": "v26.13.1",
+      "protocol": {
+        "case": 1,
+        "comparison": 1,
+        "isolatedLoad": {
+          "allocationProfile": false,
+          "engines": [
+            "js"
+          ],
+          "materializeAxioms": false,
+          "sourceTransport": "stream"
+        },
+        "javaHeapMiB": 1536,
+        "nodeHeapMiB": 3456,
+        "performance": {
+          "coldSamples": 3,
+          "repetitions": 1,
+          "warmups": 0
+        },
+        "windowsJobMemoryMiB": 4480,
+        "worker": 3
+      },
+      "witness": {
+        "axioms": 7801002,
+        "identity": {
+          "ontologyIRI": "http://purl.obolibrary.org/obo/TEMP",
+          "versionIRI": null
+        },
+        "imports": [],
+        "ontologyAnnotations": 91
+      },
+      "summaryWitnessSha256": [
+        "b44859a0ce95ce547d68d9693ab6d1b36e6be3db19a501a600b7c8b4dfdb5d1b"
+      ],
+      "engines": {
+        "js": {
+          "summary": {
+            "coldPeakBytes": 4154785792,
+            "coldMedianNanos": 177831723500
+          },
+          "cold": [
+            {
+              "sampleId": "js-cold-0",
+              "sourceTransport": "stream",
+              "elapsedNanos": 177831723500,
+              "checkpoints": [
+                {
+                  "arrayBufferBytes": 899991,
+                  "externalBytes": 5582885,
+                  "heapTotalBytes": 39591936,
+                  "heapUsedBytes": 29501080,
+                  "peakRssBytes": 101486592,
+                  "phase": "before",
+                  "rssBytes": 101154816
+                },
+                {
+                  "arrayBufferBytes": 403920169,
+                  "externalBytes": 408524062,
+                  "heapTotalBytes": 3031044096,
+                  "heapUsedBytes": 2768780312,
+                  "peakRssBytes": 4174999552,
+                  "phase": "after",
+                  "rssBytes": 3693649920
+                }
+              ]
+            },
+            {
+              "sampleId": "js-cold-1",
+              "sourceTransport": "stream",
+              "elapsedNanos": 179879809500,
+              "checkpoints": [
+                {
+                  "arrayBufferBytes": 1160320,
+                  "externalBytes": 5843214,
+                  "heapTotalBytes": 39329792,
+                  "heapUsedBytes": 28753928,
+                  "peakRssBytes": 101986304,
+                  "phase": "before",
+                  "rssBytes": 101986304
+                },
+                {
+                  "arrayBufferBytes": 403920169,
+                  "externalBytes": 408524062,
+                  "heapTotalBytes": 3137888256,
+                  "heapUsedBytes": 2892795696,
+                  "peakRssBytes": 4153683968,
+                  "phase": "after",
+                  "rssBytes": 3795099648
+                }
+              ]
+            },
+            {
+              "sampleId": "js-cold-2",
+              "sourceTransport": "stream",
+              "elapsedNanos": 177777618900,
+              "checkpoints": [
+                {
+                  "arrayBufferBytes": 946865,
+                  "externalBytes": 5629759,
+                  "heapTotalBytes": 39329792,
+                  "heapUsedBytes": 28689744,
+                  "peakRssBytes": 103198720,
+                  "phase": "before",
+                  "rssBytes": 102834176
+                },
+                {
+                  "arrayBufferBytes": 403920169,
+                  "externalBytes": 408524062,
+                  "heapTotalBytes": 3119796224,
+                  "heapUsedBytes": 2877890032,
+                  "peakRssBytes": 4154785792,
+                  "phase": "after",
+                  "rssBytes": 3777458176
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "jsToJavaPeak": 0.6124448598446838,
+    "jsToJavaColdTime": 4.378477725128412,
+    "structure": {
+      "status": "match",
+      "freshJsExecutionId": "67c55ece44f7a1e225598f096c1005df581828e91551b4342f0cef6493564b30",
+      "functionalBytes": 1145241054,
+      "functionalSha256": "cb1582d6bc8183e84b03bd8e76e35c78f0c59f74fb81dcdf7da872143134fd9d",
+      "method": "Fresh complete installed JS output and source hashes match the previously verified native Java source-load and Functional reparse.",
+      "finalReceiptSha256": "8e2f1627060d6ee1df724ab5bece0fac8aef04d761361480aed618df730f4ac5",
+      "nativeReceiptSha256": "f0622acbc63710f0ca0aa47c35ee1ebd022a15a4fec866bc5f3f69524543990e"
+    },
+    "intermediateFourGiBJob": {
+      "status": "incomplete",
+      "sampleStatuses": [
+        "completed",
+        "failed",
+        "failed"
+      ]
+    },
+    "historicalJsControl": {
+      "unguardedPeakRssKiB": 16623192,
+      "phase": "load-completed",
+      "guardedRepeatStatus": "admission-refused",
+      "observedAvailablePhysicalMiB": 10123,
+      "jobMiB": 18432,
+      "requiredWithReserveMiB": 24576
+    }
+  },
+  "otherSemantics": {
+    "ifc": {
+      "executionId": "a8f26b590a1231174f9c5e1ad7ce7ccf76437797392a5f394b9fd25921031c36",
+      "cases": [
+        {
+          "input": "building-smart-ifcowl",
+          "caseId": "b6ac2cc1441c0775f64d0a094aaf04576fb037970c33c922f24e616793309741",
+          "measures": {
+            "behavior": "observed",
+            "structure": "match"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "building-smart-ifcowl",
+          "caseId": "63e3803d9913105ffc0f3266951a808e89ec92a709c3b1893ab9138b46108b7c",
+          "measures": {
+            "behavior": "observed",
+            "structure": "reconciled"
+          },
+          "status": "passed",
+          "offline": true,
+          "reconciledRuleIds": [
+            "IFCOWL-MAPPED-SINGLETON-UNIONS"
+          ]
+        },
+        {
+          "input": "building-smart-ifcowl",
+          "caseId": "0c7e921035eb5c96f53ac1ab2f5d3f12d35a8c237d74439940b1742ef67f8e3a",
+          "measures": {
+            "behavior": "observed",
+            "structure": "not-applicable"
+          },
+          "status": "passed",
+          "offline": true,
+          "inapplicable": {
+            "structure": "expected-undeclared-ontology-annotation"
+          }
+        },
+        {
+          "input": "building-smart-ifcowl",
+          "caseId": "6686ceb8bd7947090f6d7eb5c7e985d852b766d721ea00a59d7fcc83a37401a5",
+          "measures": {
+            "behavior": "observed",
+            "structure": "match"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "building-smart-ifcowl",
+          "caseId": "107048956128861229271f3b059ced60da754df86c68c2135f83dd2ef4c56af2",
+          "measures": {
+            "behavior": "observed",
+            "structure": "reconciled"
+          },
+          "status": "passed",
+          "offline": true,
+          "reconciledRuleIds": [
+            "IFCOWL-MAPPED-SINGLETON-UNIONS"
+          ]
+        },
+        {
+          "input": "building-smart-ifcowl",
+          "caseId": "b98ffc36200624b7429394d9d14455f27f60f43f5673501c01a1960a01b165aa",
+          "measures": {
+            "behavior": "observed",
+            "structure": "not-applicable"
+          },
+          "status": "passed",
+          "offline": true,
+          "inapplicable": {
+            "structure": "expected-undeclared-ontology-annotation"
+          }
+        }
+      ]
+    },
+    "behavior": {
+      "executionId": "91d1cdddebf53c2778157cbe6743cdb69f0ff9d2ede5ef472744cbc0864590a5",
+      "cases": [
+        {
+          "input": "configuration/loader",
+          "caseId": "840b0e8f5e22f21a53c6e0fdfbbc85b6af180821f472f27345d16560c4908efc",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "configuration/writer",
+          "caseId": "ee8825a71d6eaad4e54d06c15077ca699246a4675eeb53b66532053e3e0a20ed",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "mutation/batch-publication",
+          "caseId": "07b99b2f0a224c5473f5e19107af6766dc100e2df8af94ceeb18e6f6b03acf11",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "mutation/foreign-manager",
+          "caseId": "773d9eeca7a9c427eeeb3cae3215c0c5c99ad1f5e74e90ea6e020b22b997d524",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "mutation/ontology-copy",
+          "caseId": "ddceb1e490dec175f62318ea161787a611d85cb69970cb4a73734782ff45519b",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "loading/syntax-failure-and-retry",
+          "caseId": "3fab75121d060d87f1fdf26ac6c20b05c95e50e7b656d4c601a6edbf27257f8e",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "storage/target-reuse/functional",
+          "caseId": "ee036dbdbcb551ae0d2b29a6288b9d2d9692e1af8180e1c57f5878b4956716dd",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "storage/parameters/functional",
+          "caseId": "310fbbdcd71c98f40c9faa0afcf762fbc9e0f46078211ccff017d46b5fdc6614",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "storage/target-reuse/turtle",
+          "caseId": "68d01bbdbe7f9078b53bbde5d558d46d2ad624bbce518387e6a1ef53f85bc283",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "storage/parameters/turtle",
+          "caseId": "52268f98515ac9135ae738a9095b326e6024ac73c83fe00d52ced49183465d18",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "storage/target-reuse/rdfxml",
+          "caseId": "d53edc746210df48bdc1df827c2f87a4d7267a3686ed49a837d6b2ffa8dbb6d3",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "storage/parameters/rdfxml",
+          "caseId": "84b83e705ffbabe70d5a30fdcc2224d168b84f026acdb2b49910c98106e0a195",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "storage/target-reuse/owlxml",
+          "caseId": "8b777bddae8cbf421d2c910a232b9ba4e05ef8bcfff169dec61facc7450e5453",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "storage/parameters/owlxml",
+          "caseId": "0a827cc6d16f3d54c7a978a4db420745736ed8fe6b2fd063c5bff36a369191e2",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "factory/literal-construction",
+          "caseId": "9f2ed5e8c7526b3d68e8ff7fe94c527dc9a2be0e76b1a610262153201aaf8553",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "query/deferred-search",
+          "caseId": "fc200382147c387a885e513f33989874d817895a55ecc8569ddd384578e45bda",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "query/closure-provider",
+          "caseId": "b5a151efe352e7fa8d2037977523fd853d369f08e3617ffebb742424c24ca304",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "parser/selection",
+          "caseId": "f0714679061fcc697512d07d2d07ca568779a9dba9e5572317e449f561b3403e",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "parser/rdf-metadata",
+          "caseId": "b3f2a91d62cea67fca187ae3e1b0b3c0086468813bb5cc8c8d8eff1bd6ed2a09",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "parser/individual-enumeration",
+          "caseId": "6fc8cf1b7a766da8602ecd887415e9ec20c3e2fb20417c557aa9a4678d481d22",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "parser/named-datatype-restriction",
+          "caseId": "c27864fb95b25d079b9c37ced9f504a3ee58622508fbc3fd8e93d612e5f82093",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "manager/behavior-profile-identity",
+          "caseId": "677c847c1ab9ef400b31fb3cface6648a8fb51938178e0e95e101fd8f948cb76",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "locality/filtered-forward-chain",
+          "caseId": "c585986ddec909d8fbc6659e84571c373793c6b1b810f9c09038711a802b0429",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "xml/finite-entity-expansion",
+          "caseId": "a52c6fd173afddc12c6f65829c8e7538c8aba9c7f27047cfc48d7ddd1db6ef64",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "jsonld/first-structure",
+          "caseId": "3a4071ecb21e41f5d2b1fd8215757fd98181e313f45b7dc701292185a6897a7a",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "jsonld/context-provider",
+          "caseId": "b52101b0dff70d6e8f9a6f69a7ddc2bbd1efdafb79f4a54b8286bb5550860fab",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "node-transport/loopback",
+          "caseId": "f9dc867d4c313e33eb42643ad3f99b9d05cd42db72b5e213e08e0aaae733a832",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "node-transport/compression",
+          "caseId": "2699617cad48062acb67430e506cf97a9476179cbe361164f853049c5b3c6b89",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "jsonld/context-transport",
+          "caseId": "f5282f27bb4ee0bb09d05a8e84041c959a48080a6a865a0f399c530654118c1e",
+          "measures": {
+            "behavior": "observed"
+          },
+          "status": "passed",
+          "offline": true
+        }
+      ]
+    }
+  },
+  "independentEvidence": {
+    "acceptedPlanSha256": "dcdccbf381cf22afcc470afd0e36d98be42e9660132d246e9fa1d65761d3de2e",
+    "baselineSampleBundleSha256": "0ca01b1dc2efad687570775b2f2c18c394478f4199fe54a258919c57ec6af7f3",
+    "modelAndStreamArchiveSha256": "d49f8990a10d9697b389fde97a42647fb2a4d899228d2a6e646a749a74d90049",
+    "liveCidoSamplingProfileSha256": "42d567a29623896027b048f482c73b2b125bcca5d835a24607364fab8b7a1499",
+    "apiTimingArchiveSha256": "6a092e6987cf8a53e1e75fa66b40e807e686764f98e59ef9bfebf07307b55318"
+  }
+}
