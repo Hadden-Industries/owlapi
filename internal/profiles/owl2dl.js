@@ -239,7 +239,8 @@ const checkModel = async (
         }
       }
       if (value.kind === K.ANONYMOUS_INDIVIDUAL) {
-        anonymous.push(node);
+        if (validationPolicy.checksAnonymousStructure)
+          anonymous.push({ value, scope });
         if (
           validationPolicy.checksAnonymousStructure &&
           node.anonymousForbidden

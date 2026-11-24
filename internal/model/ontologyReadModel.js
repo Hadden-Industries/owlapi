@@ -1,5 +1,10 @@
 import { AXIOM_KINDS, ENTITY_KINDS, OWLObjectKind } from "../../model/kinds.js";
-import { structuralKey, StructuralSet } from "../../model/structural.js";
+import {
+  nativeStructuralMethods,
+  OWLStructuralObject,
+  structuralKey,
+  StructuralSet,
+} from "../../model/structural.js";
 import { StructuralHashTable } from "../collections/structuralHashTable.js";
 import { buildCsrPostingIndex } from "../collections/csrPostingIndex.js";
 import { indexAxiomBodies } from "../collections/axiomBodyIndex.js";
@@ -56,6 +61,7 @@ export function readOntologyModel(snapshot) {
   const terms = new StructuralHashTable();
   let kinds, logical, annotations, signature, referencing, axiomBodies;
   const positions = new Map();
+  let exactMembership;
   const annotationViews = new Map();
 
   function byKind() {
@@ -156,7 +162,31 @@ export function readOntologyModel(snapshot) {
         return postingValues(stored, axiomBodies.overlaps, -marker - 1);
       id = marker - 1;
     } else {
-      id = stored.idOfCapturedKey(key);
+      if (!exactMembership) {
+        if (
+          stored.hasNativeKeys &&
+          OWLStructuralObject.prototype.structuralKey ===
+            nativeStructuralMethods.structuralKey
+        ) {
+          exactMembership = (target) => {
+            const ordinal = stored.idOfCapturedKey(target);
+            return ordinal < 0
+              ? empty
+              : Object.freeze([stored.valueAt(ordinal)]);
+          };
+        } else {
+          // Public membership historically captures the effective protocol
+          // keys at its first query, independently of insertion-time identity.
+          const keys = new StructuralHashTable();
+          const postings = collectPostings(keys, (emit) => {
+            let ordinal = 0;
+            for (const axiom of stored) emit(axiom, ordinal++);
+          });
+          exactMembership = (target) =>
+            postingValues(stored, postings, keys.idOfCapturedKey(target));
+        }
+      }
+      return exactMembership(key);
     }
     return id < 0 ? empty : Object.freeze([stored.valueAt(id)]);
   }

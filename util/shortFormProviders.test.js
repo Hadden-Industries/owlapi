@@ -1,9 +1,29 @@
 import { readFileSync } from "node:fs";
-import { IRI, OWLDataFactory, OWLOntologyManager } from "../model/index.js";
+import {
+  IRI,
+  OWLDataFactory,
+  OWLOntologyManager,
+  OWLStructuralObject,
+} from "../model/index.js";
 import { SimpleShortFormProvider } from "./simpleShortFormProvider.js";
 import { AnnotationValueShortFormProvider } from "./annotationValueShortFormProvider.js";
 
 const f = new OWLDataFactory();
+test("short-form admission still dispatches an overridden tuple method on both receivers", () => {
+  const entity = f.getOWLClass(IRI.create("urn:provider:Named"));
+  const original = OWLStructuralObject.prototype.toStructuralTuple,
+    calls = [];
+  try {
+    OWLStructuralObject.prototype.toStructuralTuple = function () {
+      calls.push(this);
+      return original.call(this);
+    };
+    expect(new SimpleShortFormProvider().getShortForm(entity)).toBe("Named");
+    expect(calls).toEqual([entity, entity.iri]);
+  } finally {
+    OWLStructuralObject.prototype.toStructuralTuple = original;
+  }
+});
 const comment = f.getOWLAnnotationProperty(
   IRI.create("http://www.w3.org/2000/01/rdf-schema#comment"),
 );

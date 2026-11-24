@@ -59,6 +59,24 @@ test("mixed changes replace equal-count collections atomically and cancel to a n
   expect(manager.removeAxiom(ontology, ax)).toBe(false);
 });
 
+test("factory proof preserves an overridden change-key method and its failure", () => {
+  const ontology = new OWLOntologyManager().createOntology();
+  const original = OWLStructuralObject.prototype.structuralKey;
+  const failure = new Error("custom structural key admission");
+  try {
+    OWLStructuralObject.prototype.structuralKey = function () {
+      if (this === ax) {
+        throw failure;
+      }
+      return original.call(this);
+    };
+    expect(() => new AddAxiom(ontology, ax)).toThrow(failure);
+    expect(() => new RemoveAxiom(ontology, ax)).toThrow(failure);
+  } finally {
+    OWLStructuralObject.prototype.structuralKey = original;
+  }
+});
+
 test("failed final participant and throwing iterators cannot publish any earlier change", () => {
   const manager = new OWLOntologyManager();
   const ontology = manager.createOntology();

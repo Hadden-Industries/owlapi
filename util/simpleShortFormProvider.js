@@ -2,14 +2,26 @@ import { ENTITY_KINDS, OWLObjectKind as K } from "../model/kinds.js";
 import {
   OWLStructuralObject,
   isCanonicalStructuralObject,
+  isFactoryStructuralObject,
+  nativeStructuralMethods,
 } from "../model/structural.js";
 import { ncNameSuffix } from "../internal/parsing/xml/xmlNames.js";
+
+function checkTupleReceiver(value) {
+  const method = OWLStructuralObject.prototype.toStructuralTuple;
+  if (
+    !isFactoryStructuralObject(value) ||
+    method !== nativeStructuralMethods.toStructuralTuple
+  ) {
+    method.call(value);
+  }
+}
 
 /** Package-private friend shared by label values and the selected provider. */
 export const iriShortForm = (iri) => {
   if (!isCanonicalStructuralObject(iri) || iri.kind !== K.IRI)
     throw new TypeError("iri must be an IRI");
-  OWLStructuralObject.prototype.toStructuralTuple.call(iri);
+  checkTupleReceiver(iri);
   return ncNameSuffix(iri.value) ?? `<${iri.value}>`;
 };
 
@@ -22,7 +34,7 @@ export class SimpleShortFormProvider {
     )
       throw new TypeError("entity must be a named OWL entity");
     // Authenticate the private brand without forcing a display-only key string.
-    OWLStructuralObject.prototype.toStructuralTuple.call(entity);
+    checkTupleReceiver(entity);
     return iriShortForm(entity.iri);
   }
   /** This stateless provider owns no disposable resources. */

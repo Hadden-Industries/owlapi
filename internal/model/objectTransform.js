@@ -12,8 +12,11 @@ import {
   createSourcePreservingDataFactory,
   readDataFactoryBehaviorDefinition,
 } from "../../model/owlDataFactory.js";
-import { OWLStructuralObject } from "../../model/structural.js";
-import { validateStructuralGraph } from "./structuralValidation.js";
+import { isFactoryStructuralObject } from "../../model/structural.js";
+import {
+  checkStructuralKeyReceiver,
+  validateStructuralGraph,
+} from "./structuralValidation.js";
 import { structuralFields } from "./structuralFields.js";
 import { minimumTwoSetFields, repeatSingleton } from "./setConstructs.js";
 
@@ -28,8 +31,10 @@ const ENTITY_KINDS_SET = new Set(ENTITY_KINDS);
 export const requireTransformKind = (value, kinds) => {
   if (!value || !kinds.includes(value.kind))
     throw new TypeError("unsupported transform kind");
-  validateStructuralGraph(value, ALL_OWL_OBJECT_KINDS_SET);
-  OWLStructuralObject.prototype.structuralKey.call(value);
+  if (!isFactoryStructuralObject(value)) {
+    validateStructuralGraph(value, ALL_OWL_OBJECT_KINDS_SET);
+  }
+  checkStructuralKeyReceiver(value);
   return value;
 };
 

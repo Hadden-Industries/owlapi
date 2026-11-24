@@ -289,6 +289,7 @@ function createSnapshot(
     snapshot,
     Object.freeze({
       length: axioms.size,
+      hasNativeKeys: axioms.hasNativeKeys,
       valueAt: (id) => axioms.valueAt(id),
       idOfCapturedKey: (key) => axioms.idOfCapturedKey(key),
       [Symbol.iterator]: () => axioms.values(),

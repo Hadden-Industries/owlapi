@@ -118,6 +118,37 @@ function compareNative(left, right, aTail, bTail, body) {
     : compare(firstCode(tupleEntry(left, 0)), 93);
 }
 
+function equalNative(left, right, body) {
+  if (left === right) {
+    return true;
+  }
+  if (
+    left === null ||
+    right === null ||
+    typeof left !== "object" ||
+    typeof right !== "object"
+  ) {
+    return false;
+  }
+  if (
+    !Array.isArray(left) &&
+    !Array.isArray(right) &&
+    left.kind !== right.kind
+  ) {
+    return false;
+  }
+  const length = tupleLength(left, body);
+  if (length !== tupleLength(right, body)) {
+    return false;
+  }
+  for (let i = 0; i < length; i++) {
+    if (!equalNative(tupleEntry(left, i), tupleEntry(right, i), false)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export function capturedKeysEqual(left, right, body = false) {
   if (left === right) {
     return true;
@@ -133,7 +164,7 @@ export function capturedKeysEqual(left, right, body = false) {
   if (typeof left === "string" || typeof right === "string") {
     return renderCapturedKey(left, body) === renderCapturedKey(right, body);
   }
-  return compareNative(left, right, 93, 93, body) === 0;
+  return equalNative(left, right, body);
 }
 
 export function compareCapturedKeys(a, b) {

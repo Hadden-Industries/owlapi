@@ -9,6 +9,7 @@ import {
 import { StringDocumentSource, ResourceLimitError } from "../../io/index.js";
 import { compareOntologies } from "../../internal/model/ontologyStructuralIsomorphism.js";
 import { LocalityClass, SyntacticLocalityModuleExtractor } from "./index.js";
+import { structuralFields } from "../../internal/model/structuralFields.js";
 
 const f = new OWLDataFactory();
 const a = f.getOWLClass(IRI.create("urn:locality:A"));
@@ -284,6 +285,34 @@ test("the explicit work budget is shared across preparation and every STAR pass"
     ResourceLimitError,
   );
   expect(await star.extract([a])).toEqual([]);
+});
+
+test("revisiting one nonlogical axiom through many seeds does not repeat its structural traversal", async () => {
+  const properties = Array.from({ length: 48 }, (_, i) =>
+    f.getOWLAnnotationProperty(IRI.create("urn:locality:annotation:" + i)),
+  );
+  const literal = f.getOWLLiteral("shared");
+  const declaration = f.getOWLDeclarationAxiom(
+    a,
+    properties.map((p) => f.getOWLAnnotation(p, literal)),
+  );
+  const extractor = new SyntacticLocalityModuleExtractor(LocalityClass.STAR, [
+    declaration,
+  ]);
+  const get = structuralFields.get;
+  let declarationReads = 0;
+  try {
+    structuralFields.get = function (kind) {
+      if (kind === K.DECLARATION_AXIOM) {
+        declarationReads++;
+      }
+      return Reflect.apply(get, this, [kind]);
+    };
+    expect(await extractor.extract(properties)).toEqual([]);
+  } finally {
+    delete structuralFields.get;
+  }
+  expect(declarationReads).toBe(0);
 });
 
 test.each([

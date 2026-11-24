@@ -39,6 +39,9 @@ const names = [
   "𐀀",
   "é",
   "e\u0301",
+  '["IRI","x"]',
+  '["OWLAnnotationAssertionAxiom"',
+  ']]["OWLClass"[',
 ];
 const cls = owlClass("urn:collection:class");
 const prop = factory.getOWLObjectProperty(
@@ -387,4 +390,49 @@ test("colliding bucket deletion, compaction and clone membership match an insert
       expect(table.size).toBe(expected.size);
     }
   }
+});
+
+test("rank and select reuse sparse page counts across scattered reads and isolate subsequent page writes", () => {
+  const limit = 1024 * 97 + 19,
+    bits = new DenseBitSet(limit),
+    removed = new Set();
+  for (let page = 0; page < 97; page += 2) {
+    for (const offset of [0, 31, 510]) {
+      const id = page * 1024 + offset;
+      bits.add(id);
+      removed.add(id);
+    }
+  }
+  const live = Array.from({ length: limit }, (_, i) => i).filter(
+    (id) => !removed.has(id),
+  );
+  const original = Map.prototype[Symbol.iterator];
+  let pageVisits = 0;
+  try {
+    Map.prototype[Symbol.iterator] = function () {
+      const iter = Reflect.apply(original, this, []);
+      if (this.size < 40 || !(this.get(0) instanceof Uint32Array)) {
+        return iter;
+      }
+      return (function* () {
+        for (const item of iter) {
+          pageVisits++;
+          yield item;
+        }
+      })();
+    };
+    for (let rank = 0; rank < live.length; rank += 173) {
+      expect(bits.selectClear(rank)).toBe(live[rank]);
+      expect(bits.countBefore(live[rank])).toBe(live[rank] - rank);
+    }
+    const copy = bits.clone();
+    copy.add(1024 + 2);
+    bits.add(1024 * 96 + 17);
+    expect(copy.countBefore(1024 + 3)).toBe(bits.countBefore(1024 + 3) + 1);
+    expect(copy.has(1024 * 96 + 17)).toBe(false);
+    expect(bits.has(1024 + 2)).toBe(false);
+  } finally {
+    Map.prototype[Symbol.iterator] = original;
+  }
+  expect(pageVisits).toBeLessThan(160);
 });

@@ -12,6 +12,7 @@ import { structuralFields } from "../../internal/model/structuralFields.js";
 import { collectPostings } from "../../internal/model/structuralPostings.js";
 import { createLocalityBudget } from "../../internal/modularity/localityBudget.js";
 import { isSyntacticallyLocal } from "../../internal/modularity/syntacticLocality.js";
+import { isLogicalAxiom } from "../../internal/model/axiomSemantics.js";
 import { LocalityClass } from "./localityClass.js";
 
 const kinds = new Set(OWL_OBJECT_KINDS),
@@ -241,8 +242,11 @@ export class SyntacticLocalityModuleExtractor {
           if (!base.has(id) || mask.has(id)) {
             continue;
           }
-          const axiom = this.#base.valueAt(id),
-            nodes = orderedNodes(axiom);
+          const axiom = this.#base.valueAt(id);
+          if (!isLogicalAxiom(axiom)) {
+            continue;
+          }
+          const nodes = orderedNodes(axiom);
           if (isSyntacticallyLocal(axiom, nodes, contains, mode, budget)) {
             continue;
           }

@@ -2,7 +2,6 @@ import {
   OWLObjectKind as K,
   CLASS_EXPRESSION_KINDS,
 } from "../../model/kinds.js";
-import { isLogicalAxiom } from "../model/axiomSemantics.js";
 import {
   OWL_BUILT_IN_DATATYPES,
   OWL_NAMESPACE as OWL,
@@ -42,7 +41,6 @@ const named = (property) =>
  * a different literature evaluator. No recursive visitor or depth cap is used.
  */
 export const isSyntacticallyLocal = (axiom, order, contains, mode, budget) => {
-  if (!isLogicalAxiom(axiom)) return true;
   const bottomMode = mode === "BOTTOM",
     results = new Map();
   const absent = (property) => !contains(named(property));

@@ -25,6 +25,19 @@ const fail = () => {
 };
 const key = (object) => nativeStructuralMethods.structuralKey.call(object);
 
+/** Keep observable overrides and explicit tuple validation at public input
+ * boundaries. A factory proof already authenticates its immutable native data. */
+export function checkStructuralKeyReceiver(value) {
+  const method = OWLStructuralObject.prototype.structuralKey;
+  if (
+    !isFactoryStructuralObject(value) ||
+    method !== nativeStructuralMethods.structuralKey ||
+    "toJSON" in Array.prototype
+  ) {
+    method.call(value);
+  }
+}
+
 const validatedShapes = new WeakSet();
 /** Read an existing data-only shape proof without attempting new admission. */
 export const hasValidatedStructuralShape = (value) =>

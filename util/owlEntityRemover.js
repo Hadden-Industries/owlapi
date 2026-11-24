@@ -1,4 +1,5 @@
 import { ENTITY_KINDS } from "../model/kinds.js";
+import { captureStructuralKey } from "../internal/collections/structuralProjection.js";
 import { readOntologySnapshot } from "../model/owlOntology.js";
 import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import { RemoveAxiom } from "../model/removeAxiom.js";
@@ -19,8 +20,8 @@ export class OWLEntityRemover {
   }
   visit(entity) {
     requireTransformKind(entity, ENTITY_KINDS);
-    const entityKey = entity.structuralKey();
-    const iriKey = entity.iri.structuralKey();
+    const entityKey = captureStructuralKey(entity);
+    const iriKey = captureStructuralKey(entity.iri);
     for (const ontology of this.#ontologies) {
       const model = readOntologyModel(readOntologySnapshot(ontology));
       for (const axiom of model.referencingAxioms(entityKey))

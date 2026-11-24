@@ -135,6 +135,13 @@ export class StructuralAxiomSet {
   get isFactoryValidated() {
     return this.#untrusted === 0;
   }
+  get hasNativeKeys() {
+    return (
+      this.isFactoryValidated &&
+      !this.#base.hasProtocolKeys &&
+      !this.#added?.hasProtocolKeys
+    );
+  }
 
   add(axiom) {
     requireAxiom(axiom);

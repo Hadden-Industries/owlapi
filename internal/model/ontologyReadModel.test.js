@@ -11,6 +11,8 @@ import {
 import { Imports, AxiomAnnotations } from "../../model/parameters/index.js";
 import { readOntologySnapshot } from "../../model/owlOntology.js";
 import { readOntologyModel } from "./ontologyReadModel.js";
+import { collectPostings, postingValues } from "./structuralPostings.js";
+import { OWLStructuralObject } from "../../model/structural.js";
 import { StructuralAxiomSet } from "./axiomSemantics.js";
 import { AnnotationValueShortFormProvider } from "../../util/annotationValueShortFormProvider.js";
 import { compareOntologies } from "./ontologyStructuralIsomorphism.js";
@@ -20,6 +22,33 @@ const a = f.getOWLClass(IRI.create("urn:read:A"));
 const b = f.getOWLClass(IRI.create("urn:read:B"));
 const c = f.getOWLClass(IRI.create("urn:read:C"));
 afterEach(() => jest.restoreAllMocks());
+
+test("each posting family sizes its index to its own participating keys", () => {
+  const keys = { size: 1_000_000, add: (value) => value };
+  const empty = collectPostings(keys, () => {});
+  const sparse = collectPostings(keys, (emit) => {
+    emit(999_999, 0);
+    emit(999_999, 1);
+    emit(800_000, 1);
+  });
+  expect(empty.offsets.length).toBeLessThan(3);
+  expect(sparse.offsets.length).toBeLessThan(5);
+  const values = { valueAt: (i) => ["a", "b"][i] };
+  expect([...postingValues(values, sparse, 999_999)]).toEqual(["a", "b"]);
+  expect([...postingValues(values, sparse, 800_000)]).toEqual(["b"]);
+  expect([...postingValues(values, sparse, 1)]).toEqual([]);
+});
+
+test("exact membership captures effective protocol keys at first query", () => {
+  const axiom = f.getOWLSubClassOfAxiom(a, b);
+  const ontology = new OWLOntology({ axioms: [axiom] });
+  const override = jest
+    .spyOn(OWLStructuralObject.prototype, "structuralKey")
+    .mockReturnValue("overridden key");
+  expect(ontology.containsAxiom(axiom)).toBe(true);
+  override.mockRestore();
+  expect(ontology.containsAxiom(axiom)).toBe(false);
+});
 
 test("counting, filtering by kind and committing a small edit do not flatten the axiom table", () => {
   const manager = new OWLOntologyManager();

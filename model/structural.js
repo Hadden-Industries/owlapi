@@ -1,11 +1,13 @@
 import { AXIOM_KINDS, ENTITY_KINDS, OWLObjectKind } from "./kinds.js";
 import {
+  capturedKeysEqual,
   compareCapturedKeys,
   structuralEquals,
 } from "../internal/collections/structuralComparator.js";
 import { StructuralHashTable } from "../internal/collections/structuralHashTable.js";
 import {
   bindStructuralModel,
+  captureStructuralKey,
   tupleFields,
 } from "../internal/collections/structuralProjection.js";
 
@@ -78,13 +80,35 @@ export const normalizeStructuralSet = (values, name) => {
       return Object.freeze([requireValue(values[0])]);
     }
   }
-  const table = new StructuralHashTable();
+  // Most class expressions have two operands. Capture the iterable and each
+  // effective key in its original order; a third item justifies a hash table.
+  let first, second, firstKey, secondKey, table;
   for (const value of values) {
-    table.add(requireValue(value), true);
+    const key = captureStructuralKey(requireValue(value));
+    if (first === undefined) {
+      first = value;
+      firstKey = key;
+    } else if (second === undefined) {
+      second = value;
+      secondKey = key;
+    } else {
+      if (!table) {
+        table = new StructuralHashTable();
+        table.addPrepared(first, firstKey, true);
+        table.addPrepared(second, secondKey, true);
+      }
+      table.addPrepared(value, key, true);
+    }
   }
-  return table.size === 0
-    ? EMPTY_STRUCTURAL_SET
-    : Object.freeze(table.sortedValues(compareCapturedKeys));
+  if (table) return Object.freeze(table.sortedValues(compareCapturedKeys));
+  if (second === undefined)
+    return first === undefined ? EMPTY_STRUCTURAL_SET : Object.freeze([first]);
+  if (capturedKeysEqual(firstKey, secondKey)) return Object.freeze([second]);
+  return Object.freeze(
+    compareCapturedKeys(firstKey, secondKey) < 0
+      ? [first, second]
+      : [second, first],
+  );
 };
 
 export class StructuralSet {

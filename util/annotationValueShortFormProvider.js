@@ -1,4 +1,5 @@
 import { ENTITY_KINDS, OWLObjectKind as K } from "../model/kinds.js";
+import { captureStructuralKey } from "../internal/collections/structuralProjection.js";
 import { readOntologySnapshot } from "../model/owlOntology.js";
 import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import { readLoadedImportsClosure } from "../model/owlOntology.js";
@@ -87,8 +88,8 @@ export class AnnotationValueShortFormProvider {
         members
           .flatMap((member) =>
             member.annotationAssertions(
-              entity.iri.structuralKey(),
-              property.structuralKey(),
+              captureStructuralKey(entity.iri),
+              captureStructuralKey(property),
             ),
           )
           .map((axiom) => axiom.value)

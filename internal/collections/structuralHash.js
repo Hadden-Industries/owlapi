@@ -4,9 +4,17 @@ import {
   escapedCode,
   escapedWidth,
   ProtocolKey,
-  tupleEntry,
   tupleLength,
+  tupleFields,
 } from "./structuralProjection.js";
+import { OWL_OBJECT_KINDS } from "../../model/kinds.js";
+
+// A known ["Kind" prefix has a token outside the UTF-16 code-unit range.
+// Native field walks and foreign, exact key strings apply the same substitution.
+const kindTokens = new Map(
+  OWL_OBJECT_KINDS.map((kind, index) => [kind, 65536 + index]),
+);
+const longestKind = Math.max(...OWL_OBJECT_KINDS.map((kind) => kind.length));
 
 // Seed Jenkins' per-code-unit mixer before the first input unit. Foreign keys
 // use the same UTF-16 stream as the native virtual tuple, including escapes.
@@ -18,6 +26,26 @@ function mix(hash, code) {
 function hashText(hash, text) {
   for (let i = 0; i < text.length; i++) {
     hash = mix(hash, text.charCodeAt(i));
+  }
+  return hash;
+}
+function hashKeyText(hash, text) {
+  for (let i = 0; i < text.length; i++) {
+    const unit = text.charCodeAt(i);
+    if (unit === 91 && text.charCodeAt(i + 1) === 34) {
+      const start = i + 2,
+        stop = text.indexOf('"', start);
+      const token =
+        stop >= start && stop - start <= longestKind
+          ? kindTokens.get(text.slice(start, stop))
+          : undefined;
+      if (token !== undefined) {
+        hash = mix(hash, token);
+        i = stop;
+        continue;
+      }
+    }
+    hash = mix(hash, unit);
   }
   return hash;
 }
@@ -69,13 +97,22 @@ function hashNative(hash, value, body) {
     }
     return hash;
   }
-  hash = mix(hash, 91);
-  const length = tupleLength(value, body);
-  for (let index = 0; index < length; index++) {
+  if (!Array.isArray(value)) {
+    hash = mix(hash, kindTokens.get(value.kind));
+    const fields = tupleFields.get(value.kind),
+      length = tupleLength(value, body) - 1;
+    for (let i = 0; i < length; i++) {
+      hash = hashNative(mix(hash, 44), value[fields[i]], false);
+    }
+    return mix(hash, 93);
+  }
+  const token = kindTokens.get(value[0]);
+  hash = mix(hash, token ?? 91);
+  for (let index = token === undefined ? 0 : 1; index < value.length; index++) {
     if (index > 0) {
       hash = mix(hash, 44);
     }
-    hash = hashNative(hash, tupleEntry(value, index), false);
+    hash = hashNative(hash, value[index], false);
   }
   return mix(hash, 93);
 }
@@ -86,7 +123,7 @@ export function hashCapturedKey(key, seed, body = false) {
   } else {
     hash =
       typeof key === "string"
-        ? hashText(seed, key)
+        ? hashKeyText(seed, key)
         : hashNative(seed, key, body);
   }
   hash = (hash + (hash << 3)) | 0;

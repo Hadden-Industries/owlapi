@@ -26,12 +26,16 @@ export class StructuralHashTable {
   #otherKeys;
   #deleted;
   #operations;
+  #recentSlot = -1;
 
   constructor(operations = ordinary) {
     this.#operations = operations;
   }
   get size() {
     return this.#values.length - (this.#deleted?.size ?? 0);
+  }
+  get hasProtocolKeys() {
+    return Boolean(this.#otherKeys?.size);
   }
   #slotAt(id) {
     if (!Number.isInteger(id) || id < 0 || id >= this.size) {
@@ -118,8 +122,18 @@ export class StructuralHashTable {
     if (!this.size) {
       return -1;
     }
+    if (this.#recentSlot >= 0 && this.#keyAtSlot(this.#recentSlot) === key) {
+      return this.#recentSlot;
+    }
     const hash = this.#operations.hash(key, processSalt) >>> 0;
-    return this.#buckets[this.#find(key, hash)] - 1;
+    const slot = this.#buckets[this.#find(key, hash)] - 1;
+    if (
+      this.#operations === ordinary ||
+      this.#operations === axiomBodyOperations
+    ) {
+      this.#recentSlot = slot;
+    }
+    return slot;
   }
   valueForCapturedKey(key) {
     return this.#values[this.#lookup(key)];
@@ -166,6 +180,14 @@ export class StructuralHashTable {
       (this.#otherKeys ??= new Map()).set(slot, key);
     }
     this.#buckets[bucket] = slot + 1;
+    // Repeated membership of the just inserted representative needs no hash.
+    // Only an ordinal is retained. Public protocol capture still runs first.
+    if (
+      this.#operations === ordinary ||
+      this.#operations === axiomBodyOperations
+    ) {
+      this.#recentSlot = slot;
+    }
     return id;
   }
   delete(value) {
@@ -198,6 +220,7 @@ export class StructuralHashTable {
     }
     this.#buckets[hole] = 0;
     this.#values[slot] = undefined;
+    this.#recentSlot = -1;
     this.#otherKeys?.delete(slot);
     (this.#deleted ??= new DenseBitSet(0x7fffffff)).add(slot);
     if (this.#deleted.size * 4 > this.#values.length) {
