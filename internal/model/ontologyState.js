@@ -8,6 +8,7 @@ import {
 import { OWLDocumentFormat } from "../../model/owlDocumentFormat.js";
 import { rdfDataFactory } from "../rdfjs/environment.js";
 import { StructuralAxiomSet } from "./axiomSemantics.js";
+import { registerStructuralSnapshot } from "./structuralValidation.js";
 import {
   isOntologyBuildBuffer,
   takeOntologyBuildAxioms,
@@ -254,9 +255,53 @@ export const createImmutableDocumentMetadataSnapshot = (documentMetadata) => {
 };
 
 const mutationDraftRecords = new WeakMap();
+const axiomOrdinals = new WeakMap();
 
-const equalStructuralSets = (left, right) =>
-  left.size === right.size && [...left].every((value) => right.has(value));
+/** Read-only access to the axiom table owned by a committed snapshot. */
+export function readSnapshotAxioms(snapshot) {
+  const values = axiomOrdinals.get(snapshot);
+  if (!values) throw new TypeError("Expected an ontology state snapshot");
+  return values;
+}
+
+function createSnapshot(
+  imports,
+  axioms,
+  annotations,
+  documentMetadata,
+  ontologyID,
+  revision,
+) {
+  let materialized;
+  const snapshot = Object.freeze({
+    authoredImportDeclarations: Object.freeze([...imports]),
+    get directAxioms() {
+      return (materialized ??= axioms.toFrozenArray());
+    },
+    directOntologyAnnotations: Object.freeze([...annotations]),
+    documentMetadata,
+    ontologyID,
+    revision,
+  });
+  // Drafts clone the table before their first edit. These ordinals therefore
+  // retain the original order even when a caller holds a previous revision.
+  axiomOrdinals.set(
+    snapshot,
+    Object.freeze({
+      length: axioms.size,
+      valueAt: (id) => axioms.valueAt(id),
+      idOfCapturedKey: (key) => axioms.idOfCapturedKey(key),
+      [Symbol.iterator]: () => axioms.values(),
+    }),
+  );
+  return registerStructuralSnapshot(snapshot, axioms);
+}
+
+const equalStructuralSets = (left, right) => {
+  if (left.size !== right.size) return false;
+  for (const value of left) if (!right.has(value)) return false;
+  return true;
+};
 
 const refreshMutationDraftChangeStatus = (record) => {
   // Compare full sets once at preflight, rather than after every bulk edit.
@@ -270,7 +315,7 @@ const calculateMutationDraftChangeStatus = (record) => {
   if (!record.changesState) return;
   record.changesState =
     (record.axiomsTouched &&
-      !equalStructuralSets(record.directAxioms, record.baseDirectAxioms)) ||
+      !record.directAxioms.sameMembers(record.baseDirectAxioms)) ||
     (record.annotationsTouched &&
       !equalStructuralSets(
         record.directOntologyAnnotations,
@@ -616,32 +661,24 @@ export class OntologyState {
   }
 
   #createCurrentSnapshot() {
-    return Object.freeze({
-      authoredImportDeclarations: Object.freeze([
-        ...this.#authoredImportDeclarations,
-      ]),
-      directAxioms: this.#directAxioms.toFrozenArray(),
-      directOntologyAnnotations: Object.freeze([
-        ...this.#directOntologyAnnotations,
-      ]),
-      documentMetadata: this.#documentMetadata,
-      ontologyID: this.#ontologyID,
-      revision: this.#revision,
-    });
+    return createSnapshot(
+      this.#authoredImportDeclarations,
+      this.#directAxioms,
+      this.#directOntologyAnnotations,
+      this.#documentMetadata,
+      this.#ontologyID,
+      this.#revision,
+    );
   }
 
   #createMutationSnapshot(record) {
-    return Object.freeze({
-      authoredImportDeclarations: Object.freeze([
-        ...record.authoredImportDeclarations,
-      ]),
-      directAxioms: record.directAxioms.toFrozenArray(),
-      directOntologyAnnotations: Object.freeze([
-        ...record.directOntologyAnnotations,
-      ]),
-      documentMetadata: record.documentMetadata,
-      ontologyID: record.ontologyID,
-      revision: record.baseRevision + 1,
-    });
+    return createSnapshot(
+      record.authoredImportDeclarations,
+      record.directAxioms,
+      record.directOntologyAnnotations,
+      record.documentMetadata,
+      record.ontologyID,
+      record.baseRevision + 1,
+    );
   }
 }

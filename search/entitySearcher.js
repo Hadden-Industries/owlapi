@@ -11,6 +11,8 @@ import {
 import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import { deferredQuery } from "../internal/model/deferredQuery.js";
 import { isCanonicalStructuralObject } from "../model/structural.js";
+import { captureStructuralKey } from "../internal/collections/structuralProjection.js";
+import { capturedKeysEqual } from "../internal/collections/structuralComparator.js";
 
 const entityKindsSet = new Set(ENTITY_KINDS);
 
@@ -53,21 +55,25 @@ const classValues = (
   excludeSelf = true,
 ) => {
   requireKind(entity, [K.CLASS]);
-  const entityKey = entity.structuralKey();
+  const entityKey = captureStructuralKey(entity);
   return deferredQuery(() =>
-    readOntologies(input).flatMap((ontology) =>
-      readOntologyModel(readOntologySnapshot(ontology))
-        .position(kind, matchField, entityKey)
-        .flatMap((axiom) => {
-          const value = axiom[outputField];
-          return Array.isArray(value)
-            ? value.filter(
-                (member) =>
-                  !excludeSelf || member.structuralKey() !== entityKey,
-              )
-            : [value];
-        }),
-    ),
+    readOntologies(input).flatMap((ontology) => {
+      const result = [];
+      for (const axiom of readOntologyModel(
+        readOntologySnapshot(ontology),
+      ).position(kind, matchField, entityKey)) {
+        const field = axiom[outputField];
+        if (Array.isArray(field)) {
+          for (const member of field)
+            if (
+              !excludeSelf ||
+              !capturedKeysEqual(captureStructuralKey(member), entityKey)
+            )
+              result.push(member);
+        } else result.push(field);
+      }
+      return result;
+    }),
   );
 };
 
@@ -85,10 +91,10 @@ const annotationValues = (
   const subject = annotationSubject(entity);
   if (property !== undefined && property !== null)
     requireKind(property, [K.ANNOTATION_PROPERTY]);
-  const subjectKey = subject.structuralKey();
+  const subjectKey = captureStructuralKey(subject);
   const propertyKey =
     property !== undefined && property !== null
-      ? property.structuralKey()
+      ? captureStructuralKey(property)
       : undefined;
   return deferredQuery(() =>
     readOntologies(input).flatMap((ontology) => {
@@ -97,8 +103,11 @@ const annotationValues = (
       ).annotationValues(subjectKey, includeAssertionAnnotations);
       return propertyKey === undefined
         ? values
-        : values.filter(
-            (annotation) => annotation.property.structuralKey() === propertyKey,
+        : values.filter((annotation) =>
+            capturedKeysEqual(
+              captureStructuralKey(annotation.property),
+              propertyKey,
+            ),
           );
     }),
   );
@@ -128,12 +137,17 @@ const propertyValues = (property, input, relation) => {
       : "subProperty"
     : "property";
   const output = hierarchy ? (sub ? "subProperty" : "superProperty") : relation;
-  const propertyKey = property.structuralKey();
+  const propertyKey = captureStructuralKey(property);
   return deferredQuery(() =>
     readOntologies(input).flatMap((ontology) =>
-      readOntologyModel(readOntologySnapshot(ontology))
-        .position(kind, match, propertyKey)
-        .map((axiom) => axiom[output]),
+      Array.from(
+        readOntologyModel(readOntologySnapshot(ontology)).position(
+          kind,
+          match,
+          propertyKey,
+        ),
+        (axiom) => axiom[output],
+      ),
     ),
   );
 };
@@ -158,7 +172,7 @@ const characteristic = (property, input, name, allowData = false) => {
   );
   const family = property.kind === K.DATA_PROPERTY ? "Data" : "Object";
   const kind = CHARACTERISTIC_AXIOM_KINDS[`${name}${family}`];
-  const propertyKey = property.structuralKey();
+  const propertyKey = captureStructuralKey(property);
   return readOntologies(input).some(
     (ontology) =>
       readOntologyModel(readOntologySnapshot(ontology)).position(
@@ -175,7 +189,7 @@ const characteristic = (property, input, name, allowData = false) => {
 export class EntitySearcher {
   static getAnnotationAssertionAxioms(entity, ontology) {
     readOntologySnapshot(ontology);
-    const subjectKey = annotationSubject(entity).structuralKey();
+    const subjectKey = captureStructuralKey(annotationSubject(entity));
     return deferredQuery(() => [
       ...readOntologyModel(readOntologySnapshot(ontology)).annotationAssertions(
         subjectKey,
@@ -256,21 +270,25 @@ export class EntitySearcher {
   /** Return the other endpoint of each directly asserted inverse axiom. */
   static getInverses(property, ontologies) {
     requireKind(property, OBJECT_PROPERTY_EXPRESSION_KINDS);
-    const propertyKey = property.structuralKey();
+    const propertyKey = captureStructuralKey(property);
     return deferredQuery(() =>
       readOntologies(ontologies).flatMap((ontology) =>
-        readOntologyModel(readOntologySnapshot(ontology))
-          .position(
+        Array.from(
+          readOntologyModel(readOntologySnapshot(ontology)).position(
             K.INVERSE_OBJECT_PROPERTIES_AXIOM,
             "properties",
             propertyKey,
-          )
-          .map(
-            (axiom) =>
-              axiom.properties[
-                axiom.properties[0].structuralKey() === propertyKey ? 1 : 0
-              ],
           ),
+          (axiom) =>
+            axiom.properties[
+              capturedKeysEqual(
+                captureStructuralKey(axiom.properties[0]),
+                propertyKey,
+              )
+                ? 1
+                : 0
+            ],
+        ),
       ),
     );
   }

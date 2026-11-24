@@ -1,4 +1,8 @@
-import { OntologyState } from "../internal/model/ontologyState.js";
+import {
+  OntologyState,
+  readSnapshotAxioms,
+} from "../internal/model/ontologyState.js";
+import { captureStructuralKey } from "../internal/collections/structuralProjection.js";
 import {
   AXIOM_KINDS,
   CLASS_EXPRESSION_KINDS,
@@ -26,7 +30,8 @@ const createClosureReader = (snapshots) => {
     allAxioms() {
       if (!all) {
         const set = new StructuralSet();
-        for (const s of snapshots) for (const ax of s.directAxioms) set.add(ax);
+        for (const s of snapshots)
+          for (const ax of readSnapshotAxioms(s)) set.add(ax);
         all = Object.freeze([...set]);
       }
       return all;
@@ -212,11 +217,11 @@ export class OWLOntology {
     )
       throw new TypeError("type must be an axiom kind or Imports value");
     if (typeOrImports === Imports.EXCLUDED)
-      return this.#readStateSnapshot().directAxioms.length;
+      return readSnapshotAxioms(this.#readStateSnapshot()).length;
     if (typeOrImports === Imports.INCLUDED)
       return this.#scope(Imports.INCLUDED).reduce(
         (count, ontology) =>
-          count + readOntologySnapshot(ontology).directAxioms.length,
+          count + readSnapshotAxioms(readOntologySnapshot(ontology)).length,
         0,
       );
     return this.#scope(imports).reduce(
@@ -250,11 +255,10 @@ export class OWLOntology {
     requireAxiom(axiom);
     if (!Object.values(AxiomAnnotations).includes(mode))
       throw new TypeError("annotation mode must be an AxiomAnnotations value");
-    const key =
-      mode === AxiomAnnotations.IGNORE_AXIOM_ANNOTATIONS
-        ? "structuralKeyWithoutAnnotations"
-        : "structuralKey";
-    const target = axiom[key]();
+    const target = captureStructuralKey(
+      axiom,
+      mode === AxiomAnnotations.IGNORE_AXIOM_ANNOTATIONS,
+    );
     return this.#scope(imports).some(
       (ontology) =>
         readOntologyModel(readOntologySnapshot(ontology)).equivalentAxioms(
@@ -275,7 +279,7 @@ export class OWLOntology {
   getAxiomsIgnoreAnnotations(axiom, imports = Imports.EXCLUDED) {
     requireAxiom(axiom);
     const result = new StructuralSet();
-    const key = axiom.structuralKeyWithoutAnnotations();
+    const key = captureStructuralKey(axiom, true);
     for (const ontology of this.#scope(imports))
       for (const stored of readOntologyModel(
         readOntologySnapshot(ontology),
@@ -290,7 +294,7 @@ export class OWLOntology {
       readOntologyModel(this.#readStateSnapshot()).position(
         kind,
         field,
-        target.structuralKey(),
+        captureStructuralKey(target),
       ),
     );
   }
@@ -596,7 +600,7 @@ export class OWLOntology {
     for (const ontology of this.#scope(imports))
       for (const axiom of readOntologyModel(
         readOntologySnapshot(ontology),
-      ).annotationAssertions(subject.structuralKey()))
+      ).annotationAssertions(captureStructuralKey(subject)))
         result.add(axiom);
     return result.toSet();
   }
@@ -648,7 +652,7 @@ export class OWLOntology {
 
   getEntitiesInSignature(iri, imports = Imports.EXCLUDED) {
     requireKind(iri, [OWLObjectKind.IRI], "iri");
-    const key = iri.structuralKey();
+    const key = captureStructuralKey(iri);
     const scope = this.#scope(imports);
     if (scope.length === 1)
       return new Set(
@@ -706,7 +710,7 @@ export class OWLOntology {
       ],
       "entity",
     );
-    const key = entity.structuralKey();
+    const key = captureStructuralKey(entity);
     const scope = this.#scope(imports);
     if (scope.length === 1)
       return new Set(

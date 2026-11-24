@@ -11,6 +11,7 @@ import {
 import { Imports, AxiomAnnotations } from "../../model/parameters/index.js";
 import { readOntologySnapshot } from "../../model/owlOntology.js";
 import { readOntologyModel } from "./ontologyReadModel.js";
+import { StructuralAxiomSet } from "./axiomSemantics.js";
 import { AnnotationValueShortFormProvider } from "../../util/annotationValueShortFormProvider.js";
 import { compareOntologies } from "./ontologyStructuralIsomorphism.js";
 
@@ -19,6 +20,20 @@ const a = f.getOWLClass(IRI.create("urn:read:A"));
 const b = f.getOWLClass(IRI.create("urn:read:B"));
 const c = f.getOWLClass(IRI.create("urn:read:C"));
 afterEach(() => jest.restoreAllMocks());
+
+test("counting, filtering by kind and committing a small edit do not flatten the axiom table", () => {
+  const manager = new OWLOntologyManager();
+  const ontology = manager.createOntology();
+  const flatten = jest.spyOn(StructuralAxiomSet.prototype, "toFrozenArray");
+  const first = f.getOWLDeclarationAxiom(a);
+  manager.addAxiom(ontology, first);
+  const prior = readOntologySnapshot(ontology);
+  manager.addAxiom(ontology, f.getOWLSubClassOfAxiom(a, b));
+  expect(ontology.getAxiomCount()).toBe(2);
+  expect([...ontology.getAxiomsByType(K.DECLARATION_AXIOM)]).toEqual([first]);
+  expect(flatten).not.toHaveBeenCalled();
+  expect(prior.directAxioms).toEqual([first]);
+});
 
 test("ordered signature discovery includes ontology annotations and keeps punned kinds distinct", () => {
   const person = f.getOWLNamedIndividual(a.iri);
@@ -96,7 +111,7 @@ test("commits replace read ownership while previously returned values remain sna
   expect([...ontology.getClassesInSignature()]).toEqual([b]);
   expect(ontology.getDeclarationAxioms(a).size).toBe(0);
   expect([...before]).toEqual([a]);
-  expect(reader.axioms(K.DECLARATION_AXIOM)).toEqual([first]);
+  expect([...reader.axioms(K.DECLARATION_AXIOM)]).toEqual([first]);
   expect(readOntologyModel(readOntologySnapshot(ontology))).not.toBe(reader);
 });
 
