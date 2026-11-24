@@ -2,6 +2,7 @@ import {
   AXIOM_KINDS,
   ENTITY_KINDS,
   OWL_OBJECT_KINDS,
+  OWLObjectKind,
 } from "../../model/kinds.js";
 import { isFactoryStructuralObject } from "../../model/structural.js";
 import { StructuralHashTable } from "../../internal/collections/structuralHashTable.js";
@@ -29,41 +30,83 @@ function admit(value) {
   }
 }
 
-// Constructor admission has already proved these nodes are acyclic and data-only.
-// Reuse one walk's scratch for all candidates in an extraction, including STAR.
-function traversalWorkspace() {
-  const seen = new Set(),
+// Factory proof or full external admission has established acyclic, data-only
+// nodes. Reuse scratch across roots. A shared child inherits its completed
+// height on every parent edge while being charged only once as a distinct node.
+function traversalWorkspace(measure) {
+  const seen = new Map(),
     nodes = [],
     positions = [],
+    fields = [],
     order = [];
+  const pathDepth = [],
+    pathAnnotations = [],
+    depths = [],
+    annotations = [];
+  const facts = { order, depth: 0, annotations: 0, work: 0 };
+
+  function enter(node) {
+    const level = nodes.length;
+    seen.set(node, -1);
+    nodes.push(node);
+    positions[level] = 0;
+    fields[level] = Array.isArray(node)
+      ? undefined
+      : structuralFields.get(node.kind);
+    if (measure) {
+      pathDepth[level] = 0;
+      pathAnnotations[level] = 0;
+    }
+  }
+  function includeChild(level, depth, annotationDepth) {
+    pathDepth[level] = Math.max(pathDepth[level], depth + 1);
+    pathAnnotations[level] = Math.max(pathAnnotations[level], annotationDepth);
+  }
   return (root) => {
     seen.clear();
-    seen.add(root);
-    nodes.push(root);
-    positions.push(0);
     order.length = 0;
+    facts.work = 0;
+    enter(root);
     while (nodes.length) {
-      const top = nodes.length - 1,
-        node = nodes[top];
-      const fields = Array.isArray(node)
-        ? undefined
-        : structuralFields.get(node.kind);
-      const position = positions[top];
-      if (position === (fields?.length ?? node.length)) {
-        order.push(node);
-        nodes.pop();
-        positions.pop();
-      } else {
-        positions[top]++;
-        const child = node[fields ? fields[position] : position];
-        if (child && typeof child === "object" && !seen.has(child)) {
-          seen.add(child);
-          nodes.push(child);
-          positions.push(0);
+      const level = nodes.length - 1,
+        node = nodes[level],
+        names = fields[level];
+      const length = names?.length ?? node.length,
+        index = positions[level];
+      if (index < length) {
+        positions[level]++;
+        const child = node[names ? names[index] : index];
+        if (child && typeof child === "object") {
+          const previous = seen.get(child);
+          if (previous === undefined) {
+            enter(child);
+          } else if (measure) {
+            includeChild(level, depths[previous], annotations[previous]);
+          }
+        }
+        continue;
+      }
+      const ordinal = order.length;
+      seen.set(node, ordinal);
+      order.push(node);
+      nodes.pop();
+      if (measure) {
+        const depth = pathDepth[level],
+          annotationDepth =
+            pathAnnotations[level] +
+            Number(node.kind === OWLObjectKind.ANNOTATION);
+        depths[ordinal] = depth;
+        annotations[ordinal] = annotationDepth;
+        facts.work += 1 + length;
+        if (level) {
+          includeChild(level - 1, depth, annotationDepth);
+        } else {
+          facts.depth = depth;
+          facts.annotations = annotationDepth;
         }
       }
     }
-    return order;
+    return facts;
   };
 }
 
@@ -96,12 +139,15 @@ export class SyntacticLocalityModuleExtractor {
       annotationDepths = [],
       work = [],
       keys = [];
+    const inspectFactoryGraph = traversalWorkspace(true);
     this.#index = collectPostings(this.#entities, (emit) => {
       for (const axiom of axiomIterable) {
         if (!axioms.has(axiom?.kind)) {
           throw new TypeError("Axiom base must contain OWL axioms");
         }
-        const facts = admit(axiom),
+        const facts = isFactoryStructuralObject(axiom)
+            ? inspectFactoryGraph(axiom)
+            : admit(axiom),
           size = this.#base.size,
           id = this.#base.add(axiom);
         if (id < size) {
@@ -169,6 +215,9 @@ export class SyntacticLocalityModuleExtractor {
     }
     await budget.checkpoint();
     budget.limit("maxAxioms", this.#base.size);
+    let traversal;
+    const orderedNodes = (value) =>
+      (traversal ??= traversalWorkspace(false))(value).order;
     const seeds = [],
       seedBits = new DenseBitSet(this.#entities.size);
     for (const entity of seedIterable) {
@@ -176,7 +225,11 @@ export class SyntacticLocalityModuleExtractor {
       if (!entities.has(entity?.kind)) {
         throw new TypeError("Seed must contain typed OWL entities");
       }
-      budget.check(admit(entity).order.length);
+      budget.check(
+        isFactoryStructuralObject(entity)
+          ? orderedNodes(entity).length
+          : admit(entity).order.length,
+      );
       const id = this.#entities.idOf(entity);
       if (id < 0) {
         throw new TypeError(
@@ -221,7 +274,6 @@ export class SyntacticLocalityModuleExtractor {
       }
     }
 
-    const orderedNodes = traversalWorkspace();
     const pass = async (mode, base) => {
       const signature = seedBits.clone(),
         queue = seeds.slice(),

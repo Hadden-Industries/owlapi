@@ -9,6 +9,10 @@ import { collectStorageText } from "../storageFailureOutput.js";
 import { snapshotAxioms } from "../snapshotValues.js";
 import { utf8Length } from "../xmlTokens.js";
 import {
+  canFragmentTurtleLiteral,
+  prepareTurtleLiteral,
+} from "./literalFragments.js";
+import {
   readStorageFormatParameters,
   readForceStringDatatype,
 } from "../storageFormatParameters.js";
@@ -155,10 +159,24 @@ async function prepareTurtle(
           throw new OWLOntologyStorageError("Turtle requires a default graph", {
             reason: "ONTOLOGY_NOT_REPRESENTABLE",
           });
-        if (
-          forceXsdString ||
-          documentStoragePolicy.turtlePresentation === "java-writer"
-        ) {
+        const line = forceXsdString || java;
+        if (canFragmentTurtleLiteral(quad.object)) {
+          const parts = prepareTurtleLiteral(
+            writer,
+            chunks,
+            quad,
+            line ? renderTerm(writer, quad.subject) : quad.subject,
+            line,
+            forceXsdString,
+          );
+          for (const chunk of chunks) yield admitted(chunk);
+          chunks.length = 0;
+          // A finite limit used to reject the entire quad before it reached
+          // the sink. Preflight the same bytes using bounded pieces.
+          if (documentStoragePolicy.maxOutputBytes !== Infinity)
+            for (const chunk of parts()) admitted(chunk);
+          yield* parts();
+        } else if (line) {
           // The public provider method owns RDF term escaping. A default-graph
           // quad ends with its object and the fixed " .\n" delimiter, so adding
           // the explicit string datatype cannot rewrite a literal's contents.

@@ -3,6 +3,8 @@ import { parse as parseLanguageTag } from "bcp-47";
 import { OWLOntologyStorageError } from "../../../io/errors.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
 import { snapshotAxioms, sortedStructuralValues } from "../snapshotValues.js";
+import { chunksOf } from "../../parsing/rdf/streamPrimitives.js";
+import { collectStorageText } from "../storageFailureOutput.js";
 import { XSD_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import {
   minimumTwoSetFields,
@@ -15,6 +17,50 @@ const notRepresentable = (message) => {
   });
 };
 
+const fragmentLength = 8192;
+
+function* textFragments(text) {
+  if (text.length <= fragmentLength) yield text;
+  else yield* chunksOf(text, fragmentLength);
+}
+
+function* fragments(part) {
+  if (typeof part === "string") {
+    yield* textFragments(part);
+    return;
+  }
+  const stack = [{ parts: [part], index: 0, separator: "" }];
+  while (stack.length) {
+    const group = stack.at(-1);
+    if (group.index === group.parts.length) {
+      stack.pop();
+      continue;
+    }
+    if (group.index && group.separator) yield group.separator;
+    const child = group.parts[group.index++];
+    if (typeof child === "string") yield* textFragments(child);
+    else if (child.parts)
+      stack.push({ parts: child.parts, index: 0, separator: child.separator });
+    else yield* child;
+  }
+}
+
+// Finish all grammar and value validation before exposing the first bytes of
+// an axiom. Large children retain their immutable source and are expanded only
+// as the consumer reads them.
+function joined(parts, separator = "") {
+  let length = Math.max(0, parts.length - 1) * separator.length;
+  for (const part of parts) {
+    if (typeof part !== "string") return { parts, separator };
+    length += part.length;
+    if (length > fragmentLength) return { parts, separator };
+  }
+  return parts.join(separator);
+}
+
+const application = (name, values) =>
+  joined([name + "(", joined(values, " "), ")"]);
+
 const fullIri = (iri) => {
   // RFC 3987 IRI includes fragments; absolute-IRI specifically excludes them.
   // Validate, never normalize: lexical IRI identity is part of OWL structure.
@@ -26,8 +72,24 @@ const fullIri = (iri) => {
   } catch {
     notRepresentable("Functional Syntax requires a well-formed full IRI");
   }
-  return `<${iri.value}>`;
+  return joined(["<", iri.value, ">"]);
 };
+
+const escapedLexical = (text) =>
+  text.replaceAll("\\", "\\\\").replaceAll('"', '\\"');
+
+function quotedLiteral(lexical) {
+  if (lexical.length <= fragmentLength)
+    return '"' + escapedLexical(lexical) + '"';
+  return {
+    *[Symbol.iterator]() {
+      yield '"';
+      for (const slice of chunksOf(lexical, fragmentLength))
+        yield escapedLexical(slice);
+      yield '"';
+    },
+  };
+}
 
 const renderLiteral = (literal, render, _labels, { forceXsdString }) => {
   const { lexicalForm, language } = literal;
@@ -36,14 +98,14 @@ const renderLiteral = (literal, render, _labels, { forceXsdString }) => {
   }
   // W3C OWL 2 quotedString escapes only quote and backslash. JSON escaping
   // would change the value of literal tabs and line breaks on OWL reload.
-  const quoted = `"${lexicalForm.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
+  const quoted = quotedLiteral(lexicalForm);
   if (typeof language !== "string")
     notRepresentable("Invalid literal language");
   if (!language)
     return !forceXsdString &&
       literal.datatype.iri.value === `${XSD_NAMESPACE}string`
       ? quoted
-      : `${quoted}^^${render(literal.datatype)}`;
+      : joined([quoted, "^^", render(literal.datatype)]);
   let invalid = false;
   const parsed = parseLanguageTag(language, {
     normalize: false,
@@ -58,7 +120,7 @@ const renderLiteral = (literal, render, _labels, { forceXsdString }) => {
   if (invalid || !(parsed.language || parsed.regular)) {
     notRepresentable("The literal language does not match BCP 47 langtag");
   }
-  return `${quoted}@${language}`;
+  return joined([quoted, "@", language]);
 };
 
 const renderFields = (object, fields, render) =>
@@ -74,12 +136,17 @@ const form =
   (name, fields, annotated = false) =>
   (object, render) => {
     const values = annotated ? object.annotations.map(render) : [];
-    values.push(...renderFields(object, fields, render));
-    return `${name}(${values.join(" ")})`;
+    for (const value of renderFields(object, fields, render))
+      values.push(value);
+    return application(name, values);
   };
 
 const cardinality = (name) => (object, render) =>
-  `${name}(${object.cardinality} ${render(object.property)} ${render(object.filler)})`;
+  application(name, [
+    String(object.cardinality),
+    render(object.property),
+    render(object.filler),
+  ]);
 
 const entityNames = Object.freeze({
   [OWLObjectKind.CLASS]: "Class",
@@ -104,10 +171,12 @@ const renderers = Object.freeze({
   [OWLObjectKind.ANNOTATION]: form("Annotation", ["property", "value"], true),
   [OWLObjectKind.IMPORTS_DECLARATION]: form("Import", ["iri"]),
   [OWLObjectKind.ONTOLOGY_ID]: (object, render) =>
-    [object.ontologyIRI, object.versionIRI]
-      .filter((value) => value !== undefined)
-      .map(render)
-      .join(" "),
+    joined(
+      [object.ontologyIRI, object.versionIRI]
+        .filter((value) => value !== undefined)
+        .map(render),
+      " ",
+    ),
   [OWLObjectKind.CLASS]: entity,
   [OWLObjectKind.DATATYPE]: entity,
   [OWLObjectKind.OBJECT_PROPERTY]: entity,
@@ -162,11 +231,14 @@ const renderers = Object.freeze({
     "facetRestrictions",
   ]),
   [OWLObjectKind.FACET_RESTRICTION]: (object, render) =>
-    `${render(object.facet)} ${render(object.value)}`,
+    joined([render(object.facet), render(object.value)], " "),
   [OWLObjectKind.DECLARATION_AXIOM]: (object, render) => {
     const name = entityNames[object.entity.kind];
     if (!name) notRepresentable("A declaration requires an OWL entity");
-    return `Declaration(${[...object.annotations.map(render), `${name}(${render(object.entity)})`].join(" ")})`;
+    return application("Declaration", [
+      ...object.annotations.map(render),
+      application(name, [render(object.entity)]),
+    ]);
   },
   [OWLObjectKind.SUBCLASS_OF_AXIOM]: form(
     "SubClassOf",
@@ -194,7 +266,11 @@ const renderers = Object.freeze({
     true,
   ),
   [OWLObjectKind.SUB_PROPERTY_CHAIN_AXIOM]: (object, render) =>
-    `SubObjectPropertyOf(${[...object.annotations.map(render), `ObjectPropertyChain(${object.chain.map(render).join(" ")})`, render(object.superProperty)].join(" ")})`,
+    application("SubObjectPropertyOf", [
+      ...object.annotations.map(render),
+      application("ObjectPropertyChain", object.chain.map(render)),
+      render(object.superProperty),
+    ]),
   [OWLObjectKind.EQUIVALENT_OBJECT_PROPERTIES_AXIOM]: form(
     "EquivalentObjectProperties",
     ["properties"],
@@ -291,7 +367,12 @@ const renderers = Object.freeze({
     true,
   ),
   [OWLObjectKind.HAS_KEY_AXIOM]: (object, render) =>
-    `HasKey(${[...object.annotations.map(render), render(object.classExpression), `(${object.objectProperties.map(render).join(" ")})`, `(${object.dataProperties.map(render).join(" ")})`].join(" ")})`,
+    application("HasKey", [
+      ...object.annotations.map(render),
+      render(object.classExpression),
+      application("", object.objectProperties.map(render)),
+      application("", object.dataProperties.map(render)),
+    ]),
   [OWLObjectKind.SAME_INDIVIDUAL_AXIOM]: form(
     "SameIndividual",
     ["individuals"],
@@ -353,7 +434,7 @@ export const FUNCTIONAL_SYNTAX_RENDERER_KINDS = Object.freeze(
   Object.keys(renderers),
 );
 
-/** Render one Functional Syntax line at a time from a committed snapshot. */
+/** Render complete, validated productions as bounded text fragments. */
 export function* renderFunctionalSyntaxChunks(
   snapshot,
   { forceXsdString = true } = {},
@@ -367,17 +448,17 @@ export function* renderFunctionalSyntaxChunks(
     }
     return renderers[object.kind](object, render, labels, { forceXsdString });
   };
-  yield `Ontology(${render(snapshot.ontologyID)}\n`;
+  yield* fragments(joined(["Ontology(", render(snapshot.ontologyID), "\n"]));
   for (const values of [
     snapshot.authoredImportDeclarations,
     snapshot.directOntologyAnnotations,
     snapshotAxioms(snapshot),
   ]) {
     for (const value of sortedStructuralValues(values))
-      yield render(value) + "\n";
+      yield* fragments(joined([render(value), "\n"]));
   }
   yield ")\n";
 }
 
 export const renderFunctionalSyntax = (snapshot, options) =>
-  [...renderFunctionalSyntaxChunks(snapshot, options)].join("");
+  collectStorageText(renderFunctionalSyntaxChunks(snapshot, options));

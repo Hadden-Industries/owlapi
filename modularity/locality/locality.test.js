@@ -5,6 +5,7 @@ import {
   OWLOntology,
   OWLOntologyManager,
   OWLObjectKind as K,
+  OWLStructuralObject,
 } from "../../model/index.js";
 import { StringDocumentSource, ResourceLimitError } from "../../io/index.js";
 import { compareOntologies } from "../../internal/model/ontologyStructuralIsomorphism.js";
@@ -313,6 +314,67 @@ test("revisiting one nonlogical axiom through many seeds does not repeat its str
     delete structuralFields.get;
   }
   expect(declarationReads).toBe(0);
+});
+
+test("factory and explicit admission charge the same shared expression and nested annotation graph", async () => {
+  const expression = f.getOWLObjectSomeValuesFrom(
+    f.getOWLObjectProperty(IRI.create("urn:work:p")),
+    b,
+  );
+  const label = f.getRDFSLabel(),
+    literal = f.getOWLLiteral("shared");
+  const annotation = f.getOWLAnnotation(label, literal, [
+    f.getOWLAnnotation(label, literal),
+  ]);
+  const native = f.getOWLSubClassOfAxiom(expression, expression, [annotation]);
+  const fields = {
+    annotations: native.annotations,
+    subClass: expression,
+    superClass: expression,
+  };
+  const explicit = new OWLStructuralObject(
+    native.kind,
+    fields,
+    [expression, expression, native.annotations],
+    { componentsWithoutAnnotations: [expression, expression] },
+  );
+  const factoryExtractor = new SyntacticLocalityModuleExtractor(
+    LocalityClass.STAR,
+    [native],
+  );
+  const explicitExtractor = new SyntacticLocalityModuleExtractor(
+    LocalityClass.STAR,
+    [explicit],
+  );
+  for (const limit of ["maxWork", "maxDepth", "maxAnnotationDepth"]) {
+    let low = 0,
+      high = 2048;
+    while (low < high) {
+      const bound = Math.floor((low + high) / 2);
+      try {
+        await explicitExtractor.extract([b], undefined, { [limit]: bound });
+        high = bound;
+      } catch (error) {
+        if (!(error instanceof ResourceLimitError)) {
+          throw error;
+        }
+        low = bound + 1;
+      }
+    }
+    expect(low).toBeGreaterThan(0);
+    const answer = await explicitExtractor.extract([b], undefined, {
+      [limit]: low,
+    });
+    await expect(
+      factoryExtractor.extract([b], undefined, { [limit]: low - 1 }),
+    ).rejects.toBeInstanceOf(ResourceLimitError);
+    const actual = await factoryExtractor.extract([b], undefined, {
+      [limit]: low,
+    });
+    expect(actual.map((x) => x.structuralKey())).toEqual(
+      answer.map((x) => x.structuralKey()),
+    );
+  }
 });
 
 test.each([

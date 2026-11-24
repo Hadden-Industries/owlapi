@@ -16,9 +16,48 @@ import { compareOntologies } from "../../model/ontologyStructuralIsomorphism.js"
 import {
   FUNCTIONAL_SYNTAX_RENDERER_KINDS,
   renderFunctionalSyntax,
+  renderFunctionalSyntaxChunks,
 } from "./functionalSyntaxRenderer.js";
 
 describe("Functional Syntax structural rendering", () => {
+  it("withholds a failing axiom after validating an earlier large annotation", () => {
+    const f = new OWLDataFactory();
+    const annotation = f.getOWLAnnotation(
+      f.getRDFSLabel(),
+      f.getOWLLiteral("quoted".repeat(20_000)),
+    );
+    const axiom = f.getOWLAnnotationAssertionAxiom(
+      f.getRDFSLabel(),
+      IRI.create("urn:bad>iri"),
+      f.getOWLLiteral("small"),
+      [annotation],
+    );
+    const snapshot = new OntologyState({
+      directAxioms: [axiom],
+    }).createSnapshot();
+    const fragments = renderFunctionalSyntaxChunks(snapshot);
+    expect(fragments.next().value).toBe("Ontology(\n");
+    expect(() => fragments.next()).toThrow(OWLOntologyStorageError);
+  });
+  it("bounds text fragments before UTF-8 encoding, with exact literal escaping", () => {
+    const f = new OWLDataFactory();
+    const lexical = 'a"\\\t\n🦉'.repeat(18_000);
+    const axiom = f.getOWLAnnotationAssertionAxiom(
+      f.getRDFSLabel(),
+      IRI.create("urn:large:value"),
+      f.getOWLLiteral(lexical, "en"),
+    );
+    const snapshot = new OntologyState({
+      directAxioms: [axiom],
+    }).createSnapshot();
+    const pieces = [...renderFunctionalSyntaxChunks(snapshot)];
+    expect(
+      Math.max(...pieces.map((piece) => piece.length)),
+    ).toBeLessThanOrEqual(65_536);
+    expect(pieces.join("")).toContain(
+      '"' + lexical.replaceAll("\\", "\\\\").replaceAll('"', '\\"') + '"@en',
+    );
+  });
   it("declares an explicit renderer branch for every current structural kind", () => {
     expect([...FUNCTIONAL_SYNTAX_RENDERER_KINDS].sort()).toEqual(
       [...OWL_OBJECT_KINDS].sort(),

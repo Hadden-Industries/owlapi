@@ -1,11 +1,107 @@
-import { expect, test } from "@jest/globals";
+import { expect, jest, test } from "@jest/globals";
+import { Writer } from "n3";
+import { resolveOntologyBehaviorDefinition } from "../behavior/ontologyBehaviorContext.js";
+import { readOntologySnapshot } from "../../model/owlOntology.js";
+import { readOntologyWriterConfiguration } from "../../model/owlOntologyWriterConfiguration.js";
+import { turtleStorer } from "./turtle/turtleStorer.js";
 import {
+  AddOntologyAnnotation,
+  IRI,
   OWLDocumentFormats,
   OWLManager,
   StringDocumentSource,
   StringDocumentTarget,
   StreamDocumentTarget,
 } from "../../index.js";
+
+test("a rejected large Turtle quad retains the previous chunk boundary", async () => {
+  const behavior = resolveOntologyBehaviorDefinition("java-owlapi-5.5.1");
+  const manager = OWLManager.createOWLOntologyManager({
+    behaviorProfileId: behavior.behaviorProfileId,
+  });
+  const f = manager.getOWLDataFactory();
+  const ontology = manager.createOntology(
+    f.getOWLOntologyID(IRI.create("urn:limited")),
+  );
+  manager.applyChange(
+    new AddOntologyAnnotation(
+      ontology,
+      f.getOWLAnnotation(
+        f.getRDFSLabel(),
+        f.getOWLLiteral("x".repeat(100_000)),
+      ),
+    ),
+  );
+  const sequence = await turtleStorer.renderBytes(
+    readOntologySnapshot(ontology),
+    OWLDocumentFormats.TURTLE,
+    readOntologyWriterConfiguration(manager.getOntologyWriterConfiguration()),
+    { ...behavior.documentStoragePolicy, maxOutputBytes: 80_000 },
+    behavior,
+  );
+  const iterator = sequence[Symbol.iterator]();
+  expect(() => iterator.next()).toThrow(
+    expect.objectContaining({
+      code: "RESOURCE_LIMIT_EXCEEDED",
+      resource: "outputBytes",
+    }),
+  );
+});
+
+test.each(["java-owlapi-5.5.1", "normative-v1"])(
+  "%s sends only bounded quoted literal fragments to N3 across grouping boundaries",
+  async (behaviorProfileId) => {
+    const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId });
+    const f = manager.getOWLDataFactory();
+    const ontology = manager.createOntology(
+      f.getOWLOntologyID(IRI.create("urn:large:owner")),
+    );
+    const lexical = 'q"\\\n\t🦉'.repeat(18_000);
+    const a = f.getOWLAnnotation(
+      f.getRDFSLabel(),
+      f.getOWLLiteral(lexical, "en"),
+    );
+    manager.applyChange(new AddOntologyAnnotation(ontology, a));
+    const sizes = [];
+    const nativeLine = Writer.prototype.quadToString,
+      nativeAdd = Writer.prototype.addQuad;
+    const line = jest
+      .spyOn(Writer.prototype, "quadToString")
+      .mockImplementation(function (...args) {
+        if (args[2].termType === "Literal") sizes.push(args[2].value.length);
+        return nativeLine.apply(this, args);
+      });
+    const add = jest
+      .spyOn(Writer.prototype, "addQuad")
+      .mockImplementation(function (...args) {
+        const object = args[2] ?? args[0].object;
+        if (object.termType === "Literal") sizes.push(object.value.length);
+        return nativeAdd.apply(this, args);
+      });
+    try {
+      const chunks = [];
+      await manager.saveOntology(
+        ontology,
+        OWLDocumentFormats.TURTLE,
+        new StreamDocumentTarget(async (parts) => {
+          for await (const part of parts) chunks.push(part);
+        }),
+      );
+      expect(sizes.length).toBeGreaterThan(0);
+      expect(Math.max(...sizes)).toBeLessThanOrEqual(8192);
+      const reload = OWLManager.createOWLOntologyManager({ behaviorProfileId });
+      const copied = await reload.loadOntologyFromOntologyDocument(
+        new StringDocumentSource(Buffer.concat(chunks).toString("utf8"), {
+          format: OWLDocumentFormats.TURTLE,
+        }),
+      );
+      expect([...copied.getAnnotations()][0].value.lexicalForm).toBe(lexical);
+    } finally {
+      add.mockRestore();
+      line.mockRestore();
+    }
+  },
+);
 
 test.each(["RDF_XML", "OWL_XML", "TURTLE", "FUNCTIONAL"])(
   "%s writes chunk boundaries inside a Unicode literal and reloads its exact value",
