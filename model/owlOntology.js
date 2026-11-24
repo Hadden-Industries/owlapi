@@ -36,6 +36,9 @@ const createClosureReader = (snapshots) => {
       }
       return all;
     },
+    allAxiomsSet() {
+      return new Set(this.allAxioms());
+    },
     logicalAxioms() {
       if (!logical) {
         const set = new StructuralSet();
@@ -43,6 +46,9 @@ const createClosureReader = (snapshots) => {
         logical = Object.freeze([...set]);
       }
       return logical;
+    },
+    logicalAxiomsSet() {
+      return new Set(this.logicalAxioms());
     },
     axioms(type) {
       let bucket = byKind.get(type);
@@ -54,6 +60,9 @@ const createClosureReader = (snapshots) => {
       }
       return bucket;
     },
+    axiomsSet(type) {
+      return new Set(this.axioms(type));
+    },
     signature(kind) {
       let bucket = sigByKind.get(kind);
       if (!bucket) {
@@ -63,6 +72,9 @@ const createClosureReader = (snapshots) => {
         sigByKind.set(kind, bucket);
       }
       return bucket;
+    },
+    signatureSet(kind) {
+      return new Set(this.signature(kind));
     },
   });
 };
@@ -123,11 +135,77 @@ export const readProfileClosure = (ontology) => {
   return { ontologies, complete };
 };
 
-const requireKind = (value, kinds, name) => {
-  if (!isCanonicalStructuralObject(value) || !kinds.includes(value.kind)) {
+const requireSingleKind = (value, expectedKind, name) => {
+  if (!isCanonicalStructuralObject(value) || value.kind !== expectedKind) {
     throw new TypeError(`${name} has an invalid OWL structural kind`);
   }
   return value;
+};
+
+const KIND_SETS = new WeakMap();
+const requireKind = (value, kinds, name) => {
+  if (!isCanonicalStructuralObject(value)) {
+    throw new TypeError(`${name} has an invalid OWL structural kind`);
+  }
+  let set = KIND_SETS.get(kinds);
+  if (!set) {
+    set = new Set(kinds);
+    KIND_SETS.set(kinds, set);
+  }
+  if (!set.has(value.kind)) {
+    throw new TypeError(`${name} has an invalid OWL structural kind`);
+  }
+  return value;
+};
+
+const INDIVIDUAL_KIND_SET = new Set(INDIVIDUAL_KINDS);
+const CLASS_AND_INDIVIDUAL_KINDS = Object.freeze([
+  ...INDIVIDUAL_KINDS,
+  ...CLASS_EXPRESSION_KINDS,
+]);
+const ANNOTATION_SUBJECT_KINDS = Object.freeze([
+  OWLObjectKind.IRI,
+  OWLObjectKind.ANONYMOUS_INDIVIDUAL,
+]);
+const ENTITY_OR_IRI_KINDS = Object.freeze([...ENTITY_KINDS, OWLObjectKind.IRI]);
+const REFERENCING_ENTITY_KINDS = Object.freeze([
+  ...ENTITY_KINDS,
+  OWLObjectKind.IRI,
+  OWLObjectKind.LITERAL,
+  OWLObjectKind.ANONYMOUS_INDIVIDUAL,
+]);
+
+const collectMultiOntologySet = (scope, visitMember) => {
+  let plain = null;
+  let structural = null;
+  let sourceCount = 0;
+  for (let i = 0; i < scope.length; i += 1) {
+    let seenInThis = false;
+    visitMember(readOntologyModel(readOntologySnapshot(scope[i])), (value) => {
+      if (structural) {
+        structural.add(value);
+        return;
+      }
+      if (!seenInThis) {
+        seenInThis = true;
+        sourceCount += 1;
+        if (sourceCount === 1) {
+          plain = new Set();
+        } else {
+          // Each snapshot index is already structurally unique; only allocate
+          // a StructuralSet when a second ontology also contributes items.
+          structural = new StructuralSet();
+          for (const prev of plain) structural.add(prev);
+          plain = null;
+          structural.add(value);
+          return;
+        }
+      }
+      plain.add(value);
+    });
+  }
+  if (structural) return structural.toSet();
+  return plain ?? new Set();
 };
 
 const createOntologyState = ({
@@ -195,11 +273,11 @@ export class OWLOntology {
   getAxioms(imports = Imports.EXCLUDED) {
     // Committed direct storage is already structurally unique. Cross-ontology
     // aggregation still needs structural deduplication across object identities.
-    return new Set(this.#reader(imports).allAxioms());
+    return this.#reader(imports).allAxiomsSet();
   }
 
   getAxiomsByType(type, imports = Imports.EXCLUDED) {
-    return new Set(this.#reader(imports).axioms(type));
+    return this.#reader(imports).axiomsSet(type);
   }
 
   #scope(imports) {
@@ -234,7 +312,7 @@ export class OWLOntology {
   }
 
   getLogicalAxioms(imports = Imports.EXCLUDED) {
-    return new Set(this.#reader(imports).logicalAxioms());
+    return this.#reader(imports).logicalAxiomsSet();
   }
 
   getLogicalAxiomCount(imports = Imports.EXCLUDED) {
@@ -290,12 +368,19 @@ export class OWLOntology {
 
   #position(kind, field, target, kinds) {
     requireKind(target, kinds, "query target");
-    return new Set(
-      readOntologyModel(this.#readStateSnapshot()).position(
-        kind,
-        field,
-        captureStructuralKey(target),
-      ),
+    return readOntologyModel(this.#readStateSnapshot()).positionSetFor(
+      kind,
+      field,
+      target,
+    );
+  }
+
+  #positionSingleKind(kind, field, target, expectedKind) {
+    requireSingleKind(target, expectedKind, "query target");
+    return readOntologyModel(this.#readStateSnapshot()).positionSetFor(
+      kind,
+      field,
+      target,
     );
   }
 
@@ -311,38 +396,38 @@ export class OWLOntology {
 
   /** Match the complete indexed expression, never a nested occurrence. */
   getSubClassAxiomsForSubClass(owlClass) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.SUBCLASS_OF_AXIOM,
       "subClass",
       owlClass,
-      [OWLObjectKind.CLASS],
+      OWLObjectKind.CLASS,
     );
   }
 
   getSubClassAxiomsForSuperClass(owlClass) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.SUBCLASS_OF_AXIOM,
       "superClass",
       owlClass,
-      [OWLObjectKind.CLASS],
+      OWLObjectKind.CLASS,
     );
   }
 
   getEquivalentClassesAxioms(owlClass) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.EQUIVALENT_CLASSES_AXIOM,
       "classExpressions",
       owlClass,
-      [OWLObjectKind.CLASS],
+      OWLObjectKind.CLASS,
     );
   }
 
   getDisjointClassesAxioms(owlClass) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.DISJOINT_CLASSES_AXIOM,
       "classExpressions",
       owlClass,
-      [OWLObjectKind.CLASS],
+      OWLObjectKind.CLASS,
     );
   }
 
@@ -392,65 +477,65 @@ export class OWLOntology {
   }
 
   getDataSubPropertyAxiomsForSubProperty(property) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.SUB_DATA_PROPERTY_AXIOM,
       "subProperty",
       property,
-      [OWLObjectKind.DATA_PROPERTY],
+      OWLObjectKind.DATA_PROPERTY,
     );
   }
 
   getDataSubPropertyAxiomsForSuperProperty(property) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.SUB_DATA_PROPERTY_AXIOM,
       "superProperty",
       property,
-      [OWLObjectKind.DATA_PROPERTY],
+      OWLObjectKind.DATA_PROPERTY,
     );
   }
 
   getDataPropertyDomainAxioms(property) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.DATA_PROPERTY_DOMAIN_AXIOM,
       "property",
       property,
-      [OWLObjectKind.DATA_PROPERTY],
+      OWLObjectKind.DATA_PROPERTY,
     );
   }
 
   getDataPropertyRangeAxioms(property) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.DATA_PROPERTY_RANGE_AXIOM,
       "property",
       property,
-      [OWLObjectKind.DATA_PROPERTY],
+      OWLObjectKind.DATA_PROPERTY,
     );
   }
 
   getSubAnnotationPropertyOfAxioms(property) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.SUB_ANNOTATION_PROPERTY_AXIOM,
       "subProperty",
       property,
-      [OWLObjectKind.ANNOTATION_PROPERTY],
+      OWLObjectKind.ANNOTATION_PROPERTY,
     );
   }
 
   getAnnotationPropertyDomainAxioms(property) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.ANNOTATION_PROPERTY_DOMAIN_AXIOM,
       "property",
       property,
-      [OWLObjectKind.ANNOTATION_PROPERTY],
+      OWLObjectKind.ANNOTATION_PROPERTY,
     );
   }
 
   getAnnotationPropertyRangeAxioms(property) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.ANNOTATION_PROPERTY_RANGE_AXIOM,
       "property",
       property,
-      [OWLObjectKind.ANNOTATION_PROPERTY],
+      OWLObjectKind.ANNOTATION_PROPERTY,
     );
   }
 
@@ -518,22 +603,24 @@ export class OWLOntology {
   }
 
   getFunctionalDataPropertyAxioms(property) {
-    return this.#position(
+    return this.#positionSingleKind(
       OWLObjectKind.FUNCTIONAL_DATA_PROPERTY_AXIOM,
       "property",
       property,
-      [OWLObjectKind.DATA_PROPERTY],
+      OWLObjectKind.DATA_PROPERTY,
     );
   }
 
   getClassAssertionAxioms(value) {
-    const field = INDIVIDUAL_KINDS.includes(value?.kind)
+    const field = INDIVIDUAL_KIND_SET.has(value?.kind)
       ? "individual"
       : "classExpression";
-    return this.#position(OWLObjectKind.CLASS_ASSERTION_AXIOM, field, value, [
-      ...INDIVIDUAL_KINDS,
-      ...CLASS_EXPRESSION_KINDS,
-    ]);
+    return this.#position(
+      OWLObjectKind.CLASS_ASSERTION_AXIOM,
+      field,
+      value,
+      CLASS_AND_INDIVIDUAL_KINDS,
+    );
   }
 
   getObjectPropertyAssertionAxioms(individual) {
@@ -591,18 +678,15 @@ export class OWLOntology {
   }
 
   getAnnotationAssertionAxioms(subject, imports = Imports.EXCLUDED) {
-    requireKind(
-      subject,
-      [OWLObjectKind.IRI, OWLObjectKind.ANONYMOUS_INDIVIDUAL],
-      "subject",
+    requireKind(subject, ANNOTATION_SUBJECT_KINDS, "subject");
+    const scope = this.#scope(imports);
+    if (scope.length === 1)
+      return readOntologyModel(
+        readOntologySnapshot(scope[0]),
+      ).annotationAssertionsSetFor(subject);
+    return collectMultiOntologySet(scope, (model, emit) =>
+      model.forEachAnnotationAssertionFor(subject, undefined, emit),
     );
-    const result = new StructuralSet();
-    for (const ontology of this.#scope(imports))
-      for (const axiom of readOntologyModel(
-        readOntologySnapshot(ontology),
-      ).annotationAssertions(captureStructuralKey(subject)))
-        result.add(axiom);
-    return result.toSet();
   }
 
   getImportsDeclarations() {
@@ -642,7 +726,7 @@ export class OWLOntology {
   }
 
   #signatureMatching(kind, imports) {
-    return new Set(this.#reader(imports).signature(kind));
+    return this.#reader(imports).signatureSet(kind);
   }
 
   /** All named kinds in the selected current loaded scope, without declarations inferred. */
@@ -651,28 +735,19 @@ export class OWLOntology {
   }
 
   getEntitiesInSignature(iri, imports = Imports.EXCLUDED) {
-    requireKind(iri, [OWLObjectKind.IRI], "iri");
-    const key = captureStructuralKey(iri);
+    requireSingleKind(iri, OWLObjectKind.IRI, "iri");
     const scope = this.#scope(imports);
     if (scope.length === 1)
-      return new Set(
-        readOntologyModel(readOntologySnapshot(scope[0])).entities(key),
+      return readOntologyModel(readOntologySnapshot(scope[0])).entitiesSetFor(
+        iri,
       );
-    const result = new StructuralSet();
-    for (const ontology of scope)
-      for (const entity of readOntologyModel(
-        readOntologySnapshot(ontology),
-      ).entities(key))
-        result.add(entity);
-    return result.toSet();
+    return collectMultiOntologySet(scope, (model, emit) =>
+      model.forEachEntityFor(iri, emit),
+    );
   }
 
   containsEntityInSignature(entityOrIRI, imports = Imports.EXCLUDED) {
-    requireKind(
-      entityOrIRI,
-      [...ENTITY_KINDS, OWLObjectKind.IRI],
-      "entityOrIRI",
-    );
+    requireKind(entityOrIRI, ENTITY_OR_IRI_KINDS, "entityOrIRI");
     return entityOrIRI.kind === OWLObjectKind.IRI
       ? this.getEntitiesInSignature(entityOrIRI, imports).size > 0
       : [...this.getEntitiesInSignature(entityOrIRI.iri, imports)].some(
@@ -700,31 +775,15 @@ export class OWLOntology {
   }
 
   getReferencingAxioms(entity, imports = Imports.EXCLUDED) {
-    requireKind(
-      entity,
-      [
-        ...ENTITY_KINDS,
-        OWLObjectKind.IRI,
-        OWLObjectKind.LITERAL,
-        OWLObjectKind.ANONYMOUS_INDIVIDUAL,
-      ],
-      "entity",
-    );
-    const key = captureStructuralKey(entity);
+    requireKind(entity, REFERENCING_ENTITY_KINDS, "entity");
     const scope = this.#scope(imports);
     if (scope.length === 1)
-      return new Set(
-        readOntologyModel(readOntologySnapshot(scope[0])).referencingAxioms(
-          key,
-        ),
-      );
-    const result = new StructuralSet();
-    for (const ontology of scope)
-      for (const axiom of readOntologyModel(
-        readOntologySnapshot(ontology),
-      ).referencingAxioms(key))
-        result.add(axiom);
-    return result.toSet();
+      return readOntologyModel(
+        readOntologySnapshot(scope[0]),
+      ).referencingAxiomsSetFor(entity);
+    return collectMultiOntologySet(scope, (model, emit) =>
+      model.forEachReferencingAxiomFor(entity, emit),
+    );
   }
 }
 

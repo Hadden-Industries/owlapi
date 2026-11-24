@@ -461,3 +461,54 @@ test("rank and select reuse sparse page counts across scattered reads and isolat
   }
   expect(pageVisits).toBeLessThan(160);
 });
+
+test("native hashing matches JSON structuralKey streams for ASCII, escaped, and surrogate text", () => {
+  const label = factory.getRDFSLabel();
+  const c = owlClass('urn:test:"quoted"\\\n\uD800\uDC00/C');
+  const d = owlClass("urn:test:plain/D");
+  const op = factory.getOWLObjectProperty(IRI.create("urn:test:op"));
+  const dp = factory.getOWLDataProperty(IRI.create("urn:test:dp"));
+  const ind = factory.getOWLNamedIndividual(IRI.create("urn:test:ind\t1"));
+  const lit = factory.getOWLLiteral('a"b\\c\n\uD800\uD800\uDC00', "en-gb");
+  const dt = factory.getOWLDatatype(
+    IRI.create("http://www.w3.org/2001/XMLSchema#integer"),
+  );
+  const facet = factory.getOWLFacetRestriction(
+    IRI.create("http://www.w3.org/2001/XMLSchema#minInclusive"),
+    factory.getOWLLiteral("5", dt),
+  );
+  const restriction = factory.getOWLDatatypeRestriction(dt, [facet]);
+  const some = factory.getOWLObjectSomeValuesFrom(
+    factory.getOWLObjectInverseOf(op),
+    factory.getOWLObjectIntersectionOf([c, d]),
+  );
+  const ann = factory.getOWLAnnotation(label, lit);
+  const ax1 = factory.getOWLSubClassOfAxiom(c, some, [ann]);
+  const ax2 = factory.getOWLDataPropertyRangeAxiom(dp, restriction);
+  const ax3 = factory.getOWLDataPropertyAssertionAxiom(dp, ind, lit, [ann]);
+  const samples = [
+    c,
+    c.iri,
+    op,
+    dp,
+    ind,
+    lit,
+    restriction,
+    some,
+    ax1,
+    ax2,
+    ax3,
+  ];
+  for (const seed of [0, 123456789, 0xdeadbeef]) {
+    for (const sample of samples) {
+      expect(hashCapturedKey(sample, seed, false)).toBe(
+        hashCapturedKey(sample.structuralKey(), seed, false),
+      );
+      if (typeof sample.structuralKeyWithoutAnnotations === "function") {
+        expect(hashCapturedKey(sample, seed, true)).toBe(
+          hashCapturedKey(sample.structuralKeyWithoutAnnotations(), seed, true),
+        );
+      }
+    }
+  }
+});

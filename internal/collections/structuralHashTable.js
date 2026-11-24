@@ -61,6 +61,25 @@ export class StructuralHashTable {
       }
     }
   }
+  toSet() {
+    if (!this.#deleted) {
+      return new Set(this.#values);
+    }
+    const result = new Set();
+    for (let i = 0; i < this.#values.length; i++) {
+      if (!this.#deleted.has(i)) {
+        result.add(this.#values[i]);
+      }
+    }
+    return result;
+  }
+  forEachValue(visitor) {
+    for (let i = 0; i < this.#values.length; i++) {
+      if (!this.#deleted?.has(i)) {
+        visitor(this.#values[i]);
+      }
+    }
+  }
   *reverseValues() {
     for (let i = this.#values.length - 1; i >= 0; i--) {
       if (!this.#deleted?.has(i)) {
@@ -94,11 +113,11 @@ export class StructuralHashTable {
     let bucket = hash & mask;
     while (this.#buckets[bucket]) {
       const slot = this.#buckets[bucket] - 1;
-      if (
-        hash === this.#hashes[slot] &&
-        this.#operations.equals(this.#keyAtSlot(slot), key)
-      ) {
-        break;
+      if (hash === this.#hashes[slot]) {
+        const storedKey = this.#keyAtSlot(slot);
+        if (storedKey === key || this.#operations.equals(storedKey, key)) {
+          break;
+        }
       }
       bucket = (bucket + 1) & mask;
     }

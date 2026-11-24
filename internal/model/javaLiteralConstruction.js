@@ -17,6 +17,22 @@ const XSD_DOUBLE = XSD_NAMESPACE + "double";
  * malformed/out-of-range strings. Java parseInt/parseLong admit BMP Nd digits.
  */
 function normalizeJavaIntegerLiteral(input, bits) {
+  const len = input.length;
+  if (len > 0 && len <= 9) {
+    const c0 = input.charCodeAt(0);
+    if (c0 === 48) return input;
+    if (c0 >= 49 && c0 <= 57) {
+      let asciiOnly = true;
+      for (let i = 1; i < len; i += 1) {
+        const c = input.charCodeAt(i);
+        if (c < 48 || c > 57) {
+          asciiOnly = false;
+          break;
+        }
+      }
+      if (asciiOnly) return input;
+    }
+  }
   if (trimJavaStringWhitespace(input).startsWith("0")) return input;
   // Match the non-ASCII code points before Java's BMP decimal-digit conversion.
   // eslint-disable-next-line no-control-regex
@@ -51,6 +67,17 @@ function normalizeJavaIntegerLiteral(input, bits) {
  * These are factory semantics, not RDF datatype lexical validity checks.
  */
 export function normalizeJavaTypedLiteral(lexicalForm, datatypeIRI) {
+  return (
+    normalizeJavaTypedLiteralIfNeeded(lexicalForm, datatypeIRI) ?? {
+      lexicalForm,
+      datatypeIRI,
+      language: "",
+    }
+  );
+}
+
+/** Return undefined when no normalization change applies to skip wrapper allocation. */
+export function normalizeJavaTypedLiteralIfNeeded(lexicalForm, datatypeIRI) {
   if (datatypeIRI === PLAIN_LITERAL || datatypeIRI === LANG_STRING) {
     const separator = lexicalForm.lastIndexOf("@");
     return separator < 0
@@ -61,25 +88,30 @@ export function normalizeJavaTypedLiteral(lexicalForm, datatypeIRI) {
           language: lexicalForm.slice(separator + 1),
         };
   }
+  let normalizedLexical;
   switch (datatypeIRI) {
     case XSD_BOOLEAN: {
       const value = trimJavaStringWhitespace(lexicalForm);
-      lexicalForm =
+      normalizedLexical =
         value.toLowerCase() === "true" || value === "1" ? "true" : "false";
       break;
     }
     case XSD_INTEGER:
-      lexicalForm = normalizeJavaIntegerLiteral(lexicalForm, 32);
+      normalizedLexical = normalizeJavaIntegerLiteral(lexicalForm, 32);
       break;
     case XSD_LONG:
-      lexicalForm = normalizeJavaIntegerLiteral(lexicalForm, 64);
+      normalizedLexical = normalizeJavaIntegerLiteral(lexicalForm, 64);
       break;
     case XSD_FLOAT:
-      lexicalForm = normalizeJavaFloatingPointLiteral(lexicalForm, 24);
+      normalizedLexical = normalizeJavaFloatingPointLiteral(lexicalForm, 24);
       break;
     case XSD_DOUBLE:
-      lexicalForm = normalizeJavaFloatingPointLiteral(lexicalForm, 53);
+      normalizedLexical = normalizeJavaFloatingPointLiteral(lexicalForm, 53);
       break;
+    default:
+      return undefined;
   }
-  return { lexicalForm, datatypeIRI, language: "" };
+  return normalizedLexical === lexicalForm
+    ? undefined
+    : { lexicalForm: normalizedLexical, datatypeIRI, language: "" };
 }

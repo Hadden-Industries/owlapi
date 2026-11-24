@@ -292,6 +292,7 @@ function createSnapshot(
       hasNativeKeys: axioms.hasNativeKeys,
       valueAt: (id) => axioms.valueAt(id),
       idOfCapturedKey: (key) => axioms.idOfCapturedKey(key),
+      toSet: () => axioms.toSet(),
       [Symbol.iterator]: () => axioms.values(),
     }),
   );

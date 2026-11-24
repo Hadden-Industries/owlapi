@@ -389,19 +389,24 @@ function formatJavaFloatingPoint(value, precision) {
  */
 export function normalizeJavaFloatingPointLiteral(input, precision) {
   const text = trimJavaStringWhitespace(input);
-  const sign = text.startsWith("-") ? -1 : 1;
-  const unsigned = text.replace(/^[+-]/u, "");
+  const firstCode = text.charCodeAt(0);
+  const sign = firstCode === 45 ? -1 : 1;
+  const unsigned = firstCode === 43 || firstCode === 45 ? text.slice(1) : text;
   if (unsigned === "NaN") return "NaN";
   if (unsigned === "Infinity") return sign < 0 ? "-Infinity" : "Infinity";
-  const hexadecimal =
-    /^0[xX]([\da-fA-F]+(?:\.[\da-fA-F]*)?|\.[\da-fA-F]+)[pP]([+-]?\d+)[fFdD]?$/u.exec(
-      unsigned,
-    );
-  if (hexadecimal)
-    return formatJavaFloatingPoint(
-      sign * parseHexadecimal(hexadecimal[1], hexadecimal[2], precision),
-      precision,
-    );
+  const u0 = unsigned.charCodeAt(0);
+  const u1 = unsigned.charCodeAt(1);
+  if (u0 === 48 && (u1 === 120 || u1 === 88)) {
+    const hexadecimal =
+      /^0[xX]([\da-fA-F]+(?:\.[\da-fA-F]*)?|\.[\da-fA-F]+)[pP]([+-]?\d+)[fFdD]?$/u.exec(
+        unsigned,
+      );
+    if (hexadecimal)
+      return formatJavaFloatingPoint(
+        sign * parseHexadecimal(hexadecimal[1], hexadecimal[2], precision),
+        precision,
+      );
+  }
   const decimal = /^(\d+(?:\.\d*)?|\.\d+)(?:[eE]([+-]?\d+))?[fFdD]?$/u.exec(
     unsigned,
   );

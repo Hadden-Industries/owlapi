@@ -329,7 +329,21 @@ export class StructuralAxiomSet {
     return Object.freeze([...this]);
   }
   toSet() {
-    return new Set(this);
+    if (!this.#removed && !this.#added) {
+      return this.#base.toSet();
+    }
+    const out = this.#removed ? new Set() : this.#base.toSet();
+    if (this.#removed) {
+      for (let id = 0; id < this.#base.size; id++) {
+        if (!this.#removed.has(id)) {
+          out.add(this.#base.valueAt(id));
+        }
+      }
+    }
+    if (this.#added) {
+      this.#added.forEachValue((value) => out.add(value));
+    }
+    return out;
   }
 }
 

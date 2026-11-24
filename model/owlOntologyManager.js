@@ -534,6 +534,7 @@ export class OWLOntologyManager {
   #requestedImportIRIs = new Set();
   #importedOntologyIDsByImportIRI = new Map();
   #javaClosureCache = new WeakMap();
+  #registeredClosureCache = new WeakMap();
   #externalDocumentIRIsByOntology = new WeakMap();
   #rdfXmlFormats = new WeakMap();
 
@@ -859,15 +860,20 @@ export class OWLOntologyManager {
       const indexRevision = this.#managedOntologyIndex.revision;
       const importedCount = this.#importedOntologyIDsByImportIRI.size;
       const cached = this.#javaClosureCache.get(ontology);
+      const cachedClosure = cached?.closure;
       if (
         cached &&
         cached.indexRevision === indexRevision &&
-        cached.importedCount === importedCount &&
-        cached.closure.every(
-          (member, i) => readOntologySnapshot(member) === cached.snapshots[i],
-        )
+        cached.importedCount === importedCount
       ) {
-        return cached.closure;
+        let valid = true;
+        for (let i = 0; i < cachedClosure.length; i += 1) {
+          if (readOntologySnapshot(cachedClosure[i]) !== cached.snapshots[i]) {
+            valid = false;
+            break;
+          }
+        }
+        if (valid) return cachedClosure;
       }
       const result = new Set();
       const pending = [ontology];
@@ -895,9 +901,20 @@ export class OWLOntologyManager {
       });
       return closure;
     }
-    return this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
-      operation,
+    const indexRevision = this.#managedOntologyIndex.revision;
+    const cached = this.#registeredClosureCache.get(ontology);
+    if (cached && cached.indexRevision === indexRevision) {
+      return cached.closure;
+    }
+    const closure = this.#managedOntologyIndex.createImportsClosureSnapshot(
+      ontology,
+      { operation },
+    );
+    this.#registeredClosureCache.set(ontology, {
+      closure,
+      indexRevision,
     });
+    return closure;
   }
 
   getImportsClosure(ontology) {
@@ -1789,6 +1806,7 @@ export class OWLOntologyManager {
 
   #isAnnotationAdditionFiltered(descriptor) {
     return (
+      this.#loaderConfigurationsByOntologyID.size > 0 &&
       descriptor.kind === "ADD_AXIOM" &&
       ANNOTATION_AXIOM_KINDS.has(descriptor.value.kind) &&
       this.#loaderConfigurationsByOntologyID

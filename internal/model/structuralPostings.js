@@ -31,6 +31,36 @@ export function postingValues(values, postings, key) {
   });
 }
 
+export function hasPosting(postings, key) {
+  key = postingKey(postings, key);
+  if (key < 0 || key + 1 >= postings.offsets.length) return false;
+  return postings.offsets[key] < postings.offsets[key + 1];
+}
+
+export function postingToSet(values, postings, key) {
+  const result = new Set();
+  key = postingKey(postings, key);
+  if (key < 0 || key + 1 >= postings.offsets.length) return result;
+  const start = postings.offsets[key];
+  const end = postings.offsets[key + 1];
+  const { entries } = postings;
+  for (let i = start; i < end; i++) {
+    result.add(values.valueAt(entries[i]));
+  }
+  return result;
+}
+
+export function forEachPosting(values, postings, key, visitor) {
+  key = postingKey(postings, key);
+  if (key < 0 || key + 1 >= postings.offsets.length) return;
+  const start = postings.offsets[key];
+  const end = postings.offsets[key + 1];
+  const { entries } = postings;
+  for (let i = start; i < end; i++) {
+    visitor(values.valueAt(entries[i]));
+  }
+}
+
 /** Discover keys and visit structural fields once. Only numeric pairs survive
  * until the final CSR is filled, including for caller-supplied structural values. */
 export function collectPostings(keys, visit) {
@@ -41,13 +71,11 @@ export function collectPostings(keys, visit) {
   let largestKey = -1;
   let block;
   let used = 0;
-  visit((key, value, captured) => {
+  function recordPair(id, value) {
     if (value !== previous) {
       previous = value;
       seen.clear();
     }
-    const id =
-      captured === undefined ? keys.add(key) : keys.addPrepared(key, captured);
     if (seen.has(id)) return false;
     seen.add(id);
     largestKey = Math.max(largestKey, id);
@@ -60,7 +88,14 @@ export function collectPostings(keys, visit) {
     block[used++] = value;
     pairs++;
     return true;
-  });
+  }
+  const emit = (key, value, captured) => {
+    const id =
+      captured === undefined ? keys.add(key) : keys.addPrepared(key, captured);
+    return recordPair(id, value);
+  };
+  emit.id = recordPair;
+  visit(emit);
   if (!pairs) return emptyIndex;
   function replay(emit) {
     let remaining = pairs;

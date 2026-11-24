@@ -1,3 +1,4 @@
+import { AXIOM_KINDS, ENTITY_KINDS, OWLObjectKind } from "../../model/kinds.js";
 import {
   captureStructuralKey,
   decimalPlace,
@@ -6,8 +7,12 @@ import {
   ProtocolKey,
   renderCapturedKey,
   tupleEntry,
+  tupleFields,
   tupleLength,
 } from "./structuralProjection.js";
+
+const AXIOM_KIND_SET = new Set(AXIOM_KINDS);
+const SINGLE_IRI_ENTITY_KINDS = new Set(ENTITY_KINDS);
 
 const compare = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 export function compareJsonStrings(left, right) {
@@ -97,6 +102,49 @@ function compareNative(left, right, aTail, bTail, body) {
   if (type !== 91) {
     return type === 110 ? 0 : compareNumbers(left, right, aTail, bTail);
   }
+  if (!Array.isArray(left) && !Array.isArray(right)) {
+    if (left.kind !== right.kind) {
+      return compareJsonStrings(left.kind, right.kind);
+    }
+    if (
+      left.kind === OWLObjectKind.IRI &&
+      typeof left.value === "string" &&
+      typeof right.value === "string"
+    ) {
+      return compareJsonStrings(left.value, right.value);
+    }
+    if (
+      SINGLE_IRI_ENTITY_KINDS.has(left.kind) &&
+      left.iri?.kind === OWLObjectKind.IRI &&
+      right.iri?.kind === OWLObjectKind.IRI &&
+      typeof left.iri.value === "string" &&
+      typeof right.iri.value === "string"
+    ) {
+      return left.iri === right.iri
+        ? 0
+        : compareJsonStrings(left.iri.value, right.iri.value);
+    }
+    const fields = tupleFields.get(left.kind),
+      length =
+        body && AXIOM_KIND_SET.has(left.kind)
+          ? fields.length - 1
+          : fields.length;
+    for (let i = 0; i < length; i++) {
+      const tail = i + 1 === length ? 93 : 44,
+        field = fields[i];
+      const result = compareNative(
+        left[field] ?? null,
+        right[field] ?? null,
+        tail,
+        tail,
+        false,
+      );
+      if (result !== 0) {
+        return result;
+      }
+    }
+    return 0;
+  }
   const aLength = tupleLength(left, body),
     bLength = tupleLength(right, body);
   const common = Math.min(aLength, bLength);
@@ -136,6 +184,33 @@ function equalNative(left, right, body) {
     typeof right !== "object"
   ) {
     return false;
+  }
+  if (!Array.isArray(left) && !Array.isArray(right)) {
+    if (left.kind !== right.kind) {
+      return false;
+    }
+    if (left.kind === OWLObjectKind.IRI) {
+      return (left.value ?? null) === (right.value ?? null);
+    }
+    if (
+      SINGLE_IRI_ENTITY_KINDS.has(left.kind) &&
+      left.iri?.kind === OWLObjectKind.IRI &&
+      right.iri?.kind === OWLObjectKind.IRI
+    ) {
+      return left.iri === right.iri || left.iri.value === right.iri.value;
+    }
+    const fields = tupleFields.get(left.kind),
+      length =
+        body && AXIOM_KIND_SET.has(left.kind)
+          ? fields.length - 1
+          : fields.length;
+    for (let i = 0; i < length; i++) {
+      const field = fields[i];
+      if (!equalNative(left[field] ?? null, right[field] ?? null, false)) {
+        return false;
+      }
+    }
+    return true;
   }
   if (
     !Array.isArray(left) &&

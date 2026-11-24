@@ -4,15 +4,33 @@ import {
   escapedCode,
   escapedWidth,
   ProtocolKey,
-  tupleLength,
   tupleFields,
 } from "./structuralProjection.js";
-import { OWL_OBJECT_KINDS } from "../../model/kinds.js";
+import {
+  AXIOM_KINDS,
+  ENTITY_KINDS,
+  OWL_OBJECT_KINDS,
+  OWLObjectKind,
+} from "../../model/kinds.js";
 
 // A known ["Kind" prefix has a token outside the UTF-16 code-unit range.
 // Native field walks and foreign, exact key strings apply the same substitution.
+const IRI_TOKEN = 65536 + OWL_OBJECT_KINDS.indexOf(OWLObjectKind.IRI);
 const kindTokens = new Map(
   OWL_OBJECT_KINDS.map((kind, index) => [kind, 65536 + index]),
+);
+const AXIOM_KIND_SET = new Set(AXIOM_KINDS);
+const ENTITY_KIND_SET = new Set(ENTITY_KINDS);
+const kindMeta = new Map(
+  OWL_OBJECT_KINDS.map((kind, index) => [
+    kind,
+    Object.freeze({
+      token: 65536 + index,
+      fields: tupleFields.get(kind),
+      isAxiom: AXIOM_KIND_SET.has(kind),
+      isSingleIriEntity: ENTITY_KIND_SET.has(kind),
+    }),
+  ]),
 );
 const longestKind = Math.max(...OWL_OBJECT_KINDS.map((kind) => kind.length));
 
@@ -71,24 +89,36 @@ function hashProtocolValue(seed, value) {
   }
   return mix(seed, identity);
 }
+function hashJsonString(hash, text) {
+  hash = mix(hash, 34);
+  for (let i = 0; i < text.length; i++) {
+    const unit = text.charCodeAt(i);
+    if (
+      unit >= 32 &&
+      unit !== 34 &&
+      unit !== 92 &&
+      (unit < 0xd800 || unit > 0xdfff)
+    ) {
+      hash = mix(hash, unit);
+      continue;
+    }
+    const width = escapedWidth(text, i, unit);
+    if (width === 1) {
+      hash = mix(hash, unit);
+    } else {
+      for (let part = 0; part < width; part++) {
+        hash = mix(hash, escapedCode(unit, width, part));
+      }
+    }
+  }
+  return mix(hash, 34);
+}
 function hashNative(hash, value, body) {
   if (value === null || value === undefined) {
     return hashText(hash, "null");
   }
   if (typeof value === "string") {
-    hash = mix(hash, 34);
-    for (let i = 0; i < value.length; i++) {
-      const unit = value.charCodeAt(i),
-        width = escapedWidth(value, i, unit);
-      if (width === 1) {
-        hash = mix(hash, unit);
-      } else {
-        for (let part = 0; part < width; part++) {
-          hash = mix(hash, escapedCode(unit, width, part));
-        }
-      }
-    }
-    return mix(hash, 34);
+    return hashJsonString(hash, value);
   }
   if (typeof value === "number") {
     for (let place = decimalPlace(value); place >= 1; place /= 10) {
@@ -98,9 +128,33 @@ function hashNative(hash, value, body) {
     return hash;
   }
   if (!Array.isArray(value)) {
-    hash = mix(hash, kindTokens.get(value.kind));
-    const fields = tupleFields.get(value.kind),
-      length = tupleLength(value, body) - 1;
+    const kind = value.kind;
+    if (kind === OWLObjectKind.IRI && typeof value.value === "string") {
+      return mix(
+        hashJsonString(mix(mix(hash, IRI_TOKEN), 44), value.value),
+        93,
+      );
+    }
+    const meta = kindMeta.get(kind);
+    if (
+      meta.isSingleIriEntity &&
+      value.iri?.kind === OWLObjectKind.IRI &&
+      typeof value.iri.value === "string"
+    ) {
+      return mix(
+        mix(
+          hashJsonString(
+            mix(mix(mix(mix(hash, meta.token), 44), IRI_TOKEN), 44),
+            value.iri.value,
+          ),
+          93,
+        ),
+        93,
+      );
+    }
+    hash = mix(hash, meta.token);
+    const fields = meta.fields,
+      length = body && meta.isAxiom ? fields.length - 1 : fields.length;
     for (let i = 0; i < length; i++) {
       hash = hashNative(mix(hash, 44), value[fields[i]], false);
     }

@@ -12,7 +12,12 @@ import {
   createSourcePreservingDataFactory,
   readDataFactoryBehaviorDefinition,
 } from "../../model/owlDataFactory.js";
-import { isFactoryStructuralObject } from "../../model/structural.js";
+import { ResourceLimitError } from "../../io/errors.js";
+import {
+  EMPTY_STRUCTURAL_SET,
+  isFactoryStructuralObject,
+  usesNativeStructuralKeys,
+} from "../../model/structural.js";
 import {
   checkStructuralKeyReceiver,
   validateStructuralGraph,
@@ -67,21 +72,124 @@ export const captureReplacements = (map, keyKinds, valueKinds) => {
   return result;
 };
 
-/** Iterative postorder avoids a call-stack limit and rejects manufactured cycles.
- * Rebuild through the canonical factory, preserving normalized singleton sets.
- * resolve() handles entities atomically so raw IRI maps cannot rename a punned
- * entity that is absent from a typed map.
- */
-export const transformObject = (root, factory, resolve, done = new Map()) => {
-  const order = validateStructuralGraph(
-    root,
-    TRANSFORMABLE_KINDS_SET,
-    readDataFactoryBehaviorDefinition(factory).computationResourcePolicy
-      .maxTransformDepth,
-  );
+const txSeen = new Map(),
+  txNodes = [],
+  txPos = [],
+  txFields = [],
+  txPathDepth = [],
+  txDepths = [],
+  txOrder = [],
+  txDone = new Map();
+let txBusy = false;
+
+function fillFactoryTransformOrder(
+  root,
+  supportedKinds,
+  maxDepth,
+  seen,
+  nodes,
+  positions,
+  fields,
+  pathDepth,
+  depths,
+  order,
+) {
+  if (maxDepth < 0)
+    throw new ResourceLimitError("Structural depth limit exceeded", {
+      resource: "expressionDepth",
+      limit: maxDepth,
+    });
+  if (!supportedKinds.has(root.kind))
+    throw new TypeError("Unsupported structural input kind");
+  seen.set(root, -1);
+  nodes.push(root);
+  positions[0] = 0;
+  fields[0] = structuralFields.get(root.kind);
+  pathDepth[0] = 0;
+  while (nodes.length) {
+    const level = nodes.length - 1,
+      node = nodes[level],
+      names = fields[level];
+    const length = names?.length ?? node.length,
+      index = positions[level];
+    if (index < length) {
+      positions[level]++;
+      const child = node[names ? names[index] : index];
+      if (child && typeof child === "object") {
+        const previous = seen.get(child);
+        if (previous === undefined) {
+          if (child === EMPTY_STRUCTURAL_SET) {
+            if (level + 1 > maxDepth)
+              throw new ResourceLimitError("Structural depth limit exceeded", {
+                resource: "expressionDepth",
+                limit: maxDepth,
+              });
+            const ordinal = order.length;
+            seen.set(child, ordinal);
+            order.push(child);
+            depths[ordinal] = 0;
+            if (pathDepth[level] < 1) pathDepth[level] = 1;
+          } else if (child.kind === K.IRI) {
+            if (level + 1 > maxDepth)
+              throw new ResourceLimitError("Structural depth limit exceeded", {
+                resource: "expressionDepth",
+                limit: maxDepth,
+              });
+            if (!supportedKinds.has(K.IRI))
+              throw new TypeError("Unsupported structural input kind");
+            const ordinal = order.length;
+            seen.set(child, ordinal);
+            order.push(child);
+            depths[ordinal] = 0;
+            if (pathDepth[level] < 1) pathDepth[level] = 1;
+          } else {
+            if (!Array.isArray(child) && !supportedKinds.has(child.kind))
+              throw new TypeError("Unsupported structural input kind");
+            const childLevel = nodes.length;
+            if (childLevel > maxDepth)
+              throw new ResourceLimitError("Structural depth limit exceeded", {
+                resource: "expressionDepth",
+                limit: maxDepth,
+              });
+            seen.set(child, -1);
+            nodes.push(child);
+            positions[childLevel] = 0;
+            fields[childLevel] = Array.isArray(child)
+              ? undefined
+              : structuralFields.get(child.kind);
+            pathDepth[childLevel] = 0;
+          }
+        } else {
+          if (previous === -1) throw new TypeError("Cyclic structural input");
+          const candidateDepth = depths[previous] + 1;
+          if (level + candidateDepth > maxDepth)
+            throw new ResourceLimitError("Structural depth limit exceeded", {
+              resource: "expressionDepth",
+              limit: maxDepth,
+            });
+          if (candidateDepth > pathDepth[level])
+            pathDepth[level] = candidateDepth;
+        }
+      }
+      continue;
+    }
+    const ordinal = order.length;
+    seen.set(node, ordinal);
+    order.push(node);
+    nodes.pop();
+    const depth = pathDepth[level];
+    depths[ordinal] = depth;
+    if (level && depth + 1 > pathDepth[level - 1]) {
+      pathDepth[level - 1] = depth + 1;
+    }
+  }
+}
+
+function applyTransformOrder(root, order, factory, resolve, done) {
   const get = (value) =>
     value && typeof value === "object" ? done.get(value) : value;
-  for (const value of order) {
+  for (let idx = 0; idx < order.length; idx += 1) {
+    const value = order[idx];
     if (done.has(value)) continue;
     if (Array.isArray(value)) {
       let arrayChanged = false;
@@ -148,6 +256,71 @@ export const transformObject = (root, factory, resolve, done = new Map()) => {
   if (!result || Array.isArray(root))
     throw new TypeError("object must be a supported OWL structural object");
   return result;
+}
+
+/** Iterative postorder avoids a call-stack limit and rejects manufactured cycles.
+ * Rebuild through the canonical factory, preserving normalized singleton sets.
+ * resolve() handles entities atomically so raw IRI maps cannot rename a punned
+ * entity that is absent from a typed map.
+ */
+export const transformObject = (root, factory, resolve, doneArg) => {
+  const maxDepth =
+    readDataFactoryBehaviorDefinition(factory).computationResourcePolicy
+      .maxTransformDepth;
+  if (!isFactoryStructuralObject(root)) {
+    const order = validateStructuralGraph(
+      root,
+      TRANSFORMABLE_KINDS_SET,
+      maxDepth,
+    );
+    return applyTransformOrder(
+      root,
+      order,
+      factory,
+      resolve,
+      doneArg ?? new Map(),
+    );
+  }
+
+  const usePool = !doneArg && !txBusy;
+  const seen = usePool ? txSeen : new Map();
+  const nodes = usePool ? txNodes : [];
+  const positions = usePool ? txPos : [];
+  const fields = usePool ? txFields : [];
+  const pathDepth = usePool ? txPathDepth : [];
+  const depths = usePool ? txDepths : [];
+  const order = usePool ? txOrder : [];
+  const done = usePool ? txDone : (doneArg ?? new Map());
+  if (usePool) {
+    txBusy = true;
+    seen.clear();
+    nodes.length = 0;
+    order.length = 0;
+    done.clear();
+  }
+  try {
+    fillFactoryTransformOrder(
+      root,
+      TRANSFORMABLE_KINDS_SET,
+      maxDepth,
+      seen,
+      nodes,
+      positions,
+      fields,
+      pathDepth,
+      depths,
+      order,
+    );
+    return applyTransformOrder(root, order, factory, resolve, done);
+  } finally {
+    if (usePool) {
+      seen.clear();
+      nodes.length = 0;
+      order.length = 0;
+      done.clear();
+      txBusy = false;
+    }
+  }
 };
 
 /** Pick raw-IRI replacements in native entity-type priority, independent of Map insertion. */
@@ -169,13 +342,36 @@ export const iriReplacementsForEntities = (entities) => {
   return result;
 };
 
-export const entityResolver = (factory, entities, iris) => (value) => {
-  if (ENTITY_KINDS_SET.has(value.kind)) {
-    if (entities.size === 0) return value;
-    const replacement = entities.get(value.structuralKey());
-    return replacement ? factory[`get${value.kind}`](replacement.value) : value;
-  }
-  if (value.kind === K.IRI)
-    return iris.size === 0 ? value : (iris.get(value.structuralKey()) ?? value);
-  return undefined;
+export const entityResolver = (factory, entities, iris) => {
+  const cache = new WeakMap();
+  return (value) => {
+    if (ENTITY_KINDS_SET.has(value.kind)) {
+      if (entities.size === 0) return value;
+      const useCache =
+        isFactoryStructuralObject(value) && usesNativeStructuralKeys();
+      if (useCache) {
+        const hit = cache.get(value);
+        if (hit !== undefined) return hit;
+      }
+      const replacement = entities.get(value.structuralKey());
+      const out = replacement
+        ? factory[`get${value.kind}`](replacement.value)
+        : value;
+      if (useCache) cache.set(value, out);
+      return out;
+    }
+    if (value.kind === K.IRI) {
+      if (iris.size === 0) return value;
+      const useCache =
+        isFactoryStructuralObject(value) && usesNativeStructuralKeys();
+      if (useCache) {
+        const hit = cache.get(value);
+        if (hit !== undefined) return hit;
+      }
+      const out = iris.get(value.structuralKey()) ?? value;
+      if (useCache) cache.set(value, out);
+      return out;
+    }
+    return undefined;
+  };
 };

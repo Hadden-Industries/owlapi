@@ -1,9 +1,11 @@
 import { OWLObjectKind as K } from "../../model/kinds.js";
 import { ResourceLimitError } from "../../io/errors.js";
 import {
+  EMPTY_STRUCTURAL_SET,
   IRI,
   OWLStructuralObject,
   isFactoryStructuralObject,
+  isNativeGroundStructuralObject,
   isPackageStructuralObject,
   nativeStructuralMethods,
   structuralKey,
@@ -306,3 +308,225 @@ export const validateStructuralGraph = (
 ) =>
   inspectStructuralGraph(root, supportedKinds, maxDepth, maxAnnotationDepth)
     .order;
+
+const limitNodes = [];
+const limitDepths = [];
+const limitAnns = [];
+const limitVisited = new Set();
+let limitCheckActive = false;
+
+const checkFactoryLimitsFresh = (
+  root,
+  supportedKinds,
+  maxDepth,
+  maxAnnotationDepth,
+) => {
+  const stack = [root];
+  const depths = [0];
+  const anns = [root.kind === K.ANNOTATION ? 1 : 0];
+  const visited = new Set();
+  while (stack.length) {
+    const node = stack.pop();
+    const d = depths.pop();
+    const a = anns.pop();
+    if (d > maxDepth || a > maxAnnotationDepth)
+      throw new ResourceLimitError("Structural depth limit exceeded", {
+        resource: "expressionDepth",
+        limit: maxDepth,
+      });
+    if (Array.isArray(node)) {
+      for (let i = node.length - 1; i >= 0; i--) {
+        const child = node[i];
+        if (!child || typeof child !== "object") continue;
+        if (child.kind === K.IRI) {
+          if (d + 1 > maxDepth)
+            throw new ResourceLimitError("Structural depth limit exceeded", {
+              resource: "expressionDepth",
+              limit: maxDepth,
+            });
+          if (!supportedKinds.has(K.IRI))
+            throw new TypeError("Unsupported structural input kind");
+          continue;
+        }
+        if (child === EMPTY_STRUCTURAL_SET) {
+          if (d + 1 > maxDepth)
+            throw new ResourceLimitError("Structural depth limit exceeded", {
+              resource: "expressionDepth",
+              limit: maxDepth,
+            });
+          continue;
+        }
+        if (!visited.has(child)) {
+          visited.add(child);
+          stack.push(child);
+          depths.push(d + 1);
+          anns.push(a + (child.kind === K.ANNOTATION ? 1 : 0));
+        }
+      }
+      continue;
+    }
+    if (!supportedKinds.has(node.kind))
+      throw new TypeError("Unsupported structural input kind");
+    const nodeFields = fields.get(node.kind);
+    for (let i = nodeFields.length - 1; i >= 0; i--) {
+      const child = node[nodeFields[i]];
+      if (!child || typeof child !== "object") continue;
+      if (child.kind === K.IRI) {
+        if (d + 1 > maxDepth)
+          throw new ResourceLimitError("Structural depth limit exceeded", {
+            resource: "expressionDepth",
+            limit: maxDepth,
+          });
+        if (!supportedKinds.has(K.IRI))
+          throw new TypeError("Unsupported structural input kind");
+        continue;
+      }
+      if (child === EMPTY_STRUCTURAL_SET) {
+        if (d + 1 > maxDepth)
+          throw new ResourceLimitError("Structural depth limit exceeded", {
+            resource: "expressionDepth",
+            limit: maxDepth,
+          });
+        continue;
+      }
+      if (!visited.has(child)) {
+        visited.add(child);
+        stack.push(child);
+        depths.push(d + 1);
+        anns.push(a + (child.kind === K.ANNOTATION ? 1 : 0));
+      }
+    }
+  }
+};
+
+/** Verify kind membership and depth limits without retaining order arrays. */
+export const checkStructuralGraphLimits = (
+  root,
+  supportedKinds,
+  maxDepth = Infinity,
+  maxAnnotationDepth = Infinity,
+) => {
+  if (!isFactoryStructuralObject(root)) {
+    inspectStructuralGraph(root, supportedKinds, maxDepth, maxAnnotationDepth);
+    return;
+  }
+  if (
+    isNativeGroundStructuralObject(root) &&
+    maxDepth >= 2 &&
+    maxAnnotationDepth >= 0
+  ) {
+    if (!supportedKinds.has(root.kind))
+      throw new TypeError("Unsupported structural input kind");
+    if (root.kind === K.DECLARATION_AXIOM) {
+      if (!supportedKinds.has(root.entity.kind) || !supportedKinds.has(K.IRI))
+        throw new TypeError("Unsupported structural input kind");
+    } else if (root.kind !== K.IRI && !supportedKinds.has(K.IRI)) {
+      throw new TypeError("Unsupported structural input kind");
+    }
+    return;
+  }
+  if (limitCheckActive) {
+    checkFactoryLimitsFresh(root, supportedKinds, maxDepth, maxAnnotationDepth);
+    return;
+  }
+  limitCheckActive = true;
+  limitNodes.length = 0;
+  limitDepths.length = 0;
+  limitAnns.length = 0;
+  limitVisited.clear();
+  try {
+    limitNodes.push(root);
+    limitDepths.push(0);
+    limitAnns.push(root.kind === K.ANNOTATION ? 1 : 0);
+    while (limitNodes.length) {
+      const node = limitNodes.pop();
+      const d = limitDepths.pop();
+      const a = limitAnns.pop();
+      if (d > maxDepth || a > maxAnnotationDepth)
+        throw new ResourceLimitError("Structural depth limit exceeded", {
+          resource: "expressionDepth",
+          limit: maxDepth,
+        });
+      if (Array.isArray(node)) {
+        for (let i = node.length - 1; i >= 0; i--) {
+          const child = node[i];
+          if (!child || typeof child !== "object") continue;
+          if (child.kind === K.IRI) {
+            if (d + 1 > maxDepth)
+              throw new ResourceLimitError("Structural depth limit exceeded", {
+                resource: "expressionDepth",
+                limit: maxDepth,
+              });
+            if (!supportedKinds.has(K.IRI))
+              throw new TypeError("Unsupported structural input kind");
+            continue;
+          }
+          if (child === EMPTY_STRUCTURAL_SET) {
+            if (d + 1 > maxDepth)
+              throw new ResourceLimitError("Structural depth limit exceeded", {
+                resource: "expressionDepth",
+                limit: maxDepth,
+              });
+            continue;
+          }
+          if (maxDepth === Infinity && maxAnnotationDepth === Infinity) {
+            if (!limitVisited.has(child)) {
+              limitVisited.add(child);
+              limitNodes.push(child);
+              limitDepths.push(d + 1);
+              limitAnns.push(a + (child.kind === K.ANNOTATION ? 1 : 0));
+            }
+          } else {
+            limitNodes.push(child);
+            limitDepths.push(d + 1);
+            limitAnns.push(a + (child.kind === K.ANNOTATION ? 1 : 0));
+          }
+        }
+        continue;
+      }
+      if (!supportedKinds.has(node.kind))
+        throw new TypeError("Unsupported structural input kind");
+      const nodeFields = fields.get(node.kind);
+      for (let i = nodeFields.length - 1; i >= 0; i--) {
+        const child = node[nodeFields[i]];
+        if (!child || typeof child !== "object") continue;
+        if (child.kind === K.IRI) {
+          if (d + 1 > maxDepth)
+            throw new ResourceLimitError("Structural depth limit exceeded", {
+              resource: "expressionDepth",
+              limit: maxDepth,
+            });
+          if (!supportedKinds.has(K.IRI))
+            throw new TypeError("Unsupported structural input kind");
+          continue;
+        }
+        if (child === EMPTY_STRUCTURAL_SET) {
+          if (d + 1 > maxDepth)
+            throw new ResourceLimitError("Structural depth limit exceeded", {
+              resource: "expressionDepth",
+              limit: maxDepth,
+            });
+          continue;
+        }
+        if (maxDepth === Infinity && maxAnnotationDepth === Infinity) {
+          if (!limitVisited.has(child)) {
+            limitVisited.add(child);
+            limitNodes.push(child);
+            limitDepths.push(d + 1);
+            limitAnns.push(a + (child.kind === K.ANNOTATION ? 1 : 0));
+          }
+        } else {
+          limitNodes.push(child);
+          limitDepths.push(d + 1);
+          limitAnns.push(a + (child.kind === K.ANNOTATION ? 1 : 0));
+        }
+      }
+    }
+  } finally {
+    limitNodes.length = 0;
+    limitDepths.length = 0;
+    limitAnns.length = 0;
+    limitVisited.clear();
+    limitCheckActive = false;
+  }
+};
