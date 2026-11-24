@@ -80,6 +80,9 @@ This guide covers `@hadden-industries/owlapi@0.1.0`.
 
 [Read the changelog](./CHANGELOG.md) for changes and upgrade notes.
 [Browse GitHub releases](https://github.com/Hadden-Industries/owlapi/releases) for release assets and verification records.
+The [source manifest](./package.json) identifies the candidate.
+Publication requires separate approval for the verified artifact under the [publication control](https://github.com/Hadden-Industries/owlapi/blob/main/docs/release/publication-control.json).
+To install a verified local tarball with the same import paths, use `npm install --save-exact "owlapi@file:/absolute/path/hadden-industries-owlapi-<version>.tgz"`.
 [Check the npm package](https://www.npmjs.com/package/@hadden-industries/owlapi?activeTab=versions) for available versions and tags.
 
 ## Inspect parse metadata
@@ -235,14 +238,16 @@ Each parser attempt opens a fresh stream.
 In a browser, pass `() => blob.stream()`.
 The optional `format`, `contentType`, `fileName`, and `documentIRI` fields have the same meanings as on `StringDocumentSource`.
 The manager enforces `maxInputBytes` before decoding each chunk.
-RDF/XML, Turtle, TriG, N-Triples, and N-Quads feed their parsers incrementally. Functional Syntax and OWL/XML read one top-level production at a time.
+RDF/XML, Turtle, TriG, N-Triples, and N-Quads feed their parsers incrementally. Functional Syntax reads tokens as the grammar needs them. OWL/XML processes one top-level child element at a time.
 Other parsers currently read the admitted text into one JavaScript string.
 The sink receives UTF-8 `Uint8Array` chunks and must consume them to the end before it resolves.
 In the example, `destination` is a writer supplied by the application.
 The sink owns the destination and can stage its writes when the final document must appear atomically.
 
 A manager configured with a `NodeDocumentLoader` can also load an explicit document `IRI` directly.
-The Node loader streams ontology files larger than 64 KiB, HTTP bodies with a declared length above 64 KiB, and unknown-length HTTP bodies with a recognized ontology media type.
+The Node loader streams ontology files larger than 64 KiB.
+For HTTP, a strong ETag allows replay of a body larger than 64 KiB or an unknown-length body with a recognized ontology media type.
+Other HTTP responses retain the bounded contents of the original request.
 Each open reauthorizes the resolved file or pinned HTTP destination.
 Explicit JSON-LD context requests use the context loader and its existing byte limits.
 
@@ -411,6 +416,7 @@ See the [W3C reporting plan](https://github.com/Hadden-Industries/owlapi/blob/ma
 
 OwlAPI is an independent JavaScript implementation.
 It has no affiliation with, sponsorship from, or endorsement by the Java OWLAPI project.
+The unscoped name previously identified an unrelated Overwatch package with separate code, API, ownership, and provenance.
 
 Java OWLAPI remains the primary compatibility reference for creating, loading, inspecting, and serializing OWL ontologies.
 Keeping a JVM in the application, however, does not provide the browser-native and ordinary npm package boundary needed by WebVOWL and other JavaScript consumers.

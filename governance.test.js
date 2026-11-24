@@ -1597,8 +1597,13 @@ describe("owlapi governance artifacts", () => {
       );
       expect(record.normativePublicSources.length).toBeGreaterThan(0);
       expect(record.compatibilityReferences.length).toBeGreaterThan(0);
+      const releasedJavaReference = [
+        "JAVA-PEAK-MEMORY-AND-STREAM-IO-2026-11-24",
+        "RDFXML-CORPUS-STREAMING-2026-11-23",
+        "RDF-REPEATED-EXPRESSIONS-2026-11-23",
+      ].includes(record.decisionRef);
       expect(record.referenceOwlapiRevision).toBe(
-        record.phase === 25
+        record.phase === 25 || releasedJavaReference
           ? "f760b3a4c107c6d5f90f856e5680c39b18af646f"
           : record.id === "RDFXML-PREFIX-FORMAT" || record.id.startsWith("RC2-")
             ? "b61ebe2da83daceebb3e7ba7afbd2582c9240c33"
@@ -1626,6 +1631,7 @@ describe("owlapi governance artifacts", () => {
       "internal/parsing/functional/descriptor.js",
       "internal/parsing/functional/lexer.js",
       "internal/parsing/functional/parser.js",
+      "internal/parsing/functional/streamLexer.js",
     ]);
     expect(
       records
@@ -1646,6 +1652,8 @@ describe("owlapi governance artifacts", () => {
       "internal/parsing/owlxml/descriptor.js",
       "internal/parsing/owlxml/grammar.js",
       "internal/parsing/owlxml/parser.js",
+      "internal/parsing/owlxml/streamDocument.js",
+      "internal/parsing/xml/xmlChunkTokens.js",
       "internal/parsing/xml/xmlEntityPolicy.js",
       "internal/parsing/xml/xmlParserAdapter.js",
     ]);
@@ -1657,6 +1665,7 @@ describe("owlapi governance artifacts", () => {
     ).toEqual([
       "internal/mapping/rdfReadView.js",
       "internal/mapping/rdfToOwlTranslator.js",
+      "internal/mapping/repeatedClassExpression.js",
       "internal/rdfjs/vocabulary.js",
     ]);
     expect(
@@ -1667,6 +1676,7 @@ describe("owlapi governance artifacts", () => {
     ).toEqual([
       "internal/parsing/rdfxml/descriptor.js",
       "internal/parsing/rdfxml/parser.js",
+      "internal/parsing/rdfxml/rdfXmlStreamPreparation.js",
       "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.js",
     ]);
     expect(
@@ -2039,6 +2049,7 @@ describe("owlapi governance artifacts", () => {
         .sort();
       expect(registeredExports).toEqual(Object.keys(moduleNamespace).sort());
     }
+    // The signed rc.3 source at 17cdb60b3a29 already owns these first-release targets.
     for (const id of [
       "io/node.NodeDocumentLoader",
       "model/parameters.ChangeApplied",
@@ -2046,11 +2057,16 @@ describe("owlapi governance artifacts", () => {
       expect(
         registry.bindings.find((binding) => binding.id === id)
           .firstPublicReleaseTarget,
-      ).toBe(packageJson.version);
+      ).toBe("0.1.0-rc.3");
     expect(
       registry.namespaces.find((namespace) => namespace.id === "io/node")
         .firstPublicReleaseTarget,
-    ).toBe(packageJson.version);
+    ).toBe("0.1.0-rc.3");
+    for (const id of ["io.StreamDocumentSource", "io.StreamDocumentTarget"])
+      expect(
+        registry.bindings.find((binding) => binding.id === id)
+          .firstPublicReleaseTarget,
+      ).toBe("0.1.0");
     for (const forbidden of [
       "prototype.getAnnotatedAxiom",
       "prototype.getAxiomWithoutAnnotations",
@@ -2197,18 +2213,17 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
 
     for (const requiredText of [
       "## Why `owlapi` exists",
-      "The current source candidate's version is declared in [package.json](package.json); its publication authority is recorded separately in [publication control](docs/release/publication-control.json).",
+      "[source manifest](./package.json)",
+      "Publication requires separate approval for the verified artifact",
+      "[publication control](https://github.com/Hadden-Industries/owlapi/blob/main/docs/release/publication-control.json)",
       `npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@${packageJson.version}"`,
       "owlapi@file:/absolute/path/hadden-industries-owlapi-<version>.tgz",
-      "The manifest and release tooling select this scoped identity",
-      "A version in `main` is not a published or accepted package",
-      "UO and WebVOWL may each use this exact RC in production",
-      "independently maintained JavaScript implementation",
-      "not affiliated with, sponsored by, or endorsed by the Java OWLAPI project",
-      "unrelated, now-unpublished Overwatch package",
-      "no code, API, ownership, or provenance relationship to that package",
-      "does **not** provide a reasoner",
-      "No official TypeScript declarations",
+      `npm install --save-exact ${packageJson.name}@${packageJson.version}`,
+      "OwlAPI is an independent JavaScript implementation.",
+      "no affiliation with, sponsorship from, or endorsement by the Java OWLAPI project",
+      "unrelated Overwatch package with separate code, API, ownership, and provenance",
+      "Reasoning, SWRL, OBO parsing",
+      "official TypeScript declarations are outside this release's scope",
       "does not collect personal data",
       "Copyright © 2026 Maksym Shostak",
       "HADDEN INDUSTRIES LTD",
@@ -2231,6 +2246,9 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     );
     expect(changelog).toContain(
       "This alpha is a documented subset, not complete Java OWLAPI parity.",
+    );
+    expect(changelog).toContain(
+      "Universal Ontology and WebVOWL production after immutable artifact verification and each application's complete consumer acceptance",
     );
   });
 
@@ -3080,16 +3098,22 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
       "@istanbuljs/load-nyc-config@1.1.0",
       "glob@>=9.0.0 <14.0.2",
       "jest-config@30.5.2",
+      "micromark-extension-math@3.1.0",
       "minimatch@>=7.0.0 <11.0.1",
       "source-map-js",
     ]);
     expect(packageJson.overrides["jest-config@30.5.2"]).toEqual({
       deepmerge: "npm:@stackline/deepmerge@1.1.2",
     });
+    expect(packageJson.overrides["micromark-extension-math@3.1.0"]).toEqual({
+      katex: "0.19.1",
+    });
     const lock = readJson("./package-lock.json");
     for (const name of [
       "@istanbuljs/load-nyc-config",
       "js-yaml",
+      "micromark-extension-math",
+      "katex",
       "source-map-js",
     ]) {
       const occurrences = Object.entries(lock.packages).filter(

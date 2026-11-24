@@ -2802,10 +2802,7 @@
       "kind": "CLASS",
       "summary": "A format-independent UTF-8 ontology document source backed by a replayable byte stream.",
       "capabilityIds": [
-        "parser.rdfxml",
-        "parser.owlxml",
-        "parser.functional",
-        "parser.turtle",
+        "loading.import-closure",
         "loading.abort-signal"
       ],
       "capabilityStatus": "REQUIRED_V1",

@@ -7,13 +7,13 @@
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
-      "fileCount": 198,
-      "sourceManifestSha256": "949daad85808ce39c0ba018dcb9bd421a3de1076b57aa57f2f63058be8f28bee"
+      "fileCount": 224,
+      "sourceManifestSha256": "4b83acbd2319d2cea023023a8c4229ade4e94eb6f61d5a788d9313e518f2b385"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "54c8f5303bc652f2792543fe01e05b53a77f0a5940eae359c0f6702eb3c45539",
+    "factsSha256": "137732511809e59cde969dfdbdccf480e4edb2bedd8958b172cd4ef1db77d2c1",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -152,9 +152,9 @@
   "externalDependencies": {
     "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "37452874b076a8de732e4cadd3498abacb0c07efe8315acb9bf0f6f4ce69cd6c",
+    "inventoryFactsSha256": "9c4dd78111328aae201ee3642d048cb15c6ba7cd8d2a8f8ad75f044d83a7ae3a",
     "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],
-  "conclusion": "Every material class in the machine-defined 0.1.0-rc.3 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."
+  "conclusion": "Each path in the machine-defined 0.1.0 candidate packlist maps to one material class with a recorded distribution basis. The bound third-party inventory records licence evidence for every production component, and the external contribution register has no unresolved entries."
 }
