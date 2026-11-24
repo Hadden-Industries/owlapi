@@ -599,17 +599,21 @@ async function observe(request, directory) {
     if (usesByteStream(document)) {
       return new api.StreamDocumentSource(
         async function* (signal) {
-          const digest = createHash("sha256");
+          // Preparation and readback verify the pin outside the timed load.
+          const digest = request.performance ? null : createHash("sha256");
           let inputBytes = 0;
           for await (const bytes of createReadStream(document.path, {
             signal,
           })) {
             inputBytes += bytes.byteLength;
-            digest.update(bytes);
+            digest?.update(bytes);
             yield bytes;
           }
-          const sha256 = digest.digest("hex");
-          if (inputBytes !== document.byteLength || sha256 !== document.sha256)
+          const sha256 = digest?.digest("hex");
+          if (
+            inputBytes !== document.byteLength ||
+            (digest && sha256 !== document.sha256)
+          )
             throw new Error(
               "Streamed ontology input no longer matches its pin",
             );

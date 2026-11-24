@@ -1407,14 +1407,27 @@ async function verifyComparison(entries, measurements, options) {
           if (!(await verifyPinnedFile(join(caseDirectory, pin.name), pin)))
             throw new Error("Allocation profile changed");
         for (const [key, value] of Object.entries(rebuilt)) {
-          if (
-            comparisonIdentity(value) !== comparisonIdentity(receipt[key]) ||
-            comparisonIdentity(value) !== comparisonIdentity(row[key])
-          )
+          if (comparisonIdentity(value) !== comparisonIdentity(receipt[key]))
             throw new Error(
               "Isolated load receipt disagrees with worker evidence",
             );
         }
+        const published = {
+          input: input.id,
+          caseId,
+          ...rebuilt,
+          evidence: receipt.evidence,
+          receipt: row.receipt,
+        };
+        if (
+          comparisonIdentity(row) !==
+          comparisonIdentity(
+            options.publicReceipts ? publicCorpusRow(published) : published,
+          )
+        )
+          throw new Error(
+            "Published isolated load row disagrees with its receipt",
+          );
         cases.push({ input: input.id, caseId, ...rebuilt });
         continue;
       }
@@ -2045,11 +2058,11 @@ async function executeComparison(request, environment = {}) {
       ...(measurements.includes("performance") || isolatedLoad
         ? { performance: options.performanceProtocol }
         : {}),
-      ...(options.memoryBudgetMiB
-        ? {
-            windowsJobMemoryMiB: options.memoryBudgetMiB,
-            nodeHeapMiB: options.nodeHeapMiB,
-          }
+      ...(process.platform === "win32" && options.memoryBudgetMiB
+        ? { windowsJobMemoryMiB: options.memoryBudgetMiB }
+        : {}),
+      ...(options.nodeHeapMiB !== undefined
+        ? { nodeHeapMiB: options.nodeHeapMiB }
         : {}),
       ...(options.javaHeapMiB ? { javaHeapMiB: options.javaHeapMiB } : {}),
     },
@@ -2134,7 +2147,10 @@ export function runComparison(request, environment = {}) {
     return executeComparison(request, {
       ...environment,
       memoryBudgetMiB: undefined,
-      nodeHeapMiB: undefined,
+      nodeHeapMiB:
+        request.loadOnly && process.platform !== "win32"
+          ? environment.nodeHeapMiB
+          : undefined,
     });
   }
   if (process.platform === "win32" && request.action === "run") {

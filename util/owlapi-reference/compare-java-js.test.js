@@ -1044,6 +1044,15 @@ test("isolated observations separate load and public Set peaks and bind the comp
     status: "observed",
     summary: { js: { coldPeakBytes: 20, materializedPeakBytes: 70 } },
   });
+  const diagnostic = isolatedLoadReport(
+    { js: samples.js },
+    { ...protocol, engines: ["js"], allocationProfile: true },
+    identity,
+  );
+  expect(diagnostic.status).toBe("diagnostic-only");
+  expect(diagnostic.measurementKind).toBe("allocation-profile");
+  expect(diagnostic).not.toHaveProperty("summary");
+  expect(diagnostic.diagnosticSummary.js.coldPeakBytes).toBe(20);
   samples.java.cold[0].witness.identity.ontologyIRI = "urn:different";
   expect(isolatedLoadReport(samples, protocol, identity).status).toBe("failed");
   samples.js.cold[0].checkpoints.pop();

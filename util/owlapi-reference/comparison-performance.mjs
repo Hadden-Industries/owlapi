@@ -271,13 +271,21 @@ export function isolatedLoadReport(samples, protocol, identity) {
       };
     }
   }
+  const status = !complete
+    ? "incomplete"
+    : witnesses.size !== 1
+      ? "failed"
+      : protocol.allocationProfile
+        ? "diagnostic-only"
+        : "observed";
   return {
-    status: !complete
-      ? "incomplete"
-      : witnesses.size === 1
-        ? "observed"
-        : "failed",
-    summary,
+    status,
+    measurementKind: protocol.allocationProfile
+      ? "allocation-profile"
+      : "clean",
+    ...(protocol.allocationProfile
+      ? { diagnosticSummary: summary }
+      : { summary }),
     witnessDigests: [...witnesses].sort(),
     boundary: "loadOntologyFromOntologyDocument",
   };
