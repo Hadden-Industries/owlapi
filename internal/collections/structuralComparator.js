@@ -153,10 +153,19 @@ export function compareCapturedKeys(a, b) {
 export const compareStructuralValues = (left, right) =>
   compareCapturedKeys(captureStructuralKey(left), captureStructuralKey(right));
 
-export const structuralEquals = (left, right, body = false) =>
-  left === right ||
-  capturedKeysEqual(
-    captureStructuralKey(left, body),
-    captureStructuralKey(right, body),
-    body,
-  );
+// Public equals uses ===. A collection's SameValueZero also unifies NaN.
+export function structuralEquals(left, right, body = false) {
+  if (left === right) {
+    return true;
+  }
+  const a = captureStructuralKey(left, body),
+    b = captureStructuralKey(right, body);
+  if (a instanceof ProtocolKey || b instanceof ProtocolKey) {
+    return (
+      a instanceof ProtocolKey &&
+      b instanceof ProtocolKey &&
+      a.value === b.value
+    );
+  }
+  return capturedKeysEqual(a, b, body);
+}

@@ -13,6 +13,9 @@ import {
 import { StructuralHashTable } from "./structuralHashTable.js";
 import { buildCsrPostingIndex } from "./csrPostingIndex.js";
 import { DenseBitSet } from "./denseBitSet.js";
+import { captureStructuralKey } from "./structuralProjection.js";
+import { hashCapturedKey } from "./structuralHash.js";
+import { capturedKeysEqual } from "./structuralComparator.js";
 
 const factory = new OWLDataFactory();
 const owlClass = (name) => factory.getOWLClass(IRI.create(name));
@@ -229,4 +232,159 @@ test("distributes common-prefix IRI families across seeded buckets", () => {
     ]++;
   }
   expect(Math.max(...sizes)).toBeLessThan(30);
+});
+
+test("public tuple projection keeps deep chains stack-safe and shares repeated children per call", () => {
+  let input = cls;
+  for (let i = 0; i < 10000; i++) {
+    input = factory.getOWLObjectComplementOf(input);
+  }
+  const shared = factory.getOWLSubClassOfAxiom(input, input);
+  const tuple = shared.toStructuralTuple();
+  expect(tuple[1] === tuple[2]).toBe(true);
+  let node = tuple[1];
+  for (let i = 0; i < 10000; i++) {
+    if (node[0] !== "OWLObjectComplementOf" || !Object.isFrozen(node)) {
+      throw new Error("invalid complement projection");
+    }
+    node = node[1];
+  }
+  expect(node).toEqual(cls.toStructuralTuple());
+  expect(shared.toStructuralTuple() === tuple).toBe(false);
+  const generic = new OWLStructuralObject("Custom", {}, [input, input]);
+  const captured = generic.toStructuralTuple();
+  expect(captured[1] === captured[2]).toBe(true);
+});
+
+test("public equality calls overridden methods using strict equality, independently of Map membership", () => {
+  const a = IRI.create("left"),
+    b = IRI.create("right");
+  for (const [key, equal] of [
+    ["structuralKey", "equals"],
+    ["structuralKeyWithoutAnnotations", "equalsIgnoreAnnotations"],
+  ]) {
+    const native = OWLStructuralObject.prototype[key];
+    try {
+      OWLStructuralObject.prototype[key] = () => NaN;
+      expect(a[equal](b)).toBe(false);
+      OWLStructuralObject.prototype[key] = () => undefined;
+      expect(a[equal](b)).toBe(true);
+      OWLStructuralObject.prototype[key] = undefined;
+      expect(a[equal](b)).toBe(false);
+      expect(a[equal](a)).toBe(true);
+      expect(() => a[equal]({ [key]: () => "foreign" })).toThrow(TypeError);
+    } finally {
+      OWLStructuralObject.prototype[key] = native;
+    }
+  }
+});
+
+test("foreign object, function and symbol key identities scale and retain Map equality", () => {
+  let comparisons = 0;
+  const table = new StructuralHashTable({
+    key: captureStructuralKey,
+    hash: hashCapturedKey,
+    equals: (a, b) => {
+      comparisons++;
+      return capturedKeysEqual(a, b);
+    },
+  });
+  const wrap = (key) =>
+    Object.freeze({ structuralKey: () => key, toStructuralTuple: () => [] });
+  for (const make of [
+    () => ({}),
+    () => function identity() {},
+    () => Symbol("same-description"),
+  ]) {
+    for (let i = 0; i < 1000; i++) {
+      const key = make(),
+        id = table.add(wrap(key));
+      if (table.add(wrap(key)) !== id) {
+        throw new Error("lost identity");
+      }
+    }
+  }
+  expect(table.size).toBe(3000);
+  expect(comparisons).toBeLessThan(15000);
+  expect(table.add(wrap(NaN))).toBe(table.add(wrap(NaN)));
+});
+
+test("bulk removal from compacted bases and additions preserves order without repeatedly shifting the entire array", () => {
+  const rows = Array.from({ length: 4096 }, (_, i) =>
+    factory.getOWLDeclarationAxiom(owlClass("urn:remove:" + i)),
+  );
+  const base = new StructuralAxiomSet(rows.slice(0, 3584));
+  const draft = base.clone();
+  for (let i = 3584; i < 3968; i++) {
+    draft.add(rows[i]);
+  }
+  const splice = Array.prototype.splice;
+  let shifted = 0;
+  try {
+    Array.prototype.splice = function (start, count, ...rest) {
+      if (
+        count === 1 &&
+        this.length > 32 &&
+        this[0]?.kind === "OWLDeclarationAxiom"
+      ) {
+        shifted += this.length - start - 1;
+      }
+      return Reflect.apply(splice, this, [start, count, ...rest]);
+    };
+    for (let i = 3584; i < 3920; i++) {
+      draft.delete(rows[i]);
+    }
+    for (let i = 0; i < 3000; i++) {
+      draft.delete(rows[i]);
+    }
+  } finally {
+    Array.prototype.splice = splice;
+  }
+  expect(shifted).toBeLessThan(4 * rows.length);
+  expect([...draft]).toEqual([
+    ...rows.slice(3000, 3584),
+    ...rows.slice(3920, 3968),
+  ]);
+  expect(base.size).toBe(3584);
+});
+
+test("colliding bucket deletion, compaction and clone membership match an insertion-ordered Map", () => {
+  const operations = {
+    key: (value) => value.id,
+    hash: (key) => key % 97,
+    equals: (a, b) => a === b,
+  };
+  const table = new StructuralHashTable(operations),
+    expected = new Map();
+  let seed = 137;
+  function random() {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed;
+  }
+  for (let step = 0; step < 12000; step++) {
+    const id = random() % 1703;
+    if (random() % 5 < 2) {
+      if (table.deleteKey(id) !== expected.delete(id)) {
+        throw new Error("delete mismatch");
+      }
+    } else {
+      const value = { id, step };
+      table.add(value, true);
+      expected.set(id, value);
+    }
+    if (step % 1000 === 999) {
+      const keys = [...expected.keys()];
+      const snapshot = table.clone();
+      expect([...snapshot].map((entry) => entry.id)).toEqual(keys);
+      for (let index = 0; index < keys.length; index += 41) {
+        const key = keys[index];
+        expect(snapshot.idOfCapturedKey(key)).toBe(index);
+        expect(snapshot.valueAt(index)).toBe(expected.get(key));
+      }
+      for (const key of keys.slice(0, 40)) {
+        snapshot.deleteKey(key);
+      }
+      expect(table.size).toBe(expected.size);
+    }
+  }
 });

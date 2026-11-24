@@ -194,8 +194,7 @@ export class StructuralAxiomSet {
       }
     }
     if (this.#added) {
-      for (let i = 0; i < this.#added.size; i++) {
-        const key = this.#added.keyAt(i);
+      for (const [key] of this.#added.capturedEntries()) {
         const baseId = other.#base.idOfCapturedKey(key);
         if (
           (baseId < 0 || other.#removed?.has(baseId)) &&
@@ -241,17 +240,13 @@ export class StructuralAxiomSet {
     let original;
     if (id >= 0 && !this.#removed?.has(id)) {
       original = this.#base.valueAt(id);
-      if (this.#shared) {
-        (this.#removed ??= new DenseBitSet(this.#base.size)).add(id);
-      } else {
-        this.#base.deleteKey(key);
-      }
+      this.#shared = true;
+      (this.#removed ??= new DenseBitSet(this.#base.size)).add(id);
     } else {
-      const added = this.#added?.idOfCapturedKey(key) ?? -1;
-      if (added < 0) {
+      original = this.#added?.valueForCapturedKey(key);
+      if (original === undefined) {
         return false;
       }
-      original = this.#added.valueAt(added);
       this.#added.deleteKey(key);
     }
     if (!isFactoryStructuralObject(original)) {
@@ -274,8 +269,8 @@ export class StructuralAxiomSet {
       }
     }
     if (this.#added) {
-      for (let i = 0; i < this.#added.size; i++) {
-        flat.addPrepared(this.#added.valueAt(i), this.#added.keyAt(i));
+      for (const [key, value] of this.#added.capturedEntries()) {
+        flat.addPrepared(value, key);
       }
     }
     this.#base = flat;

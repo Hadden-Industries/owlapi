@@ -30,9 +30,11 @@ export let isNativeGroundStructuralObject;
 export let nativeStructuralMethods;
 let stableComponent;
 
-const structuralTuple = (value) => {
+const projectComponents = (values, tuples = new Map()) =>
+  values.map((value) => structuralTuple(value, tuples));
+function structuralTuple(value, tuples) {
   if (value && typeof value === "object") {
-    const tuple = readPackageTuple(value);
+    const tuple = readPackageTuple(value, tuples);
     if (tuple !== undefined) {
       return tuple;
     }
@@ -41,16 +43,16 @@ const structuralTuple = (value) => {
       if (!Array.isArray(supplied)) {
         throw new TypeError("OWL structural tuples must be arrays");
       }
-      return Object.freeze(supplied.map(structuralTuple));
+      return Object.freeze(projectComponents(supplied, tuples));
     }
     if (Array.isArray(value)) {
-      return Object.freeze(value.map(structuralTuple));
+      return Object.freeze(projectComponents(value, tuples));
     }
   }
   return value;
-};
+}
 export const structuralKey = (kind, components) =>
-  JSON.stringify([kind, ...components.map(structuralTuple)]);
+  JSON.stringify([kind, ...projectComponents(components)]);
 
 export const isCanonicalStructuralObject = (value) =>
   Boolean(value) &&
@@ -118,31 +120,60 @@ export class StructuralSet {
   }
 }
 
-function projectedTuple(object, flags, body) {
-  const fields = tupleFields.get(object.kind);
-  const length =
-    fields.length - Number(body && AXIOM_KIND_SET.has(object.kind));
-  const tuple = new Array(length + 1);
-  tuple[0] = object.kind;
-  for (let i = 0; i < length; i++) {
-    tuple[i + 1] = projectedComponent(object[fields[i]]);
+function projectionFrame(value, body) {
+  const fields = Array.isArray(value) ? undefined : tupleFields.get(value.kind);
+  const length = fields
+    ? fields.length - Number(body && AXIOM_KIND_SET.has(value.kind))
+    : value.length;
+  const offset = fields ? 1 : 0;
+  const tuple = new Array(length + offset);
+  if (fields) {
+    tuple[0] = value.kind;
   }
-  if (flags < 0) {
-    tuple.push("anonymous:" + (-flags - 1));
-  }
-  return Object.freeze(tuple);
+  return { value, fields, length, offset, tuple, index: 0 };
 }
-function projectedComponent(value) {
-  if (Array.isArray(value)) {
-    const items = new Array(value.length);
-    for (let i = 0; i < items.length; i++) {
-      items[i] = projectedComponent(value[i]);
-    }
-    return Object.freeze(items);
+
+function projectedTuple(object, flags, body, shared) {
+  const previous = shared?.get(object);
+  if (previous) {
+    return previous;
   }
-  return value && typeof value === "object"
-    ? readPackageTuple(value)
-    : (value ?? null);
+  if (object.kind === OWLObjectKind.IRI) {
+    const tuple = Object.freeze([object.kind, object.value]);
+    shared?.set(object, tuple);
+    return tuple;
+  }
+  const root = projectionFrame(object, body),
+    stack = [root],
+    tuples = shared ?? new Map();
+  tuples.set(object, root.tuple);
+  if (flags < 0) {
+    root.tuple.push("anonymous:" + (-flags - 1));
+  }
+  // Scope sharing to this projection. Neither deep chains nor shared subgraphs
+  // consume the JavaScript call stack or leave tuples on a model node.
+  while (stack.length) {
+    const frame = stack[stack.length - 1];
+    if (frame.index === frame.length) {
+      Object.freeze(frame.tuple);
+      stack.pop();
+      continue;
+    }
+    const index = frame.index++;
+    const child = frame.value[frame.fields ? frame.fields[index] : index];
+    let result = child ?? null;
+    if (child !== null && typeof child === "object") {
+      result = tuples.get(child);
+      if (!result) {
+        const next = projectionFrame(child, false);
+        result = next.tuple;
+        tuples.set(child, result);
+        stack.push(next);
+      }
+    }
+    frame.tuple[index + frame.offset] = result;
+  }
+  return root.tuple;
 }
 
 function proofFor(object, kind, components) {
@@ -250,11 +281,11 @@ export class OWLStructuralObject {
       }
       return proof;
     };
-    readPackageTuple = (value) =>
+    readPackageTuple = (value, tuples) =>
       branded(value)
         ? value.#flags === 0
           ? explicitTuples.get(value).tuple
-          : projectedTuple(value, value.#flags, false)
+          : projectedTuple(value, value.#flags, false, tuples)
         : undefined;
     bindStructuralModel({
       projectable: (value) =>
@@ -298,7 +329,7 @@ export class OWLStructuralObject {
           tuple: Object.freeze([
             axiom.kind,
             ...exactBody,
-            Object.freeze(annotations.map(structuralTuple)),
+            Object.freeze(projectComponents(annotations)),
           ]),
           body: explicitTuples.get(axiom)?.body ?? Object.freeze(exactBody),
           bodyKey: explicitTuples.get(axiom)?.bodyKey,
@@ -333,10 +364,14 @@ export class OWLStructuralObject {
         Object.assign(this, fields);
       }
       if (!this.#flags) {
-        const tuple = Object.freeze([kind, ...components.map(structuralTuple)]);
+        const tuples = new Map();
+        const tuple = Object.freeze([
+          kind,
+          ...projectComponents(components, tuples),
+        ]);
         const body = options.componentsWithoutAnnotations
           ? Object.freeze(
-              options.componentsWithoutAnnotations.map(structuralTuple),
+              projectComponents(options.componentsWithoutAnnotations, tuples),
             )
           : undefined;
         explicitTuples.set(this, { tuple, body });
@@ -369,14 +404,13 @@ export class OWLStructuralObject {
     if (this === other) {
       return true;
     }
+    if (!other || typeof other.structuralKey !== "function") {
+      return false;
+    }
     if (isFactoryStructuralObject(this) && isFactoryStructuralObject(other)) {
       return structuralEquals(this, other);
     }
-    return (
-      Boolean(other) &&
-      typeof other.structuralKey === "function" &&
-      this.structuralKey() === other.structuralKey()
-    );
+    return this.structuralKey() === other.structuralKey();
   }
   structuralKeyWithoutAnnotations() {
     if (this.#flags !== 0) {
@@ -394,14 +428,15 @@ export class OWLStructuralObject {
     if (this === other) {
       return true;
     }
+    if (!other || typeof other.structuralKeyWithoutAnnotations !== "function") {
+      return false;
+    }
     if (isFactoryStructuralObject(this) && isFactoryStructuralObject(other)) {
       return structuralEquals(this, other, true);
     }
     return (
-      Boolean(other) &&
-      typeof other.structuralKeyWithoutAnnotations === "function" &&
       this.structuralKeyWithoutAnnotations() ===
-        other.structuralKeyWithoutAnnotations()
+      other.structuralKeyWithoutAnnotations()
     );
   }
 }

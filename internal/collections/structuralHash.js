@@ -21,6 +21,28 @@ function hashText(hash, text) {
   }
   return hash;
 }
+// Identity hashes never retain their owners. Registered symbols already have
+// a stable registry name; all other reference keys can be held weakly.
+const identities = new WeakMap();
+let nextIdentity = 0;
+function hashProtocolValue(seed, value) {
+  const type = typeof value;
+  if (type === "symbol") {
+    const name = Symbol.keyFor(value);
+    if (name !== undefined) {
+      return hashText(seed, name);
+    }
+  } else if (value === null || (type !== "object" && type !== "function")) {
+    return hashText(seed, String(value));
+  }
+  let identity = identities.get(value);
+  if (identity === undefined) {
+    identity = nextIdentity;
+    nextIdentity = (nextIdentity + 1) >>> 0;
+    identities.set(value, identity);
+  }
+  return mix(seed, identity);
+}
 function hashNative(hash, value, body) {
   if (value === null || value === undefined) {
     return hashText(hash, "null");
@@ -60,14 +82,7 @@ function hashNative(hash, value, body) {
 export function hashCapturedKey(key, seed, body = false) {
   let hash;
   if (key instanceof ProtocolKey) {
-    const value = key.value;
-    hash = hashText(
-      seed,
-      value !== null &&
-        (typeof value === "object" || typeof value === "function")
-        ? typeof value
-        : String(value),
-    );
+    hash = hashProtocolValue(seed, key.value);
   } else {
     hash =
       typeof key === "string"

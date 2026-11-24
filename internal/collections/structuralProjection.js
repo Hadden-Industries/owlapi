@@ -38,7 +38,7 @@ export function captureStructuralKey(value, body = false) {
   ) {
     return value;
   }
-  const key = method.call(value);
+  const key = Reflect.apply(method, value, []);
   return typeof key === "string" ? key : new ProtocolKey(key);
 }
 
