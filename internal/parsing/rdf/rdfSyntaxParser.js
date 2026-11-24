@@ -1,5 +1,9 @@
 import { RdfToOwlTranslator } from "../../mapping/rdfToOwlTranslator.js";
-import { registerRdfDocumentPreparation } from "./rdfDocumentPreparation.js";
+import {
+  acceptsOntologyBuild,
+  publishRdfTranslation,
+  registerRdfDocumentPreparation,
+} from "./rdfDocumentPreparation.js";
 
 const defaultTranslatorFactory = (dataFactory) =>
   new RdfToOwlTranslator({ dataFactory });
@@ -61,17 +65,25 @@ export class RdfSyntaxParser {
   }
 
   async #prepare(source, transaction, configuration) {
-    const syntax = await this.#readSyntax(source, transaction, configuration);
-    const prepared = await syntax.translator.prepare(
+    let syntax = await this.#readSyntax(source, transaction, configuration);
+    const { prefixes, jsonLdContexts } = syntax;
+    const preparation = syntax.translator.prepare(
       syntax.dataset,
       syntax.options,
+      acceptsOntologyBuild(transaction),
     );
+    // eslint-disable-next-line no-useless-assignment -- Retain syntax metadata only in the CP 3 closure.
+    syntax = undefined;
+    const prepared = await preparation;
     if (!prepared.deferOntologyIdentity)
       transaction.setOntologyID(prepared.ontology.getOntologyID());
     await transaction.addImportsDeclarations(
       prepared.ontology.getImportsDeclarations(),
     );
     transaction.setDocumentFormat(this.#documentFormat);
+    const reconstruct = acceptsOntologyBuild(transaction)
+      ? prepared.reconstruct
+      : prepared.reconstruct.bind(prepared);
     return {
       declarations: prepared.declarations,
       sourceComplete: prepared.sourceComplete,
@@ -79,10 +91,14 @@ export class RdfSyntaxParser {
       discoverSourceRoles: prepared.discoverSourceRoles,
       reconstruct: async (declarations, completedTransaction, sourceRoles) =>
         this.#populateTransaction(
-          await prepared.reconstruct(declarations, sourceRoles),
+          await reconstruct(
+            declarations,
+            sourceRoles,
+            acceptsOntologyBuild(completedTransaction),
+          ),
           completedTransaction,
           configuration,
-          syntax,
+          { prefixes, jsonLdContexts },
         ),
     };
   }
@@ -103,20 +119,8 @@ export class RdfSyntaxParser {
     configuration,
     { prefixes, jsonLdContexts },
   ) {
-    const { context, ontology } = translated;
-
-    const candidates = context.javaRdfOntologyIdCandidates;
-    if (!candidates) transaction.setOntologyID(ontology.getOntologyID());
-    transaction.addAnnotations(ontology.getAnnotations());
-    await transaction.addImportsDeclarations(ontology.getImportsDeclarations());
-    transaction.addAxioms(ontology.getAxioms());
-    if (candidates)
-      transaction.setOntologyID(ontology.getOntologyID(), candidates);
-    if (context.sourceStructure)
-      transaction.setSourceStructure(context.sourceStructure);
-    for (const diagnostic of context.diagnostics) {
-      transaction.addDiagnostic(diagnostic);
-    }
+    const { context } = translated;
+    await publishRdfTranslation(translated, transaction);
     transaction.setRdfDatasetContext({
       merged: context.merged,
       selectedGraph: context.selectedGraph,

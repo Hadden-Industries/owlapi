@@ -1,6 +1,10 @@
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { RdfToOwlTranslator } from "../../mapping/rdfToOwlTranslator.js";
-import { registerRdfDocumentPreparation } from "../rdf/rdfDocumentPreparation.js";
+import {
+  acceptsOntologyBuild,
+  publishRdfTranslation,
+  registerRdfDocumentPreparation,
+} from "../rdf/rdfDocumentPreparation.js";
 
 import {
   RdfXmlSyntaxAdapter,
@@ -66,6 +70,7 @@ export class RDFXMLParser {
     const preparation = syntax.translator.prepare(
       syntax.dataset,
       syntax.options,
+      acceptsOntologyBuild(transaction),
     );
     // eslint-disable-next-line no-useless-assignment -- Release this reference while declaration discovery runs on the projected graph.
     syntax = undefined;
@@ -76,6 +81,9 @@ export class RDFXMLParser {
       prepared.ontology.getImportsDeclarations(),
     );
     transaction.setDocumentFormat(OWLDocumentFormats.RDF_XML);
+    const reconstruct = acceptsOntologyBuild(transaction)
+      ? prepared.reconstruct
+      : prepared.reconstruct.bind(prepared);
     return {
       declarations: prepared.declarations,
       sourceComplete: prepared.sourceComplete,
@@ -83,7 +91,11 @@ export class RDFXMLParser {
       discoverSourceRoles: prepared.discoverSourceRoles,
       reconstruct: async (declarations, completedTransaction, sourceRoles) =>
         this.#populateTransaction(
-          await prepared.reconstruct(declarations, sourceRoles),
+          await reconstruct(
+            declarations,
+            sourceRoles,
+            acceptsOntologyBuild(completedTransaction),
+          ),
           completedTransaction,
           prefixes,
         ),
@@ -105,20 +117,8 @@ export class RDFXMLParser {
   }
 
   async #populateTransaction(translated, transaction, prefixes) {
-    const { context, ontology } = translated;
-
-    const candidates = context.javaRdfOntologyIdCandidates;
-    if (!candidates) transaction.setOntologyID(ontology.getOntologyID());
-    transaction.addAnnotations(ontology.getAnnotations());
-    await transaction.addImportsDeclarations(ontology.getImportsDeclarations());
-    transaction.addAxioms(ontology.getAxioms());
-    if (candidates)
-      transaction.setOntologyID(ontology.getOntologyID(), candidates);
-    if (context.sourceStructure)
-      transaction.setSourceStructure(context.sourceStructure);
-    for (const diagnostic of context.diagnostics) {
-      transaction.addDiagnostic(diagnostic);
-    }
+    const { context } = translated;
+    await publishRdfTranslation(translated, transaction);
     transaction.setPrefixes(prefixes);
     const documentFormat = OWLDocumentFormats.RDF_XML;
     const loadedFormat = context.loaderMetaData

@@ -16,7 +16,7 @@ import {
   XmlParseError,
 } from "../../../io/errors.js";
 import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
-import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
+import { rdfDataFactory } from "../../rdfjs/environment.js";
 import { prepareXml } from "../xml/xmlEntityPolicy.js";
 import { xmlParserAdapter } from "../xml/xmlParserAdapter.js";
 import { recordSourceStatementCount } from "../../rdfjs/sourceStatementCount.js";
@@ -25,7 +25,7 @@ import {
   prepareRdfXmlStream,
   rdfXmlRootMetadata,
 } from "./rdfXmlStreamPreparation.js";
-import { CompactDefaultGraph } from "../../rdfjs/compactDefaultGraph.js";
+import { CompactRdfGraph } from "../../rdfjs/compactRdfGraph.js";
 
 const CDATA_SECTION_NODE = 4;
 const COMMENT_NODE = 8;
@@ -929,9 +929,7 @@ export class RdfXmlSyntaxAdapter {
       );
     }
 
-    const dataset = streamed
-      ? new CompactDefaultGraph()
-      : rdfDatasetFactory.dataset();
+    const dataset = new CompactRdfGraph();
     const blankNodes = new Set();
     let emittedQuads = 0;
     let adapterFailure;
@@ -1048,7 +1046,7 @@ export class RdfXmlSyntaxAdapter {
       parser.end();
       await completion;
       execution.check();
-      if (streamed) dataset.seal();
+      dataset.seal();
       execution.check();
       recordSourceStatementCount(dataset, emittedQuads);
       if (identity.baseIRI !== undefined)

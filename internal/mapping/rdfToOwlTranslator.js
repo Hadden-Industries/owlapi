@@ -10,19 +10,21 @@ import {
 import {
   OWLDataFactory,
   createSourcePreservingDataFactory,
+  readDataFactoryBehaviorDefinition,
 } from "../../model/owlDataFactory.js";
 import { OWLObjectKind } from "../../model/kinds.js";
 import { OWLOntology } from "../../model/owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "../../model/owlOntologyLoaderConfiguration.js";
 import { IRI, StructuralSet } from "../../model/structural.js";
 import { normalizeCardinality } from "../model/cardinality.js";
+import { OntologyBuildBuffer } from "../model/ontologyBuildBuffer.js";
 import { requireTwoDistinctBooleanOperands } from "../model/setConstructs.js";
 import { OntologyBehaviorContext } from "../behavior/ontologyBehaviorContext.js";
 import { readSourceStatementCount } from "../rdfjs/sourceStatementCount.js";
 import { createRdfReadView } from "./rdfReadView.js";
 import { repeatedClassExpression } from "./repeatedClassExpression.js";
 import { selectOntologyGraph } from "../rdfjs/graphPolicy.js";
-import { CompactDefaultGraph } from "../rdfjs/compactDefaultGraph.js";
+import { isCompactRdfGraph } from "../rdfjs/compactRdfGraph.js";
 import {
   BUILT_IN_ANNOTATION_PROPERTIES,
   OWL_BUILT_IN_DATATYPES,
@@ -483,14 +485,19 @@ class ExecutionController {
 
 class OntologyTransaction {
   #annotations = new StructuralSet();
-  #axioms = new StructuralSet();
-  #configuration;
+  #axioms;
+  #maxAxioms;
+  #owned;
   #dataFactory;
   #imports = new StructuralSet();
   #ontologyID;
 
-  constructor(dataFactory, configuration) {
-    this.#configuration = configuration;
+  constructor(dataFactory, configuration, owned = false) {
+    this.#maxAxioms = configuration.maxAxioms;
+    this.#owned = owned;
+    this.#axioms = owned
+      ? new OntologyBuildBuffer(this.#maxAxioms)
+      : new StructuralSet();
     this.#dataFactory = dataFactory;
   }
 
@@ -499,14 +506,16 @@ class OntologyTransaction {
   }
 
   addAxiom(axiom) {
-    if (this.#axioms.has(axiom)) {
-      return;
-    }
-    if (this.#axioms.size >= this.#configuration.maxAxioms) {
-      throw new ResourceLimitError("The ontology axiom limit was exceeded", {
-        limit: this.#configuration.maxAxioms,
-        resource: "maxAxioms",
-      });
+    if (!this.#owned) {
+      // Foreign factories and DatasetCore inputs retain their original
+      // structural observations and are admitted when the ontology is made.
+      if (this.#axioms.has(axiom)) return;
+      if (this.#axioms.size >= this.#maxAxioms) {
+        throw new ResourceLimitError("The ontology axiom limit was exceeded", {
+          limit: this.#maxAxioms,
+          resource: "maxAxioms",
+        });
+      }
     }
     this.#axioms.add(axiom);
   }
@@ -519,27 +528,69 @@ class OntologyTransaction {
     this.#ontologyID = ontologyID;
   }
 
-  *structuralValues() {
-    yield* this.#axioms;
-    yield* this.#annotations;
+  *reverseStructuralValues() {
+    yield* [...this.#annotations].reverse();
+    yield* this.#owned
+      ? this.#axioms.reverseValues()
+      : [...this.#axioms].reverse();
   }
 
-  commit(context) {
-    const ontology = new OWLOntology({
-      annotations: this.#annotations,
-      axioms: this.#axioms,
-      imports: this.#imports,
-      ontologyID: this.#ontologyID || this.#dataFactory.getOWLOntologyID(),
-    });
+  commit(context, transfer = false) {
+    transfer &&= this.#owned;
+    const ontologyID = this.#ontologyID || this.#dataFactory.getOWLOntologyID();
+    const ontology = transfer
+      ? {
+          getOntologyID: () => ontologyID,
+          getAxioms: () => this.#axioms,
+          getAnnotations: () => this.#annotations.values(),
+          getImportsDeclarations: () => this.#imports.values(),
+        }
+      : new OWLOntology({
+          annotations: this.#annotations,
+          axioms: this.#axioms,
+          imports: this.#imports,
+          ontologyID,
+        });
     const frozenContext = Object.freeze({
       ...context,
       diagnostics: Object.freeze(context.diagnostics.map(freezeDiagnostic)),
     });
-    return Object.freeze({ context: frozenContext, ontology });
+    return Object.freeze({
+      context: frozenContext,
+      ontology,
+      ...(transfer ? { buildBuffer: this.#axioms } : {}),
+    });
   }
 }
 
+const nativeCreateIri = IRI.create;
+
+/** RDF term IDs and the fallback vocabulary cache have exactly one document's lifetime. */
+function parseIriFactory(graph) {
+  const iriByTermId = new Array(graph.termCount);
+  const vocabulary = new Map();
+  return {
+    release() {
+      iriByTermId.length = 0;
+      vocabulary.clear();
+    },
+    create(value) {
+      const create = IRI.create;
+      if (create !== nativeCreateIri || typeof value !== "string")
+        return create.call(IRI, value);
+      const id = graph.namedNodeId(value);
+      if (id !== undefined)
+        return (iriByTermId[id] ??= create.call(IRI, value));
+      // A datatype mentioned only as part of a literal has no SPO dictionary ID.
+      let iri = vocabulary.get(value);
+      if (!iri) vocabulary.set(value, (iri = create.call(IRI, value)));
+      return iri;
+    },
+  };
+}
+
 class RdfGraphInterpreter {
+  #iri;
   #metadataPolicy;
   #rdfReconstructionPolicy;
   #retainsSingletonObjectBooleans;
@@ -620,6 +671,7 @@ class RdfGraphInterpreter {
     configuration,
     dataFactory,
     dataset,
+    iriFactory,
     read,
     declarationEntities = [],
     sourceRoles = [],
@@ -648,6 +700,7 @@ class RdfGraphInterpreter {
     this.#sourceStatementCount = sourceStatementCount;
     this.#dataFactory = dataFactory;
     this.#dataset = dataset;
+    this.#iri = iriFactory;
     this.#consumedRows = read.createRowMarks?.();
     this.#read = read;
     this.#diagnostics = diagnostics;
@@ -732,13 +785,12 @@ class RdfGraphInterpreter {
         const yielded = this.#execution.cooperate();
         if (yielded) await yielded;
       }
-    const roots = [...this.#transaction.structuralValues()];
     const pending = [];
     // Visit each immutable root in the previous order. Identity tracking is
     // local to one axiom or annotation. A cached anonymous expression can be
     // shared by many axioms, so remember those subtrees across roots.
-    while (roots.length) {
-      pending.push(roots.pop());
+    for (const root of this.#transaction.reverseStructuralValues()) {
+      pending.push(root);
       visited.clear();
       while (pending.length) {
         const value = pending.pop();
@@ -1331,7 +1383,7 @@ class RdfGraphInterpreter {
     this.#retainedStatements.push(
       Object.freeze({
         subject,
-        predicate: IRI.create(quad.predicate.value),
+        predicate: this.#iri.create(quad.predicate.value),
         object,
         annotations: Object.freeze(await this.#axiomAnnotations(quad)),
       }),
@@ -1435,7 +1487,7 @@ class RdfGraphInterpreter {
         await this.#retainStatement(
           quad,
           this.#annotationSubject(quad.subject),
-          IRI.create(quad.object.value),
+          this.#iri.create(quad.object.value),
         );
       } else if (
         predicate === RDFS_VOCABULARY.subClassOf &&
@@ -1618,7 +1670,7 @@ class RdfGraphInterpreter {
       )
         continue;
       const datatype = this.#dataFactory.getOWLDatatype(
-        IRI.create(currentQuad.subject.value),
+        this.#iri.create(currentQuad.subject.value),
       );
       const restriction = await this.#datatypeRestriction(currentQuad.subject);
       // Both consumed links jointly encode the recovered definition. Preserve
@@ -1790,7 +1842,7 @@ class RdfGraphInterpreter {
             : currentQuad.object.value,
       );
       const entity = this.#dataFactory[constructorName](
-        IRI.create(subject.value),
+        this.#iri.create(subject.value),
       );
       const role = RDF_ROLE_BY_ENTITY_KIND.get(entity.kind);
       if (role) this.#knownRoles.get(role).add(subject.value);
@@ -1816,7 +1868,7 @@ class RdfGraphInterpreter {
       }
       this.#transaction.addAxiom(
         this.#dataFactory.getOWLDeclarationAxiom(
-          this.#dataFactory.getOWLObjectProperty(IRI.create(iri)),
+          this.#dataFactory.getOWLObjectProperty(this.#iri.create(iri)),
         ),
       );
     }
@@ -1956,7 +2008,7 @@ class RdfGraphInterpreter {
       this.#classIris.add(iri);
       this.#transaction.addAxiom(
         this.#dataFactory.getOWLDeclarationAxiom(
-          this.#dataFactory.getOWLClass(IRI.create(iri)),
+          this.#dataFactory.getOWLClass(this.#iri.create(iri)),
         ),
       );
       this.#consume(quad);
@@ -2036,7 +2088,7 @@ class RdfGraphInterpreter {
         this.#objectPropertyIris.add(iri);
       }
       if (!recoversRdfPropertyRolesWithoutDeclarations) {
-        const propertyIri = IRI.create(iri);
+        const propertyIri = this.#iri.create(iri);
         const property =
           category === "data"
             ? this.#dataFactory.getOWLDataProperty(propertyIri)
@@ -2128,7 +2180,7 @@ class RdfGraphInterpreter {
         ) {
           this.#transaction.addImportsDeclaration(
             this.#dataFactory.getOWLImportsDeclaration(
-              IRI.create(quad.object.value),
+              this.#iri.create(quad.object.value),
             ),
           );
           this.#consume(quad);
@@ -2255,7 +2307,7 @@ class RdfGraphInterpreter {
     }
     const ontologyIRI =
       ontologyNode.termType === "NamedNode"
-        ? IRI.create(ontologyNode.value)
+        ? this.#iri.create(ontologyNode.value)
         : undefined;
     let versionQuads = this.#outgoing(ontologyNode, OWL_VOCABULARY.versionIRI);
     const retainsLiteralVersionAsAnnotation =
@@ -2278,7 +2330,7 @@ class RdfGraphInterpreter {
           "An anonymous ontology cannot declare a version IRI",
         );
       }
-      versionIRI = IRI.create(
+      versionIRI = this.#iri.create(
         requireNamedNode(
           versionQuads[0].object,
           "owl:versionIRI requires an IRI object",
@@ -2301,7 +2353,9 @@ class RdfGraphInterpreter {
         { predicate: OWL_VOCABULARY.imports },
       );
       this.#transaction.addImportsDeclaration(
-        this.#dataFactory.getOWLImportsDeclaration(IRI.create(imported.value)),
+        this.#dataFactory.getOWLImportsDeclaration(
+          this.#iri.create(imported.value),
+        ),
       );
       this.#consume(currentQuad);
     }
@@ -2396,8 +2450,8 @@ class RdfGraphInterpreter {
         return;
       candidates.push(
         this.#dataFactory.getOWLOntologyID(
-          IRI.create(iri),
-          versions[0] ? IRI.create(versions[0].object.value) : undefined,
+          this.#iri.create(iri),
+          versions[0] ? this.#iri.create(versions[0].object.value) : undefined,
         ),
       );
     }
@@ -2912,7 +2966,7 @@ class RdfGraphInterpreter {
         if (dataDefinition) {
           axiom = this.#dataFactory.getOWLDatatypeDefinitionAxiom(
             this.#dataFactory.getOWLDatatype(
-              IRI.create(
+              this.#iri.create(
                 requireNamedNode(
                   currentQuad.subject,
                   "A datatype definition requires an IRI datatype",
@@ -2941,7 +2995,7 @@ class RdfGraphInterpreter {
         currentQuad.predicate.value === OWL_VOCABULARY.disjointUnionOf
       ) {
         const owlClass = this.#dataFactory.getOWLClass(
-          IRI.create(
+          this.#iri.create(
             requireNamedNode(
               currentQuad.subject,
               "owl:disjointUnionOf requires an IRI class subject",
@@ -3029,7 +3083,9 @@ class RdfGraphInterpreter {
       );
       expression =
         individuals.length === 0
-          ? this.#dataFactory.getOWLClass(IRI.create(OWL_VOCABULARY.Nothing))
+          ? this.#dataFactory.getOWLClass(
+              this.#iri.create(OWL_VOCABULARY.Nothing),
+            )
           : this.#dataFactory.getOWLObjectOneOf(individuals);
     } else {
       const operands = await this.#rdfList(
@@ -3069,7 +3125,7 @@ class RdfGraphInterpreter {
       this.#configuration.parsingMode !== "preserve"
     ) {
       return this.#dataFactory.getOWLClass(
-        IRI.create(
+        this.#iri.create(
           predicate === OWL_VOCABULARY.intersectionOf
             ? OWL_VOCABULARY.Thing
             : OWL_VOCABULARY.Nothing,
@@ -3259,10 +3315,10 @@ class RdfGraphInterpreter {
           axiom = this.#dataFactory.getOWLAnnotationPropertyDomainAxiom(
             implicitAnnotationDomain
               ? this.#dataFactory.getOWLAnnotationProperty(
-                  IRI.create(currentQuad.subject.value),
+                  this.#iri.create(currentQuad.subject.value),
                 )
               : this.#annotationProperty(currentQuad.subject),
-            IRI.create(
+            this.#iri.create(
               requireNamedNode(
                 currentQuad.object,
                 "An annotation property domain requires an IRI",
@@ -3277,7 +3333,7 @@ class RdfGraphInterpreter {
           axiom = this.#dataFactory.getOWLDataPropertyDomainAxiom(
             recoveredDataDomain
               ? this.#dataFactory.getOWLDataProperty(
-                  IRI.create(currentQuad.subject.value),
+                  this.#iri.create(currentQuad.subject.value),
                 )
               : this.#dataProperty(currentQuad.subject),
             await this.#classExpression(currentQuad.object, 0),
@@ -3323,7 +3379,7 @@ class RdfGraphInterpreter {
           }
           axiom = this.#dataFactory.getOWLAnnotationPropertyRangeAxiom(
             this.#annotationProperty(currentQuad.subject),
-            IRI.create(
+            this.#iri.create(
               requireNamedNode(
                 currentQuad.object,
                 "An annotation property range requires an IRI",
@@ -3347,7 +3403,7 @@ class RdfGraphInterpreter {
           }
           axiom = this.#dataFactory.getOWLObjectPropertyRangeAxiom(
             this.#dataFactory.getOWLObjectProperty(
-              IRI.create(currentQuad.subject.value),
+              this.#iri.create(currentQuad.subject.value),
             ),
             await this.#classExpression(currentQuad.object, 0),
             annotations,
@@ -3366,7 +3422,7 @@ class RdfGraphInterpreter {
             dataProperty
               ? this.#dataProperty(currentQuad.subject)
               : this.#dataFactory.getOWLDataProperty(
-                  IRI.create(currentQuad.subject.value),
+                  this.#iri.create(currentQuad.subject.value),
                 ),
             await this.#dataRange(currentQuad.object, 0),
             annotations,
@@ -3643,9 +3699,9 @@ class RdfGraphInterpreter {
         ) {
           axiom = this.#dataFactory.getOWLAnnotationAssertionAxiom(
             this.#dataFactory.getOWLAnnotationProperty(
-              IRI.create(OWL_VOCABULARY.deprecated),
+              this.#iri.create(OWL_VOCABULARY.deprecated),
             ),
-            IRI.create(
+            this.#iri.create(
               requireNamedNode(
                 currentQuad.subject,
                 "OWL deprecated entity markers require an IRI subject",
@@ -3653,7 +3709,7 @@ class RdfGraphInterpreter {
             ),
             this.#dataFactory.getOWLLiteral(
               "true",
-              IRI.create(`${XSD_NAMESPACE}boolean`),
+              this.#iri.create(`${XSD_NAMESPACE}boolean`),
             ),
             annotations,
           );
@@ -3692,7 +3748,9 @@ class RdfGraphInterpreter {
         }
         const groups = await this.#annotationAssertionGroups(currentQuad);
         const property = javaAnnotationFallback
-          ? this.#dataFactory.getOWLAnnotationProperty(IRI.create(predicate))
+          ? this.#dataFactory.getOWLAnnotationProperty(
+              this.#iri.create(predicate),
+            )
           : this.#annotationProperty(currentQuad.predicate);
         const subject = this.#annotationSubject(currentQuad.subject);
         const value = this.#annotationValue(currentQuad.object);
@@ -3744,7 +3802,7 @@ class RdfGraphInterpreter {
           this.#transaction.addAxiom(
             this.#dataFactory.getOWLAnnotationAssertionAxiom(
               this.#dataFactory.getOWLAnnotationProperty(
-                IRI.create(currentQuad.predicate.value),
+                this.#iri.create(currentQuad.predicate.value),
               ),
               this.#annotationSubject(currentQuad.subject),
               this.#annotationValue(currentQuad.object),
@@ -4124,7 +4182,7 @@ class RdfGraphInterpreter {
     this.#annotationPropertyIris.add(iri);
     this.#transaction.addAxiom(
       this.#dataFactory.getOWLAnnotationAssertionAxiom(
-        this.#dataFactory.getOWLAnnotationProperty(IRI.create(iri)),
+        this.#dataFactory.getOWLAnnotationProperty(this.#iri.create(iri)),
         this.#annotationSubject(quad.subject),
         this.#annotationValue(quad.object),
       ),
@@ -4430,7 +4488,7 @@ class RdfGraphInterpreter {
         );
       }
       this.#classIris.add(term.value);
-      return this.#dataFactory.getOWLClass(IRI.create(term.value));
+      return this.#dataFactory.getOWLClass(this.#iri.create(term.value));
     }
     if (term.termType !== "BlankNode") {
       throw new OWLSyntaxError("Invalid RDF term for an OWL class expression", {
@@ -4512,7 +4570,9 @@ class RdfGraphInterpreter {
           this.#requireListArity(individuals, 1, OWL_VOCABULARY.oneOf);
         expression =
           individuals.length === 0
-            ? this.#dataFactory.getOWLClass(IRI.create(OWL_VOCABULARY.Nothing))
+            ? this.#dataFactory.getOWLClass(
+                this.#iri.create(OWL_VOCABULARY.Nothing),
+              )
             : this.#dataFactory.getOWLObjectOneOf(individuals);
       } else {
         expression = await this.#restriction(term, depth);
@@ -4733,7 +4793,7 @@ class RdfGraphInterpreter {
     this.#checkExpressionDepth(depth);
     if (term.termType === "NamedNode") {
       this.#datatypeIris.add(term.value);
-      return this.#dataFactory.getOWLDatatype(IRI.create(term.value));
+      return this.#dataFactory.getOWLDatatype(this.#iri.create(term.value));
     }
     if (term.termType !== "BlankNode") {
       throw new OWLSyntaxError("Invalid RDF term for an OWL data range", {
@@ -4813,7 +4873,7 @@ class RdfGraphInterpreter {
         ) {
           dataRange = this.#dataFactory.getOWLDataComplementOf(
             this.#dataFactory.getOWLDatatype(
-              IRI.create(RDFS_VOCABULARY.Literal),
+              this.#iri.create(RDFS_VOCABULARY.Literal),
             ),
           );
         } else {
@@ -4844,7 +4904,7 @@ class RdfGraphInterpreter {
     const onDatatype = this.#exactlyOne(term, OWL_VOCABULARY.onDatatype);
     this.#consume(onDatatype);
     const datatype = this.#dataFactory.getOWLDatatype(
-      IRI.create(
+      this.#iri.create(
         requireNamedNode(
           onDatatype.object,
           "owl:onDatatype requires an IRI datatype",
@@ -4885,7 +4945,7 @@ class RdfGraphInterpreter {
     const currentQuad = candidates[0];
     this.#consume(currentQuad);
     return this.#dataFactory.getOWLFacetRestriction(
-      IRI.create(currentQuad.predicate.value),
+      this.#iri.create(currentQuad.predicate.value),
       this.#literal(currentQuad.object),
     );
   }
@@ -4909,7 +4969,9 @@ class RdfGraphInterpreter {
         );
       }
       this.#objectPropertyIris.add(term.value);
-      return this.#dataFactory.getOWLObjectProperty(IRI.create(term.value));
+      return this.#dataFactory.getOWLObjectProperty(
+        this.#iri.create(term.value),
+      );
     }
     if (term.termType !== "BlankNode") {
       throw new OWLSyntaxError(
@@ -4948,7 +5010,9 @@ class RdfGraphInterpreter {
           "object",
           conflictingCategories,
         );
-        return this.#dataFactory.getOWLObjectProperty(IRI.create(term.value));
+        return this.#dataFactory.getOWLObjectProperty(
+          this.#iri.create(term.value),
+        );
       }
     }
     return this.#objectPropertyExpression(term, depth);
@@ -4975,7 +5039,7 @@ class RdfGraphInterpreter {
       );
     }
     this.#dataPropertyIris.add(named.value);
-    return this.#dataFactory.getOWLDataProperty(IRI.create(named.value));
+    return this.#dataFactory.getOWLDataProperty(this.#iri.create(named.value));
   }
 
   #dataPropertyForAxiom(term) {
@@ -4992,7 +5056,9 @@ class RdfGraphInterpreter {
         "data",
         conflictingCategories,
       );
-      return this.#dataFactory.getOWLDataProperty(IRI.create(named.value));
+      return this.#dataFactory.getOWLDataProperty(
+        this.#iri.create(named.value),
+      );
     }
     return this.#dataProperty(named);
   }
@@ -5129,13 +5195,17 @@ class RdfGraphInterpreter {
       );
     }
     this.#annotationPropertyIris.add(named.value);
-    return this.#dataFactory.getOWLAnnotationProperty(IRI.create(named.value));
+    return this.#dataFactory.getOWLAnnotationProperty(
+      this.#iri.create(named.value),
+    );
   }
 
   #individual(term) {
     if (term.termType === "NamedNode") {
       this.#individualIris.add(term.value);
-      return this.#dataFactory.getOWLNamedIndividual(IRI.create(term.value));
+      return this.#dataFactory.getOWLNamedIndividual(
+        this.#iri.create(term.value),
+      );
     }
     if (term.termType === "BlankNode") {
       return this.#dataFactory.getOWLAnonymousIndividual(
@@ -5148,7 +5218,7 @@ class RdfGraphInterpreter {
 
   #annotationSubject(term) {
     if (term.termType === "NamedNode") {
-      return IRI.create(term.value);
+      return this.#iri.create(term.value);
     }
     if (term.termType === "BlankNode") {
       return this.#dataFactory.getOWLAnonymousIndividual(
@@ -5169,7 +5239,7 @@ class RdfGraphInterpreter {
       ? this.#dataFactory.getOWLLiteral(term.value, term.language)
       : this.#dataFactory.getOWLLiteral(
           term.value,
-          IRI.create(term.datatype.value),
+          this.#iri.create(term.datatype.value),
         );
   }
 
@@ -5430,7 +5500,7 @@ class RdfGraphInterpreter {
   #annotationValue(term) {
     switch (term.termType) {
       case "NamedNode":
-        return IRI.create(term.value);
+        return this.#iri.create(term.value);
       case "BlankNode":
         return this.#dataFactory.getOWLAnonymousIndividual(
           term.value,
@@ -5441,7 +5511,7 @@ class RdfGraphInterpreter {
           ? this.#dataFactory.getOWLLiteral(term.value, term.language)
           : this.#dataFactory.getOWLLiteral(
               term.value,
-              IRI.create(term.datatype.value),
+              this.#iri.create(term.datatype.value),
             );
       default:
         throw new OWLSyntaxError("Invalid OWL annotation value", {
@@ -5633,7 +5703,7 @@ const validateDataset = async (dataset, configuration, execution) => {
     !dataset ||
     typeof dataset[Symbol.iterator] !== "function" ||
     typeof dataset.match !== "function" ||
-    (!(dataset instanceof CompactDefaultGraph) &&
+    (!isCompactRdfGraph(dataset) &&
       (typeof dataset.add !== "function" ||
         typeof dataset.delete !== "function" ||
         typeof dataset.has !== "function")) ||
@@ -5755,14 +5825,20 @@ export class RdfToOwlTranslator {
       execution,
     );
 
+    const owned =
+      isCompactRdfGraph(graphSelection.dataset) &&
+      readDataFactoryBehaviorDefinition(this.#dataFactory) !== undefined &&
+      Object.getPrototypeOf(this.#dataFactory) === OWLDataFactory.prototype;
     return {
       configuration: normalizedConfiguration,
+      owned,
       sourceStatementCount: readSourceStatementCount(dataset),
       dataFactory:
         normalizedConfiguration.parsingMode === "preserve"
           ? createSourcePreservingDataFactory(this.#dataFactory)
           : this.#dataFactory,
       dataset: graphSelection.dataset,
+      iriFactory: owned ? parseIriFactory(graphSelection.dataset) : IRI,
       read: createRdfReadView(graphSelection.dataset, execution, true),
       diagnostics,
       documentIRI: normalizedDocumentIRI,
@@ -5780,14 +5856,16 @@ export class RdfToOwlTranslator {
   }
 
   /** Prepare a document once; the manager supplies AllDecl after resolving imports. */
-  async prepare(dataset, options = {}) {
-    const input = await this.#prepareReconstructionInput(dataset, options);
+  async prepare(dataset, options = {}, transfer = false) {
+    let input = await this.#prepareReconstructionInput(dataset, options);
+    if (transfer && input.owned && dataset !== input.dataset) dataset.release();
     // The input owns a projected graph and the source evidence still needed.
     // eslint-disable-next-line no-useless-assignment -- Release the original graph before discovering declarations in the copy.
     dataset = undefined;
     const transaction = new OntologyTransaction(
       this.#dataFactory,
       input.configuration,
+      input.owned,
     );
     const interpreter = new RdfGraphInterpreter({
       ...input,
@@ -5795,17 +5873,17 @@ export class RdfToOwlTranslator {
       transaction,
     });
     await interpreter.discoverDeclarationsAndImports();
-    const { ontology } = transaction.commit({ diagnostics: [] });
-    const declarations = Object.freeze(
-      [...ontology.getAxioms()]
-        .filter(({ kind }) => kind === OWLObjectKind.DECLARATION_AXIOM)
-        .map(({ entity }) => entity),
-    );
+    const { ontology } = transaction.commit({ diagnostics: [] }, transfer);
+    const ontologyID = ontology.getOntologyID();
+    const declarations = [];
+    for (const axiom of ontology.getAxioms())
+      if (axiom.kind === OWLObjectKind.DECLARATION_AXIOM)
+        declarations.push(axiom.entity);
     // Network/file retrieval and parsing other documents are not work on this
     // RDF document. Preserve its spent budget across the import-discovery gap.
     input.execution.pause();
     return {
-      declarations,
+      declarations: Object.freeze(declarations),
       deferOntologyIdentity: interpreter.defersJavaRdfOntologyId(),
       sourceComplete: input.sourceComplete,
       sourceRoles: interpreter.sourceStructure().roles,
@@ -5820,6 +5898,7 @@ export class RdfToOwlTranslator {
           transaction: new OntologyTransaction(
             this.#dataFactory,
             input.configuration,
+            input.owned,
           ),
         });
         try {
@@ -5832,14 +5911,32 @@ export class RdfToOwlTranslator {
           input.execution.pause();
         }
       },
-      reconstruct: (declarationEntities, sourceRoles) => {
-        input.execution.resume();
-        return this.#reconstruct(
-          input,
+      reconstruct: (
+        declarationEntities,
+        sourceRoles,
+        transferResult = false,
+      ) => {
+        const reconstruction = input;
+        // Built-in manager CP 3 is single-use. The interpreter owns the graph
+        // until it returns the buffer; publication then retains no parser input.
+        if (transferResult) input = undefined;
+        reconstruction.execution.resume();
+        const translated = this.#reconstruct(
+          reconstruction,
           declarationEntities,
-          ontology.getOntologyID(),
+          ontologyID,
           sourceRoles,
+          transferResult,
         );
+        if (!transferResult || !reconstruction.owned) return translated;
+        return translated.finally(() => {
+          reconstruction.iriFactory.release();
+          reconstruction.dataset.release();
+          reconstruction.read =
+            reconstruction.dataset =
+            reconstruction.iriFactory =
+              undefined;
+        });
       },
     };
   }
@@ -5856,10 +5953,12 @@ export class RdfToOwlTranslator {
     declarationEntities = [],
     ontologyID,
     sourceRoles = [],
+    transfer = false,
   ) {
     const transaction = new OntologyTransaction(
       this.#dataFactory,
       input.configuration,
+      input.owned,
     );
     if (ontologyID) transaction.setOntologyID(ontologyID);
     const diagnostics = [...input.diagnostics];
@@ -5877,16 +5976,19 @@ export class RdfToOwlTranslator {
       interpreter.javaRdfOntologyIdCandidates();
     input.execution.check();
 
-    return transaction.commit({
-      diagnostics,
-      loaderMetaData,
-      ...(javaRdfOntologyIdCandidates ? { javaRdfOntologyIdCandidates } : {}),
-      ...(input.configuration.parsingMode === "preserve"
-        ? { sourceStructure: interpreter.sourceStructure() }
-        : {}),
-      documentIRI: input.documentIRI,
-      merged: input.merged,
-      selectedGraph: input.selectedGraph,
-    });
+    return transaction.commit(
+      {
+        diagnostics,
+        loaderMetaData,
+        ...(javaRdfOntologyIdCandidates ? { javaRdfOntologyIdCandidates } : {}),
+        ...(input.configuration.parsingMode === "preserve"
+          ? { sourceStructure: interpreter.sourceStructure() }
+          : {}),
+        documentIRI: input.documentIRI,
+        merged: input.merged,
+        selectedGraph: input.selectedGraph,
+      },
+      transfer,
+    );
   }
 }

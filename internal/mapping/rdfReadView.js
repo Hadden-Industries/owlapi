@@ -1,7 +1,47 @@
 import { rdfDataFactory, rdfDatasetFactory } from "../rdfjs/environment.js";
-import { CompactDefaultGraph } from "../rdfjs/compactDefaultGraph.js";
+import { isCompactRdfGraph } from "../rdfjs/compactRdfGraph.js";
 
 const empty = Object.freeze([]);
+
+// Reconstruction often needs only cardinality or the first matching row.
+// Keep identifiers until a caller actually requests an RDF statement.
+class OutgoingRows {
+  #dataset;
+  #rows;
+
+  constructor(dataset, rows) {
+    this.#dataset = dataset;
+    this.#rows = rows;
+  }
+
+  get length() {
+    return this.#rows.length;
+  }
+
+  get 0() {
+    return this.#dataset.statementAt(this.#rows[0]);
+  }
+
+  *[Symbol.iterator]() {
+    for (const row of this.#rows) yield this.#dataset.statementAt(row);
+  }
+
+  filter(predicate) {
+    return this[Symbol.iterator]().filter(predicate).toArray();
+  }
+
+  map(project) {
+    return this[Symbol.iterator]().map(project).toArray();
+  }
+
+  some(predicate) {
+    return this[Symbol.iterator]().some(predicate);
+  }
+
+  every(predicate) {
+    return this[Symbol.iterator]().every(predicate);
+  }
+}
 const nativeDatasetPrototype = Object.getPrototypeOf(
   rdfDatasetFactory.dataset(),
 );
@@ -121,20 +161,34 @@ export function createRdfReadView(
     execution.check();
     return Object.freeze(result);
   }
-  if (dataset instanceof CompactDefaultGraph) {
+  if (isCompactRdfGraph(dataset)) {
     return Object.freeze({
-      quads: dataset,
-      matchedQuads: () => dataset.replayed(),
+      quads: { [Symbol.iterator]: () => dataset.statements() },
+      matchedQuads: () => dataset.statements(true),
       rowOf: (quad) => dataset.rowOf(quad),
       createRowMarks: () => dataset.createRowMarks(),
+      termById: (id) => dataset.termById(id),
+      forEachMatchingRow: (...args) => dataset.forEachMatchingRow(...args),
+      forEachOutgoingRow: (...args) => dataset.forEachOutgoingRow(...args),
+      firstObjectId: (s, p) => dataset.firstObjectId(s, p),
       outgoing: (subject, predicate) => {
         execution.check();
-        const all = collect(dataset.match(subject, null, null, null));
-        return predicate === undefined
-          ? all
-          : Object.freeze(
-              all.filter((quad) => quad.predicate.value === predicate),
-            );
+        execution.check();
+        const rows = [];
+        const predicateId =
+          predicate === undefined ? undefined : dataset.namedNodeId(predicate);
+        dataset.forEachOutgoingRow(
+          dataset.termId(subject),
+          undefined,
+          (row, _s, p) => {
+            // The original collection checked every outgoing row, even those
+            // excluded by the predicate. Keep that cancellation cadence.
+            execution.check();
+            if (predicate === undefined || p === predicateId) rows.push(row);
+          },
+        );
+        execution.check();
+        return rows.length ? new OutgoingRows(dataset, rows) : empty;
       },
     });
   }

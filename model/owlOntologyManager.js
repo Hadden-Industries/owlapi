@@ -38,8 +38,12 @@ import { nQuadsParserDescriptor } from "../internal/parsing/nquads/descriptor.js
 import { nTriplesParserDescriptor } from "../internal/parsing/ntriples/descriptor.js";
 import { owlXmlParserDescriptor } from "../internal/parsing/owlxml/descriptor.js";
 import { OWLParserRegistry } from "../internal/parsing/parserRegistry.js";
-import { prepareRdfDocument } from "../internal/parsing/rdf/rdfDocumentPreparation.js";
 import { streamTextSource } from "../internal/parsing/streamByteReader.js";
+import {
+  prepareRdfDocument,
+  registerOntologyBuildReceiver,
+} from "../internal/parsing/rdf/rdfDocumentPreparation.js";
+import { OntologyBuildBuffer } from "../internal/model/ontologyBuildBuffer.js";
 import { rdfXmlParserDescriptor } from "../internal/parsing/rdfxml/descriptor.js";
 import { triGParserDescriptor } from "../internal/parsing/trig/descriptor.js";
 import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js";
@@ -220,7 +224,7 @@ const requireDocumentFormat = (documentFormat) => {
 
 class ParseTransaction {
   #annotations = new StructuralSet();
-  #axioms = new StructuralSet();
+  #axioms;
   #configuration;
   #dataFactory;
   #diagnostics = [];
@@ -232,21 +236,22 @@ class ParseTransaction {
   #ontologyID;
   #prefixes;
   #publication;
-  #batchPublicationAxioms;
 
-  constructor(
-    dataFactory,
-    configuration,
-    publication,
-    batchPublicationAxioms = false,
-  ) {
+  constructor(dataFactory, configuration, publication, builtinParser = false) {
     this.#dataFactory =
       configuration.parsingMode === "preserve"
         ? createSourcePreservingDataFactory(dataFactory)
         : dataFactory;
     this.#configuration = configuration;
     this.#publication = publication;
-    this.#batchPublicationAxioms = batchPublicationAxioms;
+    this.#axioms = builtinParser
+      ? new OntologyBuildBuffer(configuration.maxAxioms)
+      : new StructuralSet();
+    if (builtinParser)
+      registerOntologyBuildReceiver(this, (buffer) => {
+        this.#axioms = buffer;
+        this.#publication?.addBuiltAxioms(buffer);
+      });
   }
 
   getOWLDataFactory() {
@@ -272,21 +277,7 @@ class ParseTransaction {
   }
 
   addAxioms(axioms) {
-    if (!this.#batchPublicationAxioms) {
-      for (const axiom of axioms) this.addAxiom(axiom);
-      return;
-    }
-    // Built-in RDF reconstruction supplies an already validated model. Stage
-    // its synchronous additions together so publication builds the immutable
-    // snapshot once. On a limit failure, publish the accepted prefix.
-    const accepted = [];
-    try {
-      for (const axiom of axioms) {
-        if (this.#recordAxiom(axiom)) accepted.push(axiom);
-      }
-    } finally {
-      if (accepted.length) this.#publication.addAxioms(accepted);
-    }
+    for (const axiom of axioms) this.addAxiom(axiom);
   }
 
   addAnnotation(annotation) {
@@ -376,16 +367,25 @@ class ParseTransaction {
     this.#sourceStructure = structure;
   }
 
-  commit(defaultFormat, documentIRI) {
+  commit(defaultFormat, documentIRI, retainBuild = false) {
     const ontologyID = this.#ontologyID || this.#dataFactory.getOWLOntologyID();
-    const managedOntology =
-      this.#publication?.managedOntology ??
-      createManagerOwnedOWLOntology({
-        annotations: this.#annotations,
-        axioms: this.#axioms,
-        imports: this.#imports,
-        ontologyID,
-      });
+    const managedOntology = retainBuild
+      ? {
+          buildBuffer: this.#axioms,
+          ontology: {
+            getOntologyID: () => ontologyID,
+            getImportsDeclarations: () => this.#imports,
+            getAnnotations: () => this.#annotations,
+            getAxioms: () => this.#axioms,
+          },
+        }
+      : (this.#publication?.managedOntology ??
+        createManagerOwnedOWLOntology({
+          annotations: this.#annotations,
+          axioms: this.#axioms,
+          imports: this.#imports,
+          ontologyID,
+        }));
     return {
       context: {
         diagnostics: [...this.#diagnostics],
@@ -1110,6 +1110,8 @@ export class OWLOntologyManager {
         const transaction = new ParseTransaction(
           this.#dataFactory,
           normalizedConfiguration,
+          undefined,
+          entry.builtinParser,
         );
         await entry.prepared.reconstruct(
           declarations,
@@ -1121,9 +1123,12 @@ export class OWLOntologyManager {
               ]
             : importedRoles(entry),
         );
+        // Only the reconstructed values and source evidence survive CP 3.
+        entry.prepared = undefined;
         const completed = transaction.commit(
           entry.context.format,
           entry.context.documentIRI,
+          entry.builtinParser,
         );
         const imports = new StructuralSet(
           entry.ontology.getImportsDeclarations(),
@@ -1145,6 +1150,7 @@ export class OWLOntologyManager {
           );
         }
         entry.completedOntology = completed.ontology;
+        entry.buildBuffer = completed.buildBuffer;
         entry.context = {
           ...completed.context,
           diagnostics: [
@@ -1171,10 +1177,15 @@ export class OWLOntologyManager {
         }
         const mutationDraft = ontologyState.createMutationDraft();
         if (entry.completedOntology) {
-          for (const axiom of entry.completedOntology.getAxioms())
-            mutationDraft.stageAxiomAddition(axiom);
+          if (entry.buildBuffer)
+            mutationDraft.stageBuiltAxioms(entry.buildBuffer);
+          else
+            for (const axiom of entry.completedOntology.getAxioms())
+              mutationDraft.stageAxiomAddition(axiom);
           for (const annotation of entry.completedOntology.getAnnotations())
             mutationDraft.stageOntologyAnnotationAddition(annotation);
+          entry.completedOntology = undefined;
+          entry.buildBuffer = undefined;
         }
         mutationDraft.stageDocumentMetadataReplacement(context);
         ontologyState.preflightMutation(mutationDraft);
@@ -1250,6 +1261,7 @@ export class OWLOntologyManager {
 
     const entry = {
       context: committed.context,
+      builtinParser: committed.builtinParser,
       ontology: committed.ontology,
       prepared: committed.prepared,
       sourceTrusted: committed.sourceTrusted,
@@ -1541,12 +1553,7 @@ export class OWLOntologyManager {
       publication = {
         managedOntology,
         addAxiom: (axiom) => mutate("stageAxiomAddition", axiom),
-        addAxioms: (axioms) => {
-          const draft = ontologyState.createMutationDraft();
-          for (const axiom of axioms) draft.stageAxiomAddition(axiom);
-          ontologyState.preflightMutation(draft);
-          ontologyState.commitMutation(draft);
-        },
+        addBuiltAxioms: (buffer) => mutate("stageBuiltAxioms", buffer),
         addAnnotation: (annotation) =>
           mutate("stageOntologyAnnotationAddition", annotation),
         addImport: async (declaration) => {
@@ -1612,9 +1619,10 @@ export class OWLOntologyManager {
           this.#dataFactory,
           configuration,
           publication,
-          committed.sourceTrusted,
+          committed.builtinParser,
         );
         await committed.prepared.reconstruct(declarations, reconstructed);
+        committed.prepared = undefined;
         committed.context = reconstructed.commit(
           committed.context.format,
           documentIRI,
@@ -2088,6 +2096,7 @@ export class OWLOntologyManager {
         this.#dataFactory,
         configuration,
         publication,
+        builtinDescriptors.has(candidate.descriptor),
       );
 
       try {
@@ -2114,6 +2123,7 @@ export class OWLOntologyManager {
             source.getDocumentIRI?.(),
           ),
           prepared,
+          builtinParser: builtinDescriptors.has(candidate.descriptor),
           sourceTrusted:
             builtinDescriptors.has(candidate.descriptor) &&
             configuration.loadAnnotationAxioms &&

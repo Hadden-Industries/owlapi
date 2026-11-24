@@ -9,7 +9,8 @@ import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 import { StreamDocumentSource } from "../../../io/streamDocumentSource.js";
 import { decodeStreamText } from "../streamByteReader.js";
 import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
-import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
+import { rdfDataFactory } from "../../rdfjs/environment.js";
+import { CompactRdfGraph } from "../../rdfjs/compactRdfGraph.js";
 import { recordSourceStatementCount } from "../../rdfjs/sourceStatementCount.js";
 
 const TURTLE_MEDIA_TYPE = "text/turtle";
@@ -475,7 +476,7 @@ export class N3SyntaxAdapter {
       );
     }
 
-    const dataset = rdfDatasetFactory.dataset();
+    const dataset = new CompactRdfGraph();
     const prefixes = Object.create(null);
     const blankNodes = new Set();
     let emittedQuads = 0;
@@ -605,6 +606,7 @@ export class N3SyntaxAdapter {
       parser.end();
       await completion;
       execution.check();
+      dataset.seal();
       recordSourceStatementCount(dataset, emittedQuads);
       return Object.freeze({
         dataset,

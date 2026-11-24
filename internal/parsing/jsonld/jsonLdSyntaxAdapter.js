@@ -6,7 +6,8 @@ import {
 } from "../../../io/errors.js";
 import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
 import { IRI } from "../../../model/structural.js";
-import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
+import { rdfDataFactory } from "../../rdfjs/environment.js";
+import { CompactRdfGraph } from "../../rdfjs/compactRdfGraph.js";
 import { RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { OntologyBehaviorContext } from "../../behavior/ontologyBehaviorContext.js";
 import { assertDocumentLoaderAuthorization } from "../../loading/documentLoaderAuthorization.js";
@@ -602,7 +603,7 @@ export class JsonLdSyntaxAdapter {
         { cause: error, syntax: "JSON-LD" },
       );
     }
-    const dataset = rdfDatasetFactory.dataset();
+    const dataset = new CompactRdfGraph();
     let statementCount = 0;
     for (const quad of quads) {
       // JSON-LD's to-RDF algorithm emits only well-formed RDF statements.
@@ -626,6 +627,7 @@ export class JsonLdSyntaxAdapter {
     const contexts = Object.hasOwn(document, "@context")
       ? [freezeJson(document["@context"])]
       : [];
+    dataset.seal();
     recordSourceStatementCount(dataset, statementCount);
 
     return Object.freeze({

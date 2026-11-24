@@ -1,14 +1,17 @@
 import { OWLObjectKind } from "../../model/kinds.js";
 import {
   createOntologyID,
-  IRI,
   isCanonicalStructuralObject,
-  OWLStructuralObject,
+  isPackageStructuralObject,
   StructuralSet,
 } from "../../model/structural.js";
 import { OWLDocumentFormat } from "../../model/owlDocumentFormat.js";
 import { rdfDataFactory } from "../rdfjs/environment.js";
 import { StructuralAxiomSet } from "./axiomSemantics.js";
+import {
+  isOntologyBuildBuffer,
+  takeOntologyBuildAxioms,
+} from "./ontologyBuildBuffer.js";
 
 const ONTOLOGY_ANNOTATION_KINDS = Object.freeze([OWLObjectKind.ANNOTATION]);
 const IMPORT_DECLARATION_KINDS = Object.freeze([
@@ -29,25 +32,6 @@ const immutableDocumentMetadataSnapshots = new WeakSet();
 const DOCUMENT_FORMAT_BRAND_PROBE_KEY =
   "__owlapi_ontology_state_document_format_brand_probe__";
 
-const isPackageOwnedStructuralObject = (value) => {
-  if (!isCanonicalStructuralObject(value)) {
-    return false;
-  }
-  const prototype = Object.getPrototypeOf(value);
-  if (
-    prototype !== OWLStructuralObject.prototype &&
-    prototype !== IRI.prototype
-  ) {
-    return false;
-  }
-  try {
-    OWLStructuralObject.prototype.structuralKey.call(value);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
 const isPackageOwnedDocumentFormat = (value) => {
   if (
     !Object.isFrozen(value) ||
@@ -67,7 +51,8 @@ const isPackageOwnedDocumentFormat = (value) => {
 };
 
 const isRetainableImmutableMetadataObject = (value) =>
-  isPackageOwnedStructuralObject(value) || isPackageOwnedDocumentFormat(value);
+  (isCanonicalStructuralObject(value) && isPackageStructuralObject(value)) ||
+  isPackageOwnedDocumentFormat(value);
 
 const requireStructuralKind = (value, kinds, name) => {
   if (!isCanonicalStructuralObject(value) || !kinds.includes(value.kind)) {
@@ -323,6 +308,26 @@ class OntologyStateMutationDraft {
     return changed;
   }
 
+  /** Publish a parser's admitted table in one transfer into a fresh ontology.
+   * Import callbacks may already have edited a Java-profile ontology. In that
+   * case keep their existing axioms and apply the parser's additions in order.
+   */
+  stageBuiltAxioms(buffer) {
+    const record = mutationDraftRecords.get(this);
+    if (!record.open)
+      throw new Error("The ontology state mutation draft is closed");
+    const axioms = takeOntologyBuildAxioms(buffer);
+    if (!axioms.size) return;
+    if (record.directAxioms.size) {
+      for (const axiom of axioms) this.stageAxiomAddition(axiom);
+      return;
+    }
+    record.directAxioms = axioms;
+    record.axiomsTouched = true;
+    refreshMutationDraftChangeStatus(record);
+    record.preparedSnapshot = undefined;
+  }
+
   /** Stage exact structural removal, preserving differently annotated axioms. */
   stageAxiomRemoval(axiom) {
     const record = mutationDraftRecords.get(this);
@@ -487,7 +492,9 @@ export class OntologyState {
       IMPORT_DECLARATION_KINDS,
       "authoredImportDeclarations",
     );
-    this.#directAxioms = new StructuralAxiomSet(directAxioms);
+    this.#directAxioms = isOntologyBuildBuffer(directAxioms)
+      ? takeOntologyBuildAxioms(directAxioms)
+      : new StructuralAxiomSet(directAxioms);
     this.#directOntologyAnnotations = createStructuralSet(
       directOntologyAnnotations,
       ONTOLOGY_ANNOTATION_KINDS,
