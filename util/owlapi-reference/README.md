@@ -139,6 +139,16 @@ The transport cases run released Java and the selected Node package against owne
 They compare redirect and attempt behavior, document base, compression fixtures, and JSON-LD context media, links and encodings, with separate host authorization checks.
 
 Use `--measure performance` for fresh-process working-set and warmed load samples.
+For a phase-isolated observation, select an input with `--load-only` and use the same selection for `run` and `verify`.
+The default samples both engines in alternating fresh processes and stops each load clock before reading the ontology summary.
+The summary digest covers the ontology and version IRIs, axiom and annotation counts, and direct import declarations.
+Use the separate structural comparison to establish model equivalence.
+Select `--load-engine java` or `--load-engine js` to measure just one runtime.
+Use `--source-transport string` or `--source-transport stream` to exercise an explicit JavaScript source.
+`--materialize-axioms` observes the public axiom collection after the load checkpoint.
+`--load-engine js --allocation-profile` writes a separate V8 allocation profile for each diagnostic sample.
+On Windows the load-only route requires the memory job and records the selected heap and commit budgets.
+Run `node --test util/owlapi-reference/comparison-job.windows.test.mjs` on Windows to exercise the actual process-tree cap with a bounded allocation.
 A ratio requires equivalent untimed structural evidence on the same profile and input.
 The verifier checks the requested sample counts and calculates the summary from the retained observations.
 Imported loads qualify for ratios only after independent agreement on every model in the loaded closure.

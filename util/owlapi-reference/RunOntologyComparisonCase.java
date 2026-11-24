@@ -632,6 +632,20 @@ public final class RunOntologyComparisonCase {
                     ontology = manager.loadOntologyFromOntologyDocument(source, configuration);
                     long elapsed = System.nanoTime() - start;
                     if (cold) observeCheckpoint(caseId, executionId, sampleId, "after");
+                    if (protocol.path("loadOnly").asBoolean()) {
+                        observation.put("witness", Map.of(
+                            "identity", OntologyStructuralComparison.ontologyIdentity(ontology.getOntologyID()),
+                            "axioms", ontology.getAxiomCount(),
+                            "ontologyAnnotations", ontology.annotations().count(),
+                            "imports", ontology.importsDeclarations().map(d -> d.getIRI().toString()).sorted().toList()));
+                        if (protocol.path("materializeAxioms").asBoolean()) {
+                            var materialized = ontology.getAxioms();
+                            observeCheckpoint(caseId, executionId, sampleId, "materialized");
+                            if (materialized.size() != ontology.getAxiomCount())
+                                throw new IllegalStateException("Materialized axiom set differs from the direct count");
+                            java.lang.ref.Reference.reachabilityFence(materialized);
+                        }
+                    }
                     if (index >= warmups) wallNanos.add(elapsed);
                 }
             }
@@ -649,7 +663,8 @@ public final class RunOntologyComparisonCase {
         System.out.println(JSON.writeValueAsString(Map.of("caseId", caseId, "executionId", executionId,
             "sampleId", sampleId, "kind", "checkpoint",
             "phase", phase, "pid", ProcessHandle.current().pid(),
-            "heapUsedBytes", runtime.totalMemory() - runtime.freeMemory())));
+            "heapUsedBytes", runtime.totalMemory() - runtime.freeMemory(),
+            "heapTotalBytes", runtime.totalMemory())));
         if (System.in.read() != '.') throw new IllegalStateException("Working-set observer disconnected");
     }
 

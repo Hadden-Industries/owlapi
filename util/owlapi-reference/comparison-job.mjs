@@ -31,6 +31,16 @@ export async function runWindowsComparisonJob(request, environment, worker) {
   }
   if (!process.env.SystemRoot)
     throw new Error("Windows system PowerShell is unavailable");
+  const javaHeapMiB =
+    environment.javaHeapMiB ??
+    (request.loadOnly ? Math.floor(budgetMiB / 2) : undefined);
+  if (
+    request.loadOnly &&
+    (!Number.isSafeInteger(javaHeapMiB) ||
+      javaHeapMiB < 64 ||
+      javaHeapMiB >= budgetMiB)
+  )
+    throw new Error("Java heap must fit within the isolated load memory job");
   const powershell = join(
     process.env.SystemRoot,
     "System32",
@@ -50,6 +60,7 @@ export async function runWindowsComparisonJob(request, environment, worker) {
           localSeeds: [...(environment.localSeeds ?? [])],
           memoryBudgetMiB: budgetMiB,
           nodeHeapMiB,
+          javaHeapMiB,
         },
       }),
       { flag: "wx" },

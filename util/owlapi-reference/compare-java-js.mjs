@@ -31,6 +31,7 @@ import {
   executeComparisonProcess,
 } from "./comparison-oracle.mjs";
 import {
+  isolatedLoadReport,
   loadPerformanceReport,
   measureComparisonWorker,
 } from "./comparison-performance.mjs";
@@ -755,21 +756,27 @@ function summarizeLoadPerformance(
   });
 }
 
-async function observeLoadPerformance({
-  definition,
+async function samplePublicLoads({
   directory,
   environment,
   java,
   jsRequest,
   nativeRequest,
-  js,
-  native,
 }) {
   const { caseId, executionId } = jsRequest;
   const protocol = environment.performanceProtocol;
+  const isolated = environment.isolatedLoad;
+  const engines = isolated?.engines ?? ["js", "java"];
   const sample = async (engine, mode, index) => {
     const name = `${engine}-${mode}-${index}`;
-    const performance = { ...protocol, mode, sampleId: name };
+    const performance = {
+      ...protocol,
+      mode,
+      sampleId: name,
+      ...(isolated
+        ? { loadOnly: true, materializeAxioms: isolated.materializeAxioms }
+        : {}),
+    };
     try {
       let worker;
       if (engine === "js") {
@@ -780,7 +787,23 @@ async function observeLoadPerformance({
         });
         worker = {
           file: processExecPath,
-          args: [jsWorker, path, join(directory, name + "-unused.json")],
+          args: [
+            ...(isolated &&
+            environment.nodeHeapMiB &&
+            process.platform !== "win32"
+              ? [`--max-old-space-size=${environment.nodeHeapMiB}`]
+              : []),
+            ...(isolated?.allocationProfile
+              ? [
+                  "--heap-prof",
+                  `--heap-prof-dir=${directory}`,
+                  `--heap-prof-name=${name}.heapprofile`,
+                ]
+              : []),
+            jsWorker,
+            path,
+            join(directory, name + "-unused.json"),
+          ],
           options: { cwd: directory },
         };
       } else {
@@ -792,22 +815,43 @@ async function observeLoadPerformance({
       }
       return await measureComparisonWorker(
         worker,
-        { caseId, executionId, sampleId: name },
+        {
+          caseId,
+          executionId,
+          sampleId: name,
+          materializeAxioms: isolated?.materializeAxioms,
+        },
         mode,
         environment.timeoutMs ?? 120_000,
       );
     } catch (error) {
-      return errorRecord(error);
+      return {
+        ...errorRecord(error),
+        caseId,
+        executionId,
+        sampleId: name,
+        ...(error.checkpoints ? { checkpoints: error.checkpoints } : {}),
+      };
     }
   };
-  const samples = {};
-  for (const engine of ["js", "java"]) {
-    const cold = [];
-    for (let index = 0; index < protocol.coldSamples; index++) {
-      cold.push(await sample(engine, "cold", index));
-    }
-    samples[engine] = { cold, warm: await sample(engine, "warm", 0) };
+  const samples = Object.fromEntries(
+    engines.map((engine) => [engine, { cold: [] }]),
+  );
+  for (let index = 0; index < protocol.coldSamples; index++) {
+    for (const engine of engines)
+      samples[engine].cold.push(await sample(engine, "cold", index));
   }
+  if (!isolated)
+    for (const engine of engines)
+      samples[engine].warm = await sample(engine, "warm", 0);
+  return samples;
+}
+
+async function observeLoadPerformance(options) {
+  const { definition, js, native, jsRequest, environment } = options;
+  const { caseId, executionId } = jsRequest;
+  const protocol = environment.performanceProtocol;
+  const samples = await samplePublicLoads(options);
   return {
     ...summarizeLoadPerformance(definition, js, native, samples, protocol, {
       caseId,
@@ -872,33 +916,14 @@ async function observeCase(
     packageDirectory: environment.packageDirectory,
     consumerDirectory: environment.consumerDirectory ?? null,
     behaviorProfileId: definition.behaviorProfileId,
+    ...(environment.isolatedLoad
+      ? { sourceTransport: environment.isolatedLoad.sourceTransport }
+      : {}),
     ...(definition.parsingMode ? { parsingMode: definition.parsingMode } : {}),
     ...(definition.jsLoaderOptions
       ? { loaderOptions: definition.jsLoaderOptions }
       : {}),
   };
-  let js;
-  let jsEvidence;
-  try {
-    const observed = await observeJs(jsRequest, directory, environment);
-    js = observed.result;
-    jsEvidence = {
-      name: "js-load.json",
-      sha256: sha256(observed.bytes),
-      byteLength: observed.bytes.length,
-    };
-    if (
-      js.effectiveSettings?.behaviorProfileId !==
-        definition.behaviorProfileId ||
-      js.effectiveSettings?.defaultBehaviorProfileId !== normativeProfile
-    ) {
-      throw new Error(
-        "JS worker returned the wrong effective behavior profile",
-      );
-    }
-  } catch (error) {
-    js = { load: errorRecord(error) };
-  }
   let native;
   let nativeEvidence;
   const nativeRequest = {
@@ -922,6 +947,69 @@ async function observeCase(
     ...(definition.javaTurtle ? { javaTurtle: definition.javaTurtle } : {}),
     ...(definition.javaRdfXml ? { javaRdfXml: definition.javaRdfXml } : {}),
   };
+  if (environment.isolatedLoad) {
+    const samples = await samplePublicLoads({
+      directory,
+      environment,
+      java,
+      jsRequest,
+      nativeRequest,
+    });
+    const protocol = {
+      ...environment.isolatedLoad,
+      coldSamples: environment.performanceProtocol.coldSamples,
+    };
+    const observed = isolatedLoadReport(samples, protocol, {
+      caseId,
+      executionId,
+    });
+    const profiles = [];
+    if (protocol.allocationProfile) {
+      for (const [i, sample] of samples.js.cold.entries()) {
+        if (sample.status !== "completed") continue;
+        const name = `js-cold-${i}.heapprofile`;
+        const bytes = await readFile(join(directory, name));
+        profiles.push({
+          name,
+          sha256: sha256(bytes),
+          byteLength: bytes.length,
+        });
+      }
+    }
+    for (const document of [input.document, ...input.imports])
+      if (!(await verifyPinnedFile(document.path, document)))
+        throw new Error("Isolated load input changed during measurement");
+    const evidence = await publishComparisonJson(directory, "load-only.json", {
+      schemaVersion: 1,
+      caseId,
+      executionId,
+      samples,
+      protocol,
+      profiles,
+    });
+    return { caseId, ...observed, evidence };
+  }
+  let js;
+  let jsEvidence;
+  try {
+    const observed = await observeJs(jsRequest, directory, environment);
+    js = observed.result;
+    jsEvidence = {
+      name: "js-load.json",
+      sha256: sha256(observed.bytes),
+      byteLength: observed.bytes.length,
+    };
+    if (
+      js.effectiveSettings?.behaviorProfileId !==
+        definition.behaviorProfileId ||
+      js.effectiveSettings?.defaultBehaviorProfileId !== normativeProfile
+    )
+      throw new Error(
+        "JS worker returned the wrong effective behavior profile",
+      );
+  } catch (error) {
+    js = { load: errorRecord(error) };
+  }
   try {
     const model = js.functional?.artifact;
     const functionalPath =
@@ -1242,9 +1330,11 @@ async function verifyComparison(entries, measurements, options) {
     comparisonIdentity(attempt.measurements) !==
       comparisonIdentity(measurements) ||
     Boolean(protocols.publicReceipts) !== Boolean(options.publicReceipts) ||
+    comparisonIdentity(protocols.isolatedLoad ?? null) !==
+      comparisonIdentity(options.isolatedLoad ?? null) ||
     comparisonIdentity(protocols.performance ?? null) !==
       comparisonIdentity(
-        measurements.includes("performance")
+        measurements.includes("performance") || options.isolatedLoad
           ? options.performanceProtocol
           : null,
       ) ||
@@ -1282,6 +1372,52 @@ async function verifyComparison(entries, measurements, options) {
         caseId,
         executionId,
       );
+      if (options.isolatedLoad) {
+        const raw = await readEvidence(
+          caseDirectory,
+          receipt.evidence,
+          "load-only.json",
+          caseId,
+          executionId,
+        );
+        const expectedProtocol = {
+          ...options.isolatedLoad,
+          coldSamples: options.performanceProtocol.coldSamples,
+        };
+        if (
+          comparisonIdentity(raw.protocol) !==
+          comparisonIdentity(expectedProtocol)
+        )
+          throw new Error("Isolated load settings changed");
+        const rebuilt = isolatedLoadReport(raw.samples, expectedProtocol, {
+          caseId,
+          executionId,
+        });
+        const expectedProfiles = expectedProtocol.allocationProfile
+          ? raw.samples.js.cold.flatMap((s, i) =>
+              s.status === "completed" ? [`js-cold-${i}.heapprofile`] : [],
+            )
+          : [];
+        if (
+          comparisonIdentity(raw.profiles.map((pin) => pin.name)) !==
+          comparisonIdentity(expectedProfiles)
+        )
+          throw new Error("Allocation profile roster changed");
+        for (const pin of raw.profiles)
+          if (!(await verifyPinnedFile(join(caseDirectory, pin.name), pin)))
+            throw new Error("Allocation profile changed");
+        for (const [key, value] of Object.entries(rebuilt)) {
+          if (
+            comparisonIdentity(value) !== comparisonIdentity(receipt[key]) ||
+            comparisonIdentity(value) !== comparisonIdentity(row[key])
+          )
+            throw new Error(
+              "Isolated load receipt disagrees with worker evidence",
+            );
+        }
+        cases.push({ input: input.id, caseId, ...rebuilt });
+        continue;
+      }
       const js = await readEvidence(
         caseDirectory,
         receipt.js?.evidence,
@@ -1492,6 +1628,23 @@ async function executePinnedSourceComparison(request, options, entries) {
 }
 
 async function executeComparison(request, environment = {}) {
+  if (
+    request.loadOnly &&
+    (!request.input ||
+      request.suite ||
+      (request.scenario && request.scenario !== "direct-load"))
+  )
+    throw new Error(
+      "Phase-isolated measurements require an explicit direct-load input",
+    );
+  if (
+    !request.loadOnly &&
+    (request.sourceTransport ||
+      request.loadEngine ||
+      request.materializeAxioms ||
+      request.allocationProfile)
+  )
+    throw new Error("Load measurement controls require --load-only");
   if (request.shard && request.suite !== "release-semantics") {
     throw new Error("A shard selection requires the release-semantics suite");
   }
@@ -1681,6 +1834,26 @@ async function executeComparison(request, environment = {}) {
   const entries = planned
     ? available.filter(({ caseId }) => planned.has(caseId))
     : available;
+  const isolatedLoad = request.loadOnly
+    ? {
+        engines:
+          request.loadEngine && request.loadEngine !== "both"
+            ? [request.loadEngine]
+            : ["js", "java"],
+        sourceTransport: request.sourceTransport ?? "auto",
+        materializeAxioms: Boolean(request.materializeAxioms),
+        allocationProfile: Boolean(request.allocationProfile),
+      }
+    : undefined;
+  if (
+    isolatedLoad &&
+    (entries.some((entry) => entry.definition.scenario !== "direct-load") ||
+      !["string", "stream", "auto"].includes(isolatedLoad.sourceTransport) ||
+      isolatedLoad.engines.some((engine) => !["js", "java"].includes(engine)) ||
+      (isolatedLoad.allocationProfile && request.loadEngine !== "js") ||
+      request.measurements)
+  )
+    throw new Error("Invalid isolated load selection");
   if (planned && (entries.length === 0 || entries.length !== planned.size))
     throw new Error(
       "The frozen corpus shard differs from the selected case registry",
@@ -1696,6 +1869,7 @@ async function executeComparison(request, environment = {}) {
   }
   const options = {
     ...environment,
+    isolatedLoad,
     packageDirectory: environment.packageDirectory ?? repository,
   };
   if (!isAbsolute(options.outputDirectory ?? ""))
@@ -1728,14 +1902,22 @@ async function executeComparison(request, environment = {}) {
   const measurements = [
     ...new Set(
       request.measurements ??
-        (behaviorOnly ? ["behavior"] : ["structure", "behavior"]),
+        (isolatedLoad
+          ? ["load-only"]
+          : behaviorOnly
+            ? ["behavior"]
+            : ["structure", "behavior"]),
     ),
   ].sort();
   if (
     !measurements.length ||
     measurements.some(
       (measurement) =>
-        !["structure", "behavior", "performance"].includes(measurement),
+        !(
+          isolatedLoad
+            ? ["load-only"]
+            : ["structure", "behavior", "performance"]
+        ).includes(measurement),
     )
   ) {
     throw new Error("Unknown comparison measurement");
@@ -1858,8 +2040,9 @@ async function executeComparison(request, environment = {}) {
       comparison: 1,
       case: 1,
       worker: 3,
+      ...(isolatedLoad ? { isolatedLoad } : {}),
       ...(options.publicReceipts ? { publicReceipts: true } : {}),
-      ...(measurements.includes("performance")
+      ...(measurements.includes("performance") || isolatedLoad
         ? { performance: options.performanceProtocol }
         : {}),
       ...(options.memoryBudgetMiB
@@ -1938,6 +2121,15 @@ async function executeComparison(request, environment = {}) {
 
 /** Run the same plan, workers and report protocol from CLI and programmatic callers. */
 export function runComparison(request, environment = {}) {
+  if (
+    request.loadOnly &&
+    request.action === "run" &&
+    process.platform === "win32" &&
+    environment.memoryGuard === false
+  )
+    return Promise.reject(
+      new Error("Isolated load measurements require the Windows memory job"),
+    );
   if (environment.memoryGuard === false) {
     return executeComparison(request, {
       ...environment,
@@ -1967,6 +2159,8 @@ const optionNames = [
   "output",
   "java-home",
   "java-selection",
+  "load-engine",
+  "source-transport",
   "maven-directory",
   "classpath-file",
   "ontology-repository",
@@ -1997,6 +2191,9 @@ function parseComparisonArguments([action, ...args]) {
       ),
       input: { type: "string", multiple: true },
       seed: { type: "string", multiple: true },
+      "load-only": { type: "boolean" },
+      "materialize-axioms": { type: "boolean" },
+      "allocation-profile": { type: "boolean" },
       "no-memory-guard": { type: "boolean" },
     },
   });
@@ -2011,6 +2208,11 @@ function parseComparisonArguments([action, ...args]) {
   return [
     {
       action,
+      loadOnly: values["load-only"],
+      materializeAxioms: values["materialize-axioms"],
+      allocationProfile: values["allocation-profile"],
+      loadEngine: values["load-engine"],
+      sourceTransport: values["source-transport"],
       input: values.input,
       suite: values.suite,
       scenario: values.scenario,

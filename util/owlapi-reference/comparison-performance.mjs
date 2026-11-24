@@ -10,6 +10,7 @@ import {
 import { join } from "node:path";
 import { createInterface } from "node:readline";
 import { executeComparisonProcess } from "./comparison-oracle.mjs";
+import { comparisonIdentity } from "./comparison-evidence.mjs";
 
 async function observeWorkingSet(pid) {
   if (!Number.isSafeInteger(pid) || pid <= 0)
@@ -52,7 +53,7 @@ async function observeWorkingSet(pid) {
 /** A worker suspends outside the load clock until its parent has observed each checkpoint. */
 export async function measureComparisonWorker(
   worker,
-  { caseId, executionId, sampleId },
+  { caseId, executionId, sampleId, materializeAxioms = false },
   mode,
   timeoutMs,
 ) {
@@ -75,6 +76,9 @@ export async function measureComparisonWorker(
   });
   const exited = new Promise((resolve) => child.once("close", resolve));
   const checkpoints = [];
+  const phases = materializeAxioms
+    ? ["before", "after", "materialized"]
+    : ["before", "after"];
   let result;
   const lines = createInterface({ input: child.stdout, crlfDelay: Infinity });
   try {
@@ -88,10 +92,10 @@ export async function measureComparisonWorker(
       )
         throw new Error("Worker changed its performance case identity");
       if (message.kind === "checkpoint") {
-        const phase = checkpoints.length === 0 ? "before" : "after";
+        const phase = phases[checkpoints.length];
         if (
           mode !== "cold" ||
-          checkpoints.length >= 2 ||
+          phase === undefined ||
           message.phase !== phase ||
           message.pid !== child.pid
         ) {
@@ -109,6 +113,13 @@ export async function measureComparisonWorker(
           ...workingSet,
           phase,
           heapUsedBytes: message.heapUsedBytes,
+          heapTotalBytes: message.heapTotalBytes,
+          ...(message.externalBytes === undefined
+            ? {}
+            : {
+                externalBytes: message.externalBytes,
+                arrayBufferBytes: message.arrayBufferBytes,
+              }),
         });
         child.stdin.write(".");
       } else if (message.kind === "sample") {
@@ -125,16 +136,18 @@ export async function measureComparisonWorker(
   }
   const code = await exited;
   if (failure || code !== 0 || !result) {
-    throw new Error(
+    const error = new Error(
       failure?.message ?? `Performance worker incomplete: ${stderr.trim()}`,
     );
+    error.checkpoints = checkpoints;
+    throw error;
   }
   if (
     result.status === "completed" &&
     mode === "cold" &&
-    checkpoints.length !== 2
+    checkpoints.length !== phases.length
   ) {
-    throw new Error("Performance worker did not finish both OS observations");
+    throw new Error("Performance worker did not finish its OS observations");
   }
   return { ...result, checkpoints };
 }
@@ -146,6 +159,129 @@ const median = (values) => {
     ? sorted[center]
     : (sorted[center - 1] + sorted[center]) / 2;
 };
+
+const byteCount = (value) => Number.isSafeInteger(value) && value >= 0;
+
+function hasTimings(sample, identity, repetitions, slot) {
+  return (
+    sample?.status === "completed" &&
+    sample.caseId === identity.caseId &&
+    sample.executionId === identity.executionId &&
+    sample.sampleId === slot &&
+    Array.isArray(sample.wallNanos) &&
+    sample.wallNanos.length === repetitions &&
+    sample.wallNanos.every((nanos) => Number.isSafeInteger(nanos) && nanos > 0)
+  );
+}
+
+function hasWorkingSet(point, phase) {
+  return (
+    point?.phase === phase &&
+    byteCount(point.rssBytes) &&
+    point.rssBytes > 0 &&
+    byteCount(point.peakRssBytes) &&
+    point.peakRssBytes >= point.rssBytes
+  );
+}
+
+function validLoadWitness({ witness, axioms, networkAttempts }) {
+  return (
+    networkAttempts === 0 &&
+    byteCount(axioms) &&
+    witness?.axioms === axioms &&
+    witness.identity &&
+    ["ontologyIRI", "versionIRI"].every(
+      (key) =>
+        witness.identity[key] === null ||
+        typeof witness.identity[key] === "string",
+    ) &&
+    byteCount(witness.ontologyAnnotations) &&
+    Array.isArray(witness.imports) &&
+    witness.imports.every((iri) => typeof iri === "string")
+  );
+}
+
+function hasIsolatedCheckpoints(sample, phases, engine, sourceTransport) {
+  if (
+    engine === "js" &&
+    (!["stream", "string"].includes(sample.sourceTransport) ||
+      (sourceTransport !== "auto" &&
+        sample.sourceTransport !== sourceTransport))
+  )
+    return false;
+  return (
+    sample.checkpoints?.length === phases.length &&
+    sample.checkpoints.every(
+      (point, i) =>
+        hasWorkingSet(point, phases[i]) &&
+        byteCount(point.heapUsedBytes) &&
+        byteCount(point.heapTotalBytes) &&
+        point.heapTotalBytes >= point.heapUsedBytes &&
+        (engine !== "js" ||
+          (byteCount(point.externalBytes) &&
+            byteCount(point.arrayBufferBytes))),
+    )
+  );
+}
+
+/** Reconstruct the public load and optional materialization peaks from the original samples. */
+export function isolatedLoadReport(samples, protocol, identity) {
+  const summary = {};
+  const witnesses = new Set();
+  const phases = protocol.materializeAxioms
+    ? ["before", "after", "materialized"]
+    : ["before", "after"];
+  let complete = true;
+  if (Object.keys(samples ?? {}).length !== protocol.engines.length)
+    throw new Error("Wrong set of load-only sample engines");
+  for (const engine of protocol.engines) {
+    const cold = samples[engine]?.cold;
+    if (!Array.isArray(cold) || cold.length !== protocol.coldSamples)
+      throw new Error("Wrong number of isolated cold loads");
+    const peaks = [],
+      durations = [],
+      setPeaks = [];
+    for (const [index, sample] of cold.entries()) {
+      if (sample?.status !== "completed") {
+        complete = false;
+        continue;
+      }
+      if (
+        !hasTimings(sample, identity, 1, `${engine}-cold-${index}`) ||
+        !validLoadWitness(sample) ||
+        !hasIsolatedCheckpoints(
+          sample,
+          phases,
+          engine,
+          protocol.sourceTransport,
+        )
+      )
+        throw new Error("Invalid isolated load witness or phase checkpoint");
+      peaks.push(sample.checkpoints[1].peakRssBytes);
+      durations.push(sample.wallNanos[0]);
+      if (protocol.materializeAxioms)
+        setPeaks.push(sample.checkpoints[2].peakRssBytes);
+      witnesses.add(comparisonIdentity(sample.witness));
+    }
+    if (peaks.length === cold.length) {
+      summary[engine] = {
+        coldPeakBytes: median(peaks),
+        coldMedianNanos: median(durations),
+        ...(setPeaks.length ? { materializedPeakBytes: median(setPeaks) } : {}),
+      };
+    }
+  }
+  return {
+    status: !complete
+      ? "incomplete"
+      : witnesses.size === 1
+        ? "observed"
+        : "failed",
+    summary,
+    witnessDigests: [...witnesses].sort(),
+    boundary: "loadOntologyFromOntologyDocument",
+  };
+}
 
 export function loadPerformanceReport({
   samples,
@@ -167,24 +303,11 @@ export function loadPerformanceReport({
       "The performance report lacks the requested cold sample count",
     );
   }
-  const hasTimings = (sample, repetitions, slot) =>
-    sample?.status === "completed" &&
-    sample.caseId === identity.caseId &&
-    sample.executionId === identity.executionId &&
-    sample.sampleId === slot &&
-    Array.isArray(sample.wallNanos) &&
-    sample.wallNanos.length === repetitions &&
-    sample.wallNanos.every((nanos) => Number.isSafeInteger(nanos) && nanos > 0);
   const hasMeasurements = (sample, slot) =>
-    hasTimings(sample, 1, slot) &&
+    hasTimings(sample, identity, 1, slot) &&
     sample.checkpoints?.length === 2 &&
-    sample.checkpoints.every(
-      ({ phase, rssBytes, peakRssBytes }, index) =>
-        phase === ["before", "after"][index] &&
-        Number.isSafeInteger(rssBytes) &&
-        rssBytes > 0 &&
-        Number.isSafeInteger(peakRssBytes) &&
-        peakRssBytes >= rssBytes,
+    sample.checkpoints.every((point, index) =>
+      hasWorkingSet(point, ["before", "after"][index]),
     );
   const allCompleted = engines.every((engine) => {
     const { cold, warm } = samples[engine];
@@ -198,7 +321,7 @@ export function loadPerformanceReport({
         (sample, index) =>
           hasMeasurements(sample, `${engine}-cold-${index}`) && matches(sample),
       ) &&
-      hasTimings(warm, protocol.repetitions, `${engine}-warm-0`) &&
+      hasTimings(warm, identity, protocol.repetitions, `${engine}-warm-0`) &&
       matches(warm)
     );
   });
@@ -216,6 +339,7 @@ export function loadPerformanceReport({
           : null,
         warmMedianNanos: hasTimings(
           warm,
+          identity,
           protocol.repetitions,
           `${engine}-warm-0`,
         )

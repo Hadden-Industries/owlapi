@@ -33,7 +33,10 @@ import {
   matchesRecordedIfcowlMismatch,
   reconcileIfcowlSingletonUnions,
 } from "./comparison-ifcowl.mjs";
-import { loadPerformanceReport } from "./comparison-performance.mjs";
+import {
+  isolatedLoadReport,
+  loadPerformanceReport,
+} from "./comparison-performance.mjs";
 import { matchesOriginalRdfXml } from "./comparison-rdfxml-expansion.mjs";
 
 async function withScratch(run) {
@@ -989,6 +992,64 @@ test("a requested Node heap must fit within the Windows job budget", async () =>
       "unused",
     ),
   ).rejects.toThrow("smaller than the comparison job budget");
+});
+
+test("phase-isolated load measurements reject retry scenarios", async () => {
+  await expect(
+    runComparison({
+      action: "list",
+      input: "obo-cido",
+      scenario: "strict-first",
+      loadOnly: true,
+    }),
+  ).rejects.toThrow("direct-load");
+});
+
+test("isolated observations separate load and public Set peaks and bind the complete witness", () => {
+  const identity = { caseId: "a".repeat(64), executionId: "b".repeat(64) };
+  const protocol = {
+    coldSamples: 1,
+    materializeAxioms: true,
+    sourceTransport: "string",
+    engines: ["js", "java"],
+  };
+  const sample = (engine) => ({
+    ...identity,
+    sampleId: engine + "-cold-0",
+    status: "completed",
+    networkAttempts: 0,
+    sourceTransport: "string",
+    wallNanos: [31],
+    axioms: 2,
+    witness: {
+      identity: { ontologyIRI: "urn:test", versionIRI: null },
+      axioms: 2,
+      ontologyAnnotations: 1,
+      imports: [],
+    },
+    checkpoints: ["before", "after", "materialized"].map((phase, i) => ({
+      phase,
+      rssBytes: 10,
+      peakRssBytes: [10, 20, 70][i],
+      heapUsedBytes: 4,
+      heapTotalBytes: 6,
+      ...(engine === "js" ? { externalBytes: 1, arrayBufferBytes: 0 } : {}),
+    })),
+  });
+  const samples = {
+    js: { cold: [sample("js")] },
+    java: { cold: [sample("java")] },
+  };
+  expect(isolatedLoadReport(samples, protocol, identity)).toMatchObject({
+    status: "observed",
+    summary: { js: { coldPeakBytes: 20, materializedPeakBytes: 70 } },
+  });
+  samples.java.cold[0].witness.identity.ontologyIRI = "urn:different";
+  expect(isolatedLoadReport(samples, protocol, identity).status).toBe("failed");
+  samples.js.cold[0].checkpoints.pop();
+  expect(() => isolatedLoadReport(samples, protocol, identity)).toThrow(
+    "phase checkpoint",
+  );
 });
 
 test("native and JavaScript closures must cover the same unique document IRIs", () => {

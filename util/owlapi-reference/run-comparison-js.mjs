@@ -323,11 +323,16 @@ async function sampleLoad(
     );
   const checkpoint = async (phase) => {
     const waiting = once(process.stdin, "data");
+    const { heapUsed, heapTotal, external, arrayBuffers } =
+      process.memoryUsage();
     emit({
       kind: "checkpoint",
       phase,
       pid: process.pid,
-      heapUsedBytes: process.memoryUsage().heapUsed,
+      heapUsedBytes: heapUsed,
+      heapTotalBytes: heapTotal,
+      externalBytes: external,
+      arrayBufferBytes: arrayBuffers,
     });
     process.stdin.resume();
     await waiting;
@@ -339,11 +344,22 @@ async function sampleLoad(
   const wallNanos = [];
   const loadSequences = request.scenario === "strict-first" ? [] : undefined;
   let ontology;
+  let sourceTransport;
   try {
     for (let index = 0; index < warmups + repetitions; index++) {
       ontology = null;
       let manager = createManager();
       const document = await openDocument(request.document);
+      sourceTransport =
+        typeof document.openBytes === "function" ? "stream" : "string";
+      if (
+        request.sourceTransport &&
+        request.sourceTransport !== "auto" &&
+        request.sourceTransport !== sourceTransport
+      )
+        throw new Error(
+          "Installed candidate cannot provide the selected input transport",
+        );
       if (cold) await checkpoint("before");
       const start = performance.now();
       if (loadSequences) {
@@ -370,12 +386,27 @@ async function sampleLoad(
       if (cold) await checkpoint("after");
       if (index >= warmups) wallNanos.push(nanos);
     }
+    const witness = protocol.loadOnly && {
+      identity: ontologyIdentity(ontology),
+      axioms: ontology.getAxiomCount(),
+      ontologyAnnotations: ontology.getAnnotations().size,
+      imports: [...ontology.getImportsDeclarations()]
+        .map(({ iri }) => iriValue(iri))
+        .sort(),
+    };
+    if (protocol.materializeAxioms) {
+      const materialized = ontology.getAxioms();
+      await checkpoint("materialized");
+      if (materialized.size !== witness.axioms)
+        throw new Error("Materialized axiom set differs from the direct count");
+    }
     emit({
       kind: "sample",
       status: "completed",
       wallNanos,
       axioms: ontology.getAxiomCount(),
       networkAttempts: networkRequests.length,
+      ...(witness ? { witness, sourceTransport } : {}),
       ...(loadSequences ? { loadSequences } : {}),
     });
   } catch (error) {
@@ -571,7 +602,9 @@ async function observe(request, directory) {
   }
   const usesRdfXmlStream = (document) =>
     document.syntax === "rdfxml" &&
-    document.byteLength > bufferLimits.MAX_STRING_LENGTH &&
+    (request.sourceTransport === "stream" ||
+      (request.sourceTransport !== "string" &&
+        document.byteLength > bufferLimits.MAX_STRING_LENGTH)) &&
     typeof api.RDFXMLStreamDocumentSource === "function";
   const loadMemory = usesRdfXmlStream(request.document) ? [] : null;
   let ingressRecorded = false;
