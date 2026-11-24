@@ -64,12 +64,17 @@ const classValues = (
       ).position(kind, matchField, entityKey)) {
         const field = axiom[outputField];
         if (Array.isArray(field)) {
-          for (const member of field)
-            if (
+          // The public search filters array properties by index even when an
+          // admitted external array supplies a different iteration protocol.
+          const matching = field.filter(
+            (member) =>
               !excludeSelf ||
-              !capturedKeysEqual(captureStructuralKey(member), entityKey)
-            )
-              result.push(member);
+              !capturedKeysEqual(captureStructuralKey(member), entityKey),
+          );
+          if (Array.isArray(matching)) {
+            for (let i = 0; i < matching.length; i++)
+              if (i in matching) result.push(matching[i]);
+          } else result.push(matching);
         } else result.push(field);
       }
       return result;
