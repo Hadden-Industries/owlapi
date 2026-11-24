@@ -2,6 +2,7 @@ import { parseIri } from "@hyperjump/uri";
 import { parse as parseLanguageTag } from "bcp-47";
 import { OWLOntologyStorageError } from "../../../io/errors.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
+import { snapshotAxioms, sortedStructuralValues } from "../snapshotValues.js";
 import { XSD_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import {
   minimumTwoSetFields,
@@ -352,13 +353,6 @@ export const FUNCTIONAL_SYNTAX_RENDERER_KINDS = Object.freeze(
   Object.keys(renderers),
 );
 
-const sorted = (values) =>
-  [...values].sort((left, right) => {
-    const a = left.structuralKey();
-    const b = right.structuralKey();
-    return a < b ? -1 : a > b ? 1 : 0;
-  });
-
 /** Render one Functional Syntax line at a time from a committed snapshot. */
 export function* renderFunctionalSyntaxChunks(
   snapshot,
@@ -377,9 +371,10 @@ export function* renderFunctionalSyntaxChunks(
   for (const values of [
     snapshot.authoredImportDeclarations,
     snapshot.directOntologyAnnotations,
-    snapshot.directAxioms,
+    snapshotAxioms(snapshot),
   ]) {
-    for (const value of sorted(values)) yield render(value) + "\n";
+    for (const value of sortedStructuralValues(values))
+      yield render(value) + "\n";
   }
   yield ")\n";
 }

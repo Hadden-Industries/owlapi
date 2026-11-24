@@ -3,7 +3,8 @@ import {
   StructuralAxiomSet,
 } from "../internal/model/axiomSemantics.js";
 import { OWLObjectKind } from "../model/kinds.js";
-import { OWLOntology } from "../model/owlOntology.js";
+import { OWLOntology, readOntologySnapshot } from "../model/owlOntology.js";
+import { readSnapshotAxioms } from "../internal/model/ontologyState.js";
 import { OWLOntologyManager } from "../model/owlOntologyManager.js";
 import { OntologyBehaviorContext } from "../internal/behavior/ontologyBehaviorContext.js";
 import { isCanonicalStructuralObject } from "../model/structural.js";
@@ -92,7 +93,7 @@ const materializeProviderOntologies = (ontologySetProvider) => {
 const collectAxiomUnion = (ontologies, mergeOnlyLogicalAxioms) => {
   const axiomUnion = new StructuralAxiomSet();
   for (const ontology of ontologies) {
-    const directAxioms = OWLOntology.prototype.getAxioms.call(ontology);
+    const directAxioms = readSnapshotAxioms(readOntologySnapshot(ontology));
     for (const axiom of directAxioms) {
       if (!mergeOnlyLogicalAxioms || isLogicalAxiom(axiom)) {
         axiomUnion.add(axiom);

@@ -10,19 +10,23 @@ import {
 } from "./reference-import-map.mjs";
 
 describe("reference import-map evidence", () => {
-  it("traces the required XML serializer while excluding only the native parser fallback", () => {
+  it("traces literal validation and rejects document DOM dependencies in the streaming writers", () => {
     expect(
       excludeNodeXmlParserFallback(
         "@xmldom/xmldom",
-        "file:///package/internal/storage/owlxml/owlXmlStorer.js",
+        "file:///package/internal/storage/rdfxml/xmlLiteralValidation.js",
       ),
     ).toBe(false);
-    expect(
-      excludeNodeXmlParserFallback(
-        "@xmldom/xmldom",
-        "file:///package/internal/storage/rdfxml/rdfXmlGraphWriter.js",
-      ),
-    ).toBe(false);
+    for (const previous of [
+      "rdfxml/rdfXmlGraphWriter.js",
+      "owlxml/owlXmlStorer.js",
+    ])
+      expect(() =>
+        excludeNodeXmlParserFallback(
+          "@xmldom/xmldom",
+          "file:///package/internal/storage/" + previous,
+        ),
+      ).toThrow(/approved/u);
     expect(
       excludeNodeXmlParserFallback(
         "@xmldom/xmldom",

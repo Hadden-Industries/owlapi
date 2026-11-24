@@ -41,13 +41,13 @@ const named = (property) =>
  * both equivalence tests; preserve these observed rules rather than substitute
  * a different literature evaluator. No recursive visitor or depth cap is used.
  */
-export const isSyntacticallyLocal = (axiom, order, signature, mode, budget) => {
+export const isSyntacticallyLocal = (axiom, order, contains, mode, budget) => {
   if (!isLogicalAxiom(axiom)) return true;
   const bottomMode = mode === "BOTTOM",
     results = new Map();
-  const absent = (property) => !signature.has(named(property).structuralKey());
-  const bottom = (value) => results.get(value)?.bottom ?? false;
-  const top = (value) => results.get(value)?.top ?? false;
+  const absent = (property) => !contains(named(property));
+  const bottom = (value) => results.get(value) % 2 === 1;
+  const top = (value) => results.get(value) >= 2;
   for (const value of order) {
     budget.check();
     if (!classes.has(value.kind)) continue;
@@ -64,14 +64,12 @@ export const isSyntacticallyLocal = (axiom, order, signature, mode, budget) => {
       case K.CLASS:
         b =
           value.iri.value === OWL + "Nothing" ||
-          (bottomMode &&
-            value.iri.value !== OWL + "Thing" &&
-            !signature.has(value.structuralKey()));
+          (bottomMode && value.iri.value !== OWL + "Thing" && !contains(value));
         t =
           value.iri.value === OWL + "Thing" ||
           (!bottomMode &&
             value.iri.value !== OWL + "Nothing" &&
-            !signature.has(value.structuralKey()));
+            !contains(value));
         break;
       case K.OBJECT_INTERSECTION_OF:
         b = !value.operands.some(bottom);
@@ -145,7 +143,7 @@ export const isSyntacticallyLocal = (axiom, order, signature, mode, budget) => {
       default:
         throw new TypeError("Unsupported locality class expression");
     }
-    results.set(value, { bottom: b, top: t });
+    results.set(value, Number(b) + 2 * Number(t));
   }
   budget.check();
   switch (axiom.kind) {

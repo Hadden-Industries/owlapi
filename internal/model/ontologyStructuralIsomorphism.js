@@ -645,10 +645,7 @@ const mismatchResult = (category, path) =>
 
 const EQUAL_RESULT = Object.freeze({ equal: true, mismatch: null });
 
-export const compareOntologies = (left, right, options = {}) => {
-  const normalizedOptions = normalizeOptions(options);
-  const leftSnapshot = createOntologySnapshot(left, "left");
-  const rightSnapshot = createOntologySnapshot(right, "right");
+const compareSnapshots = (leftSnapshot, rightSnapshot, normalizedOptions) => {
   const context = {
     maximumSearchStates: normalizedOptions.maximumSearchStates,
     searchStatesExamined: 0,
@@ -727,3 +724,18 @@ export const compareOntologies = (left, right, options = {}) => {
 
   return EQUAL_RESULT;
 };
+
+export const compareOntologies = (left, right, options = {}) => {
+  const normalizedOptions = normalizeOptions(options);
+  const leftSnapshot = createOntologySnapshot(left, "left");
+  const rightSnapshot = createOntologySnapshot(right, "right");
+  return compareSnapshots(leftSnapshot, rightSnapshot, normalizedOptions);
+};
+
+/** Same lossless comparison for the direct values already captured by a storer. */
+export const compareStoredOntology = (leftSnapshot, ontology) =>
+  compareSnapshots(
+    leftSnapshot,
+    createOntologySnapshot(ontology, "right"),
+    normalizeOptions({}),
+  );

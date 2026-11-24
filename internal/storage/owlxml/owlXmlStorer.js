@@ -1,9 +1,5 @@
-import {
-  OWL_NAMESPACE as OWL,
-  XML_NAMESPACE as XML,
-} from "../../rdfjs/vocabulary.js";
+import { XSD_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { parseIri } from "@hyperjump/uri";
-import { DOMImplementation, XMLSerializer } from "@xmldom/xmldom";
 import { OWLDocumentFormats } from "../../../formats/index.js";
 import {
   OWLOntologyStorageError,
@@ -14,6 +10,7 @@ import {
   ENTITY_KINDS,
   OWLObjectKind as K,
 } from "../../../model/kinds.js";
+import { StructuralSet } from "../../../model/structural.js";
 import { structuralFields } from "../../model/structuralFields.js";
 import {
   minimumTwoSetFields,
@@ -29,13 +26,21 @@ import {
   readStorageFormatParameters,
   readForceStringDatatype,
 } from "../storageFormatParameters.js";
+import { owlXmlHeader, owlXmlPrefixes } from "./owlXmlPresentation.js";
 import {
-  initializeJavaOwlXmlDocument,
-  serializeJavaOwlXmlDocument,
-} from "./owlXmlPresentation.js";
-import { retainPartialStorageOutput } from "../storageFailureOutput.js";
+  collectStorageText,
+  failAfterStoragePrefix,
+} from "../storageFailureOutput.js";
 import { visitStructuralValues } from "../../model/sourceEvidence.js";
-import { XSD_NAMESPACE } from "../../rdfjs/vocabulary.js";
+import { snapshotAxioms, sortedStructuralValues } from "../snapshotValues.js";
+import {
+  xmlAttribute,
+  xmlText,
+  xmlTextChunks,
+  isXmlText,
+  utf8Length,
+} from "../xmlTokens.js";
+import { utf8Chunks } from "../utf8ChunkWriter.js";
 
 const tags = new Set([
   ...OWLXML_GRAMMAR.axioms,
@@ -54,279 +59,293 @@ const fail = (message) => {
     reason: "ONTOLOGY_NOT_REPRESENTABLE",
   });
 };
+const chainTag = Symbol("ObjectPropertyChain");
 
-/** OWL/XML uses the finite W3C grammar and canonical model fields. DOM escaping
- * is shared with RDF/XML. Numeric whitespace references preserve lexical data
- * through XML end-of-line and attribute normalization.
- */
-export const owlXmlStorer = Object.freeze({
-  formatKey: OWLDocumentFormats.OWL_XML.key,
-  render(
-    snapshot,
-    format,
-    writerContext,
-    documentStoragePolicy = defaultDocumentStoragePolicy,
-  ) {
-    const parameters = readStorageFormatParameters(
-      format,
-      documentStoragePolicy,
-    );
-    const usesJavaPresentation =
-      documentStoragePolicy.owlXmlPresentation === "java-writer";
-    let forceXsdString = !usesJavaPresentation;
-    const document = new DOMImplementation().createDocument(
-      OWL,
-      "Ontology",
-      null,
-    );
-    const serializer = new XMLSerializer();
-    const validate = createStructuralValidator();
-    const root = document.documentElement;
-    if (usesJavaPresentation)
-      initializeJavaOwlXmlDocument(document, snapshot.ontologyID);
-    const labels = new Map();
-    let constructionBytes = 0;
-    const encoder = new TextEncoder();
-    const byteLength = (value) =>
-      /[^\p{ASCII}]/u.test(value)
-        ? encoder.encode(value).byteLength
-        : value.length;
-    const admit = (value) => {
-      if (typeof value !== "string" || !value.isWellFormed())
-        fail("OWL/XML requires well-formed Unicode");
-      // XML 1.0 explicitly excludes these controls; this is validation, not matching document content.
-      if (
-        documentStoragePolicy.requiresXml10Characters &&
-        // eslint-disable-next-line no-control-regex
-        /[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/u.test(value)
-      )
-        fail("OWL/XML requires XML 1.0-compatible characters");
-      constructionBytes += byteLength(value);
-      if (constructionBytes > documentStoragePolicy.maxOutputBytes)
-        throw new ResourceLimitError("OWL/XML output byte limit exceeded", {
-          resource: "outputBytes",
-          limit: documentStoragePolicy.maxOutputBytes,
-        });
-      // Character admission is complete above. The native serializer's
-      // non-strict Text path only escapes <, > and &, so serializing a throwaway
-      // Text node here adds no validation. Serialize the actual document below.
-      return value;
-    };
-    const iri = (value) => {
-      validateStructuralShape(value);
-      if (value.kind !== K.IRI) fail("OWL/XML requires an IRI");
-      validate(value);
-      const text = admit(value.value);
-      try {
-        parseIri(text);
-      } catch {
-        fail("OWL/XML requires a full IRI");
-      }
-      return text;
-    };
-    const attribute = (element, name, value, namespace = null) =>
-      element.setAttributeNS(namespace, name, admit(value));
-    validateStructuralShape(snapshot.ontologyID);
-    validate(snapshot.ontologyID);
-    if (snapshot.ontologyID.ontologyIRI)
-      attribute(root, "ontologyIRI", iri(snapshot.ontologyID.ontologyIRI));
-    if (snapshot.ontologyID.versionIRI)
-      attribute(root, "versionIRI", iri(snapshot.ontologyID.versionIRI));
-    const sorted = (values) =>
-      [...values].sort((a, b) =>
-        a.structuralKey() < b.structuralKey()
-          ? -1
-          : a.structuralKey() > b.structuralKey()
-            ? 1
-            : 0,
-      );
-    for (const declaration of sorted(snapshot.authoredImportDeclarations)) {
-      validateStructuralShape(declaration);
-      validate(declaration);
-      const element = document.createElementNS(OWL, "Import");
-      element.appendChild(document.createTextNode(iri(declaration.iri)));
-      root.appendChild(element);
-    }
-    const declarationAxioms = sorted(
-      snapshot.directAxioms.filter(
-        (axiom) => axiom.kind === K.DECLARATION_AXIOM,
-      ),
-    );
-    const declared = new Set(
-      declarationAxioms.map((axiom) => axiom.entity.structuralKey()),
-    );
-    let hasUndeclaredEntity = false;
-    if (usesJavaPresentation)
-      visitStructuralValues(
-        [snapshot.directOntologyAnnotations, snapshot.directAxioms],
-        (value) => {
-          if (
-            ENTITY_KINDS.includes(value.kind) &&
-            !declared.has(value.structuralKey())
-          )
-            hasUndeclaredEntity = true;
-        },
-      );
-    const configurationBoundary = {};
-    const values = [
-      ...sorted(snapshot.directOntologyAnnotations),
-      ...(usesJavaPresentation
-        ? [
-            ...declarationAxioms,
-            configurationBoundary,
-            ...sorted(
-              snapshot.directAxioms.filter(
-                (axiom) => axiom.kind !== K.DECLARATION_AXIOM,
-              ),
-            ),
-          ]
-        : sorted(snapshot.directAxioms)),
-    ];
-    const pending = values.reverse().map((value) => ({
-      value,
-      parent: root,
-      depth: 2,
-      annotationDepth: value.kind === K.ANNOTATION ? 1 : 0,
-      exiting: false,
-    }));
-    const active = new Set();
-    while (pending.length) {
-      const { value, parent, depth, annotationDepth, exiting } = pending.pop();
-      if (value === configurationBoundary) {
-        if (hasUndeclaredEntity) {
-          try {
-            forceXsdString = readForceStringDatatype(parameters);
-          } catch (cause) {
-            throw retainPartialStorageOutput(
-              new OWLOntologyStorageError(
-                "OWL/XML string datatype configuration is invalid",
-                { cause },
-              ),
-              serializeJavaOwlXmlDocument(document, serializer, writerContext, {
-                completed: false,
-              }),
-            );
-          }
-        }
-        continue;
-      }
-      if (exiting) {
-        validate(value);
-        active.delete(value);
-        continue;
-      }
-      if (depth > documentStoragePolicy.maxStructureDepth)
-        throw new ResourceLimitError("OWL/XML output depth limit exceeded", {
-          resource: "outputDepth",
-          limit: documentStoragePolicy.maxStructureDepth,
-        });
-      if (annotationDepth > documentStoragePolicy.maxAnnotationDepth)
-        throw new ResourceLimitError(
-          "OWL/XML annotation depth limit exceeded",
-          {
-            resource: "annotationDepth",
-            limit: documentStoragePolicy.maxAnnotationDepth,
-          },
-        );
-      if (active.has(value)) fail("Cyclic OWL/XML structural input");
-      validateStructuralShape(value);
-      const tag =
-        value.kind === K.SUB_PROPERTY_CHAIN_AXIOM
-          ? "SubObjectPropertyOf"
-          : value.kind.slice(3).replace(/Axiom$/u, "");
-      if (value.kind !== K.IRI && !tags.has(tag))
-        fail(`Unsupported OWL/XML kind ${value.kind}`);
-      const element = document.createElementNS(
-        OWL,
-        value.kind === K.IRI ? "IRI" : tag,
-      );
-      admit(tag);
-      parent.appendChild(element);
-      active.add(value);
-      pending.push({ value, exiting: true });
-      if (ENTITY_KINDS.includes(value.kind)) {
-        attribute(element, "IRI", iri(value.iri));
-        continue;
-      }
-      if (value.kind === K.IRI) {
-        element.appendChild(document.createTextNode(iri(value)));
-        continue;
-      }
-      if (value.kind === K.ANONYMOUS_INDIVIDUAL) {
-        const key = value.structuralKey();
-        if (!labels.has(key)) labels.set(key, `genid${labels.size}`);
-        attribute(element, "nodeID", labels.get(key));
-        continue;
-      }
-      if (value.kind === K.LITERAL) {
-        validateStructuralShape(value.datatype);
-        validate(value.datatype);
-        if (value.language) attribute(element, "xml:lang", value.language, XML);
-        else if (
-          forceXsdString ||
-          value.datatype.iri.value !== `${XSD_NAMESPACE}string`
-        )
-          attribute(element, "datatypeIRI", iri(value.datatype.iri));
-        element.appendChild(document.createTextNode(admit(value.lexicalForm)));
-        continue;
-      }
-      if (value.kind === K.FACET_RESTRICTION)
-        attribute(element, "facet", iri(value.facet));
-      if (value.cardinality !== undefined)
-        attribute(element, "cardinality", String(value.cardinality));
-      const bodyFields = structuralFields
-        .get(value.kind)
-        .filter(
-          (field) => !["annotations", "cardinality", "facet"].includes(field),
-        );
-      const children =
-        AXIOM_KINDS.includes(value.kind) || value.kind === K.ANNOTATION
-          ? value.annotations.map((child) => ({
-              value: child,
-              parent: element,
-            }))
-          : [];
-      for (const field of bodyFields) {
-        if (value.kind === K.SUB_PROPERTY_CHAIN_AXIOM && field === "chain") {
-          const chain = document.createElementNS(OWL, "ObjectPropertyChain");
-          element.appendChild(chain);
-          children.push(
-            ...value.chain.map((child) => ({ value: child, parent: chain })),
-          );
-        } else {
-          const content =
-            minimumTwoSetFields.get(value.kind) === field
-              ? repeatSingleton(value[field])
-              : value[field];
-          for (const child of Array.isArray(content) ? content : [content])
-            if (child !== undefined)
-              children.push({ value: child, parent: element });
-        }
-      }
-      for (let index = children.length - 1; index >= 0; index--)
-        pending.push({
-          ...children[index],
-          depth: depth + 1,
-          annotationDepth:
-            annotationDepth +
-            (children[index].value.kind === K.ANNOTATION ? 1 : 0),
-          exiting: false,
-        });
-    }
-    // Escape value whitespace before adding layout; parsed literal content must
-    // survive XML end-of-line normalization in either presentation.
-    const valueSerializer = {
-      serializeToString: (node) =>
-        serializer.serializeToString(node).replaceAll("\r", "&#13;"),
-    };
-    const text = usesJavaPresentation
-      ? serializeJavaOwlXmlDocument(document, valueSerializer, writerContext)
-      : `<?xml version="1.0" encoding="UTF-8"?>\n${serializer.serializeToString(document).replaceAll("\r", "&#13;").replaceAll("\n", "&#10;").replaceAll("\t", "&#9;")}\n`;
-    if (byteLength(text) > documentStoragePolicy.maxOutputBytes)
+function* children(value) {
+  // The Java-compatible writer attaches the chain container before the
+  // annotation siblings, then fills its operands in their authored order.
+  if (value.kind === K.SUB_PROPERTY_CHAIN_AXIOM)
+    yield { kind: chainTag, chain: value.chain };
+  if (AXIOM_KINDS.includes(value.kind) || value.kind === K.ANNOTATION)
+    yield* value.annotations;
+  for (const field of structuralFields.get(value.kind)) {
+    if (
+      ["annotations", "cardinality", "facet"].includes(field) ||
+      (value.kind === K.SUB_PROPERTY_CHAIN_AXIOM && field === "chain")
+    )
+      continue;
+    const result =
+      minimumTwoSetFields.get(value.kind) === field
+        ? repeatSingleton(value[field])
+        : value[field];
+    if (Array.isArray(result)) yield* result;
+    else if (result !== undefined) yield result;
+  }
+}
+
+/** Emit XML start, content and end tokens while retaining only the active path. */
+function* owlXmlFragments(
+  snapshot,
+  format,
+  writer,
+  policy = defaultDocumentStoragePolicy,
+) {
+  const parameters = readStorageFormatParameters(format, policy);
+  const java = policy.owlXmlPresentation === "java-writer";
+  const width = java && writer.indenting ? Math.max(0, writer.indentSize) : 0;
+  const pad = (depth) => (java ? "\n" + " ".repeat(width * depth) : "");
+  const validate = createStructuralValidator();
+  let constructionBytes = 0;
+  function admit(value) {
+    if (typeof value !== "string" || !value.isWellFormed())
+      fail("OWL/XML requires well-formed Unicode");
+    if (policy.requiresXml10Characters && !isXmlText(value))
+      fail("OWL/XML requires XML 1.0-compatible characters");
+    if (policy.maxOutputBytes !== Infinity)
+      constructionBytes += utf8Length(value);
+    if (constructionBytes > policy.maxOutputBytes)
       throw new ResourceLimitError("OWL/XML output byte limit exceeded", {
         resource: "outputBytes",
-        limit: documentStoragePolicy.maxOutputBytes,
+        limit: policy.maxOutputBytes,
       });
+    return value;
+  }
+  function iri(value) {
+    validateStructuralShape(value);
+    if (value.kind !== K.IRI) fail("OWL/XML requires an IRI");
+    validate(value);
+    const text = admit(value.value);
+    try {
+      parseIri(text);
+    } catch {
+      fail("OWL/XML requires a full IRI");
+    }
     return text;
-  },
+  }
+  const attribute = (name, value) => " " + xmlAttribute(name, admit(value));
+  const labels = new Map(),
+    active = new Set();
+  let forceXsdString = !java;
+  function* element(root) {
+    const pending = [
+      {
+        value: root,
+        depth: 2,
+        level: 1,
+        annotations: root.kind === K.ANNOTATION ? 1 : 0,
+      },
+    ];
+    while (pending.length) {
+      const frame = pending.at(-1);
+      const { value, depth, level, annotations } = frame;
+      const chain = value.kind === chainTag;
+      if (frame.children) {
+        const next = frame.children.next();
+        if (!next.done) {
+          const child = next.value;
+          pending.push({
+            value: child,
+            depth: depth + (chain ? 0 : 1),
+            level: level + 1,
+            annotations: annotations + Number(child.kind === K.ANNOTATION),
+          });
+          continue;
+        }
+        if (!chain) {
+          validate(value);
+          active.delete(value);
+        }
+        yield pad(level) + "</" + frame.tag + ">";
+        pending.pop();
+        continue;
+      }
+      if (!chain) {
+        if (depth > policy.maxStructureDepth)
+          throw new ResourceLimitError("OWL/XML output depth limit exceeded", {
+            resource: "outputDepth",
+            limit: policy.maxStructureDepth,
+          });
+        if (annotations > policy.maxAnnotationDepth)
+          throw new ResourceLimitError(
+            "OWL/XML annotation depth limit exceeded",
+            { resource: "annotationDepth", limit: policy.maxAnnotationDepth },
+          );
+        if (active.has(value)) fail("Cyclic OWL/XML structural input");
+        validateStructuralShape(value);
+      }
+      const tag = chain
+        ? "ObjectPropertyChain"
+        : value.kind === K.IRI
+          ? "IRI"
+          : value.kind === K.SUB_PROPERTY_CHAIN_AXIOM
+            ? "SubObjectPropertyOf"
+            : value.kind.slice(3).replace(/Axiom$/u, "");
+      if (!chain && !tags.has(tag))
+        fail("Unsupported OWL/XML kind " + value.kind);
+      if (!chain) admit(value.kind === K.IRI ? value.kind.slice(3) : tag);
+      let opening = pad(level) + "<" + tag,
+        text;
+      if (!chain && ENTITY_KINDS.includes(value.kind))
+        opening += attribute("IRI", iri(value.iri));
+      else if (value.kind === K.IRI) text = iri(value);
+      else if (value.kind === K.ANONYMOUS_INDIVIDUAL) {
+        const key = value.structuralKey();
+        if (!labels.has(key)) labels.set(key, "genid" + labels.size);
+        opening += attribute("nodeID", labels.get(key));
+      } else if (value.kind === K.LITERAL) {
+        validateStructuralShape(value.datatype);
+        validate(value.datatype);
+        if (value.language) opening += attribute("xml:lang", value.language);
+        else if (
+          forceXsdString ||
+          value.datatype.iri.value !== XSD_NAMESPACE + "string"
+        )
+          opening += attribute("datatypeIRI", iri(value.datatype.iri));
+        text = admit(value.lexicalForm);
+      } else {
+        if (value.kind === K.FACET_RESTRICTION)
+          opening += attribute("facet", iri(value.facet));
+        if (value.cardinality !== undefined)
+          opening += attribute("cardinality", String(value.cardinality));
+        const items = chain ? value.chain.values() : children(value);
+        const next = items.next();
+        if (!next.done) {
+          frame.children = items;
+          frame.tag = tag;
+          if (!chain) active.add(value);
+          yield opening + ">";
+          const child = next.value;
+          pending.push({
+            value: child,
+            depth: depth + (chain ? 0 : 1),
+            level: level + 1,
+            annotations: annotations + Number(child.kind === K.ANNOTATION),
+          });
+          continue;
+        }
+      }
+      if (!chain) validate(value);
+      if (text === undefined) yield opening + "/>";
+      else {
+        yield opening + ">";
+        yield* xmlTextChunks(text, java ? "java" : "compact");
+        yield "</" + tag + ">";
+      }
+      pending.pop();
+    }
+  }
+
+  validateStructuralShape(snapshot.ontologyID);
+  validate(snapshot.ontologyID);
+  const header = owlXmlHeader(snapshot.ontologyID, java, width, (value) =>
+    admit(iri(value)),
+  );
+  const axioms = sortedStructuralValues(snapshotAxioms(snapshot));
+  function* content() {
+    if (java)
+      for (const [name, uri] of owlXmlPrefixes)
+        yield (
+          pad(1) +
+          "<Prefix " +
+          xmlAttribute("name", name) +
+          " " +
+          xmlAttribute("IRI", uri) +
+          "/>"
+        );
+    for (const declaration of sortedStructuralValues(
+      snapshot.authoredImportDeclarations,
+    )) {
+      validateStructuralShape(declaration);
+      validate(declaration);
+      yield (
+        pad(1) +
+        "<Import>" +
+        xmlText(iri(declaration.iri), java ? "java" : "compact") +
+        "</Import>"
+      );
+    }
+    for (const annotation of sortedStructuralValues(
+      snapshot.directOntologyAnnotations,
+    ))
+      yield* element(annotation);
+    if (java) {
+      const declared = new StructuralSet();
+      for (const axiom of axioms)
+        if (axiom.kind === K.DECLARATION_AXIOM) {
+          declared.add(axiom.entity);
+          yield* element(axiom);
+        }
+      let undeclared = false;
+      for (const values of [snapshot.directOntologyAnnotations, axioms]) {
+        for (const root of values) {
+          visitStructuralValues(root, (value) => {
+            if (ENTITY_KINDS.includes(value.kind) && !declared.has(value))
+              undeclared = true;
+          });
+          if (undeclared) break;
+        }
+        if (undeclared) break;
+      }
+      if (undeclared) {
+        try {
+          forceXsdString = readForceStringDatatype(parameters);
+        } catch (cause) {
+          yield "\n";
+          failAfterStoragePrefix(
+            new OWLOntologyStorageError(
+              "OWL/XML string datatype configuration is invalid",
+              { cause },
+            ),
+            // The Java error prefix preserves raw CR in character data. XML
+            // attributes still use numeric references, including their CRs.
+            (prefix) =>
+              prefix.replace(/>[^<]+</gu, (text) =>
+                text.replaceAll("&#13;", "\r"),
+              ),
+          );
+        }
+      }
+    }
+    for (const axiom of axioms)
+      if (!java || axiom.kind !== K.DECLARATION_AXIOM) yield* element(axiom);
+  }
+  const body = content(),
+    first = body.next();
+  yield (
+    (java
+      ? '<?xml version="1.0"?>\n'
+      : '<?xml version="1.0" encoding="UTF-8"?>\n') +
+    header +
+    (first.done ? "/>" : ">")
+  );
+  if (!first.done) {
+    yield first.value;
+    yield* body;
+    yield pad(0) + "</Ontology>";
+  }
+  yield "\n";
+}
+
+function* checkedFragments(
+  snapshot,
+  format,
+  writer,
+  policy = defaultDocumentStoragePolicy,
+) {
+  let bytes = 0;
+  for (const text of owlXmlFragments(snapshot, format, writer, policy)) {
+    if (policy.maxOutputBytes !== Infinity) bytes += utf8Length(text);
+    if (bytes > policy.maxOutputBytes)
+      throw new ResourceLimitError("OWL/XML output byte limit exceeded", {
+        resource: "outputBytes",
+        limit: policy.maxOutputBytes,
+      });
+    yield text;
+  }
+}
+
+export const owlXmlStorer = Object.freeze({
+  formatKey: OWLDocumentFormats.OWL_XML.key,
+  render: (...args) => collectStorageText(checkedFragments(...args)),
+  renderBytes: (...args) => utf8Chunks(checkedFragments(...args)),
 });

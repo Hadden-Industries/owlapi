@@ -10,10 +10,20 @@ import {
   XSD_NAMESPACE,
 } from "../../rdfjs/vocabulary.js";
 import { parseIri } from "@hyperjump/uri";
-import { DOMImplementation, DOMParser, XMLSerializer } from "@xmldom/xmldom";
-import { prepareXml } from "../../parsing/xml/xmlEntityPolicy.js";
-import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
-import { retainPartialStorageOutput } from "../storageFailureOutput.js";
+import { validateEmbeddedXmlLiteral } from "./xmlLiteralValidation.js";
+import { isNcName } from "../../parsing/xml/xmlNames.js";
+import {
+  xmlAttribute,
+  xmlTextChunks,
+  isXmlText,
+  utf8Length as byteLength,
+} from "../xmlTokens.js";
+import { isCompactRdfGraph } from "../../rdfjs/compactRdfGraph.js";
+import { compareJsonStrings } from "../../collections/structuralComparator.js";
+import {
+  collectStorageText,
+  failAfterStoragePrefix,
+} from "../storageFailureOutput.js";
 import { parse as parseLanguageTag } from "bcp-47";
 import {
   OWLOntologyStorageError,
@@ -25,7 +35,6 @@ import {
 } from "../../../model/owlOntologyWriterConfiguration.js";
 import { RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
 
-const TEXT_NODE = 3;
 const LANG_STRING = `${RDF_NAMESPACE}langString`;
 const nativeCommentPolicies = new Map(
   [
@@ -110,6 +119,32 @@ const RESERVED_PREDICATES = new Set(
 );
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
+
+/** A subject owns an interval in one sorted row index, independent of its degree. */
+class SubjectTriples {
+  constructor(rows, start, end, read) {
+    this.rows = rows;
+    this.start = start;
+    this.end = end;
+    this.read = read;
+  }
+
+  get length() {
+    return this.end - this.start;
+  }
+
+  *[Symbol.iterator]() {
+    for (let i = this.start; i < this.end; i++) yield this.read(this.rows[i]);
+  }
+
+  find(predicate) {
+    return this[Symbol.iterator]().find(predicate);
+  }
+
+  filter(predicate) {
+    return this[Symbol.iterator]().filter(predicate).toArray();
+  }
+}
 const notRepresentable = (message, details = {}) => {
   throw new OWLOntologyStorageError(message, {
     ...details,
@@ -144,7 +179,8 @@ const requireLanguageTag = (language) => {
   }
 };
 
-const serializeGraph = (dataset, policy, context) => {
+function* serializeGraph(dataset, policy, context) {
+  const compact = isCompactRdfGraph(dataset);
   // Only cache encoded primitive identities, within this write. Read the term
   // fields in their original order on every call, including foreign getters.
   // Literal lexical/language/datatype metadata retains its full encoding path.
@@ -152,55 +188,37 @@ const serializeGraph = (dataset, policy, context) => {
     ["NamedNode", new Map()],
     ["BlankNode", new Map()],
   ]);
-  const termKey = (term) => {
-    const type = term.termType;
-    const value = term.value;
-    const literal = term.termType === "Literal";
-    const cache =
-      !literal && typeof value === "string" && resourceKeys.get(type);
-    if (cache) {
-      let key = cache.get(value);
-      if (key === undefined) {
-        // json-identity-contract: ordered-tuple; owner: RDF/XML graph writer; reason: Preserve the existing ordered RDF term type/value encoding used for deterministic graph order.
-        key = JSON.stringify([type, value]);
-        cache.set(value, key);
-      }
-      return key;
-    }
-    return JSON.stringify([
-      type,
-      value,
-      ...(literal ? [term.language, term.datatype.value] : []),
-    ]);
-  };
+  const termKey = compact
+    ? (term) => dataset.termId(term)
+    : (term) => {
+        const type = term.termType;
+        const value = term.value;
+        const literal = term.termType === "Literal";
+        const cache =
+          !literal && typeof value === "string" && resourceKeys.get(type);
+        if (cache) {
+          let key = cache.get(value);
+          if (key === undefined) {
+            // json-identity-contract: ordered-tuple; owner: RDF/XML graph writer; reason: Preserve the existing ordered RDF term type/value encoding used for deterministic graph order.
+            key = JSON.stringify([type, value]);
+            cache.set(value, key);
+          }
+          return key;
+        }
+        return JSON.stringify([
+          type,
+          value,
+          ...(literal ? [term.language, term.datatype.value] : []),
+        ]);
+      };
   const documentStoragePolicy =
     context.documentStoragePolicy ?? defaultDocumentStoragePolicy;
-  const embeddedXmlLiterals = new WeakMap();
-  const indentationSize = Math.max(0, policy.indentSize);
-  const document = new DOMImplementation().createDocument(
-    RDF_NAMESPACE,
-    "rdf:RDF",
-  );
-  const serializer = new XMLSerializer();
-  const serialize = (node) =>
-    serializer.serializeToString(node, {
-      requireWellFormed: documentStoragePolicy.requiresXml10Characters,
-    });
-  const utf8 = new TextEncoder();
-  const nonAsciiCharacter = /[^\p{ASCII}]/u;
-  const nonXmlAsciiCharacter = /[^\t\n\r\x20-\x7E]/u;
-  const changedXmlCharacter = /[^\t\n\x20-\x7E]/u;
-  const escapedXmlText = /[&<>\x22\x27]/u;
+  const indentationSize = policy.indenting ? Math.max(0, policy.indentSize) : 0;
   const nativeCommentPolicy = nativeCommentPolicies.get(documentStoragePolicy);
-  // ASCII output has exactly one UTF-8 byte per code unit. Non-ASCII text still
-  // uses the encoder, including its treatment of any admitted lone surrogate.
-  const byteLength = (text) =>
-    nonAsciiCharacter.test(text) ? utf8.encode(text).length : text.length;
-  // Construction already serializes each admitted node for its byte charge.
-  // Its attributes/text are final at admission; only element children may be
-  // appended later. Reuse that exact native serialization during formatting,
-  // releasing each string as it is consumed. Nothing survives this write.
-  const admittedSerializations = new WeakMap();
+  const checkCharacters = (value) => {
+    if (documentStoragePolicy.requiresXml10Characters && !isXmlText(value))
+      notRepresentable("RDF/XML requires XML 1.0-compatible characters");
+  };
   let constructionBytes = 0;
   const requireTextBudget = (value) => {
     // The existing escaped-text counter charges at most six bytes per UTF-16 unit.
@@ -232,23 +250,46 @@ const serializeGraph = (dataset, policy, context) => {
         });
     }
   };
-  const admitNode = (node) => {
-    // Detached leaf nodes already have the shallow shape we serialize here.
-    // Retain cloning for any attached/non-leaf input so namespace scope and
-    // construction-byte charging keep their original meaning.
-    const text = serialize(
-      node.parentNode === null && node.firstChild === null
-        ? node
-        : node.cloneNode(false),
-    );
-    admittedSerializations.set(node, text);
-    constructionBytes += byteLength(text);
+  const element = (namespace, name) => ({ namespace, name, attributes: [] });
+  const opening = (node) =>
+    "<" + node.name + node.attributes.map((a) => " " + a.text).join("");
+  // Previous admission charges standalone elements, including namespace
+  // declarations needed outside their normal document scope.
+  const standaloneSize = (node, text) => {
+    if (documentStoragePolicy.maxOutputBytes === Infinity) return 0;
+    const bound = new Map();
+    for (const a of node.attributes)
+      if (a.namespace === XMLNS_NAMESPACE)
+        bound.set(a.name === "xmlns" ? "" : a.name.slice(6), a.value);
+    const qualify = (name, namespace) => {
+      if (
+        !namespace ||
+        namespace === XMLNS_NAMESPACE ||
+        namespace === XML_NAMESPACE
+      )
+        return 0;
+      const prefix = name.includes(":") ? name.split(":")[0] : "";
+      if (bound.get(prefix) === namespace) return 0;
+      bound.set(prefix, namespace);
+      return byteLength(
+        " " + xmlAttribute(prefix ? "xmlns:" + prefix : "xmlns", namespace),
+      );
+    };
+    let bytes = byteLength(opening(node)) + qualify(node.name, node.namespace);
+    for (const a of node.attributes) bytes += qualify(a.name, a.namespace);
+    if (text === undefined) return bytes + 2;
+    for (const fragment of xmlTextChunks(text, "native"))
+      bytes += byteLength(fragment);
+    return bytes + byteLength("></" + node.name + ">");
+  };
+  const chargeConstruction = (bytes) => {
+    constructionBytes += bytes;
     if (constructionBytes > documentStoragePolicy.maxOutputBytes)
       throw new ResourceLimitError("RDF/XML construction budget exceeded", {
         limit: documentStoragePolicy.maxOutputBytes,
       });
   };
-  let root = document.documentElement;
+  const root = element(RDF_NAMESPACE, "rdf:RDF");
   const validatedIris = new Set();
   const requireNamedNode = (term) => {
     if (term?.termType !== "NamedNode" || typeof term.value !== "string") {
@@ -342,18 +383,7 @@ const serializeGraph = (dataset, policy, context) => {
         continue;
       }
       const local = characters.slice(split).join("");
-      try {
-        // The native XML implementation owns NCName/QName grammar, including
-        // supplementary Unicode characters. Do not maintain a second regex.
-        serialize(document.createElementNS(namespace, `ns:${local}`));
-      } catch (error) {
-        if (
-          error.name === "InvalidCharacterError" ||
-          error.name === "InvalidStateError"
-        )
-          continue;
-        throw error;
-      }
+      if (!isNcName(local)) continue;
       const name = { namespace, local };
       predicateNames.set(iri, name);
       return name;
@@ -361,8 +391,7 @@ const serializeGraph = (dataset, policy, context) => {
     notRepresentable("The RDF predicate has no legal RDF/XML QName split");
   };
 
-  const triples = [];
-  for (const quad of dataset) {
+  function admitQuad(quad) {
     if (
       quad?.termType !== "Quad" ||
       quad.value !== "" ||
@@ -374,27 +403,94 @@ const serializeGraph = (dataset, policy, context) => {
     requireResource(quad.subject);
     requireNamedNode(quad.predicate);
     requireObject(quad.object);
-    const name = predicateName(quad.predicate.value);
-    triples.push({
-      quad,
-      name,
-      keys: [quad.subject, quad.predicate, quad.object].map(termKey),
-    });
+    return predicateName(quad.predicate.value);
   }
-  triples.sort((left, right) => {
-    for (let index = 0; index < left.keys.length; index += 1) {
-      if (index === 1) {
-        const rank =
-          (PREDICATE_PRIORITY.get(left.quad.predicate.value) ?? 1000) -
-          (PREDICATE_PRIORITY.get(right.quad.predicate.value) ?? 1000);
-        if (rank) return rank;
+  let sortedRows, compareKeys, tripleAt;
+  if (compact) {
+    const count = dataset.termCount;
+    const order = Uint32Array.from({ length: count }, (_, id) => id);
+    order.sort((a, b) => {
+      const left = dataset.termById(a),
+        right = dataset.termById(b);
+      return (
+        compareJsonStrings(left.termType, right.termType) ||
+        compareJsonStrings(left.value, right.value) ||
+        (left.termType === "Literal"
+          ? compareJsonStrings(left.language, right.language) ||
+            compareJsonStrings(left.datatype.value, right.datatype.value)
+          : 0)
+      );
+    });
+    const ranks = new Uint32Array(count);
+    order.forEach((id, rank) => {
+      ranks[id] = rank;
+    });
+    compareKeys = (a, b) => ranks[a] - ranks[b];
+    for (const quad of dataset) admitQuad(quad);
+    sortedRows = new Uint32Array(dataset.size);
+    let index = 0;
+    dataset.forEachMatchingRow(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      (row) => {
+        sortedRows[index++] = row;
+      },
+    );
+    sortedRows.sort((left, right) => {
+      for (let column = 0; column < 3; column++) {
+        const a = dataset.rowTermId(left, column),
+          b = dataset.rowTermId(right, column);
+        if (column === 1) {
+          const priority =
+            (PREDICATE_PRIORITY.get(dataset.termById(a).value) ?? 1000) -
+            (PREDICATE_PRIORITY.get(dataset.termById(b).value) ?? 1000);
+          if (priority) return priority;
+        }
+        if (a !== b) return compareKeys(a, b);
       }
-      const order = compareCodeUnits(left.keys[index], right.keys[index]);
-      if (order) return order;
-    }
-    return 0;
-  });
-
+      return 0;
+    });
+    tripleAt = (row) => {
+      const quad = dataset.statementAt(row);
+      return {
+        row,
+        quad,
+        name: predicateNames.get(quad.predicate.value),
+        keys: [
+          dataset.rowTermId(row, 0),
+          dataset.rowTermId(row, 1),
+          dataset.rowTermId(row, 2),
+        ],
+      };
+    };
+  } else {
+    // Foreign terms retain their own getters and the established ordered key
+    // encoding. The package graph is the only trusted integer dictionary.
+    sortedRows = [];
+    for (const quad of dataset)
+      sortedRows.push({
+        quad,
+        name: admitQuad(quad),
+        keys: [quad.subject, quad.predicate, quad.object].map(termKey),
+      });
+    compareKeys = compareCodeUnits;
+    sortedRows.sort((left, right) => {
+      for (let index = 0; index < 3; index++) {
+        if (index === 1) {
+          const rank =
+            (PREDICATE_PRIORITY.get(left.quad.predicate.value) ?? 1000) -
+            (PREDICATE_PRIORITY.get(right.quad.predicate.value) ?? 1000);
+          if (rank) return rank;
+        }
+        const order = compareKeys(left.keys[index], right.keys[index]);
+        if (order) return order;
+      }
+      return 0;
+    });
+    tripleAt = (entry) => entry;
+  }
   const declarations = new Map(context.prefixes ?? []);
   if (
     ![...declarations].some(
@@ -411,49 +507,61 @@ const serializeGraph = (dataset, policy, context) => {
     .map(([name]) => name.slice(0, -1));
   const rdfAttributePrefix =
     defaultNamespace === RDF_NAMESPACE ? rdfAliases[0] : rdfAliases.at(-1);
-  const attribute = (element, namespace, name, value) => {
-    // xmldom validates characters of text nodes, but not attribute values.
-    // Reuse its XML Char validator before its native attribute escaping.
+  const attribute = (node, namespace, name, value) => {
     requireTextBudget(value);
-    // W3C XML 1.0 Char includes these ASCII characters. Other strings still
-    // use the native validator; non-string inputs preserve native coercion.
-    if (
-      typeof value !== "string" ||
-      (documentStoragePolicy.requiresXml10Characters &&
-        nonXmlAsciiCharacter.test(value))
-    )
-      serialize(document.createTextNode(value));
-    element.setAttributeNS(
+    checkCharacters(value);
+    if (namespace === RDF_NAMESPACE)
+      name = rdfAttributePrefix + ":" + name.split(":").at(-1);
+    if (!name.split(":").every(isNcName))
+      notRepresentable("The namespace prefix is not an XML name");
+    node.attributes.push({
       namespace,
-      namespace === RDF_NAMESPACE
-        ? `${rdfAttributePrefix}:${name.split(":").at(-1)}`
-        : name,
+      name,
       value,
-    );
+      text: xmlAttribute(name, value),
+    });
   };
   const subjects = new Map();
   const incoming = new Map();
-  for (const triple of triples) {
-    if (!subjects.has(triple.keys[0]))
-      subjects.set(triple.keys[0], {
-        term: triple.quad.subject,
-        triples: [],
-        type: null,
-      });
-    subjects.get(triple.keys[0]).triples.push(triple);
-    if (triple.quad.object.termType === "BlankNode")
-      incoming.set(triple.keys[2], (incoming.get(triple.keys[2]) ?? 0) + 1);
+  for (let index = 0; index < sortedRows.length;) {
+    const start = index,
+      first = tripleAt(sortedRows[index]),
+      key = first.keys[0];
+    do {
+      const triple = tripleAt(sortedRows[index]);
+      if (triple.keys[0] !== key) break;
+      if (triple.quad.object.termType === "BlankNode")
+        incoming.set(triple.keys[2], (incoming.get(triple.keys[2]) ?? 0) + 1);
+      index++;
+    } while (index < sortedRows.length);
+    const triples = new SubjectTriples(sortedRows, start, index, tripleAt);
+    subjects.set(key, { term: first.quad.subject, triples, type: null });
   }
   for (const subject of subjects.values()) {
-    subject.type =
-      TYPE_PRIORITY.map((iri) =>
-        subject.triples.find(
-          ({ quad }) =>
-            quad.predicate.value === TYPE_IRI &&
-            quad.object.termType === "NamedNode" &&
-            quad.object.value === iri,
-        ),
-      ).find(Boolean) ?? null;
+    if (compact) {
+      let best = Infinity;
+      for (const triple of subject.triples) {
+        if (
+          triple.quad.predicate.value !== TYPE_IRI ||
+          triple.quad.object.termType !== "NamedNode"
+        )
+          continue;
+        const rank = TYPE_PRIORITY.indexOf(triple.quad.object.value);
+        if (rank >= 0 && rank < best) {
+          best = rank;
+          subject.type = triple;
+        }
+      }
+    } else
+      subject.type =
+        TYPE_PRIORITY.map((iri) =>
+          subject.triples.find(
+            ({ quad }) =>
+              quad.predicate.value === TYPE_IRI &&
+              quad.object.termType === "NamedNode" &&
+              quad.object.value === iri,
+          ),
+        ).find(Boolean) ?? null;
     if (subject.type) predicateName(subject.type.quad.object.value);
   }
   const prefixes = new Map();
@@ -492,7 +600,7 @@ const serializeGraph = (dataset, policy, context) => {
       const segments = namespace.replace(/[#/:]+$/u, "").split(/[#/:]/u);
       const candidate = segments.at(-1);
       try {
-        serialize(document.createElementNS(namespace, `${candidate}:name`));
+        if (!isNcName(candidate)) throw new Error("Invalid XML prefix");
         if (
           !candidate ||
           candidate.toLowerCase().startsWith("xml") ||
@@ -514,14 +622,7 @@ const serializeGraph = (dataset, policy, context) => {
     .sort(([a], [b]) => a.length - b.length || compareCodeUnits(a, b)))
     attribute(root, XMLNS_NAMESPACE, `xmlns:${name.slice(0, -1)}`, namespace);
   const rdfPrefix = prefixes.get(RDF_NAMESPACE);
-  const namedRoot = document.createElementNS(
-    RDF_NAMESPACE,
-    rdfPrefix ? `${rdfPrefix}:RDF` : "RDF",
-  );
-  for (const item of [...root.attributes])
-    namedRoot.setAttributeNS(item.namespaceURI, item.name, item.value);
-  document.replaceChild(namedRoot, root);
-  root = namedRoot;
+  root.name = rdfPrefix ? rdfPrefix + ":RDF" : "RDF";
 
   const blankLabels = new Map();
   const resourceAttribute = (element, term, namedAttribute) => {
@@ -584,12 +685,12 @@ const serializeGraph = (dataset, policy, context) => {
     prefixes.get(name.namespace)
       ? `${prefixes.get(name.namespace)}:${name.local}`
       : name.local;
-  const renderNode = (
+  const renderNode = function* (
     term,
     ancestors = new Set(),
     depth = 1,
     referenceOnly = false,
-  ) => {
+  ) {
     if (depth > documentStoragePolicy.maxRdfXmlNodeDepth)
       throw new ResourceLimitError("RDF/XML nesting limit exceeded", {
         limit: documentStoragePolicy.maxRdfXmlNodeDepth,
@@ -599,10 +700,7 @@ const serializeGraph = (dataset, policy, context) => {
     const typeName = subject?.type
       ? predicateName(subject.type.quad.object.value)
       : { namespace: RDF_NAMESPACE, local: "Description" };
-    const description = document.createElementNS(
-      typeName.namespace,
-      elementName(typeName),
-    );
+    const description = element(typeName.namespace, elementName(typeName));
     const persistId =
       policy.saveIds &&
       (context.anonymousIndividuals?.has(term.value) ||
@@ -624,17 +722,22 @@ const serializeGraph = (dataset, policy, context) => {
       (depth === 1 && incoming.has(key))
     )
       resourceAttribute(description, term, "rdf:about");
-    admitNode(description);
-    if (!subject || emitted.has(key)) return description;
+    chargeConstruction(standaloneSize(description));
+    yield { kind: "start", node: description };
+    if (!subject || emitted.has(key)) {
+      yield { kind: "end" };
+      return;
+    }
     emitted.add(key);
     const path = new Set([...ancestors, key]);
     for (const triple of subject.triples) {
-      if (triple === subject.type) continue;
+      if (
+        triple === subject.type ||
+        (compact && triple.row === subject.type?.row)
+      )
+        continue;
       const { quad, name, keys } = triple;
-      const property = document.createElementNS(
-        name.namespace,
-        elementName(name),
-      );
+      const property = element(name.namespace, elementName(name));
       if (quad.object.termType === "Literal") {
         const embedsXmlLiteral =
           documentStoragePolicy.xmlLiteralRepresentation === "embedded" &&
@@ -654,17 +757,14 @@ const serializeGraph = (dataset, policy, context) => {
             quad.object.datatype.value,
           );
         }
-        const literalText = document.createTextNode(quad.object.value);
-        property.appendChild(literalText);
-        if (embedsXmlLiteral)
-          embeddedXmlLiterals.set(literalText, quad.object.value);
-        const text = serialize(property);
-        admittedSerializations.set(property, text);
-        constructionBytes += byteLength(text);
-        if (constructionBytes > documentStoragePolicy.maxOutputBytes)
-          throw new ResourceLimitError("RDF/XML construction budget exceeded", {
-            limit: documentStoragePolicy.maxOutputBytes,
-          });
+        checkCharacters(quad.object.value);
+        chargeConstruction(standaloneSize(property, quad.object.value));
+        yield {
+          kind: "literal",
+          node: property,
+          text: quad.object.value,
+          embedded: embedsXmlLiteral,
+        };
       } else {
         const list =
           depth < documentStoragePolicy.maxRdfXmlNodeDepth
@@ -672,13 +772,14 @@ const serializeGraph = (dataset, policy, context) => {
             : null;
         if (list) {
           attribute(property, RDF_NAMESPACE, "rdf:parseType", "Collection");
-          admitNode(property);
+          chargeConstruction(standaloneSize(property));
+          yield { kind: "start", node: property };
           for (const cell of list.cells) {
             emitted.add(cell);
             nested.add(cell);
           }
           for (const member of list.members)
-            property.appendChild(renderNode(member, path, depth + 1, true));
+            yield* renderNode(member, path, depth + 1, true);
         } else if (
           quad.object.termType === "BlankNode" &&
           depth < documentStoragePolicy.maxRdfXmlNodeDepth &&
@@ -690,17 +791,19 @@ const serializeGraph = (dataset, policy, context) => {
           !path.has(keys[2]) &&
           !emitted.has(keys[2])
         ) {
-          admitNode(property);
+          chargeConstruction(standaloneSize(property));
+          yield { kind: "start", node: property };
           nested.add(keys[2]);
-          property.appendChild(renderNode(quad.object, path, depth + 1));
+          yield* renderNode(quad.object, path, depth + 1);
         } else {
           resourceAttribute(property, quad.object, "rdf:resource");
-          admitNode(property);
+          chargeConstruction(standaloneSize(property));
+          yield { kind: "start", node: property };
         }
+        yield { kind: "end" };
       }
-      description.appendChild(property);
     }
-    return description;
+    yield { kind: "end" };
   };
   const groupRank = (subject) =>
     context.anonymousIndividuals?.has(subject.term.value)
@@ -713,23 +816,16 @@ const serializeGraph = (dataset, policy, context) => {
       groupRank(left) - groupRank(right) ||
       Number(left.term.termType === "BlankNode") -
         Number(right.term.termType === "BlankNode") ||
-      compareCodeUnits(leftKey, rightKey),
+      compareKeys(leftKey, rightKey),
   );
-  const safeComment = (text) => {
-    const content = text
+  const safeComment = (label) => {
+    const content = label
       .replace(/--+/gu, (match) => [...match].join(" "))
       .replace(/-$/u, "- ");
-    // Native immutable policies and safe ASCII need no discarded Text node.
-    // Foreign policies retain the original flag reads and native validation.
-    // The actual Comment still receives native validation and byte admission.
-    if (
-      nativeCommentPolicy === undefined ||
-      (nativeCommentPolicy && nonXmlAsciiCharacter.test(content))
-    )
-      serialize(document.createTextNode(content));
-    const comment = document.createComment(content);
-    admitNode(comment);
-    return comment;
+    if (nativeCommentPolicy !== false) checkCharacters(content);
+    const text = "<!--" + content + "-->";
+    chargeConstruction(byteLength(text));
+    return { kind: "comment", text };
   };
   let previousGroup;
   const annotations = new Map();
@@ -744,7 +840,7 @@ const serializeGraph = (dataset, policy, context) => {
     if (!annotations.has(owner)) annotations.set(owner, []);
     annotations.get(owner).push(entry);
   }
-  const appendSubject = ([key, subject]) => {
+  const appendSubject = function* ([key, subject]) {
     if (emitted.has(key) || nested.has(key)) return;
     const type = subject.type?.quad.object.value;
     const group = context.anonymousIndividuals?.has(subject.term.value)
@@ -762,10 +858,8 @@ const serializeGraph = (dataset, policy, context) => {
             { limit: documentStoragePolicy.maxOutputBytes },
           );
         const padding = " ".repeat(width);
-        root.appendChild(
-          safeComment(
-            ` \n${padding}${"/".repeat(87)}\n${padding}//\n${padding}// ${group}\n${padding}//\n${padding}${"/".repeat(87)}\n${padding} `,
-          ),
+        yield safeComment(
+          ` \n${padding}${"/".repeat(87)}\n${padding}//\n${padding}// ${group}\n${padding}//\n${padding}${"/".repeat(87)}\n${padding} `,
         );
       }
       previousGroup = group;
@@ -804,284 +898,151 @@ const serializeGraph = (dataset, policy, context) => {
                   );
                 })()
               : subject.term.value;
-        root.appendChild(safeComment(` ${identity} `));
+        yield safeComment(` ${identity} `);
       }
     }
-    root.appendChild(renderNode(subject.term));
+    yield* renderNode(subject.term);
     for (const [annotationKey, annotation] of annotations.get(key) ?? []) {
-      if (!emitted.has(annotationKey))
-        root.appendChild(renderNode(annotation.term));
+      if (!emitted.has(annotationKey)) yield* renderNode(annotation.term);
     }
   };
-  // Render owned roots first. A remaining cycle/shared node keeps explicit IDs.
-  for (const entry of orderedSubjects)
-    if (entry[1].term.termType !== "BlankNode" || incoming.get(entry[0]) !== 1)
-      appendSubject(entry);
-  for (const entry of orderedSubjects) appendSubject(entry);
+  function* events() {
+    // Emit owned roots first. Cycles and shared nodes retain explicit IDs.
+    yield { kind: "start", node: root };
+    for (const entry of orderedSubjects)
+      if (
+        entry[1].term.termType !== "BlankNode" ||
+        incoming.get(entry[0]) !== 1
+      )
+        yield* appendSubject(entry);
+    for (const entry of orderedSubjects) yield* appendSubject(entry);
+    yield { kind: "end" };
+  }
 
-  let predictedBytes = 0;
-  const charge = (text) => {
-    // UTF-8 cannot encode fewer than one byte per UTF-16 code unit here.
-    if (text.length > documentStoragePolicy.maxOutputBytes - predictedBytes)
-      throw new ResourceLimitError("RDF/XML output budget exceeded", {
-        limit: documentStoragePolicy.maxOutputBytes,
-      });
-    predictedBytes += byteLength(text);
-    if (predictedBytes > documentStoragePolicy.maxOutputBytes)
-      throw new ResourceLimitError("RDF/XML output budget exceeded", {
-        limit: documentStoragePolicy.maxOutputBytes,
+  const limit = documentStoragePolicy.maxOutputBytes;
+  let predicted = 0;
+  const charge = (amount, kind = "output") => {
+    predicted += amount;
+    if (!Number.isSafeInteger(predicted) || predicted > limit)
+      throw new ResourceLimitError("RDF/XML " + kind + " budget exceeded", {
+        limit,
       });
   };
-  const copyElementHeader = (element) => {
-    // Renderer-owned elements have only their namespace/name and admitted
-    // attributes to copy. Use native constructors without copying unrelated
-    // generic DOM bookkeeping; source children stay attached until disposal.
-    const copy = document.createElementNS(
-      element.namespaceURI,
-      element.tagName,
-    );
-    for (const attribute of Array.from(element.attributes))
-      copy.setAttributeNS(
-        attribute.namespaceURI,
-        attribute.name,
-        attribute.value,
-      );
-    return copy;
-  };
-  const formatElement = (element, depth) => {
-    const children = [...element.childNodes];
-    const admitted = admittedSerializations.get(element);
-    admittedSerializations.delete(element);
-    // A literal leaf is indivisible: never inject or normalize its whitespace.
-    if (children.some((child) => child.nodeType === TEXT_NODE)) {
-      charge(admitted ?? serialize(element));
-      const copy = children.every((child) => child.nodeType === TEXT_NODE)
-        ? copyElementHeader(element)
-        : element.cloneNode(true);
-      if (!copy.firstChild)
-        for (const child of children)
-          copy.appendChild(document.createTextNode(child.data));
-      children.forEach((child, index) => {
-        if (embeddedXmlLiterals.has(child))
-          embeddedXmlLiterals.set(
-            copy.childNodes[index],
-            embeddedXmlLiterals.get(child),
-          );
-      });
-      return copy;
-    }
-    const formatted = copyElementHeader(element);
-    charge(admitted ?? serialize(formatted));
-    if (!children.length) return formatted;
-    const indentation = policy.indenting ? depth * indentationSize : 0;
-    if (
-      !Number.isSafeInteger(indentation) ||
-      indentation > documentStoragePolicy.maxOutputBytes - predictedBytes
-    )
+  const padding = (depth) => {
+    const width = depth * indentationSize;
+    if (!Number.isSafeInteger(width) || width > limit)
       throw new ResourceLimitError("RDF/XML indentation budget exceeded", {
-        limit: documentStoragePolicy.maxOutputBytes,
+        limit,
       });
-    // Charge all padding before constructing even a single large string.
-    const whitespaceBytes =
-      children.length * (7 + indentation * 2) +
-      1 +
-      (policy.indenting ? (depth - 1) * indentationSize : 0);
-    if (
-      !Number.isSafeInteger(whitespaceBytes) ||
-      whitespaceBytes > documentStoragePolicy.maxOutputBytes - predictedBytes
-    )
-      throw new ResourceLimitError("RDF/XML indentation budget exceeded", {
-        limit: documentStoragePolicy.maxOutputBytes,
-      });
-    predictedBytes += whitespaceBytes;
-    const padding = " ".repeat(indentation);
-    let previousChild;
-    for (const child of children) {
-      const spacing =
-        child.nodeType === 8
-          ? previousChild?.nodeType === 8
-            ? `\n\n\n${padding}\n\n\n`
-            : `\n${padding}\n\n\n`
-          : previousChild?.nodeType === 8
-            ? "\n\n\n"
-            : "\n";
-      formatted.appendChild(document.createTextNode(`${spacing}${padding}`));
-      if (child.nodeType === 1)
-        formatted.appendChild(formatElement(child, depth + 1));
-      else {
-        charge(admittedSerializations.get(child) ?? serialize(child));
-        admittedSerializations.delete(child);
-        formatted.appendChild(child.cloneNode(true));
-      }
-      previousChild = child;
-    }
-    formatted.appendChild(
-      document.createTextNode(
-        `\n${" ".repeat(policy.indenting ? (depth - 1) * indentationSize : 0)}`,
-      ),
-    );
-    return formatted;
+    return " ".repeat(width);
   };
-  // Append-only construction avoids xmldom's full sibling reindex on insertion.
-  document.replaceChild(formatElement(root, 1), root);
-  const serializeDocument = (tree, validateLiteral) =>
-    serializer.serializeToString(tree, {
-      requireWellFormed: documentStoragePolicy.requiresXml10Characters,
-      nodeFilter(node) {
-        if (embeddedXmlLiterals.has(node)) {
-          const literal = embeddedXmlLiterals.get(node);
-          validateLiteral?.(literal, node);
-          return literal;
-        }
-        // XML end-of-line normalization would turn literal CR into LF. Native
-        // serialization still validates and escapes each intervening segment.
-        if (node.nodeType === TEXT_NODE) {
-          // Safe ASCII text is unchanged by native XML serialization and by
-          // the quote/CR preservation below; other text uses the native path.
-          if (
-            !changedXmlCharacter.test(node.data) &&
-            !escapedXmlText.test(node.data)
-          )
-            return node.data;
-          return node.data
-            .split("\r")
-            .map((part) =>
-              serialize(document.createTextNode(part))
-                .replaceAll('"', "&quot;")
-                .replaceAll("'", "&apos;"),
-            )
-            .join("&#xD;");
-        }
-        return node;
-      },
-    });
+  const wrap = indentationSize + 1;
+  if (wrap * root.attributes.length > limit)
+    throw new ResourceLimitError(
+      "RDF/XML root attribute padding budget exceeded",
+      { limit },
+    );
+  const rootStart =
+    "<" +
+    root.name +
+    root.attributes
+      .map((a, i) => (i ? "\n" + " ".repeat(wrap) : " ") + a.text)
+      .join("");
   const declaration =
     documentStoragePolicy.xmlDeclaration ??
     '<?xml version="1.0" encoding="UTF-8"?>';
-  const wrapRootAttributes = (text) => {
-    const end = text.indexOf(">");
-    const padding = (policy.indenting ? indentationSize : 0) + 1;
-    return (
-      text
-        .slice(0, end)
-        .replaceAll(/ (?=(?:xmlns(?::[^=\s]+)?|xml:base)=)/gu, (_, offset) =>
-          offset === `<${root.nodeName}`.length
-            ? " "
-            : `\n${" ".repeat(padding)}`,
-        ) + text.slice(end)
-    );
-  };
-  const prefixBefore = (failingText) => {
-    const ancestors = [];
-    for (
-      let node = failingText.parentNode;
-      node.nodeType === 1;
-      node = node.parentNode
-    )
-      ancestors.push(node);
-    const onPath = new Set(ancestors);
-    const copyThrough = (node) => {
-      const copy = node.cloneNode(false);
-      for (const child of Array.from(node.childNodes)) {
-        if (child === failingText) break;
-        if (onPath.has(child)) {
-          copy.appendChild(copyThrough(child));
-          break;
-        }
-        const copiedChild = child.cloneNode(true);
-        const carryLiteral = (original, copied) => {
-          if (embeddedXmlLiterals.has(original))
-            embeddedXmlLiterals.set(copied, embeddedXmlLiterals.get(original));
-          Array.from(original.childNodes ?? []).forEach((nested, index) =>
-            carryLiteral(nested, copied.childNodes[index]),
-          );
-        };
-        carryLiteral(child, copiedChild);
-        copy.appendChild(copiedChild);
-      }
-      return copy;
-    };
-    const prefix = serializeDocument(copyThrough(document.documentElement));
-    const closingAncestors = ancestors
-      .slice(1)
-      .map((node) => `</${node.nodeName}>`)
-      .join("");
-    if (!prefix.endsWith(`/>${closingAncestors}`))
-      throw new Error("Unexpected partial RDF/XML serialization boundary");
-    return `${declaration}\n${wrapRootAttributes(prefix.slice(0, -closingAncestors.length - 2) + ">")}`;
-  };
-  const text = serializeDocument(document, (literal, node) => {
-    try {
-      const prepared = prepareXml(
-        literal,
-        new OWLOntologyLoaderConfiguration({
-          behaviorProfileId: "java-owlapi-5.5.1",
-        }),
-      );
-      const parsed = new DOMParser({
-        onError(_level, message) {
-          throw new Error(message);
-        },
-      }).parseFromString(prepared, "application/xml");
-      if (!parsed.documentElement)
-        throw new Error("The XML literal has no document element");
-    } catch (cause) {
-      throw retainPartialStorageOutput(
-        new OWLOntologyStorageError("XML literal is not self contained", {
-          cause,
-        }),
-        prefixBefore(node),
-      );
+  const stack = [];
+  yield declaration + "\n";
+  for (const event of events()) {
+    const parent = stack.at(-1);
+    if (event.kind === "end") {
+      const finished = stack.pop();
+      if (finished.children) {
+        charge(1 + stack.length * indentationSize, "indentation");
+        yield "\n" + padding(stack.length) + "</" + finished.node.name + ">";
+      } else yield finished.start + "/>";
+      continue;
     }
-  });
-  // Only structural root attributes are wrapped; serialized attribute contents
-  // cannot contain a raw quote, so this never rewrites a literal or entity.
-  const rootEnd = text.indexOf(">");
-  const wrapPadding = (policy.indenting ? indentationSize : 0) + 1;
-  if (
-    wrapPadding * root.attributes.length >
-    documentStoragePolicy.maxOutputBytes - predictedBytes
-  )
-    throw new ResourceLimitError(
-      "RDF/XML root attribute padding budget exceeded",
-      { limit: documentStoragePolicy.maxOutputBytes },
-    );
-  const opening = text
-    .slice(0, rootEnd)
-    .replaceAll(/ (?=(?:xmlns(?::[^=\s]+)?|xml:base)=)/gu, (_, offset) =>
-      offset === `<${root.nodeName}`.length
-        ? " "
-        : `\n${" ".repeat(wrapPadding)}`,
-    );
-  const output = `${declaration}\n${opening}${text.slice(rootEnd)}\n\n\n\n<!-- Generated by @hadden-industries/owlapi (JavaScript implementation; version 0.1.0-rc.1) https://github.com/Hadden-Industries/owlapi -->\n\n\n`;
-  if (
-    output.length > documentStoragePolicy.maxOutputBytes ||
-    byteLength(output) > documentStoragePolicy.maxOutputBytes
-  )
-    throw new ResourceLimitError("RDF/XML output budget exceeded", {
-      limit: documentStoragePolicy.maxOutputBytes,
-    });
-  return output;
-};
+    const comment = event.kind === "comment";
+    if (parent) {
+      if (!parent.children) yield parent.start + ">";
+      const depth = stack.length;
+      charge(7 + depth * indentationSize * 2, "indentation");
+      const indent = padding(depth);
+      const spacing = comment
+        ? parent.comment
+          ? "\n\n\n" + indent + "\n\n\n"
+          : "\n" + indent + "\n\n\n"
+        : parent.comment
+          ? "\n\n\n"
+          : "\n";
+      yield spacing + indent;
+      parent.children = true;
+      parent.comment = comment;
+    }
+    if (comment) {
+      charge(byteLength(event.text));
+      yield event.text;
+      continue;
+    }
+    charge(standaloneSize(event.node, event.text));
+    const start = parent ? opening(event.node) : rootStart;
+    if (event.kind === "start") {
+      stack.push({ node: event.node, start, children: false, comment: false });
+    } else {
+      yield start + ">";
+      if (event.embedded) {
+        try {
+          validateEmbeddedXmlLiteral(event.text);
+        } catch (cause) {
+          failAfterStoragePrefix(
+            new OWLOntologyStorageError("XML literal is not self contained", {
+              cause,
+            }),
+          );
+        }
+        yield event.text;
+      } else yield* xmlTextChunks(event.text, "rdf");
+      yield "</" + event.node.name + ">";
+    }
+  }
+  charge(wrap * root.attributes.length, "root attribute padding");
+  yield "\n\n\n\n<!-- Generated by @hadden-industries/owlapi (JavaScript implementation; version 0.1.0-rc.1) https://github.com/Hadden-Industries/owlapi -->\n\n\n";
+}
 
-/** Serialize one ordinary RDF/JS default graph without ontology inference. */
-export const writeRdfXmlGraph = (
+/** Deterministic output fragments; only embedded XML literals use an XML parser. */
+export function* rdfXmlGraphChunks(
   dataset,
   policy = readOntologyWriterConfiguration(
     new OWLOntologyWriterConfiguration(),
   ),
   context = {},
-) => {
+) {
   try {
-    return serializeGraph(dataset, policy, context);
+    const limit = (
+      context.documentStoragePolicy ?? defaultDocumentStoragePolicy
+    ).maxOutputBytes;
+    let bytes = 0;
+    for (const fragment of serializeGraph(dataset, policy, context)) {
+      if (limit !== Infinity) bytes += byteLength(fragment);
+      if (bytes > limit)
+        throw new ResourceLimitError("RDF/XML output budget exceeded", {
+          limit,
+        });
+      yield fragment;
+    }
   } catch (cause) {
     if (
       cause instanceof OWLOntologyStorageError ||
       cause instanceof ResourceLimitError
     )
       throw cause;
-    return notRepresentable("The RDF graph cannot be represented in RDF/XML", {
+    notRepresentable("The RDF graph cannot be represented in RDF/XML", {
       cause,
     });
   }
-};
+}
+
+/** Serialize one ordinary RDF/JS default graph without ontology inference. */
+export const writeRdfXmlGraph = (...args) =>
+  collectStorageText(rdfXmlGraphChunks(...args));

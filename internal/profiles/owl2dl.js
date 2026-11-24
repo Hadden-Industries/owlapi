@@ -16,6 +16,12 @@ import {
   XSD_NAMESPACE as XSD,
 } from "../rdfjs/vocabulary.js";
 import { createProfileBudget } from "./budget.js";
+import {
+  profileSteps,
+  scopedProfileAxioms,
+  scopedProfileNodes,
+} from "./modelTraversal.js";
+import { readSnapshotAxioms } from "../model/ontologyState.js";
 import { inspectProfileRules } from "./profileRules.js";
 import { defaultBehaviorProfileDefinition } from "../behavior/ontologyBehaviorContext.js";
 import { inspectLiteral, isBuiltinDatatype } from "./datatypes.js";
@@ -34,7 +40,6 @@ import { inspectSourceStructure } from "./sourceStructure.js";
 import {
   createStructuralValidator,
   validateStructuralShape,
-  hasValidatedStructuralShape,
   StructuralValidationError,
 } from "../model/structuralValidation.js";
 
@@ -85,22 +90,11 @@ const needsSimple = new Set([
   K.ASYMMETRIC_OBJECT_PROPERTY_AXIOM,
   K.DISJOINT_OBJECT_PROPERTIES_AXIOM,
 ]);
-const forbidsAnonymous = new Set([
-  K.SAME_INDIVIDUAL_AXIOM,
-  K.DIFFERENT_INDIVIDUALS_AXIOM,
-  K.NEGATIVE_OBJECT_PROPERTY_ASSERTION_AXIOM,
-  K.NEGATIVE_DATA_PROPERTY_ASSERTION_AXIOM,
-  K.OBJECT_ONE_OF,
-  K.OBJECT_HAS_VALUE,
-]);
 const statusOf = (violations, unresolved) =>
   violations.length ? "invalid" : unresolved.length ? "unverified" : "valid";
 const frozen = (entries) =>
   Object.freeze(entries.map((entry) => Object.freeze(entry)));
 const validIriStrings = new Set();
-// Two annotation-inspection modes per immutable snapshot, retaining only the
-// latest scope/source binding. Reports, limits and rule results are never cached.
-const preparedTraversals = new WeakMap();
 
 const isValidProfileIri = (iriString) => {
   if (validIriStrings.has(iriString)) return true;
@@ -113,27 +107,6 @@ const isValidProfileIri = (iriString) => {
     return false;
   }
 };
-
-const checkPreparedStep = (steps, index, budget) => {
-  const depth = steps[index];
-  if (depth < 0) return;
-  budget.depth(depth);
-  if (steps[index + 1] > budget.configuration.maxLiteralLength)
-    throw new ResourceLimitError("Literal validation size limit exceeded", {
-      resource: "profileLiteralLength",
-      limit: budget.configuration.maxLiteralLength,
-    });
-  for (let edges = steps[index + 2]; edges > 0; edges--) budget.check();
-};
-// Return an interrupted step without introducing a new promise continuation.
-function replayPreparedTraversal(steps, budget, start = 0) {
-  for (let index = start; index < steps.length; index += 3) {
-    budget.check();
-    if (budget.shouldYield()) return index;
-    checkPreparedStep(steps, index, budget);
-  }
-  return -1;
-}
 
 const checkModel = async (
   ontology,
@@ -155,118 +128,43 @@ const checkModel = async (
   const unresolved = (code, detail = {}) =>
     unverified.push({ code, ...detail });
   if (!closure.complete) unresolved("IMPORT_CLOSURE_INCOMPLETE");
-  const axioms = [],
-    nodes = [],
-    anonymous = [];
+  const axioms = scopedProfileAxioms(members);
+  const anonymous = [];
   const declarations = new Set(),
     entities = new Map(),
     definitions = new Map(),
     datatypeDependencies = new Map();
-  const pendingTraversals = [];
-  let allStructuresPrepared = true;
   try {
     await budget.checkpoint(0);
     const sourceRoots = includeSource
       ? await inspectSourceStructure(members, budget, violate)
       : new Map();
+    const nodes = scopedProfileNodes(members, sourceRoots, validationPolicy);
+    let nodeCount = 0;
+    const untrusted = [];
     for (const member of members) {
-      const { snapshot, scope } = member;
-      const mode = validationPolicy.inspectsAnnotationValues ? 1 : 0;
-      const sourceVerified = member.status === "verified";
-      const previous = includeSource
-        ? undefined
-        : preparedTraversals.get(snapshot)?.[mode];
-      const cached =
-        previous?.scope === scope && previous.sourceVerified === sourceVerified
-          ? previous
-          : undefined;
-      const memberAxioms = [];
-      let axiomIndex = 0;
-      for (const axiom of snapshot.directAxioms) {
+      const stored = readSnapshotAxioms(member.snapshot);
+      for (let i = 0; i < stored.length; i++) {
         budget.check();
         if (budget.shouldYield()) await budget.yieldTurn();
-        const entry = cached
-          ? cached.axioms[axiomIndex++]
-          : { value: axiom, scope };
-        axioms.push(entry);
-        if (!cached) memberAxioms.push(entry);
       }
-      if (cached) {
-        // Replay each original visit/depth/array-edge charge in order. No
-        // aggregate charge can move an explicit exhaustion or abort boundary.
-        let replayIndex = replayPreparedTraversal(cached.steps, budget);
-        while (replayIndex >= 0) {
-          await budget.yieldTurn();
-          checkPreparedStep(cached.steps, replayIndex, budget);
-          replayIndex = replayPreparedTraversal(
-            cached.steps,
-            budget,
-            replayIndex + 3,
-          );
-        }
-        for (const node of cached.nodes) nodes.push(node);
-        continue;
-      }
-      allStructuresPrepared = false;
-      let steps = includeSource ? null : [];
-      const memberNodes = [];
-      const pending = [
-        snapshot.ontologyID,
-        snapshot.authoredImportDeclarations,
-        snapshot.directOntologyAnnotations,
-        snapshot.directAxioms,
-        ...(sourceRoots.get(scope) ?? []),
-      ].map((value) => ({ value, depth: 0 }));
-      while (pending.length) {
+      for (const step of profileSteps(member, sourceRoots, validationPolicy)) {
         budget.check();
         if (budget.shouldYield()) await budget.yieldTurn();
-        const entry = pending.pop(),
-          value = entry.value;
-        if (!value || typeof value !== "object") {
-          steps?.push(-1, -1, 0);
+        if (step.skipped) continue;
+        budget.depth(step.depth);
+        if (!step.trusted && !step.virtual) validateStructuralShape(step.value);
+        if (step.sequence) {
+          for (let i = 0; i < step.value.length; i++) budget.check();
           continue;
         }
+        if (!step.trusted)
+          untrusted.push({ index: nodeCount, value: step.value });
+        nodeCount++;
         if (
-          !validationPolicy.inspectsAnnotationValues &&
-          entry.annotationContext &&
-          [K.LITERAL, K.ANONYMOUS_INDIVIDUAL].includes(value.kind)
-        ) {
-          // Skipped values need a pre-existing stable kind proof. Do not inspect
-          // or admit a value the Java profile intentionally leaves unchecked.
-          if (!hasValidatedStructuralShape(value)) steps = null;
-          steps?.push(-1, -1, 0);
-          continue;
-        }
-        budget.depth(entry.depth);
-        validateStructuralShape(value);
-        const stepIndex = steps?.length;
-        steps?.push(
-          entry.depth,
-          value.kind === K.LITERAL && typeof value.lexicalForm === "string"
-            ? value.lexicalForm.length
-            : -1,
-          0,
-        );
-        if (Array.isArray(value)) {
-          for (const child of value) {
-            budget.check();
-            if (steps) steps[stepIndex + 2] += 1;
-            pending.push({ ...entry, value: child, depth: entry.depth + 1 });
-          }
-          continue;
-        }
-        const node = {
-          ...entry,
-          scope,
-          value,
-          sourceVerified: member.status === "verified",
-        };
-        nodes.push(node);
-        if (steps) memberNodes.push(node);
-        if (
-          value.kind === K.LITERAL &&
-          typeof value.lexicalForm === "string" &&
-          value.lexicalForm.length > budget.configuration.maxLiteralLength
+          step.value.kind === K.LITERAL &&
+          typeof step.value.lexicalForm === "string" &&
+          step.value.lexicalForm.length > budget.configuration.maxLiteralLength
         )
           throw new ResourceLimitError(
             "Literal validation size limit exceeded",
@@ -275,61 +173,16 @@ const checkModel = async (
               limit: budget.configuration.maxLiteralLength,
             },
           );
-        // Shape admission above guarantees own data fields. Keep their native
-        // order while avoiding a temporary [key, value] pair for every edge.
-        for (const field of Object.keys(value)) {
-          const child = value[field];
-          if (!child || typeof child !== "object") continue;
-          pending.push({
-            value: child,
-            parent: value,
-            field,
-            annotationContext:
-              entry.annotationContext ||
-              value.kind === K.ANNOTATION ||
-              (value.kind === K.ANNOTATION_ASSERTION_AXIOM &&
-                field === "value"),
-            depth: entry.depth + 1,
-            anonymousForbidden:
-              entry.anonymousForbidden ??
-              (forbidsAnonymous.has(value.kind) ? value.kind : undefined),
-            definition:
-              value.kind === K.DATATYPE_DEFINITION_AXIOM &&
-              field === "dataRange"
-                ? value.datatype
-                : entry.definition,
-          });
-        }
       }
-      if (steps)
-        pendingTraversals.push({
-          snapshot,
-          mode,
-          scope,
-          sourceVerified,
-          axioms: memberAxioms,
-          nodes: memberNodes,
-          steps,
-        });
     }
+    // Preserve reverse admission and cancellation points. Factory-proven
+    // snapshots need no retained per-node validation records.
     const validateStructure = createStructuralValidator();
-    for (let index = nodes.length - 1; index >= 0; index -= 1) {
+    for (let index = nodeCount - 1; index >= 0; index--) {
       budget.check();
       if (budget.shouldYield()) await budget.yieldTurn();
-      if (!allStructuresPrepared) validateStructure(nodes[index].value);
-    }
-    // Publish only after complete immutable shape/structure admission. Source
-    // assessment retains its own uncached traversal and provenance checks.
-    for (const entry of pendingTraversals) {
-      const variants = preparedTraversals.get(entry.snapshot) ?? [];
-      variants[entry.mode] = Object.freeze({
-        scope: entry.scope,
-        sourceVerified: entry.sourceVerified,
-        axioms: Object.freeze(entry.axioms.map(Object.freeze)),
-        nodes: Object.freeze(entry.nodes.map(Object.freeze)),
-        steps: Object.freeze(entry.steps),
-      });
-      preparedTraversals.set(entry.snapshot, variants);
+      if (untrusted.at(-1)?.index === index)
+        validateStructure(untrusted.pop().value);
     }
     if (profile !== "DL")
       await inspectProfileRules(

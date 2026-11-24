@@ -1,47 +1,38 @@
 import RdfDataFactory from "@rdfjs/data-model/Factory.js";
 import { OWLOntologyStorageError } from "../../io/errors.js";
-import { OWLOntology } from "../../model/owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "../../model/owlOntologyLoaderConfiguration.js";
 import { OwlToRdfTranslator } from "../mapping/owlToRdfTranslator.js";
 import { RdfToOwlTranslator } from "../mapping/rdfToOwlTranslator.js";
 import { hasNormalizedSingleton } from "../model/setConstructs.js";
-import { compareOntologies } from "../model/ontologyStructuralIsomorphism.js";
+import { compareStoredOntology } from "../model/ontologyStructuralIsomorphism.js";
+import { snapshotAxioms, sortedStructuralValues } from "./snapshotValues.js";
 
-const preparations = new WeakMap();
 const configurations = new WeakMap();
 
-const sorted = (values) =>
-  [...values].sort((a, b) =>
-    a.structuralKey() < b.structuralKey()
-      ? -1
-      : a.structuralKey() > b.structuralKey()
-        ? 1
-        : 0,
-  );
-
-/** Isolate one committed direct revision, with stable order and no manager.
- * Reuse immutable preparation only; mapping, rendering and reverse proof still
- * execute on every save with independent blank-node allocation.
- */
+/** Stable traversal of the captured revision without cloning its model or publication sets. */
 export const createRdfStorageOntology = (snapshot) => {
-  let ontology = preparations.get(snapshot);
-  if (ontology) return ontology;
-  ontology = new OWLOntology({
+  const direct = {
     ontologyID: snapshot.ontologyID,
-    annotations: sorted(snapshot.directOntologyAnnotations),
-    axioms: sorted(snapshot.directAxioms),
-    imports: sorted(snapshot.authoredImportDeclarations),
-  });
-  preparations.set(snapshot, ontology);
-  return ontology;
+    annotations: sortedStructuralValues(snapshot.directOntologyAnnotations),
+    axioms: sortedStructuralValues(snapshotAxioms(snapshot)),
+    imports: sortedStructuralValues(snapshot.authoredImportDeclarations),
+  };
+  return {
+    direct,
+    getOntologyID: () => direct.ontologyID,
+    getAnnotations: () => direct.annotations,
+    getAxioms: () => direct.axioms,
+    getImportsDeclarations: () => direct.imports,
+    getAxiomsByType: (kind) =>
+      direct.axioms.values().filter((axiom) => axiom.kind === kind),
+  };
 };
 
 /** Each save owns its blank-node allocator independently of earlier parsing. */
 export const mapStorageOntologyToRdf = (ontology, options) =>
-  new OwlToRdfTranslator({ dataFactory: new RdfDataFactory() }).translate(
-    ontology,
-    options,
-  );
+  new OwlToRdfTranslator({
+    dataFactory: new RdfDataFactory(),
+  }).translateForStorage(ontology, options);
 
 export const rdfStorageConfiguration = (
   snapshot,
@@ -50,11 +41,16 @@ export const rdfStorageConfiguration = (
   let byProfile = configurations.get(snapshot);
   const existing = byProfile?.get(behaviorProfileId);
   if (existing) return existing;
+  let parsingMode = "strict";
+  for (const axiom of snapshotAxioms(snapshot)) {
+    if (hasNormalizedSingleton(axiom)) {
+      parsingMode = "preserve";
+      break;
+    }
+  }
   const configuration = new OWLOntologyLoaderConfiguration({
     behaviorProfileId,
-    parsingMode: hasNormalizedSingleton(snapshot.directAxioms)
-      ? "preserve"
-      : "strict",
+    parsingMode,
     loadAnnotationAxioms: true,
     rdfDatasetGraphPolicy: "requireSingleGraph",
     collectWarnings: true,
@@ -86,7 +82,7 @@ export const verifyRdfStorage = async (
       `${syntaxName} reconstruction must be a diagnostic-free default graph`,
       { reason: "ONTOLOGY_NOT_REPRESENTABLE" },
     );
-  const comparison = compareOntologies(original, ontology);
+  const comparison = compareStoredOntology(original.direct, ontology);
   if (!comparison.equal)
     throw new OWLOntologyStorageError(
       `${syntaxName} does not preserve the ontology's direct OWL structure`,

@@ -285,3 +285,25 @@ test("the explicit work budget is shared across preparation and every STAR pass"
   );
   expect(await star.extract([a])).toEqual([]);
 });
+
+test.each([
+  ["BOTTOM", false, 65, [0, 1]],
+  ["BOTTOM", true, 53, [0]],
+  ["TOP", false, 47, []],
+  ["TOP", true, 47, []],
+  ["STAR", false, 76, []],
+  ["STAR", true, 65, []],
+])(
+  "%s retains the exact captured two-link work boundary with filter %s",
+  async (mode, filtered, limit, ids) => {
+    const axioms = [ab, bc];
+    const extractor = new SyntacticLocalityModuleExtractor(mode, axioms);
+    const filter = filtered ? (value) => value === ab : undefined;
+    await expect(
+      extractor.extract([a], filter, { maxWork: limit - 1 }),
+    ).rejects.toBeInstanceOf(ResourceLimitError);
+    expect(await extractor.extract([a], filter, { maxWork: limit })).toEqual(
+      ids.map((id) => axioms[id]),
+    );
+  },
+);

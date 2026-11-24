@@ -13,7 +13,9 @@ import {
   OWLOntologyStorageError,
   ResourceLimitError,
 } from "../../../io/errors.js";
-import { StringDocumentSource } from "../../../io/stringDocumentSource.js";
+import { StreamDocumentSource } from "../../../io/streamDocumentSource.js";
+import { utf8Chunks } from "../utf8ChunkWriter.js";
+import { collectStorageText } from "../storageFailureOutput.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
 import { rdfDataFactory } from "../../rdfjs/environment.js";
 import { OWL_NAMESPACE, RDF_VOCABULARY } from "../../rdfjs/vocabulary.js";
@@ -22,7 +24,7 @@ import { readAnonymousIndividualRdfNodes } from "../../mapping/owlToRdfTranslato
 
 import { OntologyStructuralComparisonLimitError } from "../../model/ontologyStructuralIsomorphism.js";
 import { RdfXmlSyntaxAdapter } from "../../parsing/rdfxml/rdfXmlSyntaxAdapter.js";
-import { writeRdfXmlGraph } from "./rdfXmlGraphWriter.js";
+import { rdfXmlGraphChunks } from "./rdfXmlGraphWriter.js";
 import { defaultDocumentStoragePolicy } from "../../behavior/ontologyBehaviorContext.js";
 import { readStorageFormatParameters } from "../storageFormatParameters.js";
 
@@ -94,78 +96,87 @@ function retainGenericPropertyRoles(ontology, dataset) {
 /** Private composition seam for testing mapping defects, never a manager option. */
 export const createRdfXmlStorer = ({
   mapOntologyToRdf: map = mapStorageOntologyToRdf,
-} = {}) =>
-  Object.freeze({
-    formatKey: OWLDocumentFormats.RDF_XML.key,
-    async render(
-      snapshot,
+} = {}) => {
+  async function prepare(
+    snapshot,
+    format,
+    writerContext,
+    documentStoragePolicy = defaultDocumentStoragePolicy,
+  ) {
+    const parameters = readStorageFormatParameters(
       format,
-      writerContext,
-      documentStoragePolicy = defaultDocumentStoragePolicy,
+      documentStoragePolicy,
+      ["force xsd:string on literals"],
+    );
+    if (
+      (documentStoragePolicy.rejectsUnknownFormatParameters &&
+        Object.keys(parameters).some(
+          (key) => key !== "force xsd:string on literals",
+        )) ||
+      (Object.hasOwn(parameters, "force xsd:string on literals") &&
+        (documentStoragePolicy.rejectsUnknownFormatParameters ||
+          parameters["force xsd:string on literals"] !== null) &&
+        typeof parameters["force xsd:string on literals"] !== "boolean")
     ) {
-      const parameters = readStorageFormatParameters(
-        format,
-        documentStoragePolicy,
-        ["force xsd:string on literals"],
+      throw new OWLOntologyStorageError(
+        "RDF/XML storage does not support output parameters",
       );
-      if (
-        (documentStoragePolicy.rejectsUnknownFormatParameters &&
-          Object.keys(parameters).some(
-            (key) => key !== "force xsd:string on literals",
-          )) ||
-        (Object.hasOwn(parameters, "force xsd:string on literals") &&
-          (documentStoragePolicy.rejectsUnknownFormatParameters ||
-            parameters["force xsd:string on literals"] !== null) &&
-          typeof parameters["force xsd:string on literals"] !== "boolean")
-      ) {
-        throw new OWLOntologyStorageError(
-          "RDF/XML storage does not support output parameters",
-        );
-      }
-      try {
-        const original = createRdfStorageOntology(snapshot);
-        const mappedDataset = map(original);
-        if (documentStoragePolicy.preservesGenericRdfPropertyRoles) {
-          retainGenericPropertyRoles(original, mappedDataset);
-        }
-        const ontologyIRI = snapshot.ontologyID.ontologyIRI?.value;
-        const text = writeRdfXmlGraph(mappedDataset, writerContext, {
-          prefixes:
-            format instanceof RDFXMLDocumentFormat
-              ? readRdfXmlPrefixes(format)
-              : undefined,
-          defaultNamespace: ontologyNamespace(ontologyIRI),
-          forceXsdString: parameters["force xsd:string on literals"] ?? false,
-          anonymousIndividuals: readAnonymousIndividualRdfNodes(mappedDataset),
-          documentStoragePolicy,
-        });
-        if (!documentStoragePolicy.requiresLosslessRdfRoundTrip) return text;
-        // Work only with the complete generated document. This context contains
-        // neither a manager, IRI mapper, nor document loader, so imports remain
-        // authored declarations rather than triggering external retrieval.
-        const configuration = rdfStorageConfiguration(snapshot);
-        const dataset = await new RdfXmlSyntaxAdapter().parse(
-          new StringDocumentSource(text),
-          configuration,
-        );
-        await verifyRdfStorage(original, dataset, configuration, "RDF/XML");
-        return text;
-      } catch (cause) {
-        if (cause instanceof OWLOntologyStorageError) throw cause;
-        // A bounded verification exhaustion is a storage failure, not proof that
-        // the ontology has no RDF/XML representation.
-        throw new OWLOntologyStorageError(
-          "RDF/XML lossless storage verification failed",
-          {
-            cause,
-            ...(cause instanceof ResourceLimitError ||
-            cause instanceof OntologyStructuralComparisonLimitError
-              ? {}
-              : { reason: "ONTOLOGY_NOT_REPRESENTABLE" }),
-          },
-        );
-      }
-    },
+    }
+    try {
+      const original = createRdfStorageOntology(snapshot);
+      const complete = documentStoragePolicy.preservesGenericRdfPropertyRoles
+        ? (dataset) => retainGenericPropertyRoles(original, dataset)
+        : undefined;
+      const mappedDataset =
+        map === mapStorageOntologyToRdf
+          ? map(original, { complete })
+          : map(original);
+      if (map !== mapStorageOntologyToRdf) complete?.(mappedDataset);
+      const ontologyIRI = snapshot.ontologyID.ontologyIRI?.value;
+      const context = {
+        prefixes:
+          format instanceof RDFXMLDocumentFormat
+            ? readRdfXmlPrefixes(format)
+            : undefined,
+        defaultNamespace: ontologyNamespace(ontologyIRI),
+        forceXsdString: parameters["force xsd:string on literals"] ?? false,
+        anonymousIndividuals: readAnonymousIndividualRdfNodes(mappedDataset),
+        documentStoragePolicy,
+      };
+      const fragments = () =>
+        rdfXmlGraphChunks(mappedDataset, writerContext, context);
+      if (!documentStoragePolicy.requiresLosslessRdfRoundTrip) return fragments;
+      // Work only with the complete generated document. This context contains
+      // neither a manager, IRI mapper, nor document loader, so imports remain
+      // authored declarations rather than triggering external retrieval.
+      const configuration = rdfStorageConfiguration(snapshot);
+      const dataset = await new RdfXmlSyntaxAdapter().parse(
+        new StreamDocumentSource(() => utf8Chunks(fragments())),
+        configuration,
+      );
+      await verifyRdfStorage(original, dataset, configuration, "RDF/XML");
+      return fragments;
+    } catch (cause) {
+      if (cause instanceof OWLOntologyStorageError) throw cause;
+      // A bounded verification exhaustion is a storage failure, not proof that
+      // the ontology has no RDF/XML representation.
+      throw new OWLOntologyStorageError(
+        "RDF/XML lossless storage verification failed",
+        {
+          cause,
+          ...(cause instanceof ResourceLimitError ||
+          cause instanceof OntologyStructuralComparisonLimitError
+            ? {}
+            : { reason: "ONTOLOGY_NOT_REPRESENTABLE" }),
+        },
+      );
+    }
+  }
+  return Object.freeze({
+    formatKey: OWLDocumentFormats.RDF_XML.key,
+    render: async (...args) => collectStorageText((await prepare(...args))()),
+    renderBytes: async (...args) => utf8Chunks((await prepare(...args))()),
   });
+};
 
 export const rdfXmlStorer = createRdfXmlStorer();

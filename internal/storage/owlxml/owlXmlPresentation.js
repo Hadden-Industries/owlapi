@@ -1,84 +1,37 @@
 import {
-  XMLNS_NAMESPACE,
-  XML_NAMESPACE,
   OWL_NAMESPACE,
   RDF_NAMESPACE,
-  XSD_NAMESPACE,
   RDFS_NAMESPACE,
+  XSD_NAMESPACE,
+  XML_NAMESPACE,
 } from "../../rdfjs/vocabulary.js";
+import { xmlAttribute } from "../xmlTokens.js";
 
-const prefixes = Object.freeze([
+export const owlXmlPrefixes = [
   ["owl", OWL_NAMESPACE],
   ["rdf", RDF_NAMESPACE],
   ["xml", XML_NAMESPACE],
   ["xsd", XSD_NAMESPACE],
   ["rdfs", RDFS_NAMESPACE],
-]);
+];
 
-/** Establish Java's OWL/XML document header using the existing DOM serializer.
- * Prefixes and the base are representation metadata, never access authority.
- */
-export function initializeJavaOwlXmlDocument(document, ontologyID) {
-  const root = document.documentElement;
-  root.setAttributeNS(XMLNS_NAMESPACE, "xmlns", OWL_NAMESPACE);
-  root.setAttributeNS(
-    XML_NAMESPACE,
-    "xml:base",
-    ontologyID.ontologyIRI?.value ?? OWL_NAMESPACE,
+/** Java puts its namespace declarations before identity attributes and wraps the header. */
+export function owlXmlHeader(ontologyID, java, width, iri) {
+  const attributes = [];
+  if (java) {
+    attributes.push(
+      xmlAttribute("xmlns", OWL_NAMESPACE),
+      xmlAttribute("xml:base", ontologyID.ontologyIRI?.value ?? OWL_NAMESPACE),
+    );
+    for (const [prefix, value] of owlXmlPrefixes.slice(1))
+      attributes.push(xmlAttribute("xmlns:" + prefix, value));
+  }
+  if (ontologyID.ontologyIRI)
+    attributes.push(xmlAttribute("ontologyIRI", iri(ontologyID.ontologyIRI)));
+  if (ontologyID.versionIRI)
+    attributes.push(xmlAttribute("versionIRI", iri(ontologyID.versionIRI)));
+  if (!java) attributes.push(xmlAttribute("xmlns", OWL_NAMESPACE));
+  return (
+    "<Ontology " + attributes.join(java ? "\n" + " ".repeat(width + 1) : " ")
   );
-  for (const name of ["rdf", "xml", "xsd", "rdfs"])
-    root.setAttributeNS(
-      XMLNS_NAMESPACE,
-      `xmlns:${name}`,
-      prefixes.find(([prefix]) => prefix === name)[1],
-    );
-  for (const [name, iri] of prefixes) {
-    const prefix = document.createElementNS(OWL_NAMESPACE, "Prefix");
-    prefix.setAttribute("name", name);
-    prefix.setAttribute("IRI", iri);
-    root.appendChild(prefix);
-  }
-}
-
-/** Serialize a completed or failed-render prefix. Add layout only between
- * element children so indentation never alters literal/IRI character content.
- * The document is renderer-owned and is consumed exactly once by this function.
- */
-export function serializeJavaOwlXmlDocument(
-  document,
-  serializer,
-  configuration,
-  { completed = true } = {},
-) {
-  const width = configuration.indenting
-    ? Math.max(0, configuration.indentSize)
-    : 0;
-  const pending = [{ element: document.documentElement, depth: 0 }];
-  while (pending.length) {
-    const { element, depth } = pending.pop();
-    const children = Array.from(element.childNodes).filter(
-      (node) => node.nodeType === 1,
-    );
-    if (!children.length) continue;
-    for (const child of children) {
-      element.insertBefore(
-        document.createTextNode(`\n${" ".repeat(width * (depth + 1))}`),
-        child,
-      );
-      pending.push({ element: child, depth: depth + 1 });
-    }
-    element.appendChild(
-      document.createTextNode(`\n${" ".repeat(width * depth)}`),
-    );
-  }
-  let text = serializer.serializeToString(document);
-  const rootEnd = text.indexOf(">");
-  const opening = text
-    .slice(0, rootEnd)
-    .replaceAll(/ (?=[^\s=]+=")/gu, (space, offset) =>
-      offset === "<Ontology".length ? space : `\n${" ".repeat(width + 1)}`,
-    );
-  text = opening + text.slice(rootEnd);
-  if (!completed) text = text.slice(0, text.lastIndexOf("</Ontology>"));
-  return `<?xml version="1.0"?>\n${text}${completed ? "\n" : ""}`;
 }

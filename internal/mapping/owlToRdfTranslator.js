@@ -22,6 +22,7 @@ import {
   dispatchObjectPropertyExpression,
 } from "../../model/dispatch.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../rdfjs/environment.js";
+import { CompactRdfGraph } from "../rdfjs/compactRdfGraph.js";
 import {
   OWL_VOCABULARY,
   RDF_NAMESPACE,
@@ -490,8 +491,8 @@ class TranslationSession {
     );
   }
 
-  translateOntology(ontology) {
-    const ontologyID = ontology.getOntologyID();
+  translateOntology(ontology, direct) {
+    const ontologyID = direct ? direct.ontologyID : ontology.getOntologyID();
     const ontologyNode = ontologyID.ontologyIRI
       ? this.#namedNode(ontologyID.ontologyIRI.value)
       : this.#dataFactory.blankNode();
@@ -508,15 +509,20 @@ class TranslationSession {
         this.#namedNode(ontologyID.versionIRI.value),
       );
     }
-    for (const declaration of ontology.getImportsDeclarations()) {
+    for (const declaration of direct
+      ? direct.imports
+      : ontology.getImportsDeclarations()) {
       this.#add(
         ontologyNode,
         OWL_VOCABULARY.imports,
         this.#namedNode(declaration.iri.value),
       );
     }
-    this.#addAnnotations(ontologyNode, ontology.getAnnotations());
-    for (const axiom of ontology.getAxioms()) {
+    this.#addAnnotations(
+      ontologyNode,
+      direct ? direct.annotations : ontology.getAnnotations(),
+    );
+    for (const axiom of direct ? direct.axioms : ontology.getAxioms()) {
       dispatchAxiom(axiom, this.#axiomHandlers);
     }
 
@@ -1119,5 +1125,18 @@ export class OwlToRdfTranslator {
       graph,
       maxQuads,
     }).translateOntology(ontology);
+  }
+
+  /** A writer owns its compact graph and may add syntax-required role declarations before sealing. */
+  translateForStorage(ontology, { maxQuads, complete } = {}) {
+    const dataset = new CompactRdfGraph();
+    new TranslationSession({
+      dataFactory: this.#dataFactory,
+      dataset,
+      graph: this.#dataFactory.defaultGraph(),
+      maxQuads,
+    }).translateOntology(ontology, ontology.direct);
+    complete?.(dataset);
+    return dataset.seal();
   }
 }
