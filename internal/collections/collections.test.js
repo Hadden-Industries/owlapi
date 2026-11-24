@@ -5,7 +5,10 @@ import {
 } from "../../model/structural.js";
 import { OWLDataFactory } from "../../model/owlDataFactory.js";
 import { StructuralAxiomSet } from "../model/axiomSemantics.js";
-import { compareStructuralValues } from "./structuralComparator.js";
+import {
+  compareJsonStrings,
+  compareStructuralValues,
+} from "./structuralComparator.js";
 import {
   hashStructuralValue,
   hashAxiomBodyWithoutAnnotations,
@@ -20,6 +23,28 @@ import { capturedKeysEqual } from "./structuralComparator.js";
 const factory = new OWLDataFactory();
 const owlClass = (name) => factory.getOWLClass(IRI.create(name));
 const sign = (left, right) => (left < right ? -1 : left > right ? 1 : 0);
+test("skips equal JSON string prefixes without losing the escape at a surrogate boundary", () => {
+  const prefix = 'urn:shared:"\\\n/namespace/';
+  const suffixes = [
+    "",
+    "!",
+    "A",
+    "\uD800",
+    "\uD800x",
+    "\uD800\uDC00",
+    "\uD800\uDC01",
+    "\uDC00",
+    "\u0000",
+    '"',
+    "\\",
+  ];
+  for (const left of suffixes)
+    for (const right of suffixes) {
+      expect(Math.sign(compareJsonStrings(prefix + left, prefix + right))).toBe(
+        sign(JSON.stringify(prefix + left), JSON.stringify(prefix + right)),
+      );
+    }
+});
 const names = [
   "a",
   "a!",

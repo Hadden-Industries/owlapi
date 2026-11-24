@@ -14,9 +14,13 @@ import {
   ResourceLimitError,
 } from "../../../io/errors.js";
 import { StreamDocumentSource } from "../../../io/streamDocumentSource.js";
+import { StringDocumentSource } from "../../../io/stringDocumentSource.js";
+import { DEFAULT_CHUNK_SIZE } from "../../parsing/rdf/streamPrimitives.js";
 import { utf8Chunks } from "../utf8ChunkWriter.js";
 import { collectStorageText } from "../storageFailureOutput.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
+import { isNativeWriterContext } from "../../../model/owlOntologyWriterConfiguration.js";
+import { hasValidatedStructuralSnapshot } from "../../model/structuralValidation.js";
 import { rdfDataFactory } from "../../rdfjs/environment.js";
 import { OWL_NAMESPACE, RDF_VOCABULARY } from "../../rdfjs/vocabulary.js";
 
@@ -98,6 +102,7 @@ export const createRdfXmlStorer = ({
   mapOntologyToRdf: map = mapStorageOntologyToRdf,
 } = {}) => {
   async function prepare(
+    stringTarget,
     snapshot,
     format,
     writerContext,
@@ -143,17 +148,56 @@ export const createRdfXmlStorer = ({
         anonymousIndividuals: readAnonymousIndividualRdfNodes(mappedDataset),
         documentStoragePolicy,
       };
-      const fragments = () =>
+      let fragments = () =>
         rdfXmlGraphChunks(mappedDataset, writerContext, context);
       if (!documentStoragePolicy.requiresLosslessRdfRoundTrip) return fragments;
+      let checkedText;
+      if (
+        stringTarget &&
+        map === mapStorageOntologyToRdf &&
+        documentStoragePolicy === defaultDocumentStoragePolicy &&
+        hasValidatedStructuralSnapshot(snapshot) &&
+        isNativeWriterContext(writerContext)
+      ) {
+        // The string target already needs this complete value. Reparse and
+        // publish those same bytes; nothing is cached across individual saves.
+        // Foreign producers/settings retain their observable replay. Stream
+        // targets retain the bounded two-pass verification and publication.
+        checkedText = collectStorageText(fragments());
+        fragments = () => [checkedText];
+      }
       // Work only with the complete generated document. This context contains
       // neither a manager, IRI mapper, nor document loader, so imports remain
       // authored declarations rather than triggering external retrieval.
       const configuration = rdfStorageConfiguration(snapshot);
-      const dataset = await new RdfXmlSyntaxAdapter().parse(
-        new StreamDocumentSource(() => utf8Chunks(fragments())),
-        configuration,
-      );
+      const parser = new RdfXmlSyntaxAdapter();
+      const byteSource = () =>
+        new StreamDocumentSource(() => utf8Chunks(fragments()));
+      let dataset;
+      if (
+        checkedText !== undefined &&
+        checkedText.length <= DEFAULT_CHUNK_SIZE &&
+        !checkedText.includes("parseType") &&
+        !checkedText.includes("XMLLiteral")
+      ) {
+        // The native writer has validated all XML characters. A complete
+        // literal-free small document can enter the same strict RDF provider
+        // as text, avoiding an encode/decode cycle. On refusal preserve the
+        // original byte-reader diagnosis.
+        try {
+          dataset = await parser.parse(
+            new StringDocumentSource(checkedText),
+            configuration,
+          );
+        } catch (cause) {
+          if (
+            cause?.code !== "XML_PARSE_ERROR" &&
+            cause?.code !== "OWL_SYNTAX_ERROR"
+          )
+            throw cause;
+          dataset = await parser.parse(byteSource(), configuration);
+        }
+      } else dataset = await parser.parse(byteSource(), configuration);
       await verifyRdfStorage(original, dataset, configuration, "RDF/XML");
       return fragments;
     } catch (cause) {
@@ -174,8 +218,10 @@ export const createRdfXmlStorer = ({
   }
   return Object.freeze({
     formatKey: OWLDocumentFormats.RDF_XML.key,
-    render: async (...args) => collectStorageText((await prepare(...args))()),
-    renderBytes: async (...args) => utf8Chunks((await prepare(...args))()),
+    render: async (...args) =>
+      collectStorageText((await prepare(true, ...args))()),
+    renderBytes: async (...args) =>
+      utf8Chunks((await prepare(false, ...args))()),
   });
 };
 

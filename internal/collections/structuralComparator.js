@@ -14,8 +14,15 @@ export function compareJsonStrings(left, right) {
   if (left === right) {
     return 0;
   }
-  let i = 0,
-    j = 0,
+  // Identical IRI namespace prefixes have identical JSON bytes. A common
+  // high surrogate is the only unit whose escaping can depend on the first
+  // differing unit; compare it with its original neighbor when necessary.
+  const limit = Math.min(left.length, right.length);
+  let i = 0;
+  while (i < limit && left.charCodeAt(i) === right.charCodeAt(i)) i++;
+  const preceding = left.charCodeAt(i - 1);
+  if (preceding >= 0xd800 && preceding <= 0xdbff) i--;
+  let j = i,
     aPart = 0,
     bPart = 0;
   for (;;) {

@@ -252,6 +252,7 @@ function* serializeGraph(dataset, policy, context) {
   };
   const element = (namespace, name) => ({ namespace, name, attributes: [] });
   const opening = (node) =>
+    node.opening ??
     "<" + node.name + node.attributes.map((a) => " " + a.text).join("");
   // Previous admission charges standalone elements, including namespace
   // declarations needed outside their normal document scope.
@@ -288,6 +289,14 @@ function* serializeGraph(dataset, policy, context) {
       throw new ResourceLimitError("RDF/XML construction budget exceeded", {
         limit: documentStoragePolicy.maxOutputBytes,
       });
+  };
+  const admitNode = (node, text) => {
+    // Native finite budgets charge the same detached header during
+    // construction and output prediction. Only the active node retains it.
+    if (nativeCommentPolicy === true) node.opening = opening(node);
+    const size = standaloneSize(node, text);
+    if (nativeCommentPolicy === true) node.standaloneBytes = size;
+    chargeConstruction(size);
   };
   const root = element(RDF_NAMESPACE, "rdf:RDF");
   const validatedIris = new Set();
@@ -722,7 +731,7 @@ function* serializeGraph(dataset, policy, context) {
       (depth === 1 && incoming.has(key))
     )
       resourceAttribute(description, term, "rdf:about");
-    chargeConstruction(standaloneSize(description));
+    admitNode(description);
     yield { kind: "start", node: description };
     if (!subject || emitted.has(key)) {
       yield { kind: "end" };
@@ -758,7 +767,7 @@ function* serializeGraph(dataset, policy, context) {
           );
         }
         checkCharacters(quad.object.value);
-        chargeConstruction(standaloneSize(property, quad.object.value));
+        admitNode(property, quad.object.value);
         yield {
           kind: "literal",
           node: property,
@@ -772,7 +781,7 @@ function* serializeGraph(dataset, policy, context) {
             : null;
         if (list) {
           attribute(property, RDF_NAMESPACE, "rdf:parseType", "Collection");
-          chargeConstruction(standaloneSize(property));
+          admitNode(property);
           yield { kind: "start", node: property };
           for (const cell of list.cells) {
             emitted.add(cell);
@@ -791,13 +800,13 @@ function* serializeGraph(dataset, policy, context) {
           !path.has(keys[2]) &&
           !emitted.has(keys[2])
         ) {
-          chargeConstruction(standaloneSize(property));
+          admitNode(property);
           yield { kind: "start", node: property };
           nested.add(keys[2]);
           yield* renderNode(quad.object, path, depth + 1);
         } else {
           resourceAttribute(property, quad.object, "rdf:resource");
-          chargeConstruction(standaloneSize(property));
+          admitNode(property);
           yield { kind: "start", node: property };
         }
         yield { kind: "end" };
@@ -985,7 +994,9 @@ function* serializeGraph(dataset, policy, context) {
       yield event.text;
       continue;
     }
-    charge(standaloneSize(event.node, event.text));
+    charge(
+      event.node.standaloneBytes ?? standaloneSize(event.node, event.text),
+    );
     const start = parent ? opening(event.node) : rootStart;
     if (event.kind === "start") {
       stack.push({ node: event.node, start, children: false, comment: false });

@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { jest } from "@jest/globals";
 import { OWLManager } from "../../../apibinding/index.js";
 import { OWLDocumentFormats } from "../../../formats/index.js";
 import {
@@ -15,6 +16,8 @@ import {
   OWL_OBJECT_KINDS,
 } from "../../../model/index.js";
 import { OwlToRdfTranslator } from "../../mapping/owlToRdfTranslator.js";
+import { RdfToOwlTranslator } from "../../mapping/rdfToOwlTranslator.js";
+import { CompactRdfGraph } from "../../rdfjs/compactRdfGraph.js";
 import { OntologyState } from "../../model/ontologyState.js";
 import {
   compareOntologies,
@@ -95,6 +98,37 @@ const requireRepresentabilityFailure = async (
 };
 
 describe("manager-selected lossless RDF/XML storage", () => {
+  it("renders the exact normative string once and rechecks its parsed OWL structure", async () => {
+    const manager = OWLManager.createOWLOntologyManager();
+    const ontology = await read(
+      manager,
+      "Ontology(<urn:once> Declaration(Class(<urn:once:C>)))",
+    );
+    const mapped = jest.spyOn(
+      OwlToRdfTranslator.prototype,
+      "translateForStorage",
+    );
+    const traversal = jest.spyOn(
+      CompactRdfGraph.prototype,
+      "forEachMatchingRow",
+    );
+    const reconstructed = jest.spyOn(RdfToOwlTranslator.prototype, "translate");
+    try {
+      const target = new StringDocumentTarget();
+      await manager.saveOntology(ontology, OWLDocumentFormats.RDF_XML, target);
+      expect(target.toString()).toContain("urn:once:C");
+      expect(reconstructed).toHaveBeenCalledTimes(1);
+      expect(mapped).toHaveBeenCalledTimes(1);
+      const graph = mapped.mock.results[0].value;
+      expect(
+        traversal.mock.instances.filter((owner) => owner === graph),
+      ).toHaveLength(1);
+    } finally {
+      reconstructed.mockRestore();
+      traversal.mockRestore();
+      mapped.mockRestore();
+    }
+  });
   it.each(["normative-v1", "java-owlapi-5.5.1"])(
     "preserves an ontology IRI with a nonempty fragment in %s",
     async (behaviorProfileId) => {

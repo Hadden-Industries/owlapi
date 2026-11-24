@@ -1,5 +1,7 @@
 import { OWLObjectKind } from "../../model/kinds.js";
 import { readOntologySnapshot } from "../../model/owlOntology.js";
+import { readSnapshotAxioms } from "./ontologyState.js";
+import { capturedKeysEqual } from "../collections/structuralComparator.js";
 import {
   isCanonicalStructuralObject,
   OWLStructuralObject,
@@ -497,7 +499,12 @@ const runStructuralMatch = (initialTask) => {
   return task;
 };
 
-const compareStructuralCollections = (leftValues, rightValues, context) => {
+const compareStructuralCollections = (
+  leftValues,
+  rightValues,
+  context,
+  uniqueNativeRight = false,
+) => {
   if (leftValues.length !== rightValues.length) return null;
   if (
     Object.getOwnPropertyDescriptor(
@@ -511,6 +518,18 @@ const compareStructuralCollections = (leftValues, rightValues, context) => {
     leftValues.every(isNativeGroundStructuralObject) &&
     rightValues.every(isNativeGroundStructuralObject)
   ) {
+    // A freshly reconstructed native axiom table proves its representatives
+    // are distinct. Equal values in the same order are already a complete
+    // bijection; verify every pair independently before charging the original
+    // search budget. Other orders, overrides and anonymous mappings keep
+    // their original matching and diagnostic path.
+    if (
+      uniqueNativeRight &&
+      leftValues.every((value, i) => capturedKeysEqual(value, rightValues[i]))
+    ) {
+      for (let i = 0; i < leftValues.length; i++) consumeSearchState(context);
+      return createEmptyAnonymousIndividualMapping();
+    }
     const keys = new Set(
       leftValues.map((value) => nativeStructuralKey.call(value)),
     );
@@ -645,7 +664,12 @@ const mismatchResult = (category, path) =>
 
 const EQUAL_RESULT = Object.freeze({ equal: true, mismatch: null });
 
-const compareSnapshots = (leftSnapshot, rightSnapshot, normalizedOptions) => {
+const compareSnapshots = (
+  leftSnapshot,
+  rightSnapshot,
+  normalizedOptions,
+  nativeRightAxioms = false,
+) => {
   const context = {
     maximumSearchStates: normalizedOptions.maximumSearchStates,
     searchStatesExamined: 0,
@@ -709,6 +733,9 @@ const compareSnapshots = (leftSnapshot, rightSnapshot, normalizedOptions) => {
         leftComparedValues,
         rightComparedValues,
         context,
+        nativeRightAxioms &&
+          leftSnapshot.annotations.length === 0 &&
+          rightSnapshot.annotations.length === 0,
       )
     ) {
       return mismatchResult(
@@ -738,4 +765,5 @@ export const compareStoredOntology = (leftSnapshot, ontology) =>
     leftSnapshot,
     createOntologySnapshot(ontology, "right"),
     normalizeOptions({}),
+    readSnapshotAxioms(readOntologySnapshot(ontology)).hasNativeKeys,
   );

@@ -18,6 +18,8 @@ const DEFAULT_INDENT_STATE = 4 * STATE_STRIDE;
 // These fixed registry policies preserve all fields or reset indent and banners.
 // Keep setters explicit to avoid allocating an intermediate record on each copy.
 const nativeReads = new WeakMap();
+const nativeWriterContexts = new WeakSet();
+export const isNativeWriterContext = (value) => nativeWriterContexts.has(value);
 const definitionForOptions = (options) => {
   if (
     options !== undefined &&
@@ -52,6 +54,7 @@ export class OWLOntologyWriterConfiguration {
           saveIds: !!(state & SAVE_IDS_FLAG),
         });
         nativeReads.set(configuration, values);
+        nativeWriterContexts.add(values);
       }
       return values;
     };
