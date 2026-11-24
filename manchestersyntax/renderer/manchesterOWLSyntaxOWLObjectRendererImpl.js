@@ -2,7 +2,7 @@ import { XSD_NAMESPACE as XSD } from "../../internal/rdfjs/vocabulary.js";
 import { ResourceLimitError } from "../../io/errors.js";
 import { ENTITY_KINDS, OWLObjectKind as K } from "../../model/kinds.js";
 import { sortedDisplayObjects } from "../../internal/model/structuralDisplayOrder.js";
-import { validateStructuralGraph } from "../../internal/model/structuralValidation.js";
+import { checkStructuralGraphLimits } from "../../internal/model/structuralValidation.js";
 import { SimpleShortFormProvider } from "../../util/simpleShortFormProvider.js";
 import { OntologyBehaviorContext } from "../../internal/behavior/ontologyBehaviorContext.js";
 
@@ -263,7 +263,7 @@ export class ManchesterOWLSyntaxOWLObjectRendererImpl {
       this.#behaviorContext.behaviorProfileDefinition.computationResourcePolicy
         .manchesterRenderingLimits;
     try {
-      validateStructuralGraph(
+      checkStructuralGraphLimits(
         object,
         supportedKinds,
         limits.maxDepth,

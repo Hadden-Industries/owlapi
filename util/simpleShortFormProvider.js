@@ -7,6 +7,8 @@ import {
 } from "../model/structural.js";
 import { ncNameSuffix } from "../internal/parsing/xml/xmlNames.js";
 
+const ENTITY_KIND_SET = new Set(ENTITY_KINDS);
+
 function checkTupleReceiver(value) {
   const method = OWLStructuralObject.prototype.toStructuralTuple;
   if (
@@ -29,8 +31,20 @@ export const iriShortForm = (iri) => {
 export class SimpleShortFormProvider {
   getShortForm(entity) {
     if (
+      isFactoryStructuralObject(entity) &&
+      ENTITY_KIND_SET.has(entity.kind) &&
+      OWLStructuralObject.prototype.toStructuralTuple ===
+        nativeStructuralMethods.toStructuralTuple &&
+      OWLStructuralObject.prototype.structuralKey ===
+        nativeStructuralMethods.structuralKey &&
+      isFactoryStructuralObject(entity.iri) &&
+      entity.iri.kind === K.IRI
+    ) {
+      return ncNameSuffix(entity.iri.value) ?? `<${entity.iri.value}>`;
+    }
+    if (
       !isCanonicalStructuralObject(entity) ||
-      !ENTITY_KINDS.includes(entity.kind)
+      !ENTITY_KIND_SET.has(entity.kind)
     )
       throw new TypeError("entity must be a named OWL entity");
     // Authenticate the private brand without forcing a display-only key string.

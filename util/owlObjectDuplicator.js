@@ -18,6 +18,7 @@ export class OWLObjectDuplicator {
   #iris;
   #literals;
   #anonymous = new Map();
+  #resolveEntity;
   #scope = `owlapi:duplicator:${nextDuplicator++}`;
 
   constructor(first, second, third) {
@@ -48,13 +49,21 @@ export class OWLObjectDuplicator {
       }
     }
     this.#factory = transformFactory(manager);
+    this.#resolveEntity = entityResolver(
+      this.#factory,
+      this.#entities,
+      this.#iris,
+    );
     Object.freeze(this);
   }
 
   duplicateObject(object) {
-    const entities = entityResolver(this.#factory, this.#entities, this.#iris);
     return transformObject(object, this.#factory, (value) => {
-      if (value.kind === K.LITERAL && this.#literals.has(value.structuralKey()))
+      if (
+        this.#literals.size > 0 &&
+        value.kind === K.LITERAL &&
+        this.#literals.has(value.structuralKey())
+      )
         return this.#literals.get(value.structuralKey()).value;
       if (value.kind === K.ANONYMOUS_INDIVIDUAL) {
         const key = value.structuralKey();
@@ -68,7 +77,7 @@ export class OWLObjectDuplicator {
           );
         return this.#anonymous.get(key);
       }
-      return entities(value);
+      return this.#resolveEntity(value);
     });
   }
 }

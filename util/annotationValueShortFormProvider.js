@@ -24,6 +24,7 @@ const stringShortForm = (provider, entity) => {
  */
 export class AnnotationValueShortFormProvider {
   #properties;
+  #propertyEntries;
   #languages = new Map();
   #ontologies;
   #alternate;
@@ -68,6 +69,16 @@ export class AnnotationValueShortFormProvider {
       );
     this.#ontologies = ontologySetProvider;
     this.#alternate = alternateShortFormProvider;
+    this.#propertyEntries = Object.freeze(
+      this.#properties.map((property) =>
+        Object.freeze({
+          property,
+          propertyKey: captureStructuralKey(property),
+          preferences:
+            this.#languages.get(property.structuralKey())?.languages ?? [],
+        }),
+      ),
+    );
     Object.freeze(this);
   }
 
@@ -76,25 +87,38 @@ export class AnnotationValueShortFormProvider {
     const provided = this.#ontologies.ontologies();
     if (!provided || typeof provided[Symbol.iterator] !== "function")
       throw new TypeError("ontologies() must return an iterable");
-    const snapshots = [...provided].map((ontology) =>
-      readLoadedImportsClosure(ontology).map((member) =>
-        readOntologyModel(readOntologySnapshot(member)),
-      ),
-    );
-    for (const property of this.#properties) {
-      const preferences =
-        this.#languages.get(property.structuralKey())?.languages ?? [];
-      const candidates = snapshots.flatMap((members) =>
-        members
-          .flatMap((member) =>
-            member.annotationAssertions(
-              captureStructuralKey(entity.iri),
-              captureStructuralKey(property),
-            ),
-          )
-          .map((axiom) => axiom.value)
-          .sort(compareDisplayObjects),
+    const snapshots = [];
+    for (const ontology of provided) {
+      snapshots.push(
+        readLoadedImportsClosure(ontology).map((member) =>
+          readOntologyModel(readOntologySnapshot(member)),
+        ),
       );
+    }
+    const subjectKey = captureStructuralKey(entity.iri);
+    for (const { propertyKey, preferences } of this.#propertyEntries) {
+      const candidates = [];
+      for (let i = 0; i < snapshots.length; i++) {
+        const members = snapshots[i];
+        const start = candidates.length;
+        for (let j = 0; j < members.length; j++) {
+          members[j].forEachAnnotationAssertion(
+            subjectKey,
+            propertyKey,
+            (axiom) => candidates.push(axiom.value),
+          );
+        }
+        if (candidates.length - start > 1) {
+          if (start === 0) {
+            candidates.sort(compareDisplayObjects);
+          } else {
+            const sorted = candidates.slice(start).sort(compareDisplayObjects);
+            for (let k = 0; k < sorted.length; k++) {
+              candidates[start + k] = sorted[k];
+            }
+          }
+        }
+      }
       let selected;
       let bestLanguage = Number.MAX_SAFE_INTEGER;
       // Native encounter order matters: an IRI can replace a non-first language

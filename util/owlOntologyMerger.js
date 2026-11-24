@@ -4,9 +4,10 @@ import {
 } from "../internal/model/axiomSemantics.js";
 import { OWLObjectKind } from "../model/kinds.js";
 import { OWLOntology, readOntologySnapshot } from "../model/owlOntology.js";
+import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import { readSnapshotAxioms } from "../internal/model/ontologyState.js";
 import { OWLOntologyManager } from "../model/owlOntologyManager.js";
-import { OntologyBehaviorContext } from "../internal/behavior/ontologyBehaviorContext.js";
+import { resolveOntologyBehaviorDefinition } from "../internal/behavior/ontologyBehaviorContext.js";
 import { isCanonicalStructuralObject } from "../model/structural.js";
 
 const requireOntologySetProvider = (ontologySetProvider) => {
@@ -139,13 +140,13 @@ export class OWLOntologyMerger {
     const normalizedOntologyIRI = requireOptionalOntologyIRI(ontologyIRI);
     // A genuine destination manager owns this operation's profile. Existing
     // structural manager adapters retain the original snapshot contract.
-    const definition = new OntologyBehaviorContext(
+    const definition = resolveOntologyBehaviorDefinition(
       normalizedOntologyManager instanceof OWLOntologyManager
         ? OWLOntologyManager.prototype.getBehaviorProfileId.call(
             normalizedOntologyManager,
           )
         : "normative-v1",
-    ).behaviorProfileDefinition;
+    );
     if (
       definition.ontologyCopyPolicy.mergePublication === "before-provider-read"
     ) {
@@ -160,21 +161,34 @@ export class OWLOntologyMerger {
       for (const ontology of providerOntologies(this.#ontologySetProvider)) {
         const source = requireOntology(ontology, index++);
         if (source === mergedOntology) continue;
+        const snapshot = readOntologySnapshot(source);
         normalizedOntologyManager.addAxioms(
           mergedOntology,
-          collectAxiomUnion([source], this.#mergeOnlyLogicalAxioms),
+          this.#mergeOnlyLogicalAxioms
+            ? readOntologyModel(snapshot).logicalAxioms()
+            : readSnapshotAxioms(snapshot),
         );
       }
       return mergedOntology;
     }
     const ontologies = materializeProviderOntologies(this.#ontologySetProvider);
-    const axiomUnion = collectAxiomUnion(
-      ontologies,
-      this.#mergeOnlyLogicalAxioms,
-    );
     const mergedOntology = createTargetOntology(
       normalizedOntologyManager,
       normalizedOntologyIRI,
+    );
+    if (ontologies.length === 1) {
+      const snapshot = readOntologySnapshot(ontologies[0]);
+      normalizedOntologyManager.addAxioms(
+        mergedOntology,
+        this.#mergeOnlyLogicalAxioms
+          ? readOntologyModel(snapshot).logicalAxioms()
+          : readSnapshotAxioms(snapshot),
+      );
+      return mergedOntology;
+    }
+    const axiomUnion = collectAxiomUnion(
+      ontologies,
+      this.#mergeOnlyLogicalAxioms,
     );
     normalizedOntologyManager.addAxioms(mergedOntology, axiomUnion);
     return mergedOntology;

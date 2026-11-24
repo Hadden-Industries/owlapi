@@ -3,7 +3,17 @@ import { monotonicNow } from "../cooperativeCheckpoint.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 
 const WHITESPACE = new Set([" ", "\t", "\n", "\r"]);
-const UTF8_ENCODER = new TextEncoder();
+const utf8ByteLengthOfCodePoint = (codePoint) =>
+  codePoint < 0x80 ? 1 : codePoint < 0x800 ? 2 : codePoint < 0x10000 ? 3 : 4;
+const utf8ByteLength = (text) => {
+  let bytes = 0;
+  for (let i = 0; i < text.length;) {
+    const codePoint = text.codePointAt(i);
+    bytes += utf8ByteLengthOfCodePoint(codePoint);
+    i += codePoint > 0xffff ? 2 : 1;
+  }
+  return bytes;
+};
 const SINGLE_TOKENS = Object.freeze({
   "(": "(",
   ")": ")",
@@ -93,6 +103,23 @@ const LONGEST_MATCH_ALIASES = new Set([
   "≥",
   "≤",
 ]);
+const ALIAS_ENTRIES_BY_FIRST_CHAR = Object.create(null);
+for (const [alias, type] of OPERATOR_ALIASES) {
+  const first = alias[0];
+  let bucket = ALIAS_ENTRIES_BY_FIRST_CHAR[first];
+  if (!bucket) {
+    bucket = [];
+    ALIAS_ENTRIES_BY_FIRST_CHAR[first] = bucket;
+  }
+  bucket.push(
+    Object.freeze({
+      alias,
+      byteLength: utf8ByteLength(alias),
+      longestMatch: LONGEST_MATCH_ALIASES.has(alias),
+      type,
+    }),
+  );
+}
 const ID_DELIMITERS = new Set([
   " ",
   "\t",
@@ -254,25 +281,25 @@ export class DLSyntaxLexer {
     if (isAsciiDigit(character)) {
       return this.#readNumberOrId(location);
     }
-    for (const [alias, type] of OPERATOR_ALIASES) {
-      if (!this.#text.startsWith(alias, this.#cursor.offset)) {
-        continue;
+    const aliases = ALIAS_ENTRIES_BY_FIRST_CHAR[character];
+    if (aliases !== undefined) {
+      for (let i = 0; i < aliases.length; i += 1) {
+        const entry = aliases[i];
+        const { alias } = entry;
+        if (!this.#text.startsWith(alias, this.#cursor.offset)) {
+          continue;
+        }
+        if (
+          entry.longestMatch &&
+          isWordContinuation(this.#text[this.#cursor.offset + alias.length])
+        ) {
+          continue;
+        }
+        for (let index = 0; index < alias.length; index += 1) {
+          this.#advance();
+        }
+        return this.#emit(entry.type, alias, location, entry.byteLength);
       }
-      if (
-        LONGEST_MATCH_ALIASES.has(alias) &&
-        isWordContinuation(this.#text[this.#cursor.offset + alias.length])
-      ) {
-        continue;
-      }
-      for (let index = 0; index < alias.length; index += 1) {
-        this.#advance();
-      }
-      return this.#emit(
-        type,
-        alias,
-        location,
-        UTF8_ENCODER.encode(alias).byteLength,
-      );
     }
     return this.#readId(location);
   }
@@ -335,8 +362,7 @@ export class DLSyntaxLexer {
         break;
       }
       const codePoint = this.#text.codePointAt(this.#cursor.offset);
-      const item = String.fromCodePoint(codePoint);
-      byteLength += UTF8_ENCODER.encode(item).byteLength;
+      byteLength += utf8ByteLengthOfCodePoint(codePoint);
       if (byteLength > this.#configuration.maxTokenLength) {
         this.#resource(
           "maxTokenLength",
@@ -346,7 +372,7 @@ export class DLSyntaxLexer {
         );
       }
       this.#advance();
-      if (item.length === 2) {
+      if (codePoint > 0xffff) {
         this.#advance();
       }
     }

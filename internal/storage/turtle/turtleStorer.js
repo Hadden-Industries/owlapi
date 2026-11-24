@@ -20,7 +20,7 @@ import { XSD_NAMESPACE, RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { rdfEntitySectionName } from "../rdfEntitySections.js";
 import { readAnonymousIndividualRdfNodes } from "../../mapping/owlToRdfTranslator.js";
 import { OWL_OBJECT_KINDS } from "../../../model/kinds.js";
-import { validateStructuralGraph } from "../../model/structuralValidation.js";
+import { checkStructuralGraphLimits } from "../../model/structuralValidation.js";
 import {
   defaultDocumentStoragePolicy,
   defaultBehaviorProfileDefinition,
@@ -34,6 +34,8 @@ import {
 } from "../rdfStorage.js";
 
 // Same admission as the existing lossless RDF writer and parser recheck.
+
+const SUPPORTED_TURTLE_KINDS = new Set(OWL_OBJECT_KINDS);
 
 /** Exact Turtle through the locked native N3 writer and shared lossless gate. */
 async function prepareTurtle(
@@ -57,7 +59,6 @@ async function prepareTurtle(
     });
   // Bound the recursive normative RDF mapper before it allocates a graph;
   // a later parser recheck cannot protect the earlier mapping phase.
-  const supportedKinds = new Set(OWL_OBJECT_KINDS);
   for (const values of [
     [snapshot.ontologyID],
     snapshot.authoredImportDeclarations,
@@ -65,9 +66,9 @@ async function prepareTurtle(
     axioms,
   ])
     for (const value of values)
-      validateStructuralGraph(
+      checkStructuralGraphLimits(
         value,
-        supportedKinds,
+        SUPPORTED_TURTLE_KINDS,
         configuration.maxExpressionDepth,
         configuration.maxAnnotationDepth,
       );
