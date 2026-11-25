@@ -23,7 +23,10 @@ import {
 } from "./modelTraversal.js";
 import { usesNativeStructuralKeys } from "../../model/structural.js";
 import { readSnapshotAxioms } from "../model/ontologyState.js";
-import { inspectProfileRules } from "./profileRules.js";
+import {
+  createProfileNodeInspector,
+  inspectProfileRules,
+} from "./profileRules.js";
 import { defaultBehaviorProfileDefinition } from "../behavior/ontologyBehaviorContext.js";
 import { inspectLiteral, isBuiltinDatatype } from "./datatypes.js";
 import { inspectFacet } from "./facets.js";
@@ -96,9 +99,12 @@ const statusOf = (violations, unresolved) =>
 const frozen = (entries) =>
   Object.freeze(entries.map((entry) => Object.freeze(entry)));
 const validIriStrings = new Set();
+const SIMPLE_ASCII_IRI =
+  /^(?:https?:\/\/[A-Za-z0-9._-]+(?::\d+)?(?:\/[A-Za-z0-9._~!$&'()*+,;=:@/-]*)?|urn:[A-Za-z0-9][A-Za-z0-9-]*:[A-Za-z0-9._~!$&'()*+,;=:@/-]+)(?:#[A-Za-z0-9._~!$&'()*+,;=:@/-]*)?$/u;
 
 const isValidProfileIri = (iriString) => {
-  if (validIriStrings.has(iriString)) return true;
+  if (SIMPLE_ASCII_IRI.test(iriString) || validIriStrings.has(iriString))
+    return true;
   try {
     if (!iriString.isWellFormed()) return false;
     parseIri(iriString);
@@ -145,17 +151,25 @@ const checkModel = async (
     definitions = new Map(),
     datatypeDependencies = new Map();
   try {
-    await budget.checkpoint(0);
+    const startYield = budget.checkpointSync(0);
+    if (startYield) await startYield;
     const sourceRoots = includeSource
       ? await inspectSourceStructure(members, budget, violate)
       : new Map();
     let nodeCount = 0;
+    const noInterrupts =
+      budget.configuration.signal === undefined &&
+      budget.configuration.timeoutMs === null;
     const untrusted = [];
     for (const member of members) {
       const stored = readSnapshotAxioms(member.snapshot);
-      for (let i = 0; i < stored.length; i++) {
-        budget.check();
-        if (budget.shouldYield()) await budget.yieldTurn();
+      if (noInterrupts) {
+        budget.check(stored.length);
+      } else {
+        for (let i = 0; i < stored.length; i++) {
+          budget.check();
+          if (budget.shouldYield()) await budget.yieldTurn();
+        }
       }
       const stepCursor = createProfileStepCursor(
         member,
@@ -210,6 +224,8 @@ const checkModel = async (
         if (untrusted.at(-1)?.index === index)
           validateStructure(untrusted.pop().value);
       }
+    } else if (noInterrupts) {
+      budget.check(nodeCount);
     } else {
       for (let index = nodeCount - 1; index >= 0; index--) {
         budget.check();
@@ -225,16 +241,30 @@ const checkModel = async (
       allTrusted
         ? `${literal.datatype.iri.value}\0${literal.language}\0${literal.lexicalForm}`
         : literal.structuralKey();
-    if (profile !== "DL")
-      await inspectProfileRules(
+    const rulesStart = violations.length;
+    const fuseProfileNodes = profile !== "DL";
+    if (profile !== "DL") {
+      const rules = inspectProfileRules(
         profile,
         axioms,
         undefined,
         budget,
         violate,
         validationPolicy,
-        { members, sourceRoots, allTrusted },
+        { members, sourceRoots, allTrusted, skipNodes: fuseProfileNodes },
       );
+      if (rules) await rules;
+    }
+    const profileNodeViolations = [];
+    const profileNodeVisitor = fuseProfileNodes
+      ? createProfileNodeInspector(
+          profile,
+          budget,
+          (code, detail = {}) =>
+            profileNodeViolations.push({ code, ...detail }),
+          validationPolicy,
+        )
+      : undefined;
     for (let m = 0; m < members.length; m++) {
       const stored = readSnapshotAxioms(members[m].snapshot);
       for (let i = 0; i < stored.length; i++) {
@@ -263,7 +293,7 @@ const checkModel = async (
         node !== undefined;
         node = firstNodeCursor.next()
       ) {
-        budget.check();
+        budget.check(fuseProfileNodes ? 2 : 1);
         if (budget.shouldYield()) await budget.yieldTurn();
         const { value, scope } = node;
         if (value.kind === K.ONTOLOGY_ID) {
@@ -283,6 +313,7 @@ const checkModel = async (
             violate("IRI_INVALID", { scope });
           continue;
         }
+        if (profileNodeVisitor) profileNodeVisitor(node);
         if (entityKinds.has(value.kind)) {
           const iri = value.iri.value;
           const bit = ENTITY_BITS.get(value.kind);
@@ -352,6 +383,13 @@ const checkModel = async (
       }
     } finally {
       firstNodeCursor.close?.();
+      if (profileNodeViolations.length > 0) {
+        const tail = violations.slice(rulesStart);
+        violations.length = rulesStart;
+        for (let i = 0; i < profileNodeViolations.length; i++)
+          violations.push(profileNodeViolations[i]);
+        for (let i = 0; i < tail.length; i++) violations.push(tail[i]);
+      }
     }
     for (const [iri, mask] of entities) {
       budget.check();
@@ -375,23 +413,20 @@ const checkModel = async (
           violate("DATATYPE_DEFINITION_COUNT", { iri, count });
       }
     }
-    for (const from of datatypeDependencies.keys())
-      if (
-        (await reachable(datatypeDependencies, from, budget, false)).has(from)
-      )
-        violate("CYCLIC_DATATYPE_DEFINITION", { iri: from });
-    const nonsimple = await inspectPropertyHierarchy(
-      axioms,
-      budget,
-      violate,
-      members,
-    );
+    for (const from of datatypeDependencies.keys()) {
+      let dep = reachable(datatypeDependencies, from, budget, false);
+      if (dep instanceof Promise) dep = await dep;
+      if (dep.has(from)) violate("CYCLIC_DATATYPE_DEFINITION", { iri: from });
+    }
+    let nonsimple = inspectPropertyHierarchy(axioms, budget, violate, members);
+    if (nonsimple instanceof Promise) nonsimple = await nonsimple;
     const checkedLiterals = new Set(),
       checkedEntities = new Set();
     const secondNodeCursor = createScopedNodeCursor(
       members,
       sourceRoots,
       validationPolicy,
+      { skipIris: true },
     );
     try {
       for (
@@ -399,7 +434,7 @@ const checkModel = async (
         node !== undefined;
         node = secondNodeCursor.next()
       ) {
-        budget.check();
+        budget.check(1 + secondNodeCursor.drainSkipped());
         if (budget.shouldYield()) await budget.yieldTurn();
         const { value, scope } = node;
         if (value.kind === K.IRI) continue;
@@ -513,12 +548,24 @@ const checkModel = async (
           }
         }
       }
+      const tailSkipped = secondNodeCursor.drainSkipped();
+      if (tailSkipped > 0) budget.check(tailSkipped);
     } finally {
       secondNodeCursor.close();
     }
-    if (validationPolicy.checksAnonymousStructure)
-      await inspectAnonymousGraph(axioms, anonymous, budget, violate, members);
+    if (validationPolicy.checksAnonymousStructure) {
+      const anon = inspectAnonymousGraph(
+        axioms,
+        anonymous,
+        budget,
+        violate,
+        members,
+      );
+      if (anon) await anon;
+    }
     await budget.checkpoint(0);
+    await Promise.resolve();
+    budget.check(0);
   } catch (error) {
     if (error instanceof StructuralValidationError)
       violate("STRUCTURAL_OBJECT_INVALID");

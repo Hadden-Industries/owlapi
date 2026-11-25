@@ -1,8 +1,5 @@
 import { OWLObjectKind as K } from "../../model/kinds.js";
-import {
-  EMPTY_STRUCTURAL_SET,
-  isFactoryStructuralObject,
-} from "../../model/structural.js";
+import { EMPTY_STRUCTURAL_SET } from "../../model/structural.js";
 import { readSnapshotAxioms } from "../model/ontologyState.js";
 import { structuralFields } from "../model/structuralFields.js";
 import { hasValidatedStructuralSnapshot } from "../model/structuralValidation.js";
@@ -99,6 +96,13 @@ const createPooledFramePool = (scope, sourceVerified) => {
       return item;
     },
     release() {
+      for (let i = 0; i < pooledFrames.length; i++) {
+        const item = pooledFrames[i];
+        item.value = undefined;
+        item.parent = undefined;
+        item.definition = undefined;
+        item.fields = undefined;
+      }
       pooledFramesBusy = false;
     },
   };
@@ -143,7 +147,7 @@ const setupChildren = (current, value) => {
   }
   current.fields = current.sequence
     ? undefined
-    : current.trusted && isFactoryStructuralObject(value)
+    : current.trusted
       ? (FIELDS_BY_KIND[value.kind] ?? Object.keys(value))
       : Object.keys(value);
   current.index = (current.sequence ? value.length : current.fields.length) - 1;
@@ -156,6 +160,7 @@ const pushNextChild = (
   depth,
   frame,
   skipEmptySequences = false,
+  skipCounter = undefined,
 ) => {
   const index = current.index--;
   const field = current.sequence ? current.field : current.fields[index];
@@ -164,6 +169,10 @@ const pushNextChild = (
     : value[current.sequence ? index : field];
   if (!current.sequence) {
     if (!child || typeof child !== "object") return depth;
+    if (skipCounter && current.trusted && child.kind === K.IRI) {
+      skipCounter.count += 1;
+      return depth;
+    }
     if (skipEmptySequences && Array.isArray(child) && child.length === 0) {
       return depth;
     }
@@ -198,7 +207,7 @@ export function createProfileStepCursor(
   member,
   sourceRoots,
   policy,
-  { pooled = false, skipEmptySequences = false } = {},
+  { pooled = false, skipEmptySequences = false, skipIris = false } = {},
 ) {
   const { stored, trusted, roots, firstExtra } = prepareMemberRoots(
     member,
@@ -207,6 +216,7 @@ export function createProfileStepCursor(
   const { frames, frame, release } = pooled
     ? createPooledFramePool(member.scope, member.status === "verified")
     : createFramePool(member.scope, member.status === "verified");
+  const skipCounter = skipIris ? { count: 0 } : undefined;
   let root = roots.length;
   let depth = -1;
   let needsSetup = false;
@@ -259,21 +269,35 @@ export function createProfileStepCursor(
           depth,
           frame,
           skipEmptySequences,
+          skipCounter,
         );
       }
+    },
+    drainSkipped() {
+      if (!skipCounter || skipCounter.count === 0) return 0;
+      const count = skipCounter.count;
+      skipCounter.count = 0;
+      return count;
     },
     close: release,
   };
 }
 
 /** Synchronous cursor over non-skipped, non-sequence scoped profile nodes. */
-export function createScopedNodeCursor(members, sourceRoots, policy) {
+export function createScopedNodeCursor(
+  members,
+  sourceRoots,
+  policy,
+  { skipIris = false } = {},
+) {
   let memberIndex = 0;
+  let skipped = 0;
   let cursor =
     members.length > 0
       ? createProfileStepCursor(members[0], sourceRoots, policy, {
           pooled: true,
           skipEmptySequences: true,
+          skipIris,
         })
       : undefined;
 
@@ -287,6 +311,7 @@ export function createScopedNodeCursor(members, sourceRoots, policy) {
         ) {
           if (!step.skipped && !step.sequence) return step;
         }
+        if (skipIris) skipped += cursor.drainSkipped();
         cursor.close();
         memberIndex++;
         cursor =
@@ -295,11 +320,17 @@ export function createScopedNodeCursor(members, sourceRoots, policy) {
                 members[memberIndex],
                 sourceRoots,
                 policy,
-                { pooled: true, skipEmptySequences: true },
+                { pooled: true, skipEmptySequences: true, skipIris },
               )
             : undefined;
       }
       return undefined;
+    },
+    drainSkipped() {
+      if (!skipIris) return 0;
+      const total = skipped + (cursor ? cursor.drainSkipped() : 0);
+      skipped = 0;
+      return total;
     },
     close() {
       if (cursor !== undefined) {

@@ -252,6 +252,64 @@ function traversalWorkspace(measure) {
   };
 }
 
+const entityStackNodes = [];
+const entityStackFields = [];
+const entityStackPos = [];
+function collectFactoryEntities(root, emitEntity) {
+  entityStackNodes.length = 1;
+  entityStackFields.length = 1;
+  entityStackPos.length = 1;
+  entityStackNodes[0] = root;
+  entityStackFields[0] = structuralFields.get(root.kind);
+  entityStackPos[0] = 0;
+  try {
+    while (entityStackNodes.length) {
+      const level = entityStackNodes.length - 1;
+      const node = entityStackNodes[level];
+      const names = entityStackFields[level];
+      const index = entityStackPos[level];
+      const length = names ? names.length : node.length;
+      if (index < length) {
+        entityStackPos[level] = index + 1;
+        const child = node[names ? names[index] : index];
+        if (
+          !child ||
+          typeof child !== "object" ||
+          child === EMPTY_STRUCTURAL_SET
+        ) {
+          continue;
+        }
+        if (Array.isArray(child)) {
+          entityStackNodes.push(child);
+          entityStackFields.push(undefined);
+          entityStackPos.push(0);
+          continue;
+        }
+        const kind = child.kind;
+        if (kind === OWLObjectKind.IRI) continue;
+        if (entities.has(kind)) {
+          emitEntity(child);
+          continue;
+        }
+        const childFields = structuralFields.get(kind);
+        if (childFields) {
+          entityStackNodes.push(child);
+          entityStackFields.push(childFields);
+          entityStackPos.push(0);
+        }
+        continue;
+      }
+      entityStackNodes.pop();
+      entityStackFields.pop();
+      entityStackPos.pop();
+    }
+  } finally {
+    entityStackNodes.length = 0;
+    entityStackFields.length = 0;
+    entityStackPos.length = 0;
+  }
+}
+
 /** Captured syntactic-locality axiom base with structural set equality.
  * Constructor and query methods are synchronous; extract returns a fresh eager
  * axiom array asynchronously. Input capture never acquires ontology documents.
@@ -263,6 +321,7 @@ export class SyntacticLocalityModuleExtractor {
   #entities = new StructuralHashTable();
   #entityIds = new WeakMap();
   #index;
+  #nonFactoryFacts;
   #depth;
   #annotationDepth;
   #work;
@@ -271,6 +330,31 @@ export class SyntacticLocalityModuleExtractor {
   #entityEntries;
   #classOrders;
   #classOrderCollector;
+  #ensureMetrics() {
+    if (this.#depth) return;
+    const size = this.#base.size;
+    const depths = new Uint32Array(size);
+    const annotationDepths = new Uint32Array(size);
+    const work = new Float64Array(size);
+    const nodeCounts = new Uint32Array(size);
+    const inspectFactoryGraph = traversalWorkspace(true);
+    const nonFactory = this.#nonFactoryFacts;
+    const offsets = this.#entityOffsets;
+    for (let id = 0; id < size; id++) {
+      const nonFactoryEntry = nonFactory?.get(id);
+      const facts =
+        nonFactoryEntry ?? inspectFactoryGraph(this.#base.valueAt(id));
+      depths[id] = facts.depth;
+      annotationDepths[id] = facts.annotations;
+      nodeCounts[id] = facts.nodeCount ?? facts.order.length;
+      work[id] = facts.work + (offsets[id + 1] - offsets[id]);
+    }
+    this.#depth = depths;
+    this.#annotationDepth = annotationDepths;
+    this.#work = work;
+    this.#nodeCounts = nodeCounts;
+    this.#nonFactoryFacts = undefined;
+  }
   #entityIdOf(entity) {
     if (isFactoryStructuralObject(entity) && usesNativeStructuralKeys()) {
       const cached = this.#entityIds.get(entity);
@@ -306,14 +390,9 @@ export class SyntacticLocalityModuleExtractor {
       throw new TypeError("Axiom base must be iterable");
     }
     this.#mode = localityClass;
-    const depths = [],
-      annotationDepths = [],
-      work = [],
-      nodeCounts = [],
-      sigOffsets = [0],
-      sigEntities = [],
-      keys = [];
-    const inspectFactoryGraph = traversalWorkspace(true);
+    const sigOffsets = [0],
+      sigEntities = [];
+    let nonFactoryFacts;
     const useNativeEntities = usesNativeStructuralKeys();
     const factoryEntityIds = new Map();
     const resolveNativeEntity = (entity) => {
@@ -331,73 +410,79 @@ export class SyntacticLocalityModuleExtractor {
           throw new TypeError("Axiom base must contain OWL axioms");
         }
         const factoryAxiom = isFactoryStructuralObject(axiom);
-        const nonFactoryFacts = factoryAxiom ? undefined : admit(axiom),
+        const facts = factoryAxiom ? undefined : admit(axiom),
           size = this.#base.size,
           id = this.#base.add(axiom);
         if (id < size) {
           continue;
         }
-        if (
-          factoryAxiom &&
-          useNativeEntities &&
-          axiom.annotations === EMPTY_STRUCTURAL_SET
-        ) {
-          if (
-            axiom.kind === OWLObjectKind.DECLARATION_AXIOM &&
-            entities.has(axiom.entity.kind)
-          ) {
-            const eid = resolveNativeEntity(axiom.entity);
+        if (factoryAxiom && useNativeEntities) {
+          const emitNativeEntity = (entity) => {
+            const eid = resolveNativeEntity(entity);
             if (emit.id(eid, id)) {
               sigEntities.push(eid);
             }
-            sigOffsets.push(sigEntities.length);
-            nodeCounts.push(4);
-            depths.push(2);
-            annotationDepths.push(0);
-            work.push(9);
-            continue;
-          }
+          };
+          const unannotated = axiom.annotations === EMPTY_STRUCTURAL_SET;
           if (
+            unannotated &&
+            axiom.kind === OWLObjectKind.DECLARATION_AXIOM &&
+            entities.has(axiom.entity.kind)
+          ) {
+            emitNativeEntity(axiom.entity);
+          } else if (
+            unannotated &&
             axiom.kind === OWLObjectKind.SUBCLASS_OF_AXIOM &&
             axiom.subClass.kind === OWLObjectKind.CLASS &&
-            axiom.superClass.kind === OWLObjectKind.CLASS &&
-            axiom.subClass !== axiom.superClass &&
-            axiom.subClass.iri !== axiom.superClass.iri
+            axiom.superClass.kind === OWLObjectKind.CLASS
           ) {
-            const eid1 = resolveNativeEntity(axiom.subClass);
-            if (emit.id(eid1, id)) {
-              sigEntities.push(eid1);
+            emitNativeEntity(axiom.subClass);
+            if (axiom.superClass !== axiom.subClass) {
+              emitNativeEntity(axiom.superClass);
             }
-            const eid2 = resolveNativeEntity(axiom.superClass);
-            if (emit.id(eid2, id)) {
-              sigEntities.push(eid2);
-            }
-            sigOffsets.push(sigEntities.length);
-            nodeCounts.push(6);
-            depths.push(2);
-            annotationDepths.push(0);
-            work.push(15);
-            continue;
+          } else if (
+            unannotated &&
+            axiom.kind === OWLObjectKind.CLASS_ASSERTION_AXIOM &&
+            axiom.classExpression.kind === OWLObjectKind.CLASS &&
+            axiom.individual.kind === OWLObjectKind.NAMED_INDIVIDUAL
+          ) {
+            emitNativeEntity(axiom.classExpression);
+            emitNativeEntity(axiom.individual);
+          } else if (
+            unannotated &&
+            axiom.kind === OWLObjectKind.OBJECT_PROPERTY_RANGE_AXIOM &&
+            axiom.property.kind === OWLObjectKind.OBJECT_PROPERTY &&
+            axiom.range.kind === OWLObjectKind.CLASS
+          ) {
+            emitNativeEntity(axiom.property);
+            emitNativeEntity(axiom.range);
+          } else if (
+            unannotated &&
+            axiom.kind === OWLObjectKind.OBJECT_PROPERTY_DOMAIN_AXIOM &&
+            axiom.property.kind === OWLObjectKind.OBJECT_PROPERTY &&
+            axiom.domain.kind === OWLObjectKind.CLASS
+          ) {
+            emitNativeEntity(axiom.property);
+            emitNativeEntity(axiom.domain);
+          } else {
+            collectFactoryEntities(axiom, emitNativeEntity);
           }
+          sigOffsets.push(sigEntities.length);
+          continue;
         }
-        const facts = factoryAxiom
-          ? inspectFactoryGraph(axiom)
-          : nonFactoryFacts;
-        keys.length = 0;
-        const order = facts.order;
+        const inspected = facts ?? traversalWorkspace(true)(axiom);
+        const order = inspected.order;
         for (let i = 0; i < order.length; i++) {
           const value = order[i];
           if (entities.has(value.kind)) {
             if (useNativeEntities && factoryAxiom) {
               const eid = resolveNativeEntity(value);
               if (emit.id(eid, id)) {
-                keys.push(eid);
                 sigEntities.push(eid);
               }
             } else {
               const key = captureStructuralKey(value);
               if (emit(value, id, key)) {
-                keys.push(key);
                 sigEntities.push(
                   key === value
                     ? this.#entities.idOf(value)
@@ -408,16 +493,18 @@ export class SyntacticLocalityModuleExtractor {
           }
         }
         sigOffsets.push(sigEntities.length);
-        nodeCounts.push(order.length);
-        depths.push(facts.depth);
-        annotationDepths.push(facts.annotations);
-        work.push(facts.work + keys.length);
+        if (!factoryAxiom) {
+          nonFactoryFacts ??= new Map();
+          nonFactoryFacts.set(id, {
+            depth: inspected.depth,
+            annotations: inspected.annotations,
+            nodeCount: order.length,
+            work: inspected.work,
+          });
+        }
       }
     });
-    this.#depth = Uint32Array.from(depths);
-    this.#annotationDepth = Uint32Array.from(annotationDepths);
-    this.#work = Float64Array.from(work);
-    this.#nodeCounts = Uint32Array.from(nodeCounts);
+    this.#nonFactoryFacts = nonFactoryFacts;
     this.#entityOffsets = Int32Array.from(sigOffsets);
     this.#entityEntries = Uint32Array.from(sigEntities);
     this.#classOrders = new Array(this.#base.size);
@@ -454,6 +541,12 @@ export class SyntacticLocalityModuleExtractor {
     }
     await budget.checkpoint();
     budget.limit("maxAxioms", this.#base.size);
+    const { maxDepth, maxAnnotationDepth, maxWork, timeoutMs, signal } =
+      budget.configuration;
+    const hasMetricLimits =
+      maxDepth !== null || maxAnnotationDepth !== null || maxWork !== null;
+    const hasBudgetGuards =
+      hasMetricLimits || signal !== undefined || timeoutMs !== null;
     let traversal;
     const orderedNodes = (value) =>
       (traversal ??= traversalWorkspace(false))(value).order;
@@ -464,12 +557,17 @@ export class SyntacticLocalityModuleExtractor {
       if (!entities.has(entity?.kind)) {
         throw new TypeError("Seed must contain typed OWL entities");
       }
-      budget.check(
-        isFactoryStructuralObject(entity)
-          ? orderedNodes(entity).length
-          : admit(entity).order.length,
-      );
-      const id = this.#entities.idOf(entity);
+      if (maxWork !== null) {
+        budget.check(
+          isFactoryStructuralObject(entity)
+            ? orderedNodes(entity).length
+            : admit(entity).order.length,
+        );
+      } else {
+        if (!isFactoryStructuralObject(entity)) admit(entity);
+        budget.check(1);
+      }
+      const id = this.#entityIdOf(entity);
       if (id < 0) {
         throw new TypeError(
           "Seed entity is absent from the captured axiom base",
@@ -485,31 +583,44 @@ export class SyntacticLocalityModuleExtractor {
     if (!seeds.length) {
       return [];
     }
-    for (let id = 0; id < this.#base.size; id++) {
-      budget.check();
-      budget.limit("maxDepth", this.#depth[id]);
-      budget.limit("maxAnnotationDepth", this.#annotationDepth[id]);
-      budget.check(this.#work[id]);
-      if (budget.shouldYield()) {
-        await budget.yieldTurn();
+    if (hasMetricLimits) {
+      this.#ensureMetrics();
+      for (let id = 0; id < this.#base.size; id++) {
+        budget.check();
+        budget.limit("maxDepth", this.#depth[id]);
+        budget.limit("maxAnnotationDepth", this.#annotationDepth[id]);
+        budget.check(this.#work[id]);
+        if (budget.shouldYield()) {
+          await budget.yieldTurn();
+        }
+      }
+    } else if (hasBudgetGuards) {
+      for (let id = 0; id < this.#base.size; id++) {
+        budget.check();
+        if (budget.shouldYield()) {
+          await budget.yieldTurn();
+        }
       }
     }
-    const selected = new DenseBitSet(this.#base.size);
-    for (let id = 0; id < this.#base.size; id++) {
-      budget.check();
-      const include =
-        filter === undefined ? true : filter(this.#base.valueAt(id));
-      budget.check(0);
-      if (typeof include !== "boolean") {
-        throw new TypeError(
-          "Locality filter must return a synchronous boolean",
-        );
-      }
-      if (include) {
-        selected.add(id);
-      }
-      if (budget.shouldYield()) {
-        await budget.yieldTurn();
+    let selected;
+    if (filter !== undefined || hasBudgetGuards) {
+      selected = new DenseBitSet(this.#base.size);
+      for (let id = 0; id < this.#base.size; id++) {
+        budget.check();
+        const include =
+          filter === undefined ? true : filter(this.#base.valueAt(id));
+        budget.check(0);
+        if (typeof include !== "boolean") {
+          throw new TypeError(
+            "Locality filter must return a synchronous boolean",
+          );
+        }
+        if (include) {
+          selected.add(id);
+        }
+        if (budget.shouldYield()) {
+          await budget.yieldTurn();
+        }
       }
     }
 
@@ -533,7 +644,7 @@ export class SyntacticLocalityModuleExtractor {
             await budget.yieldTurn();
           }
           const id = entries[i];
-          if (!base.has(id) || mask.has(id)) {
+          if ((base !== undefined && !base.has(id)) || mask.has(id)) {
             continue;
           }
           const axiom = this.#base.valueAt(id);
@@ -549,7 +660,7 @@ export class SyntacticLocalityModuleExtractor {
               mode,
               budget,
               localityResults,
-              nodeCounts[id] + 1,
+              nodeCounts ? nodeCounts[id] + 1 : 1,
             )
           ) {
             continue;

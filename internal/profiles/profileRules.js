@@ -272,7 +272,265 @@ const elKey = (value, nativeKeys) => {
   return value.structuralKey();
 };
 
-const inspectELRanges = async (
+const finishImposedRanges = async (
+  ranges,
+  parents,
+  imposed,
+  budget,
+  key,
+  result,
+  visited,
+  pending,
+  current,
+  firstRange,
+  rangeIter,
+  firstParent,
+  parentIter,
+) => {
+  await budget.yieldTurn();
+  if (rangeIter) {
+    result.add(firstRange);
+    for (let rStep = rangeIter.next(); !rStep.done; rStep = rangeIter.next()) {
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      result.add(rStep.value);
+    }
+    for (const parent of parents.get(current) ?? []) {
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      pending.push(parent);
+    }
+  } else if (parentIter) {
+    pending.push(firstParent);
+    for (
+      let pStep = parentIter.next();
+      !pStep.done;
+      pStep = parentIter.next()
+    ) {
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      pending.push(pStep.value);
+    }
+  }
+  while (pending.length) {
+    budget.check();
+    if (budget.shouldYield()) await budget.yieldTurn();
+    const node = pending.pop();
+    if (visited.has(node)) continue;
+    visited.add(node);
+    for (const range of ranges.get(node) ?? []) {
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      result.add(range);
+    }
+    for (const parent of parents.get(node) ?? []) {
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      pending.push(parent);
+    }
+  }
+  imposed.set(key, result);
+  return result;
+};
+
+const inspectELRangesAsync = async (
+  members,
+  ranges,
+  rangeNodes,
+  parents,
+  imposed,
+  hasSubChains,
+  budget,
+  violate,
+  validationPolicy,
+  nativeKeys,
+  startM,
+  startA,
+  inSecondPass,
+  pendingStartM,
+  pendingStartA,
+  pendingIter,
+  pendingRange,
+  pendingResult,
+  pendingLastSet,
+  pendingHeadPromise,
+  pendingLastPromise,
+) => {
+  const imposedRanges = async (property) => {
+    const key = elKey(property, nativeKeys);
+    if (imposed.has(key)) return imposed.get(key);
+    const result = new Set(),
+      visited = new Set(),
+      pending = [key];
+    while (pending.length) {
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      const current = pending.pop();
+      if (visited.has(current)) continue;
+      visited.add(current);
+      for (const range of ranges.get(current) ?? []) {
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+        result.add(range);
+      }
+      for (const parent of parents.get(current) ?? []) {
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+        pending.push(parent);
+      }
+    }
+    imposed.set(key, result);
+    return result;
+  };
+  const edge = (sub, sup) => {
+    const key = elKey(sub, nativeKeys);
+    let set = parents.get(key);
+    if (!set) {
+      set = new Set();
+      parents.set(key, set);
+    }
+    set.add(elKey(sup, nativeKeys));
+  };
+  const handleRangeAxiom = (value) => {
+    const kind = value.kind;
+    if (kind === K.SUB_PROPERTY_CHAIN_AXIOM) {
+      hasSubChains = true;
+    } else if (kind === K.SUB_OBJECT_PROPERTY_AXIOM) {
+      edge(value.subProperty, value.superProperty);
+    } else if (kind === K.EQUIVALENT_OBJECT_PROPERTIES_AXIOM) {
+      const props = value.properties;
+      for (let i = 0; i < props.length; i++) {
+        budget.check();
+        edge(props[i], props[0]);
+        edge(props[0], props[i]);
+      }
+    } else if (kind === K.OBJECT_PROPERTY_RANGE_AXIOM) {
+      const key = elKey(value.property, nativeKeys);
+      let set = ranges.get(key);
+      if (!set) {
+        set = new Set();
+        ranges.set(key, set);
+      }
+      const rKey = elKey(value.range, nativeKeys);
+      set.add(rKey);
+      if (!rangeNodes.has(rKey)) rangeNodes.set(rKey, value.range);
+    }
+  };
+  if (!inSecondPass) {
+    await budget.yieldTurn();
+    for (let m = startM; m < members.length; m++) {
+      const stored = readSnapshotAxioms(members[m].snapshot);
+      for (let a = m === startM ? startA : 0; a < stored.length; a++) {
+        if (m !== startM || a !== startA) {
+          budget.check();
+          if (budget.shouldYield()) await budget.yieldTurn();
+        }
+        handleRangeAxiom(stored.valueAt(a));
+      }
+    }
+    startM = 0;
+    startA = 0;
+  } else {
+    startM = pendingStartM;
+    startA = pendingStartA;
+  }
+  for (let m = startM; m < members.length; m++) {
+    const { scope, snapshot } = members[m];
+    const stored = readSnapshotAxioms(snapshot);
+    if (!hasSubChains) {
+      for (let a = m === startM ? startA : 0; a < stored.length; a++) {
+        if (!(inSecondPass && m === pendingStartM && a === pendingStartA)) {
+          budget.check();
+          if (budget.shouldYield()) await budget.yieldTurn();
+        } else {
+          await budget.yieldTurn();
+        }
+      }
+      continue;
+    }
+    for (let a = m === startM ? startA : 0; a < stored.length; a++) {
+      const value = stored.valueAt(a);
+      if (inSecondPass && m === pendingStartM && a === pendingStartA) {
+        inSecondPass = false;
+        if (pendingIter) {
+          await budget.yieldTurn();
+          const lastSet = pendingLastSet;
+          if (pendingRange !== undefined && !lastSet.has(pendingRange)) {
+            violate("EL_CHAIN_RANGE_NOT_IMPOSED_ON_LAST_PROPERTY", {
+              profile: "EL",
+              scope,
+              range:
+                rangeNodes.get(pendingRange)?.structuralKey() ?? pendingRange,
+            });
+          }
+          for (
+            let step = pendingIter.next();
+            !step.done;
+            step = pendingIter.next()
+          ) {
+            budget.check();
+            if (budget.shouldYield()) await budget.yieldTurn();
+            if (!lastSet.has(step.value))
+              violate("EL_CHAIN_RANGE_NOT_IMPOSED_ON_LAST_PROPERTY", {
+                profile: "EL",
+                scope,
+                range:
+                  rangeNodes.get(step.value)?.structuralKey() ?? step.value,
+              });
+          }
+          continue;
+        }
+        let headRanges, lastRanges;
+        if (pendingHeadPromise) {
+          headRanges = await pendingHeadPromise;
+          lastRanges = validationPolicy.elLastChainPropertyInheritsRanges
+            ? await imposedRanges(value.chain.at(-1))
+            : (ranges.get(elKey(value.chain.at(-1), nativeKeys)) ?? new Set());
+        } else if (pendingLastPromise) {
+          headRanges = pendingResult;
+          lastRanges = await pendingLastPromise;
+        } else {
+          await budget.yieldTurn();
+          if (value.kind !== K.SUB_PROPERTY_CHAIN_AXIOM) continue;
+          headRanges = await imposedRanges(value.superProperty);
+          lastRanges = validationPolicy.elLastChainPropertyInheritsRanges
+            ? await imposedRanges(value.chain.at(-1))
+            : (ranges.get(elKey(value.chain.at(-1), nativeKeys)) ?? new Set());
+        }
+        for (const range of headRanges) {
+          budget.check();
+          if (budget.shouldYield()) await budget.yieldTurn();
+          if (!lastRanges.has(range))
+            violate("EL_CHAIN_RANGE_NOT_IMPOSED_ON_LAST_PROPERTY", {
+              profile: "EL",
+              scope,
+              range: rangeNodes.get(range)?.structuralKey() ?? range,
+            });
+        }
+        continue;
+      }
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
+      if (value.kind !== K.SUB_PROPERTY_CHAIN_AXIOM) continue;
+      const headRanges = await imposedRanges(value.superProperty);
+      const lastRanges = validationPolicy.elLastChainPropertyInheritsRanges
+        ? await imposedRanges(value.chain.at(-1))
+        : (ranges.get(elKey(value.chain.at(-1), nativeKeys)) ?? new Set());
+      for (const range of headRanges) {
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
+        if (!lastRanges.has(range))
+          violate("EL_CHAIN_RANGE_NOT_IMPOSED_ON_LAST_PROPERTY", {
+            profile: "EL",
+            scope,
+            range: rangeNodes.get(range)?.structuralKey() ?? range,
+          });
+      }
+    }
+  }
+};
+
+const inspectELRanges = (
   axioms,
   budget,
   violate,
@@ -301,7 +559,23 @@ const inspectELRanges = async (
     for (let a = 0; a < stored.length; a++) {
       const value = stored.valueAt(a);
       budget.check();
-      if (budget.shouldYield()) await budget.yieldTurn();
+      if (budget.shouldYield()) {
+        return inspectELRangesAsync(
+          members,
+          ranges,
+          rangeNodes,
+          parents,
+          imposed,
+          hasSubChains,
+          budget,
+          violate,
+          validationPolicy,
+          nativeKeys,
+          m,
+          a,
+          false,
+        );
+      }
       const kind = value.kind;
       if (kind === K.SUB_PROPERTY_CHAIN_AXIOM) {
         hasSubChains = true;
@@ -313,7 +587,34 @@ const inspectELRanges = async (
         const props = value.properties;
         for (let i = 0; i < props.length; i++) {
           budget.check();
-          if (budget.shouldYield()) await budget.yieldTurn();
+          if (budget.shouldYield()) {
+            return (async () => {
+              await budget.yieldTurn();
+              for (let k = i; k < props.length; k++) {
+                if (k !== i) {
+                  budget.check();
+                  if (budget.shouldYield()) await budget.yieldTurn();
+                }
+                edge(props[k], props[0]);
+                edge(props[0], props[k]);
+              }
+              return inspectELRangesAsync(
+                members,
+                ranges,
+                rangeNodes,
+                parents,
+                imposed,
+                hasSubChains,
+                budget,
+                violate,
+                validationPolicy,
+                nativeKeys,
+                a + 1 < stored.length ? m : m + 1,
+                a + 1 < stored.length ? a + 1 : 0,
+                false,
+              );
+            })();
+          }
           edge(props[i], props[0]);
           edge(props[0], props[i]);
         }
@@ -330,7 +631,35 @@ const inspectELRanges = async (
       }
     }
   }
-  const imposedRanges = async (property) => {
+  if (!hasSubChains) {
+    for (let m = 0; m < members.length; m++) {
+      const stored = readSnapshotAxioms(members[m].snapshot);
+      for (let a = 0; a < stored.length; a++) {
+        budget.check();
+        if (budget.shouldYield()) {
+          return inspectELRangesAsync(
+            members,
+            ranges,
+            rangeNodes,
+            parents,
+            imposed,
+            false,
+            budget,
+            violate,
+            validationPolicy,
+            nativeKeys,
+            m,
+            a,
+            true,
+            m,
+            a,
+          );
+        }
+      }
+    }
+    return undefined;
+  }
+  const imposedRangesSync = (property) => {
     const key = elKey(property, nativeKeys);
     if (imposed.has(key)) return imposed.get(key);
     const result = new Set(),
@@ -338,19 +667,83 @@ const inspectELRanges = async (
       pending = [key];
     while (pending.length) {
       budget.check();
-      if (budget.shouldYield()) await budget.yieldTurn();
+      if (budget.shouldYield()) {
+        return finishImposedRanges(
+          ranges,
+          parents,
+          imposed,
+          budget,
+          key,
+          result,
+          visited,
+          pending,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+        );
+      }
       const current = pending.pop();
       if (visited.has(current)) continue;
       visited.add(current);
-      for (const range of ranges.get(current) ?? []) {
-        budget.check();
-        if (budget.shouldYield()) await budget.yieldTurn();
-        result.add(range);
+      const rangeSet = ranges.get(current);
+      if (rangeSet) {
+        const rangeIter = rangeSet[Symbol.iterator]();
+        for (
+          let rStep = rangeIter.next();
+          !rStep.done;
+          rStep = rangeIter.next()
+        ) {
+          budget.check();
+          if (budget.shouldYield()) {
+            return finishImposedRanges(
+              ranges,
+              parents,
+              imposed,
+              budget,
+              key,
+              result,
+              visited,
+              pending,
+              current,
+              rStep.value,
+              rangeIter,
+              undefined,
+              undefined,
+            );
+          }
+          result.add(rStep.value);
+        }
       }
-      for (const parent of parents.get(current) ?? []) {
-        budget.check();
-        if (budget.shouldYield()) await budget.yieldTurn();
-        pending.push(parent);
+      const parentSet = parents.get(current);
+      if (parentSet) {
+        const parentIter = parentSet[Symbol.iterator]();
+        for (
+          let pStep = parentIter.next();
+          !pStep.done;
+          pStep = parentIter.next()
+        ) {
+          budget.check();
+          if (budget.shouldYield()) {
+            return finishImposedRanges(
+              ranges,
+              parents,
+              imposed,
+              budget,
+              key,
+              result,
+              visited,
+              pending,
+              undefined,
+              undefined,
+              undefined,
+              pStep.value,
+              parentIter,
+            );
+          }
+          pending.push(pStep.value);
+        }
       }
     }
     imposed.set(key, result);
@@ -359,25 +752,110 @@ const inspectELRanges = async (
   for (let m = 0; m < members.length; m++) {
     const { scope, snapshot } = members[m];
     const stored = readSnapshotAxioms(snapshot);
-    if (!hasSubChains) {
-      for (let a = 0; a < stored.length; a++) {
-        budget.check();
-        if (budget.shouldYield()) await budget.yieldTurn();
-      }
-      continue;
-    }
     for (let a = 0; a < stored.length; a++) {
       const value = stored.valueAt(a);
       budget.check();
-      if (budget.shouldYield()) await budget.yieldTurn();
+      if (budget.shouldYield()) {
+        return inspectELRangesAsync(
+          members,
+          ranges,
+          rangeNodes,
+          parents,
+          imposed,
+          hasSubChains,
+          budget,
+          violate,
+          validationPolicy,
+          nativeKeys,
+          m,
+          a,
+          true,
+          m,
+          a,
+        );
+      }
       if (value.kind !== K.SUB_PROPERTY_CHAIN_AXIOM) continue;
-      const headRanges = await imposedRanges(value.superProperty);
+      const headRanges = imposedRangesSync(value.superProperty);
+      if (headRanges instanceof Promise) {
+        return inspectELRangesAsync(
+          members,
+          ranges,
+          rangeNodes,
+          parents,
+          imposed,
+          hasSubChains,
+          budget,
+          violate,
+          validationPolicy,
+          nativeKeys,
+          m,
+          a,
+          true,
+          m,
+          a,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          headRanges,
+          undefined,
+        );
+      }
       const lastRanges = validationPolicy.elLastChainPropertyInheritsRanges
-        ? await imposedRanges(value.chain.at(-1))
+        ? imposedRangesSync(value.chain.at(-1))
         : (ranges.get(elKey(value.chain.at(-1), nativeKeys)) ?? new Set());
-      for (const range of headRanges) {
+      if (lastRanges instanceof Promise) {
+        return inspectELRangesAsync(
+          members,
+          ranges,
+          rangeNodes,
+          parents,
+          imposed,
+          hasSubChains,
+          budget,
+          violate,
+          validationPolicy,
+          nativeKeys,
+          m,
+          a,
+          true,
+          m,
+          a,
+          undefined,
+          undefined,
+          headRanges,
+          undefined,
+          undefined,
+          lastRanges,
+        );
+      }
+      const iter = headRanges[Symbol.iterator]();
+      for (let step = iter.next(); !step.done; step = iter.next()) {
         budget.check();
-        if (budget.shouldYield()) await budget.yieldTurn();
+        if (budget.shouldYield()) {
+          return inspectELRangesAsync(
+            members,
+            ranges,
+            rangeNodes,
+            parents,
+            imposed,
+            hasSubChains,
+            budget,
+            violate,
+            validationPolicy,
+            nativeKeys,
+            m,
+            a,
+            true,
+            m,
+            a,
+            iter,
+            step.value,
+            headRanges,
+            lastRanges,
+          );
+        }
+        const range = step.value;
         if (!lastRanges.has(range))
           violate("EL_CHAIN_RANGE_NOT_IMPOSED_ON_LAST_PROPERTY", {
             profile: "EL",
@@ -387,19 +865,14 @@ const inspectELRanges = async (
       }
     }
   }
+  return undefined;
 };
 
-/** Apply profile-specific grammar and global constraints after common DL
- * structure validation. Entries retain closure scope and the offending kind.
- */
-export const inspectProfileRules = async (
+export const createProfileNodeInspector = (
   profile,
-  axioms,
-  nodes,
   budget,
   violate,
   validationPolicy,
-  context,
 ) => {
   const datatypes = profile === "RL" ? rlDatatypes : elqlDatatypes;
   let excludedDatatypes;
@@ -414,6 +887,77 @@ export const inspectProfileRules = async (
   }
   const nodeViolation = (code, value, scope, extra) =>
     violate(code, { profile, scope, kind: value.kind, ...extra });
+  return (node) => {
+    const { value, scope, annotationContext } = node;
+    // Annotation values retain the common lexical/structural checks, but are
+    // outside the logical profile's data-range and individual productions.
+    if (
+      annotationContext ||
+      value.kind === K.IRI ||
+      value.kind === K.CLASS ||
+      value.kind === K.NAMED_INDIVIDUAL
+    )
+      return;
+    // RC2-PRF-DIFF-002: the RL property production excludes all four built-ins.
+    if (
+      profile === "RL" &&
+      !validationPolicy.rlAllowsTopAndBottomProperties &&
+      ((value.kind === K.OBJECT_PROPERTY &&
+        rlForbiddenObjectProperties.has(value.iri.value)) ||
+        (value.kind === K.DATA_PROPERTY &&
+          rlForbiddenDataProperties.has(value.iri.value)))
+    )
+      nodeViolation("PROFILE_PROPERTY_NOT_ALLOWED", value, scope, {
+        iri: value.iri.value,
+      });
+    if (
+      value.kind === K.DATATYPE &&
+      (!datatypes.has(value.iri.value) ||
+        (profile === "RL" && excludedDatatypes.has(value.iri.value)))
+    )
+      nodeViolation("PROFILE_DATATYPE_NOT_ALLOWED", value, scope, {
+        iri: value.iri.value,
+      });
+    if (
+      dataKinds.has(value.kind) &&
+      value.kind !== K.DATATYPE &&
+      value.kind !== K.DATA_INTERSECTION_OF &&
+      !(profile === "EL" && value.kind === K.DATA_ONE_OF)
+    )
+      nodeViolation("PROFILE_DATA_RANGE_NOT_ALLOWED", value, scope);
+    if (
+      profile === "EL" &&
+      value.kind === K.DATA_ONE_OF &&
+      value.values.length !== 1
+    )
+      nodeViolation("PROFILE_DATA_ENUMERATION_NOT_SINGLETON", value, scope);
+    if (profile !== "RL" && value.kind === K.ANONYMOUS_INDIVIDUAL)
+      nodeViolation("PROFILE_ANONYMOUS_INDIVIDUAL_NOT_ALLOWED", value, scope);
+    if (profile === "EL") {
+      if (value.kind === K.OBJECT_INVERSE_OF)
+        nodeViolation("PROFILE_INVERSE_PROPERTY_NOT_ALLOWED", value, scope);
+      if (classKinds.has(value.kind) && !elClasses.has(value.kind))
+        nodeViolation("PROFILE_CLASS_EXPRESSION_NOT_ALLOWED", value, scope);
+      if (value.kind === K.OBJECT_ONE_OF && value.individuals.length !== 1)
+        nodeViolation("PROFILE_OBJECT_ENUMERATION_NOT_SINGLETON", value, scope);
+    }
+  };
+};
+
+/** Apply profile-specific grammar and global constraints after common DL
+ * structure validation. Entries retain closure scope and the offending kind.
+ */
+export const inspectProfileRules = (
+  profile,
+  axioms,
+  nodes,
+  budget,
+  violate,
+  validationPolicy,
+  context,
+) => {
+  const nodeViolation = (code, value, scope, extra) =>
+    violate(code, { profile, scope, kind: value.kind, ...extra });
   const check = (expression, position, scope, kind) => {
     if (!expressionAllowed(expression, profile, position, budget))
       violate("PROFILE_CLASS_POSITION_NOT_ALLOWED", {
@@ -424,79 +968,117 @@ export const inspectProfileRules = async (
         expressionKind: expression.kind,
       });
   };
-  const nodeCursor = createScopedNodeCursor(
-    context.members,
-    context.sourceRoots,
-    validationPolicy,
-  );
-  try {
-    for (
-      let node = nodeCursor.next();
-      node !== undefined;
-      node = nodeCursor.next()
-    ) {
-      budget.check();
-      if (budget.shouldYield()) await budget.yieldTurn();
-      const { value, scope, annotationContext } = node;
-      // Annotation values retain the common lexical/structural checks, but are
-      // outside the logical profile's data-range and individual productions.
-      if (
-        annotationContext ||
-        value.kind === K.IRI ||
-        value.kind === K.CLASS ||
-        value.kind === K.NAMED_INDIVIDUAL
-      )
-        continue;
-      // RC2-PRF-DIFF-002: the RL property production excludes all four built-ins.
-      if (
-        profile === "RL" &&
-        !validationPolicy.rlAllowsTopAndBottomProperties &&
-        ((value.kind === K.OBJECT_PROPERTY &&
-          rlForbiddenObjectProperties.has(value.iri.value)) ||
-          (value.kind === K.DATA_PROPERTY &&
-            rlForbiddenDataProperties.has(value.iri.value)))
-      )
-        nodeViolation("PROFILE_PROPERTY_NOT_ALLOWED", value, scope, {
-          iri: value.iri.value,
-        });
-      if (
-        value.kind === K.DATATYPE &&
-        (!datatypes.has(value.iri.value) ||
-          (profile === "RL" && excludedDatatypes.has(value.iri.value)))
-      )
-        nodeViolation("PROFILE_DATATYPE_NOT_ALLOWED", value, scope, {
-          iri: value.iri.value,
-        });
-      if (
-        dataKinds.has(value.kind) &&
-        value.kind !== K.DATATYPE &&
-        value.kind !== K.DATA_INTERSECTION_OF &&
-        !(profile === "EL" && value.kind === K.DATA_ONE_OF)
-      )
-        nodeViolation("PROFILE_DATA_RANGE_NOT_ALLOWED", value, scope);
-      if (
-        profile === "EL" &&
-        value.kind === K.DATA_ONE_OF &&
-        value.values.length !== 1
-      )
-        nodeViolation("PROFILE_DATA_ENUMERATION_NOT_SINGLETON", value, scope);
-      if (profile !== "RL" && value.kind === K.ANONYMOUS_INDIVIDUAL)
-        nodeViolation("PROFILE_ANONYMOUS_INDIVIDUAL_NOT_ALLOWED", value, scope);
-      if (profile === "EL") {
-        if (value.kind === K.OBJECT_INVERSE_OF)
-          nodeViolation("PROFILE_INVERSE_PROPERTY_NOT_ALLOWED", value, scope);
-        if (classKinds.has(value.kind) && !elClasses.has(value.kind))
-          nodeViolation("PROFILE_CLASS_EXPRESSION_NOT_ALLOWED", value, scope);
-        if (value.kind === K.OBJECT_ONE_OF && value.individuals.length !== 1)
-          nodeViolation(
-            "PROFILE_OBJECT_ENUMERATION_NOT_SINGLETON",
-            value,
-            scope,
-          );
+  const visitNode = context.skipNodes
+    ? undefined
+    : createProfileNodeInspector(profile, budget, violate, validationPolicy);
+  const visitAxiom = (value, scope) => {
+    if (forbiddenAxioms[profile].has(value.kind))
+      nodeViolation("PROFILE_AXIOM_NOT_ALLOWED", value, scope);
+    if (profile === "EL") return;
+    switch (value.kind) {
+      case K.SUBCLASS_OF_AXIOM:
+        check(value.subClass, "sub", scope, value.kind);
+        check(value.superClass, "super", scope, value.kind);
+        break;
+      case K.EQUIVALENT_CLASSES_AXIOM: {
+        const exprs = value.classExpressions;
+        const pos = profile === "RL" ? "equiv" : "sub";
+        for (let i = 0; i < exprs.length; i++)
+          check(exprs[i], pos, scope, value.kind);
+        break;
+      }
+      case K.DISJOINT_CLASSES_AXIOM: {
+        const exprs = value.classExpressions;
+        const pos =
+          profile === "RL" ? validationPolicy.rlDisjointOperandPosition : "sub";
+        for (let i = 0; i < exprs.length; i++)
+          check(exprs[i], pos, scope, value.kind);
+        break;
+      }
+      case K.OBJECT_PROPERTY_DOMAIN_AXIOM:
+      case K.DATA_PROPERTY_DOMAIN_AXIOM:
+        check(value.domain, "super", scope, value.kind);
+        break;
+      case K.OBJECT_PROPERTY_RANGE_AXIOM:
+        check(value.range, "super", scope, value.kind);
+        break;
+      case K.CLASS_ASSERTION_AXIOM:
+        if (profile === "QL") {
+          if (value.classExpression.kind !== K.CLASS)
+            nodeViolation("PROFILE_CLASS_ASSERTION_NOT_ATOMIC", value, scope);
+        } else check(value.classExpression, "super", scope, value.kind);
+        break;
+      case K.HAS_KEY_AXIOM:
+        if (profile === "RL")
+          check(value.classExpression, "sub", scope, value.kind);
+        break;
+    }
+  };
+  const finishAxiomsAsync = async (startM, startA) => {
+    await budget.yieldTurn();
+    for (let m = startM; m < context.members.length; m++) {
+      const { scope, snapshot } = context.members[m];
+      const stored = readSnapshotAxioms(snapshot);
+      for (let a = m === startM ? startA : 0; a < stored.length; a++) {
+        if (m !== startM || a !== startA) {
+          budget.check();
+          if (budget.shouldYield()) await budget.yieldTurn();
+        }
+        visitAxiom(stored.valueAt(a), scope);
       }
     }
-  } finally {
-    nodeCursor.close();
+    if (profile === "EL") {
+      const el = inspectELRanges(
+        axioms,
+        budget,
+        violate,
+        validationPolicy,
+        context.members,
+        context.allTrusted === true,
+      );
+      if (el) await el;
+    }
+  };
+  if (visitNode) {
+    const nodeCursor = createScopedNodeCursor(
+      context.members,
+      context.sourceRoots,
+      validationPolicy,
+    );
+    let cursorClosed = false;
+    try {
+      for (
+        let node = nodeCursor.next();
+        node !== undefined;
+        node = nodeCursor.next()
+      ) {
+        budget.check();
+        if (budget.shouldYield()) {
+          cursorClosed = true;
+          return (async () => {
+            try {
+              await budget.yieldTurn();
+              visitNode(node);
+              for (
+                let nextNode = nodeCursor.next();
+                nextNode !== undefined;
+                nextNode = nodeCursor.next()
+              ) {
+                budget.check();
+                if (budget.shouldYield()) await budget.yieldTurn();
+                visitNode(nextNode);
+              }
+            } finally {
+              nodeCursor.close();
+            }
+            await finishAxiomsAsync(0, 0);
+          })();
+        }
+        visitNode(node);
+      }
+    } finally {
+      if (!cursorClosed) nodeCursor.close();
+    }
   }
   for (let m = 0; m < context.members.length; m++) {
     const { scope, snapshot } = context.members[m];
@@ -504,54 +1086,14 @@ export const inspectProfileRules = async (
     for (let a = 0; a < stored.length; a++) {
       const value = stored.valueAt(a);
       budget.check();
-      if (budget.shouldYield()) await budget.yieldTurn();
-      if (forbiddenAxioms[profile].has(value.kind))
-        nodeViolation("PROFILE_AXIOM_NOT_ALLOWED", value, scope);
-      if (profile === "EL") continue;
-      switch (value.kind) {
-        case K.SUBCLASS_OF_AXIOM:
-          check(value.subClass, "sub", scope, value.kind);
-          check(value.superClass, "super", scope, value.kind);
-          break;
-        case K.EQUIVALENT_CLASSES_AXIOM: {
-          const exprs = value.classExpressions;
-          const pos = profile === "RL" ? "equiv" : "sub";
-          for (let i = 0; i < exprs.length; i++)
-            check(exprs[i], pos, scope, value.kind);
-          break;
-        }
-        case K.DISJOINT_CLASSES_AXIOM: {
-          const exprs = value.classExpressions;
-          const pos =
-            profile === "RL"
-              ? validationPolicy.rlDisjointOperandPosition
-              : "sub";
-          for (let i = 0; i < exprs.length; i++)
-            check(exprs[i], pos, scope, value.kind);
-          break;
-        }
-        case K.OBJECT_PROPERTY_DOMAIN_AXIOM:
-        case K.DATA_PROPERTY_DOMAIN_AXIOM:
-          check(value.domain, "super", scope, value.kind);
-          break;
-        case K.OBJECT_PROPERTY_RANGE_AXIOM:
-          check(value.range, "super", scope, value.kind);
-          break;
-        case K.CLASS_ASSERTION_AXIOM:
-          if (profile === "QL") {
-            if (value.classExpression.kind !== K.CLASS)
-              nodeViolation("PROFILE_CLASS_ASSERTION_NOT_ATOMIC", value, scope);
-          } else check(value.classExpression, "super", scope, value.kind);
-          break;
-        case K.HAS_KEY_AXIOM:
-          if (profile === "RL")
-            check(value.classExpression, "sub", scope, value.kind);
-          break;
+      if (budget.shouldYield()) {
+        return finishAxiomsAsync(m, a);
       }
+      visitAxiom(value, scope);
     }
   }
   if (profile === "EL")
-    await inspectELRanges(
+    return inspectELRanges(
       axioms,
       budget,
       violate,
@@ -559,4 +1101,5 @@ export const inspectProfileRules = async (
       context.members,
       context.allTrusted === true,
     );
+  return undefined;
 };

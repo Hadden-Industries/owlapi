@@ -1,7 +1,63 @@
 import { OWLObjectKind as K } from "../../model/kinds.js";
 import { readSnapshotAxioms } from "../model/ontologyState.js";
 
-export const inspectAnonymousGraph = async (
+const finishTrees = async (
+  parents,
+  namedEdges,
+  budget,
+  violation,
+  root,
+  trees,
+  withRoot,
+  firstItem,
+  iter,
+) => {
+  await budget.yieldTurn();
+  const visitTreeKey = (item) => {
+    const tree = root(item);
+    trees.add(tree);
+    if ((namedEdges.get(item) ?? 0) <= 1) withRoot.add(tree);
+  };
+  visitTreeKey(firstItem);
+  for (let step = iter.next(); !step.done; step = iter.next()) {
+    budget.check();
+    if (budget.shouldYield()) await budget.yieldTurn();
+    visitTreeKey(step.value);
+  }
+  for (const tree of trees)
+    if (!withRoot.has(tree)) violation("ANONYMOUS_TREE_WITHOUT_ROOT", { tree });
+};
+
+const scanTrees = (parents, namedEdges, budget, violation, root) => {
+  const trees = new Set(),
+    withRoot = new Set();
+  const iter = parents.keys();
+  for (let step = iter.next(); !step.done; step = iter.next()) {
+    const item = step.value;
+    budget.check();
+    if (budget.shouldYield()) {
+      return finishTrees(
+        parents,
+        namedEdges,
+        budget,
+        violation,
+        root,
+        trees,
+        withRoot,
+        item,
+        iter,
+      );
+    }
+    const tree = root(item);
+    trees.add(tree);
+    if ((namedEdges.get(item) ?? 0) <= 1) withRoot.add(tree);
+  }
+  for (const tree of trees)
+    if (!withRoot.has(tree)) violation("ANONYMOUS_TREE_WITHOUT_ROOT", { tree });
+  return undefined;
+};
+
+export const inspectAnonymousGraph = (
   axioms,
   anonymousNodes,
   budget,
@@ -53,26 +109,50 @@ export const inspectAnonymousGraph = async (
       const stored = readSnapshotAxioms(snapshot);
       for (let i = 0; i < stored.length; i++) {
         budget.check();
-        if (budget.shouldYield()) await budget.yieldTurn();
+        if (budget.shouldYield()) {
+          return (async () => {
+            await budget.yieldTurn();
+            visitAssertion(stored.valueAt(i), scope);
+            for (let j = i + 1; j < stored.length; j++) {
+              budget.check();
+              if (budget.shouldYield()) await budget.yieldTurn();
+              visitAssertion(stored.valueAt(j), scope);
+            }
+            for (let n = m + 1; n < members.length; n++) {
+              const nextScope = members[n].scope;
+              const nextStored = readSnapshotAxioms(members[n].snapshot);
+              for (let j = 0; j < nextStored.length; j++) {
+                budget.check();
+                if (budget.shouldYield()) await budget.yieldTurn();
+                visitAssertion(nextStored.valueAt(j), nextScope);
+              }
+            }
+            const t = scanTrees(parents, namedEdges, budget, violation, root);
+            if (t) await t;
+          })();
+        }
         visitAssertion(stored.valueAt(i), scope);
       }
     }
   } else {
-    for (const { value, scope } of axioms) {
+    const iter = axioms[Symbol.iterator]();
+    for (let step = iter.next(); !step.done; step = iter.next()) {
       budget.check();
-      if (budget.shouldYield()) await budget.yieldTurn();
-      visitAssertion(value, scope);
+      if (budget.shouldYield()) {
+        return (async () => {
+          await budget.yieldTurn();
+          visitAssertion(step.value.value, step.value.scope);
+          for (let rest = iter.next(); !rest.done; rest = iter.next()) {
+            budget.check();
+            if (budget.shouldYield()) await budget.yieldTurn();
+            visitAssertion(rest.value.value, rest.value.scope);
+          }
+          const t = scanTrees(parents, namedEdges, budget, violation, root);
+          if (t) await t;
+        })();
+      }
+      visitAssertion(step.value.value, step.value.scope);
     }
   }
-  const trees = new Set(),
-    withRoot = new Set();
-  for (const item of parents.keys()) {
-    budget.check();
-    if (budget.shouldYield()) await budget.yieldTurn();
-    const tree = root(item);
-    trees.add(tree);
-    if ((namedEdges.get(item) ?? 0) <= 1) withRoot.add(tree);
-  }
-  for (const tree of trees)
-    if (!withRoot.has(tree)) violation("ANONYMOUS_TREE_WITHOUT_ROOT", { tree });
+  return scanTrees(parents, namedEdges, budget, violation, root);
 };

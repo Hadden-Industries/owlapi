@@ -109,6 +109,13 @@ export const createProfileBudget = (
       await yieldTurn();
     }
   };
+  const checkpointSync = (amount = 1) => {
+    check(amount);
+    if (performance.now() - lastYieldAt >= COOPERATIVE_YIELD_INTERVAL_MS) {
+      return yieldTurn();
+    }
+    return undefined;
+  };
   const depth = (observed) => {
     check(0);
     if (observed > configuration.maxDepth)
@@ -117,5 +124,13 @@ export const createProfileBudget = (
         limit: configuration.maxDepth,
       });
   };
-  return { configuration, check, checkpoint, depth, shouldYield, yieldTurn };
+  return {
+    configuration,
+    check,
+    checkpoint,
+    checkpointSync,
+    depth,
+    shouldYield,
+    yieldTurn,
+  };
 };
