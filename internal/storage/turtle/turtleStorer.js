@@ -19,7 +19,10 @@ import {
 import { XSD_NAMESPACE, RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { rdfEntitySectionName } from "../rdfEntitySections.js";
 import { readAnonymousIndividualRdfNodes } from "../../mapping/owlToRdfTranslator.js";
-import { OWL_OBJECT_KINDS } from "../../../model/kinds.js";
+import {
+  OWL_OBJECT_KINDS,
+  OWL_OBJECT_KINDS_WITH_SWRL,
+} from "../../../model/kinds.js";
 import { checkStructuralGraphLimits } from "../../model/structuralValidation.js";
 import {
   defaultDocumentStoragePolicy,
@@ -36,6 +39,7 @@ import {
 // Same admission as the existing lossless RDF writer and parser recheck.
 
 const SUPPORTED_TURTLE_KINDS = new Set(OWL_OBJECT_KINDS);
+const JAVA_TURTLE_KINDS = new Set(OWL_OBJECT_KINDS_WITH_SWRL);
 
 /** Exact Turtle through the locked native N3 writer and shared lossless gate. */
 async function prepareTurtle(
@@ -68,12 +72,15 @@ async function prepareTurtle(
     for (const value of values)
       checkStructuralGraphLimits(
         value,
-        SUPPORTED_TURTLE_KINDS,
+        documentStoragePolicy.supportsScopedSwrl
+          ? JAVA_TURTLE_KINDS
+          : SUPPORTED_TURTLE_KINDS,
         configuration.maxExpressionDepth,
         configuration.maxAnnotationDepth,
       );
   const original = createRdfStorageOntology(snapshot);
   const dataset = mapStorageOntologyToRdf(original, {
+    supportsScopedSwrl: documentStoragePolicy.supportsScopedSwrl,
     maxQuads: Number.isFinite(configuration.maxQuads)
       ? configuration.maxQuads
       : undefined,

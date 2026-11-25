@@ -3,6 +3,7 @@ import { ResourceLimitError } from "../../io/errors.js";
 import {
   ANNOTATION_VALUE_KINDS,
   AXIOM_KINDS,
+  AXIOM_KINDS_WITH_SWRL,
   CLASS_EXPRESSION_KINDS,
   DATA_PROPERTY_EXPRESSION_KINDS,
   DATA_RANGE_KINDS,
@@ -29,6 +30,7 @@ import {
   RDF_VOCABULARY,
   RDFS_VOCABULARY,
   XSD_VOCABULARY,
+  SWRL_VOCABULARY as SWRL,
 } from "../rdfjs/vocabulary.js";
 
 import { RDF_GRAPH_TERM_TYPES } from "../rdfjs/termPolicy.js";
@@ -96,6 +98,7 @@ class TranslationSession {
   #emittedQuads = 0;
   #anonymousIndividuals = new Map();
   #axiomHandlers;
+  #axiomKinds;
   #classExpressionHandlers;
   #dataFactory;
   #dataPropertyExpressionHandlers;
@@ -105,7 +108,14 @@ class TranslationSession {
   #individualHandlers;
   #objectPropertyExpressionHandlers;
 
-  constructor({ dataFactory, dataset, graph, maxQuads }) {
+  constructor({
+    dataFactory,
+    dataset,
+    graph,
+    maxQuads,
+    supportsScopedSwrl = false,
+  }) {
+    this.#axiomKinds = supportsScopedSwrl ? AXIOM_KINDS_WITH_SWRL : AXIOM_KINDS;
     this.#maxQuads = maxQuads;
     this.#dataFactory = dataFactory;
     this.#dataset = dataset;
@@ -254,6 +264,9 @@ class TranslationSession {
 
     this.#axiomHandlers = assertCompleteHandlers(
       {
+        ...(supportsScopedSwrl
+          ? { [OWLObjectKind.SWRL_RULE]: (rule) => this.#mapSwrlRule(rule) }
+          : {}),
         [OWLObjectKind.DECLARATION_AXIOM]: (axiom) =>
           this.#mapDeclarationAxiom(axiom),
         [OWLObjectKind.SUBCLASS_OF_AXIOM]: (axiom) =>
@@ -486,7 +499,7 @@ class TranslationSession {
             axiom.annotations,
           ),
       },
-      AXIOM_KINDS,
+      this.#axiomKinds,
       "axiom",
     );
   }
@@ -523,7 +536,7 @@ class TranslationSession {
       direct ? direct.annotations : ontology.getAnnotations(),
     );
     for (const axiom of direct ? direct.axioms : ontology.getAxioms()) {
-      dispatchAxiom(axiom, this.#axiomHandlers);
+      dispatchAxiom(axiom, this.#axiomHandlers, this.#axiomKinds);
     }
 
     anonymousIndividualNodes.set(
@@ -991,10 +1004,51 @@ class TranslationSession {
     );
   }
 
-  #createList(items) {
+  #mapSwrlRule(rule) {
+    const node = this.#typedBlankNode(SWRL.Imp);
+    const variable = (argument) => {
+      const iri = this.#namedNode(argument.iri.value);
+      this.#add(iri, RDF_VOCABULARY.type, this.#namedNode(SWRL.Variable));
+      return iri;
+    };
+    const atom = (value) => {
+      const isClass = value.kind === OWLObjectKind.SWRL_CLASS_ATOM;
+      const result = this.#typedBlankNode(
+        isClass ? SWRL.ClassAtom : SWRL.IndividualPropertyAtom,
+      );
+      this.#add(
+        result,
+        isClass ? SWRL.classPredicate : SWRL.propertyPredicate,
+        this.#namedNode(value.predicate.iri.value),
+      );
+      this.#add(
+        result,
+        SWRL.argument1,
+        variable(isClass ? value.argument : value.firstArgument),
+      );
+      if (!isClass)
+        this.#add(result, SWRL.argument2, variable(value.secondArgument));
+      return result;
+    };
+    this.#add(
+      node,
+      SWRL.body,
+      this.#createList(rule.body.map(atom), SWRL.AtomList),
+    );
+    this.#add(
+      node,
+      SWRL.head,
+      this.#createList(rule.head.map(atom), SWRL.AtomList),
+    );
+    this.#addAnnotations(node, rule.annotations);
+  }
+
+  #createList(items, cellType) {
     let tail = this.#namedNode(RDF_VOCABULARY.nil);
     for (let index = items.length - 1; index >= 0; index -= 1) {
-      const head = this.#dataFactory.blankNode();
+      const head = cellType
+        ? this.#typedBlankNode(cellType)
+        : this.#dataFactory.blankNode();
       this.#add(head, RDF_VOCABULARY.first, items[index]);
       this.#add(head, RDF_VOCABULARY.rest, tail);
       tail = head;
@@ -1128,13 +1182,17 @@ export class OwlToRdfTranslator {
   }
 
   /** A writer owns its compact graph and may add syntax-required role declarations before sealing. */
-  translateForStorage(ontology, { maxQuads, complete } = {}) {
+  translateForStorage(
+    ontology,
+    { maxQuads, complete, supportsScopedSwrl } = {},
+  ) {
     const dataset = new CompactRdfGraph();
     new TranslationSession({
       dataFactory: this.#dataFactory,
       dataset,
       graph: this.#dataFactory.defaultGraph(),
       maxQuads,
+      supportsScopedSwrl,
     }).translateOntology(ontology, ontology.direct);
     complete?.(dataset);
     return dataset.seal();

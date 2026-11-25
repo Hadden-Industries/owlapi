@@ -21,6 +21,13 @@ import { rdfXmlStorer } from "./rdfxml/rdfXmlStorer.js";
 import { turtleStorer } from "./turtle/turtleStorer.js";
 import { owlXmlStorer } from "./owlxml/owlXmlStorer.js";
 import { visitStructuralValues } from "../model/sourceEvidence.js";
+import { snapshotAxioms } from "./snapshotValues.js";
+import { OWLObjectKind } from "../../model/kinds.js";
+const swrlFormats = new Set([
+  functionalSyntaxStorer.formatKey,
+  rdfXmlStorer.formatKey,
+  turtleStorer.formatKey,
+]);
 import { defaultBehaviorProfileDefinition } from "../behavior/ontologyBehaviorContext.js";
 import { readPartialStorageOutput } from "./storageFailureOutput.js";
 
@@ -90,6 +97,22 @@ export class StorerRegistry {
     if (!streamed) StringDocumentTarget.prototype.toString.call(target);
     const storer = this.select(format);
     try {
+      if (
+        !documentStoragePolicy.supportsScopedSwrl ||
+        !swrlFormats.has(format.key)
+      ) {
+        for (const axiom of snapshotAxioms(ontologySnapshot) ?? []) {
+          if (axiom.kind === OWLObjectKind.SWRL_RULE)
+            throw new OWLOntologyStorageError(
+              "The selected profile and format cannot represent SWRL rules",
+              {
+                reason: "ONTOLOGY_NOT_REPRESENTABLE",
+                format: format.key,
+                kind: axiom.kind,
+              },
+            );
+        }
+      }
       if (
         ontologySnapshot.documentMetadata?.sourceStructure?.statements?.length
       ) {

@@ -121,6 +121,7 @@ const definitions = new Map([
         requiresUnaryFunctionalDataRestrictions: false,
       }),
       owlLanguageProfilePolicy: Object.freeze({
+        allowsSwrlRulesInDl: false,
         literalValidation: "normative",
         allowsUnknownXsdDatatypes: false,
         requiresUniqueDatatypeDefinition: true,
@@ -279,6 +280,7 @@ const definitions = new Map([
         requiresUnaryFunctionalDataRestrictions: true,
       }),
       owlLanguageProfilePolicy: Object.freeze({
+        allowsSwrlRulesInDl: true,
         literalValidation: "java-pattern",
         allowsUnknownXsdDatatypes: true,
         requiresUniqueDatatypeDefinition: false,

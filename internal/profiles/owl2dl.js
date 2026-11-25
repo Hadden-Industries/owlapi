@@ -295,6 +295,12 @@ const checkModel = async (
         budget.check(fuseProfileNodes ? 2 : 1);
         if (budget.shouldYield()) await budget.yieldTurn();
         const { value, scope } = node;
+        if (
+          profile === "DL" &&
+          value.kind === K.SWRL_RULE &&
+          !validationPolicy.allowsSwrlRulesInDl
+        )
+          violate("PROFILE_AXIOM_NOT_ALLOWED", { scope, kind: value.kind });
         if (value.kind === K.ONTOLOGY_ID) {
           if (value.ontologyIRI && reserved(value.ontologyIRI.value))
             violate("RESERVED_ONTOLOGY_IRI", {

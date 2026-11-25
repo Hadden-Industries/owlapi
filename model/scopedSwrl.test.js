@@ -1,8 +1,16 @@
 import {
   OWLManager,
+  OWLDataFactory,
   OWLDocumentFormats,
   StringDocumentSource,
   StringDocumentTarget,
+  StreamDocumentSource,
+  StreamDocumentTarget,
+  OWLOntologyMerger,
+  OWL2DLProfile,
+  OWL2ELProfile,
+  OWL2QLProfile,
+  OWL2RLProfile,
   IRI,
   AXIOM_KINDS,
   AXIOM_KINDS_WITH_SWRL,
@@ -12,6 +20,8 @@ import {
   dispatchOwlObject,
 } from "../index.js";
 import { scopedSwrlCases } from "../util/owlapi-reference/fixtures/swrl/cases.mjs";
+import { jest } from "@jest/globals";
+import { CompactRdfGraph } from "../internal/rdfjs/compactRdfGraph.js";
 
 const cases = new Map(
   (await scopedSwrlCases()).map((entry) => [entry.id, entry]),
@@ -199,4 +209,233 @@ test("rule ownership retains ordinary statements about a referenced variable", a
     ),
   ).toEqual(["ordinary"]);
   expect(ruleOf(o).body).toHaveLength(2);
+});
+
+test.each([
+  OWLDocumentFormats.FUNCTIONAL,
+  OWLDocumentFormats.RDF_XML,
+  OWLDocumentFormats.TURTLE,
+])(
+  "an edited annotated rule round-trips through %o and a fragmented byte source",
+  async (format) => {
+    const m = createManager(),
+      o = await read(m, cases.get("annotated"), {
+        loadAnnotationAxioms: false,
+      }),
+      a = ruleOf(o);
+    expect(
+      a.annotations.map((n) => [
+        n.property.iri.value,
+        n.value.lexicalForm,
+        n.value.language,
+        n.value.datatype.iri.value,
+      ]),
+    ).toEqual(
+      expect.arrayContaining([
+        [
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "Incompatible links",
+          "en",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+        ],
+        [
+          "http://www.w3.org/2000/01/rdf-schema#comment",
+          "Both endpoints are excluded.",
+          "",
+          "http://www.w3.org/2001/XMLSchema#string",
+        ],
+        [
+          "urn:owlapi:test:swrl#enabled",
+          "false",
+          "",
+          "http://www.w3.org/2001/XMLSchema#boolean",
+        ],
+      ]),
+    );
+    expect(a.annotations).toHaveLength(3);
+    expect(a.head.map((atom) => atom.argument.iri.value)).toEqual([
+      "urn:swrl#x",
+      "urn:swrl:var#x",
+    ]);
+    expect(
+      o.containsAxiomIgnoreAnnotations(a.getAxiomWithoutAnnotations()),
+    ).toBe(true);
+    const df = m.getOWLDataFactory(),
+      edit = df.getOWLDeclarationAxiom(
+        df.getOWLClass(IRI.create("urn:edited")),
+      );
+    m.addAxiom(o, edit);
+    const target = new StringDocumentTarget();
+    await m.saveOntology(o, format, target);
+    const bytes = new TextEncoder().encode(target.toString());
+    const stream = new StreamDocumentSource(
+      function* () {
+        for (let start = 0; start < bytes.length; start += 7)
+          yield bytes.subarray(start, start + 7);
+      },
+      { format, documentIRI: "urn:written" },
+    );
+    const fresh = createManager();
+    const loaded = await fresh.loadOntologyFromOntologyDocument(
+      stream,
+      fresh.getOntologyLoaderConfiguration().setStrict(false),
+    );
+    expect(ruleOf(loaded).equals(a)).toBe(true);
+    expect(loaded.containsAxiom(edit)).toBe(true);
+    expect([...loaded.getIndividualsInSignature()]).toEqual([]);
+  },
+);
+
+test("the named Java language checkers and the normative grammar retain their separate contracts", async () => {
+  const m = createManager(),
+    o = await read(m, cases.get("simple"));
+  const options = { behaviorProfileId: "java-owlapi-5.5.1" };
+  expect(
+    (await new OWL2DLProfile(options).checkOntology(o)).isInProfile(),
+  ).toBe(true);
+  for (const Checker of [OWL2ELProfile, OWL2QLProfile, OWL2RLProfile]) {
+    const report = await new Checker(options).checkOntology(o);
+    expect(report.getViolations().map((v) => v.code)).toContain(
+      "PROFILE_AXIOM_NOT_ALLOWED",
+    );
+  }
+  const normative = OWLManager.createOWLOntologyManager();
+  await expect(
+    read(normative, cases.get("simple-functional")),
+  ).rejects.toMatchObject({ code: "UNSUPPORTED_CONSTRUCT" });
+  const copy = new OWLOntologyMerger({
+    ontologies: () => [o],
+  }).createMergedOntology(normative, IRI.create("urn:merged"));
+  expect(copy.containsAxiom(ruleOf(o))).toBe(true);
+  expect((await new OWL2DLProfile().checkOntology(copy)).isInProfile()).toBe(
+    false,
+  );
+  for (const format of [
+    OWLDocumentFormats.FUNCTIONAL,
+    OWLDocumentFormats.RDF_XML,
+    OWLDocumentFormats.TURTLE,
+  ]) {
+    const target = new StringDocumentTarget();
+    await expect(
+      normative.saveOntology(copy, format, target),
+    ).rejects.toMatchObject({ reason: "ONTOLOGY_NOT_REPRESENTABLE" });
+    expect(target.toString()).toBe("");
+  }
+  await expect(
+    m.saveOntology(o, OWLDocumentFormats.OWL_XML, new StringDocumentTarget()),
+  ).rejects.toThrow();
+});
+
+test("unsupported constants and rule annotations refuse publication", async () => {
+  const sample = cases.get("simple"),
+    annotated = cases.get("annotated");
+  const constant = {
+    ...sample,
+    text: sample.text.replace(
+      '<swrl:Variable rdf:about="urn:swrl#x"/>',
+      '<owl:NamedIndividual rdf:about="urn:swrl#x"/>',
+    ),
+  };
+  const nested = {
+    ...annotated,
+    text: annotated.text
+      .replace("<swrl:Imp>", '<swrl:Imp rdf:nodeID="rule">')
+      .replace(
+        "</rdf:RDF>",
+        '<owl:Annotation><owl:annotatedSource rdf:nodeID="rule"/><owl:annotatedProperty rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/><owl:annotatedTarget>Both endpoints are excluded.</owl:annotatedTarget><rdfs:label>nested</rdfs:label></owl:Annotation></rdf:RDF>',
+      ),
+  };
+  for (const entry of [cases.get("iri-annotation"), constant, nested]) {
+    const m = createManager();
+    await expect(
+      read(m, entry, { loadAnnotationAxioms: false, collectWarnings: false }),
+    ).rejects.toMatchObject({ code: "UNSUPPORTED_CONSTRUCT" });
+    expect(ruleOf(await read(m, sample))).toBeDefined();
+  }
+});
+
+test("an interrupted export cannot publish completion or change the managed rule", async () => {
+  const m = createManager(),
+    o = await read(m, cases.get("annotated")),
+    a = ruleOf(o);
+  let delivered = 0,
+    finished = false;
+  const sink = new StreamDocumentTarget(async (chunks) => {
+    for await (const chunk of chunks) {
+      delivered += chunk.length;
+      throw new Error("sink interrupted");
+    }
+    finished = true;
+  });
+  await expect(
+    m.saveOntology(o, OWLDocumentFormats.FUNCTIONAL, sink),
+  ).rejects.toThrow();
+  expect(delivered).toBeGreaterThan(0);
+  expect(finished).toBe(false);
+  expect(ruleOf(o).equals(a)).toBe(true);
+});
+
+function manyRules(count) {
+  const simple = cases.get("simple");
+  const rows = Array.from(
+    { length: count },
+    (_, i) =>
+      '<swrl:Imp><swrl:body rdf:parseType="Collection"><swrl:ClassAtom><swrl:classPredicate rdf:resource="urn:rule:predicate:' +
+      i +
+      '"/><swrl:argument1 rdf:resource="urn:swrl#x"/></swrl:ClassAtom></swrl:body></swrl:Imp>',
+  ).join("");
+  const ordinary = Array.from(
+    { length: count * 4 },
+    (_, i) => '<owl:Class rdf:about="urn:ordinary:' + i + '"/>',
+  ).join("");
+  return {
+    ...simple,
+    text: simple.text.replace(
+      /<swrl:Imp>[\s\S]*?<\/swrl:Imp>/u,
+      rows + ordinary,
+    ),
+  };
+}
+
+test("more rules and ordinary axioms use a bounded number of whole-graph traversals", async () => {
+  const scans = jest.spyOn(CompactRdfGraph.prototype, "statements");
+  try {
+    const counts = [];
+    for (const n of [4, 64]) {
+      scans.mockClear();
+      const o = await read(createManager(), manyRules(n));
+      expect(o.getAxiomsByType("SWRLRule").size).toBe(n);
+      expect(o.getAxiomsByType("OWLDeclarationAxiom").size).toBe(n * 4 + 3);
+      counts.push(scans.mock.calls.length);
+    }
+    expect(counts[0]).toBeGreaterThan(0);
+    expect(counts[1]).toBeLessThanOrEqual(counts[0] + 2);
+  } finally {
+    scans.mockRestore();
+  }
+});
+
+test("cancellation during atom reconstruction discards the pending document", async () => {
+  const controller = new AbortController(),
+    manager = createManager();
+  const getClass = OWLDataFactory.prototype.getOWLClass;
+  const hook = jest
+    .spyOn(OWLDataFactory.prototype, "getOWLClass")
+    .mockImplementation(function (iri) {
+      if (iri.value === "urn:rule:predicate:12") controller.abort();
+      return getClass.call(this, iri);
+    });
+  try {
+    await expect(
+      read(manager, manyRules(32), { signal: controller.signal }),
+    ).rejects.toMatchObject({ name: "AbortError" });
+    expect(controller.signal.aborted).toBe(true);
+    const id = manager
+      .getOWLDataFactory()
+      .getOWLOntologyID(IRI.create("urn:owlapi:test:swrl:simple"));
+    expect(manager.getOntology(id)).toBeUndefined();
+  } finally {
+    hook.mockRestore();
+  }
+  expect(ruleOf(await read(manager, cases.get("simple")))).toBeDefined();
 });

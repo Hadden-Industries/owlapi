@@ -134,7 +134,10 @@ export const createRdfXmlStorer = ({
         : undefined;
       const mappedDataset =
         map === mapStorageOntologyToRdf
-          ? map(original, { complete })
+          ? map(original, {
+              complete,
+              supportsScopedSwrl: documentStoragePolicy.supportsScopedSwrl,
+            })
           : map(original);
       if (map !== mapStorageOntologyToRdf) complete?.(mappedDataset);
       const ontologyIRI = snapshot.ontologyID.ontologyIRI?.value;
