@@ -55,11 +55,9 @@ The local executable and native properties have been observed on the selected JD
 Do not relax a strict environment validator to accept any Java 25 merely to make the new version run.
 Changed JDK inputs invalidate incompatible build-product or qualification reuse.
 
-Python follows the same ownership principle: [`.python-version`](../../.python-version) is its single editable selection.
-`scripts/development-tool-policy.mjs` derives the interpreter version, minor line and Ruff target; both native bootstraps consume that reader.
-After changing the Python pin, run `node scripts/sync-python-target.mjs --write` to project `requires-python` into both native projects and `target-version` into Ruff, then regenerate the two locks with uv.
-
-`npm run check:python-tools` and the projection tests reject drift; generated TOML constraints and historical scanner observations are not independent version declarations.
+GitHub's setup-python action reads [`.python-version`](../../.python-version) for ScanCode jobs.
+After changing the pin, run `node scripts/sync-python-target.mjs --write` to update the scanner's `requires-python`, then regenerate its lock with `uv lock --project util/scancode-runtime`.
+The scanner checks the supplied interpreter against the exact pin before installing packages.
 The file-based pattern follows the local Universal Ontology Java setup and JSON Quality/Markdown Quality Python readers; no runtime controller is imported from those repositories.
 
 ## Historical evidence and semantic authority

@@ -15,7 +15,8 @@ Phase 0 records the existing WebVOWL JavaScript regime as the implementation reg
 - immutable public structural values and copying/read-only collection boundaries.
 
 The authoritative aggregate commands are the root package scripts: `format:check`, `lint`, and `test`.
-The accepted Python/Markdown quality plan adds locked development tooling: Prettier/Snapper for authored Markdown, native ESLint GFM content checks, and Ruff for Python, while preserving the JavaScript rules and existing Jest runner.
+Markdown Quality checks authored Markdown.
+Prettier and ESLint cover JavaScript, and Jest runs the unit tests.
 
 See [contributor setup and commands](../CONTRIBUTING.md#source-text-syntax-and-formatting).
 A phase does not add a competing formatter, linter, test runner, module convention, or build system.

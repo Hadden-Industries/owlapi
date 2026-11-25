@@ -121,7 +121,6 @@ Names follow the implementation's contract, rather than merely reversing the pre
 - `generate:workflow-metadata` derives validated manifest/publication values and emits JSON plus GitHub outputs when requested.
 - `build:release-candidate` builds the release candidate and associated artifacts; it is broader than a bare `npm pack` operation.
 - `acquire:npm-evidence` and `verify:npm-evidence` identify the actual npm evidence domain, separately from release evidence generation and validation.
-- `sync:python-tools` and `check:python-tools` identify the repository's locked Python quality-tool environment, rather than implying every development tool is managed there.
 - `create:github-release-draft` and `finalize:github-release` identify their remote release effects explicitly.
 
 `run:prettier` is the internal raw-tool entry point shared by `format:source` and `format:source:check`.
@@ -129,8 +128,8 @@ It owns the generic source selection once and receives the write/check mode from
 Its tool name is intentional because it exposes that exact CLI; ordinary task names describe their subject instead.
 
 The aggregate `lint` command runs source ESLint once through `lint:json-identity`, whose configuration extends the ordinary source policy with the JSON identity rule.
-It retains the Node-policy preflight before that combined pass and the existing Python, Markdown and JSON checks.
-`lint:js` and `lint:source-python` keep their standalone source-only roles; the separate ordinary ESLint configuration remains loadable without the canonical runtime's native JSON developer tool.
+It retains the Node-policy preflight before that combined pass and the Markdown and JSON checks.
+`lint:js` checks JavaScript with the standalone ESLint configuration.
 
 `graph:dependencies` retains its name.
 JSON checking uses `check:json` for complete coverage and `inspect:json` for the same check's typed event stream; the former `inventory:json` and `lint:json` commands are retired.
@@ -183,13 +182,11 @@ This is a coordinated development-command rename; downstream automation calling 
 | `release:sbom`                             | `generate:release-sbom`                  |
 | `release:verify-immutable`                 | `verify:immutable-release`               |
 | `release:verify-tag`                       | `verify:release-tag`                     |
-| `tools:check`                              | `check:python-tools`                     |
-| `tools:sync`                               | `sync:python-tools`                      |
 | `workflow:aggregate`                       | `require:successful-jobs`                |
 | `workflow:dependency-review-applicability` | `report:dependency-review-applicability` |
 | `workflow:metadata`                        | `generate:workflow-metadata`             |
 | `workflow:runner-record`                   | `record:runner`                          |
 
 Markdown consumer checks exercise root npm commands for maintained selection, independently expected historical exclusions, literal bytes, read-only checking and native exit propagation.
-CI composes non-Markdown formatting checks from `check:node`, `check:version`, `format:source-python:check` and `format:json:check`; the following `lint` command owns the single full Markdown check in each quality job.
+CI composes non-Markdown formatting checks from `check:node`, `check:version`, `format:source:check` and `format:json:check`; the following `lint` command owns the single full Markdown check in each quality job.
 The public `format:check` command continues to include Markdown for standalone contributor use.

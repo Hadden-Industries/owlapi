@@ -122,7 +122,6 @@ Native ESM and supported JavaScript syntax are defined separately by `package.js
 Prettier retains its defaults for ordinary source files.
 Authored Markdown uses Markdown Quality for prose diagnostics, GFM content rules, literal-preserving formatting, and local-link checking.
 Fenced examples are preserved rather than executed or formatted as programs.
-Ruff checks and formats Python development files with stable rules and a 79-column target.
 Generated API views, upstream fixtures, and historical evidence retain their owning generators and byte checks.
 
 ### Set up the development tools
@@ -130,32 +129,31 @@ Generated API views, upstream fixtures, and historical evidence retain their own
 Use the Node and npm development versions declared in [the package manifest](package.json).
 Install the locked tools with `npm ci --ignore-scripts`.
 This root installation includes Markdown Quality and its matching optional native package; canonical checks never install dependencies.
-Install the CPython version selected in `.python-version` and provide its absolute executable path during the explicit development-tool setup; for example, in PowerShell:
+JavaScript development, linting, formatting and unit tests use the npm installation.
+Older checkouts can remove the root `.development-tools/` and the Ruff-only `.venv/`.
+
+### Run the ScanCode licence scanner
+
+Scanner builds use the CPython in [`.python-version`](.python-version) and the uv version in [the development tool policy](docs/release/development-tools.json).
+Install these shared tools when running ScanCode locally.
+Pass the absolute Python executable to scanner setup and make uv available on PATH.
+For example, qualify a fresh Windows installation and compare its findings with the recorded fixtures using PowerShell.
 
 ```powershell
-npm run sync:python-tools -- --python "C:\Path With Spaces\Python\python.exe"
+$env:SCANCODE_PYTHON = (uv python find --system --no-python-downloads (Get-Content .python-version)).Trim()
+$output = Join-Path ([IO.Path]::GetTempPath()) ("owlapi-scancode-" + [guid]::NewGuid())
+node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON "--output=$output"
 ```
 
-On Linux, use the same command with the installed interpreter's absolute path.
-Setup verifies the pinned interpreter, downloads the checksum-pinned uv release into `.development-tools/`, and synchronizes `.venv/` from `uv.lock` with `--locked` and no source builds or Python downloads.
-Later setup can use `npm run sync:python-tools` with the existing checkout interpreter.
-
-Checks use only these checkout tools and never synchronize dependencies.
-After changing `.python-version`, run `node scripts/sync-python-target.mjs --write` before updating locks; tool checks reject stale generated package and Ruff metadata.
-Foreign uv or virtual-environment settings cannot redirect the tool environment.
-Missing tools or a stale lock require explicit setup or a reviewed lock update.
-
-Alternatively, `node scripts/repository-python-tools.mjs python` explicitly installs the pinned CPython into `.development-tools/python/` using the pinned uv release's authenticated download catalogue, without PATH or Windows registry registration.
-CI uses this operation and passes its absolute interpreter path into later setup; checks still never download Python.
-
-ScanCode has its own `util/scancode-runtime/pyproject.toml` and `uv.lock`.
-Its source build uses the same Python pin, installs locked build dependencies first, and disables further build dependency resolution.
+CI uses GitHub's setup-python action with `.python-version` and verifies the uv release archive against its pinned checksum.
+ScanCode creates an isolated virtual environment under its requested output directory.
+It installs build dependencies first and builds the scanner from [its own lockfile](util/scancode-runtime/uv.lock).
 A stable Beartype release, pinned in the ScanCode project, replaces the former scoped prerelease selection for Python 3.15.
 
 Native Windows scanner qualification matches the retained independent baseline; Linux qualification remains pending.
 The isolated scanner constrains Pluggy to `<1.7`: Plugincode 32.0.0's hook classes fail discovery with Pluggy 1.7.0.
 
-Remove that compatibility constraint after an upstream update passes native ScanCode qualification; it does not constrain the npm runtime or quality-tool environments.
+Remove that compatibility constraint after an upstream update passes native ScanCode qualification.
 CI qualifies Windows and Linux findings against independently captured ScanCode 32.5.0 reports; a smoke qualification does not replace the full release corpus acquisition gates.
 
 The ScanCode lock determines which packages are source-built; [the scanner licence inventory](LICENSES/development/scancode-runtime/inventory.json) records them as `sourceBuiltComponents`.
@@ -167,21 +165,20 @@ Keep compilation and scanner failure logs with the compatibility reports.
 Run the gates before opening or updating a pull request.
 
 ```shell
-npm run check:python-tools
 npm run format:check
 npm run lint
 npm run test:quality
 ```
 
-Use `format:source`, `format:markdown`, `format:py`, and `format:json` for language-specific writes.
+Use `format:source`, `format:markdown`, and `format:json` for language-specific writes.
 The `run:prettier` package script declares the generic source formatting scope once: the repository root with `.gitignore` and `.prettierignore` boundaries, including every supported file under `.github`.
 
 `format:source` and `format:source:check` reuse that script with `--write` and `--check`; local composites and CI reuse these commands without separate file lists.
-Generic Prettier excludes Markdown and JSON-family files so their dedicated tools retain presentation and guarded-write ownership; Python remains owned by Ruff.
+Generic Prettier excludes Markdown and JSON-family files so their dedicated tools retain presentation and guarded-write ownership.
 Repository npm scripts use action-first names and alphabetical action groups; see the [naming rationale, ordering rule and command migration table](docs/development/npm-scripts.md).
 
 Use `check:markdown` for full read-only Markdown checking, including formatting drift, linting and local links; both `lint` and `format:check` retain that check.
-Use `lint:js` and `lint:py` for separate static checks, and the source/Python `:check` formatting scripts for read-only presentation checks.
+Use `lint:js` to check JavaScript and `format:source:check` to check source formatting.
 
 For selected Markdown files, use `npm run check:markdown -- -- "docs/guide.md"` or `npm run check:markdown -- --files-json "[\"docs/guide.md\"]"`; the canonical CLI requires a literal `--` boundary or JSON selection.
 `npm run format:markdown -- -- "docs/guide.md"` explicitly writes repairs; preview with `npm exec -- markdown-quality format --dry-run --root . -- docs/guide.md`.
@@ -234,8 +231,8 @@ Represent significant trailing spaces in examples as escaped strings or annotate
 Do not add a Markdown trimming exception.
 
 [Dependency version ownership](docs/development/dependency-versions.md) names the one file that declares each version and the command that projects it into the other files.
-For tool updates, review the manifest, `pyproject.toml`, `.python-version`, and the [uv version and archive digests](docs/release/development-tools.json).
-Regenerate the affected `uv.lock` files with the selected uv version, then synchronize and run the full gates on Windows and Linux.
+For tool updates, review the package manifest, `util/scancode-runtime/pyproject.toml`, `.python-version`, and the [uv version and archive digests](docs/release/development-tools.json).
+For scanner updates, run `node scripts/sync-python-target.mjs --write`, regenerate the scanner lock with `uv lock --project util/scancode-runtime`, then qualify it on Windows and Linux.
 The shared package owns Markdown formatter compatibility; verify the consumer CLI and SDK behavior when updating its core and native packages.
 Existing CI and release source lanes run complete authored Markdown checks from the root development graph alongside their required status checks.
 The archive-specific manual trusted Markdown dispatch is retired because no downstream receipt consumer remains.

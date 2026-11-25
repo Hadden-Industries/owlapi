@@ -11174,13 +11174,11 @@ This architecture and delivery contract provides:
 
 Most importantly, it makes `owlapi` a genuine **OWL abstraction**, not merely a relocated collection of format converters.
 
-## Python development tooling effective policy (10 October 2026)
+## Python development tooling effective policy (26 November 2026)
 
-[The Python 3.15 migration plan](plans/python-3.15-development-tools.md) supersedes earlier interpreter and tool selections for current development execution.
-Both Python projects require `>=3.15.0`; exact qualification initially uses stable 3.15.0, uv 0.13.0 and Ruff 0.17.0.
-ScanCode 32.5.0 and its locked native dependencies are built without patches from a separate runtime/build graph with the owner's scoped Beartype 0.23.0rc2 exception.
-Reassess upon a compatible stable Beartype release.
-Native checkout-local bootstrap supplies CI's exact interpreter without PATH or registry changes.
+[The October migration plan](plans/python-3.15-development-tools.md) records the original Python 3.15 qualification.
+Python tooling now belongs to ScanCode. Its jobs select CPython from `.python-version` with GitHub's setup-python action and install the scanner and build dependencies from `util/scancode-runtime/uv.lock` into an isolated environment.
+Source checks use the npm toolchain. Reconsider Python linting when the repository adds Python source.
 
 Windows and Linux CI must execute the real scanner qualifier against independent historical observations; full acquisition remains governed by the existing release/extended lanes.
 Historical Python 3.14 evidence retains its original recorded identity.
