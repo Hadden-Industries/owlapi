@@ -19,7 +19,8 @@ It verifies each traced JSPM module against the tracked reference map's SHA-384 
 `browser-consumer-manifest.json` records the tarball, the exact generated map's SHA-256 and `referenceImportMap.integrityScope` as `provider-only`.
 Read a historical manifest with its producing revision and original map to establish its integrity scope.
 
-Retain the candidate manifest and tarball digest, browser-consumer manifest, generated and local maps, injected `index.html`, provider inventory and verified mirror archive with the browser receipts.
+Retain the candidate manifest and tarball digest, browser-consumer manifest, generated and local maps, injected `index.html` and provider inventory with the browser receipts.
+Archive the verified mirror under its SHA-256 content address and retain the companion manifest linking each provider URL and digest to its licence evidence and any provider conversion or shim.
 Record the producing commit and runner identity.
 Include the job and attempt identities for hosted receipts.
 Combine receipts only after confirming that they cover the same revision and admitted candidate and that the required originals are retained.

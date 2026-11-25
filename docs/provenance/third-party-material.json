@@ -16,16 +16,16 @@
     "version": "0.1.0",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "0a1ebd858346c3a0293382d42aa68dcbb8ed99572621c821db55d3e5a1f8f94f",
+    "lockfileSha256": "5f55e5406ffb10d6f3138abfb9412c7f53a84ceaef6267e19e2d43a0ec42ad82",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "1a0621d4f4f373bc8ec71dc689cff45a78a895feb2c0b68b990d0b02c8e76657",
-    "evidenceCorpusRoot": "8c8b9f7c6568623575ed096fd84f9b1e80742ef6774f50d18113835dc58b8d0d",
+    "evidenceManifestSha256": "b51790eac4f5a5f3dcb11f5b9a6ff963d2b63c439530b39e4052c0e4b158f7c0",
+    "evidenceCorpusRoot": "543676c1d61539c280d92c1ea1158e842184983c44df50f1bb96f088aa5ae6ad",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "9c4dd78111328aae201ee3642d048cb15c6ba7cd8d2a8f8ad75f044d83a7ae3a",
+    "factsSha256": "9db42f6fc030a3319251aac074253d1c1939eb7914e622c9bea509bec08d6e28",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -12688,9 +12688,9 @@
     },
     {
       "dependencyPath": "node_modules/@types/node",
-      "artifactId": "12d9bfa50b40236581fc2bd49b0536a10909856417b4fa324f00fc1dc73a5714",
+      "artifactId": "d43c6f514fb8d66c2c0ec9ed24e22e7d6209050efb0bb39cc948c22acf2ec666",
       "name": "@types/node",
-      "version": "26.6.6",
+      "version": "26.6.7",
       "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -12723,12 +12723,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "b944135ec89f47fdacd429d1a3b2cfa781a8a239d30d4dbdc5dd34ef22666728",
-        "provenanceSha256": "ba1bcfe27a13bd82d1aeb591a1b549c11530888b09c69523179cb76716764565",
-        "registrySignatureSha256": "21d23ec4788bb6439151a5da57aab2130899224d808594db3c7516eb59dad4da",
-        "scanSha256": "7bdf26c84d2a5e35f69d69c6ced7928029a4ce28ff172c2e5c79407c5e3973c0"
+        "archiveSha256": "032aa4f01ee76e6d829d487306a3363cbcd5c7e4a2fd337caff0cf6cbcd4fd7d",
+        "provenanceSha256": "f78bb0df6ca991c2b39b907f4a45540a5525c85ea1edf53e418a63ea1d78bcc3",
+        "registrySignatureSha256": "8873e606799fe0422c5f0fe35c1a0877b5ca73a445c21bcc9934761d9bf47e17",
+        "scanSha256": "74be4986943ed70c8a18bad8ea536bee8429ff11427951cf5f08e73066f750e5"
       },
-      "registryUrl": "https://registry.npmjs.org/@types/node/-/node-26.6.6.tgz",
+      "registryUrl": "https://registry.npmjs.org/@types/node/-/node-26.6.7.tgz",
       "sourceReference": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
       "sourceUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped",
       "packageAuthor": null,
@@ -44875,7 +44875,7 @@
         },
         {
           "path": "package-lock.json",
-          "sha256": "0a1ebd858346c3a0293382d42aa68dcbb8ed99572621c821db55d3e5a1f8f94f"
+          "sha256": "5f55e5406ffb10d6f3138abfb9412c7f53a84ceaef6267e19e2d43a0ec42ad82"
         }
       ],
       "treeEvidence": null,
