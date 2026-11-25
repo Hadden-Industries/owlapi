@@ -1,4 +1,5 @@
 /** Exercise the real scanner and repository normalizer against independent 3.14 observations. */
+import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve, isAbsolute } from "node:path";
@@ -23,6 +24,51 @@ import {
 
 const executeFile = promisify(execFile);
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
+
+// The notice inventory covers every locked distribution, across both platforms.
+async function verifyScannerNoticeGraph(python) {
+  const { stdout } = await executeFile(
+    python,
+    [
+      "-I",
+      "-c",
+      [
+        "import json, tomllib",
+        "from pathlib import Path",
+        "packages = tomllib.loads(Path('util/scancode-runtime/uv.lock').read_text(encoding='utf-8'))['package']",
+        "print(json.dumps([p for p in packages if not p.get('source', {}).get('virtual')]))",
+      ].join("\n"),
+    ],
+    { cwd: repositoryRoot, timeout: 30000, windowsHide: true },
+  );
+  const packages = JSON.parse(stdout);
+  const inventory = JSON.parse(
+    await readFile(
+      join(
+        repositoryRoot,
+        "LICENSES/development/scancode-runtime/inventory.json",
+      ),
+      "utf8",
+    ),
+  );
+  const identities = (values) =>
+    values
+      .map(
+        ({ name, version }) =>
+          name.toLowerCase().replaceAll(/[-_.]+/gu, "-") + "==" + version,
+      )
+      .sort();
+  assert.deepEqual(
+    identities(inventory.components),
+    identities(packages),
+    "ScanCode notice inventory differs from the lock",
+  );
+  assert.deepEqual(
+    identities(inventory.sourceBuiltComponents),
+    identities(packages.filter((p) => p.sdist && !p.wheels?.length)),
+    "ScanCode source-build inventory differs from the lock",
+  );
+}
 
 /** Qualify a fresh locked installation; retain raw reports and failures for diagnosis. */
 export async function qualifyScancodeRuntime({
@@ -54,6 +100,7 @@ export async function qualifyScancodeRuntime({
       outputRoot: join(workingRoot, "tools"),
       python,
     });
+    await verifyScannerNoticeGraph(python);
   } catch (error) {
     await writeFile(
       join(reports, "installation-failure.log"),
