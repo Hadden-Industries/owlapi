@@ -4,9 +4,6 @@ import { verifyPinnedIntegrationCheckout } from "../util/owlapi-reference/pinned
 const approvedExclusions = new Set([
   "node_modules/**",
   "tooling/artifact-transport/node_modules/**",
-  ".development-tools/python/**",
-  ".development-tools/uv-cache/**",
-  ".venv/**",
   ".release/universal-ontology/**",
 ]);
 

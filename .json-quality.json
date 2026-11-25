@@ -60,10 +60,8 @@
     {
       "paths": [
         "**/node_modules/**",
-        ".development-tools/**",
         ".git/**",
         ".release/**",
-        ".venv/**",
         "docs/conformance/**",
         "docs/provenance/evidence/**",
         "tooling/artifact-transport/docs/provenance/evidence/**",
@@ -72,23 +70,6 @@
       "owner": "native dependency, evidence, fixture, generator and administrative producers",
       "reason": "Analysis remains mandatory; these bytes can only be changed by their owning producer after an accepted decision.",
       "allowSourceRewrites": false
-    },
-    {
-      "paths": [
-        ".development-tools/python/**"
-      ],
-      "owner": "repository Python toolchain installer",
-      "reason": "Owner-approved temporary exclusion of the ignored installed Python tree, including its directory aliases. Reassess during JSON gate qualification; Python version and locked environment checks remain mandatory, and tracked JSON stays checked.",
-      "excludeUntrackedSources": true
-    },
-    {
-      "paths": [
-        ".development-tools/uv-cache/**",
-        ".venv/**"
-      ],
-      "owner": "Native locked Python environment/cache installer",
-      "reason": "Owner-approved temporary exclusion of ignored uv cache and installed virtual environment from JSON quality. Tracked JSON is independently rescued; native Python versions, locked offline environment checks and Python tests remain mandatory.",
-      "excludeUntrackedSources": true
     },
     {
       "paths": [

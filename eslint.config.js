@@ -47,8 +47,6 @@ export default [
       "coverage/**",
       ".release/**",
       "node_modules/**",
-      ".venv/**",
-      ".development-tools/**",
       "playwright-report/**",
       "test-results/**",
       "docs/conformance/generated/**",

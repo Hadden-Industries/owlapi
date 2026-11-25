@@ -228,7 +228,7 @@ test("ignored and hidden bad peers block an eligible guarded batch and unapprove
   );
 });
 
-test("only six explicit physical exclusions are approved and retained cargo provenance remains in scope", async () => {
+test("only the approved installation trees are excluded and retained cargo provenance remains in scope", async () => {
   const policy = await readPolicyFixture(repository);
   await validateRepositoryJsonPolicy(policy, repository);
   assert.deepEqual(
@@ -239,9 +239,6 @@ test("only six explicit physical exclusions are approved and retained cargo prov
     [
       "node_modules/**",
       "tooling/artifact-transport/node_modules/**",
-      ".development-tools/python/**",
-      ".development-tools/uv-cache/**",
-      ".venv/**",
       ".release/universal-ontology/**",
     ].sort(),
   );
@@ -269,11 +266,9 @@ test("only six explicit physical exclusions are approved and retained cargo prov
   );
 });
 
-test("Python installation junctions remain pruned while siblings and tracked JSON stay checked", async (t) => {
-  const root = await repositoryFixture(t, [
-    exclusion([".development-tools/python/**"]),
-  ]);
-  const installed = join(root, ".development-tools/python"),
+test("installation junctions remain pruned while siblings and tracked JSON stay checked", async (t) => {
+  const root = await repositoryFixture(t, [exclusion(["node_modules/**"])]);
+  const installed = join(root, "node_modules"),
     runtime = join(installed, "runtime");
   await mkdir(runtime, { recursive: true });
   await writeFile(join(runtime, "untracked.json"), '{"bad":}\n');
@@ -283,21 +278,20 @@ test("Python installation junctions remain pruned while siblings and tracked JSO
     process.platform === "win32" ? "junction" : "dir",
   );
   assert.equal((await checkedFixture(root)).at(-1).contractSatisfied, true);
-  await mkdir(join(root, ".development-tools/python-neighbor"));
-  await writeFile(
-    join(root, ".development-tools/python-neighbor/bad.json"),
-    '{"bad":}\n',
-  );
+  await mkdir(join(root, "node_modules-neighbor"));
+  await writeFile(join(root, "node_modules-neighbor/bad.json"), '{"bad":}\n');
   await writeFile(join(installed, "tracked.json"), '{"bad":}\n');
   execFileSync(
     "git",
-    ["-C", root, "add", "--force", ".development-tools/python/tracked.json"],
-    { windowsHide: true },
+    ["-C", root, "add", "--force", "node_modules/tracked.json"],
+    {
+      windowsHide: true,
+    },
   );
   const events = await checkedFixture(root);
   for (const path of [
-    ".development-tools/python-neighbor/bad.json",
-    ".development-tools/python/tracked.json",
+    "node_modules-neighbor/bad.json",
+    "node_modules/tracked.json",
   ])
     assert.ok(
       events.some((event) => event.type === "finding" && event.path === path),
