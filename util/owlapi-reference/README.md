@@ -28,7 +28,7 @@ The merged models contain an ontology annotation whose predicate has no declarat
 The cases require equality for every original model and the merged model, an exact Java save and reload with missing-type generation disabled, and the specific JavaScript refusal with an empty target.
 The root and import byte identities bind this check to the recorded inputs.
 
-Corpus qualification policy 2 selects the complete published import closure for IFC4 ADD2 in the `prospects` suite.
+The corpus qualification roster selects the complete published import closure for IFC4 ADD2 in the `prospects` suite.
 The catalogue pins the root and the CC BY 3.0 EXPRESS and LIST releases by SHA-256.
 Use `--input building-smart-ifcowl --imports mapped` to select the same mapping explicitly.
 The Java-compatible closure checks the declaration-preserving RDF/XML save and reload and records the default native writer result.
@@ -60,7 +60,10 @@ The 2026-11-23 OBO acquisition records 22 new byte pins from publisher releases 
 Each row retains the historical acquisition reason and reported length alongside its new source.
 The wider suite keeps the recorded request IRI as the logical document base.
 GAZ's verified Zenodo archive declares `http://purl.obolibrary.org/obo/TEMP` in the OWL document.
-GAZ remains available for authorized local replay because the shared HTTPS client receives HTTP 403 from Zenodo.
+The shared client identifies the project to publishers.
+Zenodo serves GAZ from its fixed file endpoint, which accepts a generic file request.
+Preparation verifies all 1,308,877,129 bytes against the original SHA-256 before admitting the download for offline replay.
+[Zenodo client identification](https://developers.zenodo.org/#user-agent) · [GAZ release](https://zenodo.org/records/18247183)
 The OGG publisher's merged OWL download still returns HTTP 404.
 
 Use `--suite ogg-archive --profile java-owlapi-5.5.1 --imports mapped` to compare the archived OGG base, worm and fruit-fly source documents.
@@ -162,12 +165,23 @@ A ratio requires equivalent untimed structural evidence on the same profile and 
 The verifier checks the requested sample counts and calculates the summary from the retained observations.
 Imported loads qualify for ratios only after independent agreement on every model in the loaded closure.
 Mixed or incomplete loads retain their diagnostic observations.
+The November six-ontology run includes full string/stream model comparisons, individual trial peaks, allocation samples and heap readings after releasing each ontology.
+[Six-ontology measurements](../../docs/performance/2026-11-25-six-ontology-memory.json)
 The `api-benchmarks` suite carries the 70 generated workload IDs and their raw historical or live observations.
-Use `--benchmark-mode live` when measuring with the selected local JDK.
+Use `--benchmark-mode live` to collect fresh Java timings with the selected JDK and run the independent API witness on the same fixture sizes and source.
+Each workload/profile row records a ratio only when its observations pass the equal-work checks.
+Historical rows retain their Java baseline digest and diagnostic status.
+
+`--benchmark-mode refresh --java-baseline <absolute-file>` replaces a complete Java baseline.
+`--benchmark-mode missing --java-baseline <absolute-file>` measures only missing workload IDs using the same generator, parameters, platform, Java version and OWLAPI distribution.
+Run `verify` with the same mode, baseline path and fixture selectors.
+The default mode reads the existing baseline.
 
 Use `--scenario strict-first` to measure a separate downstream retry.
 A successful strict load ends the sequence.
 A typed syntax, unsupported-construct or resource refusal starts a compatible load in a fresh manager on the same document.
+The Java-compatibility profile can aggregate parser errors.
+The runner retains their types and retries when every member of a nonempty aggregate is eligible.
 The report retains the observed attempts and labels the released Java direct load as a separate diagnostic baseline.
 
 The `release-semantics` selection derives its shadow roster from the catalogue and the recorded hold reasons.
@@ -202,6 +216,13 @@ Long diagnostic text retains a prefix and a digest.
 
 The official released Java OWLAPI 5.5.1 oracle, historical source-build pins and frozen performance timings retain their distinct identities.
 Use [the 0.1.0 roadmap](../../docs/plans/2026-10-29-0.1.0-release-reconciliation.md#4-java-toolchain-and-oracle-migration) to select the appropriate oracle and preserve old evidence.
+
+The `reference-behavior` suite registers 28 native Java observations.
+On Linux x64 it compares the 27 available observations with a capture from the previous Temurin patch on Linux.
+The Turtle writer emits platform line endings, so the comparison preserves the bytes and character counts specific to that host.
+The remaining resource-contract observation holds the suite open.
+The `reference-selected-api` suite uses the 15 original selected-API observations.
+[Linux reference capture](../../docs/development/java-toolchain/temurin-25.0.5-linux-x64-behavior.json) · [Native oracle issue](https://github.com/owlcs/owlapi/issues/1187)
 
 The `java-owlapi-5.5.1` behavior work uses the released `f760b3a4` authority,
 Central/source paired captures and the current
@@ -450,11 +471,15 @@ Neither constitutes final release acceptance: fresh evidence from the reconciled
 
 ### July source-driven parsing and import-closure reconciliation
 
-Run `npm run test:universal-ontology -- --ontology-repository <checkout> --output <new-result-directory>`.
+Use `npm run compare:java-js -- prepare --suite july --profile normative-v1 --parsing-mode compatible --ontology-repository <checkout> --reference-checkout <built-java-checkout> --cache <absolute-cache> --output <absolute-preparation-directory>`.
+Then use `run` and `verify` with the same suite, profile, parsing mode, reference checkout and cache, and a separate absolute result directory.
+The prepared cache can move between directories.
 This fail-closed command covers all four original July variants at Universal Ontology revision `e2c667f3584b8fb705671cada0fe205b1000b617`: ISO11179-3 edition 4, reference-data, core and extended.
 It consumes only original source blobs; historical `-full` documents and VOWL projections are not reference outputs.
 
-The report separates four parsing results (18 direct-document comparisons in their original import contexts) from eight fresh closure results (Functional Syntax and RDF/XML).
+The shared suite reports seven distinct direct-source cases and four closure cases.
+Within the four original import contexts it checks 18 document models, then writes and reloads each merged closure in Functional Syntax and RDF/XML.
+This produces eight serialization checks.
 Parsing includes each document's own annotations and imports.
 Closures retain only root ontology identity and ontology annotations, plus the structural union of direct axioms.
 All resolution remains offline.
@@ -464,20 +489,28 @@ Exact specification-grounded differences use the one expected-difference ledger;
 Raw Java outcomes remain visible alongside reconciliation outcomes.
 
 The [named OWL-Time restriction decision](../../docs/compatibility/july-ontology-reconciliation.md) explains why a reconciled pass for core/extended is not raw Java equality.
-July ledger rules apply to direct document differences, not to the closure root.
-Closure reconciliation instead requires `propagationEvidence` to match with no allowed differences after Java merges those reconciled document models.
+July ledger rules apply to direct document differences.
+The native `closurePropagation` result requires exact equality after Java merges those reconciled document models.
+
+To compare the retired and current runners on the same candidate, run `node scripts/verify-comparison-migration.mjs --july-control <original-qualification.json> --july-output <shared-result-directory> --jest <full-jest-report.json>`.
+The frozen inventory names the original assertions and probe arguments.
+The qualification record gives the observed results for the November candidate.
+[Migration inventory](../../docs/compatibility/comparison-runner-migration.json) · [Qualification results](../../docs/compatibility/2026-11-25-corpus-qualification.json)
+It verifies the source and artifact digests and checks every named independent Jest assertion in the migration inventory.
 
 The standalone Java oracle exits with code 1 for unparsed source RDF and retains `SOURCE_UNPARSED_RDF`; only the qualification command adjudicates that evidence against the exact ledger.
 Do not treat a raw oracle exit as the reconciled result.
 
 Source mode records actual source bytes, including dirty changes.
 Optional `--candidate <directory>` installs the retained tarball with scripts disabled and verifies its digest before testing the public package.
+The runner uses the retained consumer lock when present.
+Use `--offline` on a prepared installation to require that lock and restrict npm to its local cache.
 This existing source/local-candidate mode does not fetch or qualify a public npm release.
 
-After publication, run the same command with `--registry-version 0.1.0-rc.1` to exercise the public-registry package.
+After publication, pass `--registry-version <exact-package-version>` to both `run` and `verify` to exercise the public-registry package.
 Place its `--output` directory outside the owlapi checkout; registry mode rejects an output under the repository, including ignored folders.
 The registry option cannot be combined with `--candidate` and rejects tags or version ranges.
-It creates an isolated consumer and empty cache, installs the exact native alias `npm:@hadden-industries/owlapi@0.1.0-rc.1`, verifies actual scoped identity/integrity and resolves only its installed public roots.
+It creates an isolated consumer and empty cache, installs the version declared in the repository package manifest, verifies its public registry integrity and resolves its installed public exports.
 
 The package has seven entry points; UO uses the five Java-shaped subpaths.
 After artifact publication and verification, UO tests authorized remote import retrieval and its complete contract, then verifies the generated standalone ontology offline with zero loader calls.
@@ -492,8 +525,9 @@ Node resolves and executes the real public modules; Jest asserts the returned ev
 This preserves concurrent imports and the exact production qualification path without depending on Jest's experimental VM module linker, which can reject shared concurrent imports on Node 22.
 Both supported Node lines run these same assertions; native failures and missing import mappings remain test failures.
 
-The required Node 24 CI job builds the exact Java revision with Maven, runs native oracle regressions, executes both July checks and retains their artifacts, including failures.
-This adds development evidence only; it does not change the release workflow or replace final qualification of the integrated scoped RC against the pinned baseline and Phase 21.
+CI and release verification prepare the four July families, run their shared comparison and verify the results against the pinned source oracle.
+Both workflows retain the diagnostics when a comparison fails.
+The installed release candidate also needs its own qualification on the protected release path.
 
 ### Local native build-input observations
 
