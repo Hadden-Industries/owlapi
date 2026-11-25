@@ -215,7 +215,7 @@
           "jobs",
           "source_canonical",
           "steps",
-          16,
+          15,
           "run"
         ],
         "template": "tool_directory=\"$RUNNER_TEMP/actionlint-{{runtime:actionlintVersion}}\"\nmkdir -p \"$tool_directory\"\narchive=\"$tool_directory/actionlint_{{runtime:actionlintVersion}}_linux_amd64.tar.gz\"\ncurl --fail --silent --show-error --location --retry 3 \\\n  https://github.com/rhysd/actionlint/releases/download/v{{runtime:actionlintVersion}}/actionlint_{{runtime:actionlintVersion}}_linux_amd64.tar.gz \\\n  --output \"$archive\"\nprintf '%s  %s\\n' '{{runtime:actionlintLinuxSha256}}' \"$archive\" | sha256sum --check --strict\ntar -xzf \"$archive\" -C \"$tool_directory\"\nprintf '%s\\n' \"$tool_directory\" >> \"$GITHUB_PATH\"\n"

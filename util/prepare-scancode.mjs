@@ -1,17 +1,41 @@
 /** Prepare an isolated, hash-locked ScanCode source build for the selected CPython. */
 import { execFile } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
-import { access, mkdir, readFile, rename, rm } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { access, mkdir, readFile, rename, rm, stat } from "node:fs/promises";
+import { constants, existsSync } from "node:fs";
+import { delimiter, isAbsolute, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
-import { ensureRepositoryUv } from "../scripts/repository-python-tools.mjs";
 import { stableJson } from "./third-party-evidence/digests.mjs";
 import { SCANCODE_TOOL } from "./third-party-evidence/scancode.mjs";
-import { pythonTarget } from "../scripts/development-tool-policy.mjs";
+import {
+  pythonTarget,
+  UV_SELECTION,
+} from "../scripts/development-tool-policy.mjs";
 
 const executeFile = promisify(execFile);
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
+
+// Use explicit PATH entries so Windows cannot prefer a uv.exe in the checkout.
+async function findUv() {
+  const name = process.platform === "win32" ? "uv.exe" : "uv";
+  for (const directory of (process.env.PATH ?? "").split(delimiter)) {
+    if (!isAbsolute(directory)) continue;
+    const path = join(directory, name);
+    try {
+      if ((await stat(path)).isFile()) {
+        await access(path, constants.X_OK);
+        return path;
+      }
+    } catch (error) {
+      if (!["ENOENT", "ENOTDIR", "EACCES", "EPERM"].includes(error.code))
+        throw error;
+    }
+  }
+  throw new Error(
+    `Install uv ${UV_SELECTION.version} on PATH to prepare ScanCode.`,
+  );
+}
 
 /** Resolve the native command; platform selection must be explicit. */
 export const resolveScancodeBootstrap = ({
@@ -71,7 +95,52 @@ export const prepareScancode = async ({
     if (error.code !== "ENOENT") throw error;
   }
   // Validation precedes installation and never accepts an ambient PATH interpreter.
-  const tools = await ensureRepositoryUv({ root: repositoryRoot, python });
+  if (!isAbsolute(python) || !existsSync(python))
+    throw new Error(
+      "Supply --python with the absolute path to the installed pinned CPython interpreter.",
+    );
+  // Environment isolation adapts HISEW runRepositoryUv.js at
+  // 446ffa14c29fbcb18270ff32799fbe377c916426 (AGPL-3.0-only).
+  const env = Object.fromEntries(
+    Object.entries(process.env).filter(
+      ([name]) => !/^(UV_|VIRTUAL_ENV$|PYTHONHOME$|PYTHONPATH$)/iu.test(name),
+    ),
+  );
+  const environment = join(resolved.toolkitRoot, "venv");
+  const options = {
+    cwd: repositoryRoot,
+    env: {
+      ...env,
+      UV_PROJECT_ENVIRONMENT: environment,
+      UV_PYTHON_DOWNLOADS: "never",
+      UV_NO_CONFIG: "1",
+      PYTHONUTF8: "1",
+    },
+    timeout: 30 * 60 * 1000,
+    maxBuffer: 64 * 1024 * 1024,
+    windowsHide: true,
+    shell: false,
+  };
+  const interpreter = await executeFile(
+    python,
+    [
+      "-I",
+      "-c",
+      "import platform; print(platform.python_implementation(), platform.python_version())",
+    ],
+    options,
+  );
+  const expected = `CPython ${pythonTarget(repositoryRoot).version}`;
+  if (interpreter.stdout.trim() !== expected)
+    throw new Error(
+      `${expected} is required; found ${interpreter.stdout.trim()}.`,
+    );
+  const uv = await findUv();
+  const version = await executeFile(uv, ["--version"], options);
+  if (version.stdout.trim().split(/\s+/u)[1] !== UV_SELECTION.version)
+    throw new Error(
+      `ScanCode requires uv ${UV_SELECTION.version}; found ${version.stdout.trim()} at ${uv}.`,
+    );
   const project = join(repositoryRoot, "util", "scancode-runtime");
   const lockBytes = await readFile(join(project, "uv.lock"));
   const lockSha256 = createHash("sha256").update(lockBytes).digest("hex");
@@ -80,19 +149,9 @@ export const prepareScancode = async ({
   // Venv launchers record their installation paths. Install at the final path,
   // and remove that task-owned destination on a known failed preparation.
   await rename(pending, resolved.outputRoot);
-  const environment = join(resolved.toolkitRoot, "venv");
-  const options = {
-    cwd: repositoryRoot,
-    env: { ...tools.env, UV_PROJECT_ENVIRONMENT: environment },
-    timeout: 30 * 60 * 1000,
-    maxBuffer: 64 * 1024 * 1024,
-    windowsHide: true,
-    shell: false,
-  };
   const common = [
     "sync",
-    // Source archives expand to more entries than workspace discovery permits.
-    // uv owns a temporary cache per command; the installed environment survives.
+    // Use a temporary cache for each isolated scanner build.
     "--no-cache",
     "--project",
     project,
@@ -103,17 +162,17 @@ export const prepareScancode = async ({
   ];
   try {
     await executeFile(
-      tools.uv,
+      uv,
       [...common, "--only-group", "build", "--no-build"],
       options,
     );
     await executeFile(
-      tools.uv,
+      uv,
       [...common, "--group", "build", "--no-build-isolation"],
       options,
     );
     await executeFile(
-      tools.uv,
+      uv,
       [
         ...common,
         "--group",

@@ -8,7 +8,7 @@
   "recordedOn": "2026-11-25",
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "efe08326120b1bede136e0a3579dc6bde4fb6e3ddede894695d4db8d09a1497f",
+    "factsSha256": "56575fa764fc911cac4ff36dbc6deae4547e870d05c4ebf5e622bee8133fc0b9",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -87,7 +87,7 @@
     "browser and Node tests",
     "bundle-size and parser-performance benchmarks",
     "production static-import-closure verification",
-    "Development-only Python tools use pyproject.toml and uv.lock with native locked validation; their selected distributions, retained terms, and copied-tool source records are inventoried in docs/provenance/third-party-material.json. Requalify the Snapper workaround and the Windows/Linux quality gates on tool updates."
+    "ScanCode uses util/scancode-runtime/uv.lock. Qualify scanner updates on Windows and Linux and refresh the lock-bound notices and third-party material inventory."
   ],
   "dependencies": [
     {

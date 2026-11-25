@@ -5,7 +5,6 @@ import {
   ACTIONLINT_SELECTION,
   BEARTYPE_VERSION,
   pinnedRequirement,
-  RUFF_VERSION,
   SCANCODE_VERSION,
 } from "./development-tool-policy.mjs";
 import { MACOS, macosRunner } from "./macos-runner.mjs";
@@ -16,7 +15,7 @@ import { SCANCODE_TOOL } from "../util/third-party-evidence/scancode.mjs";
 describe("development tool version authorities", () => {
   test("reads each exact pin from its native Python project", () => {
     expect(SCANCODE_TOOL.version).toBe(SCANCODE_VERSION);
-    for (const version of [RUFF_VERSION, SCANCODE_VERSION, BEARTYPE_VERSION])
+    for (const version of [SCANCODE_VERSION, BEARTYPE_VERSION])
       expect(version).toMatch(/^\d+\.\d+(?:\.\d+)?$/u);
     const root = mkdtempSync(join(tmpdir(), "owlapi-tool-pins-"));
     try {

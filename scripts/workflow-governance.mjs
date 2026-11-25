@@ -34,7 +34,7 @@ import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import { ordinaryReleaseWorkflow } from "./rc3-recovery-workflow.mjs";
 
 const nonMarkdownFormatCheck =
-  "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check";
+  "npm run check:node && npm run check:version && npm run format:source:check && npm run format:json:check";
 const sourceAdmission =
   "npm run check:node && npm run check:version && npm run verify:workflow-governance && node scripts/project-shared-overrides.mjs --check && node scripts/sync-python-target.mjs --check";
 
@@ -42,6 +42,7 @@ const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
 const ACTION_DIRECTORY = join(REPOSITORY_ROOT, ".github", "actions");
 const SHARED_SETUP = "./.github/actions/setup-producer";
+const SCANCODE_SETUP = "./.github/actions/setup-scancode";
 const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
 const COLLECT_ARTIFACTS = "./.github/actions/collect-artifacts";
 const PUBLISHER_SETUP = "./approval-tools/.github/actions/setup-producer";
@@ -560,6 +561,8 @@ const validateActionUses = (fileName, workflow, document, violations) => {
         }
         continue;
       }
+      // validateQualityTooling checks the inventory and ordering of these steps.
+      if (step.uses === SCANCODE_SETUP) continue;
       if (
         [
           RETAIN_ARTIFACT,
@@ -2700,11 +2703,11 @@ const validateEvidenceWorkflows = (workflows, violations) => {
       steps(shard).filter(
         (step) =>
           step.id === "scancode_python" &&
-          step.run === "node scripts/repository-python-tools.mjs python" &&
+          step.uses === SCANCODE_SETUP &&
           !step.if &&
           !step["continue-on-error"],
       ).length === 1,
-      `${fileName}:${shardId} must select the pinned checkout Python bootstrap`,
+      `${fileName}:${shardId} must select the pinned development Python`,
     );
     add(
       violations,
@@ -2856,42 +2859,40 @@ const validateEvidenceWorkflows = (workflows, violations) => {
   }
 };
 
-// Setup is confined to the quality consumers and the existing evidence shards.
-// A new caller of npm test/lint/format must explicitly adopt the locked tools.
-const QUALITY_CONSUMERS = {
-  "ci.yml": [
-    "source_portable",
-    "source_canonical",
-    "source_json",
-    "quality_windows",
-  ],
-  "release.yml": [
-    "source_portable",
-    "source_canonical",
-    "source_json",
-    "quality_windows",
-  ],
-  "maintenance.yml": ["health"],
-};
 const validateQualityTooling = (workflows, violations) => {
   for (const [file, workflow] of entries(workflows)) {
     for (const [id, job] of entries(workflow.jobs)) {
       const context = `${file}:${id} quality tooling`;
-      const consumer = QUALITY_CONSUMERS[file]?.includes(id);
       const evidence =
         ["release.yml", "extended-tests.yml"].includes(file) &&
         id === "third_party_evidence_shard";
-      const python = steps(job).filter((step) =>
-        step.run?.startsWith("node scripts/repository-python-tools.mjs python"),
-      );
-      add(
-        violations,
-        python.length === (consumer || evidence ? 1 : 0),
-        `${context} has an unexpected Python setup inventory`,
-      );
       const scannerConsumer =
         file === "ci.yml" &&
         ["source_canonical", "quality_windows"].includes(id);
+      const list = steps(job);
+      const setup = list.filter((step) => step.uses === SCANCODE_SETUP);
+      add(
+        violations,
+        setup.length === (scannerConsumer || evidence ? 1 : 0),
+        `${context} has an unexpected scanner setup inventory`,
+      );
+      if (scannerConsumer || evidence) {
+        const invocation = list.findIndex((step) =>
+          /^node util\/(?:qualify-scancode-runtime|prepare-scancode)\.mjs /u.test(
+            step.run ?? "",
+          ),
+        );
+        add(
+          violations,
+          setup[0]?.id === "scancode_python" &&
+            !setup[0].if &&
+            !setup[0]["continue-on-error"] &&
+            !setup[0].env &&
+            !setup[0].with &&
+            list.indexOf(setup[0]) < invocation,
+          `${context} requires unconditional pinned scanner setup before use`,
+        );
+      }
       const qualifications = steps(job).filter((step) =>
         step.run?.includes("qualify-scancode-runtime.mjs"),
       );
@@ -2915,7 +2916,7 @@ const validateQualityTooling = (workflows, violations) => {
               "node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON --work-root-env=SCANCODE_WORK_ROOT" &&
             isDeepStrictEqual(qualification?.env, {
               SCANCODE_PYTHON:
-                "${{ steps.quality_python.outputs.python-path }}",
+                "${{ steps.scancode_python.outputs.python-path }}",
               SCANCODE_WORK_ROOT: "${{ runner.temp }}/scancode-qualification",
             }) &&
             !qualification?.if &&
@@ -2930,50 +2931,16 @@ const validateQualityTooling = (workflows, violations) => {
           `${context} must prepare scanner reports after qualification`,
         );
       }
-      if (!consumer) continue;
-      const list = steps(job);
-      const setupIndex = list.indexOf(python[0]);
-      const sync = list.filter((step) =>
-        step.run?.startsWith("npm run sync:python-tools"),
-      );
-      const syncIndex = list.indexOf(sync[0]);
-      const checkIndexes = list.flatMap((step, index) =>
-        step.run === nonMarkdownFormatCheck ||
-        /^npm (test|run (format:check|format:source-python:check|lint|lint:source-python|test:quality|test:quality:source|check:python-tools))(?: |$)/u.test(
-          step.run ?? "",
-        )
-          ? [index]
-          : [],
-      );
-      add(
-        violations,
-        python[0]?.id === "quality_python" &&
-          python[0]?.run ===
-            "node scripts/repository-python-tools.mjs python" &&
-          !python[0]?.env &&
-          !python[0]?.with &&
-          !python[0]?.if &&
-          !python[0]?.["continue-on-error"],
-        `${context} requires unconditional pinned Python selection`,
-      );
-      add(
-        violations,
-        sync.length === 1 &&
-          sync[0].run ===
-            "npm run sync:python-tools -- --python-env QUALITY_PYTHON" &&
-          isDeepStrictEqual(sync[0].env, {
-            QUALITY_PYTHON: "${{ steps.quality_python.outputs.python-path }}",
-          }) &&
-          !sync[0].if &&
-          !sync[0]["continue-on-error"] &&
-          setupIndex >= 0 &&
-          syncIndex > setupIndex &&
-          (!scannerConsumer || list.indexOf(qualification) > syncIndex) &&
-          checkIndexes.length > 0 &&
-          checkIndexes.every((index) => index > syncIndex),
-        `${context} requires locked synchronization before every consumer`,
-      );
-      if (["ci.yml", "release.yml"].includes(file)) {
+      const sourceWorkflow = ["ci.yml", "release.yml"].includes(file);
+      if (
+        sourceWorkflow &&
+        [
+          "source_portable",
+          "source_json",
+          "source_canonical",
+          "quality_windows",
+        ].includes(id)
+      ) {
         const jsonInstalls = list.filter(
           (step) => step.run === "npm run install:json",
         );
@@ -3013,8 +2980,7 @@ const validateQualityTooling = (workflows, violations) => {
               !jsonProbes[0]?.if &&
               !jsonProbes[0]?.["continue-on-error"] &&
               installIndex >= 0 &&
-              installIndex < syncIndex &&
-              list.indexOf(jsonProbes[0]) > syncIndex,
+              list.indexOf(jsonProbes[0]) > installIndex,
             `${context} requires unconditional root JSON installation and probes`,
           );
           const jsonConsumers = list.flatMap((step, index) =>
@@ -3061,10 +3027,19 @@ const validateQualityTooling = (workflows, violations) => {
         }
         if (["source_portable", "source_json"].includes(id)) {
           for (const command of [
-            "npm run format:source-python:check",
-            "npm run lint:source-python",
+            "npm run format:source:check",
+            "npm run lint:js",
           ])
-            requireRun(job, command, context, violations);
+            add(
+              violations,
+              list.some(
+                (step) =>
+                  step.run === command &&
+                  !step.if &&
+                  !step["continue-on-error"],
+              ),
+              `${context} requires ${command}`,
+            );
         } else {
           const installIndex = list.indexOf(rootInstalls[0]);
           for (const command of [nonMarkdownFormatCheck, "npm run lint"]) {
@@ -3117,7 +3092,7 @@ const validateQualityTooling = (workflows, violations) => {
           }
         }
       }
-      if (id === "quality_windows") {
+      if (sourceWorkflow && id === "quality_windows") {
         requireFields(
           job,
           {
@@ -3129,7 +3104,6 @@ const validateQualityTooling = (workflows, violations) => {
           violations,
         );
         for (const command of [
-          "npm run check:python-tools",
           nonMarkdownFormatCheck,
           "npm run lint",
           "npm run test:quality",

@@ -1,0 +1,31 @@
+name: Set up ScanCode prerequisites
+description: Select the pinned CPython and uv for the isolated ScanCode build
+outputs:
+  python-path:
+    description: Absolute path to the runner's selected CPython executable
+    value: ${{ steps.python.outputs.python-path }}
+runs:
+  using: composite
+  steps:
+    - name: Set up CPython
+      id: python
+      uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      with:
+        python-version-file: .python-version
+        update-environment: false
+    - name: Read the uv archive checksum for this runner
+      id: archive
+      shell: bash
+      run: |
+        node --input-type=module -e '
+          import { appendFileSync } from "node:fs";
+          import { UV_SELECTION } from "./scripts/development-tool-policy.mjs";
+          appendFileSync(process.env.GITHUB_OUTPUT, `checksum=${UV_SELECTION.assets[process.platform].sha256}\n`);
+        '
+    - name: Install pinned uv
+      uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+      with:
+        version-file: util/scancode-runtime/pyproject.toml
+        checksum: ${{ steps.archive.outputs.checksum }}
+        require-checksums: true
+        enable-cache: false

@@ -740,7 +740,7 @@ describe("repository workflow governance", () => {
           const format = steps.items.findIndex(
             (step) =>
               step.get("run") ===
-              "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check",
+              "npm run check:node && npm run check:version && npm run format:source:check && npm run format:json:check",
           );
           steps.items.splice(format, 0, probe);
         }
@@ -753,7 +753,7 @@ describe("repository workflow governance", () => {
     (fileName) => {
       for (const jobId of ["source_canonical", "quality_windows"])
         for (const command of [
-          "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check",
+          "npm run check:node && npm run check:version && npm run format:source:check && npm run format:json:check",
           "npm run lint",
         ])
           for (const mutation of ["skip", "ignore", "selected", "late"]) {
@@ -779,17 +779,17 @@ describe("repository workflow governance", () => {
     },
   );
   test.each(["source_portable", "source_json"])(
-    "retains the %s source and Python floor",
+    "retains the %s JavaScript source checks",
     (jobId) => {
       expect(
         mutateWorkflow("ci.yml", (document) => {
           const steps = document.getIn(["jobs", jobId, "steps"]);
           const lint = steps.items.find(
-            (step) => step.get("run") === "npm run lint:source-python",
+            (step) => step.get("run") === "npm run lint:js",
           );
           lint.set("run", "npm run lint");
         }).join("\n"),
-      ).toMatch(/lint:source-python/u);
+      ).toMatch(/lint:js/u);
     },
   );
   test.each([
@@ -948,29 +948,24 @@ describe("repository workflow governance", () => {
 
   test.each([
     ["ci.yml", "quality_windows"],
-    ["ci.yml", "source_portable"],
-    ["release.yml", "source_canonical"],
-    ["release.yml", "quality_windows"],
-    ["maintenance.yml", "health"],
-  ])("requires locked quality setup before consumers in %s/%s", (file, job) => {
+    ["ci.yml", "source_canonical"],
+    ["release.yml", "third_party_evidence_shard"],
+    ["extended-tests.yml", "third_party_evidence_shard"],
+  ])("requires scanner setup before use in %s/%s", (file, job) => {
     for (const mutation of ["remove", "skip", "path", "late"]) {
       const violations = mutateWorkflow(file, (doc) => {
         const steps = doc.getIn(["jobs", job, "steps"]);
-        const index = steps.items.findIndex((step) =>
-          (step.get("run") ?? "").startsWith("npm run sync:python-tools"),
+        const index = steps.items.findIndex(
+          (step) => step.get("uses") === "./.github/actions/setup-scancode",
         );
         expect(index).toBeGreaterThan(-1);
         if (mutation === "remove") steps.items.splice(index, 1);
         if (mutation === "skip") steps.items[index].set("if", "false");
-        if (mutation === "path")
-          steps.items[index].set(
-            "run",
-            "npm run sync:python-tools -- --python python",
-          );
+        if (mutation === "path") steps.items[index].set("id", "unbound_python");
         if (mutation === "late")
           steps.items.push(...steps.items.splice(index, 1));
       });
-      expect(violations.join("\n")).toMatch(/quality tooling/u);
+      expect(violations.join("\n")).toMatch(/scanner setup/u);
     }
   });
 

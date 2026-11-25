@@ -1,7 +1,6 @@
 import {
   BEARTYPE_VERSION,
   pythonTarget,
-  RUFF_VERSION,
   SCANCODE_VERSION,
   UV_SELECTION,
 } from "../scripts/development-tool-policy.mjs";
@@ -527,16 +526,6 @@ const createQualityToolingFacts = () => {
   }
   return [
     {
-      id: "universal-ontology-documentation-tooling",
-      name: "Universal Ontology Ruff configuration adaptation",
-      versionOrRevision: "58a306013d3701f59dfe34341e96fac5a011e3ed",
-      license: "MIT",
-      source: "Hadden-Industries/universal-ontology",
-      files: ["LICENSES/MIT-universal-ontology.txt", "ruff.toml"],
-      attribution:
-        "Copyright (c) 2026 Hadden Industries Ltd. The retained Ruff configuration is adapted from ruff.toml; the complete MIT notice is retained. The former documentation formatter adaptation is retired.",
-    },
-    {
       id: "shared-markdown-quality-development-tool",
       name: "Shared Markdown quality development capability",
       versionOrRevision: markdown.version,
@@ -571,41 +560,28 @@ const createQualityToolingFacts = () => {
       versionOrRevision: "446ffa14c29fbcb18270ff32799fbe377c916426",
       license: "AGPL-3.0-only",
       source: "Hadden-Industries/software-engineering-workflow",
-      files: ["LICENSE", "scripts/repository-python-tools.mjs"],
+      files: ["LICENSE", "util/prepare-scancode.mjs"],
       attribution:
         "Adapted from scripts/runRepositoryUv.js in Hadden Industries Software Engineering Workflow under AGPL-3.0-only; no runtime package code is derived from it.",
     },
     {
-      id: "ruff-development-tool",
-      name: "Ruff development formatter and linter",
-      versionOrRevision: RUFF_VERSION,
-      license: "MIT",
-      source: "astral-sh/ruff",
-      files: [
-        "pyproject.toml",
-        "uv.lock",
-        "ruff.toml",
-        `LICENSES/development/ruff-${RUFF_VERSION}.txt`,
-      ],
-      attribution:
-        "Copyright (c) 2022 Charles Marsh. The complete wheel licence, including its embedded third-party notices, is retained. The tool and its distributions are not packed.",
-    },
-    {
       id: "uv-development-bootstrap",
-      name: "uv development-environment bootstrap",
+      name: "uv dependency manager for ScanCode",
       versionOrRevision: UV_SELECTION.version,
       license: "MIT OR Apache-2.0",
       concluded: "MIT",
       source: "astral-sh/uv",
       files: [
-        "pyproject.toml",
-        "uv.lock",
+        "util/scancode-runtime/pyproject.toml",
+        "util/scancode-runtime/uv.lock",
         ".python-version",
-        "scripts/repository-python-tools.mjs",
+        "util/prepare-scancode.mjs",
+        "docs/release/development-tools.json",
+        ".github/actions/setup-scancode/action.yml",
         `LICENSES/development/uv-${UV_SELECTION.version}-MIT.txt`,
       ],
       attribution:
-        "Copyright (c) 2025 Astral Software Inc. The MIT alternative is elected for development use; its complete release terms are retained. Windows/Linux x64 archive digests are pinned in the bootstrap and no binary is packed.",
+        "Copyright (c) 2025 Astral Software Inc. The MIT alternative is elected for development use; its complete release terms are retained. Scanner builds use the selected uv on PATH. CI verifies the Windows/Linux x64 archive against its pinned digest. No binary is packed.",
     },
     {
       id: "scancode-development-source-build",

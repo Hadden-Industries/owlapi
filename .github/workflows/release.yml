@@ -234,20 +234,11 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
-      - name: Select the pinned development Python
-        id: quality_python
-        run: node scripts/repository-python-tools.mjs python
-        timeout-minutes: 10
-      - name: Synchronize locked development tools
-        run: npm run sync:python-tools -- --python-env QUALITY_PYTHON
-        timeout-minutes: 5
-        env:
-          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Verify formatting
-        run: npm run format:source-python:check
+        run: npm run format:source:check
         timeout-minutes: 45
       - name: Verify static quality
-        run: npm run lint:source-python
+        run: npm run lint:js
         timeout-minutes: 45
       - name: Run the full package suite
         run: npm test -- --runInBand
@@ -288,20 +279,11 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
-      - name: Select the pinned development Python
-        id: quality_python
-        run: node scripts/repository-python-tools.mjs python
-        timeout-minutes: 10
-      - name: Synchronize locked development tools
-        run: npm run sync:python-tools -- --python-env QUALITY_PYTHON
-        timeout-minutes: 5
-        env:
-          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Verify formatting
-        run: npm run format:source-python:check
+        run: npm run format:source:check
         timeout-minutes: 45
       - name: Verify static quality
-        run: npm run lint:source-python
+        run: npm run lint:js
         timeout-minutes: 45
       - name: Verify semantic JSON identity on Node 26
         run: npm run lint:json-identity
@@ -341,17 +323,8 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
-      - name: Select the pinned development Python
-        id: quality_python
-        run: node scripts/repository-python-tools.mjs python
-        timeout-minutes: 10
-      - name: Synchronize locked development tools
-        run: npm run sync:python-tools -- --python-env QUALITY_PYTHON
-        timeout-minutes: 5
-        env:
-          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Verify formatting
-        run: npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check
+        run: npm run check:node && npm run check:version && npm run format:source:check && npm run format:json:check
         timeout-minutes: 45
       - name: Verify static quality
         run: npm run lint
@@ -589,9 +562,9 @@ jobs:
         uses: ./.github/actions/setup-producer
         with:
           phase: runtime
-      - name: Select the isolated ScanCode Python runtime
+      - name: Set up ScanCode prerequisites
         id: scancode_python
-        run: node scripts/repository-python-tools.mjs python
+        uses: ./.github/actions/setup-scancode
         timeout-minutes: 10
       - name: Provision the policy-owned npm
         uses: ./.github/actions/setup-producer
@@ -1940,20 +1913,8 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025-vs2026 --shell pwsh
         timeout-minutes: 5
-      - name: Select the pinned development Python
-        id: quality_python
-        run: node scripts/repository-python-tools.mjs python
-        timeout-minutes: 10
-      - name: Synchronize locked development tools
-        run: npm run sync:python-tools -- --python-env QUALITY_PYTHON
-        timeout-minutes: 5
-        env:
-          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
-      - name: Verify the locked environment
-        run: npm run check:python-tools
-        timeout-minutes: 10
       - name: Verify formatting
-        run: npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check
+        run: npm run check:node && npm run check:version && npm run format:source:check && npm run format:json:check
         timeout-minutes: 30
       - name: Verify static quality
         run: npm run lint

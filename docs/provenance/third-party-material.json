@@ -25,7 +25,7 @@
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "37286a7b35e36ee4d80524b395e868fee2c452981ee28d44af41dc2e94625467",
+    "factsSha256": "74213db377f2b2a1cad981077ddf54627f0c7d9aa424fce636ec8bed12e090f1",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -93,7 +93,7 @@
       "MPL-2.0": 12,
       "PSF-2.0": 1
     },
-    "materialCount": 26
+    "materialCount": 24
   },
   "components": [
     {
@@ -43424,7 +43424,7 @@
       "evidenceFiles": [
         {
           "path": "util/scancode-runtime/pyproject.toml",
-          "sha256": "e43b466a61873750ea6f8e3a0295867f2eebc11ce52cf908d5dcf821448cfaac"
+          "sha256": "de5488f1c6d40b48846b1feb566a3ac03353bc0d1958f0f2dd47c0eba3d61587"
         },
         {
           "path": "util/scancode-runtime/uv.lock",
@@ -43562,8 +43562,8 @@
           "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
         },
         {
-          "path": "scripts/repository-python-tools.mjs",
-          "sha256": "e10a1b401a6f728da8e94ed259abef6096e5ef1d59c5282b93e3578ccf7f17c1"
+          "path": "util/prepare-scancode.mjs",
+          "sha256": "6d2b1afd305af30e88e0f1c32154bf6d7f1dfb9b70ee6a338c1a6da484b33dc0"
         }
       ],
       "treeEvidence": null,
@@ -44054,48 +44054,6 @@
       "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
     },
     {
-      "id": "ruff-development-tool",
-      "relationship": "DEVELOPMENT_ONLY",
-      "name": "Ruff development formatter and linter",
-      "versionOrRevision": "0.17.6",
-      "licenseAssessments": [
-        {
-          "scope": "Development tooling or adapted test/configuration source",
-          "declaredLicenseExpression": "MIT",
-          "concludedLicenseExpression": "MIT",
-          "licenseConclusionRationale": "The retained source/distribution terms support repository development use under the recorded licence; no human review or release acceptance is inferred.",
-          "distributionDisposition": "REPOSITORY_ONLY_NOT_IN_PACKAGE"
-        }
-      ],
-      "sourceUrl": "https://github.com/astral-sh/ruff",
-      "evidenceFiles": [
-        {
-          "path": "pyproject.toml",
-          "sha256": "348795a14abd1ee90a9ca3c0c2ad724a3d46d8e7c03f25a1d2ac24f6f1ac1486"
-        },
-        {
-          "path": "uv.lock",
-          "sha256": "368aebf5960989dbf696badefe0e25f7ed50d280b44ec95ffeae9ee3bf6e230e"
-        },
-        {
-          "path": "ruff.toml",
-          "sha256": "18d80841b9b205e331f539db87edfc47bbd1db52e81847f29df7384474326d21"
-        },
-        {
-          "path": "LICENSES/development/ruff-0.17.6.txt",
-          "sha256": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18"
-        }
-      ],
-      "treeEvidence": null,
-      "attributionText": [
-        "Copyright (c) 2022 Charles Marsh. The complete wheel licence, including its embedded third-party notices, is retained. The tool and its distributions are not packed."
-      ],
-      "packageTarballScope": false,
-      "deployedApplicationScope": "NOT_APPLICABLE",
-      "noticeDisposition": "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
-      "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
-    },
-    {
       "id": "scancode-development-source-build",
       "relationship": "DEVELOPMENT_ONLY",
       "name": "ScanCode development scanner and retained dependency notices",
@@ -44113,7 +44071,7 @@
       "evidenceFiles": [
         {
           "path": "util/scancode-runtime/pyproject.toml",
-          "sha256": "e43b466a61873750ea6f8e3a0295867f2eebc11ce52cf908d5dcf821448cfaac"
+          "sha256": "de5488f1c6d40b48846b1feb566a3ac03353bc0d1958f0f2dd47c0eba3d61587"
         },
         {
           "path": "util/scancode-runtime/uv.lock",
@@ -44859,7 +44817,7 @@
         },
         {
           "path": ".markdown-quality.json",
-          "sha256": "69179d69ab655b4677ab1a7c8c6f0dddaa7f8d6c56a249704bf8f036d6acd20a"
+          "sha256": "25c89677c6a23f143607bde5ebece1907ca5bc0031737f814c1e89f9ab3944db"
         },
         {
           "path": ".markdown-quality-execution.json",
@@ -44871,7 +44829,7 @@
         },
         {
           "path": "package.json",
-          "sha256": "0145ed4f55f86ea087ffa742e2f95529170c677fa08c8bd5d80da23189126361"
+          "sha256": "d3eefa1486edf8e114e186f9d4c29dfa0c48f59571cc88cdeef6c0b2c37fea45"
         },
         {
           "path": "package-lock.json",
@@ -44888,43 +44846,9 @@
       "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
     },
     {
-      "id": "universal-ontology-documentation-tooling",
-      "relationship": "DEVELOPMENT_ONLY",
-      "name": "Universal Ontology Ruff configuration adaptation",
-      "versionOrRevision": "58a306013d3701f59dfe34341e96fac5a011e3ed",
-      "licenseAssessments": [
-        {
-          "scope": "Development tooling or adapted test/configuration source",
-          "declaredLicenseExpression": "MIT",
-          "concludedLicenseExpression": "MIT",
-          "licenseConclusionRationale": "The retained source/distribution terms support repository development use under the recorded licence; no human review or release acceptance is inferred.",
-          "distributionDisposition": "REPOSITORY_ONLY_NOT_IN_PACKAGE"
-        }
-      ],
-      "sourceUrl": "https://github.com/Hadden-Industries/universal-ontology",
-      "evidenceFiles": [
-        {
-          "path": "LICENSES/MIT-universal-ontology.txt",
-          "sha256": "8e5a2aca6bb8db5b03156c3ab511e9207efdd3ade6d3a0175d9a7fac4161eb46"
-        },
-        {
-          "path": "ruff.toml",
-          "sha256": "18d80841b9b205e331f539db87edfc47bbd1db52e81847f29df7384474326d21"
-        }
-      ],
-      "treeEvidence": null,
-      "attributionText": [
-        "Copyright (c) 2026 Hadden Industries Ltd. The retained Ruff configuration is adapted from ruff.toml; the complete MIT notice is retained. The former documentation formatter adaptation is retired."
-      ],
-      "packageTarballScope": false,
-      "deployedApplicationScope": "NOT_APPLICABLE",
-      "noticeDisposition": "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
-      "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
-    },
-    {
       "id": "uv-development-bootstrap",
       "relationship": "DEVELOPMENT_ONLY",
-      "name": "uv development-environment bootstrap",
+      "name": "uv dependency manager for ScanCode",
       "versionOrRevision": "0.13.10",
       "licenseAssessments": [
         {
@@ -44938,20 +44862,28 @@
       "sourceUrl": "https://github.com/astral-sh/uv",
       "evidenceFiles": [
         {
-          "path": "pyproject.toml",
-          "sha256": "348795a14abd1ee90a9ca3c0c2ad724a3d46d8e7c03f25a1d2ac24f6f1ac1486"
+          "path": "util/scancode-runtime/pyproject.toml",
+          "sha256": "de5488f1c6d40b48846b1feb566a3ac03353bc0d1958f0f2dd47c0eba3d61587"
         },
         {
-          "path": "uv.lock",
-          "sha256": "368aebf5960989dbf696badefe0e25f7ed50d280b44ec95ffeae9ee3bf6e230e"
+          "path": "util/scancode-runtime/uv.lock",
+          "sha256": "5dbe2ccb8fad56b95811de8d50591c4eb7ab1cc0455ecfe34e59929c661e8578"
         },
         {
           "path": ".python-version",
           "sha256": "673e2ba07f95bfcfe0a543258b8e267954e403d1f466481c546f467f86b31d46"
         },
         {
-          "path": "scripts/repository-python-tools.mjs",
-          "sha256": "e10a1b401a6f728da8e94ed259abef6096e5ef1d59c5282b93e3578ccf7f17c1"
+          "path": "util/prepare-scancode.mjs",
+          "sha256": "6d2b1afd305af30e88e0f1c32154bf6d7f1dfb9b70ee6a338c1a6da484b33dc0"
+        },
+        {
+          "path": "docs/release/development-tools.json",
+          "sha256": "8779d1334adb96e78b8b4e4029ac2fb890f0c22b7351d8585a3c4ae81ba2c477"
+        },
+        {
+          "path": ".github/actions/setup-scancode/action.yml",
+          "sha256": "02d1c8d9cb515342e12cf1dc449b33b9796fdf06711af2fc02ed985a06c91423"
         },
         {
           "path": "LICENSES/development/uv-0.13.10-MIT.txt",
@@ -44960,7 +44892,7 @@
       ],
       "treeEvidence": null,
       "attributionText": [
-        "Copyright (c) 2025 Astral Software Inc. The MIT alternative is elected for development use; its complete release terms are retained. Windows/Linux x64 archive digests are pinned in the bootstrap and no binary is packed."
+        "Copyright (c) 2025 Astral Software Inc. The MIT alternative is elected for development use; its complete release terms are retained. Scanner builds use the selected uv on PATH. CI verifies the Windows/Linux x64 archive against its pinned digest. No binary is packed."
       ],
       "packageTarballScope": false,
       "deployedApplicationScope": "NOT_APPLICABLE",

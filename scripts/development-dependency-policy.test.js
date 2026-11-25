@@ -124,9 +124,9 @@ describe("development dependency and runtime eligibility", () => {
         expect(workflow.jobs.required.needs).toContain(jobId);
       }
       expect(workflow.jobs.candidate.needs).toContain("source_json");
-      expect(
-        source.steps.some((step) => step.run === "npm run lint:source-python"),
-      ).toBe(true);
+      expect(source.steps.some((step) => step.run === "npm run lint:js")).toBe(
+        true,
+      );
       expect(
         source.steps.some((step) => step.run === "npm run install:markdown"),
       ).toBe(false);

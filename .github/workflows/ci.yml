@@ -245,20 +245,11 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
-      - name: Select the pinned development Python
-        id: quality_python
-        run: node scripts/repository-python-tools.mjs python
-        timeout-minutes: 10
-      - name: Synchronize locked development tools
-        run: npm run sync:python-tools -- --python-env QUALITY_PYTHON
-        timeout-minutes: 5
-        env:
-          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Verify formatting
-        run: npm run format:source-python:check
+        run: npm run format:source:check
         timeout-minutes: 45
       - name: Verify static quality
-        run: npm run lint:source-python
+        run: npm run lint:js
         timeout-minutes: 45
       - name: Run the full package suite
         run: npm test -- --runInBand
@@ -299,20 +290,11 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
-      - name: Select the pinned development Python
-        id: quality_python
-        run: node scripts/repository-python-tools.mjs python
-        timeout-minutes: 10
-      - name: Synchronize locked development tools
-        run: npm run sync:python-tools -- --python-env QUALITY_PYTHON
-        timeout-minutes: 5
-        env:
-          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Verify formatting
-        run: npm run format:source-python:check
+        run: npm run format:source:check
         timeout-minutes: 45
       - name: Verify static quality
-        run: npm run lint:source-python
+        run: npm run lint:js
         timeout-minutes: 45
       - name: Verify semantic JSON identity on Node 26
         run: npm run lint:json-identity
@@ -354,17 +336,8 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
-      - name: Select the pinned development Python
-        id: quality_python
-        run: node scripts/repository-python-tools.mjs python
-        timeout-minutes: 10
-      - name: Synchronize locked development tools
-        run: npm run sync:python-tools -- --python-env QUALITY_PYTHON
-        timeout-minutes: 5
-        env:
-          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Verify formatting
-        run: npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check
+        run: npm run check:node && npm run check:version && npm run format:source:check && npm run format:json:check
         timeout-minutes: 45
       - name: Verify static quality
         run: npm run lint
@@ -375,12 +348,16 @@ jobs:
       - name: Exercise root Markdown CLI consumer checks
         run: npm run test:markdown
         timeout-minutes: 5
+      - name: Set up ScanCode prerequisites
+        id: scancode_python
+        uses: ./.github/actions/setup-scancode
+        timeout-minutes: 10
       - name: Qualify the locked Python scanner
         id: scanner_qualification
         run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON --work-root-env=SCANCODE_WORK_ROOT
         timeout-minutes: 45
         env:
-          SCANCODE_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+          SCANCODE_PYTHON: ${{ steps.scancode_python.outputs.python-path }}
           SCANCODE_WORK_ROOT: ${{ runner.temp }}/scancode-qualification
       - name: Prepare scanner compatibility reports for upload
         id: scancode_diagnostics
@@ -1234,33 +1211,25 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025-vs2026 --shell pwsh
         timeout-minutes: 5
-      - name: Select the pinned development Python
-        id: quality_python
-        run: node scripts/repository-python-tools.mjs python
-        timeout-minutes: 10
-      - name: Synchronize locked development tools
-        run: npm run sync:python-tools -- --python-env QUALITY_PYTHON
-        timeout-minutes: 5
-        env:
-          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Verify formatting
-        run: npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check
+        run: npm run check:node && npm run check:version && npm run format:source:check && npm run format:json:check
         timeout-minutes: 30
       - name: Verify static quality
         run: npm run lint
         timeout-minutes: 30
-      - name: Verify the locked environment
-        run: npm run check:python-tools
-        timeout-minutes: 10
       - name: Exercise JSON behavior and source preservation probes
         run: npm run test:json
         timeout-minutes: 15
+      - name: Set up ScanCode prerequisites
+        id: scancode_python
+        uses: ./.github/actions/setup-scancode
+        timeout-minutes: 10
       - name: Qualify the locked Python scanner
         id: scanner_qualification
         run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON --work-root-env=SCANCODE_WORK_ROOT
         timeout-minutes: 45
         env:
-          SCANCODE_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+          SCANCODE_PYTHON: ${{ steps.scancode_python.outputs.python-path }}
           SCANCODE_WORK_ROOT: ${{ runner.temp }}/scancode-qualification
       - name: Prepare scanner compatibility reports for upload
         id: scancode_diagnostics

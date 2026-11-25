@@ -53,7 +53,6 @@ export function pinnedRequirement(relative, name, repositoryRoot = root) {
 }
 
 // The native projects own these pins; scripts and generated records read them.
-export const RUFF_VERSION = pinnedRequirement("pyproject.toml", "ruff");
 export const SCANCODE_VERSION = pinnedRequirement(
   "util/scancode-runtime/pyproject.toml",
   "scancode-toolkit",
@@ -63,20 +62,7 @@ export const BEARTYPE_VERSION = pinnedRequirement(
   "beartype",
 );
 
-/** Check only the enumerated native uv requirement; uv itself validates locks. */
-export function checkUvProjections(repositoryRoot = root) {
-  for (const relative of [
-    "pyproject.toml",
-    "util/scancode-runtime/pyproject.toml",
-  ]) {
-    const source = readFileSync(resolve(repositoryRoot, relative), "utf8");
-    const expected = `required-version = "==${UV_SELECTION.version}"`;
-    if (!source.split(/\r?\n/u).some((line) => line.trim() === expected))
-      throw new Error(`${relative}: exact uv projection drift`);
-  }
-}
-
-/** One maintained Python pin drives native package, Ruff and scanner metadata. */
+/** One Python pin drives the scanner interpreter and evidence metadata. */
 export function pythonTarget(repositoryRoot = root) {
   const version = readFileSync(
     resolve(repositoryRoot, ".python-version"),
@@ -87,7 +73,7 @@ export function pythonTarget(repositoryRoot = root) {
       ".python-version must contain a stable major.minor.patch version.",
     );
   const [major, minor] = version.split(".");
-  return { version, minor: `${major}.${minor}`, ruff: `py${major}${minor}` };
+  return { version, minor: `${major}.${minor}` };
 }
 
 export function syncPythonProjections(
@@ -95,40 +81,27 @@ export function syncPythonProjections(
   { write = false } = {},
 ) {
   const target = pythonTarget(repositoryRoot);
-  for (const [relative, field, value] of [
-    ["pyproject.toml", "requires-python", `>=${target.version}`],
-    [
-      "util/scancode-runtime/pyproject.toml",
-      "requires-python",
-      `>=${target.version}`,
-    ],
-    ["ruff.toml", "target-version", target.ruff],
-    // development-tools.json owns the exact uv selection both projects require.
-    ["pyproject.toml", "required-version", `==${UV_SELECTION.version}`],
-    [
-      "util/scancode-runtime/pyproject.toml",
-      "required-version",
-      `==${UV_SELECTION.version}`,
-    ],
+  const relative = "util/scancode-runtime/pyproject.toml";
+  const path = resolve(repositoryRoot, relative);
+  const source = readFileSync(path, "utf8");
+  let updated = source;
+  for (const [field, value] of [
+    ["requires-python", `>=${target.version}`],
+    ["required-version", `==${UV_SELECTION.version}`],
   ]) {
-    const path = resolve(repositoryRoot, relative);
-    const source = readFileSync(path, "utf8");
     let count = 0;
-    const updated = source.replace(
-      new RegExp(`^${field} = ".*"$`, "gmu"),
-      () => {
-        count++;
-        return `${field} = "${value}"`;
-      },
-    );
+    updated = updated.replace(new RegExp(`^${field} = ".*"$`, "gmu"), () => {
+      count++;
+      return `${field} = "${value}"`;
+    });
     if (count !== 1)
       throw new Error(`${relative}: expected exactly one generated ${field}`);
-    if (source !== updated) {
-      if (!write)
-        throw new Error(
-          `${relative}: Python projection drift; run node scripts/sync-python-target.mjs --write`,
-        );
-      writeFileSync(path, updated);
-    }
+  }
+  if (source !== updated) {
+    if (!write)
+      throw new Error(
+        `${relative}: Python projection drift; run node scripts/sync-python-target.mjs --write`,
+      );
+    writeFileSync(path, updated);
   }
 }

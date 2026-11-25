@@ -83,15 +83,6 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
-      - name: Select the pinned development Python
-        id: quality_python
-        run: node scripts/repository-python-tools.mjs python
-        timeout-minutes: 10
-      - name: Synchronize locked development tools
-        run: npm run sync:python-tools -- --python-env QUALITY_PYTHON
-        timeout-minutes: 5
-        env:
-          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Run the complete package suite
         run: npm test -- --runInBand
         timeout-minutes: 45
