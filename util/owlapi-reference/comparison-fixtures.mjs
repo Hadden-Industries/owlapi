@@ -8,6 +8,11 @@ import { createGunzip } from "node:zlib";
 import { sha256 } from "./comparison-evidence.mjs";
 import { rdfXmlExpansionSource } from "./comparison-rdfxml-expansion.mjs";
 
+const project = JSON.parse(
+  readFileSync(new URL("../../package.json", import.meta.url), "utf8"),
+);
+const publisherUserAgent = `owlapi-corpus-qualification/${project.version} (+${project.bugs.url})`;
+
 export const comparisonCatalogue = JSON.parse(
   readFileSync(new URL("./comparison-fixtures.json", import.meta.url), "utf8"),
 );
@@ -459,7 +464,10 @@ export async function fetchPinnedBytes(
       fetchImpl(url, {
         redirect: "manual",
         signal: abort.signal,
-        ...(accept ? { headers: { Accept: accept } } : {}),
+        headers: {
+          "User-Agent": publisherUserAgent,
+          ...(accept ? { Accept: accept } : {}),
+        },
       }),
     );
     const redirect = response.status >= 300 && response.status < 400;
@@ -556,9 +564,11 @@ export async function resolveComparisonFixture(
         ? createReadStream(seed)
         : fetchPinnedBytes(fixture.source, {
             fetchImpl: environment.fetchImpl,
-            accept: archive
-              ? "application/gzip"
-              : comparisonSyntaxes[fixture.syntax].mime,
+            accept:
+              fixture.source.accept ??
+              (archive
+                ? "application/gzip"
+                : comparisonSyntaxes[fixture.syntax].mime),
           }),
     archive
       ? () => [

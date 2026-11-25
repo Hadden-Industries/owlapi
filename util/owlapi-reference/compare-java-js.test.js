@@ -103,6 +103,35 @@ test("publisher acquisition continues past a minute while bytes keep arriving", 
   }
 });
 
+test("the GAZ download identifies the client and accepts the publisher's file representation", () =>
+  withScratch(async (cacheDirectory) => {
+    const source = comparisonCatalogue.fixtures.find(
+      (row) => row.id === "obo-gaz",
+    );
+    const payload = Buffer.from("<ontology/>");
+    const fixture = {
+      ...source,
+      byteLength: payload.length,
+      sha256: sha256(payload),
+    };
+    const fetchImpl = jest.fn(async () => new Response(payload));
+    const path = await resolveComparisonFixture(
+      fixture,
+      { cacheDirectory, fetchImpl },
+      true,
+    );
+    expect(await readFile(path)).toEqual(payload);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    const [url, options] = fetchImpl.mock.calls[0];
+    expect(String(url)).toBe(source.source.url);
+    expect(options.headers).toMatchObject({
+      Accept: "*/*",
+      "User-Agent": expect.stringMatching(
+        /^owlapi-corpus-qualification\/\S+ \(\+https:\/\/github\.com\/Hadden-Industries\/owlapi\/issues\)$/u,
+      ),
+    });
+  }));
+
 test("a stalled publisher response is aborted while waiting for bytes", async () => {
   jest.useFakeTimers({ doNotFake: ["nextTick", "setImmediate"] });
   try {
@@ -304,7 +333,7 @@ test("the reviewed roster preserves all original, closure and held cases", async
   ).toEqual(["obo-ogg"]);
   expect(
     corpusQualificationRoster(comparisonCases).held.map(({ input }) => input),
-  ).toEqual(["obo-gaz", "obo-ogg"]);
+  ).toEqual(["obo-ogg"]);
   expect(comparisonCatalogue.collections).toHaveLength(24);
   expect(comparisonCatalogue.standIns).toHaveLength(57);
   expect(comparisonCases({ suite: "july", ...named })).toHaveLength(11);

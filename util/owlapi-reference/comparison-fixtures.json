@@ -6516,10 +6516,10 @@
       "source": {
         "kind": "https",
         "url": "https://zenodo.org/api/records/18247183/files/gaz.owl/content",
+        "accept": "*/*",
         "redirects": []
       },
-      "acquisition": "local-only",
-      "reason": "Zenodo returns HTTP 403 to the shared HTTPS client; a verified local seed is available",
+      "acquisition": "publisher",
       "licenseLead": "CC0 1.0",
       "licenseSource": "https://creativecommons.org/publicdomain/zero/1.0/",
       "role": "root",
