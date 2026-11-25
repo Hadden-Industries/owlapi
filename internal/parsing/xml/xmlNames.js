@@ -68,6 +68,14 @@ const xmlNamePattern = new RegExp(
 );
 const nmTokenPattern = new RegExp(`^[:${continuationClass}]+$`, "u");
 
+const ASCII_NCNAME_TYPE = new Uint8Array(128);
+for (let c = 65; c <= 90; c += 1) ASCII_NCNAME_TYPE[c] = 2;
+for (let c = 97; c <= 122; c += 1) ASCII_NCNAME_TYPE[c] = 2;
+ASCII_NCNAME_TYPE[95] = 2;
+for (let c = 48; c <= 57; c += 1) ASCII_NCNAME_TYPE[c] = 1;
+ASCII_NCNAME_TYPE[45] = 1;
+ASCII_NCNAME_TYPE[46] = 1;
+
 export const isNcName = (value) => ncNamePattern.test(value);
 
 /** Longest trailing NCName, skipping leading digits after the last separator. */
@@ -78,6 +86,12 @@ export const ncNameSuffix = (value) => {
   let start = value.length;
   while (start > 0) {
     let offset = start - 1;
+    const unit = value.charCodeAt(offset);
+    if (unit < 0x80) {
+      if (ASCII_NCNAME_TYPE[unit] === 0) break;
+      start = offset;
+      continue;
+    }
     let codePoint = value.codePointAt(offset);
     if (codePoint >= 0xdc00 && codePoint <= 0xdfff && offset > 0) {
       const previous = value.codePointAt(offset - 1);
@@ -89,11 +103,17 @@ export const ncNameSuffix = (value) => {
     if (!isNcNameCodePoint(codePoint)) break;
     start = offset;
   }
-  while (
-    start < value.length &&
-    !isNcNameStartCodePoint(value.codePointAt(start))
-  )
-    start += value.codePointAt(start) > 0xffff ? 2 : 1;
+  while (start < value.length) {
+    const unit = value.charCodeAt(start);
+    if (unit < 0x80) {
+      if (ASCII_NCNAME_TYPE[unit] === 2) break;
+      start += 1;
+      continue;
+    }
+    const cp = value.codePointAt(start);
+    if (isNcNameStartCodePoint(cp)) break;
+    start += cp > 0xffff ? 2 : 1;
+  }
   return start < value.length ? value.slice(start) : undefined;
 };
 

@@ -1,16 +1,31 @@
 /** Full-IRI lexical rules, independent of resolution and parser error construction. */
 export const hasForbiddenIriCharacter = (value) => {
-  for (let offset = 0; offset < value.length;) {
-    const codePoint = value.codePointAt(offset);
-    const character = String.fromCodePoint(codePoint);
+  for (let offset = 0; offset < value.length; offset += 1) {
+    const code = value.charCodeAt(offset);
     if (
-      codePoint <= 0x20 ||
-      (codePoint >= 0xd800 && codePoint <= 0xdfff) ||
-      '<>"{}|^`\\'.includes(character)
+      code <= 0x20 ||
+      code === 60 ||
+      code === 62 ||
+      code === 34 ||
+      code === 123 ||
+      code === 125 ||
+      code === 124 ||
+      code === 94 ||
+      code === 96 ||
+      code === 92
     ) {
       return true;
     }
-    offset += character.length;
+    if (code >= 0xd800 && code <= 0xdfff) {
+      if (code <= 0xdbff && offset + 1 < value.length) {
+        const next = value.charCodeAt(offset + 1);
+        if (next >= 0xdc00 && next <= 0xdfff) {
+          offset += 1;
+          continue;
+        }
+      }
+      return true;
+    }
   }
   return false;
 };

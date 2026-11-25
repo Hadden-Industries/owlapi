@@ -139,6 +139,25 @@ class ExecutionController {
     }
   }
 
+  checkQuad(quadCount) {
+    const { signal, timeoutMs } = this.#configuration;
+    if (signal?.aborted) {
+      throw abortError(signal, this.#syntaxName);
+    }
+    if (timeoutMs === Infinity) return;
+    if (quadCount === 1 || quadCount % 64 === 0) {
+      const elapsed = this.elapsedMs();
+      if (elapsed >= timeoutMs) {
+        resourceLimit(
+          `${this.#syntaxName} parsing timed out`,
+          "timeoutMs",
+          timeoutMs,
+          Math.ceil(elapsed),
+        );
+      }
+    }
+  }
+
   cooperate() {
     this.check();
     if (monotonicNow() < this.#nextYieldAt) {
@@ -184,6 +203,10 @@ const createBudgetedLexer = (
       "The N3 implementation Lexer must implement tokenize()",
     );
   }
+  const { maxTokenCount, maxTokenLength } = configuration;
+  if (maxTokenCount === Infinity && maxTokenLength === Infinity) {
+    return lexer;
+  }
   const tokenize = lexer.tokenize.bind(lexer);
   let tokenCount = 0;
 
@@ -204,26 +227,32 @@ const createBudgetedLexer = (
       try {
         if (token?.type !== "eof") {
           tokenCount += 1;
-          if (tokenCount > configuration.maxTokenCount) {
+          if (tokenCount > maxTokenCount) {
             resourceLimit(
               `The ${syntaxName} lexer-token limit was exceeded`,
               "maxTokenCount",
-              configuration.maxTokenCount,
+              maxTokenCount,
               tokenCount,
             );
           }
-          const observed = tokenBytesAboveLimit(
-            token,
-            configuration.maxTokenLength,
-          );
-          if (observed !== undefined) {
-            resourceLimit(
-              `An ${syntaxName} token exceeded the token byte limit`,
-              "maxTokenLength",
-              configuration.maxTokenLength,
-              observed,
-              { tokenType: token.type },
-            );
+          const prefixLen = token?.prefix?.length || 0;
+          const valueLen = token?.value?.length || 0;
+          if (
+            (prefixLen + valueLen) * 3 > maxTokenLength ||
+            (Number.isSafeInteger(token?.start) &&
+              Number.isSafeInteger(token?.end) &&
+              token.end - token.start > maxTokenLength)
+          ) {
+            const observed = tokenBytesAboveLimit(token, maxTokenLength);
+            if (observed !== undefined) {
+              resourceLimit(
+                `An ${syntaxName} token exceeded the token byte limit`,
+                "maxTokenLength",
+                maxTokenLength,
+                observed,
+                { tokenType: token.type },
+              );
+            }
           }
         }
         callback(null, token);
@@ -279,6 +308,25 @@ const normalizeParserFailure = (cause, configuration, syntaxName) => {
   );
 };
 
+const validateLiteralComponentLength = (
+  component,
+  termType,
+  maxTokenLength,
+  syntaxName,
+) => {
+  if (!component || component.length * 3 <= maxTokenLength) return;
+  const componentBytes = textEncoder.encode(component).byteLength;
+  if (componentBytes > maxTokenLength) {
+    resourceLimit(
+      `A ${syntaxName} literal component exceeded the token byte limit`,
+      "maxTokenLength",
+      maxTokenLength,
+      componentBytes,
+      { termType },
+    );
+  }
+};
+
 const validateTermLength = (term, configuration, syntaxName) => {
   if (!term || term.termType === "DefaultGraph") {
     return;
@@ -291,40 +339,32 @@ const validateTermLength = (term, configuration, syntaxName) => {
     return;
   }
   const value = term.value || "";
-  const observed =
-    value.length * 3 <= configuration.maxTokenLength
-      ? 0
-      : textEncoder.encode(value).byteLength;
-  if (observed > configuration.maxTokenLength) {
-    resourceLimit(
-      `An RDF term produced from ${syntaxName} exceeded the token byte limit`,
-      "maxTokenLength",
-      configuration.maxTokenLength,
-      observed,
-      { termType: term.termType },
-    );
+  if (value.length * 3 > configuration.maxTokenLength) {
+    const observed = textEncoder.encode(value).byteLength;
+    if (observed > configuration.maxTokenLength) {
+      resourceLimit(
+        `An RDF term produced from ${syntaxName} exceeded the token byte limit`,
+        "maxTokenLength",
+        configuration.maxTokenLength,
+        observed,
+        { termType: term.termType },
+      );
+    }
   }
   if (term.termType === "Literal") {
     validateTermLength(term.datatype, configuration, syntaxName);
-    for (const [termType, value] of [
-      ["LanguageTag", term.language],
-      ["BaseDirection", term.direction],
-    ]) {
-      const component = value || "";
-      const componentBytes =
-        component.length * 3 <= configuration.maxTokenLength
-          ? 0
-          : textEncoder.encode(component).byteLength;
-      if (componentBytes > configuration.maxTokenLength) {
-        resourceLimit(
-          `A ${syntaxName} literal component exceeded the token byte limit`,
-          "maxTokenLength",
-          configuration.maxTokenLength,
-          componentBytes,
-          { termType },
-        );
-      }
-    }
+    validateLiteralComponentLength(
+      term.language,
+      "LanguageTag",
+      configuration.maxTokenLength,
+      syntaxName,
+    );
+    validateLiteralComponentLength(
+      term.direction,
+      "BaseDirection",
+      configuration.maxTokenLength,
+      syntaxName,
+    );
   }
 };
 
@@ -362,9 +402,38 @@ const canonicalTerm = (term, syntaxName, nativeTerms = false) => {
   }
 };
 
-const canonicalQuad = (quad, syntaxName, nativeTerms) => {
+const isSimpleNativeTerm = (term) => {
+  const t = term?.termType;
+  return t === "NamedNode" || t === "BlankNode";
+};
+
+const isSimpleNativeObject = (term) => {
+  const t = term?.termType;
+  return (
+    t === "NamedNode" ||
+    t === "BlankNode" ||
+    (t === "Literal" && !term.language && !term.direction)
+  );
+};
+
+const canonicalQuad = (
+  quad,
+  syntaxName,
+  nativeTerms,
+  forceDefaultGraph = false,
+) => {
   if (quad?.termType !== "Quad") {
     throw new TypeError(`The ${syntaxName} parser emitted a non-quad value`);
+  }
+  if (
+    nativeTerms &&
+    isSimpleNativeTerm(quad.subject) &&
+    isSimpleNativeTerm(quad.predicate) &&
+    isSimpleNativeObject(quad.object) &&
+    (quad.graph?.termType === "DefaultGraph" ||
+      (!forceDefaultGraph && isSimpleNativeTerm(quad.graph)))
+  ) {
+    return quad;
   }
   return canonicalTerm(quad, syntaxName, nativeTerms);
 };
@@ -482,14 +551,17 @@ export class N3SyntaxAdapter {
     let emittedQuads = 0;
     let adapterFailure;
     const streamAbort = streamed ? new AbortController() : undefined;
+    const forceDefaultGraph = this.#mediaType === N_TRIPLES_MEDIA_TYPE;
+    const isNativeImpl =
+      this.#loadImplementation === defaultImplementationLoader;
     const completion = new Promise((resolve, reject) => {
       parser.on("data", (quad) => {
         if (adapterFailure) {
           return;
         }
         try {
-          execution.check();
           emittedQuads += 1;
+          execution.checkQuad(emittedQuads);
           if (emittedQuads > normalizedConfiguration.maxQuads) {
             resourceLimit(
               `The ${this.#syntaxName} quad limit was exceeded`,
@@ -505,9 +577,13 @@ export class N3SyntaxAdapter {
           let normalizedQuad = canonicalQuad(
             quad,
             this.#syntaxName,
-            this.#loadImplementation === defaultImplementationLoader,
+            isNativeImpl,
+            forceDefaultGraph,
           );
-          if (this.#mediaType === N_TRIPLES_MEDIA_TYPE) {
+          if (
+            forceDefaultGraph &&
+            normalizedQuad.graph.termType !== "DefaultGraph"
+          ) {
             // N-Triples is an RDF graph syntax: dependency-specific stream
             // behavior must not introduce dataset membership at this seam.
             normalizedQuad = rdfDataFactory.quad(
@@ -516,15 +592,30 @@ export class N3SyntaxAdapter {
               normalizedQuad.object,
             );
           }
-          for (const term of [
+          validateTermLength(
             normalizedQuad.subject,
+            normalizedConfiguration,
+            this.#syntaxName,
+          );
+          blankNodeKeys(normalizedQuad.subject, blankNodes);
+          validateTermLength(
             normalizedQuad.predicate,
+            normalizedConfiguration,
+            this.#syntaxName,
+          );
+          blankNodeKeys(normalizedQuad.predicate, blankNodes);
+          validateTermLength(
             normalizedQuad.object,
+            normalizedConfiguration,
+            this.#syntaxName,
+          );
+          blankNodeKeys(normalizedQuad.object, blankNodes);
+          validateTermLength(
             normalizedQuad.graph,
-          ]) {
-            validateTermLength(term, normalizedConfiguration, this.#syntaxName);
-            blankNodeKeys(term, blankNodes);
-          }
+            normalizedConfiguration,
+            this.#syntaxName,
+          );
+          blankNodeKeys(normalizedQuad.graph, blankNodes);
           if (blankNodes.size > normalizedConfiguration.maxBlankNodes) {
             resourceLimit(
               `The ${this.#syntaxName} blank-node limit was exceeded`,

@@ -31,6 +31,25 @@ const FORMAT_DESCRIPTION = Object.freeze({
 const DEFAULT_FORMAT = new OWLDocumentFormat(FORMAT_DESCRIPTION);
 const xmlCharPattern =
   /^[\t\n\r\u0020-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]*$/u;
+const SIMPLE_ASCII_IRI =
+  /^(?:https?:\/\/[A-Za-z0-9._-]+(?::\d+)?(?:\/[A-Za-z0-9._~!$&'()*+,;=:@/-]*)?|urn:[A-Za-z0-9][A-Za-z0-9-]*:[A-Za-z0-9._~!$&'()*+,;=:@/-]+)(?:#[A-Za-z0-9._~!$&'()*+,;=:@/-]*)?$/u;
+
+const createDefaultPrefixes = () => {
+  const prefixes = new Map();
+  for (let i = 0; i < DEFAULT_PREFIXES.length; i += 1) {
+    const entry = DEFAULT_PREFIXES[i];
+    prefixes.set(entry[0], entry[1]);
+  }
+  return prefixes;
+};
+
+const cloneMap = (source) => {
+  const copy = new Map();
+  source.forEach((value, key) => {
+    copy.set(key, value);
+  });
+  return copy;
+};
 
 const validatePrefix = (name, namespace) => {
   if (
@@ -42,7 +61,8 @@ const validatePrefix = (name, namespace) => {
     throw new TypeError(
       "Prefixes require a colon-terminated name and nonempty namespace IRI",
     );
-  parseIri(namespace);
+  const simpleAsciiIri = SIMPLE_ASCII_IRI.test(namespace);
+  if (!simpleAsciiIri) parseIri(namespace);
   const prefix = name.slice(0, -1);
   if (
     prefix === "xmlns" ||
@@ -51,7 +71,10 @@ const validatePrefix = (name, namespace) => {
     (prefix && namespace === XML_NAMESPACE && prefix !== "xml")
   )
     throw new TypeError("Reserved XML prefix binding");
-  if (!xmlCharPattern.test(namespace) || (prefix && !isNcName(prefix)))
+  if (
+    (!simpleAsciiIri && !xmlCharPattern.test(namespace)) ||
+    (prefix && !isNcName(prefix))
+  )
     throw new TypeError("Invalid XML prefix or namespace");
 };
 
@@ -61,9 +84,9 @@ export let readRdfXmlPrefixes;
 /** Java RDFXMLDocumentFormat with a bounded inherited PrefixManager surface. */
 export class RDFXMLDocumentFormat extends OWLDocumentFormat {
   // Each instance still owns its mutable Map; only immutable inputs are shared.
-  #prefixes = new Map(DEFAULT_PREFIXES);
+  #prefixes = createDefaultPrefixes();
   static {
-    readRdfXmlPrefixes = (format) => new Map(format.#prefixes);
+    readRdfXmlPrefixes = (format) => cloneMap(format.#prefixes);
   }
   constructor() {
     if (arguments.length)
@@ -94,10 +117,14 @@ export class RDFXMLDocumentFormat extends OWLDocumentFormat {
     return this.#prefixes.has(name);
   }
   getPrefixName2PrefixMap() {
-    return new Map(this.#prefixes);
+    return cloneMap(this.#prefixes);
   }
   getPrefixNames() {
-    return new Set(this.#prefixes.keys());
+    const names = new Set();
+    this.#prefixes.forEach((_, key) => {
+      names.add(key);
+    });
+    return names;
   }
   copyPrefixesFrom(source) {
     // A native private prefix map has already passed validation. Capture it
@@ -127,7 +154,7 @@ export class RDFXMLDocumentFormat extends OWLDocumentFormat {
   }
   #copy(format) {
     const copy = copyDocumentFormatState(format, new RDFXMLDocumentFormat());
-    copy.#prefixes = new Map(this.#prefixes);
+    copy.#prefixes = cloneMap(this.#prefixes);
     return copy;
   }
   withParameter(key, value) {

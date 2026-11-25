@@ -136,11 +136,16 @@ const normalizeTerm = (term) => {
   }
 };
 
-const isAbsoluteIri = (value) =>
-  typeof value === "string" &&
-  /^[A-Za-z][A-Za-z0-9+.-]*:/u.test(value) &&
-  !/[\s<>"{}|\\^`]/u.test(value) &&
-  (value.match(/#/gu)?.length || 0) <= 1;
+const isAbsoluteIri = (value) => {
+  if (
+    typeof value !== "string" ||
+    !/^[A-Za-z][A-Za-z0-9+.-]*:/u.test(value) ||
+    /[\s<>"{}|\\^`]/u.test(value)
+  )
+    return false;
+  const hash = value.indexOf("#");
+  return hash === -1 || value.indexOf("#", hash + 1) === -1;
+};
 
 const isLanguageTag = (value) =>
   value === "" ||
@@ -604,6 +609,53 @@ export class JsonLdSyntaxAdapter {
       );
     }
     const dataset = new CompactRdfGraph();
+    const defaultGraph = rdfDataFactory.defaultGraph();
+    const cachedNamedNodes = new Map();
+    const cachedBlankNodes = new Map();
+    const cachedNormalizeTerm = (term) => {
+      switch (term?.termType) {
+        case "NamedNode": {
+          const val = term.value;
+          let node = cachedNamedNodes.get(val);
+          if (!node) {
+            node = rdfDataFactory.namedNode(val);
+            cachedNamedNodes.set(val, node);
+          }
+          return node;
+        }
+        case "BlankNode": {
+          const val = term.value;
+          let node = cachedBlankNodes.get(val);
+          if (!node) {
+            node = rdfDataFactory.blankNode(val);
+            cachedBlankNodes.set(val, node);
+          }
+          return node;
+        }
+        case "DefaultGraph":
+          return defaultGraph;
+        case "Literal": {
+          if (term.language) {
+            return rdfDataFactory.literal(term.value, term.language);
+          }
+          const dtVal = term.datatype.value;
+          let dt = cachedNamedNodes.get(dtVal);
+          if (!dt) {
+            dt = rdfDataFactory.namedNode(dtVal);
+            cachedNamedNodes.set(dtVal, dt);
+          }
+          return rdfDataFactory.literal(term.value, dt);
+        }
+        default:
+          return normalizeTerm(term);
+      }
+    };
+    const quadRecord = {
+      subject: undefined,
+      predicate: undefined,
+      object: undefined,
+      graph: undefined,
+    };
     let statementCount = 0;
     for (const quad of quads) {
       // JSON-LD's to-RDF algorithm emits only well-formed RDF statements.
@@ -613,16 +665,14 @@ export class JsonLdSyntaxAdapter {
         continue;
       }
       statementCount++;
-      dataset.add(
-        rdfDataFactory.quad(
-          normalizeTerm(quad.subject),
-          normalizeTerm(quad.predicate),
-          normalizeTerm(quad.object),
-          quad.graph === undefined
-            ? rdfDataFactory.defaultGraph()
-            : normalizeTerm(quad.graph),
-        ),
-      );
+      quadRecord.subject = cachedNormalizeTerm(quad.subject);
+      quadRecord.predicate = cachedNormalizeTerm(quad.predicate);
+      quadRecord.object = cachedNormalizeTerm(quad.object);
+      quadRecord.graph =
+        quad.graph === undefined
+          ? defaultGraph
+          : cachedNormalizeTerm(quad.graph);
+      dataset.add(quadRecord);
     }
     const contexts = Object.hasOwn(document, "@context")
       ? [freezeJson(document["@context"])]

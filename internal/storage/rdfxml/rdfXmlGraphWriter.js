@@ -14,6 +14,7 @@ import { validateEmbeddedXmlLiteral } from "./xmlLiteralValidation.js";
 import { isNcName } from "../../parsing/xml/xmlNames.js";
 import {
   xmlAttribute,
+  xmlText,
   xmlTextChunks,
   isXmlText,
   utf8Length as byteLength,
@@ -251,17 +252,28 @@ function* serializeGraph(dataset, policy, context) {
     }
   };
   const element = (namespace, name) => ({ namespace, name, attributes: [] });
-  const opening = (node) =>
-    node.opening ??
-    "<" + node.name + node.attributes.map((a) => " " + a.text).join("");
+  const opening = (node) => {
+    if (node.opening !== undefined) return node.opening;
+    const attrs = node.attributes;
+    let out = "<" + node.name;
+    for (let i = 0; i < attrs.length; i += 1) {
+      out += " " + attrs[i].text;
+    }
+    return out;
+  };
+  const standaloneBound = new Map();
   // Previous admission charges standalone elements, including namespace
   // declarations needed outside their normal document scope.
   const standaloneSize = (node, text) => {
     if (documentStoragePolicy.maxOutputBytes === Infinity) return 0;
-    const bound = new Map();
-    for (const a of node.attributes)
+    const bound = standaloneBound;
+    bound.clear();
+    const attrs = node.attributes;
+    for (let i = 0; i < attrs.length; i += 1) {
+      const a = attrs[i];
       if (a.namespace === XMLNS_NAMESPACE)
         bound.set(a.name === "xmlns" ? "" : a.name.slice(6), a.value);
+    }
     const qualify = (name, namespace) => {
       if (
         !namespace ||
@@ -269,19 +281,35 @@ function* serializeGraph(dataset, policy, context) {
         namespace === XML_NAMESPACE
       )
         return 0;
-      const prefix = name.includes(":") ? name.split(":")[0] : "";
+      const colon = name.indexOf(":");
+      const prefix = colon === -1 ? "" : name.slice(0, colon);
       if (bound.get(prefix) === namespace) return 0;
       bound.set(prefix, namespace);
       return byteLength(
         " " + xmlAttribute(prefix ? "xmlns:" + prefix : "xmlns", namespace),
       );
     };
-    let bytes = byteLength(opening(node)) + qualify(node.name, node.namespace);
-    for (const a of node.attributes) bytes += qualify(a.name, a.namespace);
+    let bytes =
+      (node.opening !== undefined
+        ? byteLength(node.opening)
+        : (() => {
+            let n = 1 + byteLength(node.name);
+            for (let i = 0; i < attrs.length; i += 1) {
+              n += 1 + byteLength(attrs[i].text);
+            }
+            return n;
+          })()) + qualify(node.name, node.namespace);
+    for (let i = 0; i < attrs.length; i += 1) {
+      bytes += qualify(attrs[i].name, attrs[i].namespace);
+    }
     if (text === undefined) return bytes + 2;
-    for (const fragment of xmlTextChunks(text, "native"))
-      bytes += byteLength(fragment);
-    return bytes + byteLength("></" + node.name + ">");
+    if (text.length <= 16_384) {
+      bytes += byteLength(xmlText(text, "native"));
+    } else {
+      for (const fragment of xmlTextChunks(text, "native"))
+        bytes += byteLength(fragment);
+    }
+    return bytes + 3 + byteLength(node.name);
   };
   const chargeConstruction = (bytes) => {
     constructionBytes += bytes;

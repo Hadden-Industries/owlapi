@@ -70,6 +70,9 @@ class StatementRow {
 export class CompactRdfGraph {
   #terms = [defaultGraph];
   #termIds = new Map();
+  #namedNodeIds = new Map();
+  #blankNodeIds = new Map();
+  #literalIds = new Map();
   #blocks = [];
   #graphBlocks;
   #graphIdsByKey;
@@ -85,17 +88,62 @@ export class CompactRdfGraph {
     graphs.add(this);
   }
 
+  #insertTerm(index, key, term) {
+    const id = this.#terms.length;
+    this.#terms.push(term);
+    index.set(key, id);
+    return id;
+  }
+
   #termId(term, insert = false) {
-    if (term.termType === "DefaultGraph") return 0;
+    const termType = term.termType;
+    if (termType === "DefaultGraph") return 0;
+    if (termType === "NamedNode") {
+      const value = term.value;
+      const known = this.#namedNodeIds.get(value);
+      return known !== undefined || !insert
+        ? known
+        : this.#insertTerm(this.#namedNodeIds, value, term);
+    }
+    if (termType === "BlankNode") {
+      const value = term.value;
+      const known = this.#blankNodeIds.get(value);
+      return known !== undefined || !insert
+        ? known
+        : this.#insertTerm(this.#blankNodeIds, value, term);
+    }
+    if (termType === "Literal") {
+      const datatype = term.datatype.value;
+      let byDatatype = this.#literalIds.get(datatype);
+      if (!byDatatype) {
+        if (!insert) return undefined;
+        byDatatype = { plain: undefined, tagged: undefined };
+        this.#literalIds.set(datatype, byDatatype);
+      }
+      const language = term.language;
+      const direction = term.direction;
+      if (!language && !direction) {
+        let plain = byDatatype.plain;
+        const known = plain?.get(term.value);
+        if (known !== undefined || !insert) return known;
+        if (!plain) byDatatype.plain = plain = new Map();
+        return this.#insertTerm(plain, term.value, term);
+      }
+      const tagKey = direction ? `${language}\0${direction}` : language;
+      let tagged = byDatatype.tagged;
+      let byTag = tagged?.get(tagKey);
+      const known = byTag?.get(term.value);
+      if (known !== undefined || !insert) return known;
+      if (!tagged) byDatatype.tagged = tagged = new Map();
+      if (!byTag) tagged.set(tagKey, (byTag = new Map()));
+      return this.#insertTerm(byTag, term.value, term);
+    }
     const [type, value] = termCoordinates(term);
     let index = this.#termIds.get(type);
     const known = index?.get(value);
     if (known !== undefined || !insert) return known;
     if (!index) this.#termIds.set(type, (index = new Map()));
-    const id = this.#terms.length;
-    this.#terms.push(term);
-    index.set(value, id);
-    return id;
+    return this.#insertTerm(index, value, term);
   }
 
   termId(term) {
@@ -103,7 +151,7 @@ export class CompactRdfGraph {
   }
 
   namedNodeId(value) {
-    return this.#termIds.get("NamedNode")?.get(value);
+    return this.#namedNodeIds?.get(value);
   }
 
   termById(id) {
@@ -315,7 +363,13 @@ export class CompactRdfGraph {
    */
   release() {
     this.#buckets = undefined;
-    this.#terms = this.#termIds = this.#blocks = undefined;
+    this.#terms =
+      this.#termIds =
+      this.#namedNodeIds =
+      this.#blankNodeIds =
+      this.#literalIds =
+      this.#blocks =
+        undefined;
     this.#graphBlocks =
       this.#graphIdsByKey =
       this.#graphRanks =
@@ -385,6 +439,9 @@ export class CompactRdfGraph {
     // belong to this view, so other projections can still read the source.
     result.#terms = this.#terms;
     result.#termIds = this.#termIds;
+    result.#namedNodeIds = this.#namedNodeIds;
+    result.#blankNodeIds = this.#blankNodeIds;
+    result.#literalIds = this.#literalIds;
     result.#blocks = this.#blocks;
     result.#rowCount = this.#rowCount;
     const matched =

@@ -52,6 +52,11 @@ const DECLARATION_CONSTRUCTORS = new Map([
 ]);
 const SUBJECT_TERM_TYPES = new Set(["BlankNode", "NamedNode"]);
 const NAMED_NODE_TERM_TYPES = new Set(["NamedNode"]);
+const OWL1_OBJECT_PROPERTY_TYPES = new Set([
+  OWL_VOCABULARY.InverseFunctionalProperty,
+  OWL_VOCABULARY.SymmetricProperty,
+  OWL_VOCABULARY.TransitiveProperty,
+]);
 import { ENTITY_DECLARATION_TYPES } from "./entityDeclarations.js";
 const ENTITY_KIND_BY_ROLE = new Map(
   Object.entries(ENTITY_DECLARATION_TYPES).map(([kind, role]) => [role, kind]),
@@ -1708,23 +1713,7 @@ class RdfGraphInterpreter {
   }
 
   async #readDeclarations(includeAxiomAnnotations = true) {
-    const owl1ObjectPropertyTypes = new Set([
-      OWL_VOCABULARY.InverseFunctionalProperty,
-      OWL_VOCABULARY.SymmetricProperty,
-      OWL_VOCABULARY.TransitiveProperty,
-    ]);
     const inferredObjectPropertyIris = new Set();
-    for (const currentQuad of this.#read.quads) {
-      if (
-        currentQuad.subject.termType === "NamedNode" &&
-        currentQuad.predicate.value === RDF_VOCABULARY.type &&
-        currentQuad.object.termType === "NamedNode" &&
-        owl1ObjectPropertyTypes.has(currentQuad.object.value)
-      ) {
-        inferredObjectPropertyIris.add(currentQuad.subject.value);
-        this.#objectPropertyIris.add(currentQuad.subject.value);
-      }
-    }
     const declarations = [];
     const explicitObjectPropertyIris = new Set();
     const genericProperties =
@@ -1740,35 +1729,38 @@ class RdfGraphInterpreter {
       ) {
         continue;
       }
-      const constructorName = DECLARATION_CONSTRUCTORS.get(
-        currentQuad.object.value,
-      );
+      const objectValue = currentQuad.object.value;
+      const constructorName = DECLARATION_CONSTRUCTORS.get(objectValue);
       if (!constructorName) {
-        if (
-          genericProperties &&
-          currentQuad.object.value === RDF_VOCABULARY.Property &&
-          currentQuad.subject.termType === "NamedNode"
-        ) {
-          genericProperties.add(currentQuad.subject.value);
+        if (currentQuad.subject.termType === "NamedNode") {
+          if (OWL1_OBJECT_PROPERTY_TYPES.has(objectValue)) {
+            inferredObjectPropertyIris.add(currentQuad.subject.value);
+            this.#objectPropertyIris.add(currentQuad.subject.value);
+          } else if (
+            genericProperties &&
+            objectValue === RDF_VOCABULARY.Property
+          ) {
+            genericProperties.add(currentQuad.subject.value);
+          }
         }
         continue;
       }
       if (currentQuad.subject.termType === "BlankNode") {
-        if (currentQuad.object.value === OWL_VOCABULARY.Class) {
+        if (objectValue === OWL_VOCABULARY.Class) {
           this.#anonymousClassNodes.add(termKey(currentQuad.subject));
           continue;
         }
-        if (currentQuad.object.value === RDFS_VOCABULARY.Datatype) {
+        if (objectValue === RDFS_VOCABULARY.Datatype) {
           this.#anonymousDataRangeNodes.add(termKey(currentQuad.subject));
           continue;
         }
-        if (currentQuad.object.value === OWL_VOCABULARY.DataRange) {
+        if (objectValue === OWL_VOCABULARY.DataRange) {
           const key = termKey(currentQuad.subject);
           this.#anonymousDataRangeNodes.add(key);
           this.#owl1DataRangeNodes.add(key);
           continue;
         }
-        if (currentQuad.object.value === OWL_VOCABULARY.NamedIndividual) {
+        if (objectValue === OWL_VOCABULARY.NamedIndividual) {
           this.#consume(currentQuad);
           continue;
         }
@@ -1780,25 +1772,23 @@ class RdfGraphInterpreter {
       );
       declarations.push({ constructorName, currentQuad, subject });
       if (
-        [
-          OWL_VOCABULARY.AnnotationProperty,
-          OWL_VOCABULARY.OntologyProperty,
-        ].includes(currentQuad.object.value)
+        objectValue === OWL_VOCABULARY.AnnotationProperty ||
+        objectValue === OWL_VOCABULARY.OntologyProperty
       ) {
         this.#annotationPropertyIris.add(subject.value);
-        if (currentQuad.object.value === OWL_VOCABULARY.OntologyProperty) {
+        if (objectValue === OWL_VOCABULARY.OntologyProperty) {
           this.#ontologyHeaderReferencePropertyIris.add(subject.value);
         }
-      } else if (currentQuad.object.value === OWL_VOCABULARY.Class) {
+      } else if (objectValue === OWL_VOCABULARY.Class) {
         this.#classIris.add(subject.value);
-      } else if (currentQuad.object.value === OWL_VOCABULARY.DatatypeProperty) {
+      } else if (objectValue === OWL_VOCABULARY.DatatypeProperty) {
         this.#dataPropertyIris.add(subject.value);
-      } else if (currentQuad.object.value === OWL_VOCABULARY.ObjectProperty) {
+      } else if (objectValue === OWL_VOCABULARY.ObjectProperty) {
         this.#objectPropertyIris.add(subject.value);
         explicitObjectPropertyIris.add(subject.value);
-      } else if (currentQuad.object.value === OWL_VOCABULARY.NamedIndividual) {
+      } else if (objectValue === OWL_VOCABULARY.NamedIndividual) {
         this.#individualIris.add(subject.value);
-      } else if (currentQuad.object.value === RDFS_VOCABULARY.Datatype) {
+      } else if (objectValue === RDFS_VOCABULARY.Datatype) {
         this.#datatypeIris.add(subject.value);
       }
       visited += 1;

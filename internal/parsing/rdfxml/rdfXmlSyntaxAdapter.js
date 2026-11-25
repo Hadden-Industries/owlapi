@@ -715,6 +715,7 @@ class ExecutionController {
     if (signal?.aborted) {
       throw abortError(signal, "The RDF/XML parse was aborted");
     }
+    if (timeoutMs === Infinity) return;
     const elapsed = this.elapsedMs();
     if (elapsed > timeoutMs) {
       resourceLimit(
@@ -723,6 +724,25 @@ class ExecutionController {
         timeoutMs,
         Math.ceil(elapsed),
       );
+    }
+  }
+
+  checkQuad(quadCount) {
+    const { signal, timeoutMs } = this.#configuration;
+    if (signal?.aborted) {
+      throw abortError(signal, "The RDF/XML parse was aborted");
+    }
+    if (timeoutMs === Infinity) return;
+    if (quadCount === 1 || quadCount % 64 === 0) {
+      const elapsed = this.elapsedMs();
+      if (elapsed > timeoutMs) {
+        resourceLimit(
+          "The RDF/XML parsing timeout was exceeded",
+          "timeoutMs",
+          timeoutMs,
+          Math.ceil(elapsed),
+        );
+      }
     }
   }
 
@@ -746,25 +766,51 @@ const xmlLiteralNormalizer = (nextLiteral, nativeTerms = false) => {
   const seenTerms = new WeakMap();
 
   return (quad) => {
-    const normalized =
+    const canReuseNative =
       nativeTerms &&
       quad?.termType === "Quad" &&
       (quad.subject.termType === "NamedNode" ||
         quad.subject.termType === "BlankNode") &&
       quad.predicate.termType === "NamedNode" &&
-      quad.graph.termType === "DefaultGraph" &&
-      (quad.object.termType === "NamedNode" ||
-        quad.object.termType === "BlankNode" ||
-        quad.object.termType === "Literal")
-        ? rdfDataFactory.quad(
+      quad.graph.termType === "DefaultGraph";
+    if (canReuseNative) {
+      const obj = quad.object;
+      const objType = obj?.termType;
+      if (objType === "NamedNode" || objType === "BlankNode") {
+        return quad;
+      }
+      if (objType === "Literal") {
+        if (obj.datatype?.value === RDF_XML_LITERAL) {
+          let canonicalValue;
+          if (seenTerms.has(obj)) {
+            canonicalValue = seenTerms.get(obj);
+          } else {
+            canonicalValue = nextLiteral();
+            seenTerms.set(obj, canonicalValue);
+          }
+          if (canonicalValue === undefined) return quad;
+          return rdfDataFactory.quad(
             quad.subject,
             quad.predicate,
-            quad.object.termType === "Literal"
-              ? rdfDataFactory.fromTerm(quad.object)
-              : quad.object,
+            rdfDataFactory.literal(
+              canonicalValue,
+              rdfDataFactory.namedNode(RDF_XML_LITERAL),
+            ),
             quad.graph,
-          )
-        : rdfDataFactory.fromQuad(quad);
+          );
+        }
+        if (!obj.language && !obj.direction) {
+          return quad;
+        }
+        return rdfDataFactory.quad(
+          quad.subject,
+          quad.predicate,
+          rdfDataFactory.fromTerm(obj),
+          quad.graph,
+        );
+      }
+    }
+    const normalized = rdfDataFactory.fromQuad(quad);
     if (
       quad.object?.termType !== "Literal" ||
       quad.object.datatype?.value !== RDF_XML_LITERAL
@@ -1037,8 +1083,8 @@ export class RdfXmlSyntaxAdapter {
           return;
         }
         try {
-          execution.check();
           emittedQuads += 1;
+          execution.checkQuad(emittedQuads);
           if (emittedQuads > normalizedConfiguration.maxQuads) {
             resourceLimit(
               "The RDF/XML quad limit was exceeded",
@@ -1048,15 +1094,14 @@ export class RdfXmlSyntaxAdapter {
             );
           }
           const normalizedQuad = normalizeQuad(quad);
-          for (const term of [
-            normalizedQuad.subject,
-            normalizedQuad.predicate,
-            normalizedQuad.object,
-            normalizedQuad.graph,
-          ]) {
-            validateTermLength(term, normalizedConfiguration);
-            blankNodeKeys(term, blankNodes);
-          }
+          validateTermLength(normalizedQuad.subject, normalizedConfiguration);
+          blankNodeKeys(normalizedQuad.subject, blankNodes);
+          validateTermLength(normalizedQuad.predicate, normalizedConfiguration);
+          blankNodeKeys(normalizedQuad.predicate, blankNodes);
+          validateTermLength(normalizedQuad.object, normalizedConfiguration);
+          blankNodeKeys(normalizedQuad.object, blankNodes);
+          validateTermLength(normalizedQuad.graph, normalizedConfiguration);
+          blankNodeKeys(normalizedQuad.graph, blankNodes);
           if (blankNodes.size > normalizedConfiguration.maxBlankNodes) {
             resourceLimit(
               "The RDF/XML blank-node limit was exceeded",
@@ -1100,7 +1145,7 @@ export class RdfXmlSyntaxAdapter {
         parser.destroy(adapterFailure);
       }, delay);
     };
-    scheduleWatchdog();
+    if (normalizedConfiguration.timeoutMs !== Infinity) scheduleWatchdog();
     const onAbort = () => {
       if (!adapterFailure) {
         adapterFailure = abortError(signal, "The RDF/XML parse was aborted");

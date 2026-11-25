@@ -27,13 +27,20 @@ export const xmlText = (value, layout) =>
 
 /** Byte accounting avoids allocating a UTF-8 copy of a large literal. */
 export function utf8Length(value) {
-  if (!/[^\p{ASCII}]/u.test(value)) return value.length;
-  let bytes = 0;
-  for (const character of value) {
-    const code = character.codePointAt(0);
-    bytes += code < 0x80 ? 1 : code < 0x800 ? 2 : code < 0x10000 ? 3 : 4;
+  const length = value.length;
+  for (let i = 0; i < length; i += 1) {
+    if (value.charCodeAt(i) >= 0x80) {
+      let bytes = i;
+      while (i < length) {
+        const code = value.codePointAt(i);
+        bytes += code < 0x80 ? 1 : code < 0x800 ? 2 : code < 0x10000 ? 3 : 4;
+        if (code > 0xffff) i += 2;
+        else i += 1;
+      }
+      return bytes;
+    }
   }
-  return bytes;
+  return length;
 }
 
 /** Escape large lexical forms in bounded pieces, keeping surrogate pairs together. */

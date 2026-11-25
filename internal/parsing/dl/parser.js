@@ -6,7 +6,7 @@ import { OWL_NAMESPACE, XSD_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
-import { IRI } from "../../../model/structural.js";
+import { IRI, StructuralSet } from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
 
 import { DLSyntaxLexer } from "./lexer.js";
@@ -29,11 +29,15 @@ const documentNamespace = (source) => {
 };
 
 const uniqueStructuralValues = (values) => {
-  const byKey = new Map();
-  for (const value of values) {
-    byKey.set(value.structuralKey(), value);
+  if (values.length <= 1) {
+    return values;
   }
-  return [...byKey.values()];
+  if (values.length === 2) {
+    return values[0] === values[1] || values[0].equals(values[1])
+      ? [values[0]]
+      : values;
+  }
+  return [...new StructuralSet(values)];
 };
 
 export class OWLDLSyntaxOWLParser {
