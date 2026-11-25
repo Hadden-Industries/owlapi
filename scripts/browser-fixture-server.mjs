@@ -28,8 +28,9 @@ const resolveRequestPath = (root, requestUrl) => {
       return undefined;
     }
     const requestedPath = segments.join("/") || "index.html";
+    const provider = mode === "import-map" && segments[0] === "provider";
     let localPath;
-    if (mode === "import-map" && segments[0] === "provider") {
+    if (provider) {
       // Retain the browser URL exactly, including the query on a relative
       // import, and resolve it to the admitted provider's encoded disk name.
       localPath = providerPathForRequest(requestedPath, url.search);
@@ -51,7 +52,8 @@ const resolveRequestPath = (root, requestUrl) => {
     return {
       path,
       contentType:
-        CONTENT_TYPES[extname(requestedPath)] ?? "application/octet-stream",
+        CONTENT_TYPES[extname(provider ? requestedPath : localPath)] ??
+        "application/octet-stream",
     };
   } catch {
     return undefined;

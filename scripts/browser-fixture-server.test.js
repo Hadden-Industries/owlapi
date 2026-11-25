@@ -79,6 +79,10 @@ it("serves first-party names and a provider module reached by its unchanged rela
         "export const firstParty = 1;\n",
       ],
       [
+        new URL("package/owlapi/model%40v2%2Ejs", fixtureUrl),
+        "export const firstParty = 1;\n",
+      ],
+      [
         new URL("./part+one.js?mode=browser", providerEntry),
         "export const provider = 2;\n",
       ],
