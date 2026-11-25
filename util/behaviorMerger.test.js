@@ -1,5 +1,5 @@
 import { OWLManager } from "../apibinding/index.js";
-import { IRI } from "../model/index.js";
+import { IRI, OWLOntologyManager } from "../model/index.js";
 import { OWLOntologyMerger } from "./index.js";
 
 const profiles = ["java-owlapi-5.5.1", "normative-v1"];
@@ -112,4 +112,31 @@ test("Java rejects an occupied copy identity before querying the provider", () =
   expect(calls).toBe(0);
   expect(source.manager.getOntology(targetID)).toBe(existing);
   expect(existing.getAxiomCount()).toBe(0);
+});
+
+test("normative-v1 merger snapshots sources before createOntology and passes frozen arrays to structural adapters", () => {
+  const source = sourceFor("normative-v1");
+  const factory = source.manager.getOWLDataFactory();
+  const lateAxiom = factory.getOWLDeclarationAxiom(
+    factory.getOWLClass(IRI.create("urn:copy:LateAfterSnapshot")),
+  );
+  const targetManager = new OWLOntologyManager();
+  let observedPayload;
+  const adapter = {
+    getOWLDataFactory: () => targetManager.getOWLDataFactory(),
+    createOntology: (id) => {
+      source.manager.addAxiom(source.ontology, lateAxiom);
+      return targetManager.createOntology(id);
+    },
+    addAxioms: (ontology, axioms) => {
+      observedPayload = axioms;
+      return targetManager.addAxioms(ontology, axioms);
+    },
+  };
+  const merger = new OWLOntologyMerger({ ontologies: () => [source.ontology] });
+  const merged = merger.createMergedOntology(adapter);
+  expect(Array.isArray(observedPayload)).toBe(true);
+  expect(Object.isFrozen(observedPayload)).toBe(true);
+  expect(observedPayload.valueAt).toBeUndefined();
+  expect(merged.getAxiomCount()).toBe(1);
 });

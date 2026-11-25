@@ -7,6 +7,7 @@ import {
 } from "../internal/rdfjs/vocabulary.js";
 import { parseIri } from "@hyperjump/uri";
 import { isNcName } from "../internal/parsing/xml/xmlNames.js";
+import { SIMPLE_ASCII_IRI } from "../internal/parsing/iriCharacters.js";
 import {
   OWLDocumentFormat,
   copyDocumentFormatState,
@@ -31,8 +32,6 @@ const FORMAT_DESCRIPTION = Object.freeze({
 const DEFAULT_FORMAT = new OWLDocumentFormat(FORMAT_DESCRIPTION);
 const xmlCharPattern =
   /^[\t\n\r\u0020-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]*$/u;
-const SIMPLE_ASCII_IRI =
-  /^(?:https?:\/\/[A-Za-z0-9._-]+(?::\d+)?(?:\/[A-Za-z0-9._~!$&'()*+,;=:@/-]*)?|urn:[A-Za-z0-9][A-Za-z0-9-]*:[A-Za-z0-9._~!$&'()*+,;=:@/-]+)(?:#[A-Za-z0-9._~!$&'()*+,;=:@/-]*)?$/u;
 
 const createDefaultPrefixes = () => {
   const prefixes = new Map();

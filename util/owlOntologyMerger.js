@@ -147,6 +147,10 @@ export class OWLOntologyMerger {
           )
         : "normative-v1",
     );
+    const usesNativeAddAxioms =
+      normalizedOntologyManager instanceof OWLOntologyManager &&
+      normalizedOntologyManager.addAxioms ===
+        OWLOntologyManager.prototype.addAxioms;
     if (
       definition.ontologyCopyPolicy.mergePublication === "before-provider-read"
     ) {
@@ -162,33 +166,37 @@ export class OWLOntologyMerger {
         const source = requireOntology(ontology, index++);
         if (source === mergedOntology) continue;
         const snapshot = readOntologySnapshot(source);
+        const view = this.#mergeOnlyLogicalAxioms
+          ? readOntologyModel(snapshot).logicalAxioms()
+          : readSnapshotAxioms(snapshot);
         normalizedOntologyManager.addAxioms(
           mergedOntology,
-          this.#mergeOnlyLogicalAxioms
-            ? readOntologyModel(snapshot).logicalAxioms()
-            : readSnapshotAxioms(snapshot),
+          usesNativeAddAxioms ? view : Object.freeze([...view]),
         );
       }
       return mergedOntology;
     }
     const ontologies = materializeProviderOntologies(this.#ontologySetProvider);
-    const mergedOntology = createTargetOntology(
-      normalizedOntologyManager,
-      normalizedOntologyIRI,
-    );
     if (ontologies.length === 1) {
       const snapshot = readOntologySnapshot(ontologies[0]);
-      normalizedOntologyManager.addAxioms(
-        mergedOntology,
-        this.#mergeOnlyLogicalAxioms
-          ? readOntologyModel(snapshot).logicalAxioms()
-          : readSnapshotAxioms(snapshot),
+      const view = this.#mergeOnlyLogicalAxioms
+        ? readOntologyModel(snapshot).logicalAxioms()
+        : readSnapshotAxioms(snapshot);
+      const payload = usesNativeAddAxioms ? view : Object.freeze([...view]);
+      const mergedOntology = createTargetOntology(
+        normalizedOntologyManager,
+        normalizedOntologyIRI,
       );
+      normalizedOntologyManager.addAxioms(mergedOntology, payload);
       return mergedOntology;
     }
     const axiomUnion = collectAxiomUnion(
       ontologies,
       this.#mergeOnlyLogicalAxioms,
+    );
+    const mergedOntology = createTargetOntology(
+      normalizedOntologyManager,
+      normalizedOntologyIRI,
     );
     normalizedOntologyManager.addAxioms(mergedOntology, axiomUnion);
     return mergedOntology;

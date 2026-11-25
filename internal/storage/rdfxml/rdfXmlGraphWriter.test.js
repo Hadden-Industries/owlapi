@@ -11,6 +11,7 @@ import {
   rdfDataFactory as factory,
   rdfDatasetFactory,
 } from "../../rdfjs/environment.js";
+import { defaultDocumentStoragePolicy } from "../../behavior/ontologyBehaviorContext.js";
 import { RDF_NAMESPACE, XSD_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { writeRdfXmlGraph } from "./rdfXmlGraphWriter.js";
 
@@ -479,4 +480,26 @@ describe("RDF/XML default-graph writer", () => {
       }
     },
   );
+
+  it("enforces exact byte budgets across output and standalone element closing tags", () => {
+    const simpleQuad = quad(subject, named("urn:test:p"), literal("x"));
+    const serialized = writeRdfXmlGraph(dataset([simpleQuad]));
+    const fullBytes = Buffer.byteLength(serialized, "utf8");
+    expect(() =>
+      writeRdfXmlGraph(dataset([simpleQuad]), undefined, {
+        documentStoragePolicy: {
+          ...defaultDocumentStoragePolicy,
+          maxOutputBytes: fullBytes,
+        },
+      }),
+    ).not.toThrow();
+    expect(() =>
+      writeRdfXmlGraph(dataset([simpleQuad]), undefined, {
+        documentStoragePolicy: {
+          ...defaultDocumentStoragePolicy,
+          maxOutputBytes: fullBytes - 1,
+        },
+      }),
+    ).toThrow(ResourceLimitError);
+  });
 });

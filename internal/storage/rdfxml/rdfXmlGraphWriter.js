@@ -309,7 +309,7 @@ function* serializeGraph(dataset, policy, context) {
       for (const fragment of xmlTextChunks(text, "native"))
         bytes += byteLength(fragment);
     }
-    return bytes + 3 + byteLength(node.name);
+    return bytes + 4 + byteLength(node.name);
   };
   const chargeConstruction = (bytes) => {
     constructionBytes += bytes;
