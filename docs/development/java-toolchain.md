@@ -93,3 +93,23 @@ The new mode requires the same nonempty ordered artifact classpath and preserves
 
 The observations retain actual executable/release-file digests and runtime properties.
 They do not establish hosted Linux acquisition, a new source-build reconstruction, frozen-candidate acceptance or publication readiness.
+
+For a JDK patch comparison, capture both versions on the same operating system with the same ordered JARs and probe inputs.
+Java OWLAPI's Turtle banner writer calls `PrintWriter.println`, which uses the platform line separator.
+In the November replay, four CRLF endings accounted for the entire difference between a 986-byte Windows document and a 982-byte Linux document.
+Two other probes reported the corresponding character-count differences.
+Keep the platform-specific bytes in the evidence.
+The selected-API verifier recognizes platform separators in generated temporary filename arguments and still checks the filename and saved ontology bytes.
+[Java OWLAPI 5.5.1 Turtle renderer](https://github.com/owlcs/owlapi/blob/owlapi-parent-5.5.1/parsers/src/main/java/org/semanticweb/owlapi/rdf/turtle/renderer/TurtleRenderer.java) · [Java `PrintWriter` contract](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/PrintWriter.html) · [November comparison evidence](../compatibility/2026-11-25-corpus-qualification.json)
+
+The Linux x64 behavior reference binds the earlier Temurin executable, all 64 ordered JARs and each available probe to the original inventory.
+Both patches produced the same 27 behavior observations on Linux.
+Replacing a Linux Turtle document with its Windows output fails the same-release comparison.
+The remaining registered observation is held pending upstream investigation.
+[Linux reference capture](java-toolchain/temurin-25.0.5-linux-x64-behavior.json) · [Open native observation](https://github.com/owlcs/owlapi/issues/1187)
+
+One additional observation differed between the Windows and Linux captures.
+Five parser-factory entries exchanged positions within tied priority groups 9 and 16.
+The factory names, priorities and other behavioral rows matched.
+The same-release verifier preserves the observed order.
+[Java OWLAPI priority collection](https://github.com/owlcs/owlapi/blob/owlapi-parent-5.5.1/api/src/main/java/org/semanticweb/owlapi/util/PriorityCollection.java)

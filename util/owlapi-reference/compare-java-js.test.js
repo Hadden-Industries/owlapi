@@ -5,6 +5,11 @@ import { join, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 import { gzipSync } from "node:zlib";
 import { comparisonCases, runComparison } from "./compare-java-js.mjs";
+import {
+  bindLinuxBehaviorBaseline,
+  referenceCaptureBaseline,
+  referenceCaptureVerdicts,
+} from "./comparison-reference-captures.mjs";
 import { runWindowsComparisonJob } from "./comparison-job.mjs";
 import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
 import {
@@ -47,6 +52,77 @@ async function withScratch(run) {
     await rm(directory, { recursive: true, force: true });
   }
 }
+
+test("the Linux reference covers the frozen inventory and detects a changed Turtle writer", async () => {
+  const suite = "reference-behavior";
+  const { cases } = await runComparison({ action: "list", suite });
+  const original = await readFile(
+    new URL(
+      "../../docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+      import.meta.url,
+    ),
+  );
+  const baseline = JSON.parse(
+    await readFile(
+      new URL(
+        "../../docs/development/java-toolchain/temurin-25.0.5-linux-x64-behavior.json",
+        import.meta.url,
+      ),
+    ),
+  );
+  const held = bindLinuxBehaviorBaseline(original, baseline);
+  const nativeReference = await referenceCaptureBaseline(
+    suite,
+    original,
+    JSON.parse(original),
+  );
+  if (process.platform === "linux" && process.arch === "x64") {
+    expect(nativeReference.held).toEqual(held);
+    expect(nativeReference.reference).toEqual(baseline);
+  } else {
+    expect(nativeReference.held.size).toBe(0);
+    expect(nativeReference.reference).toEqual(JSON.parse(original));
+  }
+  const statuses = (observations) =>
+    referenceCaptureVerdicts(suite, cases, baseline, observations, held);
+  const complete = statuses(baseline);
+  expect(complete.filter((row) => row.status === "observed")).toHaveLength(27);
+  expect(complete.filter((row) => row.status === "incomplete")).toEqual([
+    expect.objectContaining({
+      probeId: "ObserveResourceContracts",
+      reason: expect.stringContaining("#1187"),
+    }),
+  ]);
+
+  const changed = structuredClone(baseline);
+  const writer = changed.observations.find(
+    (row) => row.probeId === "ObserveStorageContracts",
+  );
+  writer.stdout = JSON.parse(original).observations.find(
+    (row) => row.probeId === writer.probeId,
+  ).stdout;
+  expect(statuses(changed).filter((row) => row.status === "failed")).toEqual([
+    expect.objectContaining({ probeId: writer.probeId }),
+  ]);
+
+  const { basis, ...capture } = structuredClone(baseline);
+  capture.observations[0] = capture.observations[1];
+  expect(() =>
+    bindLinuxBehaviorBaseline(original, {
+      ...capture,
+      basis: { ...basis, captureIdentity: comparisonIdentity(capture) },
+    }),
+  ).toThrow("frozen probe inventory");
+  expect(() =>
+    bindLinuxBehaviorBaseline(original, {
+      ...baseline,
+      basis: {
+        ...basis,
+        held: [...basis.held, { caseId: cases[0].caseId, reason: "missing" }],
+      },
+    }),
+  ).toThrow("frozen probe inventory");
+});
 
 test("publisher acquisition continues past a minute while bytes keep arriving", async () => {
   jest.useFakeTimers({ doNotFake: ["nextTick", "setImmediate"] });

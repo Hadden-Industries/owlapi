@@ -46,6 +46,7 @@ export function replayBehaviorResearch({
   javaHeapMiB,
   reuseFrom,
   reuseUnchangedProbes = false,
+  requiredObservations,
 }) {
   const javaToolchain = observeCurrentJavaToolchain(java, selection);
   const output = resolve(outputDirectory);
@@ -68,6 +69,9 @@ export function replayBehaviorResearch({
     throw new Error(
       "Cannot reuse Java observations from a changed or unrecorded JDK",
     );
+  const includesProbe = (id) =>
+    !requiredObservations ||
+    requiredObservations.some((row) => row.probeId === id);
   const inputs = [
     ...researchFiles.map((file) => {
       const bytes = readFileSync(join(researchDirectory, file));
@@ -77,23 +81,26 @@ export function replayBehaviorResearch({
         probes: JSON.parse(bytes).probes,
       };
     }),
-    ...additionalProbeFiles.map((file) => {
-      const bytes = readFileSync(join(root, "util/owlapi-reference", file));
-      return {
-        path: `../../../../util/owlapi-reference/${file}`,
-        bytes,
-        probes: [
-          {
-            id: basename(file, ".java"),
-            language: "Java",
-            source: bytes.toString("utf8"),
-          },
-        ],
-      };
-    }),
+    ...additionalProbeFiles
+      .filter((file) => includesProbe(basename(file, ".java")))
+      .map((file) => {
+        const bytes = readFileSync(join(root, "util/owlapi-reference", file));
+        return {
+          path: `../../../../util/owlapi-reference/${file}`,
+          bytes,
+          probes: [
+            {
+              id: basename(file, ".java"),
+              language: "Java",
+              source: bytes.toString("utf8"),
+            },
+          ],
+        };
+      }),
   ];
   for (const input of inputs) {
     for (const probe of input.probes) {
+      if (!includesProbe(probe.id)) continue;
       const source =
         typeof probe.source === "string" ? probe.source : probe.source.text;
       if (probe.language !== "Java" && !source.startsWith("import java"))
@@ -124,6 +131,16 @@ export function replayBehaviorResearch({
           inputSha256: sha256(input.bytes),
           sourceSha256: sha256(source),
         };
+        if (
+          requiredObservations &&
+          !requiredObservations.some(
+            (row) =>
+              row.probeId === identity.probeId &&
+              row.sourceSha256 === identity.sourceSha256 &&
+              jsonEquals(row.arguments, identity.arguments),
+          )
+        )
+          continue;
         const matches =
           retained?.observations.filter((observation) =>
             Object.entries(identity).every(

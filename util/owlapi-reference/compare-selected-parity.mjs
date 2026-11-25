@@ -18,6 +18,14 @@ const canonical = (value) =>
         )
       : value;
 const canonicalJson = (value) => JSON.stringify(canonical(value));
+// The replay creates these named files inside its own temporary directory.
+// Keep arbitrary arguments and serialized ontology bytes exact.
+const invocationArguments = (args) =>
+  args.map((arg) =>
+    typeof arg === "string"
+      ? arg.replace(/^(\$\{PROBE_WORKSPACE\})[\\/]([\w.-]+)$/u, "$1/$2")
+      : arg,
+  );
 const invocationKey = (row) =>
   canonicalJson({
     method: row.method,
@@ -54,7 +62,8 @@ export function compareSelectedParity(
     if (
       left.probeId !== right.probeId ||
       left.sourceSha256 !== right.sourceSha256 ||
-      canonicalJson(left.arguments) !== canonicalJson(right.arguments) ||
+      canonicalJson(invocationArguments(left.arguments)) !==
+        canonicalJson(invocationArguments(right.arguments)) ||
       !left.matchesExpectedCompletion ||
       !right.matchesExpectedCompletion ||
       left.exitCode !== right.exitCode
