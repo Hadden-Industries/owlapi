@@ -3,6 +3,7 @@ import {
   comparisonWitnesses,
   generatedFixture,
   julyComparisonFixtures,
+  julyComparisonManifest,
 } from "./comparison-fixtures.mjs";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
 import { pinnedSourceOracle } from "./comparison-oracle.mjs";
@@ -668,7 +669,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
         const definition = {
           schemaVersion: 1,
           scenario,
-          scenarioVersion: 1,
+          scenarioVersion: scenario === "direct-load" ? 1 : 2,
           observationPoint:
             scenario === "strict-first"
               ? "public-strict-then-compatible-load"
@@ -678,6 +679,15 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           ...(strictFirst ? { loadSequence: ["strict", "compatible"] } : {}),
           ...(oracle ? { oracle } : {}),
           ...admittedInputs,
+          ...(normativeJuly && input.closure && scenario === "closure-roundtrip"
+            ? {
+                expectedClosure: julyComparisonManifest.roots.find(
+                  (root) => root.path === input.source.path,
+                ).expectedClosure,
+                allowedSourceDiagnostics:
+                  julyComparisonManifest.allowedSourceDiagnostics,
+              }
+            : {}),
           importPolicy: policy,
           ...(requiredImportClosure ? { requiredImportClosure } : {}),
           ...(expansion

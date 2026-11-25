@@ -2,7 +2,7 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { realpathSync } from "node:fs";
+import { existsSync, realpathSync } from "node:fs";
 import { createRequire } from "node:module";
 import {
   basename,
@@ -148,6 +148,20 @@ export const assertSourceQualificationOutputDirectory = (
     "Source-mode --output must be outside the owlapi checkout or in a Git-ignored directory",
   );
 };
+
+export function assertRegistryQualificationOutputDirectory(output) {
+  const resolvedOutput = existsSync(output)
+    ? realpathSync(output)
+    : join(realpathSync(dirname(output)), basename(output));
+  const resolvedRepository = realpathSync(REPOSITORY_ROOT);
+  if (
+    resolvedOutput === resolvedRepository ||
+    isStrictDescendantPath(resolvedRepository, resolvedOutput)
+  )
+    throw new Error(
+      "Public-registry qualification requires output outside the owlapi checkout.",
+    );
+}
 
 // This labels the tested package source, not release or consumer acceptance.
 export const qualificationStage = ({ candidateDirectory, registryVersion }) =>
@@ -485,9 +499,22 @@ export const installCandidate = async (
     throw new Error("Run candidate qualification through npm");
   const consumerDirectory = join(outputDirectory, "consumer");
   await mkdir(consumerDirectory);
+  let lock = consumerLock;
+  if (!lock) {
+    try {
+      lock = JSON.parse(
+        await readFile(
+          join(candidateDirectory, "lockless-consumer-package-lock.json"),
+          "utf8",
+        ),
+      );
+    } catch (error) {
+      if (error.code !== "ENOENT" || offline) throw error;
+    }
+  }
   const bound =
-    consumerLock &&
-    bindRetainedConsumerLock(consumerLock, {
+    lock &&
+    bindRetainedConsumerLock(lock, {
       tarballPath,
       integrity:
         "sha512-" + createHash("sha512").update(tarball).digest("base64"),

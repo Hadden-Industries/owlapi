@@ -29,6 +29,7 @@ import {
   comparisonIdentity,
   comparisonStageFailure,
   exactComparedDocuments,
+  isRetryableStrictRefusal,
   matchesComparisonImportClosure,
   readNativeComparisonResult,
   recordedNativeRdfXmlRoundTrip,
@@ -322,6 +323,35 @@ test.each(["matching pins", "changed archive", "invalid pin type"])(
   },
 );
 
+test("strict-first accepts a Java-profile aggregate only when every selected parser reports a retryable cause", () => {
+  const syntax = Object.assign(
+    new Error("Conflicting OWL property categories"),
+    {
+      code: "OWL_SYNTAX_ERROR",
+    },
+  );
+  const mismatch = Object.assign(new Error("Unrecognized syntax"), {
+    code: "PARSER_MISMATCH",
+  });
+  const aggregate = (errors) =>
+    comparisonStageFailure(
+      "load",
+      Object.assign(new AggregateError(errors), {
+        code: "UNPARSABLE_ONTOLOGY",
+      }),
+    );
+  expect(aggregate([syntax]).parserFailures[0]).toMatchObject({
+    category: syntax.code,
+    message: syntax.message,
+  });
+  expect(isRetryableStrictRefusal(aggregate([syntax]))).toBe(true);
+  expect(isRetryableStrictRefusal(aggregate([syntax, mismatch]))).toBe(false);
+  expect(isRetryableStrictRefusal(aggregate([]))).toBe(false);
+  expect(isRetryableStrictRefusal({ category: "UNPARSABLE_ONTOLOGY" })).toBe(
+    false,
+  );
+});
+
 test("a writer failure retains the precise RDF statement reported by its parser", () => {
   const statement = {
     subject: "urn:owlapi:header",
@@ -444,6 +474,27 @@ test("the benchmark registry accounts for all 70 workloads under both profiles",
       ({ behaviorProfileId }) => behaviorProfileId === "normative-v1",
     ),
   ).toHaveLength(70);
+});
+
+test("registry comparisons reject version ranges, mixed subjects and a benchmark selector before installation", async () => {
+  const request = { action: "verify", suite: "july" };
+  await expect(
+    runComparison(request, { registryVersion: "latest" }),
+  ).rejects.toThrow(/exact public package version/u);
+  const { PACKAGE_VERSION } =
+    await import("../../scripts/package-identity.mjs");
+  await expect(
+    runComparison(request, {
+      registryVersion: PACKAGE_VERSION,
+      candidateDirectory: "candidate",
+    }),
+  ).rejects.toThrow(/exact public package version/u);
+  await expect(
+    runComparison(
+      { ...request, suite: "api-benchmarks" },
+      { registryVersion: PACKAGE_VERSION },
+    ),
+  ).rejects.toThrow(/direct or closure ontology comparison/u);
 });
 
 test("the api-semantics suite registers all 70 workloads across both profiles", async () => {
@@ -1945,7 +1996,7 @@ test("the release roster qualifies mapped ifcOWL and retains one recorded import
   ).toThrow("requires the exact historical inputs");
 
   const roster = corpusQualificationRoster(comparisonCases);
-  expect(roster.policyVersion).toBe(2);
+  expect(roster.policyVersion).toBe(3);
   const cells = roster.cells.filter((cell) => cell.input === input);
   const positive = new Set(prospectCases.map(({ caseId }) => caseId));
   expect(new Set(cells.map(({ caseId }) => caseId))).toEqual(

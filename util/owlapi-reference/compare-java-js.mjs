@@ -3,6 +3,12 @@ import { mkdir, readdir, readFile, rm } from "node:fs/promises";
 import { dirname, isAbsolute, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
+import { PACKAGE_VERSION } from "../../scripts/package-identity.mjs";
+import {
+  fetchRegistryMetadata,
+  installRegistryConsumer,
+  verifyRegistryInstallation,
+} from "../../scripts/public-registry-consumer.mjs";
 import {
   comparisonCatalogue,
   julyComparisonFixtures,
@@ -21,7 +27,7 @@ import {
   readCompletedComparisonFile,
   recordedNativeRdfXmlRoundTrip,
   sha256,
-  strictRetryCategories,
+  isRetryableStrictRefusal,
 } from "./comparison-evidence.mjs";
 import {
   admitPinnedSourceClasspath,
@@ -72,6 +78,7 @@ import { verifyProfileStages } from "./comparison-profile.mjs";
 import { runCanonicalVowlProfileContract } from "./run-profile-contract.mjs";
 import { runWriterConfigurationContract } from "./run-writer-configuration-contract.mjs";
 import {
+  assertRegistryQualificationOutputDirectory,
   assertSourceQualificationOutputDirectory,
   captureSourceIdentity,
   installCandidate,
@@ -161,6 +168,9 @@ const comparisonInputs = [
   "../../docs/compatibility/profiles/java-owlapi-5.5.1/java-dependencies.lock.json",
   "../../scripts/canonical-json.mjs",
   "../../scripts/java-toolchain.mjs",
+  "../../scripts/public-registry-consumer.mjs",
+  "../../scripts/public-registry-read.mjs",
+  "../../scripts/package-identity.mjs",
   "../../.java-version",
   "../../package-lock.json",
   "../../test/consumers/browser/import-map/reference-import-map.json",
@@ -368,6 +378,7 @@ function matchesExpectedLoadOutcomes(definition, js, native) {
       (javaCompleted ? "not-requested" : "blocked") &&
     [
       js.functional,
+      js.functionalReload,
       js.documentModels,
       js.merge,
       js.rdfXmlWrite,
@@ -378,6 +389,7 @@ function matchesExpectedLoadOutcomes(definition, js, native) {
       native.javaRdfXmlRoundTrip,
       native.javaDefaultRdfXmlRoundTrip,
       native.functionalReparse,
+      native.jsFunctionalRoundTrip,
       native.jsRdfXmlRoundTrip,
       native.closurePropagation,
     ].every((stage) => stage === undefined) &&
@@ -404,7 +416,8 @@ function matchesExpectedJsRdfXmlWriteRefusal(js, native, expected) {
     typeof statement.object === "string" &&
     sha256(statement.object) === expected.objectSha256 &&
     js.rdfXmlReload === undefined &&
-    native.jsRdfXmlRoundTrip === undefined
+    native.jsRdfXmlRoundTrip === undefined &&
+    native.jsRdfXmlNativeReload === undefined
   );
 }
 
@@ -419,6 +432,7 @@ function completedClosureStages(js, native, expectedJsRdfXmlWriteRefusal) {
       js.rdfXmlReload?.status === "completed";
   return (
     js.merge?.status === "completed" &&
+    js.functionalReload?.status === "completed" &&
     native.merge?.status === "completed" &&
     jsWriterCompleted &&
     native.javaRdfXmlRoundTrip?.write?.status === "completed" &&
@@ -435,8 +449,18 @@ function compareClosureStages(
   const javaRoundTrip = native.javaRdfXmlRoundTrip;
   const comparisons = native.documentComparisons ?? [];
   const verdicts = [
+    native.closurePropagation?.status,
     javaRoundTrip?.comparison?.status,
-    ...(expectedJsRdfXmlWriteRefusal ? [] : [native.jsRdfXmlRoundTrip?.status]),
+    native.jsFunctionalRoundTrip?.status,
+    ...(expectedJsRdfXmlWriteRefusal
+      ? []
+      : [
+          native.jsRdfXmlRoundTrip?.status,
+          native.jsRdfXmlNativeReload?.comparison?.status,
+          native.jsRdfXmlNativeReload?.unparsedRdf?.length === 0
+            ? "match"
+            : "inconclusive",
+        ]),
     ...comparisons.map(({ documentIRI, comparison }) =>
       reconciledMembers.includes(documentIRI) ? "match" : comparison.status,
     ),
@@ -457,7 +481,7 @@ function matchesStrictFirstAttempts(attempts) {
     ? attempts.length === 1
     : attempts.length === 2 &&
         attempts[0].status === "failed" &&
-        strictRetryCategories.includes(attempts[0].category) &&
+        isRetryableStrictRefusal(attempts[0]) &&
         attempts[1]?.parsingMode === "compatible" &&
         attempts[1].status === "completed";
 }
@@ -627,6 +651,31 @@ async function caseVerdict(definition, measurements, js, native, performance) {
   const matchedImportClosure =
     !definition.requiredImportClosure ||
     matchesComparisonImportClosure(definition, js, native);
+  const matchedClosureWitness =
+    !definition.expectedClosure ||
+    (matchesOntologyClosure(js.load?.closure, definition.expectedClosure) &&
+      matchesOntologyClosure(
+        native.javaLoad?.ontology?.closure,
+        definition.expectedClosure,
+      ) &&
+      Array.isArray(js.load.diagnostics) &&
+      js.load.diagnostics.length === definition.expectedClosure.length &&
+      js.load.diagnostics.every(({ diagnostics }) =>
+        diagnostics.every(({ code }) =>
+          definition.allowedSourceDiagnostics.includes(code),
+        ),
+      ) &&
+      [js.functionalReload, js.rdfXmlReload].every(
+        (row) =>
+          row?.parsingMode === "strict" &&
+          row.importAttempts === 0 &&
+          row.diagnostics?.length === 0,
+      ) &&
+      native.documentComparisons?.every(
+        ({ documentIRI, unparsedRdf }) =>
+          documentIRI === definition.expectedDifferences?.memberDocumentIRI ||
+          unparsedRdf?.length === 0,
+      ));
   const matchedOriginalRdfXml =
     !definition.originalRdfXml || matchesOriginalRdfXml(definition, js, native);
   const behavior =
@@ -638,6 +687,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     matchedWriter &&
     matchedRecordedIfcowl &&
     matchedImportClosure &&
+    matchedClosureWitness &&
     matchedOriginalRdfXml &&
     expectedLoad &&
     offline
@@ -954,8 +1004,7 @@ async function observeCase(
     scenario: definition.scenario,
     compareStructure,
     ...(compareLoadedDocuments ? { compareLoadedDocuments } : {}),
-    ...(definition.expectedDifferences?.memberDocumentIRI ||
-    definition.expectedDifferences?.memberDocumentIRIs?.length
+    ...(definition.scenario === "closure-roundtrip" && compareStructure
       ? { propagateClosure: true }
       : {}),
     ...(definition.javaXml ? { javaXml: definition.javaXml } : {}),
@@ -1054,6 +1103,10 @@ async function observeCase(
       js.rdfXmlReload?.functional,
       "js-rdfxml-reloaded.ofn",
     );
+    const jsFunctionalReloadPath = await checkedModel(
+      js.functionalReload?.functional,
+      "js-functional-reloaded.ofn",
+    );
     const sourceModels = [];
     for (const [index, document] of (js.documentModels ?? []).entries()) {
       const path = await checkedModel(document, `js-direct-${index}.ofn`);
@@ -1063,7 +1116,9 @@ async function observeCase(
       {
         ...nativeRequest,
         functionalPath,
+        jsRdfXmlPath: await checkedModel(js.rdfXmlWrite, "js-closure.rdf"),
         jsReloadPath,
+        jsFunctionalReloadPath,
         sourceModels,
       },
       directory,
@@ -1194,6 +1249,25 @@ async function captureInstalledIdentity(candidateDirectory, consumerDirectory) {
       integrity,
     },
   );
+  return {
+    mode: "INSTALLED_CANDIDATE",
+    candidate,
+    tarballSha256,
+    integrity,
+    dependencyGraphSha256,
+    importMapSha256: sha256(
+      await readFile(
+        new URL(
+          "../../test/consumers/browser/import-map/reference-import-map.json",
+          import.meta.url,
+        ),
+      ),
+    ),
+    contentSha256: await installedContentDigest(consumerDirectory),
+  };
+}
+
+async function installedContentDigest(consumerDirectory) {
   const files = [];
   async function visit(relative) {
     for (const entry of await readdir(join(consumerDirectory, relative), {
@@ -1221,22 +1295,26 @@ async function captureInstalledIdentity(candidateDirectory, consumerDirectory) {
   }
   await visit("node_modules");
   files.sort(([left], [right]) => (left < right ? -1 : left === right ? 0 : 1));
-  return {
-    mode: "INSTALLED_CANDIDATE",
-    candidate,
-    tarballSha256,
-    integrity,
-    dependencyGraphSha256,
-    importMapSha256: sha256(
-      await readFile(
-        new URL(
-          "../../test/consumers/browser/import-map/reference-import-map.json",
-          import.meta.url,
-        ),
-      ),
-    ),
-    contentSha256: comparisonIdentity(files),
-  };
+  return comparisonIdentity(files);
+}
+
+async function observeComparisonSubject(options) {
+  const directory = join(options.outputDirectory, "consumer");
+  if (options.candidateDirectory)
+    return captureInstalledIdentity(options.candidateDirectory, directory);
+  if (options.registryMetadata) {
+    const identity = verifyRegistryInstallation({
+      directory,
+      dependencyName: "owlapi",
+      metadata: options.registryMetadata,
+    });
+    return {
+      ...identity,
+      lockSha256: sha256(await readFile(join(directory, "package-lock.json"))),
+      contentSha256: await installedContentDigest(directory),
+    };
+  }
+  return captureSourceIdentity(options.packageDirectory);
 }
 
 async function readEvidence(directory, pin, name, caseId, executionId) {
@@ -1276,6 +1354,7 @@ async function verifyWorkerArtifacts(directory, js, native) {
     ...(js.documentModels ?? []),
     js.rdfXmlWrite,
     js.rdfXmlReload?.functional,
+    js.functionalReload?.functional,
     native.javaModel,
     native.javaRdfXmlRoundTrip?.write,
     native.javaDefaultRdfXmlRoundTrip?.write,
@@ -1307,13 +1386,7 @@ async function verifyComparison(entries, measurements, options) {
   const directory = options.outputDirectory;
   const attempt = await readJson(join(directory, "attempt.json"));
   const report = await readJson(join(directory, "report.json"));
-  const expectedCandidate = options.candidateDirectory
-    ? await captureInstalledIdentity(
-        options.candidateDirectory,
-        join(directory, "consumer"),
-      )
-    : (options.candidateIdentity ??
-      (await captureSourceIdentity(options.packageDirectory)));
+  const expectedCandidate = await observeComparisonSubject(options);
   const {
     candidate,
     oracle,
@@ -1685,6 +1758,52 @@ async function executePinnedSourceComparison(request, options, entries) {
 }
 
 async function executeComparison(request, environment = {}) {
+  const suite = request.suite ?? request.scenario;
+  if (
+    suite !== "api-benchmarks" &&
+    (environment.benchmarkMode || environment.javaBaselinePath)
+  )
+    throw new Error(
+      "Java timing baseline controls require the api-benchmarks suite",
+    );
+  if (
+    ["api-benchmarks", "api-semantics"].includes(suite) &&
+    environment.candidateDirectory
+  )
+    throw new Error(
+      "The API benchmark workers measure the local source package",
+    );
+  if (environment.registryVersion !== undefined) {
+    if (environment.offline)
+      throw new Error(
+        "Public-registry comparison requires registry metadata access",
+      );
+    if (
+      environment.candidateDirectory ||
+      environment.registryVersion !== PACKAGE_VERSION
+    )
+      throw new Error(
+        "Registry comparisons require the exact public package version and a separate candidate selection",
+      );
+    const ontologySuites = ["july", "prospects", "wider", "smoke"];
+    if (
+      !["run", "verify"].includes(request.action) ||
+      !(request.input?.length || request.suite) ||
+      (request.suite && !ontologySuites.includes(request.suite)) ||
+      (request.scenario &&
+        !["direct-load", "closure-roundtrip", "strict-first"].includes(
+          request.scenario,
+        ))
+    )
+      throw new Error(
+        "Select a direct or closure ontology comparison for public-registry evidence",
+      );
+    if (!isAbsolute(environment.outputDirectory ?? ""))
+      throw new Error(
+        "Registry evidence requires an absolute output directory",
+      );
+    assertRegistryQualificationOutputDirectory(environment.outputDirectory);
+  }
   if (
     request.loadOnly &&
     (!request.input ||
@@ -1945,9 +2064,23 @@ async function executeComparison(request, environment = {}) {
     isolatedLoad,
     packageDirectory: environment.packageDirectory ?? repository,
   };
+  if (environment.registryVersion !== undefined)
+    options.registryMetadata = await fetchRegistryMetadata(
+      environment.registryVersion,
+    );
   if (!isAbsolute(options.outputDirectory ?? ""))
     throw new Error("Comparison requires an absolute output directory");
   assertSourceQualificationOutputDirectory(repository, options.outputDirectory);
+  if (
+    entries.some(
+      ({ definition }) => definition.oracle?.kind === "pinned-source",
+    ) &&
+    !referenceCheckout(options) &&
+    !referenceDistribution(options)
+  )
+    throw new Error(
+      "Set OWLAPI_REFERENCE_CHECKOUT to the pinned Java checkout or OWLAPI_REFERENCE_DISTRIBUTION to its verified distribution",
+    );
   if (options.candidateDirectory && !isAbsolute(options.candidateDirectory)) {
     throw new Error("An absolute retained candidate directory is required");
   }
@@ -2078,7 +2211,12 @@ async function executeComparison(request, environment = {}) {
     );
     return result;
   }
-  if (options.candidateDirectory) {
+  if (options.registryMetadata) {
+    const directory = join(options.outputDirectory, "consumer");
+    installRegistryConsumer({ directory, metadata: options.registryMetadata });
+    options.consumerDirectory = directory;
+    options.packageDirectory = join(directory, "node_modules", "owlapi");
+  } else if (options.candidateDirectory) {
     const installed = await installCandidate(
       options.candidateDirectory,
       options.outputDirectory,
@@ -2087,12 +2225,7 @@ async function executeComparison(request, environment = {}) {
     options.packageDirectory = installed.packageDirectory;
     options.consumerDirectory = installed.consumerDirectory;
   }
-  const candidate = options.candidateDirectory
-    ? await captureInstalledIdentity(
-        options.candidateDirectory,
-        options.consumerDirectory,
-      )
-    : await captureSourceIdentity(options.packageDirectory);
+  const candidate = await observeComparisonSubject(options);
   if (!candidate)
     throw new Error("An installed candidate identity is required");
   const classpath = await admitCaseClasspath(entries, options);
@@ -2162,12 +2295,7 @@ async function executeComparison(request, environment = {}) {
     const row = { input: entry.input.id, ...result, receipt };
     cases.push(options.publicReceipts ? publicCorpusRow(row) : row);
   }
-  const confirmed = options.candidateDirectory
-    ? await captureInstalledIdentity(
-        options.candidateDirectory,
-        options.consumerDirectory,
-      )
-    : await captureSourceIdentity(options.packageDirectory);
+  const confirmed = await observeComparisonSubject(options);
   if (comparisonIdentity(confirmed) !== comparisonIdentity(candidate)) {
     throw new Error("Selected source changed during comparison");
   }
@@ -2244,6 +2372,7 @@ const optionNames = [
   "reference-distribution",
   "java-build-cache",
   "candidate",
+  "registry-version",
   "java-xml",
   "java-turtle",
   "cold-samples",
@@ -2273,6 +2402,7 @@ function parseComparisonArguments([action, ...args]) {
       "load-only": { type: "boolean" },
       "materialize-axioms": { type: "boolean" },
       "allocation-profile": { type: "boolean" },
+      offline: { type: "boolean" },
       "no-memory-guard": { type: "boolean" },
     },
   });
@@ -2317,6 +2447,8 @@ function parseComparisonArguments([action, ...args]) {
       referenceDistribution: values["reference-distribution"],
       javaBuildCacheDirectory: values["java-build-cache"],
       candidateDirectory: values.candidate,
+      registryVersion: values["registry-version"],
+      offline: values.offline,
       benchmarkMode: values["benchmark-mode"],
       javaBaselinePath: values["java-baseline"],
       corpusReceipts: values["corpus-receipts"],

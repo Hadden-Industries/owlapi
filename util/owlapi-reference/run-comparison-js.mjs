@@ -11,7 +11,7 @@ import {
   publishComparisonFile,
   publishComparisonJson,
   sha256,
-  strictRetryCategories,
+  isRetryableStrictRefusal,
 } from "./comparison-evidence.mjs";
 import { loadPublicApi } from "./qualify-universal-ontology.mjs";
 import { observeConfiguration } from "./comparison-configuration.mjs";
@@ -204,49 +204,103 @@ async function roundTripClosure(
     "js-closure.rdf",
     directory,
   );
-  if (result.rdfXmlWrite.status !== "completed") return;
+  if (result.functional.status === "completed") {
+    result.functionalReload = await reloadClosure(
+      api,
+      directory,
+      request,
+      parameters,
+      "FUNCTIONAL",
+      result.functional.artifact.name,
+      "js-functional-reloaded.ofn",
+    );
+  }
+  if (result.rdfXmlWrite.status === "completed") {
+    result.rdfXmlReload = await reloadClosure(
+      api,
+      directory,
+      request,
+      parameters,
+      "RDF_XML",
+      result.rdfXmlWrite.artifact.name,
+      "js-rdfxml-reloaded.ofn",
+    );
+  }
+}
+
+async function reloadClosure(
+  api,
+  directory,
+  request,
+  parameters,
+  format,
+  name,
+  output,
+) {
+  const settings = {
+    ...parameters,
+    collectWarnings: true,
+    parsingMode:
+      parameters.behaviorProfileId === "normative-v1"
+        ? "strict"
+        : parameters.parsingMode,
+    remoteImports: false,
+    remoteJsonLdContexts: false,
+  };
+  let importAttempts = 0;
   try {
     const reloader = api.OWLManager.createOWLOntologyManager({
-      ...parameters,
+      ...settings,
       documentLoader: {
         load() {
+          importAttempts++;
           throw new Error("A merged document cannot load imports");
         },
       },
     });
     const source = new api.StringDocumentSource(
-      await readFile(join(directory, "js-closure.rdf"), "utf8"),
+      await readFile(join(directory, name), "utf8"),
       {
         documentIRI: api.IRI.create(request.document.documentIRI),
-        format: api.OWLDocumentFormats.RDF_XML,
+        format: api.OWLDocumentFormats[format],
       },
     );
     const graph = await reloader.loadOntologyGraphFromOntologyDocument(
       source,
-      new api.OWLOntologyLoaderConfiguration(parameters),
+      new api.OWLOntologyLoaderConfiguration(settings),
+    );
+    const diagnostics = graph.documents.flatMap(
+      ({ context }) => context.diagnostics ?? [],
     );
     if (
+      importAttempts ||
       graph.ontology.getImportsDeclarations().size ||
       graph.importsClosure.length !== 1
     ) {
-      throw new Error("Merged RDF/XML reload retained imports");
+      throw new Error(`Merged ${format} reload retained imports`);
     }
     const functional = await storeModel(
       api,
       reloader,
       graph.ontology,
       "FUNCTIONAL",
-      "js-rdfxml-reloaded.ofn",
+      output,
       directory,
     );
-    result.rdfXmlReload = {
+    return {
       status: functional.status,
+      parsingMode: settings.parsingMode,
+      importAttempts,
+      diagnostics,
       identity: ontologyIdentity(graph.ontology),
       axioms: graph.ontology.getAxiomCount(),
       functional,
     };
   } catch (error) {
-    result.rdfXmlReload = failure("rdfxml-reload", error);
+    return failure(
+      format === "RDF_XML" ? "rdfxml-reload" : "functional-reload",
+      error,
+    );
   }
 }
 
@@ -264,7 +318,7 @@ async function loadStrictFirst({
   } catch (error) {
     const refusal = failure("load", error);
     attempts.push({ parsingMode: "strict", ...refusal });
-    if (!strictRetryCategories.includes(refusal.category)) throw error;
+    if (!isRetryableStrictRefusal(refusal)) throw error;
   }
 
   // A rejected load can have staged bindings. The downstream retry starts

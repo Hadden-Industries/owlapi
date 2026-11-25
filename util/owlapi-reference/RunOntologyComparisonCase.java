@@ -356,16 +356,35 @@ public final class RunOntologyComparisonCase {
             result.put("functionalReparse", failure("functional-reparse", failure));
             return null;
         }
-        JsonNode after = request.path("jsReloadPath");
-        if (after.isTextual()) {
-            try {
-                OWLOntology reloaded = loadFunctional(Path.of(after.asText()), absent, configuration);
-                result.put("jsRdfXmlRoundTrip", compare(actual, reloaded));
+        compareJsReload(request.path("jsReloadPath"), "jsRdfXmlRoundTrip", actual, absent, configuration, result);
+        compareJsReload(request.path("jsFunctionalReloadPath"), "jsFunctionalRoundTrip", actual, absent, configuration, result);
+        JsonNode rendered = request.path("jsRdfXmlPath");
+        if (rendered.isTextual()) {
+            OWLOntologyManager reader = OWLManager.createOWLOntologyManager();
+            reader.getIRIMappers().clear();
+            reader.getIRIMappers().add(iri -> { throw new IllegalArgumentException("Unexpected standalone import " + iri); });
+            try (InputStream stream = Files.newInputStream(Path.of(rendered.asText()))) {
+                OWLOntology parsed = reader.loadOntologyFromOntologyDocument(new StreamDocumentSource(stream,
+                    IRI.create(request.required("document").required("documentIRI").asText()), new RDFXMLDocumentFormat(), null), configuration);
+                result.put("jsRdfXmlNativeReload", Map.of("comparison", compare(actual, parsed),
+                    "unparsedRdf", unparsedRdf(reader, parsed)));
             } catch (Exception failure) {
-                result.put("jsRdfXmlRoundTrip", failure("js-writer-functional-reparse", failure));
+                result.put("jsRdfXmlNativeReload", failure("js-rdfxml-native-reload", failure));
             }
         }
         return actual;
+    }
+
+    private static void compareJsReload(JsonNode after, String field, OWLOntology actual, Path absent,
+        OWLOntologyLoaderConfiguration configuration, Map<String, Object> result) {
+        if (after.isTextual()) {
+            try {
+                OWLOntology reloaded = loadFunctional(Path.of(after.asText()), absent, configuration);
+                result.put(field, compare(actual, reloaded));
+            } catch (Exception failure) {
+                result.put(field, failure("js-writer-functional-reparse", failure));
+            }
+        }
     }
 
     private static OWLOntology load(OWLOntologyManager manager, JsonNode document,

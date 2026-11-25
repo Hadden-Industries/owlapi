@@ -3,19 +3,99 @@
   "roots": [
     {
       "name": "iso11179-3",
-      "path": "src/iso-iec/11179/-3/ed-4/20260714"
+      "path": "src/iso-iec/11179/-3/ed-4/20260714",
+      "expectedClosure": [
+        {
+          "ontologyIRI": "https://haddenindustries.com/ontology/iso-iec/11179/-3/ed-4/",
+          "versionIRI": "https://haddenindustries.com/ontology/iso-iec/11179/-3/ed-4/20260714"
+        },
+        {
+          "ontologyIRI": "http://www.w3.org/2004/02/skos/core",
+          "versionIRI": null
+        }
+      ]
     },
     {
       "name": "reference-data",
-      "path": "src/universal/reference-data/20260714"
+      "path": "src/universal/reference-data/20260714",
+      "expectedClosure": [
+        {
+          "ontologyIRI": "https://haddenindustries.com/ontology/universal/reference-data/",
+          "versionIRI": "https://haddenindustries.com/ontology/universal/reference-data/20260714"
+        },
+        {
+          "ontologyIRI": "https://haddenindustries.com/ontology/iso-iec/11179/-3/ed-4/",
+          "versionIRI": "https://haddenindustries.com/ontology/iso-iec/11179/-3/ed-4/20260714"
+        },
+        {
+          "ontologyIRI": "http://www.w3.org/2004/02/skos/core",
+          "versionIRI": null
+        }
+      ]
     },
     {
       "name": "core",
-      "path": "src/universal/core/20260714"
+      "path": "src/universal/core/20260714",
+      "expectedClosure": [
+        {
+          "ontologyIRI": "https://haddenindustries.com/ontology/universal/core/",
+          "versionIRI": "https://haddenindustries.com/ontology/universal/core/20260714"
+        },
+        {
+          "ontologyIRI": "http://www.w3.org/ns/time/gregorian",
+          "versionIRI": null
+        },
+        {
+          "ontologyIRI": "http://www.w3.org/2006/time",
+          "versionIRI": "http://www.w3.org/2006/time#2016"
+        },
+        {
+          "ontologyIRI": "https://haddenindustries.com/ontology/universal/reference-data/",
+          "versionIRI": "https://haddenindustries.com/ontology/universal/reference-data/20260714"
+        },
+        {
+          "ontologyIRI": "https://haddenindustries.com/ontology/iso-iec/11179/-3/ed-4/",
+          "versionIRI": "https://haddenindustries.com/ontology/iso-iec/11179/-3/ed-4/20260714"
+        },
+        {
+          "ontologyIRI": "http://www.w3.org/2004/02/skos/core",
+          "versionIRI": null
+        }
+      ]
     },
     {
       "name": "extended",
-      "path": "src/universal/extended/20260714"
+      "path": "src/universal/extended/20260714",
+      "expectedClosure": [
+        {
+          "ontologyIRI": "https://haddenindustries.com/ontology/universal/extended/",
+          "versionIRI": "https://haddenindustries.com/ontology/universal/extended/20260714"
+        },
+        {
+          "ontologyIRI": "https://haddenindustries.com/ontology/universal/core/",
+          "versionIRI": "https://haddenindustries.com/ontology/universal/core/20260714"
+        },
+        {
+          "ontologyIRI": "http://www.w3.org/ns/time/gregorian",
+          "versionIRI": null
+        },
+        {
+          "ontologyIRI": "http://www.w3.org/2006/time",
+          "versionIRI": "http://www.w3.org/2006/time#2016"
+        },
+        {
+          "ontologyIRI": "https://haddenindustries.com/ontology/universal/reference-data/",
+          "versionIRI": "https://haddenindustries.com/ontology/universal/reference-data/20260714"
+        },
+        {
+          "ontologyIRI": "https://haddenindustries.com/ontology/iso-iec/11179/-3/ed-4/",
+          "versionIRI": "https://haddenindustries.com/ontology/iso-iec/11179/-3/ed-4/20260714"
+        },
+        {
+          "ontologyIRI": "http://www.w3.org/2004/02/skos/core",
+          "versionIRI": null
+        }
+      ]
     }
   ],
   "mappings": [
@@ -84,5 +164,9 @@
       "sha256": "5c824ae62d1ba2d987bb3ed1129755e0b33b7504ebe045b29af26bd7cacd26db",
       "syntax": "rdfxml"
     }
-  }
+  },
+  "allowedSourceDiagnostics": [
+    "RDF_UNDECLARED_ANNOTATION_PROPERTY",
+    "RDF_NAMED_DATATYPE_RESTRICTION"
+  ]
 }

@@ -103,6 +103,9 @@ export function comparisonStageFailure(phase, error) {
     status: "failed",
     phase,
     ...observedFailure(error),
+    ...(error instanceof AggregateError && error.code === "UNPARSABLE_ONTOLOGY"
+      ? { parserFailures: error.errors.map(observedFailure) }
+      : {}),
     ...(causes.length ? { causes } : {}),
     ...(cause !== undefined ? { causesTruncated: true } : {}),
   };
@@ -150,11 +153,23 @@ export function recordedNativeRdfXmlRoundTrip(stages) {
   );
 }
 
-export const strictRetryCategories = Object.freeze([
+const strictRetryCategories = Object.freeze([
   "OWL_SYNTAX_ERROR",
   "UNSUPPORTED_CONSTRUCT",
   "RESOURCE_LIMIT_EXCEEDED",
 ]);
+
+export function isRetryableStrictRefusal(refusal) {
+  return (
+    strictRetryCategories.includes(refusal?.category) ||
+    (refusal?.category === "UNPARSABLE_ONTOLOGY" &&
+      Array.isArray(refusal.parserFailures) &&
+      refusal.parserFailures.length > 0 &&
+      refusal.parserFailures.every((error) =>
+        strictRetryCategories.includes(error?.category),
+      ))
+  );
+}
 
 /** Publish one complete result without replacing an earlier observation. */
 export const publishComparisonFile = (directory, name, bytes) =>

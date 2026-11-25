@@ -5,9 +5,9 @@ import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
 import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
 import { recordedIfcowlSuite } from "./comparison-ifcowl.mjs";
 
-// Version 2 qualifies the published ifcOWL closure and checks the recorded
-// stand-in as behavior. The version is part of the authenticated roster hash.
-const qualificationPolicyVersion = 2;
+// Version 3 requires standalone Functional and RDF/XML reloads and native
+// propagation of each closure. Old receipts cannot satisfy the new roster.
+const qualificationPolicyVersion = 3;
 const releaseSuites = [
   { suite: "prospects" },
   { suite: recordedIfcowlSuite },
