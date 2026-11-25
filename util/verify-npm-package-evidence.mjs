@@ -7,7 +7,12 @@ import addFormats from "ajv-formats";
 
 import { stableJson } from "./third-party-evidence/digests.mjs";
 import { ARCHIVE_LIMITS } from "./third-party-evidence/archive-evidence.mjs";
-import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
+import {
+  EvidenceVerificationError,
+  findRetiredJsonQualityBlobReferences,
+  formatRetiredJsonQualityBlobMessage,
+  verifyEvidenceManifest,
+} from "./third-party-evidence/evidence-manifest.mjs";
 import { EVIDENCE_MANIFEST_NAME } from "./third-party-evidence/format.mjs";
 
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -163,11 +168,23 @@ export const verifyRepositoryEvidence = async ({
     );
   }
 
-  return verifyEvidenceManifest({
+  const summary = await verifyEvidenceManifest({
     manifest,
     lockfileBytes,
     blobRoot: resolve(provenanceRoot, "evidence", "npm"),
   });
+  const jsonQualityCheck = await findRetiredJsonQualityBlobReferences({
+    repositoryRoot,
+    manifest,
+  });
+  if (jsonQualityCheck.missing.length > 0) {
+    throw new EvidenceVerificationError(
+      "CONTROL_FAILURE",
+      "JSON_QUALITY_RETIRED_BLOB_REFERENCE",
+      formatRetiredJsonQualityBlobMessage(jsonQualityCheck),
+    );
+  }
+  return summary;
 };
 
 const isMain =

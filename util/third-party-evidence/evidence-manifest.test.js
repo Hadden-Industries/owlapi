@@ -11,6 +11,8 @@ import { sha256, stableJson } from "./digests.mjs";
 import {
   EvidenceVerificationError,
   createEvidenceManifest,
+  findRetiredJsonQualityBlobReferences,
+  formatRetiredJsonQualityBlobMessage,
   verifyEvidenceManifest,
 } from "./evidence-manifest.mjs";
 import { normalizeLockedRegistryGraph } from "./lock-graph.mjs";
@@ -617,5 +619,66 @@ describe("npm package evidence manifest", () => {
       code: "SIGNATURE_INVALID",
       message: "example",
     });
+  });
+
+  it("detects concrete npm blob paths in .json-quality.json retired by a manifest refresh", async () => {
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-json-quality-blobs-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    const activePath = `blobs/sha256/${"a".repeat(2)}/${"a".repeat(64)}`;
+    const retiredPath = `blobs/sha256/${"b".repeat(2)}/${"b".repeat(64)}`;
+    const missingPath = `blobs/sha256/${"c".repeat(2)}/${"c".repeat(64)}`;
+    const previousManifest = {
+      blobs: [{ path: activePath }, { path: retiredPath }],
+    };
+    const manifest = { blobs: [{ path: activePath }] };
+
+    await expect(
+      findRetiredJsonQualityBlobReferences({
+        repositoryRoot,
+        manifest,
+        previousManifest,
+      }),
+    ).resolves.toEqual({ referenced: [], missing: [], retired: [] });
+
+    await writeFile(
+      join(repositoryRoot, ".json-quality.json"),
+      JSON.stringify({
+        preserveSourcePresentation: [
+          { paths: ["docs/provenance/evidence/npm/blobs/sha256/**"] },
+          { paths: [`docs/provenance/evidence/npm/${retiredPath}`] },
+        ],
+        exceptions: [
+          { paths: ["docs/provenance/evidence/**"] },
+          { paths: [`docs/provenance/evidence/npm/${activePath}`] },
+          { paths: [`docs/provenance/evidence/npm/${missingPath}`] },
+        ],
+      }),
+    );
+
+    const check = await findRetiredJsonQualityBlobReferences({
+      repositoryRoot,
+      manifest,
+      previousManifest,
+    });
+    expect(check).toEqual({
+      referenced: [
+        `docs/provenance/evidence/npm/${activePath}`,
+        `docs/provenance/evidence/npm/${retiredPath}`,
+        `docs/provenance/evidence/npm/${missingPath}`,
+      ],
+      missing: [
+        `docs/provenance/evidence/npm/${retiredPath}`,
+        `docs/provenance/evidence/npm/${missingPath}`,
+      ],
+      retired: [`docs/provenance/evidence/npm/${retiredPath}`],
+    });
+    expect(formatRetiredJsonQualityBlobMessage(check)).toContain(
+      `retired by refresh: docs/provenance/evidence/npm/${retiredPath}`,
+    );
+    expect(formatRetiredJsonQualityBlobMessage(check)).toContain(
+      `missing from manifest: docs/provenance/evidence/npm/${missingPath}`,
+    );
   });
 });

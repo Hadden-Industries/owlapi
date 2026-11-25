@@ -746,3 +746,85 @@ export const verifyEvidenceShard = async ({
     );
   }
 };
+
+const NPM_EVIDENCE_PREFIX = "docs/provenance/evidence/npm/";
+const NPM_BLOB_PREFIX = `${NPM_EVIDENCE_PREFIX}blobs/`;
+const GLOB_CHARACTER = /[*?[\]{}()]/u;
+
+const collectPolicyBlobPaths = (rules, target) => {
+  if (!Array.isArray(rules)) {
+    return;
+  }
+  for (const rule of rules) {
+    if (!Array.isArray(rule?.paths)) {
+      continue;
+    }
+    for (const candidate of rule.paths) {
+      if (
+        typeof candidate === "string" &&
+        candidate.startsWith(NPM_BLOB_PREFIX) &&
+        !GLOB_CHARACTER.test(candidate)
+      ) {
+        target.add(candidate);
+      }
+    }
+  }
+};
+
+/**
+ * Find exact npm evidence blob paths still pinned in `.json-quality.json`
+ * that are missing from `manifest.blobs` (and flag which were present in
+ * `previousManifest.blobs` before refresh).
+ */
+export const findRetiredJsonQualityBlobReferences = async ({
+  repositoryRoot,
+  manifest,
+  previousManifest = null,
+}) => {
+  let rawPolicy;
+  try {
+    rawPolicy = await readFile(
+      join(repositoryRoot, ".json-quality.json"),
+      "utf8",
+    );
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return { referenced: [], missing: [], retired: [] };
+    }
+    throw error;
+  }
+  const policy = JSON.parse(rawPolicy);
+  const referencedSet = new Set();
+  collectPolicyBlobPaths(policy?.exceptions, referencedSet);
+  collectPolicyBlobPaths(policy?.preserveSourcePresentation, referencedSet);
+  const referenced = [...referencedSet].sort(compareCodeUnits);
+  if (referenced.length === 0) {
+    return { referenced, missing: [], retired: [] };
+  }
+  const active = new Set(
+    (manifest?.blobs ?? []).map(({ path }) => `${NPM_EVIDENCE_PREFIX}${path}`),
+  );
+  const missing = referenced.filter((path) => !active.has(path));
+  const previous = previousManifest
+    ? new Set(
+        (previousManifest.blobs ?? []).map(
+          ({ path }) => `${NPM_EVIDENCE_PREFIX}${path}`,
+        ),
+      )
+    : null;
+  const retired = previous ? missing.filter((path) => previous.has(path)) : [];
+  return { referenced, missing, retired };
+};
+
+export const formatRetiredJsonQualityBlobMessage = ({ missing, retired }) => {
+  const retiredSet = new Set(retired);
+  const remaining = missing.filter((path) => !retiredSet.has(path));
+  const parts = [];
+  if (retired.length > 0) {
+    parts.push(`retired by refresh: ${retired.join(", ")}`);
+  }
+  if (remaining.length > 0) {
+    parts.push(`missing from manifest: ${remaining.join(", ")}`);
+  }
+  return `.json-quality.json still references npm evidence blob path(s) absent from npm-package-evidence.json (${parts.join("; ")}). Update .json-quality.json before running check:json or test:json.`;
+};

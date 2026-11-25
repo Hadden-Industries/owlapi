@@ -38,6 +38,8 @@ import {
 } from "./third-party-evidence/digests.mjs";
 import {
   createEvidenceManifest,
+  findRetiredJsonQualityBlobReferences,
+  formatRetiredJsonQualityBlobMessage,
   verifyEvidenceShard,
   verifyEvidenceManifest,
   comparableEvidenceFacts,
@@ -1266,6 +1268,7 @@ export const publishEvidence = async ({
   repositoryRoot,
   stagingCorpus,
   manifest,
+  warn = (message) => process.stderr.write(`${message}\n`),
 }) => {
   const provenanceRoot = join(repositoryRoot, "docs", "provenance");
   const evidenceParent = join(provenanceRoot, "evidence");
@@ -1303,6 +1306,21 @@ export const publishEvidence = async ({
   await writeFile(pendingManifest, stableJson(manifest), { flag: "wx" });
   const hadCorpus = await exists(destinationCorpus);
   const hadManifest = await exists(destinationManifest);
+  let previousManifest = null;
+  if (hadManifest) {
+    try {
+      previousManifest = JSON.parse(
+        await readFile(destinationManifest, "utf8"),
+      );
+    } catch (_error) {
+      previousManifest = null;
+    }
+  }
+  const jsonQualityCheck = await findRetiredJsonQualityBlobReferences({
+    repositoryRoot,
+    manifest,
+    previousManifest,
+  });
   let installedCorpus = false;
   let installedManifest = false;
   try {
@@ -1336,6 +1354,13 @@ export const publishEvidence = async ({
     await rm(pendingCorpus, { recursive: true, force: true });
     await rm(pendingManifest, { force: true });
   }
+  if (jsonQualityCheck.missing.length > 0) {
+    warn(`Warning: ${formatRetiredJsonQualityBlobMessage(jsonQualityCheck)}`);
+  }
+  return {
+    retiredJsonQualityBlobPaths: jsonQualityCheck.retired,
+    missingJsonQualityBlobPaths: jsonQualityCheck.missing,
+  };
 };
 
 const publishEvidenceShard = async ({
@@ -1549,6 +1574,7 @@ export const acquireEvidence = async ({
   reuseEvidenceFrom = null,
   reuseScanReports = null,
   reuseScanReportsSha256 = null,
+  warn = undefined,
 } = {}) => {
   const reusable =
     reuseEvidenceFrom === null
@@ -1714,6 +1740,7 @@ export const acquireEvidence = async ({
         repositoryRoot,
         stagingCorpus: corpusRoot,
         manifest,
+        ...(warn ? { warn } : {}),
       });
     } else {
       await compareCommittedEvidence({

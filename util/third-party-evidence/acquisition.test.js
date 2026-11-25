@@ -21,6 +21,7 @@ import {
   collectNativeScancodeReport,
   fetchJsonWithRetry,
   parseAcquisitionArguments,
+  publishEvidence,
 } from "../acquire-npm-package-evidence.mjs";
 import {
   mergeEvidenceShardDirectories,
@@ -34,6 +35,7 @@ import {
   verifyEvidenceManifest,
   verifyEvidenceShard,
 } from "./evidence-manifest.mjs";
+import { verifyRepositoryEvidence } from "../verify-npm-package-evidence.mjs";
 import { computeCorpusRoot, retainBlob } from "./blob-store.mjs";
 import { stableJson } from "./digests.mjs";
 import { normalizeLockedRegistryGraph } from "./lock-graph.mjs";
@@ -2290,5 +2292,96 @@ describe("shard aggregation CLIs", () => {
         "--left=.release/windows",
       ]),
     ).toThrow(/duplicate|right/iu);
+  });
+
+  it("warns during evidence refresh and fails verification when .json-quality.json references a retired blob path", async () => {
+    const fixture = makeRegistryFixture();
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-retired-blob-check-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+
+    const firstWarnings = [];
+    const first = await acquireEvidence({
+      repositoryRoot,
+      fetchImpl: mappedFetch(registry.origin),
+      downloadTarball: fixtureDownload,
+      verifyPackageMetadata: fixtureMetadataVerification,
+      scanArtifact: fixtureScan,
+      write: true,
+      warn: (message) => firstWarnings.push(message),
+      sleep: async () => {},
+    });
+    const pinnedBlob = `docs/provenance/evidence/npm/${first.manifest.artifacts[0].scan.evidence.path}`;
+    await writeFile(
+      join(repositoryRoot, ".json-quality.json"),
+      JSON.stringify({
+        schemaVersion: 4,
+        exceptions: [
+          {
+            paths: [pinnedBlob],
+            owner: "native npm evidence verifier",
+            reason: "Pin active ScanCode blob",
+            allowSourceRewrites: false,
+          },
+        ],
+      }),
+    );
+
+    await expect(
+      verifyRepositoryEvidence({ repositoryRoot }),
+    ).resolves.toMatchObject({ artifactCount: 1 });
+    expect(firstWarnings).toEqual([]);
+
+    // Rotate the scan blob (different finding text => different blob hash)
+    const refreshWarnings = [];
+    const refreshed = await acquireEvidence({
+      repositoryRoot,
+      fetchImpl: mappedFetch(registry.origin),
+      downloadTarball: fixtureDownload,
+      verifyPackageMetadata: fixtureMetadataVerification,
+      scanArtifact: async (options) => {
+        const report = await fixtureScan(options);
+        report.files[1].copyrights = [
+          { copyright: "Copyright (c) Rotated Test" },
+        ];
+        return report;
+      },
+      write: true,
+      warn: (message) => refreshWarnings.push(message),
+      sleep: async () => {},
+    });
+    expect(
+      `docs/provenance/evidence/npm/${refreshed.manifest.artifacts[0].scan.evidence.path}`,
+    ).not.toBe(pinnedBlob);
+    expect(refreshWarnings).toHaveLength(1);
+    expect(refreshWarnings[0]).toContain(pinnedBlob);
+    expect(refreshWarnings[0]).toContain("retired by refresh");
+
+    // Also confirm direct publishEvidence returns the retired path list
+    const published = await publishEvidence({
+      repositoryRoot,
+      stagingCorpus: join(repositoryRoot, "docs/provenance/evidence/npm"),
+      manifest: refreshed.manifest,
+      warn: () => {},
+    });
+    expect(published).toEqual({
+      retiredJsonQualityBlobPaths: [],
+      missingJsonQualityBlobPaths: [pinnedBlob],
+    });
+
+    await expect(
+      verifyRepositoryEvidence({ repositoryRoot }),
+    ).rejects.toMatchObject({
+      name: "EvidenceVerificationError",
+      classification: "CONTROL_FAILURE",
+      code: "JSON_QUALITY_RETIRED_BLOB_REFERENCE",
+      message: expect.stringContaining(pinnedBlob),
+    });
   });
 });
