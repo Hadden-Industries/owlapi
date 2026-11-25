@@ -271,4 +271,27 @@ describe("native configuration within an explicitly selected behavior profile", 
       manager.getOntologyWriterConfiguration().getBehaviorProfileId(),
     ).toBe("java-owlapi-5.5.1");
   });
+
+  test("loader configuration honors inherited behaviorProfileId and ignores non-enumerable own properties", () => {
+    const inherited = Object.create({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    });
+    expect(
+      new OWLOntologyLoaderConfiguration(inherited).getBehaviorProfileId(),
+    ).toBe("java-owlapi-5.5.1");
+
+    const withNonEnumerable = {};
+    Object.defineProperty(withNonEnumerable, "_hiddenMeta", {
+      value: "ignored",
+      enumerable: false,
+    });
+    Object.defineProperty(withNonEnumerable, "parsingMode", {
+      value: "compatible",
+      enumerable: false,
+    });
+    const config = new OWLOntologyLoaderConfiguration(withNonEnumerable);
+    expect(config.parsingMode).toBe("strict");
+    expect(config.isStrict()).toBe(true);
+    expect("_hiddenMeta" in config).toBe(false);
+  });
 });

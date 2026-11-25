@@ -2187,7 +2187,15 @@ export class OWLOntologyManager {
     for (const { mutationDraft, ontologyState } of ontologyMutations.values()) {
       ontologyState.commitMutation(mutationDraft);
     }
-    if (importParticipants.size > 0) this.#importDeclarationsRevision += 1;
+    if (importParticipants.size > 0) {
+      this.#importDeclarationsRevision += 1;
+      for (const participant of importParticipants) {
+        const owner = readOntologyOwner(participant);
+        if (owner && owner !== this) {
+          owner.#importDeclarationsRevision += 1;
+        }
+      }
+    }
     if (usesJavaIndexSemantics)
       for (const descriptor of materializedChanges) {
         if (descriptor.kind === "REMOVE_IMPORT")

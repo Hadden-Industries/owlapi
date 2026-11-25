@@ -316,6 +316,10 @@ export const transformObject = (root, factory, resolve, doneArg) => {
     if (usePool) {
       seen.clear();
       nodes.length = 0;
+      positions.length = 0;
+      fields.length = 0;
+      pathDepth.length = 0;
+      depths.length = 0;
       order.length = 0;
       done.clear();
       txBusy = false;

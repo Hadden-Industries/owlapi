@@ -8,6 +8,21 @@ import {
   usesNativeStructuralKeys,
 } from "../../model/structural.js";
 
+const isSimpleJsonString = (value) => {
+  for (let i = 0; i < value.length; i += 1) {
+    const code = value.charCodeAt(i);
+    if (
+      code < 0x20 ||
+      code === 34 ||
+      code === 92 ||
+      (code >= 0xd800 && code <= 0xdfff)
+    ) {
+      return false;
+    }
+  }
+  return true;
+};
+
 const ontologyIDKey = (ontologyID, name = "ontologyID") => {
   if (
     !isCanonicalStructuralObject(ontologyID) ||
@@ -16,28 +31,23 @@ const ontologyIDKey = (ontologyID, name = "ontologyID") => {
   ) {
     throw new TypeError(`${name} must be an OWLOntologyID`);
   }
-  if (!isFactoryStructuralObject(ontologyID) || !usesNativeStructuralKeys()) {
-    try {
-      const key = OWLStructuralObject.prototype.structuralKey.call(ontologyID);
-      if (!usesNativeStructuralKeys()) return key;
-    } catch {
-      throw new TypeError(`${name} must be an OWLOntologyID`);
+  if (isFactoryStructuralObject(ontologyID) && usesNativeStructuralKeys()) {
+    const { ontologyIRI, versionIRI } = ontologyID;
+    if (
+      ontologyIRI !== undefined &&
+      isSimpleJsonString(ontologyIRI.value) &&
+      (versionIRI === undefined || isSimpleJsonString(versionIRI.value))
+    ) {
+      return versionIRI === undefined
+        ? `["OWLOntologyID",["IRI","${ontologyIRI.value}"],null]`
+        : `["OWLOntologyID",["IRI","${ontologyIRI.value}"],["IRI","${versionIRI.value}"]]`;
     }
   }
-  const { ontologyIRI, versionIRI } = ontologyID;
-  if (ontologyIRI === undefined) {
+  try {
     return OWLStructuralObject.prototype.structuralKey.call(ontologyID);
-  }
-  if (typeof ontologyIRI.value !== "string") {
+  } catch {
     throw new TypeError(`${name} must be an OWLOntologyID`);
   }
-  if (versionIRI === undefined) {
-    return `${ontologyIRI.value.length}:${ontologyIRI.value}`;
-  }
-  if (typeof versionIRI.value !== "string") {
-    throw new TypeError(`${name} must be an OWLOntologyID`);
-  }
-  return `${ontologyIRI.value.length}:${ontologyIRI.value}:${versionIRI.value}`;
 };
 
 const requireOntology = (ontology) => {
@@ -268,9 +278,12 @@ const getOntologyByIRIFromStates = (
 ) => {
   const key = iriKey(iri, "iri");
   if (allowNamedIDFallback) {
-    const exactIDKey = usesNativeStructuralKeys()
-      ? `${iri.value.length}:${iri.value}`
-      : structuralKey(OWLObjectKind.ONTOLOGY_ID, [iri, undefined]);
+    const exactIDKey =
+      usesNativeStructuralKeys() &&
+      isFactoryStructuralObject(iri) &&
+      isSimpleJsonString(iri.value)
+        ? `["OWLOntologyID",["IRI","${iri.value}"],null]`
+        : structuralKey(OWLObjectKind.ONTOLOGY_ID, [iri, undefined]);
     for (const state of states) {
       const exact = state.ontologyByID.get(exactIDKey);
       if (exact) return exact;

@@ -278,25 +278,23 @@ export class OWLOntologyLoaderConfiguration {
     if (!values || typeof values !== "object" || Array.isArray(values)) {
       throw new TypeError("loader configuration values must be an object");
     }
-    const keys = Reflect.ownKeys(values);
-    let hasBehaviorProfileId = false;
+    const behaviorProfileId = values.behaviorProfileId;
+    const stringKeys = Object.keys(values);
     let extraKeys = 0;
-    for (let i = 0; i < keys.length; i += 1) {
-      const name = keys[i];
-      if (name === "behaviorProfileId") {
-        hasBehaviorProfileId = true;
-      } else if (typeof name === "string") {
-        if (!ALLOWED_SETTINGS.has(name)) {
-          throw new TypeError(`Unknown loader configuration setting: ${name}`);
-        }
-        extraKeys += 1;
-      } else {
-        extraKeys += 1;
+    for (let i = 0; i < stringKeys.length; i += 1) {
+      const name = stringKeys[i];
+      if (name === "behaviorProfileId") continue;
+      if (!ALLOWED_SETTINGS.has(name)) {
+        throw new TypeError(`Unknown loader configuration setting: ${name}`);
       }
+      extraKeys += 1;
     }
-    const behaviorProfileDefinition = resolveOntologyBehaviorDefinition(
-      hasBehaviorProfileId ? values.behaviorProfileId : undefined,
+    const symbolKeys = Object.getOwnPropertySymbols(values).filter((sym) =>
+      Object.prototype.propertyIsEnumerable.call(values, sym),
     );
+    extraKeys += symbolKeys.length;
+    const behaviorProfileDefinition =
+      resolveOntologyBehaviorDefinition(behaviorProfileId);
     this.#meta = getDefaultMeta(behaviorProfileDefinition);
     const usesJavaProviderDefaults =
       behaviorProfileDefinition.computationResourcePolicy
@@ -312,15 +310,19 @@ export class OWLOntologyLoaderConfiguration {
       return;
     }
     const merged = { ...profileDefaults };
-    for (let i = 0; i < keys.length; i += 1) {
-      const name = keys[i];
+    for (let i = 0; i < stringKeys.length; i += 1) {
+      const name = stringKeys[i];
       if (name !== "behaviorProfileId") merged[name] = values[name];
+    }
+    for (let i = 0; i < symbolKeys.length; i += 1) {
+      const sym = symbolKeys[i];
+      merged[sym] = values[sym];
     }
     if (merged.selectedGraph !== undefined) {
       merged.selectedGraph = snapshotRdfTerm(merged.selectedGraph);
     }
     validate(merged, usesJavaProviderDefaults);
-    if (Object.getOwnPropertySymbols(merged).length > 0) {
+    if (symbolKeys.length > 0) {
       this.#meta = { ...this.#meta, hasPublicSymbols: true };
       Object.assign(this, merged);
     } else copyPublicSettings(this, merged);

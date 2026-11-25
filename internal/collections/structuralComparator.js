@@ -212,13 +212,6 @@ function equalNative(left, right, body) {
     }
     return true;
   }
-  if (
-    !Array.isArray(left) &&
-    !Array.isArray(right) &&
-    left.kind !== right.kind
-  ) {
-    return false;
-  }
   const length = tupleLength(left, body);
   if (length !== tupleLength(right, body)) {
     return false;

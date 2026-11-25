@@ -205,4 +205,23 @@ describe("profile-specific mutation publication", () => {
     const other = createManager();
     expect(other.addAxiom(ontology, annotation)).toBe("SUCCESSFULLY");
   });
+
+  test("java-owlapi-5.5.1 invalidates imports closure caches after cross-manager import edits", () => {
+    const manager1 = createManager("java-owlapi-5.5.1");
+    const manager2 = createManager("java-owlapi-5.5.1");
+    const importIri = IRI.create("urn:import:cross-manager:child");
+    const root = manager1.createOntology(
+      ontologyID(manager1, "urn:import:cross-manager:root"),
+    );
+    const child = manager1.createOntology(
+      ontologyID(manager1, importIri.value),
+    );
+    expect(manager1.getImportsClosure(root).size).toBe(1);
+
+    const decl = manager2
+      .getOWLDataFactory()
+      .getOWLImportsDeclaration(importIri);
+    manager2.applyChange(new AddImport(root, decl));
+    expect(manager1.getImportsClosure(root)).toEqual(new Set([root, child]));
+  });
 });

@@ -2,6 +2,7 @@ import { AXIOM_KINDS, ENTITY_KINDS, OWLObjectKind } from "./kinds.js";
 import {
   capturedKeysEqual,
   compareCapturedKeys,
+  compareJsonStrings,
   structuralEquals,
 } from "../internal/collections/structuralComparator.js";
 import { StructuralHashTable } from "../internal/collections/structuralHashTable.js";
@@ -62,7 +63,8 @@ const nativeTupleSerialization = () => !("toJSON" in Array.prototype);
 export const usesNativeStructuralKeys = () =>
   nativeTupleSerialization() &&
   Object.getOwnPropertyDescriptor(structuralPrototype, "structuralKey")
-    ?.value === nativeStructuralMethods.structuralKey;
+    ?.value === nativeStructuralMethods.structuralKey &&
+  !Object.hasOwn(iriPrototype, "structuralKey");
 
 const projectComponents = (values, tuples = new Map()) =>
   values.map((value) => structuralTuple(value, tuples));
@@ -94,10 +96,9 @@ export const isCanonicalStructuralObject = (value) =>
   typeof value.toStructuralTuple === "function" &&
   (isFactoryStructuralObject(value) || Object.isFrozen(value));
 
-let trustedArrayA, trustedArrayB;
+const trustedFrozenArrays = new WeakSet();
 const trustFrozenArray = (frozen) => {
-  trustedArrayB = trustedArrayA;
-  trustedArrayA = frozen;
+  trustedFrozenArrays.add(frozen);
   return frozen;
 };
 export const freezeOrderedComponents = (items) =>
@@ -146,7 +147,9 @@ export const normalizeStructuralSet = (values, name) => {
         }
         return trustFrozenArray(
           Object.freeze(
-            firstIri < secondIri ? [first, second] : [second, first],
+            compareJsonStrings(firstIri, secondIri) < 0
+              ? [first, second]
+              : [second, first],
           ),
         );
       }
@@ -389,8 +392,7 @@ export class OWLStructuralObject {
       if (branded(value)) {
         return Math.min(2, Math.max(0, value.#flags));
       }
-      const isTrustedComponentArray =
-        value === trustedArrayA || value === trustedArrayB;
+      const isTrustedComponentArray = trustedFrozenArrays.has(value);
       if (
         !Array.isArray(value) ||
         Object.getPrototypeOf(value) !== Array.prototype ||
@@ -490,11 +492,10 @@ export class OWLStructuralObject {
         });
       }
     } else if (token === FACTORY_UNARY) {
+      const clean = hasCleanStructuralProto1(fields);
       this.kind = kind;
       this[fields] = components;
-      const proof = hasCleanStructuralProto1(fields)
-        ? stableComponent(components)
-        : 0;
+      const proof = clean ? stableComponent(components) : 0;
       this.#flags = proof
         ? ENTITY_KIND_SET.has(kind) && proof === 2
           ? 3
@@ -508,13 +509,14 @@ export class OWLStructuralObject {
     } else if (token === FACTORY_PAIR) {
       const first = components;
       const second = options;
+      const clean = hasCleanStructuralProto2(
+        fields.firstField,
+        fields.secondField,
+      );
       this.kind = kind;
       this[fields.firstField] = first;
       this[fields.secondField] = second;
-      const proof = hasCleanStructuralProto2(
-        fields.firstField,
-        fields.secondField,
-      )
+      const proof = clean
         ? Math.min(stableComponent(first), stableComponent(second))
         : 0;
       this.#flags = proof;
@@ -526,10 +528,11 @@ export class OWLStructuralObject {
     } else if (token === FACTORY_ANNOTATED_UNARY) {
       const value = components;
       const annotations = options;
+      const clean = hasCleanStructuralProto2(fields, "annotations");
       this.kind = kind;
       this[fields] = value;
       this.annotations = annotations;
-      const proof = hasCleanStructuralProto2(fields, "annotations")
+      const proof = clean
         ? Math.min(stableComponent(value), stableComponent(annotations))
         : 0;
       this.#flags = proof;
@@ -549,15 +552,16 @@ export class OWLStructuralObject {
       const first = components;
       const second = options;
       const annotations = extra;
+      const clean = hasCleanStructuralProto3(
+        fields.firstField,
+        fields.secondField,
+        "annotations",
+      );
       this.kind = kind;
       this.annotations = annotations;
       this[fields.firstField] = first;
       this[fields.secondField] = second;
-      const proof = hasCleanStructuralProto3(
-        fields.firstField,
-        fields.secondField,
-        "annotations",
-      )
+      const proof = clean
         ? Math.min(
             stableComponent(first),
             stableComponent(second),
@@ -581,17 +585,18 @@ export class OWLStructuralObject {
       const cardinality = fields;
       const property = components;
       const filler = options;
+      const clean =
+        extra && hasCleanStructuralProto3("cardinality", "filler", "property");
       this.kind = kind;
       this.cardinality = cardinality;
       this.filler = filler;
       this.property = property;
-      const proof =
-        extra && hasCleanStructuralProto3("cardinality", "filler", "property")
-          ? Math.min(
-              stableComponent(property),
-              filler ? stableComponent(filler) : 2,
-            )
-          : 0;
+      const proof = clean
+        ? Math.min(
+            stableComponent(property),
+            filler ? stableComponent(filler) : 2,
+          )
+        : 0;
       this.#flags = proof;
       if (!proof) {
         explicitTuples.set(this, {
@@ -605,14 +610,14 @@ export class OWLStructuralObject {
       const datatype = fields;
       const lexicalForm = components;
       const language = options;
+      const clean =
+        extra &&
+        hasCleanStructuralProto3("datatype", "language", "lexicalForm");
       this.kind = kind;
       this.datatype = datatype;
       this.language = language;
       this.lexicalForm = lexicalForm;
-      const proof =
-        extra && hasCleanStructuralProto3("datatype", "language", "lexicalForm")
-          ? stableComponent(datatype)
-          : 0;
+      const proof = clean ? stableComponent(datatype) : 0;
       this.#flags = proof;
       if (!proof) {
         explicitTuples.set(this, {
@@ -625,10 +630,11 @@ export class OWLStructuralObject {
     } else if (token === FACTORY_DECLARATION) {
       const entity = fields;
       const annotations = components;
+      const clean = hasCleanStructuralProto2("annotations", "entity");
       this.kind = kind;
       this.annotations = annotations;
       this.entity = entity;
-      const proof = hasCleanStructuralProto2("annotations", "entity")
+      const proof = clean
         ? Math.min(stableComponent(entity), stableComponent(annotations))
         : 0;
       this.#flags =

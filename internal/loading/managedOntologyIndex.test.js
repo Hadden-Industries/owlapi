@@ -4,7 +4,8 @@ import {
   createManagerOwnedOWLOntology,
   OWLOntology,
 } from "../../model/owlOntology.js";
-import { IRI } from "../../model/structural.js";
+import { IRI, OWLStructuralObject } from "../../model/structural.js";
+import { OWLObjectKind } from "../../model/kinds.js";
 
 import { ManagedOntologyIndex } from "./managedOntologyIndex.js";
 
@@ -637,5 +638,32 @@ describe("ManagedOntologyIndex", () => {
       managed.ontology,
     );
     loadSession.discard();
+  });
+
+  it("rejects forged explicit-tuple OWLOntologyIDs and preserves lookup across toJSON overrides", () => {
+    const dataFactory = new OWLDataFactory();
+    const targetIri = IRI.create("urn:index:identity:forged:target");
+    const targetId = dataFactory.getOWLOntologyID(targetIri);
+    const ontology = createOntology(dataFactory, targetIri);
+    const index = new ManagedOntologyIndex();
+    index.registerOntology(ontology);
+
+    const forged = new OWLStructuralObject(
+      OWLObjectKind.ONTOLOGY_ID,
+      { ontologyIRI: { value: targetIri.value }, versionIRI: undefined },
+      ["totally-unrelated-tuple"],
+    );
+    expect(forged.equals(targetId)).toBe(false);
+    expect(index.getOntologyByID(forged)).toBeUndefined();
+
+    Array.prototype.toJSON = function toJSON() {
+      return [...this];
+    };
+    try {
+      expect(index.getOntologyByID(targetId)).toBe(ontology);
+      expect(index.getOntologyByIRI(targetIri)).toBe(ontology);
+    } finally {
+      delete Array.prototype.toJSON;
+    }
   });
 });
