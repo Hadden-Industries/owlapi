@@ -1,425 +1,441 @@
 {
-  "declarations": {
-    "sourceSha256": "5c9706b0903e0f88adf295f1675e8909b4a3792fcb06847bd402477b23473825",
-    "format": "rdfxml",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 3,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [],
-    "inDL": true,
-    "inEL": true
+  "oracle": {
+    "version": "5.5.1.2024-09-07T21:41:32Z",
+    "lockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+    "probeSha256": "82c7860a5b05c5991f6d5e88f78950d9d2bff7b91e6352cf2225e008acab174c",
+    "jdk": {
+      "vendor": "Eclipse Adoptium",
+      "version": "25.0.5.1",
+      "runtime": "25.0.5.1+2-LTS",
+      "executableSha256": "d412ea875f8d8441db42c15dfacb52d95e76ceaee72d58f4ef81c7a9e5836707",
+      "releaseSha256": "a993648ddcc822491fc88f2253e6ebc29f37b3047fa0bfd7ee480afed8793c94",
+      "setupJavaVersion": "25.0.5+1.2",
+      "compilerSha256": "eb4868afeea938e2db2d8bb8c535d6a02268d5d1ae6d758be676d24ce007a9d1"
+    }
   },
-  "simple": {
-    "sourceSha256": "834105922288e321d70451a727174c0214c1d0d79922fd291b3839c3d29ee08f",
-    "format": "rdfxml",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 4,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
-        ],
-        "head": [
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl:var#x>) Variable(<urn:swrl#x>))"
-        ],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "simple-functional": {
-    "sourceSha256": "395108156691ba0977c784e407c68221a9337c92a68871bf5319767e10e715b7",
-    "format": "functional",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 4,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
-        ],
-        "head": [
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl:var#x>) Variable(<urn:swrl#x>))"
-        ],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "strict-rdf": {
-    "sourceSha256": "834105922288e321d70451a727174c0214c1d0d79922fd291b3839c3d29ee08f",
-    "format": "rdfxml",
-    "strict": true,
-    "loadAnnotationAxioms": true,
-    "axioms": 19,
-    "declarations": 3,
-    "individuals": [
-      "urn:swrl#x",
-      "urn:swrl:var#x"
-    ],
-    "rules": [],
-    "inDL": false,
-    "inEL": false
-  },
-  "annotated": {
-    "sourceSha256": "e384a8931d8870513f8d477ba9221ca622457fef0081de7e3adbcc9e4df4f905",
-    "format": "rdfxml",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 4,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))",
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
-        ],
-        "head": [
-          "ClassAtom(owl:Nothing Variable(<urn:swrl#x>))",
-          "ClassAtom(owl:Nothing Variable(<urn:swrl:var#x>))"
-        ],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": [
-          "Annotation(<urn:owlapi:test:swrl#enabled> \"false\"^^xsd:boolean)",
-          "Annotation(rdfs:comment \"Both endpoints are excluded.\"^^xsd:string)",
-          "Annotation(rdfs:label \"Incompatible links\"@en)"
-        ]
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "annotations-disabled": {
-    "sourceSha256": "e384a8931d8870513f8d477ba9221ca622457fef0081de7e3adbcc9e4df4f905",
-    "format": "rdfxml",
-    "strict": false,
-    "loadAnnotationAxioms": false,
-    "axioms": 4,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))",
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
-        ],
-        "head": [
-          "ClassAtom(owl:Nothing Variable(<urn:swrl#x>))",
-          "ClassAtom(owl:Nothing Variable(<urn:swrl:var#x>))"
-        ],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": [
-          "Annotation(<urn:owlapi:test:swrl#enabled> \"false\"^^xsd:boolean)",
-          "Annotation(rdfs:comment \"Both endpoints are excluded.\"^^xsd:string)",
-          "Annotation(rdfs:label \"Incompatible links\"@en)"
-        ]
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "iri-annotation": {
-    "sourceSha256": "02a0679d825202d38741d0500f7e99e2d70eaa24106da5872d69f182ddf450dc",
-    "format": "rdfxml",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 5,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))",
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
-        ],
-        "head": [
-          "ClassAtom(owl:Nothing Variable(<urn:swrl#x>))",
-          "ClassAtom(owl:Nothing Variable(<urn:swrl:var#x>))"
-        ],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": [
-          "Annotation(<urn:owlapi:test:swrl#enabled> \"false\"^^xsd:boolean)",
-          "Annotation(rdfs:label \"Incompatible links\"@en)"
-        ]
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "unsupported-first": {
-    "sourceSha256": "7c451161903b4fdb7c602babcbce78d42903f1e3a933540a1569ed82da49b468",
-    "format": "rdfxml",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 5,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
-          "BuiltInAtom(<urn:owlapi:test:swrl#check> Variable(<urn:swrl#x>))"
-        ],
-        "head": [],
-        "variables": [
-          "urn:swrl#x"
-        ],
-        "annotations": []
-      },
-      {
-        "body": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
-        ],
-        "head": [
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl:var#x>) Variable(<urn:swrl#x>))"
-        ],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "unsupported-last": {
-    "sourceSha256": "b1448efdb600f3b0f4dab9bc302b08bbcace9cc60b5da5b0f4301c6231e995d3",
-    "format": "rdfxml",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 5,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
-          "BuiltInAtom(<urn:owlapi:test:swrl#check> Variable(<urn:swrl#x>))"
-        ],
-        "head": [],
-        "variables": [
-          "urn:swrl#x"
-        ],
-        "annotations": []
-      },
-      {
-        "body": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
-        ],
-        "head": [
-          "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl:var#x>) Variable(<urn:swrl#x>))"
-        ],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "empty-rdf": {
-    "sourceSha256": "0ec604e1c7c51641a26a799a4f339e2a0ff02c4ba7cf150db6863aaf9ef5a97c",
-    "format": "rdfxml",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 4,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [],
-        "head": [],
-        "variables": [],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "shared-list": {
-    "sourceSha256": "1644372c352d42bf94b7762d7742808f53d0a2b05c7cff7dadfd3fb45059277b",
-    "format": "rdfxml",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 4,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))"
-        ],
-        "head": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))"
-        ],
-        "variables": [
-          "urn:swrl#x"
-        ],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "crossed-list": {
-    "sourceSha256": "cc74a1422b5508f2b194f4ec1b2265f281f7b23970e5b9f4d05d0fee12692375",
-    "format": "rdfxml",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 4,
-    "declarations": 3,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [],
-        "head": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl:var#x>))",
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))"
-        ],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "empty-functional": {
-    "sourceSha256": "2dbf373a4580f98e1eb615846612b0e4356e22c704c7a6f78603edf5bfc7b24b",
-    "format": "functional",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 3,
-    "declarations": 2,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [],
-        "head": [],
-        "variables": [],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "free-head": {
-    "sourceSha256": "701003d836ec6bd0c6d07d5a8d03e58502fe2aa0d4e71d2600f37eaecaaf999b",
-    "format": "functional",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 3,
-    "declarations": 2,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))"
-        ],
-        "head": [
-          "ClassAtom(<urn:owlapi:test:swrl#D> Variable(<urn:swrl:var#x>))"
-        ],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "duplicates": {
-    "sourceSha256": "663ce7d2651ae67603cf1fad7165245b47bbbda5b7c75be57f6670c2e34352b4",
-    "format": "functional",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 3,
-    "declarations": 2,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ClassAtom(<urn:owlapi:test:swrl#D> Variable(<urn:swrl:var#x>))",
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))"
-        ],
-        "head": [],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "reordered": {
-    "sourceSha256": "f68a7b6f04429fb56fe8653f160b2eec0b4c8e846b9d715795a1a1fee2174c89",
-    "format": "functional",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "axioms": 3,
-    "declarations": 2,
-    "individuals": [],
-    "rules": [
-      {
-        "body": [
-          "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
-          "ClassAtom(<urn:owlapi:test:swrl#D> Variable(<urn:swrl:var#x>))"
-        ],
-        "head": [],
-        "variables": [
-          "urn:swrl#x",
-          "urn:swrl:var#x"
-        ],
-        "annotations": []
-      }
-    ],
-    "inDL": true,
-    "inEL": false
-  },
-  "missing-head": {
-    "sourceSha256": "a46c7c82f96a594541fae1f0e381316fccfee9844380830827a82efb0ca4b241",
-    "format": "functional",
-    "strict": false,
-    "loadAnnotationAxioms": true,
-    "error": "UnparsableOntologyException"
+  "observations": {
+    "declarations": {
+      "sourceSha256": "5c9706b0903e0f88adf295f1675e8909b4a3792fcb06847bd402477b23473825",
+      "format": "rdfxml",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 3,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [],
+      "inDL": true,
+      "inEL": true
+    },
+    "simple": {
+      "sourceSha256": "834105922288e321d70451a727174c0214c1d0d79922fd291b3839c3d29ee08f",
+      "format": "rdfxml",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 4,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
+          ],
+          "head": [
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl:var#x>) Variable(<urn:swrl#x>))"
+          ],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "simple-functional": {
+      "sourceSha256": "395108156691ba0977c784e407c68221a9337c92a68871bf5319767e10e715b7",
+      "format": "functional",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 4,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
+          ],
+          "head": [
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl:var#x>) Variable(<urn:swrl#x>))"
+          ],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "strict-rdf": {
+      "sourceSha256": "834105922288e321d70451a727174c0214c1d0d79922fd291b3839c3d29ee08f",
+      "format": "rdfxml",
+      "strict": true,
+      "loadAnnotationAxioms": true,
+      "axioms": 19,
+      "declarations": 3,
+      "individuals": [
+        "urn:swrl#x",
+        "urn:swrl:var#x"
+      ],
+      "rules": [],
+      "inDL": false,
+      "inEL": false
+    },
+    "annotated": {
+      "sourceSha256": "e384a8931d8870513f8d477ba9221ca622457fef0081de7e3adbcc9e4df4f905",
+      "format": "rdfxml",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 4,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))",
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
+          ],
+          "head": [
+            "ClassAtom(owl:Nothing Variable(<urn:swrl#x>))",
+            "ClassAtom(owl:Nothing Variable(<urn:swrl:var#x>))"
+          ],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": [
+            "Annotation(<urn:owlapi:test:swrl#enabled> \"false\"^^xsd:boolean)",
+            "Annotation(rdfs:comment \"Both endpoints are excluded.\"^^xsd:string)",
+            "Annotation(rdfs:label \"Incompatible links\"@en)"
+          ]
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "annotations-disabled": {
+      "sourceSha256": "e384a8931d8870513f8d477ba9221ca622457fef0081de7e3adbcc9e4df4f905",
+      "format": "rdfxml",
+      "strict": false,
+      "loadAnnotationAxioms": false,
+      "axioms": 4,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))",
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
+          ],
+          "head": [
+            "ClassAtom(owl:Nothing Variable(<urn:swrl#x>))",
+            "ClassAtom(owl:Nothing Variable(<urn:swrl:var#x>))"
+          ],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": [
+            "Annotation(<urn:owlapi:test:swrl#enabled> \"false\"^^xsd:boolean)",
+            "Annotation(rdfs:comment \"Both endpoints are excluded.\"^^xsd:string)",
+            "Annotation(rdfs:label \"Incompatible links\"@en)"
+          ]
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "iri-annotation": {
+      "sourceSha256": "02a0679d825202d38741d0500f7e99e2d70eaa24106da5872d69f182ddf450dc",
+      "format": "rdfxml",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 5,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))",
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
+          ],
+          "head": [
+            "ClassAtom(owl:Nothing Variable(<urn:swrl#x>))",
+            "ClassAtom(owl:Nothing Variable(<urn:swrl:var#x>))"
+          ],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": [
+            "Annotation(<urn:owlapi:test:swrl#enabled> \"false\"^^xsd:boolean)",
+            "Annotation(rdfs:label \"Incompatible links\"@en)"
+          ]
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "unsupported-first": {
+      "sourceSha256": "7c451161903b4fdb7c602babcbce78d42903f1e3a933540a1569ed82da49b468",
+      "format": "rdfxml",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 5,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
+            "BuiltInAtom(<urn:owlapi:test:swrl#check> Variable(<urn:swrl#x>))"
+          ],
+          "head": [],
+          "variables": [
+            "urn:swrl#x"
+          ],
+          "annotations": []
+        },
+        {
+          "body": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
+          ],
+          "head": [
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl:var#x>) Variable(<urn:swrl#x>))"
+          ],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "unsupported-last": {
+      "sourceSha256": "b1448efdb600f3b0f4dab9bc302b08bbcace9cc60b5da5b0f4301c6231e995d3",
+      "format": "rdfxml",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 5,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
+            "BuiltInAtom(<urn:owlapi:test:swrl#check> Variable(<urn:swrl#x>))"
+          ],
+          "head": [],
+          "variables": [
+            "urn:swrl#x"
+          ],
+          "annotations": []
+        },
+        {
+          "body": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#p> Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>))"
+          ],
+          "head": [
+            "ObjectPropertyAtom(<urn:owlapi:test:swrl#q> Variable(<urn:swrl:var#x>) Variable(<urn:swrl#x>))"
+          ],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "empty-rdf": {
+      "sourceSha256": "0ec604e1c7c51641a26a799a4f339e2a0ff02c4ba7cf150db6863aaf9ef5a97c",
+      "format": "rdfxml",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 4,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [],
+          "head": [],
+          "variables": [],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "shared-list": {
+      "sourceSha256": "1644372c352d42bf94b7762d7742808f53d0a2b05c7cff7dadfd3fb45059277b",
+      "format": "rdfxml",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 4,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))"
+          ],
+          "head": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))"
+          ],
+          "variables": [
+            "urn:swrl#x"
+          ],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "crossed-list": {
+      "sourceSha256": "cc74a1422b5508f2b194f4ec1b2265f281f7b23970e5b9f4d05d0fee12692375",
+      "format": "rdfxml",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 4,
+      "declarations": 3,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [],
+          "head": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl:var#x>))",
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))"
+          ],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "empty-functional": {
+      "sourceSha256": "2dbf373a4580f98e1eb615846612b0e4356e22c704c7a6f78603edf5bfc7b24b",
+      "format": "functional",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 3,
+      "declarations": 2,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [],
+          "head": [],
+          "variables": [],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "free-head": {
+      "sourceSha256": "701003d836ec6bd0c6d07d5a8d03e58502fe2aa0d4e71d2600f37eaecaaf999b",
+      "format": "functional",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 3,
+      "declarations": 2,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))"
+          ],
+          "head": [
+            "ClassAtom(<urn:owlapi:test:swrl#D> Variable(<urn:swrl:var#x>))"
+          ],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "duplicates": {
+      "sourceSha256": "663ce7d2651ae67603cf1fad7165245b47bbbda5b7c75be57f6670c2e34352b4",
+      "format": "functional",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 3,
+      "declarations": 2,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ClassAtom(<urn:owlapi:test:swrl#D> Variable(<urn:swrl:var#x>))",
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))"
+          ],
+          "head": [],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "reordered": {
+      "sourceSha256": "f68a7b6f04429fb56fe8653f160b2eec0b4c8e846b9d715795a1a1fee2174c89",
+      "format": "functional",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "axioms": 3,
+      "declarations": 2,
+      "individuals": [],
+      "rules": [
+        {
+          "body": [
+            "ClassAtom(<urn:owlapi:test:swrl#C> Variable(<urn:swrl#x>))",
+            "ClassAtom(<urn:owlapi:test:swrl#D> Variable(<urn:swrl:var#x>))"
+          ],
+          "head": [],
+          "variables": [
+            "urn:swrl#x",
+            "urn:swrl:var#x"
+          ],
+          "annotations": []
+        }
+      ],
+      "inDL": true,
+      "inEL": false
+    },
+    "missing-head": {
+      "sourceSha256": "a46c7c82f96a594541fae1f0e381316fccfee9844380830827a82efb0ca4b241",
+      "format": "functional",
+      "strict": false,
+      "loadAnnotationAxioms": true,
+      "error": "UnparsableOntologyException"
+    }
   }
 }
