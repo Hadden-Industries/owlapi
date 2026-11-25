@@ -250,13 +250,18 @@ test("evidence identity detects a changed compared model rather than trusting it
   ]);
 });
 
-test("the dedicated command fails instead of skipping when Java is unavailable", () => {
+test("the shared July command fails when its Java oracle is unavailable", () => {
   const execution = spawnSync(
     process.execPath,
     [
-      fileURLToPath(
-        new URL("./qualify-universal-ontology.mjs", import.meta.url),
-      ),
+      fileURLToPath(new URL("./compare-java-js.mjs", import.meta.url)),
+      "prepare",
+      "--suite",
+      "july",
+      "--profile",
+      "normative-v1",
+      "--parsing-mode",
+      "compatible",
       "--ontology-repository",
       ".",
       "--output",
@@ -265,10 +270,14 @@ test("the dedicated command fails instead of skipping when Java is unavailable",
     {
       encoding: "utf8",
       windowsHide: true,
-      env: { ...process.env, OWLAPI_REFERENCE_CHECKOUT: "" },
+      env: {
+        ...process.env,
+        OWLAPI_REFERENCE_CHECKOUT: "",
+        OWLAPI_REFERENCE_DISTRIBUTION: "",
+      },
     },
   );
-  expect(execution.status).toBe(1);
+  expect(execution.status).toBe(2);
   expect(execution.stderr).toMatch(/OWLAPI_REFERENCE_CHECKOUT/u);
 });
 
@@ -276,9 +285,14 @@ test("source qualification rejects self-invalidating output before checking Java
   const execution = spawnSync(
     process.execPath,
     [
-      fileURLToPath(
-        new URL("./qualify-universal-ontology.mjs", import.meta.url),
-      ),
+      fileURLToPath(new URL("./compare-java-js.mjs", import.meta.url)),
+      "prepare",
+      "--suite",
+      "july",
+      "--profile",
+      "normative-v1",
+      "--parsing-mode",
+      "compatible",
       "--ontology-repository",
       ".",
       "--output",
@@ -290,7 +304,7 @@ test("source qualification rejects self-invalidating output before checking Java
       env: { ...process.env, OWLAPI_REFERENCE_CHECKOUT: "" },
     },
   );
-  expect(execution.status).toBe(1);
+  expect(execution.status).toBe(2);
   expect(execution.stderr).toMatch(/outside.*checkout.*Git-ignored/u);
   expect(execution.stderr).not.toMatch(/OWLAPI_REFERENCE_CHECKOUT/u);
 });

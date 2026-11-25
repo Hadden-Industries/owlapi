@@ -107,7 +107,7 @@ describe("import-closure oracle launcher arguments", () => {
       ],
       "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_UNKNOWN",
     ],
-  ])("rejects an invalid argument vector", (arguments_, code) => {
+  ])("rejects an invalid argument vector %j", (arguments_, code) => {
     expect(() => parseImportClosureContractArguments(arguments_)).toThrow(
       expect.objectContaining({ code }),
     );

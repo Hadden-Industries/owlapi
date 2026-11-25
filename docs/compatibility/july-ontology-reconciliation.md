@@ -6,9 +6,12 @@ Historical `-full` documents and VOWL outputs are not evidence for either owlapi
 
 ## Two checks, one difference policy
 
-Run `npm run test:universal-ontology -- --ontology-repository <checkout> --output <new-directory>` with `OWLAPI_REFERENCE_CHECKOUT` pointing to the built Java pin.
-The optional `--candidate <directory>` selects a retained package candidate; otherwise the report binds the current source bytes, including uncommitted changes.
-Source-mode output must be outside the owlapi checkout or in a Git-ignored directory (for example, `.release/july-qualification`); other locations are rejected before writing because generated evidence must not change its own source fingerprint.
+Use the shared `compare:java-js` runner to prepare the pinned July originals and then run and verify the normative, compatible suite with the historical source oracle.
+Pass `--candidate <directory>` to select a retained package candidate.
+Source mode fingerprints the working tree, including uncommitted changes.
+Write source-mode output outside the owlapi checkout or in a Git-ignored directory such as `.release/july-qualification`.
+This keeps generated evidence outside the source fingerprint.
+[July reconciliation commands](../../util/owlapi-reference/README.md#july-source-driven-parsing-and-import-closure-reconciliation)
 
 Each root has a parsing result covering every reachable document in its original import context, including that document's own ontology annotations and direct import declarations.
 Four root results contain 18 document comparisons.
@@ -25,8 +28,8 @@ The oracle loads the exact compared JavaScript document models and merges them w
 This result must equal the JavaScript closure output.
 Thus deduplication, sharing and root-only annotations determine propagation through native operations.
 Every direct model must already pass its parsing reconciliation; an unknown parsing difference cannot be hidden by a merge that happens to remove it.
-The July rules are evaluated on direct documents only.
-Applying them directly to a closure's raw difference object is not the closure reconciliation protocol; that protocol requires exact `propagationEvidence` with no difference allowance.
+The July rules apply to each direct document.
+The `closurePropagation` result requires exact equality between the native merge of those document models and the JavaScript closure.
 
 ## Named OWL-Time restrictions
 

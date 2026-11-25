@@ -41,9 +41,7 @@ test("required canonical CI builds the pinned Java reference and reconciles all 
   );
   expect(liveSuite.if).toBeUndefined();
   expect(liveSuite["continue-on-error"]).toBeUndefined();
-  const gate = steps.find(({ run }) =>
-    run?.startsWith("npm run test:universal-ontology --"),
-  );
+  const gate = steps.find(({ id }) => id === "july_qualification");
   expect(gate).toMatchObject({
     env: {
       OWLAPI_REFERENCE_CHECKOUT: "${{ github.workspace }}/.release/java-owlapi",
@@ -52,7 +50,12 @@ test("required canonical CI builds the pinned Java reference and reconciles all 
   expect(gate.if).toBeUndefined();
   expect(gate["continue-on-error"]).toBeUndefined();
   expect(gate.run).toContain(
-    "--ontology-repository .release/universal-ontology",
+    '--ontology-repository "$GITHUB_WORKSPACE/.release/universal-ontology"',
+  );
+  expect(gate.run.match(/npm run compare:java-js -- (\w+)/gu)).toEqual(
+    ["prepare", "run", "verify"].map(
+      (action) => "npm run compare:java-js -- " + action,
+    ),
   );
   const stagingIndex = steps.findIndex(({ id }) => id === "july_diagnostics");
   expect(stagingIndex).toBeGreaterThan(steps.indexOf(gate));

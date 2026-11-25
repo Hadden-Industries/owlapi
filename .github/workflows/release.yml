@@ -427,9 +427,16 @@ jobs:
         timeout-minutes: 45
 
       - name: Reconcile all four July variants in parsing and both closure formats
+        id: july_qualification
         env:
           OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
-        run: npm run test:universal-ontology -- --ontology-repository .release/universal-ontology --output .release/july-qualification
+        run: |
+          suite=(--suite july --profile normative-v1 --parsing-mode compatible --cache "$GITHUB_WORKSPACE/.release/july-cache" --reference-checkout "$OWLAPI_REFERENCE_CHECKOUT")
+          output="$GITHUB_WORKSPACE/.release/july-qualification"
+          npm run compare:java-js -- prepare "${suite[@]}" --ontology-repository "$GITHUB_WORKSPACE/.release/universal-ontology" --output "$GITHUB_WORKSPACE/.release/july-prepare"
+          npm run compare:java-js -- run "${suite[@]}" --output "$output"
+          npm run compare:java-js -- verify "${suite[@]}" --output "$output"
+          node scripts/verify-comparison-migration.mjs --jest "$GITHUB_WORKSPACE/.release/java-qualification/jest.json"
         timeout-minutes: 15
       - name: Prepare July reconciliation diagnostics for upload
         id: july_diagnostics

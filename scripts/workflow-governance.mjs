@@ -1381,10 +1381,15 @@ const validateJavaReferenceBoundary = (job, violations) => {
   add(
     violations,
     upload.length === 1 &&
+      observed.some(
+        (step) =>
+          step.id === "july_qualification" &&
+          ["prepare", "run", "verify"].every((action) =>
+            step.run?.includes(`npm run compare:java-js -- ${action} `),
+          ),
+      ) &&
       observed.indexOf(upload[0]) >
-        observed.findIndex((step) =>
-          step.run?.startsWith("npm run test:universal-ontology --"),
-        ) &&
+        observed.findIndex((step) => step.id === "july_qualification") &&
       observed.indexOf(upload[0]) <
         observed.findIndex((step) => step.id === "reference_publication"),
     `${label}: publication must follow all live Java qualification`,
