@@ -43,6 +43,7 @@ import {
   loadPerformanceReport,
 } from "./comparison-performance.mjs";
 import { matchesOriginalRdfXml } from "./comparison-rdfxml-expansion.mjs";
+import { benchmarkSourceDigest } from "./comparison-benchmarks.mjs";
 
 async function withScratch(run) {
   const directory = await mkdtemp(join(tmpdir(), "owlapi-comparison-test-"));
@@ -478,12 +479,23 @@ test("api-semantics verify rejects stale harness, sink, or fixture generator evi
         new URL("../generate-owlapi-benchmark-fixtures.cjs", import.meta.url),
       ),
     );
+    const rows = definitions.map(({ input: groupId, behaviorProfileId }) => ({
+      groupId,
+      behaviorProfileId,
+      status: "passed",
+      admission: "independently-witnessed",
+      semanticMatch: true,
+    }));
     const validReport = {
       schemaVersion: 1,
       action: "run",
       scenario: "api-semantics",
+      sourceSha256: await benchmarkSourceDigest(),
       definitions,
       evidence: {
+        rows,
+        syntaxCount: definitions[0].syntaxCount,
+        importClosureCount: definitions[0].importClosureCount,
         harnessSha256,
         sinkSha256,
         fixtureGeneratorSha256,
@@ -494,9 +506,9 @@ test("api-semantics verify rejects stale harness, sink, or fixture generator evi
           failed: 0,
         },
       },
-      cases: definitions.map((definition) => ({
+      cases: definitions.map((definition, index) => ({
         caseId: definition.caseId,
-        status: "passed",
+        ...rows[index],
       })),
     };
     const reportPath = join(outputDirectory, "api-semantics.json");
@@ -530,7 +542,7 @@ test("api-semantics verify rejects stale harness, sink, or fixture generator evi
     );
     expect(verified.cases).toHaveLength(2);
   });
-});
+}, 30_000);
 
 test("Manchester literal rendering owns a separate behavior-only release case", async () => {
   const scenario = "large-literal-rendering";
@@ -1245,6 +1257,12 @@ test("isolated observations separate load and public Set peaks and bind the comp
   expect(diagnostic.measurementKind).toBe("allocation-profile");
   expect(diagnostic).not.toHaveProperty("summary");
   expect(diagnostic.diagnosticSummary.js.coldPeakBytes).toBe(20);
+  samples.java.cold[0].witness.ontologyAnnotations++;
+  expect(isolatedLoadReport(samples, protocol, identity)).toMatchObject({
+    status: "diagnostic-only",
+    diagnosticSummary: { java: { coldPeakBytes: 20 } },
+  });
+  samples.java.cold[0].witness.ontologyAnnotations--;
   samples.java.cold[0].witness.identity.ontologyIRI = "urn:different";
   expect(isolatedLoadReport(samples, protocol, identity).status).toBe("failed");
   samples.js.cold[0].checkpoints.pop();

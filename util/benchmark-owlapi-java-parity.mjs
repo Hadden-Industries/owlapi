@@ -4,8 +4,8 @@ import path from "node:path";
 import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { performance } from "node:perf_hooks";
-import { parseArgs } from "node:util";
-import { createHash } from "node:crypto";
+import { isDeepStrictEqual, parseArgs } from "node:util";
+import { createHash, randomUUID } from "node:crypto";
 import { format as prettierFormat, resolveConfig } from "prettier";
 import { OWLManager } from "../apibinding/index.js";
 import { OWLDocumentFormats, RDFXMLDocumentFormat } from "../formats/index.js";
@@ -2343,6 +2343,7 @@ export const loadJavaBaseline = (baselinePath = DEFAULT_JAVA_BASELINE_PATH) => {
   }
   return {
     schemaVersion: parsed.schemaVersion ?? 1,
+    ...(parsed.provenance ? { provenance: parsed.provenance } : {}),
     owlapiRelease: parsed.owlapiRelease ?? "5.5.1",
     fixtureGeneratorVersion:
       parsed.fixtureGeneratorVersion ?? GENERATOR_VERSION,
@@ -2399,6 +2400,9 @@ export const mergeJavaBaselineResults = (existingBaseline, newJavaSuite) => {
   return {
     schemaVersion: 1,
     owlapiRelease: existingBaseline?.owlapiRelease ?? "5.5.1",
+    ...(existingBaseline?.provenance
+      ? { provenance: existingBaseline.provenance }
+      : {}),
     fixtureGeneratorVersion:
       existingBaseline?.fixtureGeneratorVersion ?? GENERATOR_VERSION,
     parameters: existingBaseline?.parameters ?? {
@@ -2441,14 +2445,18 @@ export const writeJavaBaseline = async (
     ...prettierBase,
     parser: "json-stringify",
   });
-  fs.writeFileSync(
-    baselinePath,
-    formattedJson.replaceAll("\r\n", "\n"),
-    "utf8",
-  );
+  const temporary = baselinePath + "." + randomUUID() + ".tmp";
+  try {
+    fs.writeFileSync(temporary, formattedJson.replaceAll("\r\n", "\n"), {
+      flag: "wx",
+    });
+    fs.renameSync(temporary, baselinePath);
+  } finally {
+    fs.rmSync(temporary, { force: true });
+  }
 };
 
-export const resolveJavaBaselineSuite = async ({
+const resolveJavaBaseline = async ({
   javaBaselinePath = DEFAULT_JAVA_BASELINE_PATH,
   filterIds = null,
   updateMissingJavaBaseline = false,
@@ -2459,6 +2467,7 @@ export const resolveJavaBaselineSuite = async ({
   importClosureCount = 8,
   sharedFixtures = null,
   runJava = runJavaBenchmarks,
+  expectedRuntime,
 } = {}) => {
   const targetIds =
     filterIds && filterIds.length > 0
@@ -2475,6 +2484,7 @@ export const resolveJavaBaselineSuite = async ({
     const fullBaseline = mergeJavaBaselineResults(
       {
         owlapiRelease: "5.5.1",
+        ...(expectedRuntime ? { provenance: expectedRuntime.provenance } : {}),
         fixtureGeneratorVersion: GENERATOR_VERSION,
         parameters: {
           warmupCount,
@@ -2494,10 +2504,29 @@ export const resolveJavaBaselineSuite = async ({
 
   const existingBaseline = loadJavaBaseline(javaBaselinePath);
   const missingIds = findMissingJavaBaselineIds(existingBaseline, targetIds);
-  if (missingIds.length === 0) {
-    return existingBaseline;
+  if (missingIds.length === 0) return existingBaseline;
+  if (
+    updateMissingJavaBaseline &&
+    expectedRuntime &&
+    (!isDeepStrictEqual(
+      existingBaseline.provenance,
+      expectedRuntime.provenance,
+    ) ||
+      existingBaseline.fixtureGeneratorVersion !== GENERATOR_VERSION ||
+      existingBaseline.platform !== `${process.platform}-${process.arch}` ||
+      existingBaseline.javaVersion !== expectedRuntime.javaVersion ||
+      existingBaseline.owlapiVersion !== expectedRuntime.owlapiVersion ||
+      Object.entries({
+        warmupCount,
+        runCount,
+        syntaxCount,
+        importClosureCount,
+      }).some(([key, value]) => existingBaseline.parameters[key] !== value))
+  ) {
+    throw new Error(
+      "Incremental Java baselines require the same runtime, platform, generator and parameters",
+    );
   }
-
   if (!updateMissingJavaBaseline) {
     throw new Error(
       `Pinned Java OWLAPI baseline (${javaBaselinePath}) is missing ${missingIds.length} benchmark ID(s): ${missingIds.join(", ")}. Re-run with --update-missing-java-baseline to profile only the missing API benchmark(s) in Java and append them to the baseline file.`,
@@ -2517,6 +2546,21 @@ export const resolveJavaBaselineSuite = async ({
   await writeJavaBaseline(mergedBaseline, javaBaselinePath);
   return loadJavaBaseline(javaBaselinePath);
 };
+
+export async function resolveJavaBaselineSuite(options = {}) {
+  if (!options.refreshJavaBaseline && !options.updateMissingJavaBaseline)
+    return resolveJavaBaseline(options);
+  const baseline = options.javaBaselinePath ?? DEFAULT_JAVA_BASELINE_PATH;
+  fs.mkdirSync(path.dirname(baseline), { recursive: true });
+  const lock = baseline + ".lock";
+  const descriptor = fs.openSync(lock, "wx");
+  try {
+    return await resolveJavaBaseline(options);
+  } finally {
+    fs.closeSync(descriptor);
+    fs.unlinkSync(lock);
+  }
+}
 
 const safeRatio = (numerator, denominator) => {
   return denominator === 0 ? null : numerator / denominator;

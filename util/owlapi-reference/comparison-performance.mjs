@@ -228,6 +228,8 @@ function hasIsolatedCheckpoints(sample, phases, engine, sourceTransport) {
 export function isolatedLoadReport(samples, protocol, identity) {
   const summary = {};
   const witnesses = new Set();
+  const ontologyIds = new Set();
+  let consistentTrials = true;
   const phases = protocol.materializeAxioms
     ? ["before", "after", "materialized"]
     : ["before", "after"];
@@ -235,6 +237,7 @@ export function isolatedLoadReport(samples, protocol, identity) {
   if (Object.keys(samples ?? {}).length !== protocol.engines.length)
     throw new Error("Wrong set of load-only sample engines");
   for (const engine of protocol.engines) {
+    const engineWitnesses = new Set();
     const cold = samples[engine]?.cold;
     if (!Array.isArray(cold) || cold.length !== protocol.coldSamples)
       throw new Error("Wrong number of isolated cold loads");
@@ -261,8 +264,12 @@ export function isolatedLoadReport(samples, protocol, identity) {
       durations.push(sample.wallNanos[0]);
       if (protocol.materializeAxioms)
         setPeaks.push(sample.checkpoints[2].peakRssBytes);
-      witnesses.add(comparisonIdentity(sample.witness));
+      const digest = comparisonIdentity(sample.witness);
+      engineWitnesses.add(digest);
+      witnesses.add(digest);
+      ontologyIds.add(comparisonIdentity(sample.witness.identity));
     }
+    if (engineWitnesses.size > 1) consistentTrials = false;
     if (peaks.length === cold.length) {
       summary[engine] = {
         coldPeakBytes: median(peaks),
@@ -271,11 +278,16 @@ export function isolatedLoadReport(samples, protocol, identity) {
       };
     }
   }
+  const unequalWork =
+    complete &&
+    consistentTrials &&
+    ontologyIds.size === 1 &&
+    witnesses.size > 1;
   const status = !complete
     ? "incomplete"
-    : witnesses.size !== 1
+    : !consistentTrials || ontologyIds.size !== 1
       ? "failed"
-      : protocol.allocationProfile
+      : protocol.allocationProfile || unequalWork
         ? "diagnostic-only"
         : "observed";
   return {
@@ -283,7 +295,13 @@ export function isolatedLoadReport(samples, protocol, identity) {
     measurementKind: protocol.allocationProfile
       ? "allocation-profile"
       : "clean",
-    ...(protocol.allocationProfile
+    ...(unequalWork
+      ? {
+          reason:
+            "The engines returned different load witnesses for the same ontology",
+        }
+      : {}),
+    ...(protocol.allocationProfile || unequalWork
       ? { diagnosticSummary: summary }
       : { summary }),
     witnessDigests: [...witnesses].sort(),

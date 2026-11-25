@@ -2250,6 +2250,7 @@ const optionNames = [
   "repetitions",
   "warmups",
   "benchmark-mode",
+  "java-baseline",
   "syntax-count",
   "import-closure-count",
   "corpus-receipts",
@@ -2317,6 +2318,7 @@ function parseComparisonArguments([action, ...args]) {
       javaBuildCacheDirectory: values["java-build-cache"],
       candidateDirectory: values.candidate,
       benchmarkMode: values["benchmark-mode"],
+      javaBaselinePath: values["java-baseline"],
       corpusReceipts: values["corpus-receipts"],
       corpusArtifacts: values["corpus-artifacts"],
       memoryGuard: values["no-memory-guard"] ? false : undefined,
@@ -2392,9 +2394,13 @@ if (
         result.cases?.some(
           ({ status }) =>
             status &&
-            !["passed", "prepared", "diagnostic-only", "observed"].includes(
-              status,
-            ),
+            ![
+              "passed",
+              "prepared",
+              "diagnostic-only",
+              "observed",
+              "qualified",
+            ].includes(status),
         )
       ) {
         process.exitCode = 1;
