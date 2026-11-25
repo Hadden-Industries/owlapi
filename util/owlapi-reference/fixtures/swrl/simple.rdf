@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:swrl="http://www.w3.org/2003/11/swrl#">
+  <owl:Ontology rdf:about="urn:owlapi:test:swrl:simple"/>
+  <owl:Class rdf:about="urn:owlapi:test:swrl#C"/>
+  <owl:ObjectProperty rdf:about="urn:owlapi:test:swrl#p"/>
+  <owl:ObjectProperty rdf:about="urn:owlapi:test:swrl#q"/>
+  <swrl:Variable rdf:about="urn:swrl#x"/>
+  <swrl:Variable rdf:about="urn:swrl:var#x"/>
+  <swrl:Imp>
+    <swrl:body rdf:parseType="Collection">
+      <swrl:ClassAtom>
+        <swrl:classPredicate rdf:resource="urn:owlapi:test:swrl#C"/>
+        <swrl:argument1 rdf:resource="urn:swrl#x"/>
+      </swrl:ClassAtom>
+      <swrl:IndividualPropertyAtom>
+        <swrl:propertyPredicate rdf:resource="urn:owlapi:test:swrl#p"/>
+        <swrl:argument1 rdf:resource="urn:swrl#x"/>
+        <swrl:argument2 rdf:resource="urn:swrl:var#x"/>
+      </swrl:IndividualPropertyAtom>
+    </swrl:body>
+    <swrl:head rdf:parseType="Collection">
+      <swrl:IndividualPropertyAtom>
+        <swrl:propertyPredicate rdf:resource="urn:owlapi:test:swrl#q"/>
+        <swrl:argument1 rdf:resource="urn:swrl:var#x"/>
+        <swrl:argument2 rdf:resource="urn:swrl#x"/>
+      </swrl:IndividualPropertyAtom>
+    </swrl:head>
+  </swrl:Imp>
+</rdf:RDF>

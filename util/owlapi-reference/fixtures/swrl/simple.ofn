@@ -1,0 +1,10 @@
+Prefix(:=<urn:owlapi:test:swrl#>)
+Ontology(<urn:owlapi:test:swrl:simple>
+  Declaration(Class(:C))
+  Declaration(ObjectProperty(:p))
+  Declaration(ObjectProperty(:q))
+  DLSafeRule(
+    Body(ClassAtom(:C Variable(<urn:swrl#x>))
+         ObjectPropertyAtom(:p Variable(<urn:swrl#x>) Variable(<urn:swrl:var#x>)))
+    Head(ObjectPropertyAtom(:q Variable(<urn:swrl:var#x>) Variable(<urn:swrl#x>))))
+)

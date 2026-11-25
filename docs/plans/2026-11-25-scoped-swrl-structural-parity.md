@@ -192,6 +192,10 @@ The existing list reader checks cardinality, cycles, shared tails, configured li
 It marks cells while traversing and has a compatible non-nil terminator recovery.
 Carry a cyclic list and a crossed/shared tail through the *new caller*; establish the applicable behavior with the native witness before changing any ownership rule.
 Honor existing independent annotation-loading settings.
+
+**Shared-list decision, 26 November 2026.** Apply the repository's normative authority hierarchy to this edge of the named extension. RDF graphs can express branching collections. OWL 2 reverse mapping §3, Table 3 requires disjoint cells for distinct maximal list matches and distinct cells within a match. SWRL is a Member Submission outside the OWL 2 axiom grammar. It assigns separate meanings to the body and head, and an empty body makes a rule unconditional. The project adopts the OWL structural list constraint for this extension. Reject cycles and overlapping tails with the existing list syntax error. If both sides reference the same complete validated list, retain every atom in both roles. The generic OWL list reader and the normative profile retain their existing scope. The native crossed-tail fixture lost its body, whereas the identical-head fixture retained both roles. A source graph with distinct lists remains the writer's portable output.
+[Authority hierarchy](2026-10-13-java-compatible-api-behavior-implementation-plan.md#authority-and-profile-contracts) · [OWL 2 reverse mapping §3](https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification) · [RDF 1.1 collections](https://www.w3.org/TR/rdf11-mt/#rdf-collections) · [SWRL submission §§2–3, 6](https://www.w3.org/submissions/SWRL/)
+
 Reuse existing writer allocation for RDF lists and the Functional lexer, parser and renderer for terms and annotations.
 Render from the captured model so edits are reflected.
 Require the reference workbench to observe the same public reconstruction as package consumers.
