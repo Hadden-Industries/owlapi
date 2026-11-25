@@ -2,8 +2,10 @@ import { OWLOntologyStateError } from "../../io/errors.js";
 import { OWLObjectKind } from "../../model/kinds.js";
 import {
   isCanonicalStructuralObject,
+  isFactoryStructuralObject,
   OWLStructuralObject,
   structuralKey,
+  usesNativeStructuralKeys,
 } from "../../model/structural.js";
 
 const ontologyIDKey = (ontologyID, name = "ontologyID") => {
@@ -14,11 +16,28 @@ const ontologyIDKey = (ontologyID, name = "ontologyID") => {
   ) {
     throw new TypeError(`${name} must be an OWLOntologyID`);
   }
-  try {
+  if (!isFactoryStructuralObject(ontologyID) || !usesNativeStructuralKeys()) {
+    try {
+      const key = OWLStructuralObject.prototype.structuralKey.call(ontologyID);
+      if (!usesNativeStructuralKeys()) return key;
+    } catch {
+      throw new TypeError(`${name} must be an OWLOntologyID`);
+    }
+  }
+  const { ontologyIRI, versionIRI } = ontologyID;
+  if (ontologyIRI === undefined) {
     return OWLStructuralObject.prototype.structuralKey.call(ontologyID);
-  } catch {
+  }
+  if (typeof ontologyIRI.value !== "string") {
     throw new TypeError(`${name} must be an OWLOntologyID`);
   }
+  if (versionIRI === undefined) {
+    return `${ontologyIRI.value.length}:${ontologyIRI.value}`;
+  }
+  if (typeof versionIRI.value !== "string") {
+    throw new TypeError(`${name} must be an OWLOntologyID`);
+  }
+  return `${ontologyIRI.value.length}:${ontologyIRI.value}:${versionIRI.value}`;
 };
 
 const requireOntology = (ontology) => {
@@ -128,7 +147,9 @@ const createDeterministicImportOrderKey = (ontologyID, documentIRI) => {
 };
 
 const normalizeOntologyRegistration = (ontology, { documentIRI } = {}) => {
-  requireOntology(ontology);
+  if (!ontology || typeof ontology.getOntologyID !== "function") {
+    throw new TypeError("ontology must be an OWLOntology");
+  }
   const ontologyID = ontology.getOntologyID();
   return {
     documentIRI,
@@ -247,10 +268,9 @@ const getOntologyByIRIFromStates = (
 ) => {
   const key = iriKey(iri, "iri");
   if (allowNamedIDFallback) {
-    const exactIDKey = structuralKey(OWLObjectKind.ONTOLOGY_ID, [
-      iri,
-      undefined,
-    ]);
+    const exactIDKey = usesNativeStructuralKeys()
+      ? `${iri.value.length}:${iri.value}`
+      : structuralKey(OWLObjectKind.ONTOLOGY_ID, [iri, undefined]);
     for (const state of states) {
       const exact = state.ontologyByID.get(exactIDKey);
       if (exact) return exact;

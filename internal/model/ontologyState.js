@@ -256,6 +256,34 @@ export const createImmutableDocumentMetadataSnapshot = (documentMetadata) => {
 
 const mutationDraftRecords = new WeakMap();
 const axiomOrdinals = new WeakMap();
+const EMPTY_FROZEN_ARRAY = Object.freeze([]);
+
+class SnapshotAxiomView {
+  #axioms;
+
+  constructor(axioms) {
+    this.#axioms = axioms;
+    this.length = axioms.size;
+    this.hasNativeKeys = axioms.hasNativeKeys;
+    Object.freeze(this);
+  }
+
+  valueAt(id) {
+    return this.#axioms.valueAt(id);
+  }
+
+  idOfCapturedKey(key) {
+    return this.#axioms.idOfCapturedKey(key);
+  }
+
+  toSet() {
+    return this.#axioms.toSet();
+  }
+
+  [Symbol.iterator]() {
+    return this.#axioms.values();
+  }
+}
 
 /** Read-only access to the axiom table owned by a committed snapshot. */
 export function readSnapshotAxioms(snapshot) {
@@ -271,31 +299,29 @@ function createSnapshot(
   documentMetadata,
   ontologyID,
   revision,
+  reusedImports,
+  reusedAnnotations,
 ) {
   let materialized;
   const snapshot = Object.freeze({
-    authoredImportDeclarations: Object.freeze([...imports]),
+    authoredImportDeclarations:
+      reusedImports ??
+      (imports.size === 0 ? EMPTY_FROZEN_ARRAY : Object.freeze([...imports])),
     get directAxioms() {
       return (materialized ??= axioms.toFrozenArray());
     },
-    directOntologyAnnotations: Object.freeze([...annotations]),
+    directOntologyAnnotations:
+      reusedAnnotations ??
+      (annotations.size === 0
+        ? EMPTY_FROZEN_ARRAY
+        : Object.freeze([...annotations])),
     documentMetadata,
     ontologyID,
     revision,
   });
   // Drafts clone the table before their first edit. These ordinals therefore
   // retain the original order even when a caller holds a previous revision.
-  axiomOrdinals.set(
-    snapshot,
-    Object.freeze({
-      length: axioms.size,
-      hasNativeKeys: axioms.hasNativeKeys,
-      valueAt: (id) => axioms.valueAt(id),
-      idOfCapturedKey: (key) => axioms.idOfCapturedKey(key),
-      toSet: () => axioms.toSet(),
-      [Symbol.iterator]: () => axioms.values(),
-    }),
-  );
+  axiomOrdinals.set(snapshot, new SnapshotAxiomView(axioms));
   return registerStructuralSnapshot(snapshot, axioms);
 }
 
@@ -681,6 +707,12 @@ export class OntologyState {
       record.documentMetadata,
       record.ontologyID,
       record.baseRevision + 1,
+      record.importsTouched
+        ? undefined
+        : this.#snapshot.authoredImportDeclarations,
+      record.annotationsTouched
+        ? undefined
+        : this.#snapshot.directOntologyAnnotations,
     );
   }
 }

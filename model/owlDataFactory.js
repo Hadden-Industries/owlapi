@@ -108,10 +108,14 @@ const requireSingleKind = (value, expectedKind, name) => {
 
 const requireKind = (value, kinds, name) => {
   const normalized = requireStructural(value, name);
-  let set = kindSets.get(kinds);
+  const set = kinds instanceof Set ? kinds : kindSets.get(kinds);
   if (!set) {
-    set = new Set(kinds);
-    kindSets.set(kinds, set);
+    const created = new Set(kinds);
+    kindSets.set(kinds, created);
+    if (!created.has(normalized.kind)) {
+      throw new TypeError(`${name} has an invalid OWL structural kind`);
+    }
+    return normalized;
   }
   if (!set.has(normalized.kind)) {
     throw new TypeError(`${name} has an invalid OWL structural kind`);
@@ -132,7 +136,7 @@ const requireStructuralSet = (values, name, minimum) => {
 
 const requireKindSet = (values, kinds, name, minimum) => {
   const normalized = requireStructuralSet(values, name, minimum);
-  if (kinds.length === 1) {
+  if (Array.isArray(kinds) && kinds.length === 1) {
     const expected = kinds[0];
     for (let i = 0; i < normalized.length; i += 1) {
       if (normalized[i].kind !== expected) {
@@ -141,7 +145,7 @@ const requireKindSet = (values, kinds, name, minimum) => {
     }
     return normalized;
   }
-  let set = kindSets.get(kinds);
+  let set = kinds instanceof Set ? kinds : kindSets.get(kinds);
   if (!set) {
     set = new Set(kinds);
     kindSets.set(kinds, set);
@@ -335,12 +339,6 @@ const createSetConstruct = (
     : object;
 };
 
-const objectBooleanMinimumOperands = (factory) =>
-  isSourcePreservingFactory(factory)
-    ? 2
-    : readDataFactoryBehaviorDefinition(factory).objectBooleanExpressionPolicy
-        .minimumDistinctOperands;
-
 export class OWLDataFactory {
   // UNSUPPORTED(OWLAPI parity): The Java OWLDataFactory overload matrix is not
   // reproduced mechanically. The initial 0.1 package exposes one unambiguous JavaScript signature
@@ -355,17 +353,19 @@ export class OWLDataFactory {
   #xsdStringDatatype;
   #rdfLangStringDatatype;
   #literalPolicy;
+  #behaviorProfileDefinition;
 
   /** Structural values remain profile-neutral; construction follows this contract. */
   constructor({ behaviorProfileId } = {}) {
     const context = new OntologyBehaviorContext(behaviorProfileId);
     factoryBehaviorContexts.set(this, context);
+    this.#behaviorProfileDefinition = context.behaviorProfileDefinition;
     this.#literalPolicy =
       context.behaviorProfileDefinition.literalConstructionPolicy;
   }
 
   getBehaviorProfileId() {
-    return readDataFactoryBehaviorDefinition(this).behaviorProfileId;
+    return this.#behaviorProfileDefinition.behaviorProfileId;
   }
 
   #internIri(value, name) {
@@ -558,21 +558,28 @@ export class OWLDataFactory {
     );
   }
 
-  getOWLSubClassOfAxiom(subClass, superClass, annotations = []) {
-    const normalizedAnnotations = normalizeAnnotations(annotations);
-    const operands = [
-      requireKind(subClass, CLASS_EXPRESSION_KINDS, "subClass"),
-      requireKind(superClass, CLASS_EXPRESSION_KINDS, "superClass"),
-    ];
-    return createFactoryStructuralObject(
+  getOWLSubClassOfAxiom(subClass, superClass, annotations = EMPTY_ANNOTATIONS) {
+    const normalizedSub = requireKind(
+      subClass,
+      CLASS_EXPRESSION_KINDS,
+      "subClass",
+    );
+    const normalizedSuper = requireKind(
+      superClass,
+      CLASS_EXPRESSION_KINDS,
+      "superClass",
+    );
+    const normalizedAnnotations =
+      annotations === EMPTY_ANNOTATIONS
+        ? EMPTY_ANNOTATIONS
+        : normalizeAnnotations(annotations);
+    return createStructuralAnnotatedPair(
       OWLObjectKind.SUBCLASS_OF_AXIOM,
-      {
-        annotations: normalizedAnnotations,
-        subClass: operands[0],
-        superClass: operands[1],
-      },
-      [...operands, normalizedAnnotations],
-      { componentsWithoutAnnotations: operands },
+      "subClass",
+      normalizedSub,
+      "superClass",
+      normalizedSuper,
+      normalizedAnnotations,
     );
   }
 
@@ -590,7 +597,10 @@ export class OWLDataFactory {
       operands,
       CLASS_EXPRESSION_KINDS,
       undefined,
-      objectBooleanMinimumOperands(this),
+      isSourcePreservingFactory(this)
+        ? 2
+        : this.#behaviorProfileDefinition.objectBooleanExpressionPolicy
+            .minimumDistinctOperands,
     );
   }
 
@@ -610,7 +620,10 @@ export class OWLDataFactory {
       operands,
       CLASS_EXPRESSION_KINDS,
       undefined,
-      objectBooleanMinimumOperands(this),
+      isSourcePreservingFactory(this)
+        ? 2
+        : this.#behaviorProfileDefinition.objectBooleanExpressionPolicy
+            .minimumDistinctOperands,
     );
   }
 
@@ -628,8 +641,8 @@ export class OWLDataFactory {
       individuals,
       INDIVIDUAL_KINDS,
       "individuals",
-      factoryBehaviorContexts.get(this).behaviorProfileDefinition
-        .individualEnumerationPolicy.minimumIndividualCount,
+      this.#behaviorProfileDefinition.individualEnumerationPolicy
+        .minimumIndividualCount,
     );
     return createStructuralUnary(
       OWLObjectKind.OBJECT_ONE_OF,
@@ -806,7 +819,7 @@ export class OWLDataFactory {
       OWLObjectKind.DATA_INTERSECTION_OF,
       "operands",
       operands,
-      DATA_RANGE_KINDS,
+      DATA_RANGE_KIND_SET,
     );
   }
 
@@ -816,7 +829,7 @@ export class OWLDataFactory {
       OWLObjectKind.DATA_UNION_OF,
       "operands",
       operands,
-      DATA_RANGE_KINDS,
+      DATA_RANGE_KIND_SET,
     );
   }
 
@@ -824,7 +837,7 @@ export class OWLDataFactory {
     return createUnary(
       OWLObjectKind.DATA_COMPLEMENT_OF,
       "operand",
-      requireKind(operand, DATA_RANGE_KINDS, "operand"),
+      requireKind(operand, DATA_RANGE_KIND_SET, "operand"),
     );
   }
 

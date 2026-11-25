@@ -22,8 +22,8 @@ const kinds = Object.freeze({
   REMOVE_ONTOLOGY_ANNOTATION: new Set([K.ANNOTATION]),
 });
 
-/** Retain nominal immutable records; descriptors never come from caller methods. */
-const createOntologyChangeRecord = (kind, ontology, value) => {
+/** Validate an ontology + structural value pair without allocating a change record. */
+export const validateStructuralChangeTarget = (kind, ontology, value) => {
   readOntologySnapshot(ontology);
   if (
     !isCanonicalStructuralObject(value) ||
@@ -36,6 +36,11 @@ const createOntologyChangeRecord = (kind, ontology, value) => {
   if (!isFactoryStructuralObject(value)) {
     validateStructuralGraph(value, supportedKinds);
   }
+};
+
+/** Retain nominal immutable records; descriptors never come from caller methods. */
+const createOntologyChangeRecord = (kind, ontology, value) => {
+  validateStructuralChangeTarget(kind, ontology, value);
   return Object.freeze({ kind, ontology, value });
 };
 

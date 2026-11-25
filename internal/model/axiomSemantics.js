@@ -265,7 +265,7 @@ export class StructuralAxiomSet {
   #compactIfNeeded() {
     if (
       (this.#removed?.size ?? 0) + (this.#added?.size ?? 0) <=
-      this.#base.size / 8
+      Math.max(32, this.#base.size / 8)
     ) {
       return;
     }

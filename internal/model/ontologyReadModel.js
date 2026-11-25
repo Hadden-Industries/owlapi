@@ -65,9 +65,7 @@ const signatureKinds = new Map(
 
 /** Derived indexes belong to one immutable revision. Stored postings are integer
  * ordinals. Public collections materialize only the values a query returns. */
-export function readOntologyModel(snapshot) {
-  let reader = readers.get(snapshot);
-  if (reader) return reader;
+function createOntologyReadModel(snapshot) {
   const stored = readSnapshotAxioms(snapshot);
   const terms = new StructuralHashTable();
   const termIds = new WeakMap();
@@ -442,7 +440,7 @@ export function readOntologyModel(snapshot) {
     const found = discoverSignature();
     forEachPosting(found.entities, found.byIRI, termIdOf(iri), visitor);
   }
-  reader = Object.freeze({
+  return Object.freeze({
     allAxioms: () => stored,
     allAxiomsSet: () => stored.toSet(),
     axioms,
@@ -503,6 +501,13 @@ export function readOntologyModel(snapshot) {
     entitiesSetFor,
     forEachEntityFor,
   });
+}
+
+/** Return the cached derived read model for one immutable snapshot. */
+export function readOntologyModel(snapshot) {
+  let reader = readers.get(snapshot);
+  if (reader) return reader;
+  reader = createOntologyReadModel(snapshot);
   readers.set(snapshot, reader);
   return reader;
 }

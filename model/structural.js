@@ -103,16 +103,17 @@ const trustFrozenArray = (frozen) => {
 export const freezeOrderedComponents = (items) =>
   trustFrozenArray(Object.freeze(items));
 
+const requireStructuralValue = (value, name) => {
+  if (!isCanonicalStructuralObject(value)) {
+    throw new TypeError(name + " must contain OWL structural objects");
+  }
+  return value;
+};
+
 export const normalizeStructuralSet = (values, name) => {
   if (!values || typeof values[Symbol.iterator] !== "function") {
     throw new TypeError(name + " must be iterable");
   }
-  const requireValue = (value) => {
-    if (!isCanonicalStructuralObject(value)) {
-      throw new TypeError(name + " must contain OWL structural objects");
-    }
-    return value;
-  };
   if (
     Array.isArray(values) &&
     values[Symbol.iterator] === Array.prototype[Symbol.iterator]
@@ -121,25 +122,42 @@ export const normalizeStructuralSet = (values, name) => {
       return EMPTY_STRUCTURAL_SET;
     }
     if (values.length === 1) {
-      return trustFrozenArray(Object.freeze([requireValue(values[0])]));
+      return trustFrozenArray(
+        Object.freeze([requireStructuralValue(values[0], name)]),
+      );
     }
     if (values.length === 2) {
-      const first = requireValue(values[0]);
-      const second = requireValue(values[1]);
+      const first = requireStructuralValue(values[0], name);
+      const second = requireStructuralValue(values[1], name);
       if (first === second) {
         return trustFrozenArray(Object.freeze([second]));
       }
+      if (
+        isFactoryStructuralObject(first) &&
+        isFactoryStructuralObject(second) &&
+        first.kind === second.kind &&
+        first.iri !== undefined &&
+        usesNativeStructuralKeys()
+      ) {
+        const firstIri = first.iri.value;
+        const secondIri = second.iri.value;
+        if (firstIri === secondIri) {
+          return trustFrozenArray(Object.freeze([second]));
+        }
+        return trustFrozenArray(
+          Object.freeze(
+            firstIri < secondIri ? [first, second] : [second, first],
+          ),
+        );
+      }
       const firstKey = captureStructuralKey(first);
       const secondKey = captureStructuralKey(second);
-      if (capturedKeysEqual(firstKey, secondKey)) {
+      const cmp = compareCapturedKeys(firstKey, secondKey);
+      if (cmp === 0) {
         return trustFrozenArray(Object.freeze([second]));
       }
       return trustFrozenArray(
-        Object.freeze(
-          compareCapturedKeys(firstKey, secondKey) < 0
-            ? [first, second]
-            : [second, first],
-        ),
+        Object.freeze(cmp < 0 ? [first, second] : [second, first]),
       );
     }
   }
@@ -147,7 +165,7 @@ export const normalizeStructuralSet = (values, name) => {
   // effective key in its original order; a third item justifies a hash table.
   let first, second, firstKey, secondKey, table;
   for (const value of values) {
-    const key = captureStructuralKey(requireValue(value));
+    const key = captureStructuralKey(requireStructuralValue(value, name));
     if (first === undefined) {
       first = value;
       firstKey = key;
@@ -288,6 +306,24 @@ function hasCleanPrototype(kind, prototype) {
   }
   return true;
 }
+
+const hasCleanStructuralProto1 = (f1) =>
+  Object.getPrototypeOf(structuralPrototype) === Object.prototype &&
+  !("kind" in structuralPrototype) &&
+  !(f1 in structuralPrototype);
+
+const hasCleanStructuralProto2 = (f1, f2) =>
+  Object.getPrototypeOf(structuralPrototype) === Object.prototype &&
+  !("kind" in structuralPrototype) &&
+  !(f1 in structuralPrototype) &&
+  !(f2 in structuralPrototype);
+
+const hasCleanStructuralProto3 = (f1, f2, f3) =>
+  Object.getPrototypeOf(structuralPrototype) === Object.prototype &&
+  !("kind" in structuralPrototype) &&
+  !(f1 in structuralPrototype) &&
+  !(f2 in structuralPrototype) &&
+  !(f3 in structuralPrototype);
 
 function proofFor(object, kind, components, knownProto = false) {
   const expected =
@@ -456,8 +492,9 @@ export class OWLStructuralObject {
     } else if (token === FACTORY_UNARY) {
       this.kind = kind;
       this[fields] = components;
-      const clean = hasCleanPrototype(kind, structuralPrototype);
-      const proof = clean ? stableComponent(components) : 0;
+      const proof = hasCleanStructuralProto1(fields)
+        ? stableComponent(components)
+        : 0;
       this.#flags = proof
         ? ENTITY_KIND_SET.has(kind) && proof === 2
           ? 3
@@ -474,7 +511,10 @@ export class OWLStructuralObject {
       this.kind = kind;
       this[fields.firstField] = first;
       this[fields.secondField] = second;
-      const proof = hasCleanPrototype(kind, structuralPrototype)
+      const proof = hasCleanStructuralProto2(
+        fields.firstField,
+        fields.secondField,
+      )
         ? Math.min(stableComponent(first), stableComponent(second))
         : 0;
       this.#flags = proof;
@@ -489,7 +529,7 @@ export class OWLStructuralObject {
       this.kind = kind;
       this[fields] = value;
       this.annotations = annotations;
-      const proof = hasCleanPrototype(kind, structuralPrototype)
+      const proof = hasCleanStructuralProto2(fields, "annotations")
         ? Math.min(stableComponent(value), stableComponent(annotations))
         : 0;
       this.#flags = proof;
@@ -510,10 +550,14 @@ export class OWLStructuralObject {
       const second = options;
       const annotations = extra;
       this.kind = kind;
+      this.annotations = annotations;
       this[fields.firstField] = first;
       this[fields.secondField] = second;
-      this.annotations = annotations;
-      const proof = hasCleanPrototype(kind, structuralPrototype)
+      const proof = hasCleanStructuralProto3(
+        fields.firstField,
+        fields.secondField,
+        "annotations",
+      )
         ? Math.min(
             stableComponent(first),
             stableComponent(second),
@@ -534,13 +578,15 @@ export class OWLStructuralObject {
         });
       }
     } else if (token === FACTORY_CARDINALITY) {
-      const { cardinality, property, filler } = fields;
+      const cardinality = fields;
+      const property = components;
+      const filler = options;
       this.kind = kind;
       this.cardinality = cardinality;
       this.filler = filler;
       this.property = property;
       const proof =
-        components && hasCleanPrototype(kind, structuralPrototype)
+        extra && hasCleanStructuralProto3("cardinality", "filler", "property")
           ? Math.min(
               stableComponent(property),
               filler ? stableComponent(filler) : 2,
@@ -564,7 +610,7 @@ export class OWLStructuralObject {
       this.language = language;
       this.lexicalForm = lexicalForm;
       const proof =
-        extra && hasCleanPrototype(kind, structuralPrototype)
+        extra && hasCleanStructuralProto3("datatype", "language", "lexicalForm")
           ? stableComponent(datatype)
           : 0;
       this.#flags = proof;
@@ -582,7 +628,7 @@ export class OWLStructuralObject {
       this.kind = kind;
       this.annotations = annotations;
       this.entity = entity;
-      const proof = hasCleanPrototype(kind, structuralPrototype)
+      const proof = hasCleanStructuralProto2("annotations", "entity")
         ? Math.min(stableComponent(entity), stableComponent(annotations))
         : 0;
       this.#flags =
@@ -746,6 +792,9 @@ function getAllocationConstructor(count) {
   }
   return Alloc;
 }
+const ALLOC_1 = getAllocationConstructor(1);
+const ALLOC_2 = getAllocationConstructor(2);
+const ALLOC_3 = getAllocationConstructor(3);
 function allocateFactoryObject(kind, fields, components, options, token) {
   if (!token) {
     return new OWLStructuralObject(kind, fields, components, options);
@@ -768,7 +817,7 @@ export const createStructuralUnary = (kind, field, value) =>
   Reflect.construct(
     OWLStructuralObject,
     [kind, field, value, undefined, FACTORY_UNARY],
-    getAllocationConstructor(1),
+    ALLOC_1,
   );
 export const createStructuralRestriction = (
   kind,
@@ -779,7 +828,7 @@ export const createStructuralRestriction = (
   Reflect.construct(
     OWLStructuralObject,
     [kind, getPairSpec("property", fillerName), property, filler, FACTORY_PAIR],
-    getAllocationConstructor(2),
+    ALLOC_2,
   );
 export const createStructuralCardinality = (
   kind,
@@ -790,14 +839,8 @@ export const createStructuralCardinality = (
 ) =>
   Reflect.construct(
     OWLStructuralObject,
-    [
-      kind,
-      { cardinality, property, filler },
-      validFiller,
-      undefined,
-      FACTORY_CARDINALITY,
-    ],
-    getAllocationConstructor(3),
+    [kind, cardinality, property, filler, FACTORY_CARDINALITY, validFiller],
+    ALLOC_3,
   );
 export const createStructuralLiteral = (
   lexicalForm,
@@ -815,7 +858,7 @@ export const createStructuralLiteral = (
       FACTORY_LITERAL,
       validDatatype,
     ],
-    getAllocationConstructor(3),
+    ALLOC_3,
   );
 export const createStructuralPair = (
   kind,
@@ -827,7 +870,7 @@ export const createStructuralPair = (
   Reflect.construct(
     OWLStructuralObject,
     [kind, getPairSpec(firstField, secondField), first, second, FACTORY_PAIR],
-    getAllocationConstructor(2),
+    ALLOC_2,
   );
 export const createStructuralDeclaration = (entity, annotations) =>
   Reflect.construct(
@@ -839,7 +882,7 @@ export const createStructuralDeclaration = (entity, annotations) =>
       undefined,
       FACTORY_DECLARATION,
     ],
-    getAllocationConstructor(2),
+    ALLOC_2,
   );
 export const createStructuralAnnotatedUnary = (
   kind,
@@ -850,7 +893,7 @@ export const createStructuralAnnotatedUnary = (
   Reflect.construct(
     OWLStructuralObject,
     [kind, field, value, annotations, FACTORY_ANNOTATED_UNARY],
-    getAllocationConstructor(2),
+    ALLOC_2,
   );
 export const createStructuralAnnotatedPair = (
   kind,
@@ -870,7 +913,7 @@ export const createStructuralAnnotatedPair = (
       FACTORY_ANNOTATED_PAIR,
       annotations,
     ],
-    getAllocationConstructor(3),
+    ALLOC_3,
   );
 export function createOntologyID(ontologyIRI, versionIRI) {
   const components = [ontologyIRI || null, versionIRI || null];

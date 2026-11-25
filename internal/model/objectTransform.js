@@ -344,32 +344,87 @@ export const iriReplacementsForEntities = (entities) => {
 
 export const entityResolver = (factory, entities, iris) => {
   const cache = new WeakMap();
+  let nativeEntitiesByKind;
+  let nativeIris;
+  if (entities.size > 0) {
+    nativeEntitiesByKind = new Map();
+    for (const entry of entities.values()) {
+      const { key, value } = entry;
+      if (!isFactoryStructuralObject(key)) {
+        nativeEntitiesByKind = undefined;
+        break;
+      }
+      let byIri = nativeEntitiesByKind.get(key.kind);
+      if (!byIri) {
+        byIri = new Map();
+        nativeEntitiesByKind.set(key.kind, byIri);
+      }
+      byIri.set(key.iri.value, value);
+    }
+  }
+  if (iris.size > 0) {
+    nativeIris = new Map();
+    for (const [iriKey, replacement] of iris) {
+      if (iriKey.startsWith('["IRI",') && iriKey.endsWith("]")) {
+        try {
+          const parsed = JSON.parse(iriKey);
+          if (
+            Array.isArray(parsed) &&
+            parsed.length === 2 &&
+            parsed[0] === "IRI" &&
+            typeof parsed[1] === "string"
+          ) {
+            nativeIris.set(parsed[1], replacement);
+            continue;
+          }
+        } catch {
+          nativeIris = undefined;
+          break;
+        }
+      }
+      nativeIris = undefined;
+      break;
+    }
+  }
   return (value) => {
     if (ENTITY_KINDS_SET.has(value.kind)) {
       if (entities.size === 0) return value;
-      const useCache =
+      const isNative =
         isFactoryStructuralObject(value) && usesNativeStructuralKeys();
-      if (useCache) {
+      if (isNative) {
         const hit = cache.get(value);
         if (hit !== undefined) return hit;
+        if (nativeEntitiesByKind !== undefined) {
+          const iri = nativeEntitiesByKind
+            .get(value.kind)
+            ?.get(value.iri.value);
+          const out = iri ? factory[`get${value.kind}`](iri) : value;
+          cache.set(value, out);
+          return out;
+        }
       }
       const replacement = entities.get(value.structuralKey());
       const out = replacement
         ? factory[`get${value.kind}`](replacement.value)
         : value;
-      if (useCache) cache.set(value, out);
+      if (isNative) cache.set(value, out);
       return out;
     }
     if (value.kind === K.IRI) {
       if (iris.size === 0) return value;
-      const useCache =
+      const isNative =
         isFactoryStructuralObject(value) && usesNativeStructuralKeys();
-      if (useCache) {
+      if (isNative) {
         const hit = cache.get(value);
         if (hit !== undefined) return hit;
+        if (nativeIris !== undefined) {
+          const out = nativeIris.get(value.value) ?? value;
+          cache.set(value, out);
+          return out;
+        }
       }
       const out = iris.get(value.structuralKey()) ?? value;
-      if (useCache) cache.set(value, out);
+      if (isNative) cache.set(value, out);
       return out;
     }
     return undefined;

@@ -87,6 +87,24 @@ const JAVA_PROVIDER_DEFAULTS = Object.freeze({
   remoteImports: true,
   remoteJsonLdContexts: true,
 });
+const defaultMetaByProfile = new WeakMap();
+const getDefaultMeta = (behaviorProfileDefinition) => {
+  let meta = defaultMetaByProfile.get(behaviorProfileDefinition);
+  if (!meta) {
+    meta = {
+      behaviorProfileDefinition,
+      connectionTimeoutMilliseconds: 20000,
+      configuredConnectionAttempts: 5,
+      shouldFollowRedirects: true,
+      entityExpansionLimit: "100000000",
+      authorizationHeaderValue: "",
+      acceptsHttpCompression: true,
+      hasPublicSymbols: false,
+    };
+    defaultMetaByProfile.set(behaviorProfileDefinition, meta);
+  }
+  return meta;
+};
 
 // Copy the native fixed public layout without changing its own-field order.
 const copyPublicSettings = (target, values) => {
@@ -196,39 +214,63 @@ const requireBoolean = (value, name) => {
 };
 
 export class OWLOntologyLoaderConfiguration {
-  #behaviorProfileDefinition;
-  #connectionTimeoutMilliseconds = 20000;
-  #configuredConnectionAttempts = 5;
-  #shouldFollowRedirects = true;
-  #entityExpansionLimit = "100000000";
-  #authorizationHeaderValue = "";
-  #acceptsHttpCompression = true;
-  #hasPublicSymbols = false;
+  #meta;
+  collectWarnings;
+  format;
+  loadAnnotationAxioms;
+  maxAnnotationDepth;
+  maxAxioms;
+  maxBlankNodes;
+  maxEntityDeclarations;
+  maxEntityExpansionDepth;
+  maxEntityReplacementLength;
+  maxExpandedXmlBytes;
+  maxExpressionDepth;
+  maxImportCount;
+  maxImportDepth;
+  maxInputBytes;
+  maxQuads;
+  maxRdfListLength;
+  maxRedirects;
+  maxRemoteDocumentBytes;
+  maxRetries;
+  maxSniffBytes;
+  maxTokenCount;
+  maxTokenLength;
+  maxXmlNestingDepth;
+  missingImportHandling;
+  parsingMode;
+  rdfDatasetGraphPolicy;
+  remoteImports;
+  remoteJsonLdContexts;
+  selectedGraph;
+  signal;
+  sourceLocations;
+  timeoutMs;
 
   constructor(
     values = {},
     cloneSource = undefined,
     publicOverrides = undefined,
+    overrideKey = undefined,
+    overrideValue = undefined,
+    metaOverride = undefined,
   ) {
     if (values === CLONE_TOKEN) {
-      this.#behaviorProfileDefinition = cloneSource.#behaviorProfileDefinition;
-      this.#connectionTimeoutMilliseconds =
-        cloneSource.#connectionTimeoutMilliseconds;
-      this.#configuredConnectionAttempts =
-        cloneSource.#configuredConnectionAttempts;
-      this.#shouldFollowRedirects = cloneSource.#shouldFollowRedirects;
-      this.#entityExpansionLimit = cloneSource.#entityExpansionLimit;
-      this.#authorizationHeaderValue = cloneSource.#authorizationHeaderValue;
-      this.#acceptsHttpCompression = cloneSource.#acceptsHttpCompression;
-      this.#hasPublicSymbols =
-        cloneSource.#hasPublicSymbols ||
+      const sourceMeta = cloneSource.#meta;
+      this.#meta =
+        metaOverride ??
         (publicOverrides !== undefined &&
-          Object.getOwnPropertySymbols(publicOverrides).length > 0);
+        !sourceMeta.hasPublicSymbols &&
+        Object.getOwnPropertySymbols(publicOverrides).length > 0
+          ? { ...sourceMeta, hasPublicSymbols: true }
+          : sourceMeta);
       // The historical options boundary also admits enumerable symbol fields.
       // Preserve those uncommon extensions with the generic copy path.
-      if (this.#hasPublicSymbols) {
+      if (this.#meta.hasPublicSymbols) {
         Object.assign(this, cloneSource);
       } else copyPublicSettings(this, cloneSource);
+      if (overrideKey !== undefined) this[overrideKey] = overrideValue;
       if (publicOverrides) Object.assign(this, publicOverrides);
       Object.freeze(this);
       return;
@@ -236,37 +278,52 @@ export class OWLOntologyLoaderConfiguration {
     if (!values || typeof values !== "object" || Array.isArray(values)) {
       throw new TypeError("loader configuration values must be an object");
     }
-    const { behaviorProfileId, ...settings } = values;
-    this.#behaviorProfileDefinition =
-      resolveOntologyBehaviorDefinition(behaviorProfileId);
-    for (const name of Object.keys(settings)) {
-      if (!ALLOWED_SETTINGS.has(name)) {
-        throw new TypeError(`Unknown loader configuration setting: ${name}`);
+    const keys = Reflect.ownKeys(values);
+    let hasBehaviorProfileId = false;
+    let extraKeys = 0;
+    for (let i = 0; i < keys.length; i += 1) {
+      const name = keys[i];
+      if (name === "behaviorProfileId") {
+        hasBehaviorProfileId = true;
+      } else if (typeof name === "string") {
+        if (!ALLOWED_SETTINGS.has(name)) {
+          throw new TypeError(`Unknown loader configuration setting: ${name}`);
+        }
+        extraKeys += 1;
+      } else {
+        extraKeys += 1;
       }
     }
+    const behaviorProfileDefinition = resolveOntologyBehaviorDefinition(
+      hasBehaviorProfileId ? values.behaviorProfileId : undefined,
+    );
+    this.#meta = getDefaultMeta(behaviorProfileDefinition);
     const usesJavaProviderDefaults =
-      this.#behaviorProfileDefinition.computationResourcePolicy
+      behaviorProfileDefinition.computationResourcePolicy
         .usesJavaProviderDefaults;
     const profileDefaults = usesJavaProviderDefaults
       ? JAVA_PROVIDER_DEFAULTS
       : DEFAULTS;
     // The two native default records contain no caller-owned values and are
     // already valid. Explicit options still pass the complete validator below.
-    if (Reflect.ownKeys(settings).length === 0) {
+    if (extraKeys === 0) {
       copyPublicSettings(this, profileDefaults);
       Object.freeze(this);
       return;
     }
-    const normalizedValues = { ...settings };
-    if (normalizedValues.selectedGraph !== undefined) {
-      normalizedValues.selectedGraph = snapshotRdfTerm(
-        normalizedValues.selectedGraph,
-      );
+    const merged = { ...profileDefaults };
+    for (let i = 0; i < keys.length; i += 1) {
+      const name = keys[i];
+      if (name !== "behaviorProfileId") merged[name] = values[name];
     }
-    const merged = { ...profileDefaults, ...normalizedValues };
+    if (merged.selectedGraph !== undefined) {
+      merged.selectedGraph = snapshotRdfTerm(merged.selectedGraph);
+    }
     validate(merged, usesJavaProviderDefaults);
-    Object.assign(this, merged);
-    this.#hasPublicSymbols = Object.getOwnPropertySymbols(merged).length > 0;
+    if (Object.getOwnPropertySymbols(merged).length > 0) {
+      this.#meta = { ...this.#meta, hasPublicSymbols: true };
+      Object.assign(this, merged);
+    } else copyPublicSettings(this, merged);
     Object.freeze(this);
   }
 
@@ -300,7 +357,7 @@ export class OWLOntologyLoaderConfiguration {
     const merged = { ...this, ...normalizedValues };
     validate(
       merged,
-      this.#behaviorProfileDefinition.computationResourcePolicy
+      this.#meta.behaviorProfileDefinition.computationResourcePolicy
         .usesJavaProviderDefaults,
     );
     return new OWLOntologyLoaderConfiguration(
@@ -311,26 +368,26 @@ export class OWLOntologyLoaderConfiguration {
   }
 
   getBehaviorProfileId() {
-    return this.#behaviorProfileDefinition.behaviorProfileId;
+    return this.#meta.behaviorProfileDefinition.behaviorProfileId;
   }
   getConnectionTimeout() {
-    return this.#connectionTimeoutMilliseconds;
+    return this.#meta.connectionTimeoutMilliseconds;
   }
   getRetriesToAttempt() {
-    return this.#configuredConnectionAttempts;
+    return this.#meta.configuredConnectionAttempts;
   }
   isFollowRedirects() {
-    return this.#shouldFollowRedirects;
+    return this.#meta.shouldFollowRedirects;
   }
   getEntityExpansionLimit() {
-    return this.#entityExpansionLimit;
+    return this.#meta.entityExpansionLimit;
   }
   /** Java treats a null override as the default empty authorization value. */
   getAuthorizationValue() {
-    return this.#authorizationHeaderValue ?? "";
+    return this.#meta.authorizationHeaderValue ?? "";
   }
   isAcceptingHTTPCompression() {
-    return this.#acceptsHttpCompression;
+    return this.#meta.acceptsHttpCompression;
   }
   setAuthorizationValue(value) {
     if (value !== null && typeof value !== "string")
@@ -338,16 +395,26 @@ export class OWLOntologyLoaderConfiguration {
         "authorization header value must be a string or null",
       );
     if (this.getAuthorizationValue() === value) return this;
-    const copy = new OWLOntologyLoaderConfiguration(CLONE_TOKEN, this);
-    copy.#authorizationHeaderValue = value;
-    return copy;
+    return new OWLOntologyLoaderConfiguration(
+      CLONE_TOKEN,
+      this,
+      undefined,
+      undefined,
+      undefined,
+      { ...this.#meta, authorizationHeaderValue: value },
+    );
   }
   setAcceptingHTTPCompression(value) {
     requireBoolean(value, "accept HTTP compression");
-    if (this.#acceptsHttpCompression === value) return this;
-    const copy = new OWLOntologyLoaderConfiguration(CLONE_TOKEN, this);
-    copy.#acceptsHttpCompression = value;
-    return copy;
+    if (this.#meta.acceptsHttpCompression === value) return this;
+    return new OWLOntologyLoaderConfiguration(
+      CLONE_TOKEN,
+      this,
+      undefined,
+      undefined,
+      undefined,
+      { ...this.#meta, acceptsHttpCompression: value },
+    );
   }
   isStrict() {
     return this.parsingMode === "strict";
@@ -358,53 +425,81 @@ export class OWLOntologyLoaderConfiguration {
 
   setConnectionTimeout(value) {
     requireJavaInt(value, "connection timeout");
-    if (value === this.#connectionTimeoutMilliseconds) return this;
-    const copy = new OWLOntologyLoaderConfiguration(CLONE_TOKEN, this);
-    copy.#connectionTimeoutMilliseconds = value;
-    return copy;
+    if (value === this.#meta.connectionTimeoutMilliseconds) return this;
+    return new OWLOntologyLoaderConfiguration(
+      CLONE_TOKEN,
+      this,
+      undefined,
+      undefined,
+      undefined,
+      { ...this.#meta, connectionTimeoutMilliseconds: value },
+    );
   }
 
   setRetriesToAttempt(value) {
     requireJavaInt(value, "connection attempts");
-    if (value === this.#configuredConnectionAttempts) return this;
-    const copy = new OWLOntologyLoaderConfiguration(CLONE_TOKEN, this);
-    copy.#configuredConnectionAttempts = value;
-    return copy;
+    if (value === this.#meta.configuredConnectionAttempts) return this;
+    return new OWLOntologyLoaderConfiguration(
+      CLONE_TOKEN,
+      this,
+      undefined,
+      undefined,
+      undefined,
+      { ...this.#meta, configuredConnectionAttempts: value },
+    );
   }
 
   setFollowRedirects(value) {
     requireBoolean(value, "follow redirects");
-    if (value === this.#shouldFollowRedirects) return this;
-    const copy = new OWLOntologyLoaderConfiguration(CLONE_TOKEN, this);
-    copy.#shouldFollowRedirects = value;
-    return copy;
+    if (value === this.#meta.shouldFollowRedirects) return this;
+    return new OWLOntologyLoaderConfiguration(
+      CLONE_TOKEN,
+      this,
+      undefined,
+      undefined,
+      undefined,
+      { ...this.#meta, shouldFollowRedirects: value },
+    );
   }
 
   setEntityExpansionLimit(value) {
     if (typeof value !== "string")
       throw new TypeError("entity expansion limit must be a string");
-    if (value === this.#entityExpansionLimit) return this;
-    const copy = new OWLOntologyLoaderConfiguration(CLONE_TOKEN, this);
-    copy.#entityExpansionLimit = value;
-    return copy;
+    if (value === this.#meta.entityExpansionLimit) return this;
+    return new OWLOntologyLoaderConfiguration(
+      CLONE_TOKEN,
+      this,
+      undefined,
+      undefined,
+      undefined,
+      { ...this.#meta, entityExpansionLimit: value },
+    );
   }
 
   setStrict(value) {
     requireBoolean(value, "strict");
     return this.isStrict() === value
       ? this
-      : new OWLOntologyLoaderConfiguration(CLONE_TOKEN, this, {
-          parsingMode: value ? "strict" : "compatible",
-        });
+      : new OWLOntologyLoaderConfiguration(
+          CLONE_TOKEN,
+          this,
+          undefined,
+          "parsingMode",
+          value ? "strict" : "compatible",
+        );
   }
 
   setLoadAnnotationAxioms(value) {
     requireBoolean(value, "load annotation axioms");
     return this.loadAnnotationAxioms === value
       ? this
-      : new OWLOntologyLoaderConfiguration(CLONE_TOKEN, this, {
-          loadAnnotationAxioms: value,
-        });
+      : new OWLOntologyLoaderConfiguration(
+          CLONE_TOKEN,
+          this,
+          undefined,
+          "loadAnnotationAxioms",
+          value,
+        );
   }
 
   withParsingMode(parsingMode) {

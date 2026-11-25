@@ -91,6 +91,7 @@ export function normalizeJavaTypedLiteralIfNeeded(lexicalForm, datatypeIRI) {
   let normalizedLexical;
   switch (datatypeIRI) {
     case XSD_BOOLEAN: {
+      if (lexicalForm === "true" || lexicalForm === "false") return undefined;
       const value = trimJavaStringWhitespace(lexicalForm);
       normalizedLexical =
         value.toLowerCase() === "true" || value === "1" ? "true" : "false";

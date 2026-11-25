@@ -207,48 +207,133 @@ function safeIntervalCoefficient(
   return belowFits ? below : aboveFits ? below + 1 : undefined;
 }
 
+const safeFits = (numerator, denominator, upper) =>
+  Number.isSafeInteger(numerator) &&
+  Number.isSafeInteger(denominator) &&
+  Number.isSafeInteger(upper * numerator + 20 * denominator);
+
+const isAsciiDigit = (code) => code >= 48 && code <= 57;
+
+function formatDecimalDigits(sign, digits, exponent) {
+  const magnitude = digits.length + exponent - 1;
+  if (magnitude < -3 || magnitude >= 7)
+    return `${sign}${digits[0]}.${digits.slice(1) || "0"}E${magnitude}`;
+  if (exponent >= 0) return sign + digits + "0".repeat(exponent) + ".0";
+  const point = digits.length + exponent;
+  return (
+    sign +
+    (point > 0
+      ? digits.slice(0, point) + "." + digits.slice(point)
+      : "0." + "0".repeat(-point) + digits)
+  );
+}
+
+function matchesDecimalInput(input, sign, result, exponent) {
+  let digitsCount = 1;
+  for (let threshold = 10; threshold <= result; threshold *= 10)
+    digitsCount += 1;
+  const magnitude = digitsCount + exponent - 1;
+  if (magnitude < -3 || magnitude >= 7) return false;
+  const neg = sign === "-" ? 1 : 0;
+  if (neg && input.charCodeAt(0) !== 45) return false;
+  if (exponent >= 0) {
+    const expectedLen = neg + digitsCount + exponent + 2;
+    if (input.length !== expectedLen) return false;
+    if (
+      input.charCodeAt(expectedLen - 2) !== 46 ||
+      input.charCodeAt(expectedLen - 1) !== 48
+    )
+      return false;
+    for (let k = 0; k < exponent; k += 1) {
+      if (input.charCodeAt(neg + digitsCount + k) !== 48) return false;
+    }
+    let n = result;
+    for (let i = neg + digitsCount - 1; i >= neg; i -= 1) {
+      const digit = n % 10;
+      if (input.charCodeAt(i) !== 48 + digit) return false;
+      n = (n - digit) / 10;
+    }
+    return true;
+  }
+  const point = digitsCount + exponent;
+  if (point > 0) {
+    const expectedLen = neg + digitsCount + 1;
+    if (input.length !== expectedLen) return false;
+    const dotIdx = neg + point;
+    if (input.charCodeAt(dotIdx) !== 46) return false;
+    let n = result;
+    for (let i = expectedLen - 1; i >= neg; i -= 1) {
+      if (i === dotIdx) continue;
+      const digit = n % 10;
+      if (input.charCodeAt(i) !== 48 + digit) return false;
+      n = (n - digit) / 10;
+    }
+    return true;
+  }
+  const zeros = -point;
+  const expectedLen = neg + 2 + zeros + digitsCount;
+  if (input.length !== expectedLen) return false;
+  if (input.charCodeAt(neg) !== 48 || input.charCodeAt(neg + 1) !== 46)
+    return false;
+  for (let k = 0; k < zeros; k += 1) {
+    if (input.charCodeAt(neg + 2 + k) !== 48) return false;
+  }
+  let n = result;
+  const digitsStart = neg + 2 + zeros;
+  for (let i = expectedLen - 1; i >= digitsStart; i -= 1) {
+    const digit = n % 10;
+    if (input.charCodeAt(i) !== 48 + digit) return false;
+    n = (n - digit) / 10;
+  }
+  return true;
+}
+
 /** Use native integer arithmetic only when the complete interval, next decimal
  * candidate and tie comparison fit exactly. Failed admission does no rounding;
  * the general BigInt interval below remains authoritative for wider values.
  */
-function safeFloatDecimal(binary) {
-  const coefficient = binary.coefficient;
-  const asymmetric = binary.exponent > -149 && coefficient === 0x800000;
+function safeFloatDecimal(value, sign, originalInput) {
+  binary32Bytes.setFloat32(0, value);
+  const bits = binary32Bytes.getUint32(0);
+  const encodedExponent = (bits >>> 23) & 255;
+  const fraction = bits & 0x7fffff;
+  const coefficient = encodedExponent === 0 ? fraction : 0x800000 + fraction;
+  const binExp = encodedExponent === 0 ? -149 : encodedExponent - 150;
+  const asymmetric = binExp > -149 && coefficient === 0x800000;
   const center = 4 * coefficient;
   const lower = center - (asymmetric ? 1 : 2);
   const upper = center + 2;
-  const binaryExponent = binary.exponent - 2;
+  const binaryExponent = binExp - 2;
   let numerator = binaryExponent < 0 ? 1 : 2 ** binaryExponent;
   let denominator = binaryExponent < 0 ? 2 ** -binaryExponent : 1;
   let exponent = Math.floor(
-    binary.exponent * LOG10_TWO + (asymmetric ? Math.log10(0.75) : 0),
+    binExp * LOG10_TWO + (asymmetric ? Math.log10(0.75) : 0),
   );
   if (exponent < 0) numerator *= 10 ** -exponent;
   else denominator *= 10 ** exponent;
-  const fits = () =>
-    Number.isSafeInteger(numerator) &&
-    Number.isSafeInteger(denominator) &&
-    Number.isSafeInteger(upper * numerator + 20 * denominator);
-  if (!fits()) return undefined;
+  if (!safeFits(numerator, denominator, upper)) return undefined;
   while ((upper - lower) * numerator < denominator) {
     exponent -= 1;
     numerator *= 10;
-    if (!fits()) return undefined;
+    if (!safeFits(numerator, denominator, upper)) return undefined;
   }
   while ((upper - lower) * numerator >= 10 * denominator) {
     exponent += 1;
     denominator *= 10;
-    if (!fits()) return undefined;
+    if (!safeFits(numerator, denominator, upper)) return undefined;
   }
   let scaledCenter = center * numerator;
   let below = Math.floor(scaledCenter / denominator);
   if (below * denominator > scaledCenter) below -= 1;
   else if ((below + 1) * denominator <= scaledCenter) below += 1;
-  const maximumExponent = exponent + String(below).length - 2;
+  let belowDigits = 1;
+  for (let threshold = 10; threshold <= below; threshold *= 10)
+    belowDigits += 1;
+  const maximumExponent = exponent + belowDigits - 2;
   while (exponent > maximumExponent) {
     exponent -= 1;
     numerator *= 10;
-    if (!fits()) return undefined;
+    if (!safeFits(numerator, denominator, upper)) return undefined;
     scaledCenter = center * numerator;
     below = Math.floor(scaledCenter / denominator);
   }
@@ -277,9 +362,16 @@ function safeFloatDecimal(binary) {
       below,
     );
   if (result === undefined) return undefined;
-  const fullDigits = String(result);
-  const digits = fullDigits.replace(/0+$/u, "");
-  return { digits, exponent: exponent + fullDigits.length - digits.length };
+  while (result >= 10 && result % 10 === 0) {
+    result /= 10;
+    exponent += 1;
+  }
+  if (
+    originalInput !== undefined &&
+    matchesDecimalInput(originalInput, sign, result, exponent)
+  )
+    return originalInput;
+  return formatDecimalDigits(sign, String(result), exponent);
 }
 
 /** Exact interval selection, following the mathematical scale argument in
@@ -291,10 +383,6 @@ function safeFloatDecimal(binary) {
  */
 function shortestJavaDecimal(value, precision) {
   const binary = binaryComponents(value, precision);
-  if (precision === 24) {
-    const decimal = safeFloatDecimal(binary);
-    if (decimal) return decimal;
-  }
   // Binary32 decomposition is already exact as a Number. Allocate a BigInt
   // only when the safe-integer interval path cannot admit the complete work.
   const binaryCoefficient = BigInt(binary.coefficient);
@@ -365,23 +453,18 @@ function shortestJavaDecimal(value, precision) {
   return { digits, exponent: exponent + fullDigits.length - digits.length };
 }
 
-function formatJavaFloatingPoint(value, precision) {
+function formatJavaFloatingPoint(value, precision, originalInput) {
   if (Number.isNaN(value)) return "NaN";
   if (!Number.isFinite(value)) return String(value);
   const sign = value < 0 || Object.is(value, -0) ? "-" : "";
   if (value === 0) return sign + "0.0";
-  const { digits, exponent } = shortestJavaDecimal(Math.abs(value), precision);
-  const magnitude = digits.length + exponent - 1;
-  if (magnitude < -3 || magnitude >= 7)
-    return `${sign}${digits[0]}.${digits.slice(1) || "0"}E${magnitude}`;
-  if (exponent >= 0) return sign + digits + "0".repeat(exponent) + ".0";
-  const point = digits.length + exponent;
-  return (
-    sign +
-    (point > 0
-      ? digits.slice(0, point) + "." + digits.slice(point)
-      : "0." + "0".repeat(-point) + digits)
-  );
+  const absValue = value < 0 ? -value : value;
+  if (precision === 24) {
+    const fast = safeFloatDecimal(absValue, sign, originalInput);
+    if (fast !== undefined) return fast;
+  }
+  const { digits, exponent } = shortestJavaDecimal(absValue, precision);
+  return formatDecimalDigits(sign, digits, exponent);
 }
 
 /** Return the JDK Float/Double lexical spelling, preserving malformed input as
@@ -389,9 +472,11 @@ function formatJavaFloatingPoint(value, precision) {
  */
 export function normalizeJavaFloatingPointLiteral(input, precision) {
   const text = trimJavaStringWhitespace(input);
+  if (text.length === 0) return input;
   const firstCode = text.charCodeAt(0);
   const sign = firstCode === 45 ? -1 : 1;
   const unsigned = firstCode === 43 || firstCode === 45 ? text.slice(1) : text;
+  if (unsigned.length === 0) return input;
   if (unsigned === "NaN") return "NaN";
   if (unsigned === "Infinity") return sign < 0 ? "-Infinity" : "Infinity";
   const u0 = unsigned.charCodeAt(0);
@@ -407,14 +492,57 @@ export function normalizeJavaFloatingPointLiteral(input, precision) {
         precision,
       );
   }
-  const decimal = /^(\d+(?:\.\d*)?|\.\d+)(?:[eE]([+-]?\d+))?[fFdD]?$/u.exec(
-    unsigned,
-  );
-  if (!decimal) return input;
-  const numericText = decimal[1] + "e" + (decimal[2] || "0");
-  const value =
-    precision === 24
-      ? parseFloatDecimal(numericText, decimal[1], decimal[2])
-      : Number(numericText);
-  return formatJavaFloatingPoint(sign * value, precision);
+  let end = unsigned.length;
+  const lastCode = unsigned.charCodeAt(end - 1);
+  const hasSuffix =
+    lastCode === 102 || lastCode === 70 || lastCode === 100 || lastCode === 68;
+  if (hasSuffix) end -= 1;
+  let i = 0;
+  let intDigits = 0;
+  while (i < end && isAsciiDigit(unsigned.charCodeAt(i))) {
+    i += 1;
+    intDigits += 1;
+  }
+  let fracDigits = 0;
+  if (i < end && unsigned.charCodeAt(i) === 46) {
+    i += 1;
+    while (i < end && isAsciiDigit(unsigned.charCodeAt(i))) {
+      i += 1;
+      fracDigits += 1;
+    }
+  }
+  if (intDigits === 0 && fracDigits === 0) return input;
+  const coeffEnd = i;
+  let expStart = -1;
+  if (i < end) {
+    const ec = unsigned.charCodeAt(i);
+    if (ec !== 101 && ec !== 69) return input;
+    i += 1;
+    expStart = i;
+    if (i < end) {
+      const sc = unsigned.charCodeAt(i);
+      if (sc === 43 || sc === 45) i += 1;
+    }
+    let expDigits = 0;
+    while (i < end && isAsciiDigit(unsigned.charCodeAt(i))) {
+      i += 1;
+      expDigits += 1;
+    }
+    if (expDigits === 0 || i !== end) return input;
+  }
+  const numericText = hasSuffix ? unsigned.slice(0, end) : unsigned;
+  let value = Number(numericText);
+  if (precision === 24) {
+    const rounded = Math.fround(value);
+    if (Number.isFinite(value) && value !== rounded) {
+      value = parseFloatDecimal(
+        numericText,
+        unsigned.slice(0, coeffEnd),
+        expStart >= 0 ? unsigned.slice(expStart, end) : undefined,
+      );
+    } else {
+      value = rounded;
+    }
+  }
+  return formatJavaFloatingPoint(sign * value, precision, input);
 }
