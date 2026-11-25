@@ -1,0 +1,186 @@
+{
+  "artifactId": "8b2a7227c0a13bde6fcbb048b41515db173bb6b9555c5c41e7ba47d8840e52d2",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 32474,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9c63a23124d68cd30cd316a94a1a0bca34f032786df6df69fc4b5f136bac8d2e",
+        "size": 1144,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "84fb1a46c3fe74c5a394119ec523b86eeeb02443142a2ed8cf5cfae968c3b920",
+        "size": 4263,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts",
+        "sha256": "b04003dedc64a232bf6ccbf60d3dbae69b8b807ae1754d18b42c1203c3fdc79f",
+        "size": 560,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts.map",
+        "sha256": "f8ba7928eb2a7e0f53f30b36e126c593e68c1895317d92cf2831e6a90567f694",
+        "size": 570,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js",
+        "sha256": "259b695c6bb89e19b92dba0fbe4662c840b838dc4b73afa4d35a9b9c404e7ed4",
+        "size": 22754,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js.map",
+        "sha256": "c24d0b1f13f541d16943c8865a35c4b62eb548e3636dd522bd3771132a14c300",
+        "size": 39459,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/package.json",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "b04003dedc64a232bf6ccbf60d3dbae69b8b807ae1754d18b42c1203c3fdc79f",
+        "size": 560,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts.map",
+        "sha256": "f8ba7928eb2a7e0f53f30b36e126c593e68c1895317d92cf2831e6a90567f694",
+        "size": 570,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "e534e91a25c0f76349b281a3c9bfe5eabefdd47ff9631fda7347d8983b01e45d",
+        "size": 22458,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js.map",
+        "sha256": "ac963121bbdf75bc2894890d9e7546127540dc4bcf83c8760bb39445b3d935cd",
+        "size": 39544,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/package.json",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5c8b16d9caf8db29fd4dec193628d35a014b8f5bf0235ad13a687d27be882a70",
+        "size": 1593,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1144,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9c/9c63a23124d68cd30cd316a94a1a0bca34f032786df6df69fc4b5f136bac8d2e",
+          "sha256": "9c63a23124d68cd30cd316a94a1a0bca34f032786df6df69fc4b5f136bac8d2e"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9c63a23124d68cd30cd316a94a1a0bca34f032786df6df69fc4b5f136bac8d2e",
+        "size": 1144
+      }
+    ],
+    "expandedBytes": 133523,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "brace-expansion",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/juliangruber/brace-expansion.git"
+      },
+      "version": "5.1.0"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "balanced-match": "^4.0.2"
+      },
+      "description": "Brace expansion as known from sh/bash",
+      "devDependencies": {
+        "@types/brace-expansion": "^1.1.2",
+        "@types/node": "^25.2.1",
+        "mkdirp": "^3.0.1",
+        "prettier": "^3.3.2",
+        "tap": "^21.6.2",
+        "tshy": "^3.0.2",
+        "typedoc": "^0.28.5"
+      },
+      "engines": {
+        "node": "20 || >=22"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/esm/index.js",
+            "types": "./dist/esm/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/commonjs/index.js",
+            "types": "./dist/commonjs/index.d.ts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "license": "MIT",
+      "main": "./dist/commonjs/index.js",
+      "module": "./dist/esm/index.js",
+      "name": "brace-expansion",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/juliangruber/brace-expansion.git"
+      },
+      "scripts": {
+        "benchmark": "node benchmark/index.js",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "postversion": "npm publish",
+        "prepare": "tshy",
+        "prepublishOnly": "git push origin --follow-tags",
+        "presnap": "npm run prepare",
+        "pretest": "npm run prepare",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap",
+        "typedoc": "typedoc --tsconfig .tshy/esm.json ./src/*.ts"
+      },
+      "tshy": {
+        "exports": {
+          ".": "./src/index.ts",
+          "./package.json": "./package.json"
+        }
+      },
+      "type": "module",
+      "types": "./dist/commonjs/index.d.ts",
+      "version": "5.1.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 32474,
+      "sha256": "2d1000870fffb3c831b0fbf353a4da3d46f1648619e8ab412b966a85432bb749"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

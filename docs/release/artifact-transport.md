@@ -1,10 +1,14 @@
 # Actions artifact transport
 
-All 39 qualification and diagnostic upload sites use the shared `retain-artifact` action.
-Six logical-name collectors use `collect-artifacts`.
-Both execute one self-contained JavaScript bundle.
-Workflow callers select their logical name, literal payload paths and retention period.
+Candidate and qualification proofs, publisher receipts, and artifacts consumed by logical-name collectors use the shared `retain-artifact` action.
+That action and `collect-artifacts` execute one self-contained JavaScript bundle.
+Their callers select literal payload paths, logical names and retention periods.
 Recovery limits, waits, compression defaults and inventory limits belong to `artifact-transport-policy.json`.
+
+ScanCode reports, July reconciliation diagnostics and failed OWL contract assertions use pinned `actions/upload-artifact`.
+These six uploads are for inspection and have no downstream workflow consumer.
+They stage the selected payload with the existing path, symlink and size checks before the official uploader runs.
+Each artifact name includes the workflow attempt so reruns preserve earlier reports.
 
 Release qualification of this transport revision is pending.
 Local checks, independent review, exact-head hosted CI and release acceptance are separate claims.
@@ -131,7 +135,8 @@ The second build binds the refreshed rights record to the action bundle.
 Any existing human rights decision requires explicit reassessment before the record can be regenerated.
 
 The build record binds source, policy, both dependency locks and generated outputs.
-Workflow governance rejects direct upload bypasses, changed action contracts and caller policy overrides, and closes the producer/collector census.
+Workflow governance limits direct uploads to the declared diagnostic steps and checks their staged paths and inputs.
+It also checks the recovery producer and collector inventories, action contracts and caller inputs.
 The current CI qualification policy binds the transport policy and build record; older green receipts cannot automatically qualify this protocol.
 
 Recovery fault injection covers lost acknowledgements, delayed visibility, conflicting copies, failed lookups/downloads, bounded retries, deadlines, cancellation, unsafe ZIPs and a standalone SDK bundle.

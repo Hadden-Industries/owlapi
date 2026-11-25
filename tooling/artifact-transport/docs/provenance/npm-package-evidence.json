@@ -425,73 +425,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 8676,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/4a/4a3aa85ec8b6cbf873ebc36b0b316585a338689139bcd6d9b721dcf95ca9332f",
-          "sha256": "4a3aa85ec8b6cbf873ebc36b0b316585a338689139bcd6d9b721dcf95ca9332f"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "066316c926b566ee44f3cbd85ce8ade9e18dd027d91caf5d5d736d8d3429dc84",
-      "integrity": "sha512-iqkXHkW65De+BT14nHLiBFbNuJ/DdMrZaVNJ1IXPctpK6b1olUJ5Qmy8QBvwROajTiGztso2n82kFEvCsNG7Rg==",
-      "lockfileLicenses": [
-        "Apache-2.0"
-      ],
-      "name": "bare-url",
-      "occurrencePaths": [
-        "node_modules/bare-url"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 17542,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/b6/b62683d13ab5669ccd92d623d1c0a9dbdd5d756187756c41294a5e783cb4dd08",
-          "sha256": "b62683d13ab5669ccd92d623d1c0a9dbdd5d756187756c41294a5e783cb4dd08"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 780,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/79/795d0ec92044414dd7898a26c7dd2b8fcd6e2284ce18694535a13a7ebffbf0d4",
-          "sha256": "795d0ec92044414dd7898a26c7dd2b8fcd6e2284ce18694535a13a7ebffbf0d4"
-        },
-        "publishedAt": "2026-11-04T14:23:56.125Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIBnsGc56DW0SNrbU8ReRJRSrEyMoNHIMfr26XlXq4N/2AiEA+9fvRUSNbk8MFihDekVRLGIlWW0sdUxwSUm98LK0Tmw="
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQC2VuT2aSS/DTKZimvLFUyBEpbPsydlMJ26amcyBmLqPwIhANOv0G+yATYz6JLXLRcxBGy/NTJZba0Hs5yLYbQSPET/"
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/bare-url/-/bare-url-2.5.6.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 101545,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/91/913107084aad0058c66340b407c14cac8f0d7d91acf49feee67fe026186f2ff3",
-          "sha256": "913107084aad0058c66340b407c14cac8f0d7d91acf49feee67fe026186f2ff3"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 1557015,
-        "sha256": "a2a64804063d0e2fc762ab767f39b2297f57a130800a3537caa5992fe5bda555"
-      },
-      "version": "2.5.6"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 5926,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/51/51dbb13d396134f81d8848a62d87e9726c9fbee20d97effbbc49d2b24021c14f",
@@ -732,70 +665,6 @@
         "sha256": "4bd2cfc8e674c93cf7abb3bd3d6fd8e388fa10324bec011223a8fa4f287185d1"
       },
       "version": "0.3.5"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 10157,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/62/6274113e4e3fed7ac58901721f9dcc4988a3719ea6754174d05e3fa01b56e312",
-          "sha256": "6274113e4e3fed7ac58901721f9dcc4988a3719ea6754174d05e3fa01b56e312"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "08ba098fb4780461e70b4f68bccfcf50fba89ed8b5fda56e11f2d3aacc88e2da",
-      "integrity": "sha512-iXa654H3yFafF/ieHkukfbgWo2rmXD2ceD0ZOtrPhw1bc3FDch1d9N/TNs0FQ1/cIbwb7kspUX8jzIs8nzb9DQ==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "@octokit/endpoint",
-      "occurrencePaths": [
-        "node_modules/@octokit/endpoint"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 17102,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/89/8926a07d3648948444406a72ef515fe0e678057fe5d1700a568a8c60b0223265",
-          "sha256": "8926a07d3648948444406a72ef515fe0e678057fe5d1700a568a8c60b0223265"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 780,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/a2/a2325090fc00f309fb638ee05df8506d6f74f2e384689a00774a59afc32a8e6f",
-          "sha256": "a2325090fc00f309fb638ee05df8506d6f74f2e384689a00774a59afc32a8e6f"
-        },
-        "publishedAt": "2026-08-29T18:33:47.496Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQC2Fo46maTgd/+tdcwUPJBnBTr2ibfsQutfGY0TxUFxcQIhAMiTQzoTrcZQM5NY70rEnqPG7WfTH1+ht8HOgdlTnWq0"
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIQDOld6FnINcBaUh294iBgQgJq0Bm2Nizm72QGr3h/qgOwIgAmwI86LWMo1HZQrzjWNuXUCOZMsVZkVQrwlcCQv13Xk="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/@octokit/endpoint/-/endpoint-11.0.5.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 77163,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/32/32989accf5d208207656415d90d36c8a3b47208002331eeaac9c11b71f92c457",
-          "sha256": "32989accf5d208207656415d90d36c8a3b47208002331eeaac9c11b71f92c457"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 13965,
-        "sha256": "346efdbc834222173f458e05e42b8137d2f275d772fba5018902964e2db15484"
-      },
-      "version": "11.0.5"
     },
     {
       "archive": {
@@ -1097,6 +966,73 @@
         "sha256": "2215d1ae82eea71988cbec916db366d2485dfd89d70888698d6fa34c267b8a90"
       },
       "version": "1.2.0"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 6451,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/f3/f3f6ecef5921c3894d2ebd1538f7eb9dab4891cec070bae7c245ef74f47fc6da",
+          "sha256": "f3f6ecef5921c3894d2ebd1538f7eb9dab4891cec070bae7c245ef74f47fc6da"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "10b40d3426f0322792f20d263e6446832ff904f0e44635bdd06e7419589c30ed",
+      "integrity": "sha512-OX91VSlShLPDgRZV7tk/YQ4l8tT75QziF5Ixg8g4PFbCVPjuTWwN+yQfAxLJ0dufJpprdOd6HlM74Jhd39TcBQ==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "fast-xml-builder",
+      "occurrencePaths": [
+        "node_modules/fast-xml-builder"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 18202,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/68/68c3768e8bec2bff3b006447f3a5ed554f798080d84cb2534f11bc3a8d31ecd7",
+          "sha256": "68c3768e8bec2bff3b006447f3a5ed554f798080d84cb2534f11bc3a8d31ecd7"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/85/851e90d893c467e5777ce0915bb947d90a1432f4d951462a4dcb29789952ee26",
+          "sha256": "851e90d893c467e5777ce0915bb947d90a1432f4d951462a4dcb29789952ee26"
+        },
+        "publishedAt": "2026-11-13T09:21:28.168Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQDYkjA8kxMYjhPP+zKmfqd2RM6FHv2RB0+mFcbgW09+xAIhAJsG41BYEPRPsLXBPE+e90ud/dAhmt0Fdwyc1xnfiBzE"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQD7Fzw4rcTN2EBk1OZIutwk8hEXO7dsCgQTRNBzad0O6QIgeX3wseLiNuLl2v78rQxLLToTudocaQ1YoPE57c44YaI="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/fast-xml-builder/-/fast-xml-builder-1.3.2.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 53028,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/9f/9fe5bb8b4f32ccb0cc09951b1de1e905e9badde30e1c0298ef5893019ce543f8",
+          "sha256": "9fe5bb8b4f32ccb0cc09951b1de1e905e9badde30e1c0298ef5893019ce543f8"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 60514,
+        "sha256": "1dc7f0c683f128759e8bddb74d582239b544632647b5500329d819c5c61af462"
+      },
+      "version": "1.3.2"
     },
     {
       "archive": {
@@ -1903,6 +1839,73 @@
     {
       "archive": {
         "evidence": {
+          "bytes": 8762,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/3d/3d5c72d41715c211d064ecae1d0425c7def4c2a8d6438a631b558a9ad924a4ed",
+          "sha256": "3d5c72d41715c211d064ecae1d0425c7def4c2a8d6438a631b558a9ad924a4ed"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "1ebe0ce1413467e95c2893d76de29a22fe3a648e21f3325ff6c042bfd4563635",
+      "integrity": "sha512-8r+FVU/o4zcFmpCDqbqAYhHHbtXPP+cyZKo7DRGRWc7OLlNs4TMaSQEpXL/sIdzyEG0M7RHw4B7xYMGrTc+qrg==",
+      "lockfileLicenses": [
+        "Apache-2.0"
+      ],
+      "name": "bare-path",
+      "occurrencePaths": [
+        "node_modules/bare-path"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 17227,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/fa/fa2e24aab87cd7fc55744684ac673e92f20ed9a7e6bde21fc07701924a9e69e3",
+          "sha256": "fa2e24aab87cd7fc55744684ac673e92f20ed9a7e6bde21fc07701924a9e69e3"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/d4/d458872f969ca8ba5429d0ea220b5f8afdbd093597de7ccf9191d7f4dc1d038e",
+          "sha256": "d458872f969ca8ba5429d0ea220b5f8afdbd093597de7ccf9191d7f4dc1d038e"
+        },
+        "publishedAt": "2026-11-12T10:05:07.028Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCkxA5LjQgQoeRWYHAR4gx2mFkcthkfzfZaEIBxXj3FBgIhAJzXMN3hBzDA7BmlvhrhuCUS+TJD+vOei9ha8FXOXYH3"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIHiPZ93lf+EWANF1H00nDvz0bRcFdJ022donic/ov/6uAiB6plimCqGfZmF/4tKKl8G7Eeuyju8cLmd7FiqESyS1yw=="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/bare-path/-/bare-path-3.1.3.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 110355,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/0a/0aefa55671f484743b26d24d2a64b87612fe6ba513be836f87455aebf4ec3cc8",
+          "sha256": "0aefa55671f484743b26d24d2a64b87612fe6ba513be836f87455aebf4ec3cc8"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 140803,
+        "sha256": "97594371b7aa35ad36f45ca242a8c1125802f6af2a3bf2dd02307f1efa14b809"
+      },
+      "version": "3.1.3"
+    },
+    {
+      "archive": {
+        "evidence": {
           "bytes": 21698,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/68/68bb62d27e4d18e95baf5a99def7b2a217dae9d33f261e6c24c188d360284c64",
@@ -2511,6 +2514,140 @@
     {
       "archive": {
         "evidence": {
+          "bytes": 9164,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/44/440c9df4e78e804ac5f7afeeb598bceafaf322c80ecf055951802409bf488a2e",
+          "sha256": "440c9df4e78e804ac5f7afeeb598bceafaf322c80ecf055951802409bf488a2e"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "2927ea125e6e67bf0a7b45fc1a142b1000efed748ab1736978e39182b0f9bd11",
+      "integrity": "sha512-bNBjq+x9Wezp3risJs7TaPH3jjVnyFmmSSxfpES8tp9xjvL4t6Bk9v2nC+xm5lfxJeDzChK7NBryK+JciM/pfQ==",
+      "lockfileLicenses": [
+        "Apache-2.0"
+      ],
+      "name": "bare-fs",
+      "occurrencePaths": [
+        "node_modules/bare-fs"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 17513,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/a1/a1c85b9c6d1d364b27b7e428b8108d4d536e06776e6cb074a66c9e3d9561d0a0",
+          "sha256": "a1c85b9c6d1d364b27b7e428b8108d4d536e06776e6cb074a66c9e3d9561d0a0"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/1e/1eb0d7583d4cda798f81a43df8a18f2a3fd840d72b62838fc894cb2e1fabb66b",
+          "sha256": "1eb0d7583d4cda798f81a43df8a18f2a3fd840d72b62838fc894cb2e1fabb66b"
+        },
+        "publishedAt": "2026-11-23T14:59:19.572Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCYWY7DpVvHNZ9loW2N+S7pPveds72+/sBmBFVD68ufbAIhAMba7KPuuG50rwWTYxrSmDNxmsAmWwPt3toU0kDcdNBQ"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCICF5YPSgUAcR51oJ74J7PLaisCp/oylmipTN427EEBdXAiA/A/GFbzoma+AaHEu+umXpDY9yneDh1TojaOI/cVgjFQ=="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/bare-fs/-/bare-fs-4.8.7.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 106622,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/5c/5c791d2369231bb4580ffc2bea1897266a2d43a38111b2201ac02e352c657712",
+          "sha256": "5c791d2369231bb4580ffc2bea1897266a2d43a38111b2201ac02e352c657712"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 330085,
+        "sha256": "cd559af697bdd4dacc2e8a9f55436246faea3987b48c8c1e07987e635f9d2424"
+      },
+      "version": "4.8.7"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 10157,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/46/4612520fd4588c721041696a5c440b3f5cb0dd387bfe5ae098bea28ef9a29083",
+          "sha256": "4612520fd4588c721041696a5c440b3f5cb0dd387bfe5ae098bea28ef9a29083"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "2a0a2298844505ebca5b2cd720c4ac71514542d6e9ccb75269a1075332279e75",
+      "integrity": "sha512-H52ocs+dXsxmLtMPqabXz0p+mNWfe5RacpUHq8sB6mJLiMPU6PF/7O0Bl/U8a8WrV1NzWNYpXwZW0zo0BeoT2A==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "@octokit/endpoint",
+      "occurrencePaths": [
+        "node_modules/@octokit/endpoint"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 17198,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/22/22dfa3ee1477c1e1ff36ed56883b6de6273fbf4f7e274da8a443d5a6c7cdc19b",
+          "sha256": "22dfa3ee1477c1e1ff36ed56883b6de6273fbf4f7e274da8a443d5a6c7cdc19b"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/1d/1db13d52d937efc788fdc1bc9fc37987407dcd0d8fef2a3748fa83ad36039f4a",
+          "sha256": "1db13d52d937efc788fdc1bc9fc37987407dcd0d8fef2a3748fa83ad36039f4a"
+        },
+        "publishedAt": "2026-11-24T07:32:06.657Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIHyy+V9I4MC6MF5ogczpcHdzORAeYj3dmaLl43fytpHLAiASieFCgyVX4p4qBpiGO1kzrfO9X9hIiilbWO7xQ5G/iQ=="
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQD/Q4oVDu17IOLwNwW/UevNi7Mtxefx0z7/koxs9G71pQIhAPVIirviDOpDEdaZJau7HWEydrO4HEmtREJ4aEbXBThL"
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/@octokit/endpoint/-/endpoint-11.0.6.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 77163,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/c6/c6526cd4b2d73c8e529089c439d138642f22e21b7756cd743d8677b25b85a3c4",
+          "sha256": "c6526cd4b2d73c8e529089c439d138642f22e21b7756cd743d8677b25b85a3c4"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 13986,
+        "sha256": "0d3771a7d2a25e25a1e0354874fb767629aec1b53d6c59ec73678eb14a392ee1"
+      },
+      "version": "11.0.6"
+    },
+    {
+      "archive": {
+        "evidence": {
           "bytes": 4437,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/08/08b9706b5bd1be171392a67d35d785f0a5d55042fc96e68774592fe567642662",
@@ -3055,70 +3192,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 6644,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/d1/d16552646e6f1dbb57e53f7916dd42bf25916daf8f86ef3bf1efa1c90ba5ed5e",
-          "sha256": "d16552646e6f1dbb57e53f7916dd42bf25916daf8f86ef3bf1efa1c90ba5ed5e"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "307ccc9cf948ec1963cca9cf1ad8c53212b7eb0a91cc35217b92837f12f01fab",
-      "integrity": "sha512-pIM/1n3ntFXKYrUZwW7QCK0gAW7XY+wzj1YMIV3tLDvPj/V+zTGJK5e3/4WJfwj0qWw2ElNXiTixda/R+3YSug==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "fast-xml-builder",
-      "occurrencePaths": [
-        "node_modules/fast-xml-builder"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 17694,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/52/522ad15414dab245aac8255a2dc36c3ef6c19f5eca0a726509205f916bbaea17",
-          "sha256": "522ad15414dab245aac8255a2dc36c3ef6c19f5eca0a726509205f916bbaea17"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 780,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/31/31321f3528e9bf4a4f5a4cda1869748448ef507433d36131b67386f17910eeef",
-          "sha256": "31321f3528e9bf4a4f5a4cda1869748448ef507433d36131b67386f17910eeef"
-        },
-        "publishedAt": "2026-08-14T07:02:38.815Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEQCIGWY5rQCaXAfeO69L+pVgCe3AvoWAIRHXsI8xt2gCYu4AiB3q2RDMqSVumhtlFuiJMRoMfFFQm0v+3h982PCfqqSKw=="
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIQDBIFMw1N5DF7oOIy/h4XTK0SsgLQ+PIYIOLDZ3n3XNggIgEzwSeS6fOjm5GpQsmadkw4LF+7HNuiVh3aO6eRU+q9k="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/fast-xml-builder/-/fast-xml-builder-1.3.1.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 54267,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/8e/8e8b22bb4f0edb93586910f8b1804102009363c67cd611b7e7a0c4773884f8fc",
-          "sha256": "8e8b22bb4f0edb93586910f8b1804102009363c67cd611b7e7a0c4773884f8fc"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 60073,
-        "sha256": "0e9583b397ee65ab8cfd32b2f78461bc7d9d4c2d398a03506f524d1973d7642a"
-      },
-      "version": "1.3.1"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 11592,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/25/2593b35a20894a58f9469ead830dd67928eb8928e598cebbfb66e3db25f2bb4f",
@@ -3179,6 +3252,69 @@
         "sha256": "318f45395a1e1f4dab40782dbbd81ec07029b5d5c9afbbf9620c6129e95a67df"
       },
       "version": "4.8.0"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 4179,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/0c/0c154efd639173ab348641fedcd5861d0390c3f229446a7ebf7de158108e5b36",
+          "sha256": "0c154efd639173ab348641fedcd5861d0390c3f229446a7ebf7de158108e5b36"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "33828edb87405c7be96e708cb5277712c80666a68d46bae460ae34264852b4d1",
+      "integrity": "sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "http-proxy-agent",
+      "occurrencePaths": [
+        "node_modules/http-proxy-agent"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/5d/5d6d3a93cad53049b39197296e72cf764384bb1cb60fa9493c69b0b73212ffeb",
+          "sha256": "5d6d3a93cad53049b39197296e72cf764384bb1cb60fa9493c69b0b73212ffeb"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 518,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/a2/a2514a634ca49ba7c2d739cb51c8c698fb0bafa85457bf21dec03b672e8e7d1b",
+          "sha256": "a2514a634ca49ba7c2d739cb51c8c698fb0bafa85457bf21dec03b672e8e7d1b"
+        },
+        "publishedAt": "2024-02-15T19:14:20.532Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEUCIBi+r32oZ7TAb8M+r8gRNyTMLi4SMGeNoZOcOaBcXWBJAiEAgEJSlR5tDp/tFXfa6gKR+uqSbvjxJ3CwHII/T6GqKuk="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-7.0.2.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 40984,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/6a/6ae0b974d7c240651054221cacaad6ef1fe16d8a03d16f3a93866b6eedb576fd",
+          "sha256": "6ae0b974d7c240651054221cacaad6ef1fe16d8a03d16f3a93866b6eedb576fd"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 6290,
+        "sha256": "785f73faa92bfba8d61da20bf59325ab2b3dca1bbc0bbac523406f404d8a6f02"
+      },
+      "version": "7.0.2"
     },
     {
       "archive": {
@@ -3303,70 +3439,6 @@
         "sha256": "9d6a926982795204bed8fb5d02537a08b74d0b8f85ec715808fe713e48d14a79"
       },
       "version": "2.2.0"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 4867,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/4f/4ffcd7bc24d2aa1a20793093b67a95e75a970c29d6de8d28946bdac04f75ace9",
-          "sha256": "4ffcd7bc24d2aa1a20793093b67a95e75a970c29d6de8d28946bdac04f75ace9"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "3695fd02238671dd7f0201d2c4ff7ca46adc20944652837fe52147395cedcbc0",
-      "integrity": "sha512-+8NeqHRjQWH9nYlwo2gamAMImZCVzI4UoEgDpWorBt9OEfppiZn+uSkskzQKPWIZyji/C8fpWO7u69G0DX0tbg==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "tar-stream",
-      "occurrencePaths": [
-        "node_modules/tar-stream"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/ee/eef1901d4544eb64d27a49ceca45be98f53d14a7709f269f891ac0c0cdc7c62e",
-          "sha256": "eef1901d4544eb64d27a49ceca45be98f53d14a7709f269f891ac0c0cdc7c62e"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 780,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/09/091853b491e74b29d624690c5e9a2a4fa674139036c2fea66c6acfdbf1ca5be3",
-          "sha256": "091853b491e74b29d624690c5e9a2a4fa674139036c2fea66c6acfdbf1ca5be3"
-        },
-        "publishedAt": "2026-10-02T16:33:13.226Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQCt5h/RFJCH2PpKhNA89vOYsjlfqJZ9hPCAVbCiao0ufAIhAPGHzI8ADQ1y+PdGuk1ACpba3AmfngXpa3tc+PRKDix1"
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQDR9VFQ5oDINEXjaafARiKnuiZ7TJ9D1uxZDWxdgkleLAIhAKw6Ei/ENy05O4QEaaAzp13VyfUTS4zJQzlQ2m+fkjLJ"
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/tar-stream/-/tar-stream-3.2.2.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 43784,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/83/83b4ec00c0774127dd4069878a1c296baa9cb02c3890730e07d34229e730db05",
-          "sha256": "83b4ec00c0774127dd4069878a1c296baa9cb02c3890730e07d34229e730db05"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 10375,
-        "sha256": "6adbf26440b42fb6dfcd8c837c5bd16331a64de325da11df751ced9a2c76ddf6"
-      },
-      "version": "3.2.2"
     },
     {
       "archive": {
@@ -3923,66 +3995,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 11612,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/b3/b3b7d918c4962a749388ffa549c531b689941c3c1d10bc1cfc5cff97de0e6f2b",
-          "sha256": "b3b7d918c4962a749388ffa549c531b689941c3c1d10bc1cfc5cff97de0e6f2b"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "425aa5dbb84d9c8eef8c18590183dca8bd254f0e274c8def640da05508732a9a",
-      "integrity": "sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "object-inspect",
-      "occurrencePaths": [
-        "node_modules/object-inspect"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/5a/5ae40b00202348ad9cf70b7e0b4d2458faf90ea644a62d43f5ec4f797bd78f7f",
-          "sha256": "5ae40b00202348ad9cf70b7e0b4d2458faf90ea644a62d43f5ec4f797bd78f7f"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/32/3298d0b3818a72af280bcb3c37735893cc3eb719504c90cb20d1abae27f0180c",
-          "sha256": "3298d0b3818a72af280bcb3c37735893cc3eb719504c90cb20d1abae27f0180c"
-        },
-        "publishedAt": "2025-02-05T01:26:10.272Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQDmWRl2Pr+NvTG0wMeED1kG9FCJlgPGJHqlz/dPa6LWHQIhALxOZiTuPsDFuDcUfcBlVhCWbqD8EYMlL32qytNN0RDt"
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/object-inspect/-/object-inspect-1.13.4.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 84158,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/bf/bfb241b2399e9aec1ba0426a75a34f50f6dc2b393ab80e57dc8cb16a4867ce4c",
-          "sha256": "bfb241b2399e9aec1ba0426a75a34f50f6dc2b393ab80e57dc8cb16a4867ce4c"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 28026,
-        "sha256": "8324967a3afd8a45b0401e3554aebc1843f493bec46a89a7ce8cf072e62e90bf"
-      },
-      "version": "1.13.4"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 21550,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/ab/abf0a2d38b73332672150c2466792b41c8d4a1d9d202b75600c89dfa73a65505",
@@ -4283,69 +4295,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 4919,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/b0/b09661a8a0e592a27548b242a8b0480e9ad8d82fd0a3d3110c6a95e725eb96be",
-          "sha256": "b09661a8a0e592a27548b242a8b0480e9ad8d82fd0a3d3110c6a95e725eb96be"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "47e64a3b019a20983ced1f6605fc5bb4ad33e228c7d4257c05c3aeafb137f56e",
-      "integrity": "sha512-ag87y7cJJ9/3+GxFr8Oy4O5faDsGRGnBGsJj/YjOSsSx/5eadKLYTMPlzuR6obgoCDDm0abAAZitXXQkMOPSpA==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "https-proxy-agent",
-      "occurrencePaths": [
-        "node_modules/https-proxy-agent"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 17387,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/a2/a2602ced1a82d299c4902abfb1f8f2e8929a068a5d837080dce7e87b61144308",
-          "sha256": "a2602ced1a82d299c4902abfb1f8f2e8929a068a5d837080dce7e87b61144308"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/7f/7f250c3d36e10e185f2488134fc01eb39a80f4fc134db9de9898b263a86cef01",
-          "sha256": "7f250c3d36e10e185f2488134fc01eb39a80f4fc134db9de9898b263a86cef01"
-        },
-        "publishedAt": "2026-06-08T16:47:28.029Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQDWDLqJJgxaIwQ5FXWvzVEre69h3G+p+9mTIFdSzWi9vgIhAPcJPEWb7PLQvtkAsVW3ZgYQg+47gbeM6k2ZTYwCl8tS"
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-9.1.0.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 45847,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/02/0239ea32be7141cad060e3cb5d755e6434f33750b8bf2d8a4ea967780722c55c",
-          "sha256": "0239ea32be7141cad060e3cb5d755e6434f33750b8bf2d8a4ea967780722c55c"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 9651,
-        "sha256": "f05f86b8d218916a4e8396ce375dcbd547e4ca5aec8fd9adeb2528b5dde940ed"
-      },
-      "version": "9.1.0"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 3567,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/46/460677b8bb283fcdd042612266fd22a0a4d563c85fcab32e96f3d09430653bdf",
@@ -4466,6 +4415,73 @@
         "sha256": "6bb45cfba08cd2eea39eb3ce6eaa94113070fe137ec0bd4a9f122be9a0250e6f"
       },
       "version": "3.2.6"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 4868,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/f2/f28f5d32a6babae874550f62aeef237d0b9cb418d44c7f5e179e92169215e772",
+          "sha256": "f28f5d32a6babae874550f62aeef237d0b9cb418d44c7f5e179e92169215e772"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "4ae40f125ccb8c36260576219c38e9f3446505e3ee0f082211d0a57e4b29f767",
+      "integrity": "sha512-rQZZfW2Q4YDCFJyP8KFDG+gfMzcOHaMYq0gb9jzH2gsK0P5qXVpu+UoKE1qaZcs3/R6QVkJr2228nlZoM1V5PA==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "tar-stream",
+      "occurrencePaths": [
+        "node_modules/tar-stream"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/c9/c95187347823cf2e839340b8ded5e7ddc9d20d297d573ad72d87dc9e33d63fc4",
+          "sha256": "c95187347823cf2e839340b8ded5e7ddc9d20d297d573ad72d87dc9e33d63fc4"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/8c/8c98077230d497bfd1407fccc834f434d144c5830e78253e2d925b55f0d04095",
+          "sha256": "8c98077230d497bfd1407fccc834f434d144c5830e78253e2d925b55f0d04095"
+        },
+        "publishedAt": "2026-11-23T12:23:54.451Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIBy0gyN5oLUIMD//HaVV+LVx57ybmyoJGel2e/cTwQG/AiEAxYduAmeC62YD/MiuwBwIB8NO9AGPg6NIWuxG3eUWNgw="
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCbr925l8NV+QhFxxu2aZvF/8d+yX5fMJ3gBl0gGS1swwIhAMAwq0RkKpQJ0+Zft6jY4dMrhKVuN4bVtRr8NWX5s7/P"
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/tar-stream/-/tar-stream-3.3.0.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 43785,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/25/25b23b9bd0f67c0edc6ad5e8cdbe3e4dbbcf628b27b1af6243fd9e10e5750957",
+          "sha256": "25b23b9bd0f67c0edc6ad5e8cdbe3e4dbbcf628b27b1af6243fd9e10e5750957"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 10592,
+        "sha256": "b05a538895a9ebde3386a4a55200d85523a0f4d7c2699b71fa495c2ce12338fd"
+      },
+      "version": "3.3.0"
     },
     {
       "archive": {
@@ -4946,6 +4962,69 @@
         "sha256": "3e36bf072a5561d2440fe7cea5bc79754c3c8110650e94c960842f08d328023e"
       },
       "version": "1.1.1"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 5159,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/5b/5b5aa1e98a28b151aa9e7d0a29e4872156bf112a3165ed4c0a762992ef2fceb5",
+          "sha256": "5b5aa1e98a28b151aa9e7d0a29e4872156bf112a3165ed4c0a762992ef2fceb5"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "4f502cec5dc514f31963011b3b97d27bc7e10703bedd3aebb8bef0cda1fdb4af",
+      "integrity": "sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "https-proxy-agent",
+      "occurrencePaths": [
+        "node_modules/https-proxy-agent"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/ad/adfa054ce1534bc3fae3f75c165cd7ce670f795c9b5a9aa20b458133824973ce",
+          "sha256": "adfa054ce1534bc3fae3f75c165cd7ce670f795c9b5a9aa20b458133824973ce"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 518,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/3c/3cc1b02922ad94dcdf71ee23685d5a1ce130e9f8e19cdf3e985d0de81cdf23ca",
+          "sha256": "3cc1b02922ad94dcdf71ee23685d5a1ce130e9f8e19cdf3e985d0de81cdf23ca"
+        },
+        "publishedAt": "2024-12-07T03:32:09.302Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEQCIGQmE/GtFh47FHNYydO0kHVKVPJ3xHC8374L5yFaZwr7AiBPZDC76EJqXcrgPjMTGm9K5WZjFnK9aQJZh1/K2XXGXQ=="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-7.0.6.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 47517,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/ff/ff2f62576b30719d7dbf0d1232c4a52fea847a2adb60659b8fa4c30bd90968c1",
+          "sha256": "ff2f62576b30719d7dbf0d1232c4a52fea847a2adb60659b8fa4c30bd90968c1"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 8998,
+        "sha256": "960f89e8e5240882f64249d04a538421dd39d62ffacc138544647cc3251bc0e0"
+      },
+      "version": "7.0.6"
     },
     {
       "archive": {
@@ -5674,70 +5753,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 9163,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/e3/e3bcdcde0b655d2137fa911bf5f14be5e534b15ecd4e700d5a03ad3d64712af9",
-          "sha256": "e3bcdcde0b655d2137fa911bf5f14be5e534b15ecd4e700d5a03ad3d64712af9"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "5c2133741faffe6efa1416dd1330a16655c2ebd3ef13b10df65ddbe549517b57",
-      "integrity": "sha512-MPC2eyrpbk3A873sK4y6rk+Iv4o2enxTjHZ8zH3HO0mjrpm5XjnguY2XmfidIsDV6vnjpbMBKUAJpV0ISD2SsQ==",
-      "lockfileLicenses": [
-        "Apache-2.0"
-      ],
-      "name": "bare-fs",
-      "occurrencePaths": [
-        "node_modules/bare-fs"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 17649,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/81/818231c231ea8c589315216e09640be8c9a6505fb39716fc2d62f4cebfe324e7",
-          "sha256": "818231c231ea8c589315216e09640be8c9a6505fb39716fc2d62f4cebfe324e7"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 780,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/d2/d2c789a65f3f68ff82a60d0b2d90c60c0b15777b3b2fca0b8dbde37ef9a72a99",
-          "sha256": "d2c789a65f3f68ff82a60d0b2d90c60c0b15777b3b2fca0b8dbde37ef9a72a99"
-        },
-        "publishedAt": "2026-10-09T19:25:06.621Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEQCIBckkOQuFCHYNeZQygFCfJXaQXx+nuvqVZLHh5NJCvj9AiBP0wgnBtQZG5hRDual94Q4tqSOiuBTSoIGskaTTx7ZHw=="
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQD4m2P3OpoY3/JS3YN0XAZ/NbFF2pQHQ+YaqUrjD8gZiAIhAIXC9xsaIG7LPAmsLd4b0kmoDER+n/ybI8Zzw2NNIhMT"
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/bare-fs/-/bare-fs-4.8.4.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 106620,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/20/20e3f06f666ff3537e653c8c66424d5c7ac25fb65594eb6a608febf7fc8d912b",
-          "sha256": "20e3f06f666ff3537e653c8c66424d5c7ac25fb65594eb6a608febf7fc8d912b"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 357399,
-        "sha256": "412bc041e9d872afaa86323ce5eb5cfdfaf9abb1e2b4c8d463f11fb409911888"
-      },
-      "version": "4.8.4"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 4933,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/f9/f95e2383c30afc6e0ec8543cbc8a99e5483746876bdd8b9d0dac58e451897f26",
@@ -5854,6 +5869,73 @@
         "sha256": "bbedaab7c94b9d392ea85da0a77c18c3a0bce3d47a1ca1685af11a747b2883ee"
       },
       "version": "1.0.0"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 14972,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/54/548775334b7bc72e572e26575382f63a5a3aea5a6b3db70bb85df155cd3b2794",
+          "sha256": "548775334b7bc72e572e26575382f63a5a3aea5a6b3db70bb85df155cd3b2794"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "5e16da5ff8d47cad646292c3fce417b8b20112c53b65445b3bc03306e2ca8a7d",
+      "integrity": "sha512-wR8dO/fx+z8C5exuem1e7BKOWvjsuzvjS/tvA/Xu3Z1zQqJGcXrPzXbcAiaMgp2KjreEROcTkmnnisrcmJ2hYQ==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "fast-xml-parser",
+      "occurrencePaths": [
+        "node_modules/fast-xml-parser"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 18034,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/7d/7d0fa5d2f797b7534bafa29b0f5cb26e0a11d93e68072b30291294bd96276c88",
+          "sha256": "7d0fa5d2f797b7534bafa29b0f5cb26e0a11d93e68072b30291294bd96276c88"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/f1/f15b5da9b805ed26d4f4ef54fa54bd2263f0ace51371a0ab240b630b6ef2e502",
+          "sha256": "f15b5da9b805ed26d4f4ef54fa54bd2263f0ace51371a0ab240b630b6ef2e502"
+        },
+        "publishedAt": "2026-11-13T09:55:51.043Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCICqeOgBvVRCTWvPawfHXFI+ubiliOcGIYUsMsOxEbHjxAiBU+u9yJmt9KD+UysNMDNl+iXPxpqbIiLRuWBZ5vuVAaw=="
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQDlnjl+aojQh/1ly2SeNueclnGpnOPb36jnNFr1LclXpQIgLbtG/weWjS9v/IGeeG7dmCKQ7nvMLuw0ATqIq42firM="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.12.1.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 105714,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/0b/0ba0323edc76e8af215ca54a8f2cbfa147bc6621608fbda068550625f52986da",
+          "sha256": "0ba0323edc76e8af215ca54a8f2cbfa147bc6621608fbda068550625f52986da"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 381472,
+        "sha256": "b5e1b988bf12a23838b41ab6cae3ef2993f6f8c3482ebac133ab55fa39837016"
+      },
+      "version": "5.12.1"
     },
     {
       "archive": {
@@ -6041,73 +6123,6 @@
         "sha256": "9b6bbd39c376956f4c0342f25cc1a5e3ecbf49206a8a983c5b24c70485da4437"
       },
       "version": "1.1.3"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 259664,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/c6/c62ac4df120c75f48500410bcfe8c3b06505ad7818c328d0dce97b17c4b43c56",
-          "sha256": "c62ac4df120c75f48500410bcfe8c3b06505ad7818c328d0dce97b17c4b43c56"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "61db322f8f73801cc8ce8e8d24fcb150adb33965e65002b0dec6749074c41705",
-      "integrity": "sha512-vddvvtZ7sejSlCv+OIkn2ztjB1O31Fc2JsxI/YK725r3elXXlF/J3o3lbXJFRhoeWRWK1tjdZ+GTi6Fdtrp+EA==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "@typespec/ts-http-runtime",
-      "occurrencePaths": [
-        "node_modules/@typespec/ts-http-runtime"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/92/929c46b29b0c561f782f75acdd1fa9491bfd719ebae7070b85ede7a9537fb5a6",
-          "sha256": "929c46b29b0c561f782f75acdd1fa9491bfd719ebae7070b85ede7a9537fb5a6"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 780,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/eb/ebc1a2c9dfb131173a6d8dd78bd0ada5a8d0c08f2514601215a5ce03cbbc9afa",
-          "sha256": "ebc1a2c9dfb131173a6d8dd78bd0ada5a8d0c08f2514601215a5ce03cbbc9afa"
-        },
-        "publishedAt": "2026-11-07T17:12:17.497Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEQCIEDoWSs57bomWtF0Lq+pRUOM2hT/rYC7Z276FQwVHhSmAiBK3ipGpIZ40yYkKYUGovujZ2H1lQyJ9Zn8vujhnPmVjQ=="
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQCW0IIaaAG9VAPgV0SC1z92QszyBasDs7uEy873bXKAAAIhAMo+0Ithc85kMWGTarWB2igyt7J8CzzgRV2iYlyxMEb4"
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/@typespec/ts-http-runtime/-/ts-http-runtime-0.3.10.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 2387434,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/0a/0a5568f537deca01f0fa218dbf126b9375f593a01be72c67aa9da4a40a9a12fb",
-          "sha256": "0a5568f537deca01f0fa218dbf126b9375f593a01be72c67aa9da4a40a9a12fb"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 320532,
-        "sha256": "7a8f7e5859f7be10b302d6835f0f5fd023ccc48eff234ad63210c729945c761b"
-      },
-      "version": "0.3.10"
     },
     {
       "archive": {
@@ -7381,69 +7396,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 10889,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/9d/9d9dc19ebd9db4aa1bf523abbbf03e2ffdebf89adbbdbd94d01289bd217cf676",
-          "sha256": "9d9dc19ebd9db4aa1bf523abbbf03e2ffdebf89adbbdbd94d01289bd217cf676"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "7b6eec3ad9be9ba24250e2dcdfbe49cdb1508132ff9a00a70127cc8b2c794f7d",
-      "integrity": "sha512-nFQuYSTVrGvysVBps5Ih+0BdnYFN/Cj3C816r6+p7yK+FHrVLGE4O4N9AFwykrlNlvM2HYt+Rad1Uiro6h88Ig==",
-      "lockfileLicenses": [
-        "BlueOak-1.0.0"
-      ],
-      "name": "minimatch",
-      "occurrencePaths": [
-        "node_modules/minimatch"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 17752,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/b3/b30887053b42932912137fff9f98daeea642ab5a12287c32ebdd21abd8077b0a",
-          "sha256": "b30887053b42932912137fff9f98daeea642ab5a12287c32ebdd21abd8077b0a"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/65/658b4982dda6037dd2c198ea0f4b10b5b4619f4424f433f304de0e19c3fdb62b",
-          "sha256": "658b4982dda6037dd2c198ea0f4b10b5b4619f4424f433f304de0e19c3fdb62b"
-        },
-        "publishedAt": "2026-11-11T09:50:19.549Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEQCIDv1uKndKTp5uF8EnOfx3W0patnaByYWGnokabgsjPaZAiBs28XnHVRyQ0SpOTIsbON9LCRuqoOjjvGtsNdeT6OV5g=="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-11.0.8.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 77802,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/cc/cc46a0f6f068a132aa1ee17aae60cc83d871a25305499ad2b06e761ab20d145a",
-          "sha256": "cc46a0f6f068a132aa1ee17aae60cc83d871a25305499ad2b06e761ab20d145a"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 121657,
-        "sha256": "1dc838a033c6105308d3d49c1881f9304b2b6821683dfe4815c37f8e19e7956a"
-      },
-      "version": "11.0.8"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 6867,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/aa/aa17710f130e97a7c6259c7abddb32cf9f2fe52254e5cdb004819470a2c7ea6b",
@@ -7864,6 +7816,73 @@
         "sha256": "555f4dc09d0b81838d5ed1027136cf81341c10ac9258f14fa76bd453da67aa5d"
       },
       "version": "3.1.1"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 5659,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/5f/5f4a2060b8cb36197ad50df2c73554d67477d0a10b0e2947d467528d02fa05e6",
+          "sha256": "5f4a2060b8cb36197ad50df2c73554d67477d0a10b0e2947d467528d02fa05e6"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "8b2a7227c0a13bde6fcbb048b41515db173bb6b9555c5c41e7ba47d8840e52d2",
+      "integrity": "sha512-aa11Dv491GKnYqxaul3aRJ0szew7yMJMfZPnqD44NjGrZXoj62l41OEDDpdpC4eE2P88vBFfLuSyRhpG91NUvg==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "brace-expansion",
+      "occurrencePaths": [
+        "node_modules/minimatch/node_modules/brace-expansion"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/f9/f9e14534369ce65f4400842461745c80ed0876a927d3c87c1db5fd3e04e57131",
+          "sha256": "f9e14534369ce65f4400842461745c80ed0876a927d3c87c1db5fd3e04e57131"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/b2/b23ebeb5838afa7d0ef59e8e201294a7ee555f34ec7934a5fc5b2cc46fe4d44d",
+          "sha256": "b23ebeb5838afa7d0ef59e8e201294a7ee555f34ec7934a5fc5b2cc46fe4d44d"
+        },
+        "publishedAt": "2026-11-23T15:56:32.039Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIDsPr2YggRxy6tLO+zxkahN56b/ivjOCVhM8r4ubyOHKAiB2T7PJ4BAn3JXds9VYmvnb1H1xjtFhRURbUGkqUSYrmw=="
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIEMGmyf4IumZ/+/wZq43Hy7iMAAZ9BvgnJjEBNs3A1baAiEAoZBGDoYoSB5DfI9s8O/nTKZTX1af7wPCTLg12Er/nCc="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.1.0.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 48237,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/2b/2b0f088976026bf7919a220f46da7eb936aa8a9edf16875663789f05cf3f645e",
+          "sha256": "2b0f088976026bf7919a220f46da7eb936aa8a9edf16875663789f05cf3f645e"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 32474,
+        "sha256": "2d1000870fffb3c831b0fbf353a4da3d46f1648619e8ab412b966a85432bb749"
+      },
+      "version": "5.1.0"
     },
     {
       "archive": {
@@ -8479,6 +8498,69 @@
     {
       "archive": {
         "evidence": {
+          "bytes": 10889,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/fc/fcae576dad33243872b789a95d8d37a7d15eeb1a0bf2cc109593b6a3dc06e806",
+          "sha256": "fcae576dad33243872b789a95d8d37a7d15eeb1a0bf2cc109593b6a3dc06e806"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "9b68fda73e398661db044eab3ba99bb94fc1d01d396e91ca4bb2427fe373329e",
+      "integrity": "sha512-KCFkfyjqerNlSstjlhIGNXIKZGA/6O4V4RlhZ+Dsr621SPPw0mzlypE9D9ZOoPiVefHID+j7/XuMMlqfD/F60Q==",
+      "lockfileLicenses": [
+        "BlueOak-1.0.0"
+      ],
+      "name": "minimatch",
+      "occurrencePaths": [
+        "node_modules/minimatch"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 17408,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/51/51feeed81cb655d7b34353f4b032d34778b6afea9896aa8beb9fd1c1a4c611b6",
+          "sha256": "51feeed81cb655d7b34353f4b032d34778b6afea9896aa8beb9fd1c1a4c611b6"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 518,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/ee/ee7e9f1a5d367ecd2dd38999fbf4fd3187e14a0f9deb36df48fe32dd0e95de0e",
+          "sha256": "ee7e9f1a5d367ecd2dd38999fbf4fd3187e14a0f9deb36df48fe32dd0e95de0e"
+        },
+        "publishedAt": "2026-11-16T21:52:08.927Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCLsyZz2VMV6So/peQdezeWJn2mjhEXSCEIRLttN25rugIhAPW8l2G/utQGBjGpnIVeUhGuz118gG0HzbagP10Z4ahu"
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-11.0.9.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 77802,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/63/6395aabfce325c58350f3fe56f445a8bac47df8c3c444b70e18ea6b1a1374322",
+          "sha256": "6395aabfce325c58350f3fe56f445a8bac47df8c3c444b70e18ea6b1a1374322"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 123285,
+        "sha256": "fc8a4ba8a9ad37a4c8163fc170336bb22514597d247663d148d5435dda60c661"
+      },
+      "version": "11.0.9"
+    },
+    {
+      "archive": {
+        "evidence": {
           "bytes": 7476,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/ce/ce31422d92fb38ee98c5883d1b3f5d5e82a3e3747817c4c9cd62d321b901c7ec",
@@ -8539,70 +8621,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 8761,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/cb/cb33091cfeaacbb87b4edab7671e6428c69678e9d3bbb491bf920a6eb8208f08",
-          "sha256": "cb33091cfeaacbb87b4edab7671e6428c69678e9d3bbb491bf920a6eb8208f08"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "9ccbc36f450da8f6f54c8b82bcbe19c3071f93d3ecd8ed5e9c187fdfa5945b40",
-      "integrity": "sha512-ZyKbsuuqK6Ag0K8pX6V5Txq6XeJRvY+wXucnFGRjiyVYP9YWDpIQugk/b+enRYrEYBJaqLzghRQpXPMR7341Nw==",
-      "lockfileLicenses": [
-        "Apache-2.0"
-      ],
-      "name": "bare-path",
-      "occurrencePaths": [
-        "node_modules/bare-path"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 17215,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/0f/0f5042e69f533cf13b3a9e66164db4279d83d51b2bbc93b99124d03ddbd64ef8",
-          "sha256": "0f5042e69f533cf13b3a9e66164db4279d83d51b2bbc93b99124d03ddbd64ef8"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 780,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/90/901db7c03a7964a21103ddbd9a4cfc57676220e449f4ea1aa515c9c3ea68534b",
-          "sha256": "901db7c03a7964a21103ddbd9a4cfc57676220e449f4ea1aa515c9c3ea68534b"
-        },
-        "publishedAt": "2026-09-01T07:14:42.842Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCICr7awxMXbHQgxR+QanSccqc9yAA/hJRvOQNeInlMw/bAiEApIV2FUCk4tzUbUpp5zbdcPcftlntbF2NgJ85S03lRuM="
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCICl4nAo1w6wJy+PEGFO/zWtle/eNoNquwmhk8YMbtirXAiEAi7DpJ9inzcnTktxZIjklh5feDyd4OTDifhOkpgahmg4="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/bare-path/-/bare-path-3.1.2.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 110355,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/c2/c224eeb75462c4c5be454a5006dd3948144105c535814a4e87cc98f3e682c647",
-          "sha256": "c224eeb75462c4c5be454a5006dd3948144105c535814a4e87cc98f3e682c647"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 138452,
-        "sha256": "cd4006032ecc1522a3cfe95d6f922b7defc112c4c07c12310b84dbbab140af52"
-      },
-      "version": "3.1.2"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 9057,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/20/207ff2e9343a62bf34e944d75ec25d0faedc96d762da2449c6a3ee25b3ef0176",
@@ -8659,133 +8677,6 @@
         "sha256": "2c30dd630b58299bdfaac8688f763c6f312d29779c500b1e3701a1d4fb3b534b"
       },
       "version": "3.3.0"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 4631,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/f3/f395cb8fbef6bb373e666485648eaa52bfdff3c89501f7cabe05b26d9d7de84c",
-          "sha256": "f395cb8fbef6bb373e666485648eaa52bfdff3c89501f7cabe05b26d9d7de84c"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "9ecee232f204f0d7f5ac70594abf051953c97f4cdaf37a5d0f8714fefa4b32fe",
-      "integrity": "sha512-TQf59BsZnytt8GdJKLPfUZ54g/iaUL2OWDSFCCvMOhsHduDQxO8xC4PNeyIkVcA5KwL2phPSv0douC0fgWzmnA==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "agent-base",
-      "occurrencePaths": [
-        "node_modules/agent-base"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 16624,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/4a/4a0443489d1b08ca7a517008e89c2a1b55e9aa32d619ee5424d39947f94cddc3",
-          "sha256": "4a0443489d1b08ca7a517008e89c2a1b55e9aa32d619ee5424d39947f94cddc3"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/eb/eb9b92497334fb33bcaab4bbf968bef43fdd5c3a2455b5bcd60c53ee11de0b43",
-          "sha256": "eb9b92497334fb33bcaab4bbf968bef43fdd5c3a2455b5bcd60c53ee11de0b43"
-        },
-        "publishedAt": "2026-04-01T06:57:34.221Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQCy3iMjwgQEuTOa6HP6Z8rcloxwEJ8bwYjY+JEjVSwbQQIhALdbXkwSQOK8paTBvRi0fDjLluuxQVHWEtciF5KOP97C"
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/agent-base/-/agent-base-9.0.0.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 42909,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/51/512e2a6399f3e1a2170c5e984ea8dc3b01a2527f3bcddcf3b6474f0b0b1853e6",
-          "sha256": "512e2a6399f3e1a2170c5e984ea8dc3b01a2527f3bcddcf3b6474f0b0b1853e6"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 6984,
-        "sha256": "2361fece924ff86b49991de66bd8e8db0e3bbfcb8d9e1a4443bae89a23cba89f"
-      },
-      "version": "9.0.0"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 4173,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/93/93cf56d3df60ebb07b916476d8820aaad5efb34b75afc2ab7b660d5dc84cdba4",
-          "sha256": "93cf56d3df60ebb07b916476d8820aaad5efb34b75afc2ab7b660d5dc84cdba4"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "a0153ccf8fbe76915f2574f2182ba899eaa0ee945876ca6d4a4400386acf26ca",
-      "integrity": "sha512-uZbew1NqdmPDTMJ8ah1y+b+9QEJrfkXFk3RcTQw3X0jW/xRUvFKsg1CfQdSYGdTbXZWExtU3J3ccxtnfw1Fi0g==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "brace-expansion",
-      "occurrencePaths": [
-        "node_modules/brace-expansion"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/7b/7b62f1183838dc0c8378503127c5663d27fd8dac9027ee9c4c84b905129e059c",
-          "sha256": "7b62f1183838dc0c8378503127c5663d27fd8dac9027ee9c4c84b905129e059c"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 780,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/b3/b39b4726604f9bac393def326df6b2826a054e70e79efce01482aca21ba23ddc",
-          "sha256": "b39b4726604f9bac393def326df6b2826a054e70e79efce01482aca21ba23ddc"
-        },
-        "publishedAt": "2026-09-14T22:02:58.810Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIAkrqNzwWiBk2UvzBMWjKR6ADOa7s4M/lF7AY4spVPdBAiEAxPONwyYz2BJ4UMzDiq+dITWj2Rw95YswFp9O5Rm4CHs="
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIGUVEJydbSPyIXGiJHFk8mVVj0ty/cwj49wMwg9vVOLrAiEAoAfiMVysswnpDqFjhDeOasp8BMfphqjTn2FE69WmgHE="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-2.1.7.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 37115,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/a3/a314fc63e530e477ca210d1afaa1416330d7b0768c77d97481d131b346b19db1",
-          "sha256": "a314fc63e530e477ca210d1afaa1416330d7b0768c77d97481d131b346b19db1"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 7371,
-        "sha256": "6f4d64fdab4cdc5096d48537f35a6bbb2b8b918abaa4bdb0833e92486f66befc"
-      },
-      "version": "2.1.7"
     },
     {
       "archive": {
@@ -8966,6 +8857,73 @@
         "sha256": "0f008bf151bb061999f6bf3324b37d5859695865b34773cc34e6f7669999c8a5"
       },
       "version": "1.1.1"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 4098,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/49/49a464d54021fcdbda9bf81cf6b9dbfa0311e73a1583874c28f70fc79a3352f8",
+          "sha256": "49a464d54021fcdbda9bf81cf6b9dbfa0311e73a1583874c28f70fc79a3352f8"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "a50d08abb58e052bb0049e663631bdbc9b69c85d39e34327a00f49c61a0fe547",
+      "integrity": "sha512-BnlDzDYQoplTsZSvPi86CNzmbcb07X8ufR8fk1zivaiEJlXJkiq1MQyDCVmlWcsWbj6aWXqHnrwwevbrm/Saig==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "brace-expansion",
+      "occurrencePaths": [
+        "node_modules/brace-expansion"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/8d/8d27fea0e252650422890dd81812c6caff54b22750fa7b6adee65a7cc5bc81ec",
+          "sha256": "8d27fea0e252650422890dd81812c6caff54b22750fa7b6adee65a7cc5bc81ec"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/a0/a0cf8600aa49994577d1f97e1756d5261ebb54d7582fca41ad69d06f59469665",
+          "sha256": "a0cf8600aa49994577d1f97e1756d5261ebb54d7582fca41ad69d06f59469665"
+        },
+        "publishedAt": "2026-11-11T12:30:22.695Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQDhAnm/EA0KCOSX9k1lErTr/T8rRP+BuupnXAb6+lTaKAIhAJqvQgajbBiVI+tyO0WuUokBrUBVQEN9z/XEtYE0uOLP"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQDC/QgF68N+ow+HaZdxX9x6j6/14sEj+cLbjIbpbzTdPQIhAJVFHbrWxIDuJEZbeBO+qt1Ns0w6LGgN402tXhgn812o"
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-2.1.8.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 36815,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/cd/cd7aa408539a29d7d58d59c277c703708dc5e16a035ea00c952a66032ea5877f",
+          "sha256": "cd7aa408539a29d7d58d59c277c703708dc5e16a035ea00c952a66032ea5877f"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 10390,
+        "sha256": "eb26e9fe6cb6d92d79fe866c567552d5a052749c5438f2eda737639605c7ab5a"
+      },
+      "version": "2.1.8"
     },
     {
       "archive": {
@@ -9330,69 +9288,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 2994,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/c0/c0c7d66337bace13c6be66bb4911ef71d9458dc0f9dd4b776bf2d45841899a0c",
-          "sha256": "c0c7d66337bace13c6be66bb4911ef71d9458dc0f9dd4b776bf2d45841899a0c"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "ae85b451e8cf8384c1b2adaff0fa70f32ec44249ea9a861304f2ddaaf0b7e160",
-      "integrity": "sha512-N8IBcM3UgCVzz2L2Lqv8DVntDnnC8/hiV4nEDUPkqq72TPUgYWjQc+bdZlBPZK9LzPAvOY//gAt0S0DApoOXWQ==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "proxy-agent-negotiate",
-      "occurrencePaths": [
-        "node_modules/proxy-agent-negotiate"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 17191,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/28/28537ccbf3bd5b353f3b1b51d7a7dafaf702ec94e38b822b2b18e161ffe09ead",
-          "sha256": "28537ccbf3bd5b353f3b1b51d7a7dafaf702ec94e38b822b2b18e161ffe09ead"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/b4/b40443022b6eb50301589b8a810d3a06e11c41e8679911408aea088f0f4ca0ea",
-          "sha256": "b40443022b6eb50301589b8a810d3a06e11c41e8679911408aea088f0f4ca0ea"
-        },
-        "publishedAt": "2026-06-08T16:47:13.126Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIAZXJuIWPDmBLjX2GPp2P3IVQwLz6IXCGSoirTOpj8K8AiEA7AdjZQHKd+Tw+3NHgrk7RlO1GBtxZ/EYQkjdSamE5oY="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/proxy-agent-negotiate/-/proxy-agent-negotiate-1.1.0.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 24395,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/25/25e129e00aa1f43060f5ea7d82bc3668b1d2e22995fde7aba903f53e93fb1436",
-          "sha256": "25e129e00aa1f43060f5ea7d82bc3668b1d2e22995fde7aba903f53e93fb1436"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 1924,
-        "sha256": "6eec23d5d381a8b0ffafe91c19876d3a052e463618695981a7529f3a8bca1997"
-      },
-      "version": "1.1.0"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 6316,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/80/809a41bdb7f172866227b9affeb294b1584d76b73b83c9ed05e8487adfedb0d5",
@@ -9629,6 +9524,73 @@
         "sha256": "415a7a042524c6e93ddff26530d2f4e94058428d37e1d062f619d1c0afdafcbf"
       },
       "version": "9.1.1"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 259664,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/f7/f7db90df6347bc7583a7d21ce6e295023fe552c48eb7b56be1bb4620095428f7",
+          "sha256": "f7db90df6347bc7583a7d21ce6e295023fe552c48eb7b56be1bb4620095428f7"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "b4d64797010e42a39a66894bcda2062d1263174ed1775204b4a25130f8827d32",
+      "integrity": "sha512-KZlacW7zFdcIOAcpNiV5U9fy0Tfgw7xdEc4rVyuUtQS+UR1Sn32PXuAz+AJ70Y0yzTWh62/pEEpFmWUJl6YySw==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "@typespec/ts-http-runtime",
+      "occurrencePaths": [
+        "node_modules/@typespec/ts-http-runtime"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/16/163e7557e7aee30bfb394102134e3da3607569c8b32b21ef8474f725c49c8393",
+          "sha256": "163e7557e7aee30bfb394102134e3da3607569c8b32b21ef8474f725c49c8393"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/66/668910c26a578b9d1990564c1bee2c68f4fa40e99e210d144213cdfdcdfe185f",
+          "sha256": "668910c26a578b9d1990564c1bee2c68f4fa40e99e210d144213cdfdcdfe185f"
+        },
+        "publishedAt": "2026-11-17T22:02:26.864Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIELezE9NncF8dBU3e4mYLGm5KdGTggx/GSdMt2T+FZsiAiBXM28RcNDQsxOQPJDeF/T86+gg3KljG4+UvCHLaKYmDQ=="
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCXNvm/uPenmUiA9YxB2PJjxgFDjMwmZ/XVU/6pB7m+9gIhAOFpo79uVZfdfhrv3fQGMjTAN9SX8+qpIhFWRQdKO59a"
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/@typespec/ts-http-runtime/-/ts-http-runtime-0.3.11.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 2387434,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/f1/f1e5bdd424d3ba99fc9c003213c1b3529216130c60c70b1914552ae7c9ffb9f7",
+          "sha256": "f1e5bdd424d3ba99fc9c003213c1b3529216130c60c70b1914552ae7c9ffb9f7"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 344395,
+        "sha256": "f8c0a113c5da727da7200aca18478a66397841f3f9c71be0a091829d18f3eaec"
+      },
+      "version": "0.3.11"
     },
     {
       "archive": {
@@ -10194,6 +10156,73 @@
     {
       "archive": {
         "evidence": {
+          "bytes": 9952,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/b3/b355b7708b35b9cc386897c768964faaadf330435ca6e4df7a40b10b2a4ff183",
+          "sha256": "b355b7708b35b9cc386897c768964faaadf330435ca6e4df7a40b10b2a4ff183"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "c2f0612b7c0f9449fcc817e69c7c0cd88d0a63a0b5e5f93a511ca521f0bdd757",
+      "integrity": "sha512-77owW16RX6YgdOzddHtM0oGz8wsd0/F9k/0coz6TPmjUHnr/9FwWODVMNKwyYWM/a/ESdTum855nfQxnsKUygA==",
+      "lockfileLicenses": [
+        "Apache-2.0"
+      ],
+      "name": "bare-buffer",
+      "occurrencePaths": [
+        "node_modules/bare-buffer"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 17581,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/a4/a423c6e7ee2dc0475b1d248410f808617ff6dd11ffd7a3cc0ab7690258dc3c2d",
+          "sha256": "a423c6e7ee2dc0475b1d248410f808617ff6dd11ffd7a3cc0ab7690258dc3c2d"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/56/561eff1db225586837f9e6979d6b61b6860b9c26c4384eecea387043a6e48529",
+          "sha256": "561eff1db225586837f9e6979d6b61b6860b9c26c4384eecea387043a6e48529"
+        },
+        "publishedAt": "2026-11-17T08:15:50.288Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIGomCsr9sZj4chkR3+D04kiTISq88gG34N2NnXX4429rAiEAktF2wBfcSQGI2YVvvSeGTb7Ux5BeD2Py2fpu70uSq0Y="
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCID9JVZSiiKi0sqAkFXEqVH0TrAWC9BF9gq6mKfttlcTZAiEAi9vFIMfOgjeGglIJtTSzwApxUgKVXG0ApGmTL0sbQw0="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/bare-buffer/-/bare-buffer-3.7.3.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 107940,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/cd/cdd9b43977174cbd63d4a9f4c8676b22b07dabe6f62ea1d826365e2b49934653",
+          "sha256": "cdd9b43977174cbd63d4a9f4c8676b22b07dabe6f62ea1d826365e2b49934653"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 445392,
+        "sha256": "4394b3460f76122a14d270b49f1b3674e6e88d88ed7964b2850bd32b3732bd43"
+      },
+      "version": "3.7.3"
+    },
+    {
+      "archive": {
+        "evidence": {
           "bytes": 8477,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/41/417fe2a7357186a1f67018d57a9506dcbfbd22e4f1779a423bbb87235387a84a",
@@ -10374,92 +10403,28 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 26539,
+          "bytes": 7355,
           "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/86/8697c84252547e3a1db002fee8ae878682b83cfe09a6bec140d419a6946b1df7",
-          "sha256": "8697c84252547e3a1db002fee8ae878682b83cfe09a6bec140d419a6946b1df7"
+          "path": "blobs/sha256/d9/d91e4933d72198281c892f782abcb4c0607d7468a14ba3cb63a3e3fdfbf908dd",
+          "sha256": "d91e4933d72198281c892f782abcb4c0607d7468a14ba3cb63a3e3fdfbf908dd"
         },
         "state": "VERIFIED"
       },
-      "artifactId": "c5d1c4707dec9f0f68b0cfe7378d5709a162262f3442bc6f6145ba48c0c26caf",
-      "integrity": "sha512-b4e2xxj/yMeT2hNlD6x7zNFiQK2Dlmkb9CQ6v3/1G2RezKN4YS2lcEv8lzGm1mhs4f2lM4yNAMI/zUDBZBBt7w==",
+      "artifactId": "c6ac57bb01e205fc7692d136149063dbce0a9cbb6cb3ed6d83278bd1113fe3ed",
+      "integrity": "sha512-IVgHNlp/jwQX271+Xzoq9LZNTWXxZK+cEOrGBOBxXNbn7fapnZ+Ts6TVMgNOuAezwG2wdtnMX97tTPK6VEnuOQ==",
       "lockfileLicenses": [
         "MIT"
       ],
-      "name": "@types/node",
+      "name": "object-inspect",
       "occurrencePaths": [
-        "node_modules/@types/node"
+        "node_modules/object-inspect"
       ],
       "provenance": {
         "evidence": {
           "bytes": 238,
           "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/a5/a5b7b1a5f02649c5366f97b1a6b301f6b5be0eb430bb5f521a1b6dccfd9b0574",
-          "sha256": "a5b7b1a5f02649c5366f97b1a6b301f6b5be0eb430bb5f521a1b6dccfd9b0574"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 780,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/f6/f6fcb23c99b63b6007fb5b6db1c5a08f549f011a162168728011d93502bdd0a3",
-          "sha256": "f6fcb23c99b63b6007fb5b6db1c5a08f549f011a162168728011d93502bdd0a3"
-        },
-        "publishedAt": "2026-10-01T22:39:33.611Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEQCIEi11AO/BbQA5zcJYTqtz+0FfZjY6J2P6eIpASfVit6MAiAzgVRSVUx6A+hAEBZlKiJUzmjU/fz0z/MWlGt4BO1vmQ=="
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIHITHhh63NA0frg1ZaXydIJO9lQuQDLtaDlqWYmk8E8SAiEAxDWvvvksifzTtUd2u33hL7KWWkv8R17A/Rb+dSxJ1nA="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/@types/node/-/node-25.9.9.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 148157,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/6d/6d8eadda933fb1d7fbff43884cb0cfe69e96dd8700267630e9d159a187c84451",
-          "sha256": "6d8eadda933fb1d7fbff43884cb0cfe69e96dd8700267630e9d159a187c84451"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 437812,
-        "sha256": "fb7f3d16a84ea47e898159a010c1cfba3266de74b42528f0bf99584c2309accb"
-      },
-      "version": "25.9.9"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 3799,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/22/22c0c8c8a1a25fc02ee7e1ec6040adadef2726270cb8652e6adceb69ed5420b1",
-          "sha256": "22c0c8c8a1a25fc02ee7e1ec6040adadef2726270cb8652e6adceb69ed5420b1"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "c6404c9ae55018fb62889ff23b1e925d7f3a772b9ab62f56f007d3bc0af82776",
-      "integrity": "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==",
-      "lockfileLicenses": [
-        "ISC"
-      ],
-      "name": "graceful-fs",
-      "occurrencePaths": [
-        "node_modules/graceful-fs"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/8e/8ef1ebb60fe34c1e205436ed372f4334e7271ecca5346e3ee13aad09e63c32c2",
-          "sha256": "8ef1ebb60fe34c1e205436ed372f4334e7271ecca5346e3ee13aad09e63c32c2"
+          "path": "blobs/sha256/b0/b052a2cec510efae8a2f9874bac45bd97036bf52fb7a98e209fb5c7795de52fa",
+          "sha256": "b052a2cec510efae8a2f9874bac45bd97036bf52fb7a98e209fb5c7795de52fa"
         },
         "state": "NOT_PUBLISHED"
       },
@@ -10467,85 +10432,25 @@
         "evidence": {
           "bytes": 518,
           "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/ee/ee95f4856ac05cb77fa2ab0324328d327a1d0196ba5617caaebdf6431ec971e2",
-          "sha256": "ee95f4856ac05cb77fa2ab0324328d327a1d0196ba5617caaebdf6431ec971e2"
+          "path": "blobs/sha256/f8/f8356de070e04c7cc5cbb56744de37d2dcd989675e37d4c0c0471e4f92deb728",
+          "sha256": "f8356de070e04c7cc5cbb56744de37d2dcd989675e37d4c0c0471e4f92deb728"
         },
-        "publishedAt": "2023-03-16T19:30:19.323Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
-            "sig": "MEQCIGvrVOcn7hI1H803c2vtwpp2SWqq+i4Io7slvfmq5ALwAiBUkAIGXz4UnL+r6Mp2H+OE2q0DUtrViYowDGL171hm5w=="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 33537,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/a2/a2070a084203367d96dd7a01c0ea85a9ceb8168a48a61373b7d56ce7eeabaf81",
-          "sha256": "a2070a084203367d96dd7a01c0ea85a9ceb8168a48a61373b7d56ce7eeabaf81"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 9804,
-        "sha256": "3961374aa161e6fed80d6f4b6aaf2fb7eafd2c9e5be34e865b375f0114dd099c"
-      },
-      "version": "4.2.11"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 9950,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/9f/9fdc702ebdea6e71866664069390bcb70d31dd6570e568254b2dc283a03cd1c2",
-          "sha256": "9fdc702ebdea6e71866664069390bcb70d31dd6570e568254b2dc283a03cd1c2"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "c64869b370a57a4c1330438d2357a1682fc3ca08b333d843441092378ba48d1b",
-      "integrity": "sha512-cIjZnSO+y89ykVX9x96OVnA6tGORBn7vGJ/e3PCbBHMEyfMNG/ixzOS0lLa6saMlWcs69bSKjxFyDwjK152OMg==",
-      "lockfileLicenses": [
-        "Apache-2.0"
-      ],
-      "name": "bare-buffer",
-      "occurrencePaths": [
-        "node_modules/bare-buffer"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 17365,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/0f/0f498157a75a6229a2bada1c682741db1e1ec8b10fa743833cf48a6e5d189e14",
-          "sha256": "0f498157a75a6229a2bada1c682741db1e1ec8b10fa743833cf48a6e5d189e14"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/b2/b2340e299277cf9d3dddfbdb8bd16624cc7560a0933e9d03248e76168d1559f6",
-          "sha256": "b2340e299277cf9d3dddfbdb8bd16624cc7560a0933e9d03248e76168d1559f6"
-        },
-        "publishedAt": "2026-09-02T10:30:20.806Z",
+        "publishedAt": "2026-11-18T21:07:37.644Z",
         "signatures": [
           {
             "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIACRC6VATBjudbJlIwIKckpTKeqwMC4D0GEiYXog86mUAiEAsAOKgY1ddBdXs+8MS/WzF9yM+eZI/MXrjEpGgiaRCn0="
+            "sig": "MEYCIQDYbcEkE/rsAzh/7I/Q6LO2nz/xtylDC13AGFuUkeRuOQIhAKBx4J+7+Pr8FLaHSLLUb02YfJukfamvvUVykf/MDpfx"
           }
         ],
         "state": "VERIFIED"
       },
-      "resolved": "https://registry.npmjs.org/bare-buffer/-/bare-buffer-3.7.1.tgz",
+      "resolved": "https://registry.npmjs.org/object-inspect/-/object-inspect-1.14.0.tgz",
       "scan": {
         "evidence": {
-          "bytes": 107937,
+          "bytes": 59228,
           "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/5c/5c252ebc451c55d73fcaf0467dd67411c13145362c98c6b8d9b20d6164ff44cc",
-          "sha256": "5c252ebc451c55d73fcaf0467dd67411c13145362c98c6b8d9b20d6164ff44cc"
+          "path": "blobs/sha256/f8/f81c1c7e0faecac1d47a82c80bba2259c3d5420355f6a8d315788455df14269f",
+          "sha256": "f81c1c7e0faecac1d47a82c80bba2259c3d5420355f6a8d315788455df14269f"
         },
         "execution": {
           "perFileTimeoutSeconds": 600
@@ -10553,10 +10458,10 @@
         "state": "VERIFIED"
       },
       "tarball": {
-        "bytes": 413831,
-        "sha256": "5e8300123b47806899d0e6fbbad092ea60f07a04caa261ba08304ca51ebc8676"
+        "bytes": 25896,
+        "sha256": "d3a67c3c2ca8f503e3471103ce5a36e25b648bf927d0460219978e6de0d5f548"
       },
-      "version": "3.7.1"
+      "version": "1.14.0"
     },
     {
       "archive": {
@@ -10681,58 +10586,54 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 14972,
+          "bytes": 3790,
           "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/04/049db0d980305ccdf68fc2ce244f1ba2667d3cc4a96cd600ad0969e9cc262a4e",
-          "sha256": "049db0d980305ccdf68fc2ce244f1ba2667d3cc4a96cd600ad0969e9cc262a4e"
+          "path": "blobs/sha256/e3/e3a06a6debaf30c06c03570b7afe37d518a52bb3774e3f2c2f6d491a92b89cd4",
+          "sha256": "e3a06a6debaf30c06c03570b7afe37d518a52bb3774e3f2c2f6d491a92b89cd4"
         },
         "state": "VERIFIED"
       },
-      "artifactId": "cc8bb0aeb6a168c9a92e0c733df3287293ca99675863c6cde015aabef1e152db",
-      "integrity": "sha512-/pXxRBtwxY9w8z7YbgsvIPPcPvFDsTbIkWwTQJhzNJPokj+TbN6ftmcv4j/pEQDvOCNnKGDzuk5Bo2oogIOiFg==",
+      "artifactId": "cb1fe68529d958856a164ba564ffa81dce3d68f050498a6abfab5d0589c63a0c",
+      "integrity": "sha512-iuyGF2E4oafQfPsRrG2wtY2ILupMhvtdrhzrxB+0VcjsPpSPttpfYdjnGFGsTi5MaJFjI1jOKHPQ6UTbTj9TAw==",
       "lockfileLicenses": [
-        "MIT"
+        "BlueOak-1.0.0"
       ],
-      "name": "fast-xml-parser",
+      "name": "graceful-fs",
       "occurrencePaths": [
-        "node_modules/fast-xml-parser"
+        "node_modules/graceful-fs"
       ],
       "provenance": {
         "evidence": {
-          "bytes": 18446,
+          "bytes": 17146,
           "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/ae/aeda65f91ab5b3c9370a4d8329a57375a8dcb90047af1548f4c46e06d99441f4",
-          "sha256": "aeda65f91ab5b3c9370a4d8329a57375a8dcb90047af1548f4c46e06d99441f4"
+          "path": "blobs/sha256/81/810f45a5284c486e9fd52327ec826bfe81fa7867ef48b2f5e73b5a8c4ab831cc",
+          "sha256": "810f45a5284c486e9fd52327ec826bfe81fa7867ef48b2f5e73b5a8c4ab831cc"
         },
         "state": "VERIFIED"
       },
       "registrySignature": {
         "evidence": {
-          "bytes": 780,
+          "bytes": 518,
           "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/94/947bae20e8e9362f0791b4d357770c4019aa8b44336b2da4e6deb87b4bdf872e",
-          "sha256": "947bae20e8e9362f0791b4d357770c4019aa8b44336b2da4e6deb87b4bdf872e"
+          "path": "blobs/sha256/3b/3bb20004fbeb2ce0cf63f7469ffb96ab3a71cfa058ffbaaab20fc7df73426eb0",
+          "sha256": "3bb20004fbeb2ce0cf63f7469ffb96ab3a71cfa058ffbaaab20fc7df73426eb0"
         },
-        "publishedAt": "2026-11-03T12:15:08.693Z",
+        "publishedAt": "2026-11-12T12:06:24.936Z",
         "signatures": [
           {
             "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQDN4GFlSQjDSF3hLkFEnMsVc0J/5uQqgpdMzQI6KNTIrgIhAL3UN0uTaSPr23LdI0eQcRIiMHfdT6aaP4Dw/c9/6qi1"
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQCrrTKB3D/sClRXs4VyE16wBwOhrYaz5qQ4t/5M0AsscAIhAOmRz1GjFWZMF0v/5ux9Yt7A44YWqS8lJQP+SdmWYRFU"
+            "sig": "MEUCIHZWE63YD5+tSzU27CyNCdy5Q6gRDls6R2/8Il9DYTtPAiEApsWf0UhUir6MkJfBpcqMF+9e3waZYGEUT+nQY79neCw="
           }
         ],
         "state": "VERIFIED"
       },
-      "resolved": "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.12.0.tgz",
+      "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.12.tgz",
       "scan": {
         "evidence": {
-          "bytes": 105714,
+          "bytes": 34669,
           "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/1a/1aec3a26dace9b5e808c8f6c73325459018e6ad04db644a64d1c89cbe2aad39c",
-          "sha256": "1aec3a26dace9b5e808c8f6c73325459018e6ad04db644a64d1c89cbe2aad39c"
+          "path": "blobs/sha256/07/0755e7a6cdb5a263b3b19b8f69b6e706a41fb88f90bf9137e1b180c23a81c005",
+          "sha256": "0755e7a6cdb5a263b3b19b8f69b6e706a41fb88f90bf9137e1b180c23a81c005"
         },
         "execution": {
           "perFileTimeoutSeconds": 600
@@ -10740,10 +10641,10 @@
         "state": "VERIFIED"
       },
       "tarball": {
-        "bytes": 380251,
-        "sha256": "104218e11e0bb8e2708211c76b649082d940c45149ccd1b4f7da4aafeb397aec"
+        "bytes": 9935,
+        "sha256": "4ce49e6df444e0e984000530452b68dae551d7f9aefe832dc6fbfbf583b0cc6a"
       },
-      "version": "5.12.0"
+      "version": "4.2.12"
     },
     {
       "archive": {
@@ -10932,6 +10833,73 @@
     {
       "archive": {
         "evidence": {
+          "bytes": 26541,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/84/8498fcdd19cd5a050c546d961340d064970a3056868b3c67b0b7f921592f6547",
+          "sha256": "8498fcdd19cd5a050c546d961340d064970a3056868b3c67b0b7f921592f6547"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "d80d7158baf750d49f2f04b4e35190800a4dc913aaf896f301f6b922c2fa07fd",
+      "integrity": "sha512-49uWGmIcvfuuEnFIm83Pn7MGcDvdY8UQ3v3DF4O0ouWbElWTaT/HudacSntQwFrnLAgiMoKtXEVV5dFC+DZ2cQ==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "@types/node",
+      "occurrencePaths": [
+        "node_modules/@types/node"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/9a/9a059255a6db52af3c86f8d2c04190b28b1f4c83880fa97cbe0afaa1587bbb6b",
+          "sha256": "9a059255a6db52af3c86f8d2c04190b28b1f4c83880fa97cbe0afaa1587bbb6b"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/96/96d1f3b11c002d5ad23484431dde6501eaf226a059a4b28a8915bcfe7d4abee3",
+          "sha256": "96d1f3b11c002d5ad23484431dde6501eaf226a059a4b28a8915bcfe7d4abee3"
+        },
+        "publishedAt": "2026-11-25T07:36:54.850Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQDuzeGjD+6N8Tn5Z9xiJDPxzVqPop+0Opm6Km2jdkRujAIhAMT6n4WZSOKOG/CCQu7NcJDJxPYRXGpdqw83k1uulqUt"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIBk34UYjAtm8ukmTeV56vmbSkCwFaelTl/TdFcs6Z+5YAiB36yHky9GWvbn+3W/pKaWQ4YQ1ob/WwjQeY7mDm5Z62w=="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-25.9.12.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 148259,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/2d/2d14063993111ba426556a8efc49e493ff55e2790d5fbddef498a43802969c4e",
+          "sha256": "2d14063993111ba426556a8efc49e493ff55e2790d5fbddef498a43802969c4e"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 437812,
+        "sha256": "98039a63bab351b4f9b5055ab95f00be5642b941eabc1b276af9f5f420d913a0"
+      },
+      "version": "25.9.12"
+    },
+    {
+      "archive": {
+        "evidence": {
           "bytes": 103800,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/6b/6b8940ae76be04cc0bfc8f616d067ac5213964f04a440eeb313b9e9af617862f",
@@ -11055,6 +11023,73 @@
         "sha256": "e09206c60fccafb952c854af7629cbb031a98d6da2e143fb3aa3c8a48402aa22"
       },
       "version": "5.1.2"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 8677,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/5f/5f9ee3691e39580e8cddb04c7f0775cd20f3fefe7b0212113690591965fdacb8",
+          "sha256": "5f9ee3691e39580e8cddb04c7f0775cd20f3fefe7b0212113690591965fdacb8"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "db37a29c7a4b3ff035e0e11d80a882998fd616a586a0ccc53675f0c92b0fa4de",
+      "integrity": "sha512-G5KTe5Bj6z5pqIxcn3lWlIFIv0rkXbccx0T0Xuf7t4RapfSWvFlcVbrwYXxFZ00PC4lp57OCIk6uXP/r3GbpDw==",
+      "lockfileLicenses": [
+        "Apache-2.0"
+      ],
+      "name": "bare-url",
+      "occurrencePaths": [
+        "node_modules/bare-url"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 17614,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/dc/dcb0ff5528b8aa977034da76e15ac76271f337462d73e595aa4348f20c324cb5",
+          "sha256": "dcb0ff5528b8aa977034da76e15ac76271f337462d73e595aa4348f20c324cb5"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/00/0022015ed87a8df5b5c46cd57bb7c23fffd2206af568998d44fb1e781aa06b2f",
+          "sha256": "0022015ed87a8df5b5c46cd57bb7c23fffd2206af568998d44fb1e781aa06b2f"
+        },
+        "publishedAt": "2026-11-17T08:17:50.564Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCdc6UT7WA4Q+NKbHUpAnsuCliFyNOawvww50umXudiLwIhALN2ze48vlGpEoSatTj/QbDAwtTU+wWr5zGkrZG5Knwa"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQDoH1XO61DjucVSErscqEL53drmh6bxMZsGfa+cUdROmAIgHSI4dx8GoO1lVfbw4y/jhjGmeprUun1l+CPfPCDEXFo="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/bare-url/-/bare-url-2.5.8.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 101547,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/36/368ac51d4da0fa19cf880b5b12fe54ae1703caa30befa12a8d1925c4d565c3aa",
+          "sha256": "368ac51d4da0fa19cf880b5b12fe54ae1703caa30befa12a8d1925c4d565c3aa"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 1555203,
+        "sha256": "fdb9ae05ac184f0119f1a9c7639bbe380a25a1e62e662ba775487eea261541ed"
+      },
+      "version": "2.5.8"
     },
     {
       "archive": {
@@ -13118,136 +13153,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 3937,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/18/18673d8b7a07c52b70571a3cf9cd8c441445d00ecb42895da11f3ffd8b20b218",
-          "sha256": "18673d8b7a07c52b70571a3cf9cd8c441445d00ecb42895da11f3ffd8b20b218"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "f88750c5defa2755edad64bd90215e852d5de2602258f0409152244099f04048",
-      "integrity": "sha512-2NxoveTT58mjYT4n3RPTEfCZGLMbidoO8XEieXfpSYxu+PQJ1qpx4ypwH6N+uF9twBPIvRRgvkvW5HUTYWENig==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "http-proxy-agent",
-      "occurrencePaths": [
-        "node_modules/http-proxy-agent"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 17234,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/ba/ba53bf38bbf25af2ed891877c1e841c2cb41d1ba7d1e4120890ad1970fcae833",
-          "sha256": "ba53bf38bbf25af2ed891877c1e841c2cb41d1ba7d1e4120890ad1970fcae833"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/57/57dd40b9021a530a9bcac29bda8224d22e292e17de27d2358d1d3571720a8216",
-          "sha256": "57dd40b9021a530a9bcac29bda8224d22e292e17de27d2358d1d3571720a8216"
-        },
-        "publishedAt": "2026-06-08T16:47:24.200Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQCLD/mRuLDKiTLRM1juziGVgNL8wCTJCMBKaKuapDUY3gIhAJzzChLf5rCFRsdDl4bl42iOZe81WN53TEZpxhsahVAo"
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-9.1.0.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 39295,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/4a/4a1d3d3f9b9d5b07d1e74c88ce101f7515bb579cf7e9f43ad1cf7d31a795b121",
-          "sha256": "4a1d3d3f9b9d5b07d1e74c88ce101f7515bb579cf7e9f43ad1cf7d31a795b121"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 5983,
-        "sha256": "498cf1c537eabe9bde84d6b07d87f67d63849f7a99c2e2bf98ea7c49af97a76d"
-      },
-      "version": "9.1.0"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 5661,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/4e/4e0e57ea06c05de4748dca11c356dff1ea986ad89001da527124e94170ba1754",
-          "sha256": "4e0e57ea06c05de4748dca11c356dff1ea986ad89001da527124e94170ba1754"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "f8a6e416dece54ed95a0615e3b8e3ccbc6a4a59124f55f5527eadff224196bb7",
-      "integrity": "sha512-Vh3dmFbc4wZeox7M9I/0L9GfFd83Su4+yCck/OF9Gi/P/dAHn0RT7X4K9R7gMNMhDck3DvhR6QXsnQdjjgwNvQ==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "brace-expansion",
-      "occurrencePaths": [
-        "node_modules/minimatch/node_modules/brace-expansion"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/e4/e4072738783fc40b688f392d23002ba7eb1f4503366e2ab8abf3dfa831f5c66e",
-          "sha256": "e4072738783fc40b688f392d23002ba7eb1f4503366e2ab8abf3dfa831f5c66e"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 780,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/5b/5bc8581ac13a49141c1329b6ba5bca2602a9e0d5cc516f57cf03cde0de4e4027",
-          "sha256": "5bc8581ac13a49141c1329b6ba5bca2602a9e0d5cc516f57cf03cde0de4e4027"
-        },
-        "publishedAt": "2026-11-11T12:27:55.676Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIQDEi64QEfNJRXN2DPvEsQk/9dqT8lN6Q7jbbKoKbDXEpgIgNYN8/QLKOb81eBWaabssCsqF1jNzJaPTarf0EcEMDww="
-          },
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIFuOeZek/M/5gkHdwe1VtOz7vF5ECZGkxTb542HlL+SJAiEA+fLKGP0A9f6NzgNsIA18ZbdQtd/1YKQcYFSDQnckhxY="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.13.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 48268,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/5d/5dc13b951f7b617c9dae66ddd4891e16a3d4bc8cb1d3136fee4cfe7c6817b9c3",
-          "sha256": "5dc13b951f7b617c9dae66ddd4891e16a3d4bc8cb1d3136fee4cfe7c6817b9c3"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 32333,
-        "sha256": "015c8761629e59fc31f3a6e472a940f6d759fc8227e67882c399dfb9a703ae6e"
-      },
-      "version": "5.0.13"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 7340,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/06/06eca4733572c678643ffb652407b14b11572ba7e0c63dcdefeb0f7049a5ce0a",
@@ -13304,6 +13209,69 @@
         "sha256": "a339df70dfa3507a3fe2137464915212d69a9585d201c253b90f0c13fd952b4a"
       },
       "version": "1.2.2"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 4913,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/65/65835ab14fc3e4db2085bcb638a590849c6c29a123897d5d5422c344fb2c9e87",
+          "sha256": "65835ab14fc3e4db2085bcb638a590849c6c29a123897d5d5422c344fb2c9e87"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "fb06fc1191699937d81b21a0d69b04231e7ffc8fbf7863d34a89db08636bc07c",
+      "integrity": "sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "agent-base",
+      "occurrencePaths": [
+        "node_modules/agent-base"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/af/af2cb84931610e51b52e962cbfaf71db879647c0b2b7709515b737378f5a57a8",
+          "sha256": "af2cb84931610e51b52e962cbfaf71db879647c0b2b7709515b737378f5a57a8"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 518,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/3a/3a8712fea59bd6cac45e6f2089df3e64f3dcd52fed929832972035145a42ab4c",
+          "sha256": "3a8712fea59bd6cac45e6f2089df3e64f3dcd52fed929832972035145a42ab4c"
+        },
+        "publishedAt": "2025-07-07T17:44:01.356Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQCryPXT4Bh1HMfaPyzZ2zOs4VS+D695o5R3xI6DRBrp3QIgVka0YoK/gflyRjfhqwJ6sNrhwcUY6lQj0xrRBTV1j0A="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/agent-base/-/agent-base-7.1.4.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 45441,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/fd/fd68f43b438511584e5dfc35387a9d43695123d39e7e3b0654a6f34acc0b71ad",
+          "sha256": "fd68f43b438511584e5dfc35387a9d43695123d39e7e3b0654a6f34acc0b71ad"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 7812,
+        "sha256": "7dd4a61668a9a4e8d4e903f1a254f94d53dafd3f316f2b9b597c5ad8c79cb57e"
+      },
+      "version": "7.1.4"
     },
     {
       "archive": {
@@ -13512,12 +13480,6 @@
       "sha256": "04725ef6e05e2f67de6595000bf428cdbbd334837c1e027de213717a503d2e16"
     },
     {
-      "bytes": 14972,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/04/049db0d980305ccdf68fc2ce244f1ba2667d3cc4a96cd600ad0969e9cc262a4e",
-      "sha256": "049db0d980305ccdf68fc2ce244f1ba2667d3cc4a96cd600ad0969e9cc262a4e"
-    },
-    {
       "bytes": 2813,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/06/0673f948d7d08f08adb0787175d3b741e8c51e95ffe5e1aceec39978a838e880",
@@ -13564,6 +13526,12 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/0c/0c02361cfb428a27d324d035e926c0008a84c533f65961bcf39c9f75b22113e1",
       "sha256": "0c02361cfb428a27d324d035e926c0008a84c533f65961bcf39c9f75b22113e1"
+    },
+    {
+      "bytes": 4179,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/0c/0c154efd639173ab348641fedcd5861d0390c3f229446a7ebf7de158108e5b36",
+      "sha256": "0c154efd639173ab348641fedcd5861d0390c3f229446a7ebf7de158108e5b36"
     },
     {
       "bytes": 3379,
@@ -13620,12 +13588,6 @@
       "sha256": "17ae413756a42e21b08486f111351ed91c5a2fbc0b93e73d889791f10985ccd6"
     },
     {
-      "bytes": 3937,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/18/18673d8b7a07c52b70571a3cf9cd8c441445d00ecb42895da11f3ffd8b20b218",
-      "sha256": "18673d8b7a07c52b70571a3cf9cd8c441445d00ecb42895da11f3ffd8b20b218"
-    },
-    {
       "bytes": 3507,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/1a/1a3ec0d8bd770f0884eb66fe7a1ac23e3bbdda8ba5ce558d4967650dc608ed55",
@@ -13678,12 +13640,6 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/22/22a77e9fccb6d6c48e786160222d9b13d45b2546aec9ded18f31e4dc1d1a833f",
       "sha256": "22a77e9fccb6d6c48e786160222d9b13d45b2546aec9ded18f31e4dc1d1a833f"
-    },
-    {
-      "bytes": 3799,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/22/22c0c8c8a1a25fc02ee7e1ec6040adadef2726270cb8652e6adceb69ed5420b1",
-      "sha256": "22c0c8c8a1a25fc02ee7e1ec6040adadef2726270cb8652e6adceb69ed5420b1"
     },
     {
       "bytes": 4976,
@@ -13824,6 +13780,12 @@
       "sha256": "3ca670cc5d58409dc2dfc6ff2909f995e3b38e21aece448701927be4825b1d26"
     },
     {
+      "bytes": 8762,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/3d/3d5c72d41715c211d064ecae1d0425c7def4c2a8d6438a631b558a9ad924a4ed",
+      "sha256": "3d5c72d41715c211d064ecae1d0425c7def4c2a8d6438a631b558a9ad924a4ed"
+    },
+    {
       "bytes": 7128,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/3d/3d8eb525bd461f2a4a6d078bdf0f1478351db9251b868ce43825ecac0ac75349",
@@ -13860,6 +13822,12 @@
       "sha256": "42f272e98e8bbfaabbff88e2930cc931d56878d11386ea08ab510e74374c10a6"
     },
     {
+      "bytes": 9164,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/44/440c9df4e78e804ac5f7afeeb598bceafaf322c80ecf055951802409bf488a2e",
+      "sha256": "440c9df4e78e804ac5f7afeeb598bceafaf322c80ecf055951802409bf488a2e"
+    },
+    {
       "bytes": 3758,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/45/457ceef53514eabde03231198770e68748639ff5bf3f6bdb2e85a80dc1db6b1d",
@@ -13870,6 +13838,12 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/46/460677b8bb283fcdd042612266fd22a0a4d563c85fcab32e96f3d09430653bdf",
       "sha256": "460677b8bb283fcdd042612266fd22a0a4d563c85fcab32e96f3d09430653bdf"
+    },
+    {
+      "bytes": 10157,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/46/4612520fd4588c721041696a5c440b3f5cb0dd387bfe5ae098bea28ef9a29083",
+      "sha256": "4612520fd4588c721041696a5c440b3f5cb0dd387bfe5ae098bea28ef9a29083"
     },
     {
       "bytes": 8176,
@@ -13884,6 +13858,12 @@
       "sha256": "46ccd3564a348a94a72427a4a2d285cb8cae285595a0aa8af3e1114b88a41797"
     },
     {
+      "bytes": 4098,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/49/49a464d54021fcdbda9bf81cf6b9dbfa0311e73a1583874c28f70fc79a3352f8",
+      "sha256": "49a464d54021fcdbda9bf81cf6b9dbfa0311e73a1583874c28f70fc79a3352f8"
+    },
+    {
       "bytes": 7294,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/49/49b37e3911c7c58dba4ad37a433712ae6dc332439c01e9f10c45652bb97e6dd2",
@@ -13894,12 +13874,6 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/4a/4a23aea832c15eea6a83afd27cef5140a319290eece4d9aed6b1e007b9e1258e",
       "sha256": "4a23aea832c15eea6a83afd27cef5140a319290eece4d9aed6b1e007b9e1258e"
-    },
-    {
-      "bytes": 8676,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/4a/4a3aa85ec8b6cbf873ebc36b0b316585a338689139bcd6d9b721dcf95ca9332f",
-      "sha256": "4a3aa85ec8b6cbf873ebc36b0b316585a338689139bcd6d9b721dcf95ca9332f"
     },
     {
       "bytes": 6536,
@@ -13914,12 +13888,6 @@
       "sha256": "4bf232b05ce16524049ce3f22e65a2da4a281572f3f08a87ceb73a1a022be812"
     },
     {
-      "bytes": 5661,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/4e/4e0e57ea06c05de4748dca11c356dff1ea986ad89001da527124e94170ba1754",
-      "sha256": "4e0e57ea06c05de4748dca11c356dff1ea986ad89001da527124e94170ba1754"
-    },
-    {
       "bytes": 24314,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/4e/4e42cfd3870a4d639a781eaceffe638ff98dcad074764f305154f0e7f0b3e3d3",
@@ -13930,12 +13898,6 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/4e/4e9923edc38972abbd8b5aa1d839a8236461fadb443c8107518786820474f205",
       "sha256": "4e9923edc38972abbd8b5aa1d839a8236461fadb443c8107518786820474f205"
-    },
-    {
-      "bytes": 4867,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/4f/4ffcd7bc24d2aa1a20793093b67a95e75a970c29d6de8d28946bdac04f75ace9",
-      "sha256": "4ffcd7bc24d2aa1a20793093b67a95e75a970c29d6de8d28946bdac04f75ace9"
     },
     {
       "bytes": 6815,
@@ -13954,6 +13916,12 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/51/51dbb13d396134f81d8848a62d87e9726c9fbee20d97effbbc49d2b24021c14f",
       "sha256": "51dbb13d396134f81d8848a62d87e9726c9fbee20d97effbbc49d2b24021c14f"
+    },
+    {
+      "bytes": 14972,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/54/548775334b7bc72e572e26575382f63a5a3aea5a6b3db70bb85df155cd3b2794",
+      "sha256": "548775334b7bc72e572e26575382f63a5a3aea5a6b3db70bb85df155cd3b2794"
     },
     {
       "bytes": 50182,
@@ -13980,6 +13948,12 @@
       "sha256": "586c97e528d1fa88e8d76ec2b77c235e6ae44baacfd9018eeec0c004eb983373"
     },
     {
+      "bytes": 5159,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/5b/5b5aa1e98a28b151aa9e7d0a29e4872156bf112a3165ed4c0a762992ef2fceb5",
+      "sha256": "5b5aa1e98a28b151aa9e7d0a29e4872156bf112a3165ed4c0a762992ef2fceb5"
+    },
+    {
       "bytes": 6859,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/5c/5cfb7fe34d8dd6735b621804305c0c4a623be96a81e39847ac470c880b47c3a0",
@@ -13990,6 +13964,18 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/5f/5f092bc27f9ac4c88c21f8de5903da14e6d431e73638547f4351ffcc65f95bf5",
       "sha256": "5f092bc27f9ac4c88c21f8de5903da14e6d431e73638547f4351ffcc65f95bf5"
+    },
+    {
+      "bytes": 5659,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/5f/5f4a2060b8cb36197ad50df2c73554d67477d0a10b0e2947d467528d02fa05e6",
+      "sha256": "5f4a2060b8cb36197ad50df2c73554d67477d0a10b0e2947d467528d02fa05e6"
+    },
+    {
+      "bytes": 8677,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/5f/5f9ee3691e39580e8cddb04c7f0775cd20f3fefe7b0212113690591965fdacb8",
+      "sha256": "5f9ee3691e39580e8cddb04c7f0775cd20f3fefe7b0212113690591965fdacb8"
     },
     {
       "bytes": 5055,
@@ -14010,12 +13996,6 @@
       "sha256": "61c96cd100eb495eeeeb98c799098e274796ca1334067dcb889d0e9171a0667f"
     },
     {
-      "bytes": 10157,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/62/6274113e4e3fed7ac58901721f9dcc4988a3719ea6754174d05e3fa01b56e312",
-      "sha256": "6274113e4e3fed7ac58901721f9dcc4988a3719ea6754174d05e3fa01b56e312"
-    },
-    {
       "bytes": 3144,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/63/638d7b90963adb714447ce74fc57cf9d12d64ffb75e34cca378b4f56cbda3041",
@@ -14026,6 +14006,12 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/64/640425968f714a099bec7ea924b148efff7aa09b62ca1f0ad2b55572068d39b7",
       "sha256": "640425968f714a099bec7ea924b148efff7aa09b62ca1f0ad2b55572068d39b7"
+    },
+    {
+      "bytes": 4913,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/65/65835ab14fc3e4db2085bcb638a590849c6c29a123897d5d5422c344fb2c9e87",
+      "sha256": "65835ab14fc3e4db2085bcb638a590849c6c29a123897d5d5422c344fb2c9e87"
     },
     {
       "bytes": 9249,
@@ -14172,10 +14158,10 @@
       "sha256": "8474e78928afabdf9b3069f2d20065964f9996ab4f189b9a9070675346f8220c"
     },
     {
-      "bytes": 26539,
+      "bytes": 26541,
       "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/86/8697c84252547e3a1db002fee8ae878682b83cfe09a6bec140d419a6946b1df7",
-      "sha256": "8697c84252547e3a1db002fee8ae878682b83cfe09a6bec140d419a6946b1df7"
+      "path": "blobs/sha256/84/8498fcdd19cd5a050c546d961340d064970a3056868b3c67b0b7f921592f6547",
+      "sha256": "8498fcdd19cd5a050c546d961340d064970a3056868b3c67b0b7f921592f6547"
     },
     {
       "bytes": 8296,
@@ -14244,12 +14230,6 @@
       "sha256": "932630b1d033759a4f9f9c4e274715e0288e56833f3ca57097561bba0edeabf8"
     },
     {
-      "bytes": 4173,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/93/93cf56d3df60ebb07b916476d8820aaad5efb34b75afc2ab7b660d5dc84cdba4",
-      "sha256": "93cf56d3df60ebb07b916476d8820aaad5efb34b75afc2ab7b660d5dc84cdba4"
-    },
-    {
       "bytes": 7756,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/95/953ed45d9638fb45211d7f151a67696d2f44e2a0a8ca89fe6c673cacfb5ca945",
@@ -14304,12 +14284,6 @@
       "sha256": "9c87d520721cd5ec64e5c2d163f2d08ae25de7027e9943e46f1c6863e62a067f"
     },
     {
-      "bytes": 10889,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/9d/9d9dc19ebd9db4aa1bf523abbbf03e2ffdebf89adbbdbd94d01289bd217cf676",
-      "sha256": "9d9dc19ebd9db4aa1bf523abbbf03e2ffdebf89adbbdbd94d01289bd217cf676"
-    },
-    {
       "bytes": 6016,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/9e/9e3499019b4b29f111a2d857e0bc5957a2ca2cb66268b42b2a691d04e449b767",
@@ -14344,12 +14318,6 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/9f/9f9fef9b32b4f6e7c924de54df46f1ef5dbddfb7fe379cfec1cbf29d230d2ad2",
       "sha256": "9f9fef9b32b4f6e7c924de54df46f1ef5dbddfb7fe379cfec1cbf29d230d2ad2"
-    },
-    {
-      "bytes": 9950,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/9f/9fdc702ebdea6e71866664069390bcb70d31dd6570e568254b2dc283a03cd1c2",
-      "sha256": "9fdc702ebdea6e71866664069390bcb70d31dd6570e568254b2dc283a03cd1c2"
     },
     {
       "bytes": 6438,
@@ -14418,12 +14386,6 @@
       "sha256": "aff1ecba4291de58f4df5400ca7a37da44422701d6a256266c5f831df1050c8f"
     },
     {
-      "bytes": 4919,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/b0/b09661a8a0e592a27548b242a8b0480e9ad8d82fd0a3d3110c6a95e725eb96be",
-      "sha256": "b09661a8a0e592a27548b242a8b0480e9ad8d82fd0a3d3110c6a95e725eb96be"
-    },
-    {
       "bytes": 3319,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/b0/b0e5ddb3da75ca9fd61f7d4ec55afbb96cdfee87db9463ab86708dc38408ea9e",
@@ -14436,10 +14398,10 @@
       "sha256": "b19fc54e594c621a26315a7d774ea178dc98061323fd0f32ba4779008d146820"
     },
     {
-      "bytes": 11612,
+      "bytes": 9952,
       "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/b3/b3b7d918c4962a749388ffa549c531b689941c3c1d10bc1cfc5cff97de0e6f2b",
-      "sha256": "b3b7d918c4962a749388ffa549c531b689941c3c1d10bc1cfc5cff97de0e6f2b"
+      "path": "blobs/sha256/b3/b355b7708b35b9cc386897c768964faaadf330435ca6e4df7a40b10b2a4ff183",
+      "sha256": "b355b7708b35b9cc386897c768964faaadf330435ca6e4df7a40b10b2a4ff183"
     },
     {
       "bytes": 6635,
@@ -14508,12 +14470,6 @@
       "sha256": "bf8d210fa0753c67719c3a4e0c80df8ba3de71099b535ae14a4b3c88c98f7c34"
     },
     {
-      "bytes": 2994,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/c0/c0c7d66337bace13c6be66bb4911ef71d9458dc0f9dd4b776bf2d45841899a0c",
-      "sha256": "c0c7d66337bace13c6be66bb4911ef71d9458dc0f9dd4b776bf2d45841899a0c"
-    },
-    {
       "bytes": 2352,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/c1/c125425527b2e54374b1093b4c2d57806451260a2e3b055c3a4411a730284cab",
@@ -14544,12 +14500,6 @@
       "sha256": "c538ca9159272fdf5685bfcdb739137eb8429d601e6009d8f339e30ede28a283"
     },
     {
-      "bytes": 259664,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/c6/c62ac4df120c75f48500410bcfe8c3b06505ad7818c328d0dce97b17c4b43c56",
-      "sha256": "c62ac4df120c75f48500410bcfe8c3b06505ad7818c328d0dce97b17c4b43c56"
-    },
-    {
       "bytes": 4816,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/c7/c7871013fe22a1155abc914f1f6bb0a0c79695370d67354c157d5217f8d17a8f",
@@ -14566,12 +14516,6 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/ca/cadbe91f7f50780db081d3a5567ee2d27f1386af08d0ccfcee8c59f70539d6d6",
       "sha256": "cadbe91f7f50780db081d3a5567ee2d27f1386af08d0ccfcee8c59f70539d6d6"
-    },
-    {
-      "bytes": 8761,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/cb/cb33091cfeaacbb87b4edab7671e6428c69678e9d3bbb491bf920a6eb8208f08",
-      "sha256": "cb33091cfeaacbb87b4edab7671e6428c69678e9d3bbb491bf920a6eb8208f08"
     },
     {
       "bytes": 4011,
@@ -14610,12 +14554,6 @@
       "sha256": "cfb0f17df2b610f6822ab16e22635286516a4cc0e8ea94110cba89a31895a856"
     },
     {
-      "bytes": 6644,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/d1/d16552646e6f1dbb57e53f7916dd42bf25916daf8f86ef3bf1efa1c90ba5ed5e",
-      "sha256": "d16552646e6f1dbb57e53f7916dd42bf25916daf8f86ef3bf1efa1c90ba5ed5e"
-    },
-    {
       "bytes": 7210,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/d4/d4c30f1c612755ffd4df7e7e1358098d148f926820af04136c21af6ba9781a67",
@@ -14626,6 +14564,12 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/d6/d6ac17d5e3bd380767f91c47770818f8b5b34d7b9053cd6def4cdeff3a2a4451",
       "sha256": "d6ac17d5e3bd380767f91c47770818f8b5b34d7b9053cd6def4cdeff3a2a4451"
+    },
+    {
+      "bytes": 7355,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/d9/d91e4933d72198281c892f782abcb4c0607d7468a14ba3cb63a3e3fdfbf908dd",
+      "sha256": "d91e4933d72198281c892f782abcb4c0607d7468a14ba3cb63a3e3fdfbf908dd"
     },
     {
       "bytes": 3284,
@@ -14700,10 +14644,10 @@
       "sha256": "e304be47b76f50a7b78c7483766d3c9d7f829b9894bbe451527b40292a259d1d"
     },
     {
-      "bytes": 9163,
+      "bytes": 3790,
       "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/e3/e3bcdcde0b655d2137fa911bf5f14be5e534b15ecd4e700d5a03ad3d64712af9",
-      "sha256": "e3bcdcde0b655d2137fa911bf5f14be5e534b15ecd4e700d5a03ad3d64712af9"
+      "path": "blobs/sha256/e3/e3a06a6debaf30c06c03570b7afe37d518a52bb3774e3f2c2f6d491a92b89cd4",
+      "sha256": "e3a06a6debaf30c06c03570b7afe37d518a52bb3774e3f2c2f6d491a92b89cd4"
     },
     {
       "bytes": 6259,
@@ -14772,10 +14716,16 @@
       "sha256": "f202b434ff856fb4d0f2595be2bc75decd1a6be5b2244e07a07c4f41502b2e1d"
     },
     {
-      "bytes": 4631,
+      "bytes": 4868,
       "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/f3/f395cb8fbef6bb373e666485648eaa52bfdff3c89501f7cabe05b26d9d7de84c",
-      "sha256": "f395cb8fbef6bb373e666485648eaa52bfdff3c89501f7cabe05b26d9d7de84c"
+      "path": "blobs/sha256/f2/f28f5d32a6babae874550f62aeef237d0b9cb418d44c7f5e179e92169215e772",
+      "sha256": "f28f5d32a6babae874550f62aeef237d0b9cb418d44c7f5e179e92169215e772"
+    },
+    {
+      "bytes": 6451,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/f3/f3f6ecef5921c3894d2ebd1538f7eb9dab4891cec070bae7c245ef74f47fc6da",
+      "sha256": "f3f6ecef5921c3894d2ebd1538f7eb9dab4891cec070bae7c245ef74f47fc6da"
     },
     {
       "bytes": 4084,
@@ -14790,6 +14740,12 @@
       "sha256": "f57b70322c19b223af3a8ac218ad7a88f40d94b0e93ab3900246b7a99edb6d98"
     },
     {
+      "bytes": 259664,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/f7/f7db90df6347bc7583a7d21ce6e295023fe552c48eb7b56be1bb4620095428f7",
+      "sha256": "f7db90df6347bc7583a7d21ce6e295023fe552c48eb7b56be1bb4620095428f7"
+    },
+    {
       "bytes": 4933,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/f9/f95e2383c30afc6e0ec8543cbc8a99e5483746876bdd8b9d0dac58e451897f26",
@@ -14800,6 +14756,12 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/fa/fa9fd9c55ddf89258215584f63264d1b9d68db3c4efbf3ba854a6752231a40ed",
       "sha256": "fa9fd9c55ddf89258215584f63264d1b9d68db3c4efbf3ba854a6752231a40ed"
+    },
+    {
+      "bytes": 10889,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/fc/fcae576dad33243872b789a95d8d37a7d15eeb1a0bf2cc109593b6a3dc06e806",
+      "sha256": "fcae576dad33243872b789a95d8d37a7d15eeb1a0bf2cc109593b6a3dc06e806"
     },
     {
       "bytes": 7798,
@@ -14886,18 +14848,6 @@
       "sha256": "0e4414f5bcb5d56fc7ae42ea2ab4e320064d13c697cbcd654dfefc2f77d3a6a1"
     },
     {
-      "bytes": 17365,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/0f/0f498157a75a6229a2bada1c682741db1e1ec8b10fa743833cf48a6e5d189e14",
-      "sha256": "0f498157a75a6229a2bada1c682741db1e1ec8b10fa743833cf48a6e5d189e14"
-    },
-    {
-      "bytes": 17215,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/0f/0f5042e69f533cf13b3a9e66164db4279d83d51b2bbc93b99124d03ddbd64ef8",
-      "sha256": "0f5042e69f533cf13b3a9e66164db4279d83d51b2bbc93b99124d03ddbd64ef8"
-    },
-    {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/11/11065fc0599d4ca2a4f76f02bf3bf622bc143731b97e2386371b079700dc32f0",
@@ -14936,6 +14886,12 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/16/163e7557e7aee30bfb394102134e3da3607569c8b32b21ef8474f725c49c8393",
+      "sha256": "163e7557e7aee30bfb394102134e3da3607569c8b32b21ef8474f725c49c8393"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/16/16f1e065003901d678cb04a79bdeb33d4b1f9a3ce5e33e095ccf041786d8d35a",
       "sha256": "16f1e065003901d678cb04a79bdeb33d4b1f9a3ce5e33e095ccf041786d8d35a"
     },
@@ -14962,6 +14918,12 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/20/20f96a80fc8fbc49059254b309724b6119cdfebb188662e6740e3b07994e38bf",
       "sha256": "20f96a80fc8fbc49059254b309724b6119cdfebb188662e6740e3b07994e38bf"
+    },
+    {
+      "bytes": 17198,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/22/22dfa3ee1477c1e1ff36ed56883b6de6273fbf4f7e274da8a443d5a6c7cdc19b",
+      "sha256": "22dfa3ee1477c1e1ff36ed56883b6de6273fbf4f7e274da8a443d5a6c7cdc19b"
     },
     {
       "bytes": 238,
@@ -14992,12 +14954,6 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/27/2754e091f9b327f127d66e288206e95c88912fa5bbd5148d5ec1137445a81847",
       "sha256": "2754e091f9b327f127d66e288206e95c88912fa5bbd5148d5ec1137445a81847"
-    },
-    {
-      "bytes": 17191,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/28/28537ccbf3bd5b353f3b1b51d7a7dafaf702ec94e38b822b2b18e161ffe09ead",
-      "sha256": "28537ccbf3bd5b353f3b1b51d7a7dafaf702ec94e38b822b2b18e161ffe09ead"
     },
     {
       "bytes": 238,
@@ -15174,12 +15130,6 @@
       "sha256": "49d0de306fc3cdd7a55d908e1b102eb37a3eb6e25144be9dd9fcd75d9a80b535"
     },
     {
-      "bytes": 16624,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/4a/4a0443489d1b08ca7a517008e89c2a1b55e9aa32d619ee5424d39947f94cddc3",
-      "sha256": "4a0443489d1b08ca7a517008e89c2a1b55e9aa32d619ee5424d39947f94cddc3"
-    },
-    {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/4a/4a617c4c1e2dc5977322b8c4b83d59971e1b44556c751582821c216dfcfb1d0e",
@@ -15210,10 +15160,10 @@
       "sha256": "51a51b91e91a9e64477f5d0993dd6a2531c77f2e492b68beb975bb7d0b855316"
     },
     {
-      "bytes": 17694,
+      "bytes": 17408,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/52/522ad15414dab245aac8255a2dc36c3ef6c19f5eca0a726509205f916bbaea17",
-      "sha256": "522ad15414dab245aac8255a2dc36c3ef6c19f5eca0a726509205f916bbaea17"
+      "path": "blobs/sha256/51/51feeed81cb655d7b34353f4b032d34778b6afea9896aa8beb9fd1c1a4c611b6",
+      "sha256": "51feeed81cb655d7b34353f4b032d34778b6afea9896aa8beb9fd1c1a4c611b6"
     },
     {
       "bytes": 16589,
@@ -15264,12 +15214,6 @@
       "sha256": "59dde6683da5ba9b3de39198c39e0d1e3ed38591f02259d9336dda158df5e03a"
     },
     {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/5a/5ae40b00202348ad9cf70b7e0b4d2458faf90ea644a62d43f5ec4f797bd78f7f",
-      "sha256": "5ae40b00202348ad9cf70b7e0b4d2458faf90ea644a62d43f5ec4f797bd78f7f"
-    },
-    {
       "bytes": 16919,
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/5b/5b09076536150c56a4334bf5360023adedfc1b66035262e74cb52c6903989210",
@@ -15292,6 +15236,12 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/5d/5d2bbd916125b8e7463f371a2690d6cf4ada9758a3f7dec4f65c397cf263e4c2",
       "sha256": "5d2bbd916125b8e7463f371a2690d6cf4ada9758a3f7dec4f65c397cf263e4c2"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/5d/5d6d3a93cad53049b39197296e72cf764384bb1cb60fa9493c69b0b73212ffeb",
+      "sha256": "5d6d3a93cad53049b39197296e72cf764384bb1cb60fa9493c69b0b73212ffeb"
     },
     {
       "bytes": 238,
@@ -15334,6 +15284,12 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/67/67b47a4cb1a2de9584b9b8c64f7fbf5401431f83db0a7d8e2487688a25892f5d",
       "sha256": "67b47a4cb1a2de9584b9b8c64f7fbf5401431f83db0a7d8e2487688a25892f5d"
+    },
+    {
+      "bytes": 18202,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/68/68c3768e8bec2bff3b006447f3a5ed554f798080d84cb2534f11bc3a8d31ecd7",
+      "sha256": "68c3768e8bec2bff3b006447f3a5ed554f798080d84cb2534f11bc3a8d31ecd7"
     },
     {
       "bytes": 238,
@@ -15420,10 +15376,10 @@
       "sha256": "7a62dee745d802a6fb3c79b0c7b90a3e832c9e3a1948fa243d4cffd93ab63c82"
     },
     {
-      "bytes": 238,
+      "bytes": 18034,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/7b/7b62f1183838dc0c8378503127c5663d27fd8dac9027ee9c4c84b905129e059c",
-      "sha256": "7b62f1183838dc0c8378503127c5663d27fd8dac9027ee9c4c84b905129e059c"
+      "path": "blobs/sha256/7d/7d0fa5d2f797b7534bafa29b0f5cb26e0a11d93e68072b30291294bd96276c88",
+      "sha256": "7d0fa5d2f797b7534bafa29b0f5cb26e0a11d93e68072b30291294bd96276c88"
     },
     {
       "bytes": 17133,
@@ -15450,10 +15406,10 @@
       "sha256": "8029234af0fcd3b42d56ad5f3ff2c09d3b78513c88e9f702d78c4a8e1116275a"
     },
     {
-      "bytes": 17649,
+      "bytes": 17146,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/81/818231c231ea8c589315216e09640be8c9a6505fb39716fc2d62f4cebfe324e7",
-      "sha256": "818231c231ea8c589315216e09640be8c9a6505fb39716fc2d62f4cebfe324e7"
+      "path": "blobs/sha256/81/810f45a5284c486e9fd52327ec826bfe81fa7867ef48b2f5e73b5a8c4ab831cc",
+      "sha256": "810f45a5284c486e9fd52327ec826bfe81fa7867ef48b2f5e73b5a8c4ab831cc"
     },
     {
       "bytes": 238,
@@ -15510,12 +15466,6 @@
       "sha256": "885612c8fa116b4fd01b2118377dc8239a95414c689b888212e6878fe9ef795f"
     },
     {
-      "bytes": 17102,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/89/8926a07d3648948444406a72ef515fe0e678057fe5d1700a568a8c60b0223265",
-      "sha256": "8926a07d3648948444406a72ef515fe0e678057fe5d1700a568a8c60b0223265"
-    },
-    {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/8a/8a4057d01aa88ee34c9f151d4c2a687901155dfdfd78300671140d939984037b",
@@ -15530,14 +15480,14 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/8e/8ea01726bb3ef40cff2743b6031c8c452df168f496753d48caec817f8cfa05f4",
-      "sha256": "8ea01726bb3ef40cff2743b6031c8c452df168f496753d48caec817f8cfa05f4"
+      "path": "blobs/sha256/8d/8d27fea0e252650422890dd81812c6caff54b22750fa7b6adee65a7cc5bc81ec",
+      "sha256": "8d27fea0e252650422890dd81812c6caff54b22750fa7b6adee65a7cc5bc81ec"
     },
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/8e/8ef1ebb60fe34c1e205436ed372f4334e7271ecca5346e3ee13aad09e63c32c2",
-      "sha256": "8ef1ebb60fe34c1e205436ed372f4334e7271ecca5346e3ee13aad09e63c32c2"
+      "path": "blobs/sha256/8e/8ea01726bb3ef40cff2743b6031c8c452df168f496753d48caec817f8cfa05f4",
+      "sha256": "8ea01726bb3ef40cff2743b6031c8c452df168f496753d48caec817f8cfa05f4"
     },
     {
       "bytes": 17331,
@@ -15550,12 +15500,6 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/92/9205d8b9ebc634df36b053c7ddb6d2ab64d18757cbec9fbd774acc08713a7f32",
       "sha256": "9205d8b9ebc634df36b053c7ddb6d2ab64d18757cbec9fbd774acc08713a7f32"
-    },
-    {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/92/929c46b29b0c561f782f75acdd1fa9491bfd719ebae7070b85ede7a9537fb5a6",
-      "sha256": "929c46b29b0c561f782f75acdd1fa9491bfd719ebae7070b85ede7a9537fb5a6"
     },
     {
       "bytes": 238,
@@ -15620,6 +15564,12 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/9a/9a059255a6db52af3c86f8d2c04190b28b1f4c83880fa97cbe0afaa1587bbb6b",
+      "sha256": "9a059255a6db52af3c86f8d2c04190b28b1f4c83880fa97cbe0afaa1587bbb6b"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/9a/9a4d40e81261629a108bb58068395841f27d894279c55f322ba6e0c232f9cc51",
       "sha256": "9a4d40e81261629a108bb58068395841f27d894279c55f322ba6e0c232f9cc51"
     },
@@ -15660,10 +15610,16 @@
       "sha256": "a163ff3ca1ac081e561ef6a9fb46b9711aa8589344d1f627506f77fd6bddd20c"
     },
     {
-      "bytes": 17387,
+      "bytes": 17513,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/a2/a2602ced1a82d299c4902abfb1f8f2e8929a068a5d837080dce7e87b61144308",
-      "sha256": "a2602ced1a82d299c4902abfb1f8f2e8929a068a5d837080dce7e87b61144308"
+      "path": "blobs/sha256/a1/a1c85b9c6d1d364b27b7e428b8108d4d536e06776e6cb074a66c9e3d9561d0a0",
+      "sha256": "a1c85b9c6d1d364b27b7e428b8108d4d536e06776e6cb074a66c9e3d9561d0a0"
+    },
+    {
+      "bytes": 17581,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/a4/a423c6e7ee2dc0475b1d248410f808617ff6dd11ffd7a3cc0ab7690258dc3c2d",
+      "sha256": "a423c6e7ee2dc0475b1d248410f808617ff6dd11ffd7a3cc0ab7690258dc3c2d"
     },
     {
       "bytes": 238,
@@ -15692,12 +15648,6 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/a5/a5b7b1a5f02649c5366f97b1a6b301f6b5be0eb430bb5f521a1b6dccfd9b0574",
-      "sha256": "a5b7b1a5f02649c5366f97b1a6b301f6b5be0eb430bb5f521a1b6dccfd9b0574"
-    },
-    {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/a6/a64d6d1bbac476ab3c9c3edec9dcb079ce89a69f7de684461e5a669be2f334cf",
       "sha256": "a64d6d1bbac476ab3c9c3edec9dcb079ce89a69f7de684461e5a669be2f334cf"
     },
@@ -15706,6 +15656,12 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/a8/a88ec7ae71c56cb326f1a036ddc6f87ea94c5010a0285fa4a510c41f2e049664",
       "sha256": "a88ec7ae71c56cb326f1a036ddc6f87ea94c5010a0285fa4a510c41f2e049664"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/ad/adfa054ce1534bc3fae3f75c165cd7ce670f795c9b5a9aa20b458133824973ce",
+      "sha256": "adfa054ce1534bc3fae3f75c165cd7ce670f795c9b5a9aa20b458133824973ce"
     },
     {
       "bytes": 238,
@@ -15720,22 +15676,22 @@
       "sha256": "aeb4dd4883994f00f5176deed3bca9dee1af085b10acbbdca852931e6b810da7"
     },
     {
-      "bytes": 18446,
+      "bytes": 238,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/ae/aeda65f91ab5b3c9370a4d8329a57375a8dcb90047af1548f4c46e06d99441f4",
-      "sha256": "aeda65f91ab5b3c9370a4d8329a57375a8dcb90047af1548f4c46e06d99441f4"
+      "path": "blobs/sha256/af/af2cb84931610e51b52e962cbfaf71db879647c0b2b7709515b737378f5a57a8",
+      "sha256": "af2cb84931610e51b52e962cbfaf71db879647c0b2b7709515b737378f5a57a8"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/b0/b052a2cec510efae8a2f9874bac45bd97036bf52fb7a98e209fb5c7795de52fa",
+      "sha256": "b052a2cec510efae8a2f9874bac45bd97036bf52fb7a98e209fb5c7795de52fa"
     },
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/b2/b2f2f914ccb381344516d17644d99a3b992e7ee8fb8331ce8a733a62459ca9e8",
       "sha256": "b2f2f914ccb381344516d17644d99a3b992e7ee8fb8331ce8a733a62459ca9e8"
-    },
-    {
-      "bytes": 17752,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/b3/b30887053b42932912137fff9f98daeea642ab5a12287c32ebdd21abd8077b0a",
-      "sha256": "b30887053b42932912137fff9f98daeea642ab5a12287c32ebdd21abd8077b0a"
     },
     {
       "bytes": 238,
@@ -15754,18 +15710,6 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/b6/b60cdd9bd243f39bf9cd0c19bba1cda0d449d76ab8f07cf2ec8ece42878d2f54",
       "sha256": "b60cdd9bd243f39bf9cd0c19bba1cda0d449d76ab8f07cf2ec8ece42878d2f54"
-    },
-    {
-      "bytes": 17542,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/b6/b62683d13ab5669ccd92d623d1c0a9dbdd5d756187756c41294a5e783cb4dd08",
-      "sha256": "b62683d13ab5669ccd92d623d1c0a9dbdd5d756187756c41294a5e783cb4dd08"
-    },
-    {
-      "bytes": 17234,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/ba/ba53bf38bbf25af2ed891877c1e841c2cb41d1ba7d1e4120890ad1970fcae833",
-      "sha256": "ba53bf38bbf25af2ed891877c1e841c2cb41d1ba7d1e4120890ad1970fcae833"
     },
     {
       "bytes": 238,
@@ -15844,6 +15788,12 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/c8/c88eae99e4e5dc3b9979dea85017d136ff0c75313f6e48bdba10c473f8e052b4",
       "sha256": "c88eae99e4e5dc3b9979dea85017d136ff0c75313f6e48bdba10c473f8e052b4"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/c9/c95187347823cf2e839340b8ded5e7ddc9d20d297d573ad72d87dc9e33d63fc4",
+      "sha256": "c95187347823cf2e839340b8ded5e7ddc9d20d297d573ad72d87dc9e33d63fc4"
     },
     {
       "bytes": 238,
@@ -15978,6 +15928,12 @@
       "sha256": "dbf47c31950d68223e52e3ef9e4a64f9e0986a9d8bbd641228242680a87edec8"
     },
     {
+      "bytes": 17614,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/dc/dcb0ff5528b8aa977034da76e15ac76271f337462d73e595aa4348f20c324cb5",
+      "sha256": "dcb0ff5528b8aa977034da76e15ac76271f337462d73e595aa4348f20c324cb5"
+    },
+    {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/de/dede1770ad55f9f164148eb89dc782db38c83c640bafb93f025ef4a386158fb5",
@@ -16018,12 +15974,6 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/e3/e3af2764b27155eef8c51c3a52e79b10d6dd6396c679cf74b5f54b844b23f742",
       "sha256": "e3af2764b27155eef8c51c3a52e79b10d6dd6396c679cf74b5f54b844b23f742"
-    },
-    {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/e4/e4072738783fc40b688f392d23002ba7eb1f4503366e2ab8abf3dfa831f5c66e",
-      "sha256": "e4072738783fc40b688f392d23002ba7eb1f4503366e2ab8abf3dfa831f5c66e"
     },
     {
       "bytes": 16517,
@@ -16082,12 +16032,6 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/ee/eef1901d4544eb64d27a49ceca45be98f53d14a7709f269f891ac0c0cdc7c62e",
-      "sha256": "eef1901d4544eb64d27a49ceca45be98f53d14a7709f269f891ac0c0cdc7c62e"
-    },
-    {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/ef/ef8c9540f83c224c2203f1dd3f9f68369d21fd4172c0a4e73210eaf6041c44d0",
       "sha256": "ef8c9540f83c224c2203f1dd3f9f68369d21fd4172c0a4e73210eaf6041c44d0"
     },
@@ -16126,6 +16070,18 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/f7/f7a3d206820f75704490b33f48ebce6739e1697b46ad2bba71959bd6022c9fcf",
       "sha256": "f7a3d206820f75704490b33f48ebce6739e1697b46ad2bba71959bd6022c9fcf"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/f9/f9e14534369ce65f4400842461745c80ed0876a927d3c87c1db5fd3e04e57131",
+      "sha256": "f9e14534369ce65f4400842461745c80ed0876a927d3c87c1db5fd3e04e57131"
+    },
+    {
+      "bytes": 17227,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/fa/fa2e24aab87cd7fc55744684ac673e92f20ed9a7e6bde21fc07701924a9e69e3",
+      "sha256": "fa2e24aab87cd7fc55744684ac673e92f20ed9a7e6bde21fc07701924a9e69e3"
     },
     {
       "bytes": 238,
@@ -16464,12 +16420,6 @@
       "sha256": "3a61c6c96caf5c1d9b623fb9b04c822b783dfcb78aa7e49c76a3f643e6ed7f95"
     },
     {
-      "bytes": 2988,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/3a/3a99acaa394dea033e3feda3ca2bbed56d76cd80a055005156c38c1c225bd601",
-      "sha256": "3a99acaa394dea033e3feda3ca2bbed56d76cd80a055005156c38c1c225bd601"
-    },
-    {
       "bytes": 2564,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/3b/3b69ae48f1a27c3b2853e3314abcfb98cee6860471c0dde95d6e95ea94a896b0",
@@ -16534,12 +16484,6 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/43/435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b",
       "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b"
-    },
-    {
-      "bytes": 224,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/44/44b8395bb567fb3c33f6345db58314026a9719cadb207e2ee1e7e60f895d9edd",
-      "sha256": "44b8395bb567fb3c33f6345db58314026a9719cadb207e2ee1e7e60f895d9edd"
     },
     {
       "bytes": 2156,
@@ -16752,6 +16696,12 @@
       "sha256": "657992da76c3bb5294b826969bd1609141f9b26ad141e61d83b43103b548d2f5"
     },
     {
+      "bytes": 3952,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/65/65a3ec27a936f42ed3eb04c06ef412ab0e374962e4e4c601c66b23a787fc7731",
+      "sha256": "65a3ec27a936f42ed3eb04c06ef412ab0e374962e4e4c601c66b23a787fc7731"
+    },
+    {
       "bytes": 43693,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/65/65c892bdc722cec56df01ff258cfb9b97d99d0b471dc0f0cc522293e8d9e2517",
@@ -16806,12 +16756,6 @@
       "sha256": "6d0917530cf3b3dca12c1ab7798e4d38ad0a6798ecc1bd27849a3048ba91d265"
     },
     {
-      "bytes": 424,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/6d/6da681c7577459b5175c63455f560d890230e30c4b615e2a1f357ad136429934",
-      "sha256": "6da681c7577459b5175c63455f560d890230e30c4b615e2a1f357ad136429934"
-    },
-    {
       "bytes": 2716,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/6e/6eba9e109a6a14b36352a33adaf8eeaa037a836650c7649414d8f6edc1d7840a",
@@ -16840,6 +16784,18 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/75/75486ea0af9309140ca6e2c401d7e67bea8f4892344e5707f6394dc5e83dfc44",
       "sha256": "75486ea0af9309140ca6e2c401d7e67bea8f4892344e5707f6394dc5e83dfc44"
+    },
+    {
+      "bytes": 595,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/76/7606ff87c3a079701c96dbab9cca6f67ffcc58b764fde6e9dbeb88178a267376",
+      "sha256": "7606ff87c3a079701c96dbab9cca6f67ffcc58b764fde6e9dbeb88178a267376"
+    },
+    {
+      "bytes": 6288,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/76/764d060a92e9eb2833ba7ce56ca72b4986996f2430783670f7a1e403ad8ff6df",
+      "sha256": "764d060a92e9eb2833ba7ce56ca72b4986996f2430783670f7a1e403ad8ff6df"
     },
     {
       "bytes": 1052,
@@ -17044,6 +17000,12 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/9b/9b2dd816ad215399342f5e615b278de226738b8ca47952677933e8fea60622d2",
       "sha256": "9b2dd816ad215399342f5e615b278de226738b8ca47952677933e8fea60622d2"
+    },
+    {
+      "bytes": 698,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/9c/9c45ed26bb61766df334510f9453c102bd53015df8b2cec4e33999a077393ac1",
+      "sha256": "9c45ed26bb61766df334510f9453c102bd53015df8b2cec4e33999a077393ac1"
     },
     {
       "bytes": 1144,
@@ -17454,12 +17416,6 @@
       "sha256": "ca92334f97726913bd69da5ade8582aa2a2840592a2ca8f183b5f77734702705"
     },
     {
-      "bytes": 4898,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/ca/ca9e0150b598f4361108074b1bd3476a85a09d69e1ef70c14af7faaec2af4dee",
-      "sha256": "ca9e0150b598f4361108074b1bd3476a85a09d69e1ef70c14af7faaec2af4dee"
-    },
-    {
       "bytes": 2254,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/ca/cad52774e6de9b5c1ab1d7106abf324155cccd6fecbfb405ebc479a0c6771f34",
@@ -17736,12 +17692,6 @@
       "sha256": "f5a7086db928685f10c51cb0c5970525aaf38ce3835153f31b22801edf7ad663"
     },
     {
-      "bytes": 791,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/f6/f65c5d9f22a317b2a10803bd1868461ce6499c2ed7217bc80c0cc772a748789c",
-      "sha256": "f65c5d9f22a317b2a10803bd1868461ce6499c2ed7217bc80c0cc772a748789c"
-    },
-    {
       "bytes": 1952,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/f7/f71e8ed126b46346494aad5486874cd8f0aafe95092ed67d2e3cb6110f939abc",
@@ -17796,6 +17746,12 @@
       "sha256": "0004f14c04543f5b06c9a3d8ce4c802cd149da5791aa167b250ffd45d56db13d"
     },
     {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/00/0022015ed87a8df5b5c46cd57bb7c23fffd2206af568998d44fb1e781aa06b2f",
+      "sha256": "0022015ed87a8df5b5c46cd57bb7c23fffd2206af568998d44fb1e781aa06b2f"
+    },
+    {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/00/003fd6e1b9af5f1a08b6acaf85e57b7c22926772f58f33faa455e6c8f29634c4",
@@ -17818,12 +17774,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/08/0828c51470ee38b29b0f473039468f23725fd1300f377da1d4d77d5ec2cf1c93",
       "sha256": "0828c51470ee38b29b0f473039468f23725fd1300f377da1d4d77d5ec2cf1c93"
-    },
-    {
-      "bytes": 780,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/09/091853b491e74b29d624690c5e9a2a4fa674139036c2fea66c6acfdbf1ca5be3",
-      "sha256": "091853b491e74b29d624690c5e9a2a4fa674139036c2fea66c6acfdbf1ca5be3"
     },
     {
       "bytes": 518,
@@ -17940,6 +17890,18 @@
       "sha256": "1d7eeec9543b2d18551ea5f4bfecba0b719155c80c5f7c01f6eda6ef0a0829f0"
     },
     {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/1d/1db13d52d937efc788fdc1bc9fc37987407dcd0d8fef2a3748fa83ad36039f4a",
+      "sha256": "1db13d52d937efc788fdc1bc9fc37987407dcd0d8fef2a3748fa83ad36039f4a"
+    },
+    {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/1e/1eb0d7583d4cda798f81a43df8a18f2a3fd840d72b62838fc894cb2e1fabb66b",
+      "sha256": "1eb0d7583d4cda798f81a43df8a18f2a3fd840d72b62838fc894cb2e1fabb66b"
+    },
+    {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/1f/1f8617d9c7c4305ea7a4a5a729ab5d3f36fabf5df4fa3b715ee59ae5dc1cd6d4",
@@ -18014,12 +17976,6 @@
     {
       "bytes": 780,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/31/31321f3528e9bf4a4f5a4cda1869748448ef507433d36131b67386f17910eeef",
-      "sha256": "31321f3528e9bf4a4f5a4cda1869748448ef507433d36131b67386f17910eeef"
-    },
-    {
-      "bytes": 780,
-      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/31/31b213cd30ca7227b7e4af05a4111b9c8602039894b81fbfa31c670a2ec04a77",
       "sha256": "31b213cd30ca7227b7e4af05a4111b9c8602039894b81fbfa31c670a2ec04a77"
     },
@@ -18034,12 +17990,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/32/3248b7a7e1c4732ffe82b691e0cab6dbb86a4acc26d766e5f2528d8357157d82",
       "sha256": "3248b7a7e1c4732ffe82b691e0cab6dbb86a4acc26d766e5f2528d8357157d82"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/32/3298d0b3818a72af280bcb3c37735893cc3eb719504c90cb20d1abae27f0180c",
-      "sha256": "3298d0b3818a72af280bcb3c37735893cc3eb719504c90cb20d1abae27f0180c"
     },
     {
       "bytes": 518,
@@ -18104,14 +18054,32 @@
     {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/3a/3a8712fea59bd6cac45e6f2089df3e64f3dcd52fed929832972035145a42ab4c",
+      "sha256": "3a8712fea59bd6cac45e6f2089df3e64f3dcd52fed929832972035145a42ab4c"
+    },
+    {
+      "bytes": 518,
+      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/3b/3b0ce6760350f7e43721bfbe0a4dc84182449adcbb8212b9d6ae97a132581c8f",
       "sha256": "3b0ce6760350f7e43721bfbe0a4dc84182449adcbb8212b9d6ae97a132581c8f"
     },
     {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/3b/3bb20004fbeb2ce0cf63f7469ffb96ab3a71cfa058ffbaaab20fc7df73426eb0",
+      "sha256": "3bb20004fbeb2ce0cf63f7469ffb96ab3a71cfa058ffbaaab20fc7df73426eb0"
+    },
+    {
+      "bytes": 518,
+      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/3b/3bc622fb27328e2f3937653af735280209c01b66ebb4c191366e1d608a61b519",
       "sha256": "3bc622fb27328e2f3937653af735280209c01b66ebb4c191366e1d608a61b519"
+    },
+    {
+      "bytes": 518,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/3c/3cc1b02922ad94dcdf71ee23685d5a1ce130e9f8e19cdf3e985d0de81cdf23ca",
+      "sha256": "3cc1b02922ad94dcdf71ee23685d5a1ce130e9f8e19cdf3e985d0de81cdf23ca"
     },
     {
       "bytes": 518,
@@ -18246,6 +18214,12 @@
       "sha256": "54a695adcff1a07483e327c3cb549380d187da33df7cf2854c419dee0a23a1fd"
     },
     {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/56/561eff1db225586837f9e6979d6b61b6860b9c26c4384eecea387043a6e48529",
+      "sha256": "561eff1db225586837f9e6979d6b61b6860b9c26c4384eecea387043a6e48529"
+    },
+    {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/56/563ff3d5e7c88d3836ec983dfea328de8ae3b805efe93d6a37bd20ef03460a48",
@@ -18256,12 +18230,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/57/5749e1b62b25087c0c59a71b6993a1b25bce28d1b9aa856945f901d376e459a7",
       "sha256": "5749e1b62b25087c0c59a71b6993a1b25bce28d1b9aa856945f901d376e459a7"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/57/57dd40b9021a530a9bcac29bda8224d22e292e17de27d2358d1d3571720a8216",
-      "sha256": "57dd40b9021a530a9bcac29bda8224d22e292e17de27d2358d1d3571720a8216"
     },
     {
       "bytes": 518,
@@ -18280,12 +18248,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/5b/5b2a5e27e303fdb138fc7d1b19f5399492c0aeff52e2bd08dd446ada3576ef0f",
       "sha256": "5b2a5e27e303fdb138fc7d1b19f5399492c0aeff52e2bd08dd446ada3576ef0f"
-    },
-    {
-      "bytes": 780,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/5b/5bc8581ac13a49141c1329b6ba5bca2602a9e0d5cc516f57cf03cde0de4e4027",
-      "sha256": "5bc8581ac13a49141c1329b6ba5bca2602a9e0d5cc516f57cf03cde0de4e4027"
     },
     {
       "bytes": 518,
@@ -18318,16 +18280,16 @@
       "sha256": "6479e2499befcecc2e41f05a02b718c51b94491ea65bd5236db157b15ef14011"
     },
     {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/65/658b4982dda6037dd2c198ea0f4b10b5b4619f4424f433f304de0e19c3fdb62b",
-      "sha256": "658b4982dda6037dd2c198ea0f4b10b5b4619f4424f433f304de0e19c3fdb62b"
-    },
-    {
       "bytes": 780,
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/65/65bddc9e483c1681f4ad2483e665d8e049fb2874082540c69a335c878b41c3ae",
       "sha256": "65bddc9e483c1681f4ad2483e665d8e049fb2874082540c69a335c878b41c3ae"
+    },
+    {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/66/668910c26a578b9d1990564c1bee2c68f4fa40e99e210d144213cdfdcdfe185f",
+      "sha256": "668910c26a578b9d1990564c1bee2c68f4fa40e99e210d144213cdfdcdfe185f"
     },
     {
       "bytes": 518,
@@ -18408,12 +18370,6 @@
       "sha256": "75270ddf56ddb310af0f63a919c306e9878abc2827b5bd3b87510cb609cc63ce"
     },
     {
-      "bytes": 780,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/79/795d0ec92044414dd7898a26c7dd2b8fcd6e2284ce18694535a13a7ebffbf0d4",
-      "sha256": "795d0ec92044414dd7898a26c7dd2b8fcd6e2284ce18694535a13a7ebffbf0d4"
-    },
-    {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/79/79691d114b0888f762d46794c6b37131f2fab825f011ab454a9b3cebcb958c81",
@@ -18442,12 +18398,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/7d/7dd76cb8fd9f3158f549b252a1a7040596fc5186ca9445d7bfb7791b0a4a532f",
       "sha256": "7dd76cb8fd9f3158f549b252a1a7040596fc5186ca9445d7bfb7791b0a4a532f"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/7f/7f250c3d36e10e185f2488134fc01eb39a80f4fc134db9de9898b263a86cef01",
-      "sha256": "7f250c3d36e10e185f2488134fc01eb39a80f4fc134db9de9898b263a86cef01"
     },
     {
       "bytes": 518,
@@ -18492,6 +18442,12 @@
       "sha256": "84b45630be1830b6b639b5399fd609431610e65d98a183bbeb12e3a853c90d84"
     },
     {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/85/851e90d893c467e5777ce0915bb947d90a1432f4d951462a4dcb29789952ee26",
+      "sha256": "851e90d893c467e5777ce0915bb947d90a1432f4d951462a4dcb29789952ee26"
+    },
+    {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/85/85796335acc19abc967d209161640ba8f9a625f4277842d2d3368c125bd168ec",
@@ -18510,16 +18466,16 @@
       "sha256": "8b14000b3a2f89f3de0bbfb0b4775b286d78f6bdb4c7d2b0a0b6a93b7b35ea36"
     },
     {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/8c/8c98077230d497bfd1407fccc834f434d144c5830e78253e2d925b55f0d04095",
+      "sha256": "8c98077230d497bfd1407fccc834f434d144c5830e78253e2d925b55f0d04095"
+    },
+    {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/8f/8f7127a541f0fa226da3390b45a297339599ecf6279ef31d45ad468836ceaf85",
       "sha256": "8f7127a541f0fa226da3390b45a297339599ecf6279ef31d45ad468836ceaf85"
-    },
-    {
-      "bytes": 780,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/90/901db7c03a7964a21103ddbd9a4cfc57676220e449f4ea1aa515c9c3ea68534b",
-      "sha256": "901db7c03a7964a21103ddbd9a4cfc57676220e449f4ea1aa515c9c3ea68534b"
     },
     {
       "bytes": 518,
@@ -18532,12 +18488,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/91/9145c76922e9e5c3ce55d38f821c15c0f2dac8ba990ecbdb753be36ad70b8108",
       "sha256": "9145c76922e9e5c3ce55d38f821c15c0f2dac8ba990ecbdb753be36ad70b8108"
-    },
-    {
-      "bytes": 780,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/94/947bae20e8e9362f0791b4d357770c4019aa8b44336b2da4e6deb87b4bdf872e",
-      "sha256": "947bae20e8e9362f0791b4d357770c4019aa8b44336b2da4e6deb87b4bdf872e"
     },
     {
       "bytes": 780,
@@ -18556,6 +18506,12 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/96/961d024eb75337ec02756d589b53c5b836cbbca5b3edf1a51cddacf555da7240",
       "sha256": "961d024eb75337ec02756d589b53c5b836cbbca5b3edf1a51cddacf555da7240"
+    },
+    {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/96/96d1f3b11c002d5ad23484431dde6501eaf226a059a4b28a8915bcfe7d4abee3",
+      "sha256": "96d1f3b11c002d5ad23484431dde6501eaf226a059a4b28a8915bcfe7d4abee3"
     },
     {
       "bytes": 518,
@@ -18630,6 +18586,12 @@
       "sha256": "9fea08a9d3f84c2369840efa52a5ded482ff063bde68d2b550bd52de4f6f5b8c"
     },
     {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/a0/a0cf8600aa49994577d1f97e1756d5261ebb54d7582fca41ad69d06f59469665",
+      "sha256": "a0cf8600aa49994577d1f97e1756d5261ebb54d7582fca41ad69d06f59469665"
+    },
+    {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/a1/a183e0e7762ac32dff985418bd24894ae2f7c22ac5b52737e1497d20562ddd28",
@@ -18642,10 +18604,10 @@
       "sha256": "a22093e4547e95da7b3cefeb442214d952d87f69439d048ed234d5fb282b0ee8"
     },
     {
-      "bytes": 780,
+      "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/a2/a2325090fc00f309fb638ee05df8506d6f74f2e384689a00774a59afc32a8e6f",
-      "sha256": "a2325090fc00f309fb638ee05df8506d6f74f2e384689a00774a59afc32a8e6f"
+      "path": "blobs/sha256/a2/a2514a634ca49ba7c2d739cb51c8c698fb0bafa85457bf21dec03b672e8e7d1b",
+      "sha256": "a2514a634ca49ba7c2d739cb51c8c698fb0bafa85457bf21dec03b672e8e7d1b"
     },
     {
       "bytes": 780,
@@ -18750,16 +18712,10 @@
       "sha256": "b1c0c1c0de1bd2747dae903c3ec77dc174b41c665a1b0a8002c3696e1788c9f6"
     },
     {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/b2/b2340e299277cf9d3dddfbdb8bd16624cc7560a0933e9d03248e76168d1559f6",
-      "sha256": "b2340e299277cf9d3dddfbdb8bd16624cc7560a0933e9d03248e76168d1559f6"
-    },
-    {
       "bytes": 780,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/b3/b39b4726604f9bac393def326df6b2826a054e70e79efce01482aca21ba23ddc",
-      "sha256": "b39b4726604f9bac393def326df6b2826a054e70e79efce01482aca21ba23ddc"
+      "path": "blobs/sha256/b2/b23ebeb5838afa7d0ef59e8e201294a7ee555f34ec7934a5fc5b2cc46fe4d44d",
+      "sha256": "b23ebeb5838afa7d0ef59e8e201294a7ee555f34ec7934a5fc5b2cc46fe4d44d"
     },
     {
       "bytes": 518,
@@ -18772,12 +18728,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/b3/b3fb818a9b2e8d801bf604f63aac89fe59ed73e2c7de30c6a450a37f767e44bc",
       "sha256": "b3fb818a9b2e8d801bf604f63aac89fe59ed73e2c7de30c6a450a37f767e44bc"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/b4/b40443022b6eb50301589b8a810d3a06e11c41e8679911408aea088f0f4ca0ea",
-      "sha256": "b40443022b6eb50301589b8a810d3a06e11c41e8679911408aea088f0f4ca0ea"
     },
     {
       "bytes": 780,
@@ -18896,8 +18846,8 @@
     {
       "bytes": 780,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/d2/d2c789a65f3f68ff82a60d0b2d90c60c0b15777b3b2fca0b8dbde37ef9a72a99",
-      "sha256": "d2c789a65f3f68ff82a60d0b2d90c60c0b15777b3b2fca0b8dbde37ef9a72a99"
+      "path": "blobs/sha256/d4/d458872f969ca8ba5429d0ea220b5f8afdbd093597de7ccf9191d7f4dc1d038e",
+      "sha256": "d458872f969ca8ba5429d0ea220b5f8afdbd093597de7ccf9191d7f4dc1d038e"
     },
     {
       "bytes": 518,
@@ -18986,18 +18936,6 @@
     {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/eb/eb9b92497334fb33bcaab4bbf968bef43fdd5c3a2455b5bcd60c53ee11de0b43",
-      "sha256": "eb9b92497334fb33bcaab4bbf968bef43fdd5c3a2455b5bcd60c53ee11de0b43"
-    },
-    {
-      "bytes": 780,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/eb/ebc1a2c9dfb131173a6d8dd78bd0ada5a8d0c08f2514601215a5ce03cbbc9afa",
-      "sha256": "ebc1a2c9dfb131173a6d8dd78bd0ada5a8d0c08f2514601215a5ce03cbbc9afa"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/ed/ed0ba50608a93f74709abfcd03e8ae40a52af726f5a1b49890c1fb4965ee3b87",
       "sha256": "ed0ba50608a93f74709abfcd03e8ae40a52af726f5a1b49890c1fb4965ee3b87"
     },
@@ -19022,8 +18960,8 @@
     {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/ee/ee95f4856ac05cb77fa2ab0324328d327a1d0196ba5617caaebdf6431ec971e2",
-      "sha256": "ee95f4856ac05cb77fa2ab0324328d327a1d0196ba5617caaebdf6431ec971e2"
+      "path": "blobs/sha256/ee/ee7e9f1a5d367ecd2dd38999fbf4fd3187e14a0f9deb36df48fe32dd0e95de0e",
+      "sha256": "ee7e9f1a5d367ecd2dd38999fbf4fd3187e14a0f9deb36df48fe32dd0e95de0e"
     },
     {
       "bytes": 518,
@@ -19036,6 +18974,12 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/ef/efa0d305f5436a0e00422dbbcde65badbac72c52e2cdc4a936c2504600119602",
       "sha256": "efa0d305f5436a0e00422dbbcde65badbac72c52e2cdc4a936c2504600119602"
+    },
+    {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/f1/f15b5da9b805ed26d4f4ef54fa54bd2263f0ace51371a0ab240b630b6ef2e502",
+      "sha256": "f15b5da9b805ed26d4f4ef54fa54bd2263f0ace51371a0ab240b630b6ef2e502"
     },
     {
       "bytes": 518,
@@ -19068,10 +19012,10 @@
       "sha256": "f5cc809b808094a6f38c5021383d520d8dd43145f4ab2d54ae894a0712ac781d"
     },
     {
-      "bytes": 780,
+      "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/f6/f6fcb23c99b63b6007fb5b6db1c5a08f549f011a162168728011d93502bdd0a3",
-      "sha256": "f6fcb23c99b63b6007fb5b6db1c5a08f549f011a162168728011d93502bdd0a3"
+      "path": "blobs/sha256/f8/f8356de070e04c7cc5cbb56744de37d2dcd989675e37d4c0c0471e4f92deb728",
+      "sha256": "f8356de070e04c7cc5cbb56744de37d2dcd989675e37d4c0c0471e4f92deb728"
     },
     {
       "bytes": 518,
@@ -19114,12 +19058,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/ff/ff5fd4af62ae30dabcff45b746258bbaec8fb7ea434729e3c283f3336bc53eec",
       "sha256": "ff5fd4af62ae30dabcff45b746258bbaec8fb7ea434729e3c283f3336bc53eec"
-    },
-    {
-      "bytes": 45847,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/02/0239ea32be7141cad060e3cb5d755e6434f33750b8bf2d8a4ea967780722c55c",
-      "sha256": "0239ea32be7141cad060e3cb5d755e6434f33750b8bf2d8a4ea967780722c55c"
     },
     {
       "bytes": 2015124,
@@ -19170,6 +19108,12 @@
       "sha256": "0735b143bf4874d5e99b10b8a4b277584d0404ddea062cbf516c2a54596a3aa8"
     },
     {
+      "bytes": 34669,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/07/0755e7a6cdb5a263b3b19b8f69b6e706a41fb88f90bf9137e1b180c23a81c005",
+      "sha256": "0755e7a6cdb5a263b3b19b8f69b6e706a41fb88f90bf9137e1b180c23a81c005"
+    },
+    {
       "bytes": 58031,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/08/080b9c1976abe9fa168f455dd46f8cb2e1fa7e04eeb9b1bc16f65f1c12eafeb7",
@@ -19188,22 +19132,28 @@
       "sha256": "09784087b59948bfcc8fb5ed3abd17c2df920f5ab3d06455763adbf1e3a7a025"
     },
     {
-      "bytes": 2387434,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/0a/0a5568f537deca01f0fa218dbf126b9375f593a01be72c67aa9da4a40a9a12fb",
-      "sha256": "0a5568f537deca01f0fa218dbf126b9375f593a01be72c67aa9da4a40a9a12fb"
-    },
-    {
       "bytes": 56990,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/0a/0a9c427f0f44cf5f40d38c89637e0c931d7d9cecd8c373c5007bfb8454aa0f62",
       "sha256": "0a9c427f0f44cf5f40d38c89637e0c931d7d9cecd8c373c5007bfb8454aa0f62"
     },
     {
+      "bytes": 110355,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/0a/0aefa55671f484743b26d24d2a64b87612fe6ba513be836f87455aebf4ec3cc8",
+      "sha256": "0aefa55671f484743b26d24d2a64b87612fe6ba513be836f87455aebf4ec3cc8"
+    },
+    {
       "bytes": 167327,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/0b/0b80694c0f6b4e71659ec3ac82c7a23057fcbc9378f0997f46f0d0e086628a2a",
       "sha256": "0b80694c0f6b4e71659ec3ac82c7a23057fcbc9378f0997f46f0d0e086628a2a"
+    },
+    {
+      "bytes": 105714,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/0b/0ba0323edc76e8af215ca54a8f2cbfa147bc6621608fbda068550625f52986da",
+      "sha256": "0ba0323edc76e8af215ca54a8f2cbfa147bc6621608fbda068550625f52986da"
     },
     {
       "bytes": 91031,
@@ -19296,12 +19246,6 @@
       "sha256": "1a185671e7d20c46b14b92e947153184e1d649a46bff49680e4c9eed30ce58b2"
     },
     {
-      "bytes": 105714,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/1a/1aec3a26dace9b5e808c8f6c73325459018e6ad04db644a64d1c89cbe2aad39c",
-      "sha256": "1aec3a26dace9b5e808c8f6c73325459018e6ad04db644a64d1c89cbe2aad39c"
-    },
-    {
       "bytes": 52293,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/1b/1b49881c190f4b5f9fa9f33ee1be794605f4bb0f0a71d4b0369e816c765e3148",
@@ -19330,12 +19274,6 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/1e/1e6e6a87c8e0dd596ab5f9455bf94f3f536e29f2f629e363f939aa0d60f324b4",
       "sha256": "1e6e6a87c8e0dd596ab5f9455bf94f3f536e29f2f629e363f939aa0d60f324b4"
-    },
-    {
-      "bytes": 106620,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/20/20e3f06f666ff3537e653c8c66424d5c7ac25fb65594eb6a608febf7fc8d912b",
-      "sha256": "20e3f06f666ff3537e653c8c66424d5c7ac25fb65594eb6a608febf7fc8d912b"
     },
     {
       "bytes": 1243963,
@@ -19380,10 +19318,10 @@
       "sha256": "2508ae9c53a1f00520c9144b7753c949e4cd26a74bbf13a47eaa14bf76a46381"
     },
     {
-      "bytes": 24395,
+      "bytes": 43785,
       "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/25/25e129e00aa1f43060f5ea7d82bc3668b1d2e22995fde7aba903f53e93fb1436",
-      "sha256": "25e129e00aa1f43060f5ea7d82bc3668b1d2e22995fde7aba903f53e93fb1436"
+      "path": "blobs/sha256/25/25b23b9bd0f67c0edc6ad5e8cdbe3e4dbbcf628b27b1af6243fd9e10e5750957",
+      "sha256": "25b23b9bd0f67c0edc6ad5e8cdbe3e4dbbcf628b27b1af6243fd9e10e5750957"
     },
     {
       "bytes": 59600,
@@ -19410,16 +19348,22 @@
       "sha256": "29f8552693b0f8c46ecf0018cb3a1ccece8cd8e0896d2e210b408af30ec303b2"
     },
     {
+      "bytes": 48237,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/2b/2b0f088976026bf7919a220f46da7eb936aa8a9edf16875663789f05cf3f645e",
+      "sha256": "2b0f088976026bf7919a220f46da7eb936aa8a9edf16875663789f05cf3f645e"
+    },
+    {
+      "bytes": 148259,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/2d/2d14063993111ba426556a8efc49e493ff55e2790d5fbddef498a43802969c4e",
+      "sha256": "2d14063993111ba426556a8efc49e493ff55e2790d5fbddef498a43802969c4e"
+    },
+    {
       "bytes": 72780,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/30/3070c46fe5f27ebbb989ae1faca846523b84fd322e2dee6b68f3a33777840827",
       "sha256": "3070c46fe5f27ebbb989ae1faca846523b84fd322e2dee6b68f3a33777840827"
-    },
-    {
-      "bytes": 77163,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/32/32989accf5d208207656415d90d36c8a3b47208002331eeaac9c11b71f92c457",
-      "sha256": "32989accf5d208207656415d90d36c8a3b47208002331eeaac9c11b71f92c457"
     },
     {
       "bytes": 54055,
@@ -19438,6 +19382,12 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/34/3466400d78c52856aff7e245651a3a367d33b72c97502b6eecabee73b8cbb667",
       "sha256": "3466400d78c52856aff7e245651a3a367d33b72c97502b6eecabee73b8cbb667"
+    },
+    {
+      "bytes": 101547,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/36/368ac51d4da0fa19cf880b5b12fe54ae1703caa30befa12a8d1925c4d565c3aa",
+      "sha256": "368ac51d4da0fa19cf880b5b12fe54ae1703caa30befa12a8d1925c4d565c3aa"
     },
     {
       "bytes": 162980,
@@ -19536,12 +19486,6 @@
       "sha256": "49974196c06e5d76c1df2a800d76bbfdf1113b5ce043f46f0a0ccf85e02dbb69"
     },
     {
-      "bytes": 39295,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/4a/4a1d3d3f9b9d5b07d1e74c88ce101f7515bb579cf7e9f43ad1cf7d31a795b121",
-      "sha256": "4a1d3d3f9b9d5b07d1e74c88ce101f7515bb579cf7e9f43ad1cf7d31a795b121"
-    },
-    {
       "bytes": 41929,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/4b/4b44506a223b00fc17b465df1406d7171c5324783a6b6c27d0a7a29f47c43672",
@@ -19590,12 +19534,6 @@
       "sha256": "502fcf7473ff621b827bbf2997def810fc961503ec83ee67b49f29b39d4cf8c7"
     },
     {
-      "bytes": 42909,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/51/512e2a6399f3e1a2170c5e984ea8dc3b01a2527f3bcddcf3b6474f0b0b1853e6",
-      "sha256": "512e2a6399f3e1a2170c5e984ea8dc3b01a2527f3bcddcf3b6474f0b0b1853e6"
-    },
-    {
       "bytes": 54420,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/51/51a62dc209f5a0c89806cb8926c517d06e678cb459a24b73d6686f02b7e592ce",
@@ -19632,22 +19570,16 @@
       "sha256": "59e4b4c5070b14093d339f43e198badc1059842c0d9eda61785640888e04f34d"
     },
     {
-      "bytes": 107937,
+      "bytes": 106622,
       "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/5c/5c252ebc451c55d73fcaf0467dd67411c13145362c98c6b8d9b20d6164ff44cc",
-      "sha256": "5c252ebc451c55d73fcaf0467dd67411c13145362c98c6b8d9b20d6164ff44cc"
+      "path": "blobs/sha256/5c/5c791d2369231bb4580ffc2bea1897266a2d43a38111b2201ac02e352c657712",
+      "sha256": "5c791d2369231bb4580ffc2bea1897266a2d43a38111b2201ac02e352c657712"
     },
     {
       "bytes": 42215,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/5c/5cdaeb65ed3acf7d8844ca3fd099f4d3883887df7113ca793e6ba059184898bb",
       "sha256": "5cdaeb65ed3acf7d8844ca3fd099f4d3883887df7113ca793e6ba059184898bb"
-    },
-    {
-      "bytes": 48268,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/5d/5dc13b951f7b617c9dae66ddd4891e16a3d4bc8cb1d3136fee4cfe7c6817b9c3",
-      "sha256": "5dc13b951f7b617c9dae66ddd4891e16a3d4bc8cb1d3136fee4cfe7c6817b9c3"
     },
     {
       "bytes": 54118,
@@ -19674,6 +19606,12 @@
       "sha256": "612611a5eda1e7f698684724660816c5fb78527caf6848ba8fef5ac26794dd63"
     },
     {
+      "bytes": 77802,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/63/6395aabfce325c58350f3fe56f445a8bac47df8c3c444b70e18ea6b1a1374322",
+      "sha256": "6395aabfce325c58350f3fe56f445a8bac47df8c3c444b70e18ea6b1a1374322"
+    },
+    {
       "bytes": 49497,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/63/63b61e13d77e394f8634517735df94e6ea7436e7a90c2950a56707bc7ddbb70c",
@@ -19690,6 +19628,12 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/69/69448411f622ac640c88d9761984b0667cf6516261d0bb4bc4728784dc67e47f",
       "sha256": "69448411f622ac640c88d9761984b0667cf6516261d0bb4bc4728784dc67e47f"
+    },
+    {
+      "bytes": 40984,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/6a/6ae0b974d7c240651054221cacaad6ef1fe16d8a03d16f3a93866b6eedb576fd",
+      "sha256": "6ae0b974d7c240651054221cacaad6ef1fe16d8a03d16f3a93866b6eedb576fd"
     },
     {
       "bytes": 3001829,
@@ -19714,12 +19658,6 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/6d/6d116f6af47bb012bdd50544b4e4b5d3779a5cce873ccc2ef2ee631567b7679c",
       "sha256": "6d116f6af47bb012bdd50544b4e4b5d3779a5cce873ccc2ef2ee631567b7679c"
-    },
-    {
-      "bytes": 148157,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/6d/6d8eadda933fb1d7fbff43884cb0cfe69e96dd8700267630e9d159a187c84451",
-      "sha256": "6d8eadda933fb1d7fbff43884cb0cfe69e96dd8700267630e9d159a187c84451"
     },
     {
       "bytes": 57967,
@@ -19818,12 +19756,6 @@
       "sha256": "836d620b6d7d700d57a3886273dd63b5b4fc34fa92e99a0c73a790e89fab569b"
     },
     {
-      "bytes": 43784,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/83/83b4ec00c0774127dd4069878a1c296baa9cb02c3890730e07d34229e730db05",
-      "sha256": "83b4ec00c0774127dd4069878a1c296baa9cb02c3890730e07d34229e730db05"
-    },
-    {
       "bytes": 56862,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/83/83be7957e135dc2166227154da2a57cb8e9aac0a25bcc224c9086026f05398dd",
@@ -19870,18 +19802,6 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/8c/8c90d9e3718469f74d975fb3e23fe12161bb4a5b8929daf636d95003aef3b0a2",
       "sha256": "8c90d9e3718469f74d975fb3e23fe12161bb4a5b8929daf636d95003aef3b0a2"
-    },
-    {
-      "bytes": 54267,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/8e/8e8b22bb4f0edb93586910f8b1804102009363c67cd611b7e7a0c4773884f8fc",
-      "sha256": "8e8b22bb4f0edb93586910f8b1804102009363c67cd611b7e7a0c4773884f8fc"
-    },
-    {
-      "bytes": 101545,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/91/913107084aad0058c66340b407c14cac8f0d7d91acf49feee67fe026186f2ff3",
-      "sha256": "913107084aad0058c66340b407c14cac8f0d7d91acf49feee67fe026186f2ff3"
     },
     {
       "bytes": 50471,
@@ -19938,22 +19858,16 @@
       "sha256": "9db69e16961e9616db89433b6db91cef104b27d28d8c0bfc61592f236f33dabf"
     },
     {
-      "bytes": 33537,
+      "bytes": 53028,
       "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/a2/a2070a084203367d96dd7a01c0ea85a9ceb8168a48a61373b7d56ce7eeabaf81",
-      "sha256": "a2070a084203367d96dd7a01c0ea85a9ceb8168a48a61373b7d56ce7eeabaf81"
+      "path": "blobs/sha256/9f/9fe5bb8b4f32ccb0cc09951b1de1e905e9badde30e1c0298ef5893019ce543f8",
+      "sha256": "9fe5bb8b4f32ccb0cc09951b1de1e905e9badde30e1c0298ef5893019ce543f8"
     },
     {
       "bytes": 88449,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/a2/a29c1447328c73be543709395de111aff4771124cb4b990e2273ceef46f1ecac",
       "sha256": "a29c1447328c73be543709395de111aff4771124cb4b990e2273ceef46f1ecac"
-    },
-    {
-      "bytes": 37115,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/a3/a314fc63e530e477ca210d1afaa1416330d7b0768c77d97481d131b346b19db1",
-      "sha256": "a314fc63e530e477ca210d1afaa1416330d7b0768c77d97481d131b346b19db1"
     },
     {
       "bytes": 49383,
@@ -20106,12 +20020,6 @@
       "sha256": "bdc40969d373a155625679a8499f56b202efb6f35ad106fb75011542e6487f96"
     },
     {
-      "bytes": 84158,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/bf/bfb241b2399e9aec1ba0426a75a34f50f6dc2b393ab80e57dc8cb16a4867ce4c",
-      "sha256": "bfb241b2399e9aec1ba0426a75a34f50f6dc2b393ab80e57dc8cb16a4867ce4c"
-    },
-    {
       "bytes": 52924,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/c0/c0226d55586c9ad3586a435983e8ea3015d35f5c6f5b0e47d6d5ea06f1ff6cad",
@@ -20130,12 +20038,6 @@
       "sha256": "c1b19c15bad3ffb9e3bde769d13f2e215d35c74c0496035297b3d96c0d8863c4"
     },
     {
-      "bytes": 110355,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/c2/c224eeb75462c4c5be454a5006dd3948144105c535814a4e87cc98f3e682c647",
-      "sha256": "c224eeb75462c4c5be454a5006dd3948144105c535814a4e87cc98f3e682c647"
-    },
-    {
       "bytes": 42016,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/c4/c4cc6506f4cb45615b527968df2166c1c367500629c2014bd06c30a83ed11497",
@@ -20146,6 +20048,12 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/c5/c507f3750664ae1b6b7406b4f93d2affd24d10de8398d2322e3603c35888268f",
       "sha256": "c507f3750664ae1b6b7406b4f93d2affd24d10de8398d2322e3603c35888268f"
+    },
+    {
+      "bytes": 77163,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/c6/c6526cd4b2d73c8e529089c439d138642f22e21b7756cd743d8677b25b85a3c4",
+      "sha256": "c6526cd4b2d73c8e529089c439d138642f22e21b7756cd743d8677b25b85a3c4"
     },
     {
       "bytes": 56500,
@@ -20178,10 +20086,16 @@
       "sha256": "cc2c64599581fbd8876f3cbe379115bb8048ffe6022650efcf29802bbf008cf2"
     },
     {
-      "bytes": 77802,
+      "bytes": 36815,
       "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/cc/cc46a0f6f068a132aa1ee17aae60cc83d871a25305499ad2b06e761ab20d145a",
-      "sha256": "cc46a0f6f068a132aa1ee17aae60cc83d871a25305499ad2b06e761ab20d145a"
+      "path": "blobs/sha256/cd/cd7aa408539a29d7d58d59c277c703708dc5e16a035ea00c952a66032ea5877f",
+      "sha256": "cd7aa408539a29d7d58d59c277c703708dc5e16a035ea00c952a66032ea5877f"
+    },
+    {
+      "bytes": 107940,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/cd/cdd9b43977174cbd63d4a9f4c8676b22b07dabe6f62ea1d826365e2b49934653",
+      "sha256": "cdd9b43977174cbd63d4a9f4c8676b22b07dabe6f62ea1d826365e2b49934653"
     },
     {
       "bytes": 64555,
@@ -20370,6 +20284,12 @@
       "sha256": "f1cbe8a89bd5c256d89a9f497d98081aa54027c5f6136a722433649d1080bed6"
     },
     {
+      "bytes": 2387434,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/f1/f1e5bdd424d3ba99fc9c003213c1b3529216130c60c70b1914552ae7c9ffb9f7",
+      "sha256": "f1e5bdd424d3ba99fc9c003213c1b3529216130c60c70b1914552ae7c9ffb9f7"
+    },
+    {
       "bytes": 42432,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/f4/f4282fce2ea190318d78ec4ee24b282899810ef7b574b716f7b7621de3949d1e",
@@ -20406,6 +20326,12 @@
       "sha256": "f7d861592cc1875648ac9be73a4be6f0745429bf4b439e91644f296240b1b68c"
     },
     {
+      "bytes": 59228,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/f8/f81c1c7e0faecac1d47a82c80bba2259c3d5420355f6a8d315788455df14269f",
+      "sha256": "f81c1c7e0faecac1d47a82c80bba2259c3d5420355f6a8d315788455df14269f"
+    },
+    {
       "bytes": 80549,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/f9/f946a48a1e98cbb5d9db2ce0a05cdddf7570a03e3710ca60a787bb4e302b970a",
@@ -20416,6 +20342,12 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/f9/f9ac09f7e71f4ce1b7a883bbc8d2add9c9bc634583cc8514ccc893c358b67422",
       "sha256": "f9ac09f7e71f4ce1b7a883bbc8d2add9c9bc634583cc8514ccc893c358b67422"
+    },
+    {
+      "bytes": 45441,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/fd/fd68f43b438511584e5dfc35387a9d43695123d39e7e3b0654a6f34acc0b71ad",
+      "sha256": "fd68f43b438511584e5dfc35387a9d43695123d39e7e3b0654a6f34acc0b71ad"
     },
     {
       "bytes": 44825,
@@ -20440,16 +20372,22 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/fe/fee62191bf95d58ccb45d8f8d33acb7a288bbce8349ef42ef2a88c9c2603f2d4",
       "sha256": "fee62191bf95d58ccb45d8f8d33acb7a288bbce8349ef42ef2a88c9c2603f2d4"
+    },
+    {
+      "bytes": 47517,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/ff/ff2f62576b30719d7dbf0d1232c4a52fea847a2adb60659b8fa4c30bd90968c1",
+      "sha256": "ff2f62576b30719d7dbf0d1232c4a52fea847a2adb60659b8fa4c30bd90968c1"
     }
   ],
-  "corpusRoot": "7c41dc71568364dca3a0e88f116c7a3e9a824fff5f92588b4d48a9e6baaed041",
+  "corpusRoot": "a3dfa6484ba48d22dbd0b9c6272e00c5b26cb1fa10585a47bf913c4fce91ed04",
   "generatedBy": {
     "path": "util/acquire-npm-package-evidence.mjs",
     "version": "1.0.0"
   },
   "lockfile": {
     "path": "package-lock.json",
-    "sha256": "fe3272bf158cbdf539235b4bb0c4a9074a69b50b09cd054ef10f963077e2f99e",
+    "sha256": "a816fc74dd05f6f5efb299c62288a01f0c604998a70fb027150e9537895d8ead",
     "version": 3
   },
   "occurrences": [
@@ -20742,7 +20680,7 @@
       }
     },
     {
-      "artifactId": "08ba098fb4780461e70b4f68bccfcf50fba89ed8b5fda56e11f2d3aacc88e2da",
+      "artifactId": "2a0a2298844505ebca5b2cd720c4ac71514542d6e9ccb75269a1075332279e75",
       "dependencyName": "@octokit/endpoint",
       "dependencyPath": "node_modules/@octokit/endpoint",
       "development": false,
@@ -20958,7 +20896,7 @@
       }
     },
     {
-      "artifactId": "c5d1c4707dec9f0f68b0cfe7378d5709a162262f3442bc6f6145ba48c0c26caf",
+      "artifactId": "d80d7158baf750d49f2f04b4e35190800a4dc913aaf896f301f6b922c2fa07fd",
       "dependencyName": "@types/node",
       "dependencyPath": "node_modules/@types/node",
       "development": false,
@@ -20970,7 +20908,7 @@
       }
     },
     {
-      "artifactId": "61db322f8f73801cc8ce8e8d24fcb150adb33965e65002b0dec6749074c41705",
+      "artifactId": "b4d64797010e42a39a66894bcda2062d1263174ed1775204b4a25130f8827d32",
       "dependencyName": "@typespec/ts-http-runtime",
       "dependencyPath": "node_modules/@typespec/ts-http-runtime",
       "development": false,
@@ -20994,7 +20932,7 @@
       }
     },
     {
-      "artifactId": "9ecee232f204f0d7f5ac70594abf051953c97f4cdaf37a5d0f8714fefa4b32fe",
+      "artifactId": "fb06fc1191699937d81b21a0d69b04231e7ffc8fbf7863d34a89db08636bc07c",
       "dependencyName": "agent-base",
       "dependencyPath": "node_modules/agent-base",
       "development": false,
@@ -21138,7 +21076,7 @@
       }
     },
     {
-      "artifactId": "c64869b370a57a4c1330438d2357a1682fc3ca08b333d843441092378ba48d1b",
+      "artifactId": "c2f0612b7c0f9449fcc817e69c7c0cd88d0a63a0b5e5f93a511ca521f0bdd757",
       "dependencyName": "bare-buffer",
       "dependencyPath": "node_modules/bare-buffer",
       "development": false,
@@ -21162,7 +21100,7 @@
       }
     },
     {
-      "artifactId": "5c2133741faffe6efa1416dd1330a16655c2ebd3ef13b10df65ddbe549517b57",
+      "artifactId": "2927ea125e6e67bf0a7b45fc1a142b1000efed748ab1736978e39182b0f9bd11",
       "dependencyName": "bare-fs",
       "dependencyPath": "node_modules/bare-fs",
       "development": false,
@@ -21174,7 +21112,7 @@
       }
     },
     {
-      "artifactId": "9ccbc36f450da8f6f54c8b82bcbe19c3071f93d3ecd8ed5e9c187fdfa5945b40",
+      "artifactId": "1ebe0ce1413467e95c2893d76de29a22fe3a648e21f3325ff6c042bfd4563635",
       "dependencyName": "bare-path",
       "dependencyPath": "node_modules/bare-path",
       "development": false,
@@ -21198,7 +21136,7 @@
       }
     },
     {
-      "artifactId": "066316c926b566ee44f3cbd85ce8ade9e18dd027d91caf5d5d736d8d3429dc84",
+      "artifactId": "db37a29c7a4b3ff035e0e11d80a882998fd616a586a0ccc53675f0c92b0fa4de",
       "dependencyName": "bare-url",
       "dependencyPath": "node_modules/bare-url",
       "development": false,
@@ -21258,7 +21196,7 @@
       }
     },
     {
-      "artifactId": "a0153ccf8fbe76915f2574f2182ba899eaa0ee945876ca6d4a4400386acf26ca",
+      "artifactId": "a50d08abb58e052bb0049e663631bdbc9b69c85d39e34327a00f49c61a0fe547",
       "dependencyName": "brace-expansion",
       "dependencyPath": "node_modules/brace-expansion",
       "development": false,
@@ -21630,7 +21568,7 @@
       }
     },
     {
-      "artifactId": "307ccc9cf948ec1963cca9cf1ad8c53212b7eb0a91cc35217b92837f12f01fab",
+      "artifactId": "10b40d3426f0322792f20d263e6446832ff904f0e44635bdd06e7419589c30ed",
       "dependencyName": "fast-xml-builder",
       "dependencyPath": "node_modules/fast-xml-builder",
       "development": false,
@@ -21642,7 +21580,7 @@
       }
     },
     {
-      "artifactId": "cc8bb0aeb6a168c9a92e0c733df3287293ca99675863c6cde015aabef1e152db",
+      "artifactId": "5e16da5ff8d47cad646292c3fce417b8b20112c53b65445b3bc03306e2ca8a7d",
       "dependencyName": "fast-xml-parser",
       "dependencyPath": "node_modules/fast-xml-parser",
       "development": false,
@@ -21798,7 +21736,7 @@
       }
     },
     {
-      "artifactId": "c6404c9ae55018fb62889ff23b1e925d7f3a772b9ab62f56f007d3bc0af82776",
+      "artifactId": "cb1fe68529d958856a164ba564ffa81dce3d68f050498a6abfab5d0589c63a0c",
       "dependencyName": "graceful-fs",
       "dependencyPath": "node_modules/graceful-fs",
       "development": false,
@@ -21882,7 +21820,7 @@
       }
     },
     {
-      "artifactId": "f88750c5defa2755edad64bd90215e852d5de2602258f0409152244099f04048",
+      "artifactId": "33828edb87405c7be96e708cb5277712c80666a68d46bae460ae34264852b4d1",
       "dependencyName": "http-proxy-agent",
       "dependencyPath": "node_modules/http-proxy-agent",
       "development": false,
@@ -21894,7 +21832,7 @@
       }
     },
     {
-      "artifactId": "47e64a3b019a20983ced1f6605fc5bb4ad33e228c7d4257c05c3aeafb137f56e",
+      "artifactId": "4f502cec5dc514f31963011b3b97d27bc7e10703bedd3aebb8bef0cda1fdb4af",
       "dependencyName": "https-proxy-agent",
       "dependencyPath": "node_modules/https-proxy-agent",
       "development": false,
@@ -22362,7 +22300,7 @@
       }
     },
     {
-      "artifactId": "7b6eec3ad9be9ba24250e2dcdfbe49cdb1508132ff9a00a70127cc8b2c794f7d",
+      "artifactId": "9b68fda73e398661db044eab3ba99bb94fc1d01d396e91ca4bb2427fe373329e",
       "dependencyName": "minimatch",
       "dependencyPath": "node_modules/minimatch",
       "development": false,
@@ -22386,7 +22324,7 @@
       }
     },
     {
-      "artifactId": "f8a6e416dece54ed95a0615e3b8e3ccbc6a4a59124f55f5527eadff224196bb7",
+      "artifactId": "8b2a7227c0a13bde6fcbb048b41515db173bb6b9555c5c41e7ba47d8840e52d2",
       "dependencyName": "brace-expansion",
       "dependencyPath": "node_modules/minimatch/node_modules/brace-expansion",
       "development": false,
@@ -22458,7 +22396,7 @@
       }
     },
     {
-      "artifactId": "425aa5dbb84d9c8eef8c18590183dca8bd254f0e274c8def640da05508732a9a",
+      "artifactId": "c6ac57bb01e205fc7692d136149063dbce0a9cbb6cb3ed6d83278bd1113fe3ed",
       "dependencyName": "object-inspect",
       "dependencyPath": "node_modules/object-inspect",
       "development": false,
@@ -22557,18 +22495,6 @@
       "artifactId": "8dfc2272e9d8a33a3bbe387b271127984c11fa0ec67e62147fe75d06e4ec5d4d",
       "dependencyName": "process-nextick-args",
       "dependencyPath": "node_modules/process-nextick-args",
-      "development": false,
-      "optional": false,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
-      "artifactId": "ae85b451e8cf8384c1b2adaff0fa70f32ec44249ea9a861304f2ddaaf0b7e160",
-      "dependencyName": "proxy-agent-negotiate",
-      "dependencyPath": "node_modules/proxy-agent-negotiate",
       "development": false,
       "optional": false,
       "platformSelectors": {
@@ -22854,7 +22780,7 @@
       }
     },
     {
-      "artifactId": "3695fd02238671dd7f0201d2c4ff7ca46adc20944652837fe52147395cedcbc0",
+      "artifactId": "4ae40f125ccb8c36260576219c38e9f3446505e3ee0f082211d0a57e4b29f767",
       "dependencyName": "tar-stream",
       "dependencyPath": "node_modules/tar-stream",
       "development": false,
@@ -23180,14 +23106,14 @@
   ],
   "schemaVersion": 1,
   "summary": {
-    "archiveVerifiedCount": 221,
-    "artifactCount": 221,
-    "blobCount": 1159,
-    "occurrenceCount": 223,
-    "provenanceNotPublishedCount": 178,
-    "provenanceVerifiedCount": 43,
-    "registrySignatureVerifiedCount": 221,
-    "retainedBytes": 33081226,
-    "scanVerifiedCount": 221
+    "archiveVerifiedCount": 220,
+    "artifactCount": 220,
+    "blobCount": 1154,
+    "occurrenceCount": 222,
+    "provenanceNotPublishedCount": 180,
+    "provenanceVerifiedCount": 40,
+    "registrySignatureVerifiedCount": 220,
+    "retainedBytes": 32981856,
+    "scanVerifiedCount": 220
   }
 }

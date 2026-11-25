@@ -16,16 +16,16 @@
     "version": "0.1.0",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "5f55e5406ffb10d6f3138abfb9412c7f53a84ceaef6267e19e2d43a0ec42ad82",
+    "lockfileSha256": "43828da339bb8fd36dab68c91c476839bb75a492317a701fb0c929e41ef4d31d",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "b51790eac4f5a5f3dcb11f5b9a6ff963d2b63c439530b39e4052c0e4b158f7c0",
-    "evidenceCorpusRoot": "543676c1d61539c280d92c1ea1158e842184983c44df50f1bb96f088aa5ae6ad",
+    "evidenceManifestSha256": "ddbe67da726f39d8196bf222f3cc9a99fb07fad542d50e2218f486e053069871",
+    "evidenceCorpusRoot": "12bcc70116806af7d27200d399ecb83e1585ab721f92c23b585c469a8b8d9ae4",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "9db42f6fc030a3319251aac074253d1c1939eb7914e622c9bea509bec08d6e28",
+    "factsSha256": "40cbef15fa78efd42f2375542a7da0f3f20dae9983b674e7d4a7e936ff035110",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -38,11 +38,11 @@
     "developmentComponentCount": 665,
     "authenticatedTarballArtifactCount": 687,
     "registrySignatureVerifiedArtifactCount": 687,
-    "provenanceVerifiedArtifactCount": 205,
-    "provenanceNotPublishedArtifactCount": 482,
+    "provenanceVerifiedArtifactCount": 206,
+    "provenanceNotPublishedArtifactCount": 481,
     "scanVerifiedArtifactCount": 687,
     "evidenceBlobCount": 3385,
-    "evidenceRetainedBytes": 134664475,
+    "evidenceRetainedBytes": 134686514,
     "inspectedLicenceFileCount": 672,
     "inspectedNoticeFileCount": 347,
     "productionInspectedLicenceFileCount": 47,
@@ -5538,9 +5538,9 @@
     },
     {
       "dependencyPath": "node_modules/@hyperjump/uri",
-      "artifactId": "a213d5a8cd5e2f18a440bc6c34253794f1053fdb11b533daee5ff733ff4e7b87",
+      "artifactId": "9ffe8d14c073bb0fe7d9293dc02e7b76b256029b58a6f9f084db4159627d583d",
       "name": "@hyperjump/uri",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -5573,12 +5573,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "71391147b28843468dbc4156f59e15202eef273d5b8630c5bf1fdd8607bb8a74",
-        "provenanceSha256": "997c1c3f886d88a56b9380e11fef9532890f325458184bc72cdaac58e30a155a",
-        "registrySignatureSha256": "501246e4db1c3692ac62ab58b030f44c9e903eb5bdfd00a680872f09ffa3c59d",
-        "scanSha256": "9d46cf6e84e572705e5581942946b05605cf2727ac47381e12c7812cd6d53856"
+        "archiveSha256": "322b0fd478e25e690a87e9e2c2cb912471e9751be5ccc6d5ffd3a0203db69a21",
+        "provenanceSha256": "70d3f124d5ccbc104dc0ee8c24d3f3e1e9f21a93d0491c7efc614ec355ee725a",
+        "registrySignatureSha256": "35e8f8f24026a735878bc3603fb88cef28c23a3c900b38d3bf4ccc5a067ebb8c",
+        "scanSha256": "351e456edda22ec959a54f089faa9012dc012ef797e6aefb62cd4aaefecad1c8"
       },
-      "registryUrl": "https://registry.npmjs.org/@hyperjump/uri/-/uri-1.4.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/@hyperjump/uri/-/uri-1.4.1.tgz",
       "sourceReference": "github:hyperjump-io/uri",
       "sourceUrl": "https://github.com/hyperjump-io/uri",
       "packageAuthor": "Jason Desrosiers <jdesrosi@gmail.com>",
@@ -7539,9 +7539,9 @@
     },
     {
       "dependencyPath": "node_modules/@jspm/generator",
-      "artifactId": "c25ba73a2c6255b59565877e7874c3400e2e0bb38d716275e7d74ecc5aa2e581",
+      "artifactId": "d16867e11632462276503254134440fae960e5b5eba7adc614ce69c50ed6e5e7",
       "name": "@jspm/generator",
-      "version": "2.18.0",
+      "version": "2.18.1",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "Apache-2.0"
@@ -7581,12 +7581,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "0ce8b609c70131b79dc48947b9d376284e5d9de299a3ff5c06d0e4ef77d18f67",
-        "provenanceSha256": "11dc1402a90469f4cd841d0b8824892a1324ec642806df831b012a1b12b726d4",
-        "registrySignatureSha256": "708e8821dc6e3cfad5b86e342dbabf975dc411b2a74726f5cb5c7f8f48b9c457",
-        "scanSha256": "47c9cdb2436cfdf2e4dbbb37c668a85daaeb15901815bfad1a7ccd3982aa9b9a"
+        "archiveSha256": "7e9c4b26b5f233f97ddc1ae99538bafd05ce9833a13573b64f58350a3bb1869d",
+        "provenanceSha256": "f01a8ba7f82c8eebe41bf76300e74f5594b547a2ea7547d4d44ff730df18aee7",
+        "registrySignatureSha256": "f4761ff1cb7e3133a8038b90e4ee07c030a15677fb5db3cbb365cb0a0cc7ea53",
+        "scanSha256": "4479df4863d2ade99a5764aa9a332131d146ef3acbb07d65cf1d5cc9c616fbc2"
       },
-      "registryUrl": "https://registry.npmjs.org/@jspm/generator/-/generator-2.18.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/@jspm/generator/-/generator-2.18.1.tgz",
       "sourceReference": "git+https://github.com/jspm/jspm.git",
       "sourceUrl": "https://github.com/jspm/jspm",
       "packageAuthor": "Guy Bedford",
@@ -7602,9 +7602,9 @@
     },
     {
       "dependencyPath": "node_modules/@jspm/import-map",
-      "artifactId": "b43a18b9ee45640fff82009ec8f18fe590c0e8b11c6179361f810df1d5798dcc",
+      "artifactId": "511ab9d7e2cd2e63facd712973488a4b29ba161430f096c2db13c7ba69a586dc",
       "name": "@jspm/import-map",
-      "version": "1.5.0",
+      "version": "1.5.1",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -7624,32 +7624,32 @@
         {
           "path": "package/LICENSE",
           "kind": "LICENCE",
-          "sha256": "b9ee12500648e6bc569f8ae64563e7edbe97207bc87082db2aa849475ad2b954",
-          "blobSha256": "b9ee12500648e6bc569f8ae64563e7edbe97207bc87082db2aa849475ad2b954",
-          "blobPath": "blobs/sha256/b9/b9ee12500648e6bc569f8ae64563e7edbe97207bc87082db2aa849475ad2b954"
+          "sha256": "5c2c14ba8b28de21ec7767dcfa46fc4c6304299ca5af5991607099f3e9f56c8a",
+          "blobSha256": "5c2c14ba8b28de21ec7767dcfa46fc4c6304299ca5af5991607099f3e9f56c8a",
+          "blobPath": "blobs/sha256/5c/5c2c14ba8b28de21ec7767dcfa46fc4c6304299ca5af5991607099f3e9f56c8a"
         },
         {
           "path": "package/README.md",
           "kind": "README_ATTRIBUTION",
-          "sha256": "a2502012fce9691320547b91c2faefab19daf3b73c3f4fe08022216167a0b8ba",
-          "blobSha256": "a2502012fce9691320547b91c2faefab19daf3b73c3f4fe08022216167a0b8ba",
-          "blobPath": "blobs/sha256/a2/a2502012fce9691320547b91c2faefab19daf3b73c3f4fe08022216167a0b8ba"
+          "sha256": "69559068261f31488f82ab9c7527047a8edcfacb307c60985df16eece9943bda",
+          "blobSha256": "69559068261f31488f82ab9c7527047a8edcfacb307c60985df16eece9943bda",
+          "blobPath": "blobs/sha256/69/69559068261f31488f82ab9c7527047a8edcfacb307c60985df16eece9943bda"
         }
       ],
       "externalLicenseEvidence": [],
       "authentication": {
         "registrySignature": "VERIFIED",
-        "provenance": "NOT_PUBLISHED",
+        "provenance": "VERIFIED",
         "archive": "VERIFIED",
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "cbb7bac2076153002159515af79305f74aef9a7e94bdcead48e82212ddc66275",
-        "provenanceSha256": "2a795fb1bb813eaeee15c27680bbb1110850ae0529c3661427d48ec9ade2d00f",
-        "registrySignatureSha256": "d87b821ffbf88b9004de2b709a5742ec8e1604eea5e9a5bca88882ae054edbdc",
-        "scanSha256": "e278f2eb829d82583b1624477786bde9f985404be7d9519a73621ede0f39d1b2"
+        "archiveSha256": "11251b12ad0cd1f81a4cae19918654170b239dee03f0d7e6405faa2840574a4d",
+        "provenanceSha256": "8c2d348e2d86b3f0146a6dbe77d284374cb3918b001e51b2389a30f1965388fe",
+        "registrySignatureSha256": "eb2b2314392ad91196fbf1bdbb81489fe2756bedd9a15a72299af00e35035383",
+        "scanSha256": "1b01821d25a297c55706959ba8102ea433d2d53023214cd9150b7270106dc1d8"
       },
-      "registryUrl": "https://registry.npmjs.org/@jspm/import-map/-/import-map-1.5.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/@jspm/import-map/-/import-map-1.5.1.tgz",
       "sourceReference": "git+https://github.com/jspm/jspm.git",
       "sourceUrl": "https://github.com/jspm/jspm",
       "packageAuthor": "Guy Bedford",
@@ -11224,9 +11224,9 @@
     },
     {
       "dependencyPath": "node_modules/@sigstore/core",
-      "artifactId": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f",
+      "artifactId": "09788af7ab3fea441d354644f77cad1288020bfc310bc4e563fe397e5f61fbe9",
       "name": "@sigstore/core",
-      "version": "4.0.1",
+      "version": "4.0.2",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "Apache-2.0"
@@ -11259,12 +11259,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "86ec40b083945470216b3aa9280cd2b23662f115f86a7b1ab88cf01710a79404",
-        "provenanceSha256": "133d4c10dcf164393ff2e9af526209d4cafa591a5eb080e66d0d0bb36d73e123",
-        "registrySignatureSha256": "2028a0b37d5a87b6242f98d6c0f6e996442e1e26d6aaacfcb0c54eeaf6a8bdcc",
-        "scanSha256": "782c498e42639cc0ee9d8e3b4fa10ffe03abd323136b195f043469f6eaefda7d"
+        "archiveSha256": "8f680dfea8e03260045194959f062dab1a45bf1caad2a85d594638ffc9f8963c",
+        "provenanceSha256": "f817b25ce6621c3a1f679b4cf8745cd216ea297f7a9fca7834c334e351490808",
+        "registrySignatureSha256": "054444e62d83ffc4d83c0d3bf059395d1d887b7430d14285ff42ed85268577ba",
+        "scanSha256": "76e362027bcd95854b56437a639fe187bfad626581135ccc4095adb9e05e239c"
       },
-      "registryUrl": "https://registry.npmjs.org/@sigstore/core/-/core-4.0.1.tgz",
+      "registryUrl": "https://registry.npmjs.org/@sigstore/core/-/core-4.0.2.tgz",
       "sourceReference": "git+https://github.com/sigstore/sigstore-js.git",
       "sourceUrl": "https://github.com/sigstore/sigstore-js",
       "packageAuthor": "bdehamer@github.com",
@@ -11448,9 +11448,9 @@
     },
     {
       "dependencyPath": "node_modules/@sigstore/verify",
-      "artifactId": "5704c639c459e097b6fac48e7f61bb743252c49def5fe6a5523ca81456a0f1a5",
+      "artifactId": "b68dc0774cc2cf771bf1a8d7b42d8bdd0876033ba5ac2d925beb7c7625821f49",
       "name": "@sigstore/verify",
-      "version": "4.1.3",
+      "version": "4.1.4",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "Apache-2.0"
@@ -11475,12 +11475,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "cada1dfd230d71efad84653125d654bb74bf55acfa5d3cba18b09b720e82ad0a",
-        "provenanceSha256": "c6c8db64cf08fce9f6b73521b7c666e01d9ade62b16a65f6957003d278ef8a65",
-        "registrySignatureSha256": "e8772497d741c92519bdccc661d54dd78aa69de044e560c15fa3dcf6e08c825a",
-        "scanSha256": "f44307db908bcb69b3839b5edb8007bf0354dae354eb5d69155a0acfde69a435"
+        "archiveSha256": "0fa0e3b3ccbbe2794585b567ea03bdb8e7bb8e4a368b147bb2819e1ba3ce9bce",
+        "provenanceSha256": "5c8bd0735cde51a27e798c4ee5408cfe365b3b858c544df9083086a10fac1549",
+        "registrySignatureSha256": "9640d6cc524582ae3b56d3ea39cb3473399a736fa831cb7a1ae67171c18302e8",
+        "scanSha256": "5cb61d09fab77d5e4f72dab02f528e84499e900d3527b3c2079afe2c81b8d556"
       },
-      "registryUrl": "https://registry.npmjs.org/@sigstore/verify/-/verify-4.1.3.tgz",
+      "registryUrl": "https://registry.npmjs.org/@sigstore/verify/-/verify-4.1.4.tgz",
       "sourceReference": "git+https://github.com/sigstore/sigstore-js.git",
       "sourceUrl": "https://github.com/sigstore/sigstore-js",
       "packageAuthor": "bdehamer@github.com",
@@ -12184,9 +12184,9 @@
     },
     {
       "dependencyPath": "node_modules/@types/estree",
-      "artifactId": "5b1ef94f888c42b1c389a78a2e5711baa1398f010c3c19621521137deba51b56",
+      "artifactId": "a0aa23c849f09053102b6dd761643490fd61ecb371559ba8982b580319bd43fe",
       "name": "@types/estree",
-      "version": "1.0.10",
+      "version": "1.0.11",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -12219,12 +12219,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "37b789412d3667f3112cfcdadd8835bed03dac43581138076ad34f4b1a5f3f51",
-        "provenanceSha256": "f7c6049fe73e8c1686e0c38641a84a75828612ea29cd50cabdabcb353c47e8ca",
-        "registrySignatureSha256": "b52b08102d873d60e2812f3b9bb1a1ce1a8274b44b39af54612fc3b4a517371a",
-        "scanSha256": "49e178233b894e628821a2f21b702bcdbda379a6cd809999cd4e71fb98a7c7b2"
+        "archiveSha256": "d930c8737c5a22d3d8d318608e9560fd6254364dc2024ca37cb2785edb33640e",
+        "provenanceSha256": "32b430e51a8412f9fafeb4c11cb3cb0a1ab99c804f132567009cd9c9e35cf480",
+        "registrySignatureSha256": "90f43fab5d17b65d980ce406a807e01091169446a91da379ed05515e7a2e96e8",
+        "scanSha256": "7119d4025c334424d7347a73790448221e30a65f8087c0a083e3ce4f5f286294"
       },
-      "registryUrl": "https://registry.npmjs.org/@types/estree/-/estree-1.0.10.tgz",
+      "registryUrl": "https://registry.npmjs.org/@types/estree/-/estree-1.0.11.tgz",
       "sourceReference": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
       "sourceUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped",
       "packageAuthor": null,
@@ -12688,9 +12688,9 @@
     },
     {
       "dependencyPath": "node_modules/@types/node",
-      "artifactId": "d43c6f514fb8d66c2c0ec9ed24e22e7d6209050efb0bb39cc948c22acf2ec666",
+      "artifactId": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd",
       "name": "@types/node",
-      "version": "26.6.7",
+      "version": "26.6.10",
       "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -12723,12 +12723,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "032aa4f01ee76e6d829d487306a3363cbcd5c7e4a2fd337caff0cf6cbcd4fd7d",
-        "provenanceSha256": "f78bb0df6ca991c2b39b907f4a45540a5525c85ea1edf53e418a63ea1d78bcc3",
-        "registrySignatureSha256": "8873e606799fe0422c5f0fe35c1a0877b5ca73a445c21bcc9934761d9bf47e17",
-        "scanSha256": "74be4986943ed70c8a18bad8ea536bee8429ff11427951cf5f08e73066f750e5"
+        "archiveSha256": "e76dce4a5b1769018843dd0fdbde12fc032b97bd631b2bb0c94d05be0ce1554e",
+        "provenanceSha256": "86a39b2cabb2d165c074af77ec50c63101c097d5ecd49bdc39309c715168770e",
+        "registrySignatureSha256": "15e63fa5d1e69f7efb45a3aeedd6d4a4fcc9c2a14024fbbb6f00c61ada56e2cf",
+        "scanSha256": "fc3eef7cecb3c5c0a3e59b8df8251d2195e17a49ade4282b45d70ed6ebabffc1"
       },
-      "registryUrl": "https://registry.npmjs.org/@types/node/-/node-26.6.7.tgz",
+      "registryUrl": "https://registry.npmjs.org/@types/node/-/node-26.6.10.tgz",
       "sourceReference": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
       "sourceUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped",
       "packageAuthor": null,
@@ -15918,9 +15918,9 @@
     },
     {
       "dependencyPath": "node_modules/bare-fs",
-      "artifactId": "b43b6adee801d179a50e45b9025940362bdce4277b52c6f49f9d46f2940847bd",
+      "artifactId": "2927ea125e6e67bf0a7b45fc1a142b1000efed748ab1736978e39182b0f9bd11",
       "name": "bare-fs",
-      "version": "4.8.5",
+      "version": "4.8.7",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "Apache-2.0"
@@ -15960,12 +15960,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "5b6ee9e3865c52f0f4631c1c78c243eec7c6975ff16be13d2c5e57559fc0b083",
-        "provenanceSha256": "fb694a8b7f313807e2ebda90d30ac434d80c410b83ec5ac1ee0273f543a832d6",
-        "registrySignatureSha256": "e5c9212e2a70a6a496407891a0fb0c53195139568a6ca304f9ac8b3f3feaae87",
-        "scanSha256": "0cad6fde66ff33d2062d1439f9a395080804295bb30f7e3a3d81f0a51a2749ea"
+        "archiveSha256": "440c9df4e78e804ac5f7afeeb598bceafaf322c80ecf055951802409bf488a2e",
+        "provenanceSha256": "a1c85b9c6d1d364b27b7e428b8108d4d536e06776e6cb074a66c9e3d9561d0a0",
+        "registrySignatureSha256": "1eb0d7583d4cda798f81a43df8a18f2a3fd840d72b62838fc894cb2e1fabb66b",
+        "scanSha256": "5c791d2369231bb4580ffc2bea1897266a2d43a38111b2201ac02e352c657712"
       },
-      "registryUrl": "https://registry.npmjs.org/bare-fs/-/bare-fs-4.8.5.tgz",
+      "registryUrl": "https://registry.npmjs.org/bare-fs/-/bare-fs-4.8.7.tgz",
       "sourceReference": "git+https://github.com/holepunchto/bare-fs.git",
       "sourceUrl": "https://github.com/holepunchto/bare-fs",
       "packageAuthor": "Holepunch",
@@ -16361,9 +16361,9 @@
     },
     {
       "dependencyPath": "node_modules/brace-expansion",
-      "artifactId": "f8a6e416dece54ed95a0615e3b8e3ccbc6a4a59124f55f5527eadff224196bb7",
+      "artifactId": "8b2a7227c0a13bde6fcbb048b41515db173bb6b9555c5c41e7ba47d8840e52d2",
       "name": "brace-expansion",
-      "version": "5.0.13",
+      "version": "5.1.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -16396,12 +16396,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "4e0e57ea06c05de4748dca11c356dff1ea986ad89001da527124e94170ba1754",
-        "provenanceSha256": "e4072738783fc40b688f392d23002ba7eb1f4503366e2ab8abf3dfa831f5c66e",
-        "registrySignatureSha256": "5bc8581ac13a49141c1329b6ba5bca2602a9e0d5cc516f57cf03cde0de4e4027",
-        "scanSha256": "5dc13b951f7b617c9dae66ddd4891e16a3d4bc8cb1d3136fee4cfe7c6817b9c3"
+        "archiveSha256": "5f4a2060b8cb36197ad50df2c73554d67477d0a10b0e2947d467528d02fa05e6",
+        "provenanceSha256": "f9e14534369ce65f4400842461745c80ed0876a927d3c87c1db5fd3e04e57131",
+        "registrySignatureSha256": "b23ebeb5838afa7d0ef59e8e201294a7ee555f34ec7934a5fc5b2cc46fe4d44d",
+        "scanSha256": "2b0f088976026bf7919a220f46da7eb936aa8a9edf16875663789f05cf3f645e"
       },
-      "registryUrl": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.13.tgz",
+      "registryUrl": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.1.0.tgz",
       "sourceReference": "git+https://github.com/juliangruber/brace-expansion.git",
       "sourceUrl": "https://github.com/juliangruber/brace-expansion",
       "packageAuthor": null,
@@ -16914,9 +16914,9 @@
     },
     {
       "dependencyPath": "node_modules/caniuse-lite",
-      "artifactId": "f4c6d71bea578025873d47f96ba6dd2920d8e02d2a86116f2268fbdd1965c55e",
+      "artifactId": "5fe75237f382841e03bf6055f2b02145723b870e7cc1d4a13692192c972d8fba",
       "name": "caniuse-lite",
-      "version": "1.0.30001827",
+      "version": "1.0.30001828",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "CC-BY-4.0"
@@ -16949,12 +16949,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "e4d6ca10e0f8849aefd2b32ede720a8e5f7c7c8d8be2df00168168dab522790c",
-        "provenanceSha256": "a964431c7681a00fd60c62ced47ff7536405ccf70f330eed205cac1fa3c95050",
-        "registrySignatureSha256": "c4eae60e437a08880c0e52aa9d92e64c631e745c781c5460ddaf1f141cc28045",
-        "scanSha256": "f3f59d3db7d9ce157c398115d42f1da6f6612797c19284020d7ef1274aaaeb91"
+        "archiveSha256": "d9d2dbd07be37dfd290c8b1a06208e42bf0afd7768f61ffd84ab2596a34986ea",
+        "provenanceSha256": "39adb84cf76bd5b1374060e0ab6fe15de60f1aec040226a5eac0c80891fafa7c",
+        "registrySignatureSha256": "829eea74735598b9b3afc89208618a40a2ac7d1f93078ec698549b8914440fe6",
+        "scanSha256": "501422608315b3013c05c83d83549170b06ccb1df9d04c393a2d43e04bd40143"
       },
-      "registryUrl": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001827.tgz",
+      "registryUrl": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001828.tgz",
       "sourceReference": "browserslist/caniuse-lite",
       "sourceUrl": "https://github.com/browserslist/caniuse-lite",
       "packageAuthor": "Ben Briggs | beneb.info@gmail.com | http://beneb.info",
@@ -18802,9 +18802,9 @@
     },
     {
       "dependencyPath": "node_modules/electron-to-chromium",
-      "artifactId": "e993d83bfeecb9ecc438bd778230ef4a6aa4df28e85253bc105bffb2a204213d",
+      "artifactId": "11f0c31a356229220f4ba452b88f349a1e1f3dee9a42190655e76d888a26fa57",
       "name": "electron-to-chromium",
-      "version": "1.5.492",
+      "version": "1.5.494",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "ISC"
@@ -18846,12 +18846,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "84e603a66fa14bc6834aed479dfa82fb14a2f8241b4a8ef6f77f87f0cd7aaae2",
-        "provenanceSha256": "88a12faa92ca2b5b4c0810f97f70e876f6d73e507e59b763c3f204917e21f8be",
-        "registrySignatureSha256": "0d814ad7f85c8f90b10e120d3702d102cf72f16f49c065ae6114263d7d3c8f94",
-        "scanSha256": "230f93abd9e90a3b84c344c07032a333894c1dd48e92ab9db48457772e85c85f"
+        "archiveSha256": "057ac0c9c2236debf4f7727e37c22c2fd1464a4ade225666517b36373e8b625f",
+        "provenanceSha256": "a166d6bed8852104d384590949a19047cd0b823aca0aa133c66df9d9a9a70e72",
+        "registrySignatureSha256": "3630d98776834033c5e00aabef6ff339c6f5dbb61b2f2d525f986f5ae9215ba2",
+        "scanSha256": "01a809feb717ff58b0c2d6016b67c569e6120b4c839b57aee1144f769353c7a7"
       },
-      "registryUrl": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.492.tgz",
+      "registryUrl": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.494.tgz",
       "sourceReference": "git+https://github.com/Kilian/electron-to-chromium.git",
       "sourceUrl": "https://github.com/Kilian/electron-to-chromium",
       "packageAuthor": "Kilian Valkhof",
@@ -28650,9 +28650,9 @@
     },
     {
       "dependencyPath": "node_modules/make-fetch-happen",
-      "artifactId": "1c4afe32f7cd59c394cbf8749caa678dda5c1c268b60f99414d70853e623ae76",
+      "artifactId": "13636dbb8acf7aca07a3d3f29cdf8168c074ebbeaa7558e6164eb9d809c7d7c3",
       "name": "make-fetch-happen",
-      "version": "16.0.1",
+      "version": "16.0.2",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "ISC"
@@ -28693,12 +28693,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "b69b99c364888bced2db67ad83330010ea16475d4113dbc69582c0e7bb37f39e",
-        "provenanceSha256": "83a3d356e7fbee128f7e1d6d57c8e8debfec56d6c394bd3e65cf70955f610041",
-        "registrySignatureSha256": "a489a0357d9bd95d8891316cff914b1d80dad99e3e445fddb2a180e4f42d2f14",
-        "scanSha256": "7dc981ca35dede98035ab9575bcdcc07f3e0ce7e0e5857aa9109ebc591b47bde"
+        "archiveSha256": "15a274c77b7924b6fe2904d7ea1050238b902ca2c96e8a69fae2879da0986c35",
+        "provenanceSha256": "341f07b0d74cfef2239d5e59ea9e7061e918aa9e8a6776f75934fa244e6b89ad",
+        "registrySignatureSha256": "2a37a8958fea61f06f932cf28a000f55f24d7ad2da52a40f3c8dce1a3a9f9dda",
+        "scanSha256": "5e89489c1a17b28986b3ce8bb49b54343140ed727a5f17ba0c1c62c5ae49270d"
       },
-      "registryUrl": "https://registry.npmjs.org/make-fetch-happen/-/make-fetch-happen-16.0.1.tgz",
+      "registryUrl": "https://registry.npmjs.org/make-fetch-happen/-/make-fetch-happen-16.0.2.tgz",
       "sourceReference": "git+https://github.com/npm/make-fetch-happen.git",
       "sourceUrl": "https://github.com/npm/make-fetch-happen",
       "packageAuthor": "GitHub Inc.",
@@ -34260,9 +34260,9 @@
     },
     {
       "dependencyPath": "node_modules/npm-packlist",
-      "artifactId": "ae32e0aaf1955a39ee486449c6c41616e1d6799f70c637336d0edd9fc356c499",
+      "artifactId": "0598af93c643875b0235f5b0d30c565484edf3e2a53ff29f6d47b39082d27a63",
       "name": "npm-packlist",
-      "version": "11.3.1",
+      "version": "11.3.2",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "ISC"
@@ -34302,12 +34302,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "7ca5b814a7b78d133397821e7ca6d4723fe601c693124765142f180a106cede7",
-        "provenanceSha256": "b19da6cf2e14264335f90cb1f0767bb53bf8ac5ed795ec44c31cf78e9d2f6a27",
-        "registrySignatureSha256": "c490512a1052d2f6a8f643695424c33c2a48e3f37b56fec805011f02179a4c62",
-        "scanSha256": "6cea5d34c379f9820704f6b874f396bd2fd98b28a9e4c1b632b75ded9a44da24"
+        "archiveSha256": "404af9f5d4513493f0d72c1476ff3c4e221b74118b9f82aa20428ab0b4c61f0f",
+        "provenanceSha256": "99a0c250ff37cf11904145d4b2459ec81902651268b984a75896cbf3c761ae64",
+        "registrySignatureSha256": "b56bd2fc756c0285ebeb42cdf101fb5aa0a3416b88c42d62bf726398256ea573",
+        "scanSha256": "48370a85ac589650602da16ea4d1ee8aa5e2f46b5e6d135cb4d0bb623a45c1dc"
       },
-      "registryUrl": "https://registry.npmjs.org/npm-packlist/-/npm-packlist-11.3.1.tgz",
+      "registryUrl": "https://registry.npmjs.org/npm-packlist/-/npm-packlist-11.3.2.tgz",
       "sourceReference": "git+https://github.com/npm/npm-packlist.git",
       "sourceUrl": "https://github.com/npm/npm-packlist",
       "packageAuthor": "GitHub Inc.",
@@ -34386,9 +34386,9 @@
     },
     {
       "dependencyPath": "node_modules/npm-registry-fetch",
-      "artifactId": "098dd96d696a7c632f3259b26c1fe643a9e79618d726a54e9f34f5b789273913",
+      "artifactId": "4d4a12418772752d06eef155267085edb8a3bb599af425b0fc783ff597cfaae5",
       "name": "npm-registry-fetch",
-      "version": "20.0.1",
+      "version": "20.0.2",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "ISC"
@@ -34421,12 +34421,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "4ad5ac49ed954e93bd64746dda4ecda8eb3c19b145fe70b0f47c020150c83b4b",
-        "provenanceSha256": "187fc01b1de5f43dd994defffdbb7620fb29ef0adc2919d23ee4175f793b666c",
-        "registrySignatureSha256": "5618bc266c3a719e2c4a3d688852303435419684131aed88029624e7926d217e",
-        "scanSha256": "1b480e6a9e653c40a42b6a4b23c2a35802e8459dad83e9b82938a31bf479adaa"
+        "archiveSha256": "c59ad6dec9ac302b5e8d52a257c5cd5f9b01502eb4d28652f9408da1655c1081",
+        "provenanceSha256": "0e47e4ca7447e0d9acf121708a1fe5885ad81ca461420aea91beaa1d9f54cda3",
+        "registrySignatureSha256": "2877a25137728a0494fc306cd2885b20333f26d1395e6bd6ec161d720e678773",
+        "scanSha256": "a76dca7f13cf5e758d70eb5c35e8cd45aa583a90a9e9b4708d2f3f4208fc26f0"
       },
-      "registryUrl": "https://registry.npmjs.org/npm-registry-fetch/-/npm-registry-fetch-20.0.1.tgz",
+      "registryUrl": "https://registry.npmjs.org/npm-registry-fetch/-/npm-registry-fetch-20.0.2.tgz",
       "sourceReference": "git+https://github.com/npm/npm-registry-fetch.git",
       "sourceUrl": "https://github.com/npm/npm-registry-fetch",
       "packageAuthor": "GitHub Inc.",
@@ -40578,9 +40578,9 @@
     },
     {
       "dependencyPath": "node_modules/tar-stream",
-      "artifactId": "3695fd02238671dd7f0201d2c4ff7ca46adc20944652837fe52147395cedcbc0",
+      "artifactId": "4ae40f125ccb8c36260576219c38e9f3446505e3ee0f082211d0a57e4b29f767",
       "name": "tar-stream",
-      "version": "3.2.2",
+      "version": "3.3.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -40620,12 +40620,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "4ffcd7bc24d2aa1a20793093b67a95e75a970c29d6de8d28946bdac04f75ace9",
-        "provenanceSha256": "eef1901d4544eb64d27a49ceca45be98f53d14a7709f269f891ac0c0cdc7c62e",
-        "registrySignatureSha256": "091853b491e74b29d624690c5e9a2a4fa674139036c2fea66c6acfdbf1ca5be3",
-        "scanSha256": "83b4ec00c0774127dd4069878a1c296baa9cb02c3890730e07d34229e730db05"
+        "archiveSha256": "f28f5d32a6babae874550f62aeef237d0b9cb418d44c7f5e179e92169215e772",
+        "provenanceSha256": "c95187347823cf2e839340b8ded5e7ddc9d20d297d573ad72d87dc9e33d63fc4",
+        "registrySignatureSha256": "8c98077230d497bfd1407fccc834f434d144c5830e78253e2d925b55f0d04095",
+        "scanSha256": "25b23b9bd0f67c0edc6ad5e8cdbe3e4dbbcf628b27b1af6243fd9e10e5750957"
       },
-      "registryUrl": "https://registry.npmjs.org/tar-stream/-/tar-stream-3.2.2.tgz",
+      "registryUrl": "https://registry.npmjs.org/tar-stream/-/tar-stream-3.3.0.tgz",
       "sourceReference": "git+https://github.com/mafintosh/tar-stream.git",
       "sourceUrl": "https://github.com/mafintosh/tar-stream",
       "packageAuthor": "Mathias Buus <mathiasbuus@gmail.com>",
@@ -40880,9 +40880,9 @@
     },
     {
       "dependencyPath": "node_modules/tinyexec",
-      "artifactId": "888f971fd882ba5082141feb13da6827c7541170ce90d9ecb1c443ee117c07ee",
+      "artifactId": "85f0998e64479e01b347fe057a91971a91a912ea30e3c5b49df98f2edea23d07",
       "name": "tinyexec",
-      "version": "1.3.1",
+      "version": "1.4.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -40915,12 +40915,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "e07fe77159530e260fc71b2eaa6c84ee5f854f9cbf4784f65873b2b1cccf1ee9",
-        "provenanceSha256": "3d362ecc12636e5e27f862c1def90b606da32da7ae28475fec1fe7fdda33215f",
-        "registrySignatureSha256": "47856d794d0d17273d06f87cf41f143ab0e47be0aa4af07719befb2652ee808e",
-        "scanSha256": "2e337568ebcf3b29f0a738f2846edaa99ab504dc7a4097d02a8274dc218b0da0"
+        "archiveSha256": "23b54adeb68aaee1b9921ed7ac2b7aebda45a66ed4cb6d8ac50d22f6ee44d2cf",
+        "provenanceSha256": "b55817adb056ddbb892d04d729d37e7be720d3ed1d3ebc83affe92de167c35d7",
+        "registrySignatureSha256": "bb69f15d83c5707c664b6c64d5583e05179de51e7de718959693c9da9896b7af",
+        "scanSha256": "9b707cad04b99eaea8e219f4956c90250f87fe6d43851b046b633a0adbfcfa34"
       },
-      "registryUrl": "https://registry.npmjs.org/tinyexec/-/tinyexec-1.3.1.tgz",
+      "registryUrl": "https://registry.npmjs.org/tinyexec/-/tinyexec-1.4.0.tgz",
       "sourceReference": "git+https://github.com/tinylibs/tinyexec.git",
       "sourceUrl": "https://github.com/tinylibs/tinyexec",
       "packageAuthor": "James Garbutt (https://github.com/43081j)",
@@ -43424,11 +43424,11 @@
       "evidenceFiles": [
         {
           "path": "util/scancode-runtime/pyproject.toml",
-          "sha256": "28043bc059d8efaa17f3ecf21e3f0252bf64db46fcf6226f151d21cd8b194d84"
+          "sha256": "e43b466a61873750ea6f8e3a0295867f2eebc11ce52cf908d5dcf821448cfaac"
         },
         {
           "path": "util/scancode-runtime/uv.lock",
-          "sha256": "6a85e489294c9e2490a7a29bddd565431e9368f2c2f1b68fcec4f4710216b38c"
+          "sha256": "5dbe2ccb8fad56b95811de8d50591c4eb7ab1cc0455ecfe34e59929c661e8578"
         },
         {
           "path": "LICENSES/development/scancode-runtime/beartype-0.23.1/licenses/LICENSE",
@@ -44057,7 +44057,7 @@
       "id": "ruff-development-tool",
       "relationship": "DEVELOPMENT_ONLY",
       "name": "Ruff development formatter and linter",
-      "versionOrRevision": "0.17.4",
+      "versionOrRevision": "0.17.6",
       "licenseAssessments": [
         {
           "scope": "Development tooling or adapted test/configuration source",
@@ -44071,18 +44071,18 @@
       "evidenceFiles": [
         {
           "path": "pyproject.toml",
-          "sha256": "d718033a814bb7f78872133622f66465031bec0fb123dd7a0ddfc3a16cc35154"
+          "sha256": "348795a14abd1ee90a9ca3c0c2ad724a3d46d8e7c03f25a1d2ac24f6f1ac1486"
         },
         {
           "path": "uv.lock",
-          "sha256": "437cd94d1ab0de7d2583971e8819135f785d42848ac86ef5fcea5088f5f9be0c"
+          "sha256": "368aebf5960989dbf696badefe0e25f7ed50d280b44ec95ffeae9ee3bf6e230e"
         },
         {
           "path": "ruff.toml",
           "sha256": "18d80841b9b205e331f539db87edfc47bbd1db52e81847f29df7384474326d21"
         },
         {
-          "path": "LICENSES/development/ruff-0.17.4.txt",
+          "path": "LICENSES/development/ruff-0.17.6.txt",
           "sha256": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18"
         }
       ],
@@ -44113,11 +44113,11 @@
       "evidenceFiles": [
         {
           "path": "util/scancode-runtime/pyproject.toml",
-          "sha256": "28043bc059d8efaa17f3ecf21e3f0252bf64db46fcf6226f151d21cd8b194d84"
+          "sha256": "e43b466a61873750ea6f8e3a0295867f2eebc11ce52cf908d5dcf821448cfaac"
         },
         {
           "path": "util/scancode-runtime/uv.lock",
-          "sha256": "6a85e489294c9e2490a7a29bddd565431e9368f2c2f1b68fcec4f4710216b38c"
+          "sha256": "5dbe2ccb8fad56b95811de8d50591c4eb7ab1cc0455ecfe34e59929c661e8578"
         },
         {
           "path": "util/scancode-runtime/qualification-baseline.json",
@@ -44125,7 +44125,7 @@
         },
         {
           "path": "LICENSES/development/scancode-runtime/inventory.json",
-          "sha256": "d072005367dd7d6ad02e10b883f79d73264d7d8cd045543d44f21197b5adf3d1"
+          "sha256": "fec13261ad6ed865da7206a8088d140c781c9d3e45fa02816919c09a233fa731"
         },
         {
           "path": "LICENSES/development/scancode-runtime/attrs-26.1.0/licenses/LICENSE",
@@ -44448,15 +44448,15 @@
           "sha256": "9f7c8b48bbc47535f6ca9fc8c912a7f25e795b5811fe371f3747f35862de909a"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/packaging-26.3/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/packaging-26.4/licenses/LICENSE",
           "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/packaging-26.3/licenses/LICENSE.APACHE",
+          "path": "LICENSES/development/scancode-runtime/packaging-26.4/licenses/LICENSE.APACHE",
           "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/packaging-26.3/licenses/LICENSE.BSD",
+          "path": "LICENSES/development/scancode-runtime/packaging-26.4/licenses/LICENSE.BSD",
           "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
         },
         {
@@ -44871,11 +44871,11 @@
         },
         {
           "path": "package.json",
-          "sha256": "0113836c2c1b50115b4fb576a93ba4478cee505df0f4c8137fff21b5a7fe2420"
+          "sha256": "8730d9c7eab4d1e55d9222390e082142f635e7c504c30f76e9a74e267e7e5bda"
         },
         {
           "path": "package-lock.json",
-          "sha256": "5f55e5406ffb10d6f3138abfb9412c7f53a84ceaef6267e19e2d43a0ec42ad82"
+          "sha256": "43828da339bb8fd36dab68c91c476839bb75a492317a701fb0c929e41ef4d31d"
         }
       ],
       "treeEvidence": null,
@@ -44925,7 +44925,7 @@
       "id": "uv-development-bootstrap",
       "relationship": "DEVELOPMENT_ONLY",
       "name": "uv development-environment bootstrap",
-      "versionOrRevision": "0.13.9",
+      "versionOrRevision": "0.13.10",
       "licenseAssessments": [
         {
           "scope": "Development tooling or adapted test/configuration source",
@@ -44939,11 +44939,11 @@
       "evidenceFiles": [
         {
           "path": "pyproject.toml",
-          "sha256": "d718033a814bb7f78872133622f66465031bec0fb123dd7a0ddfc3a16cc35154"
+          "sha256": "348795a14abd1ee90a9ca3c0c2ad724a3d46d8e7c03f25a1d2ac24f6f1ac1486"
         },
         {
           "path": "uv.lock",
-          "sha256": "437cd94d1ab0de7d2583971e8819135f785d42848ac86ef5fcea5088f5f9be0c"
+          "sha256": "368aebf5960989dbf696badefe0e25f7ed50d280b44ec95ffeae9ee3bf6e230e"
         },
         {
           "path": ".python-version",
@@ -44954,7 +44954,7 @@
           "sha256": "e10a1b401a6f728da8e94ed259abef6096e5ef1d59c5282b93e3578ccf7f17c1"
         },
         {
-          "path": "LICENSES/development/uv-0.13.9-MIT.txt",
+          "path": "LICENSES/development/uv-0.13.10-MIT.txt",
           "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c"
         }
       ],

@@ -1,0 +1,107 @@
+{
+  "artifactId": "a0aa23c849f09053102b6dd761643490fd61ecb371559ba8982b580319bd43fe",
+  "evidence": {
+    "archiveRoot": "estree",
+    "compressedBytes": 5988,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "estree",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "estree/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "estree/README.md",
+        "sha256": "3d0f626ac3657ee8d393482e347f35fa59f5a496fe322f876c54c443d5525d33",
+        "size": 458,
+        "type": "FILE"
+      },
+      {
+        "path": "estree/flow.d.ts",
+        "sha256": "5e7c558636932e615efa25b9ecdeff5e80436e646b16084c7554b66ae1fe9103",
+        "size": 4801,
+        "type": "FILE"
+      },
+      {
+        "path": "estree/index.d.ts",
+        "sha256": "2e8efcf17c471819d4b5ea941ec7bf3743f53704aab9be9a60459c0b3b75cd66",
+        "size": 19218,
+        "type": "FILE"
+      },
+      {
+        "path": "estree/package.json",
+        "sha256": "490c99047b824349a4c56c34d50e70faf3f371f8d1f426fc413a9e230a8baf85",
+        "size": 830,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "estree/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 26448,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/estree",
+      "license": "MIT",
+      "name": "@types/estree",
+      "repository": {
+        "directory": "types/estree",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "1.0.11"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "RReverser",
+          "name": "RReverser",
+          "url": "https://github.com/RReverser"
+        }
+      ],
+      "dependencies": {},
+      "description": "TypeScript definitions for estree",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/estree",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/estree",
+      "nonNpm": true,
+      "peerDependencies": {},
+      "repository": {
+        "directory": "types/estree",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "5.6",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "e66e92b82b1fc218fb08468462a8cddf802f819af6c1c7fa752de8ee2f0f1a9c",
+      "version": "1.0.11"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 5988,
+      "sha256": "7a36d18f2a13dec9bf6b2f51ddfdefc9f7e11478a9d651f08149277f74b76850"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

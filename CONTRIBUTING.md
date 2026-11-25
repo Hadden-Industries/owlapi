@@ -54,12 +54,12 @@ The package declares the engine admission range `>=22.0.0`.
 The maintained-family minimums of Node 22.0.0, 24.0.0 and 26.0.0 passed hosted installed-package and native-platform qualification; see the [qualification record](docs/release/node-consumer-qualification.md).
 Every release candidate still requires qualification of its own bytes and human release acceptance.
 
-Local npm eligibility is `>=12.2.2`; producer CI, release construction, and governed qualification select exact npm 12.2.2 before project commands or cache probes.
-Consumer runtime qualification separately selects exact npm 10.9.10, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.
+Local npm eligibility is `>=12.2.3`; producer CI, release construction, and governed qualification select exact npm 12.2.3 before project commands or cache probes.
+Consumer runtime qualification separately selects exact npm 10.9.11, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.
 Local development uses the Node range in [`package.json`](package.json) under `devEngines.runtime`.
 Consumer admission is derived from the lowest maintained-family minimum.
 The selected Node version must also be supported by npm and the locked development dependencies.
-Producer tooling uses Node 26.13.1; consumer references remain Node 22.23.4, 24.22.2 and 26.13.1.
+Producer tooling uses Node 26.13.1; consumer references remain Node 22.23.5, 24.22.3 and 26.13.1.
 
 <!-- runtime-policy:end -->
 

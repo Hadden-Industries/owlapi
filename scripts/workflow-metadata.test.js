@@ -88,10 +88,6 @@ describe("workflow metadata", () => {
   });
 
   test("preserves the historical rc.1 bootstrap decision and rejects contradictory controls", () => {
-    const currentManifest = {
-      ...JSON.parse(readFileSync("package.json", "utf8")),
-      version: "0.1.0-rc.1",
-    };
     const publication = JSON.parse(
       readFileSync(
         "docs/release/history/0.1.0-rc.1-publication-control.json",
@@ -104,12 +100,9 @@ describe("workflow metadata", () => {
     const ajv = new Ajv2020({ allErrors: true, strict: true });
     addFormats(ajv);
     const validate = ajv.compile(schema);
-    expect(currentManifest.version).toBe("0.1.0-rc.1");
     expect(validate(publication)).toBe(true);
     expect(publication.reconciliation).toBeNull();
-    expect(
-      deriveWorkflowMetadata({ manifest: currentManifest, publication }),
-    ).toMatchObject({
+    expect(deriveWorkflowMetadata({ manifest, publication })).toMatchObject({
       coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
       tag: "v0.1.0-rc.1",
       channel: "next",

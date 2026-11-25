@@ -129,7 +129,11 @@ describe("native reference preparation boundary", () => {
     expect(REFERENCE_RECIPE.sourceCommit).toBe(
       "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
     );
-    expect(REFERENCE_RECIPE.maven).toBe("3.10.0");
+    expect(REFERENCE_RECIPE.maven).toEqual({
+      version: expect.stringMatching(/^3\.\d+\.\d+$/u),
+      revision: expect.stringMatching(/^[0-9a-f]{40}$/u),
+      zipSha512: expect.stringMatching(/^[0-9a-f]{128}$/u),
+    });
     for (const goal of [...recipe.preparation, recipe.build]) {
       expect(goal[goal.indexOf("-s") + 1]).toBe(recipe.settings);
       expect(goal[goal.indexOf("-gs") + 1]).toBe(recipe.settings);

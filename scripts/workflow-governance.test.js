@@ -384,7 +384,33 @@ describe("repository workflow governance", () => {
           "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
         );
       }).join("\n"),
-    ).toMatch(/47-producer|unapproved Action/u);
+    ).toContain(
+      "Official artifact uploads are restricted to the reviewed diagnostic steps",
+    );
+  });
+  test.each([
+    "workspace path",
+    "unstaged upload",
+    "overwrite",
+    "unconditional staging",
+  ])("rejects unsafe diagnostic upload changes: %s", (mutation) => {
+    const violations = mutateWorkflow("ci.yml", (document) => {
+      const body = document.getIn(["jobs", "owl_contract", "steps"]).items;
+      const index = body.findIndex(
+        (step) => step.get("id") === "owl_failure_diagnostics",
+      );
+      const stage = body[index];
+      const upload = body[index + 1];
+      if (mutation === "workspace path")
+        stage.setIn(["env", "OWLAPI_DIAGNOSTIC_PATH"], ".");
+      if (mutation === "unstaged upload")
+        upload.setIn(["with", "path"], ".release/owl-contract/native.ndjson");
+      if (mutation === "overwrite") upload.setIn(["with", "overwrite"], true);
+      if (mutation === "unconditional staging") stage.delete("if");
+    });
+    expect(violations.join("\n")).toContain(
+      "ci.yml:owl_contract:owl_failure_diagnostics requires",
+    );
   });
   test.each(["cache", "skip", "command"])(
     "rejects consumer setup bypass: %s",

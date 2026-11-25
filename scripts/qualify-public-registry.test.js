@@ -6,6 +6,7 @@ import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
+  assertHistoricalRc2PublicRegistryFacts,
   assertPublicRegistryFacts,
   qualifyPublicRegistry,
   readPublicationAttempt,
@@ -13,59 +14,54 @@ import {
 
 const version = PACKAGE_VERSION;
 const retainedSha256 = "a".repeat(64);
+const registryFacts = (version) => ({
+  expectedVersion: version,
+  retainedSha256,
+  metadata: {
+    name: "@hadden-industries/owlapi",
+    version,
+    dist: {
+      integrity: "sha512-example",
+      tarball: `https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-${version}.tgz`,
+    },
+  },
+  distTags: { next: version, latest: version },
+  registryTarballSha256: retainedSha256,
+});
 
 describe("fresh public-registry qualification", () => {
-  test("accepts the exact prerelease under both next and latest", () => {
-    expect(
-      assertPublicRegistryFacts({
-        expectedVersion: version,
-        retainedSha256,
-        metadata: {
-          name: "@hadden-industries/owlapi",
-          version,
-          dist: {
-            integrity: "sha512-example",
-            tarball: `https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-${version}.tgz`,
-          },
-        },
-        distTags: { next: version, latest: version },
-        registryTarballSha256: retainedSha256,
-      }),
-    ).toEqual({
-      coordinate: `@hadden-industries/owlapi@${version}`,
+  test("accepts the exact historical rc.2 under both next and latest", () => {
+    const rc2 = "0.1.0-rc.2";
+    expect(assertHistoricalRc2PublicRegistryFacts(registryFacts(rc2))).toEqual({
+      coordinate: `@hadden-industries/owlapi@${rc2}`,
       channel: "next",
-      next: version,
-      latest: version,
+      next: rc2,
+      latest: rc2,
       integrity: "sha512-example",
       tarballSha256: retainedSha256,
     });
   });
 
   test.each([
-    ["a stale next tag", { distTags: { next: "0.1.0-alpha.1" } }],
+    [
+      "a stale next tag",
+      { distTags: { next: "0.1.0-alpha.1", latest: version } },
+      /Both next and latest/u,
+    ],
     [
       "a stale latest tag",
-      { distTags: { next: version, latest: "0.1.0-rc.1" } },
+      { distTags: { next: version, latest: "0.1.0-alpha.1" } },
+      /Both next and latest/u,
     ],
-    ["different registry bytes", { registryTarballSha256: "b".repeat(64) }],
-  ])("rejects %s", (_label, override) => {
+    [
+      "different registry bytes",
+      { registryTarballSha256: "b".repeat(64) },
+      /Public registry bytes differ/u,
+    ],
+  ])("rejects %s", (_label, override, message) => {
     expect(() =>
-      assertPublicRegistryFacts({
-        expectedVersion: version,
-        retainedSha256,
-        metadata: {
-          name: "@hadden-industries/owlapi",
-          version,
-          dist: {
-            integrity: "sha512-example",
-            tarball: "https://registry.npmjs.org/tarball",
-          },
-        },
-        distTags: { next: version },
-        registryTarballSha256: retainedSha256,
-        ...override,
-      }),
-    ).toThrow();
+      assertPublicRegistryFacts({ ...registryFacts(version), ...override }),
+    ).toThrow(message);
   });
 });
 

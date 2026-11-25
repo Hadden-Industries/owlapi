@@ -1,0 +1,168 @@
+{
+  "artifactId": "4f502cec5dc514f31963011b3b97d27bc7e10703bedd3aebb8bef0cda1fdb4af",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8998,
+    "duplicateEntries": [
+      {
+        "occurrenceCount": 2,
+        "path": "package/dist/index.js",
+        "sha256": "30165586fac3becbc9dbf2b7b5bdaa802a77ac34af9926208f6e94a3bd87ef31",
+        "size": 7451,
+        "type": "FILE"
+      }
+    ],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+        "size": 1101,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "462697a398c1bbbfd771bf58829aba65a1c620b072749a76a6ab1c25f62e9edc",
+        "size": 2172,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "00e87b6148eab98378cb1daf51383be23a0c9ad59f5ed4afdb859212773115d4",
+        "size": 2004,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts.map",
+        "sha256": "78df96e77c748b4b4a5a00826f8f8541b488bd6ff1d087dfb2e0c8f729322ba4",
+        "size": 1393,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "30165586fac3becbc9dbf2b7b5bdaa802a77ac34af9926208f6e94a3bd87ef31",
+        "size": 7451,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js.map",
+        "sha256": "8c0c9b0f8b34966e0e8ad5158bba82a8a54901713516ab0ca77c9dd54f645c82",
+        "size": 4591,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parse-proxy-response.d.ts",
+        "sha256": "44e22bce546cb7d17dc205a8374d80d7c64e42883b87ef63621bae7485f26ca7",
+        "size": 469,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parse-proxy-response.d.ts.map",
+        "sha256": "1267b18f3c8f2dc5306010da3d4124deba040f8118e92b04e791765a8b581db5",
+        "size": 448,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parse-proxy-response.js",
+        "sha256": "36a30ebcd66060fa8e3aba8295854757afbd60f2643d8992814727f249c5eba0",
+        "size": 3908,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parse-proxy-response.js.map",
+        "sha256": "05da2a26a5ecca3c3f3e40b849467e096d747a5a317cfb1b9aa625ad29200747",
+        "size": 2946,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b08c1977d38f14f4be7fb5be33aab545e3e5a6e2e12100733a6ad97dec995206",
+        "size": 1223,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1101,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8d/8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+          "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+        "size": 1101
+      }
+    ],
+    "expandedBytes": 35157,
+    "packageIdentity": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "https-proxy-agent",
+      "repository": {
+        "directory": "packages/https-proxy-agent",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "version": "7.0.6"
+    },
+    "packageMetadata": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "dependencies": {
+        "agent-base": "^7.1.2",
+        "debug": "4"
+      },
+      "description": "An HTTP(s) proxy `http.Agent` implementation for HTTPS",
+      "devDependencies": {
+        "@types/async-retry": "^1.4.5",
+        "@types/debug": "4",
+        "@types/jest": "^29.5.1",
+        "@types/node": "^14.18.45",
+        "async-listen": "^3.0.0",
+        "async-retry": "^1.3.3",
+        "jest": "^29.5.0",
+        "proxy": "2.2.0",
+        "ts-jest": "^29.1.0",
+        "tsconfig": "0.0.0",
+        "typescript": "^5.0.4"
+      },
+      "engines": {
+        "node": ">= 14"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "https",
+        "proxy",
+        "endpoint",
+        "agent"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.js",
+      "name": "https-proxy-agent",
+      "repository": {
+        "directory": "packages/https-proxy-agent",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "lint": "eslint --ext .ts",
+        "pack": "node ../../scripts/pack.mjs",
+        "test": "jest --env node --verbose --bail test/test.ts",
+        "test-e2e": "jest --env node --verbose --bail test/e2e.test.ts"
+      },
+      "types": "./dist/index.d.ts",
+      "version": "7.0.6"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 8998,
+      "sha256": "960f89e8e5240882f64249d04a538421dd39d62ffacc138544647cc3251bc0e0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

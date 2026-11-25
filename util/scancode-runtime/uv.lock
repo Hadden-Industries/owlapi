@@ -304,24 +304,24 @@ wheels = [
 
 [[package]]
 name = "cython"
-version = "3.3.1"
+version = "3.3.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/99/ca/18e324972e5cac914816fdd7bb03e19a455b90039c277a538f7781b50c85/cython-3.3.1.tar.gz", hash = "sha256:e0e45989e821bef6aa9ae15c7d583ab5e055f7406c4b3624e49e06d24e90375a", size = 3743354, upload-time = "2026-11-01T20:12:04.773Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/98/de/dff7f5fcfd06a947b16bbd66568e3e8f291cd9a17c35fd04b43b5a7ad3bf/cython-3.3.2.tar.gz", hash = "sha256:e789d9fd939b74fb8c572fc2b689e3b14bd141ba95243693a546064c8179a1d3", size = 3741343, upload-time = "2026-11-25T05:44:55.667Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cb/37/231f00ec8f6a56519aea9cef921ae9c5d4c39edd8b5557d0de9048211004/cython-3.3.1-cp315-cp315-macosx_11_0_arm64.whl", hash = "sha256:a1bfd7511fe8d83f5e681876df22878efac5cd5b2c174f272e6bf018c8fd4a91", size = 3179367, upload-time = "2026-11-01T20:12:59.906Z" },
-    { url = "https://files.pythonhosted.org/packages/3c/b1/a0ed5165b268fe2d52929e08e9e89278b6f2eeee1c49c9976ba64ef194b7/cython-3.3.1-cp315-cp315-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:bce8f37f50add0432ac802cfc34e5bd16395f2918ad1eaeb50b26d02c9001014", size = 3331494, upload-time = "2026-11-01T20:13:01.774Z" },
-    { url = "https://files.pythonhosted.org/packages/63/e4/4ef74af67d86067258187a24764df2d9d9bf9adb0b78712862dea051eaff/cython-3.3.1-cp315-cp315-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:fcb6c86dddaedd1da5d77ba2469c1a4bea52442e02d8f0653ff78667fbaaa8d9", size = 3456176, upload-time = "2026-11-01T20:13:03.833Z" },
-    { url = "https://files.pythonhosted.org/packages/a2/0e/0458355eb10a33315ede98d91a40b5848f3302cf4e9b44c70211a592ae3a/cython-3.3.1-cp315-cp315-win_amd64.whl", hash = "sha256:45dd533a87c9629d02d77c9a5b48cf399907a99e4bb556aebafd2ac4b68580d2", size = 2927687, upload-time = "2026-11-01T20:13:05.712Z" },
-    { url = "https://files.pythonhosted.org/packages/d7/4e/548df758dbbea481ab054e062933252753b8db86757894bbb1fa84bd9292/cython-3.3.1-cp39-abi3-macosx_10_9_x86_64.whl", hash = "sha256:c4e4132b03a6c6c11541f7498441224f55a9e101c615d49494983d2b10dd7669", size = 3066885, upload-time = "2026-11-01T20:13:07.719Z" },
-    { url = "https://files.pythonhosted.org/packages/87/55/61840ec209f861887ca547c75c401a493be6c034c1d9ad8f9b628b607054/cython-3.3.1-cp39-abi3-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:226d791808ce95f20ab1b3589082be604b5b5b31e670bf773ef9c312d2f0a8c2", size = 3361449, upload-time = "2026-11-01T20:13:09.398Z" },
-    { url = "https://files.pythonhosted.org/packages/96/b1/16e743c3fbfa6424d9c94430934b5bde3a696e7b72c1476e284fdcd1210f/cython-3.3.1-cp39-abi3-manylinux2014_armv7l.manylinux_2_17_armv7l.manylinux_2_31_armv7l.whl", hash = "sha256:4d1f9d6fad7a8d9750b641a941cd841ec43740a375cb2fdb934329a17fa88b36", size = 3044439, upload-time = "2026-11-01T20:13:11.239Z" },
-    { url = "https://files.pythonhosted.org/packages/59/4d/5e19712c074564e696731df56242c7626001b5695d09798115d788cbd771/cython-3.3.1-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:73f6f40f9308e77cbdb3259155d793ac189ead6687b9a432f1b4503170cb9a13", size = 3157847, upload-time = "2026-11-01T20:13:12.87Z" },
-    { url = "https://files.pythonhosted.org/packages/39/16/d6517f078e69f0e5b224b0f1109851408f240af70982d1ef61c53f3a2df9/cython-3.3.1-cp39-abi3-musllinux_1_2_armv7l.whl", hash = "sha256:801730e5714a40dbab8a373af36110de8ff161ec056c855a9627cf05fbc8a6d1", size = 3049217, upload-time = "2026-11-01T20:13:14.506Z" },
-    { url = "https://files.pythonhosted.org/packages/78/5c/539b55fa787a427b0dd0e2ba805c04acb108fa65c69ff76e901d44e4a2d2/cython-3.3.1-cp39-abi3-musllinux_1_2_i686.whl", hash = "sha256:a2bdb50e9fe8974447b68edc5b0201573b06d2c5683f472a5fc08e1792051277", size = 3376191, upload-time = "2026-11-01T20:13:16.383Z" },
-    { url = "https://files.pythonhosted.org/packages/8d/dc/ca2ea10c22499e00d366a9252177ec9039b8d786c85fd28260d41ec2dda5/cython-3.3.1-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:5febfc8c52aced0cf9360e6f2304428a5fa0e66fd9aa7338d5c41f0ce26dd104", size = 3267528, upload-time = "2026-11-01T20:13:18.074Z" },
-    { url = "https://files.pythonhosted.org/packages/66/89/b2fdb92a7ccedff602f362bdf3fe38d67016de8c6655bc60bffce98b923a/cython-3.3.1-cp39-abi3-win32.whl", hash = "sha256:b0265a0e186af3c38339c561507e98e2e3a0d377cdb2b0427f980138ceddd4af", size = 2590014, upload-time = "2026-11-01T20:13:19.925Z" },
-    { url = "https://files.pythonhosted.org/packages/9f/d8/3d620697d89110b58937b1297dfdafbbfec4415b11b845b46ec9a04b52b5/cython-3.3.1-cp39-abi3-win_arm64.whl", hash = "sha256:8b4391d39260efedeff2e3914e958b9ed75cb2b40f10b62bb0e9ca002658563a", size = 2693762, upload-time = "2026-11-01T20:13:21.506Z" },
-    { url = "https://files.pythonhosted.org/packages/9d/55/088578d75bc8dbcbc535af04b1d596ff227ca756dd74f9d3c1c526f955d0/cython-3.3.1-py3-none-any.whl", hash = "sha256:61abc7feedd20dac6c4ff7ab3a30e17136a067b242ab9253e2b4a6d9a72c2b61", size = 1352000, upload-time = "2026-11-01T20:12:01.888Z" },
+    { url = "https://files.pythonhosted.org/packages/3b/50/6c725a7c179052a66815e90757eb75a730d95905d63df2cbcb180f9a9c18/cython-3.3.2-cp315-cp315-macosx_11_0_arm64.whl", hash = "sha256:bdf74fa39f5949de6004704684d721185535f754be6d18a7e5921c9bf04b1b86", size = 3178071, upload-time = "2026-11-25T05:45:58.926Z" },
+    { url = "https://files.pythonhosted.org/packages/c6/54/27d004576aae55e84999c062d1713348f6196972b4ee3259c2cbe42c572d/cython-3.3.2-cp315-cp315-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:3e51a6bf45d1c40334071de7fc36774f1296b2cd3c2778a8e0efdb89a321049c", size = 3330642, upload-time = "2026-11-25T05:46:00.624Z" },
+    { url = "https://files.pythonhosted.org/packages/f8/0d/38780c65105b2c0eab00e1d51d92c8e9a1f758558f4a107c0354dff5af16/cython-3.3.2-cp315-cp315-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:f87d479106fa67bf06808ae80e6c02eefa0e0ebf597e42e6a8653b038372d18f", size = 3456905, upload-time = "2026-11-25T05:46:02.236Z" },
+    { url = "https://files.pythonhosted.org/packages/2c/ed/5f153df3d294d7a3bc02739a76557611cf9cd6ad6081c0b7e9eb8a5de815/cython-3.3.2-cp315-cp315-win_amd64.whl", hash = "sha256:a15465611e6b5b12ae8822a45f53ecc7b0fe47b4e36d21be7d816079fdc7438b", size = 2926590, upload-time = "2026-11-25T05:46:04.282Z" },
+    { url = "https://files.pythonhosted.org/packages/2d/49/9400763536e52fd2b4c11f39e74e1dd0565750bbf54bd20414c495afd027/cython-3.3.2-cp39-abi3-macosx_10_9_x86_64.whl", hash = "sha256:77f7eb2b1615ff1c6504c7a9986130910c0064ac5f46a6be29cee9910ce7a8e0", size = 2982053, upload-time = "2026-11-25T05:46:06.1Z" },
+    { url = "https://files.pythonhosted.org/packages/ac/19/a8766fa9a4f072101d0cdf735c314e87af0ae95fd159b4cdf25d4977c2fb/cython-3.3.2-cp39-abi3-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:aaa520548f0c6186fb4b40c4899efe65e298dc2deab023e43aeb871f2ab21edc", size = 3144298, upload-time = "2026-11-25T05:46:07.813Z" },
+    { url = "https://files.pythonhosted.org/packages/3e/4f/b27847bd80d67dfb7c2771d6b21b2b1f0ba74ff22b9ef78047541ec99df1/cython-3.3.2-cp39-abi3-manylinux2014_armv7l.manylinux_2_17_armv7l.manylinux_2_31_armv7l.whl", hash = "sha256:6fe8f608e8a1949715e59ebe44fb88f493ded20403ac1c5ed50753247cd759ba", size = 2899006, upload-time = "2026-11-25T05:46:09.385Z" },
+    { url = "https://files.pythonhosted.org/packages/f9/61/34e15d2bbe7dfbcdbbd4a4128b86141c52be95e2e64e74a37679113b9c5b/cython-3.3.2-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:5a67eaeba88ca5674e23160b4fb884e9fb8766e8c38c979c0522707be0bd0246", size = 2885359, upload-time = "2026-11-25T05:46:10.957Z" },
+    { url = "https://files.pythonhosted.org/packages/66/c1/3fb493680a04ea8be687431f17bd5d334a3d0de76776a98129cf79a88d5c/cython-3.3.2-cp39-abi3-musllinux_1_2_armv7l.whl", hash = "sha256:70b42d46b4a63da7c78538ec9b97374813b4967817eece5112c0f62e538e3fd3", size = 2842319, upload-time = "2026-11-25T05:46:12.901Z" },
+    { url = "https://files.pythonhosted.org/packages/a0/31/f1ad994790feeeaab853a1d7b95d1071f38336d04dc9aea44c700199315a/cython-3.3.2-cp39-abi3-musllinux_1_2_i686.whl", hash = "sha256:f407195e0e87193ba9d79b5155ae6f02714ae5dc625f6d622ea8427705ac4517", size = 3163172, upload-time = "2026-11-25T05:46:14.449Z" },
+    { url = "https://files.pythonhosted.org/packages/f1/68/7c494405bb4972031a7131d543b1daa6659069f60e1b6b04e9196cc42adc/cython-3.3.2-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:e5f298e45245c07d3094962a1cc77be9cb34b1efeefbaaae7ad659f83145b3ed", size = 3051646, upload-time = "2026-11-25T05:46:16.414Z" },
+    { url = "https://files.pythonhosted.org/packages/62/00/201cb8be3ff233dcb855812a39d52c9035f950626bd4d57a9dec1e5bf3b9/cython-3.3.2-cp39-abi3-win32.whl", hash = "sha256:50d897bf566eed97f3a24328bc8aba8881a80a885eb98e313c496a2a1538904e", size = 2548951, upload-time = "2026-11-25T05:46:17.871Z" },
+    { url = "https://files.pythonhosted.org/packages/1d/a5/dd56265af26da1c92cf8203a3d34dbcc6d4fd41171da3b123a126157a4a2/cython-3.3.2-cp39-abi3-win_arm64.whl", hash = "sha256:5e7e8d959ad262d1cda9e4a43b19cfc8c84b78830cf39d8a402e985dd9e7b5e5", size = 2606612, upload-time = "2026-11-25T05:46:19.394Z" },
+    { url = "https://files.pythonhosted.org/packages/27/c1/b51acd1bb1f807c6a8b7ac3b2f1cd9b65bdea8a54daa4423e4bd4060c66d/cython-3.3.2-py3-none-any.whl", hash = "sha256:93ebae3f7d1cd0ce5e49cdc8df2e83c54596fe2f1971767738efb78f43e4032b", size = 1350368, upload-time = "2026-11-25T05:44:53.202Z" },
 ]
 
 [[package]]
@@ -684,8 +684,8 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 build = [
-    { name = "cython", specifier = "==3.3.1" },
-    { name = "packaging", specifier = "==26.3" },
+    { name = "cython", specifier = "==3.3.2" },
+    { name = "packaging", specifier = "==26.4" },
     { name = "setuptools", specifier = "==84.2.1" },
     { name = "setuptools-scm", specifier = "==10.3.4" },
     { name = "wheel", specifier = "==0.48.0" },
@@ -702,11 +702,11 @@ wheels = [
 
 [[package]]
 name = "packaging"
-version = "26.3"
+version = "26.4"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/7d/fa/3944b40b07da9ce895c0e6303a5ab7d53da063554f534556b134a54d6093/packaging-26.3.tar.gz", hash = "sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79", size = 313412, upload-time = "2026-08-04T18:15:28.737Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c3/75/ffb1dc0ed12352139fb4ca0e3fde4325a23e3d0f3f40efe89717bc4f557b/packaging-26.4.tar.gz", hash = "sha256:c4b671c41ddb9bf26e543c37723610d28fb6bf7affc4da17cf048d419d2c062a", size = 355877, upload-time = "2026-11-23T21:44:11.152Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl", hash = "sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c", size = 129956, upload-time = "2026-08-04T18:15:27.159Z" },
+    { url = "https://files.pythonhosted.org/packages/ba/7b/5504f91c9c2733f693d7759e50ede5d27119d4da7e5836c46d3b5ff81d56/packaging-26.4-py3-none-any.whl", hash = "sha256:81383611a09c1bc0b08b76e0fd5829d7c6824c65b27a6aee339da133f4233ea2", size = 140049, upload-time = "2026-11-23T21:44:09.531Z" },
 ]
 
 [[package]]

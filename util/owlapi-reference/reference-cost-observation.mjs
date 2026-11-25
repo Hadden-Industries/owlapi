@@ -13,7 +13,11 @@ import { createHash } from "node:crypto";
 import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { JAVA_REFERENCE_POLICY } from "../../scripts/java-reference-state.mjs";
-import { referenceBuildRecipe, REFERENCE_RECIPE } from "./reference-inputs.mjs";
+import {
+  referenceBuildRecipe,
+  referenceMavenDirectory,
+  REFERENCE_RECIPE,
+} from "./reference-inputs.mjs";
 import { referenceBuildEnvironment } from "./reference-native-build.mjs";
 
 const fact = (condition, message) => {
@@ -104,9 +108,7 @@ export function observeFreshReferenceCost(env = process.env) {
   );
   const original = realpathSync.native(resolve(".release/java-owlapi"));
   const jdk = realpathSync.native(env.JAVA_HOME);
-  const maven = realpathSync.native(
-    join(env.RUNNER_TEMP, "reference-maven-3.10.0/apache-maven-3.10.0"),
-  );
+  const maven = realpathSync.native(referenceMavenDirectory(env.RUNNER_TEMP));
   mkdirSync(root, { mode: 0o700 });
   for (const path of [
     "source",

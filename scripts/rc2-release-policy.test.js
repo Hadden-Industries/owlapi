@@ -57,21 +57,28 @@ test("candidate registry acceptance requires next and latest to identify the exa
     expect(() => assertPublicRegistryFacts(facts(tags))).toThrow();
 });
 
-test("the current candidate selects all twelve paths with its own dated OIDC publication approval", () => {
+test("publication approval is bound to the historical rc.2 coordinate", () => {
   const manifest = JSON.parse(readFileSync("package.json", "utf8"));
   const control = JSON.parse(
-    readFileSync("docs/release/publication-control.json", "utf8"),
+    readFileSync(
+      "docs/release/history/0.1.0-rc.2-publication-control.json",
+      "utf8",
+    ),
   );
-  expect(manifest.version).toBe(PACKAGE_VERSION);
+  const rc2Manifest = {
+    ...manifest,
+    version: "0.1.0-rc.2",
+    publishConfig: { tag: "next" },
+  };
   expect(PUBLIC_SUBPATHS).toHaveLength(12);
   expect(control).toMatchObject({
     enabled: true,
     mode: "DIRECT_OIDC",
-    coordinate: `@hadden-industries/owlapi@${PACKAGE_VERSION}`,
-    reviewedOn: "2026-10-30",
+    coordinate: "@hadden-industries/owlapi@0.1.0-rc.2",
+    reviewedOn: "2026-10-10",
   });
   expect(
-    deriveWorkflowMetadata({ manifest, publication: control })
+    deriveWorkflowMetadata({ manifest: rc2Manifest, publication: control })
       .publication_enabled,
   ).toBe("true");
   const ajv = new Ajv2020({ strict: true, allErrors: true });
@@ -110,19 +117,28 @@ test("the current candidate selects all twelve paths with its own dated OIDC pub
   expect(() =>
     deriveWorkflowMetadata({ manifest, publication: historical }),
   ).toThrow();
-  const publishedRc2 = JSON.parse(
-    readFileSync(
-      "docs/release/history/0.1.0-rc.2-publication-control.json",
-      "utf8",
-    ),
-  );
-  expect(publishedRc2).toMatchObject({
-    coordinate: "@hadden-industries/owlapi@0.1.0-rc.2",
-    enabled: true,
-    reviewedOn: "2026-10-10",
-  });
-  expect(validate(publishedRc2)).toBe(true);
   expect(() =>
-    deriveWorkflowMetadata({ manifest, publication: publishedRc2 }),
-  ).toThrow();
+    deriveWorkflowMetadata({ manifest, publication: control }),
+  ).toThrow(/publication-control/u);
+
+  const current = JSON.parse(
+    readFileSync("docs/release/publication-control.json", "utf8"),
+  );
+  expect(validate(current)).toBe(true);
+  expect(
+    deriveWorkflowMetadata({ manifest, publication: current }),
+  ).toMatchObject({
+    coordinate: `@hadden-industries/owlapi@${PACKAGE_VERSION}`,
+    channel: "pilot",
+    publication_enabled: "false",
+    publication_mode: "UNRESOLVED",
+  });
+  expect(
+    validate({
+      ...current,
+      enabled: true,
+      mode: "DIRECT_OIDC",
+      reviewedOn: control.reviewedOn,
+    }),
+  ).toBe(false);
 });

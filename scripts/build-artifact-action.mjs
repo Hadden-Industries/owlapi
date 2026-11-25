@@ -40,7 +40,8 @@ const builds = await build({
       },
       output: {
         entryFileNames: "[name].mjs",
-        chunkFileNames: "[name]-[hash].mjs",
+        // Keep checked-in chunk paths stable. The build manifest binds their bytes.
+        chunkFileNames: "[name].mjs",
       },
     },
   },

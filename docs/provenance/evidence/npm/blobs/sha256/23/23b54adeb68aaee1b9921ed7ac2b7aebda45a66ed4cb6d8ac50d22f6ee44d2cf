@@ -1,0 +1,135 @@
+{
+  "artifactId": "85f0998e64479e01b347fe057a91971a91a912ea30e3c5b49df98f2edea23d07",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9483,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "f95f668fe64081ddb4153b322e34fdd719b991285ed08177d5ad7133b7988d92",
+        "size": 1065,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a45b9d2d9b2777b736d9f8ebe55da1c674ba46f1cec7a450f2ade986e48b1286",
+        "size": 8331,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/main.d.mts",
+        "sha256": "77642922ba0079f87e11b2d30d896b1fee9a2178296b8999dfbbd2162c7a00aa",
+        "size": 3840,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/main.mjs",
+        "sha256": "89090e12fd1591c7b45d0d00bc42dd053a9ae9815a44a5ebd9200b468582361d",
+        "size": 13233,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "305ffb085ec2fcf68a81a442ad54ec081cecd48781c3d73dfe19b1915c508998",
+        "size": 1552,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1065,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f9/f95f668fe64081ddb4153b322e34fdd719b991285ed08177d5ad7133b7988d92",
+          "sha256": "f95f668fe64081ddb4153b322e34fdd719b991285ed08177d5ad7133b7988d92"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "f95f668fe64081ddb4153b322e34fdd719b991285ed08177d5ad7133b7988d92",
+        "size": 1065
+      }
+    ],
+    "expandedBytes": 28021,
+    "packageIdentity": {
+      "author": "James Garbutt (https://github.com/43081j)",
+      "homepage": "https://github.com/tinylibs/tinyexec#readme",
+      "license": "MIT",
+      "name": "tinyexec",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tinylibs/tinyexec.git"
+      },
+      "version": "1.4.0"
+    },
+    "packageMetadata": {
+      "author": "James Garbutt (https://github.com/43081j)",
+      "bugs": {
+        "url": "https://github.com/tinylibs/tinyexec/issues"
+      },
+      "description": "A minimal library for executing processes in Node",
+      "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@types/node": "^26.6.6",
+        "@vitest/coverage-v8": "^5.1.0",
+        "eslint": "^10.14.0",
+        "prettier": "^3.10.1",
+        "publint": "^0.3.25",
+        "tsdown": "^0.23.7",
+        "typescript": "npm:@typescript/typescript6@^6.0.2",
+        "typescript-eslint": "^8.72.2",
+        "vitest": "^5.0.0"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "exports": {
+        ".": {
+          "default": "./dist/main.mjs",
+          "types": "./dist/main.d.mts"
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist",
+        "THIRD-PARTY-LICENSES.txt"
+      ],
+      "homepage": "https://github.com/tinylibs/tinyexec#readme",
+      "keywords": [
+        "execa",
+        "exec",
+        "tiny",
+        "child_process",
+        "spawn"
+      ],
+      "license": "MIT",
+      "main": "./dist/main.mjs",
+      "name": "tinyexec",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tinylibs/tinyexec.git"
+      },
+      "scripts": {
+        "build": "tsdown",
+        "dev": "tsdown --watch",
+        "format": "prettier --write src",
+        "format:check": "prettier --check src",
+        "lint": "tsc --noEmit && eslint src && publint",
+        "prepare": "npm run build",
+        "test": "npm run build && npm run test:unit",
+        "test:smoke": "node test/smoke.mjs",
+        "test:unit": "vitest run"
+      },
+      "type": "module",
+      "types": "./dist/main.d.mts",
+      "version": "1.4.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 9483,
+      "sha256": "1b9d677c1666a569a55dc970b82661281c11b0a81cd2db953908d5003a4df93b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

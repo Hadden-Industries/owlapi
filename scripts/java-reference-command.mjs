@@ -30,7 +30,10 @@ import {
   referenceProducerHint,
 } from "./java-reference-reuse.mjs";
 import { prepareReferenceBuild } from "../util/owlapi-reference/reference-native-build.mjs";
-import { createReferenceInputRecord } from "../util/owlapi-reference/reference-inputs.mjs";
+import {
+  createReferenceInputRecord,
+  referenceMavenDirectory,
+} from "../util/owlapi-reference/reference-inputs.mjs";
 import {
   materializePublishedReferenceBundle,
   verifyMaterializedPublishedReferenceBundle,
@@ -104,10 +107,7 @@ function nativeOptions(resume = false) {
     sourceDirectory: resolve(".release/java-owlapi"),
     workspaceDirectory: NATIVE,
     jdkDirectory: process.env.JAVA_HOME,
-    mavenDirectory: join(
-      process.env.RUNNER_TEMP,
-      "reference-maven-3.10.0/apache-maven-3.10.0",
-    ),
+    mavenDirectory: referenceMavenDirectory(process.env.RUNNER_TEMP),
     host: {
       os: process.env.RUNNER_OS,
       architecture: process.env.RUNNER_ARCH,

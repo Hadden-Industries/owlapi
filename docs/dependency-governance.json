@@ -5,10 +5,10 @@
     "name": "@hadden-industries/owlapi",
     "version": "0.1.0"
   },
-  "recordedOn": "2026-11-23",
+  "recordedOn": "2026-11-25",
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "3b833fa6b7522103ddfffd00f00daafc6c9293f5268a806cb31c009fc0948823",
+    "factsSha256": "efe08326120b1bede136e0a3579dc6bde4fb6e3ddede894695d4db8d09a1497f",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -16,9 +16,9 @@
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "productionAudit": {
-    "performedOn": "2026-11-23",
+    "performedOn": "2026-11-25",
     "command": "npm audit --omit=dev --json",
-    "npmVersion": "12.2.2",
+    "npmVersion": "12.2.3",
     "productionPackageCount": 48,
     "vulnerabilityCounts": {
       "info": 0,
@@ -30,7 +30,7 @@
     }
   },
   "installScriptPolicy": {
-    "npmVersion": "12.2.2",
+    "npmVersion": "12.2.3",
     "mode": "STRICT_EXPLICIT_DECISIONS",
     "projectConfig": ".npmrc",
     "decisions": [
@@ -92,7 +92,7 @@
   "dependencies": [
     {
       "name": "@hyperjump/uri",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "role": "RFC 3987 full-IRI lexical validation without normalization for ontology storage",
       "standardsGrounding": [
         "https://www.rfc-editor.org/rfc/rfc3987",

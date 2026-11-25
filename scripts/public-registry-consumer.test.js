@@ -7,6 +7,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
+import semver from "semver";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
@@ -109,7 +110,7 @@ test.each([
   [
     "different version",
     (value) => {
-      value.version = "0.1.0";
+      value.version = semver.inc(value.version, "major");
     },
   ],
   [

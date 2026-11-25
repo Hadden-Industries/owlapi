@@ -77,7 +77,7 @@ describe("optional preparation timeout recovery", () => {
         }
         if (args.includes("-v"))
           return success(
-            "Apache Maven 3.10.0 (c43a36b8d67be7e0805a411bc0898af1a51f5472)",
+            `Apache Maven ${REFERENCE_RECIPE.maven.version} (${REFERENCE_RECIPE.maven.revision})`,
           );
         if (executable.endsWith("java"))
           return success(

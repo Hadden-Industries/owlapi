@@ -5,21 +5,21 @@
   "automatedEvidence": {
     "verifier": "util/verify-npm-package-evidence.mjs",
     "summary": {
-      "occurrenceCount": 223,
-      "artifactCount": 221,
-      "blobCount": 1159,
-      "retainedBytes": 33081226,
-      "registrySignatureVerifiedCount": 221,
-      "provenanceVerifiedCount": 43,
-      "provenanceNotPublishedCount": 178,
-      "archiveVerifiedCount": 221,
-      "scanVerifiedCount": 221
+      "occurrenceCount": 222,
+      "artifactCount": 220,
+      "blobCount": 1154,
+      "retainedBytes": 32981856,
+      "registrySignatureVerifiedCount": 220,
+      "provenanceVerifiedCount": 40,
+      "provenanceNotPublishedCount": 180,
+      "archiveVerifiedCount": 220,
+      "scanVerifiedCount": 220
     },
     "inputs": {
-      "tooling/artifact-transport/package.json": "f313804806bbc6f7c085ddc1e3cf617d0bd12101f2b7bfe293dd0e065e313574",
-      "tooling/artifact-transport/package-lock.json": "fe3272bf158cbdf539235b4bb0c4a9074a69b50b09cd054ef10f963077e2f99e",
-      "tooling/artifact-transport/docs/provenance/npm-package-evidence.json": "b68c47aa9e20530eda086489455ffbb7f69cfbfce180001ec8f4ea3387812428",
-      ".github/actions/retain-artifact/dist/third-party-licenses.txt": "6b326c0c570e56500dedd0f8152d237d7192e7b794d39734b61e310df82ace75"
+      "tooling/artifact-transport/package.json": "fbee208b7e795c9f815bf513cf3e9447c90d184e1f91aaf65d977cf447e3f230",
+      "tooling/artifact-transport/package-lock.json": "a816fc74dd05f6f5efb299c62288a01f0c604998a70fb027150e9537895d8ead",
+      "tooling/artifact-transport/docs/provenance/npm-package-evidence.json": "f7ac1e0380d044acb1886fde46465f0db9e9718fb5ba2fe941c8c47dcfb81f86",
+      ".github/actions/retain-artifact/dist/third-party-licenses.txt": "0824ea9f33b3e6f166ce6315b27c3faef5a24e1700a64a051a9c655563fb70a5"
     }
   },
   "limitation": "Authenticated identities, retained legal text and scanner observations do not establish rights-owner approval or licensing compatibility."

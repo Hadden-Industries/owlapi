@@ -4,6 +4,7 @@ import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import semver from "semver";
 import { createHash } from "node:crypto";
 import { repositoryPythonTools } from "../scripts/repository-python-tools.mjs";
 
@@ -194,14 +195,17 @@ describe("third-party-material prospective generation", () => {
         readFileSync(join(repositoryRoot, "package-lock.json"), "utf8"),
       );
       const name = "@hadden-industries/markdown-quality";
-      expect(manifest.devDependencies[name]).toBe(">=3.0.1");
-      expect(lock.packages[`node_modules/${name}`].bundleDependencies).toEqual(
-        expect.arrayContaining(["@eslint/markdown", "eslint"]),
-      );
+      const range = manifest.devDependencies[name];
+      const lockedTool = lock.packages[`node_modules/${name}`];
+      expect(range).toMatch(/^>=\d+\.\d+\.\d+$/u);
+      expect(lock.packages[""].devDependencies[name]).toBe(range);
+      expect(semver.satisfies(lockedTool.version, range)).toBe(true);
+      expect(lockedTool.dependencies).toMatchObject({
+        "@eslint/markdown": expect.any(String),
+        eslint: expect.any(String),
+      });
       expect(prospective.package.tarballDependenciesBundled).toBe(false);
-      expect(shared.versionOrRevision).toBe(
-        lock.packages[`node_modules/${name}`].version,
-      );
+      expect(shared.versionOrRevision).toBe(lockedTool.version);
       expect(shared.evidenceFiles.map(({ path }) => path)).toEqual(
         expect.arrayContaining([
           "package.json",

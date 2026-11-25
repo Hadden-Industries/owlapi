@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { parse } from "yaml";
 
-test("required Node 24 CI builds the pinned Java reference and reconciles all July sources", async () => {
+test("required canonical CI builds the pinned Java reference and reconciles all July sources", async () => {
   const workflow = parse(
     await readFile(
       new URL("../../.github/workflows/ci.yml", import.meta.url),
@@ -54,11 +54,14 @@ test("required Node 24 CI builds the pinned Java reference and reconciles all Ju
   expect(gate.run).toContain(
     "--ontology-repository .release/universal-ontology",
   );
-  expect(
-    steps.some(
-      (step) =>
-        step.with?.path === ".release/july-qualification" &&
-        step.if === "${{ !cancelled() }}",
-    ),
-  ).toBe(true);
+  const stagingIndex = steps.findIndex(({ id }) => id === "july_diagnostics");
+  expect(stagingIndex).toBeGreaterThan(steps.indexOf(gate));
+  expect(steps[stagingIndex]).toMatchObject({
+    if: "${{ !cancelled() }}",
+    env: { OWLAPI_DIAGNOSTIC_PATH: ".release/july-qualification" },
+  });
+  expect(steps[stagingIndex + 1]).toMatchObject({
+    if: "${{ !cancelled() && steps.july_diagnostics.outcome == 'success' }}",
+    with: { path: "${{ steps.july_diagnostics.outputs.path }}" },
+  });
 });

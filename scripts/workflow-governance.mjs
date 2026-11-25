@@ -85,6 +85,7 @@ const EXPECTED_ISSUE_FORMS = [
 // docs/release/action-versions.json owns each pin and its release-tag comment.
 const ACTIONS = ACTION_PINS;
 const DOWNLOAD_ARTIFACT = actionReference("actions/download-artifact");
+const UPLOAD_ARTIFACT = actionReference("actions/upload-artifact");
 const DOWNLOAD_INPUTS = {
   "merge-multiple": false,
   "skip-decompress": false,
@@ -2916,23 +2917,12 @@ const validateQualityTooling = (workflows, violations) => {
             !qualification?.["continue-on-error"],
           `${context} requires unconditional locked scanner qualification`,
         );
-        const retention = steps(job).filter(
-          (step) => step.with?.name === `scancode-qualification-${id}`,
-        );
+        const scannerSteps = steps(job);
         add(
           violations,
-          retention.length === 1 &&
-            retention[0]?.uses === RETAIN_ARTIFACT &&
-            retention[0]?.if === "${{ !cancelled() }}" &&
-            isDeepStrictEqual(retention[0]?.with, {
-              name: `scancode-qualification-${id}`,
-              path: ".release/scancode-qualification/reports",
-
-              "retention-days": 14,
-            }) &&
-            steps(job).indexOf(retention[0]) >
-              steps(job).indexOf(qualification),
-          `${context} must retain exact scanner compatibility reports`,
+          scannerSteps.findIndex((step) => step.id === "scancode_diagnostics") >
+            scannerSteps.indexOf(qualification),
+          `${context} must prepare scanner reports after qualification`,
         );
       }
       if (!consumer) continue;
@@ -3691,6 +3681,101 @@ const validateConsumerRuntimeControls = (
   );
 };
 
+function validateDiagnosticUploads(workflows, violations) {
+  const scanPath = ".release/scancode-qualification/reports";
+  const julyPath = ".release/july-qualification";
+  const failurePath = ".release/owl-contract/native.ndjson";
+  const diagnosticSites = [
+    ...["source_canonical", "quality_windows"].map((job) => [
+      "ci.yml",
+      job,
+      "scancode_diagnostics",
+      `scancode-qualification-${job}`,
+      scanPath,
+      14,
+      0,
+    ]),
+    ...[
+      ["ci.yml", 14],
+      ["release.yml", 90],
+    ].map(([file, retention]) => [
+      file,
+      "source_canonical",
+      "july_diagnostics",
+      "july-ontology-reconciliation",
+      julyPath,
+      retention,
+      6,
+    ]),
+    ...["ci.yml", "release.yml"].map((file) => [
+      file,
+      "owl_contract",
+      "owl_failure_diagnostics",
+      "owl-contract-failure-${{ github.run_id }}",
+      failurePath,
+      90,
+      6,
+    ]),
+  ];
+  for (const [
+    file,
+    job,
+    id,
+    name,
+    path,
+    retention,
+    compression,
+  ] of diagnosticSites) {
+    const body = steps(workflows[file]?.jobs?.[job]);
+    const index = body.findIndex((step) => step.id === id);
+    const stage = body[index];
+    const upload = body[index + 1];
+    const condition =
+      path === failurePath
+        ? "${{ failure() && hashFiles('.release/owl-contract/native.ndjson') != '' }}"
+        : "${{ !cancelled() }}";
+    const context = `${file}:${job}:${id}`;
+    add(
+      violations,
+      index >= 0 &&
+        fieldsMatch(stage, {
+          if: condition,
+          env: { OWLAPI_DIAGNOSTIC_PATH: path },
+          run: "node scripts/prepare-artifact-diagnostic.mjs",
+        }) &&
+        sameInventory(Object.keys(stage), ["name", "id", "if", "env", "run"]),
+      `${context} requires its bounded diagnostic staging step`,
+    );
+    add(
+      violations,
+      index >= 0 &&
+        fieldsMatch(upload, {
+          uses: UPLOAD_ARTIFACT,
+          if: "${{ !cancelled() && steps." + id + ".outcome == 'success' }}",
+          with: {
+            name: name + "-${{ github.run_attempt }}",
+            path: "${{ steps." + id + ".outputs.path }}",
+            "if-no-files-found": "error",
+            overwrite: false,
+            "include-hidden-files": false,
+            "retention-days": retention,
+            "compression-level": compression,
+          },
+        }) &&
+        sameInventory(Object.keys(upload), ["name", "if", "uses", "with"]),
+      `${context} requires the official uploader for the staged diagnostics`,
+    );
+  }
+  add(
+    violations,
+    Object.values(workflows)
+      .flatMap(allSteps)
+      .filter((step) => step.uses?.startsWith("actions/upload-artifact@"))
+      .length === diagnosticSites.length,
+    "Official artifact uploads are restricted to the reviewed diagnostic steps",
+  );
+}
+
 /** Both entry descriptors execute the same reviewed bundle and expose no network
  * policy overrides. The complete static producer/collector census is deliberate.
  */
@@ -3699,6 +3784,7 @@ const validateArtifactTransportControls = (
   actionOverrides,
   violations,
 ) => {
+  validateDiagnosticUploads(workflows, violations);
   const actions = {};
   for (const name of ["retain-artifact", "collect-artifacts"]) {
     const source =
@@ -3779,8 +3865,8 @@ const validateArtifactTransportControls = (
         RETAIN_ARTIFACT,
         "./approval-tools/.github/actions/retain-artifact",
       ].includes(step.uses),
-    ).length === 49,
-    "Artifact transport must cover the complete 49-producer inventory",
+    ).length === 43,
+    "Artifact transport must cover the complete 43-producer recovery inventory",
   );
   add(
     violations,
@@ -3804,6 +3890,11 @@ function validateCallGraph(workflows, actionOverrides, violations) {
         violations,
         !isDisabled(step.if),
         `${location}: explicitly disabled step ${step.name ?? step.id ?? step.uses ?? "run"}`,
+      );
+      add(
+        violations,
+        !ancestors.length || !step.uses?.startsWith("actions/upload-artifact@"),
+        `${location}: official artifact uploads belong in reviewed diagnostic steps`,
       );
       if (!step.uses?.startsWith("./")) continue;
       const match =

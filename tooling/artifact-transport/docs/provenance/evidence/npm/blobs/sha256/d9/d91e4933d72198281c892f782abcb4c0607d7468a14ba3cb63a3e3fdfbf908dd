@@ -1,0 +1,233 @@
+{
+  "artifactId": "c6ac57bb01e205fc7692d136149063dbce0a9cbb6cb3ed6d83278bd1113fe3ed",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 25896,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "c5d7d674c3932a7e2962b172028b54a41540916a991cdd9ee0bf60f901eb00ae",
+        "size": 585,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "2fcbe79efec00c48e89542606d4f55d3fda3b307d93710c65c2484a88f053221",
+        "size": 40421,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "bd40cc437e28a3ad7bef2ad34e6b72e757b182e67bda1acadbab4ef0476f8232",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "cd323ce8e1d1a16742117f2330b5b56cd2f3ca5cd0720d283d68be2ebe22ecd3",
+        "size": 31752,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package-support.json",
+        "sha256": "1d6770f17ca57a021af57c931ebd3c787d0d06ebaed27da98cfcc2ef77633247",
+        "size": 365,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b3d6a8950168f6c4ddf16aa81224f6b1ecc8e3a7a9316f7455731b11e675d682",
+        "size": 3095,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.markdown",
+        "sha256": "65a3ec27a936f42ed3eb04c06ef412ab0e374962e4e4c601c66b23a787fc7731",
+        "size": 3952,
+        "type": "FILE"
+      },
+      {
+        "path": "package/stringWidth.js",
+        "sha256": "7e61d2dfef6227b13a01729afd7ba968cfc5a6894833d97e4e8c4425d1b50766",
+        "size": 2112,
+        "type": "FILE"
+      },
+      {
+        "path": "package/stringWidthRanges.js",
+        "sha256": "9620d44f13a144d3e1c3c53ea0aa3c62617b852c24cbc889ea002afa1a43dfbe",
+        "size": 3371,
+        "type": "FILE"
+      },
+      {
+        "path": "package/util.inspect.js",
+        "sha256": "bb49299375c82d8d22983b76f6c25cd9ac923dc61cd25fffe9b3f71dad26dc40",
+        "size": 42,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/bd/bd40cc437e28a3ad7bef2ad34e6b72e757b182e67bda1acadbab4ef0476f8232",
+          "sha256": "bd40cc437e28a3ad7bef2ad34e6b72e757b182e67bda1acadbab4ef0476f8232"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "bd40cc437e28a3ad7bef2ad34e6b72e757b182e67bda1acadbab4ef0476f8232",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 3952,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/65/65a3ec27a936f42ed3eb04c06ef412ab0e374962e4e4c601c66b23a787fc7731",
+          "sha256": "65a3ec27a936f42ed3eb04c06ef412ab0e374962e4e4c601c66b23a787fc7731"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.markdown",
+        "sha256": "65a3ec27a936f42ed3eb04c06ef412ab0e374962e4e4c601c66b23a787fc7731",
+        "size": 3952
+      }
+    ],
+    "expandedBytes": 86766,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "homepage": "https://github.com/inspect-js/object-inspect",
+      "license": "MIT",
+      "name": "object-inspect",
+      "repository": {
+        "type": "git",
+        "url": "ssh://github.com/inspect-js/object-inspect.git"
+      },
+      "version": "1.14.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "browser": {
+        "./util.inspect.js": false
+      },
+      "description": "string representations of objects in node and the browser",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^22.2.5",
+        "@pkgjs/support": "^0.0.6",
+        "auto-changelog": "^2.7.0",
+        "core-js": "^2.6.12",
+        "error-cause": "^1.0.9",
+        "es-value-fixtures": "^1.7.1",
+        "eslint": "^10.15.0",
+        "for-each": "^0.3.5",
+        "functions-have-names": "^1.2.3",
+        "glob": "=10.3.7",
+        "globalthis": "^1.0.4",
+        "has-symbols": "^1.1.0",
+        "has-tostringtag": "^1.0.2",
+        "in-publish": "^2.0.1",
+        "jackspeak": "=2.1.1",
+        "jiti": "^0.0.0",
+        "keyv": "^5.6.0",
+        "make-arrow-function": "^1.2.0",
+        "mock-property": "^1.1.2",
+        "npmignore": "^0.3.6",
+        "nyc": "^10.3.2",
+        "require-stash": "^1.0.0",
+        "safe-publish-latest": "^2.0.0",
+        "safer-buffer": "^2.1.2",
+        "semver": "^6.3.2",
+        "string.prototype.repeat": "^1.0.0",
+        "tape": "^5.10.3"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/object-inspect",
+      "keywords": [
+        "inspect",
+        "util.inspect",
+        "object",
+        "stringify",
+        "pretty"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "object-inspect",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows",
+          ".nycrc",
+          "eslint.config.mjs",
+          "example/",
+          "/test-core-js.js",
+          "scripts/",
+          "test/"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "ssh://github.com/inspect-js/object-inspect.git"
+      },
+      "scripts": {
+        "generate:string-width": "node --expose-internals scripts/generate-string-width-ranges.js",
+        "lint": "eslint .",
+        "postlint": "npx @pkgjs/support validate",
+        "posttest": "npx npm@'>=10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only && npm run test:corejs",
+        "test:corejs": "nyc tape test-core-js.js 'test/*.js'",
+        "tests-only": "nyc tape 'test/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "support": true,
+      "testling": {
+        "browsers": [
+          "ie/6..latest",
+          "chrome/latest",
+          "firefox/latest",
+          "safari/latest",
+          "opera/latest",
+          "iphone/latest",
+          "ipad/latest",
+          "android/latest"
+        ],
+        "files": [
+          "test/*.js",
+          "test/browser/*.js"
+        ]
+      },
+      "version": "1.14.0"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 25896,
+      "sha256": "d3a67c3c2ca8f503e3471103ce5a36e25b648bf927d0460219978e6de0d5f548"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

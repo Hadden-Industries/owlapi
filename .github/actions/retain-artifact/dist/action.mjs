@@ -1,4 +1,4 @@
-import { a as freezePayload, c as hashBytes, g as setOutput, h as setFailed, i as assertWorkspacePath, l as selectArtifactGroups, m as info, n as retainArtifact, o as inspectArchive, p as getInput, r as assertSameManifest, s as materializeArchive, u as artifact_transport_policy_default } from "./transport-IzJs0naq.mjs";
+import { a as freezePayload, c as hashBytes, g as setOutput, h as setFailed, i as assertWorkspacePath, l as selectArtifactGroups, m as info, n as retainArtifact, o as inspectArchive, p as getInput, r as assertSameManifest, s as materializeArchive, u as artifact_transport_policy_default } from "./transport.mjs";
 import { crc32 } from "node:zlib";
 import { randomUUID } from "node:crypto";
 import { cp, mkdir, mkdtemp, readFile, readdir, realpath, rm } from "node:fs/promises";

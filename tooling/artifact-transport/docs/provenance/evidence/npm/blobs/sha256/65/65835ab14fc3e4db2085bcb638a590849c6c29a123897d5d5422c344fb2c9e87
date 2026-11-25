@@ -1,0 +1,164 @@
+{
+  "artifactId": "fb06fc1191699937d81b21a0d69b04231e7ffc8fbf7863d34a89db08636bc07c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7812,
+    "duplicateEntries": [
+      {
+        "occurrenceCount": 2,
+        "path": "package/dist/index.js",
+        "sha256": "c6503bd5e007db8b73fedf07b6eaaf4a94d5541953f0d06c8a17d1644c29a0c5",
+        "size": 7324,
+        "type": "FILE"
+      }
+    ],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+        "size": 1101,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "dc8148b1d0bbb80f812f1d8c00700e9242a010e7463aee2da415476a45f37a9e",
+        "size": 2459,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/helpers.d.ts",
+        "sha256": "d159a1bf12aed961258abcb9bc26ceaa615db573662be64f7e9ce136db1fb265",
+        "size": 624,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/helpers.d.ts.map",
+        "sha256": "314ccebf6dbf85ff055681fdc0291008afa38036f665c857578b2e47e17ad165",
+        "size": 585,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/helpers.js",
+        "sha256": "6043c5c1bb76491992f6c56f65895e2e9167ae10122fef4d58d6638ebac4ba05",
+        "size": 2314,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/helpers.js.map",
+        "sha256": "232164f309b02945f8f49b1f0f6d04f546de10b6d5d0151f140892f4550a55c9",
+        "size": 1401,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "86cc3effc64d89018e0615a7026f9298c17d162cde9bce65b9c4b5b2aebdb40a",
+        "size": 1519,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts.map",
+        "sha256": "9cd18cdd433a41bd7b2151461db479f59f7823ee46a7ee123a3464981147a29c",
+        "size": 1430,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "c6503bd5e007db8b73fedf07b6eaaf4a94d5541953f0d06c8a17d1644c29a0c5",
+        "size": 7324,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js.map",
+        "sha256": "3ba2c1244801b32c7dfc0a71d50b2316a2d178c666287b5c43887539354aebcb",
+        "size": 4146,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7a08cb2fe1d2b788e0a7bf6a9b7597dbeeeae804698c2fbd15de786d284d327c",
+        "size": 1059,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1101,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8d/8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+          "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+        "size": 1101
+      }
+    ],
+    "expandedBytes": 31286,
+    "packageIdentity": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "agent-base",
+      "repository": {
+        "directory": "packages/agent-base",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "version": "7.1.4"
+    },
+    "packageMetadata": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "description": "Turn a function into an `http.Agent` instance",
+      "devDependencies": {
+        "@types/debug": "^4.1.7",
+        "@types/jest": "^29.5.1",
+        "@types/node": "^14.18.45",
+        "@types/semver": "^7.3.13",
+        "@types/ws": "^6.0.4",
+        "async-listen": "^3.0.0",
+        "jest": "^29.5.0",
+        "ts-jest": "^29.1.0",
+        "tsconfig": "0.0.0",
+        "typescript": "^5.0.4",
+        "ws": "^5.2.4"
+      },
+      "engines": {
+        "node": ">= 14"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "http",
+        "agent",
+        "base",
+        "barebones",
+        "https"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.js",
+      "name": "agent-base",
+      "repository": {
+        "directory": "packages/agent-base",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "lint": "eslint . --ext .ts",
+        "pack": "node ../../scripts/pack.mjs",
+        "test": "jest --env node --verbose --bail"
+      },
+      "types": "./dist/index.d.ts",
+      "version": "7.1.4"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 7812,
+      "sha256": "7dd4a61668a9a4e8d4e903f1a254f94d53dafd3f316f2b9b597c5ad8c79cb57e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

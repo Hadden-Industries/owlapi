@@ -1,7 +1,8 @@
-import { PACKAGE_VERSION } from "./package-identity.mjs";
+import { PACKAGE_VERSION, releaseChannel } from "./package-identity.mjs";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { gunzipSync } from "node:zlib";
 
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
@@ -14,15 +15,15 @@ import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 import { sourceFingerprint } from "./consumer-source-snapshot.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 import { projectReleaseEvidenceSchema } from "./release-version-schema.mjs";
-import {
-  RC3_RECOVERY,
-  RECOVERY_REQUIRED_JOBS,
-  RECOVERY_SOURCE_JOBS,
-} from "./rc3-recovery-policy.mjs";
+import { historicalEvidenceName } from "./historical-release-evidence.mjs";
+import { RC3_RECOVERY, RECOVERY_SOURCE_JOBS } from "./rc3-recovery-policy.mjs";
 
-const { buildReleaseEvidence } = releaseEvidence;
+const { buildHistoricalRc2ReleaseEvidence, buildReleaseEvidence } =
+  releaseEvidence;
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
+const rc2Version = "0.1.0-rc.2";
+const rc3Version = RC3_RECOVERY.tag.slice(1);
 const sha = (character) => character.repeat(64);
 const requiredJobNames = [
   "Release / qualified",
@@ -155,17 +156,17 @@ const facts = {
   },
 };
 
-const scopedFacts = () => {
+const scopedFacts = (version = rc2Version) => {
   const candidate = structuredClone(facts);
-  const rc = PACKAGE_VERSION;
-  candidate.source.ref = `refs/tags/v${rc}`;
-  candidate.source.tag = `v${rc}`;
+  candidate.source.ref = `refs/tags/v${version}`;
+  candidate.source.tag = `v${version}`;
   candidate.workflow = { ...candidate.qualificationWorkflow };
-  candidate.publication.coordinate = `@hadden-industries/owlapi@${rc}`;
-  candidate.publication.next = rc;
-  candidate.publication.latest = rc;
+  candidate.publication.coordinate = `@hadden-industries/owlapi@${version}`;
+  candidate.publication.channel = releaseChannel(version);
+  candidate.publication.next = version;
+  candidate.publication.latest = version;
   candidate.publication.latestPresent = true;
-  candidate.publication.tarballUrl = `https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-${rc}.tgz`;
+  candidate.publication.tarballUrl = `https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-${version}.tgz`;
   candidate.publication.provenance.sourceCommit = candidate.source.commit;
   candidate.publication.provenance.workflow = ".github/workflows/release.yml";
   candidate.publication.provenance.runId = candidate.workflow.runId;
@@ -184,6 +185,7 @@ const scopedFacts = () => {
     },
     {
       workflow: "Release",
+      packageVersion: version,
       tarballSha256: candidate.candidate.tarball.sha256,
       artifact: {
         id: Number(candidate.candidate.artifactId),
@@ -206,8 +208,9 @@ const scopedFacts = () => {
     conclusion: "success",
     url: `https://github.com/Hadden-Industries/owlapi/actions/runs/12345/job/${index + 1}`,
   }));
-  candidate.candidate.tarball.name = `hadden-industries-owlapi-${rc}.tgz`;
-  candidate.candidate.sbom.name = `hadden-industries-owlapi-${rc}.cdx.json`;
+  candidate.candidate.tarball.name = `hadden-industries-owlapi-${version}.tgz`;
+  candidate.candidate.sbom.name = `hadden-industries-owlapi-${version}.cdx.json`;
+  candidate.githubRelease.url = `https://github.com/${candidate.source.repository}/releases/tag/v${version}`;
   candidate.githubRelease.assets = [
     candidate.candidate.checksums,
     candidate.candidate.sbom,
@@ -216,72 +219,27 @@ const scopedFacts = () => {
   return candidate;
 };
 
-const recoveredFacts = () => {
-  const result = scopedFacts(),
-    c = RC3_RECOVERY;
-  result.source.commit = c.sourceCommit;
-  result.qualificationWorkflow = {
-    ...result.qualificationWorkflow,
-    commit: c.sourceCommit,
-    runId: c.runId,
-    runAttempt: 1,
-    url: `https://github.com/${c.repository}/actions/runs/${c.runId}`,
-  };
-  result.workflow = {
-    ...result.workflow,
-    commit: "b".repeat(40),
-    runId: "50000000000",
-    runAttempt: 1,
-    url: `https://github.com/${c.repository}/actions/runs/50000000000`,
-  };
-  result.candidate.artifactId = String(c.artifacts.candidate);
-  result.producerContract = contractReport(
-    { commit: c.sourceCommit, runId: Number(c.runId), runAttempt: 1 },
-    {
-      workflow: "Release",
-      tarballSha256: result.candidate.tarball.sha256,
-      artifact: {
-        id: c.artifacts.candidate,
-        digest: result.candidate.artifactDigest,
-      },
-    },
+const recoveredEvidence = () =>
+  JSON.parse(
+    gunzipSync(
+      readFileSync(
+        new URL(
+          `./fixtures/immutable-release-evidence/${historicalEvidenceName(rc3Version)}.gz`,
+          import.meta.url,
+        ),
+      ),
+    ),
   );
-  Object.assign(result.publication.provenance, {
-    sourceCommit: result.workflow.commit,
-    runId: result.workflow.runId,
-    runAttempt: 1,
-  });
-  result.publication.publisherJob = {
-    url: `${result.workflow.url}/job/99`,
-    runAttempt: 1,
-    conclusion: "success",
-  };
-  result.githubRelease.id = c.releaseId;
-  result.reconciliation = {
-    failureClass: "PRE_PUBLICATION_APPROVAL_CAPTURE_IMPORT_FAILURE",
-    sourceFailureJob: {
-      name: "Release / npm trusted publisher",
-      conclusion: "failure",
-      url: `${result.qualificationWorkflow.url}/job/123874274391`,
-    },
-    publicationWrite: "NOT_ATTEMPTED",
-    tagObject: c.tagObject,
-    packageReproduction: "ORIGINAL_QUALIFIED_ARTIFACT",
-  };
-  result.requiredJobs = RECOVERY_REQUIRED_JOBS.map((name, index) => ({
-    name,
-    conclusion: "success",
-    url: `${RECOVERY_SOURCE_JOBS.includes(name) ? result.qualificationWorkflow.url : result.workflow.url}/job/${index + 1}`,
-  }));
-  return result;
-};
 
-test("recovery records preserve original qualification, failed publication and the distinct OIDC controller", () => {
-  const input = recoveredFacts();
-  const record = validateReleaseEvidence(buildReleaseEvidence(input));
+test("reads rc.3 recovery evidence with the original qualification and its distinct OIDC controller", () => {
+  const record = recoveredEvidence();
+  expect(validateReleaseEvidence(record)).toBe(record);
   expect(record.schemaVersion).toBe(6);
   expect(record.source.commit).toBe(RC3_RECOVERY.sourceCommit);
   expect(record.workflow.commit).not.toBe(record.source.commit);
+  expect(record.publication.provenance.sourceCommit).toBe(
+    record.workflow.commit,
+  );
   expect(record.producerContract.identity.runId).toBe(
     Number(RC3_RECOVERY.runId),
   );
@@ -289,11 +247,11 @@ test("recovery records preserve original qualification, failed publication and t
   expect(() =>
     releaseEvidence.assertReleaseExecutionIdentity({
       evidence: record,
-      promotionCommit: input.workflow.commit,
-      sourceCommit: input.source.commit,
-      tag: input.source.tag,
+      promotionCommit: record.workflow.commit,
+      sourceCommit: record.source.commit,
+      tag: `v${PACKAGE_VERSION}`,
     }),
-  ).not.toThrow();
+  ).toThrow(/invalid candidate|different canonical package source/u);
 });
 
 test.each([
@@ -308,7 +266,7 @@ test.each([
   "proof origin",
   "job origin",
 ])("recovery refuses changed %s", (change) => {
-  const input = recoveredFacts();
+  const input = recoveredEvidence();
   if (change === "artifact") input.candidate.artifactId = "1";
   if (change === "source") input.source.commit = "f".repeat(40);
   if (change === "original run") input.qualificationWorkflow.runId = "1";
@@ -321,30 +279,31 @@ test.each([
   if (change === "proof origin")
     input.producerContract.identity.runId = Number(input.workflow.runId);
   if (change === "job origin")
-    input.requiredJobs[0].url = `${input.workflow.url}/job/1`;
-  expect(() => buildReleaseEvidence(input)).toThrow();
+    input.requiredJobs.find(({ name }) =>
+      RECOVERY_SOURCE_JOBS.includes(name),
+    ).url = `${input.workflow.url}/job/1`;
+  expect(() => validateReleaseEvidence(input)).toThrow();
 });
 
-test("one release schema structure preserves exact identities for historical, current and projected candidates", () => {
+test("legacy release schema preserves the rc.2 and rc.3 identities and excludes staged candidates", () => {
   const schema = JSON.parse(
     readFileSync("docs/release/release-evidence.schema.json", "utf8"),
   );
-  const projected = projectReleaseEvidenceSchema(schema, "0.1.0-rc.9");
+  const stagedVersion = "0.1.0-rc.9";
+  const projected = projectReleaseEvidenceSchema(schema, stagedVersion);
+  expect(projected).toEqual(schema);
   const ajv = new Ajv2020({ allErrors: true, strict: true });
   addFormats(ajv);
   const validate = ajv.compile(projected);
-  const current = buildReleaseEvidence(scopedFacts());
-  expect(
-    validate(
-      JSON.parse(
-        JSON.stringify(current).replaceAll(PACKAGE_VERSION, "0.1.0-rc.9"),
-      ),
-    ),
-  ).toBe(false);
-  for (const version of ["0.1.0-rc.2", PACKAGE_VERSION]) {
-    const record = JSON.parse(
-      JSON.stringify(current).replaceAll(PACKAGE_VERSION, version),
-    );
+  const rc2 = buildHistoricalRc2ReleaseEvidence(scopedFacts());
+  const recordFor = (version) =>
+    JSON.parse(JSON.stringify(rc2).replaceAll(rc2Version, version));
+  const staged = recordFor(stagedVersion);
+  staged.package.channel = "pilot";
+  staged.publication.channel = "pilot";
+  expect(validate(staged)).toBe(false);
+  for (const version of [rc2Version, rc3Version]) {
+    const record = recordFor(version);
     expect(validate(record)).toBe(true);
     for (const mutate of [
       (value) => {
@@ -411,17 +370,17 @@ test("strict release evidence retains each equivalent approval transport input",
       sha256: sha("f"),
     })),
   );
-  const evidence = buildReleaseEvidence(candidate);
+  const evidence = buildHistoricalRc2ReleaseEvidence(candidate);
   expect(() => validateReleaseEvidence(evidence)).not.toThrow();
   expect(evidence.inputEvidence).toEqual(candidate.inputEvidence);
 });
 
-test("fresh scoped RC evidence binds one source and run without borrowing alpha reconciliation", () => {
-  const evidence = buildReleaseEvidence(scopedFacts());
+test("scoped rc.2 evidence binds one source and one qualification run", () => {
+  const evidence = buildHistoricalRc2ReleaseEvidence(scopedFacts());
   expect(evidence.package).toEqual({
     name: "@hadden-industries/owlapi",
-    version: PACKAGE_VERSION,
-    coordinate: `@hadden-industries/owlapi@${PACKAGE_VERSION}`,
+    version: rc2Version,
+    coordinate: `@hadden-industries/owlapi@${rc2Version}`,
     channel: "next",
     registry: "https://registry.npmjs.org/",
   });
@@ -441,13 +400,16 @@ test("fresh scoped RC evidence binds one source and run without borrowing alpha 
   expect(validate.errors).toBeNull();
 });
 test("historical consumer pins remain readable but cannot finalize a current release", () => {
-  const evidence = JSON.parse(
-    JSON.stringify(buildReleaseEvidence(scopedFacts())),
-  );
-  evidence.producerContract.consumerSources.snapshots[0].commit = "9".repeat(
-    40,
-  );
-  expect(validateReleaseEvidence(evidence)).toBe(evidence);
+  const historical = buildHistoricalRc2ReleaseEvidence(scopedFacts());
+  const archivedCommit = "9".repeat(40);
+  historical.producerContract.consumerSources.snapshots[0].commit =
+    archivedCommit;
+  expect(validateReleaseEvidence(historical)).toBe(historical);
+
+  // Use the selected version to exercise the consumer-source pin check.
+  const evidence = buildReleaseEvidence(scopedFacts(PACKAGE_VERSION));
+  evidence.producerContract.consumerSources.snapshots[0].commit =
+    archivedCommit;
   expect(() =>
     releaseEvidence.assertReleaseExecutionIdentity({
       evidence,
@@ -460,31 +422,19 @@ test("historical consumer pins remain readable but cannot finalize a current rel
 
 test("historical schema-4 evidence remains readable after oracle changes but cannot finalize a current release", () => {
   const evidence = JSON.parse(
-    JSON.stringify(buildReleaseEvidence(scopedFacts())),
+    JSON.stringify(buildHistoricalRc2ReleaseEvidence(scopedFacts())).replaceAll(
+      rc2Version,
+      "0.1.0-rc.1",
+    ),
   );
   evidence.schemaVersion = 4;
   evidence.publication.mode = "DIRECT_BOOTSTRAP";
   evidence.requiredJobs.find(
     (job) => job.name === "Release / npm trusted publisher",
   ).name = "Release / npm direct bootstrap";
-  evidence.package.version = "0.1.0-rc.1";
-  evidence.package.coordinate = "@hadden-industries/owlapi@0.1.0-rc.1";
-  evidence.source.ref = "refs/tags/v0.1.0-rc.1";
-  evidence.source.tag = "v0.1.0-rc.1";
-  evidence.publication.next = "0.1.0-rc.1";
-  evidence.publication.coordinate = "@hadden-industries/owlapi@0.1.0-rc.1";
   evidence.publication.latestPresent = false;
   delete evidence.publication.latest;
-  evidence.publication.tarballUrl =
-    "https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.1.tgz";
-  for (const asset of [
-    evidence.candidate.tarball,
-    evidence.candidate.sbom,
-    ...evidence.githubRelease.assets,
-  ])
-    asset.name = asset.name.replace(PACKAGE_VERSION, "0.1.0-rc.1");
   const report = evidence.producerContract;
-  report.candidate.package.version = "0.1.0-rc.1";
   report.fixtureSha256 = "0".repeat(64);
   report.assertions[0].name = "previous interface assertion";
   report.consumerSources.snapshots[0].sources[0].blob = "9".repeat(40);
@@ -521,7 +471,7 @@ test.each(["coordinate", "run", "reconciliation", "asset"])(
       candidate.reconciliation = facts.reconciliation;
     if (field === "asset")
       candidate.candidate.tarball.name = "owlapi-0.1.0-rc.2.tgz";
-    expect(() => buildReleaseEvidence(candidate)).toThrow();
+    expect(() => buildHistoricalRc2ReleaseEvidence(candidate)).toThrow();
   },
 );
 
@@ -533,7 +483,7 @@ test.each([
 ])("schema rejects substituted scoped %s even without the builder", (field) => {
   // Validate a serialized asset, without shared object identities from the builder.
   const evidence = JSON.parse(
-    JSON.stringify(buildReleaseEvidence(scopedFacts())),
+    JSON.stringify(buildHistoricalRc2ReleaseEvidence(scopedFacts())),
   );
   if (field === "tarball URL")
     evidence.publication.tarballUrl =
@@ -609,7 +559,7 @@ test("partial reruns retain successful prerequisites and the original publicatio
   candidate.workflow.runAttempt = 2;
   candidate.qualificationWorkflow.runAttempt = 1;
   expect(() =>
-    validateReleaseEvidence(buildReleaseEvidence(candidate)),
+    validateReleaseEvidence(buildHistoricalRc2ReleaseEvidence(candidate)),
   ).not.toThrow();
   for (const field of ["run_id", "head_sha", "run_attempt", "conclusion"]) {
     const changed = structuredClone(input);

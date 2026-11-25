@@ -1,16 +1,11 @@
-import { C as require_tunnel, D as __require, E as __exportAll, O as __toCommonJS, S as require_undici, T as __esmMin, _ as setSecret, b as HttpClient, c as hashBytes, d as debug$3, f as error, k as __toESM, m as info, o as inspectArchive, t as classifyUploadError, u as artifact_transport_policy_default, v as warning, w as __commonJSMin, x as HttpCodes, y as BearerCredentialHandler } from "./transport-IzJs0naq.mjs";
+import { C as require_tunnel, D as __require, E as __exportAll, O as __toCommonJS, S as require_undici, T as __esmMin, _ as setSecret, b as HttpClient, c as hashBytes, d as debug, f as error, k as __toESM, m as info, o as inspectArchive, t as classifyUploadError, u as artifact_transport_policy_default, v as warning, w as __commonJSMin, x as HttpCodes, y as BearerCredentialHandler } from "./transport.mjs";
 import os, { EOL } from "os";
 import * as crypto from "crypto";
 import * as fs$2 from "fs";
 import { existsSync, readFileSync } from "fs";
 import * as path from "path";
 import { normalize, resolve } from "path";
-import * as http$1 from "http";
-import { Agent } from "https";
-import * as net from "net";
-import * as tls from "tls";
-import { EventEmitter, once } from "events";
-import assert from "assert";
+import { EventEmitter } from "events";
 import http from "node:http";
 import Stream, { Readable, Transform, finished } from "node:stream";
 import buffer from "node:buffer";
@@ -22,7 +17,6 @@ import { resolve as resolve$1 } from "node:path";
 import os$1, { EOL as EOL$1 } from "node:os";
 import process$1 from "node:process";
 import https from "node:https";
-import { URL as URL$1 } from "url";
 import * as stream from "stream";
 import { Readable as Readable$1 } from "stream";
 import { Buffer as Buffer$1 } from "buffer";
@@ -832,7 +826,7 @@ var BinaryReader = class {
 /**
 * assert that condition is true or throw error (with message)
 */
-function assert$1(condition, msg) {
+function assert(condition, msg) {
 	if (!condition) throw new Error(msg);
 }
 var FLOAT32_MAX = 34028234663852886e22;
@@ -1566,21 +1560,21 @@ var ReflectionJsonReader = class {
 	* google.protobuf.NullValue accepts only JSON `null` (or the old `"NULL_VALUE"`).
 	*/
 	enum(type, json, fieldName, ignoreUnknownFields) {
-		if (type[0] == "google.protobuf.NullValue") assert$1(json === null || json === "NULL_VALUE", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
+		if (type[0] == "google.protobuf.NullValue") assert(json === null || json === "NULL_VALUE", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
 		if (json === null) return 0;
 		switch (typeof json) {
 			case "number":
-				assert$1(Number.isInteger(json), `Unable to parse field ${this.info.typeName}#${fieldName}, enum can only be integral number, got ${json}.`);
+				assert(Number.isInteger(json), `Unable to parse field ${this.info.typeName}#${fieldName}, enum can only be integral number, got ${json}.`);
 				return json;
 			case "string":
 				let localEnumName = json;
 				if (type[2] && json.substring(0, type[2].length) === type[2]) localEnumName = json.substring(type[2].length);
 				let enumNumber = type[1][localEnumName];
 				if (typeof enumNumber === "undefined" && ignoreUnknownFields) return false;
-				assert$1(typeof enumNumber == "number", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} has no value for "${json}".`);
+				assert(typeof enumNumber == "number", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} has no value for "${json}".`);
 				return enumNumber;
 		}
-		assert$1(false, `Unable to parse field ${this.info.typeName}#${fieldName}, cannot parse enum value from ${typeof json}".`);
+		assert(false, `Unable to parse field ${this.info.typeName}#${fieldName}, cannot parse enum value from ${typeof json}".`);
 	}
 	scalar(json, type, longType, fieldName) {
 		let e;
@@ -1689,7 +1683,7 @@ var ReflectionJsonWriter = class {
 			if (group.oneofKind !== field.localName) continue;
 			const opt = field.kind == "scalar" || field.kind == "enum" ? Object.assign(Object.assign({}, options), { emitDefaultValues: true }) : options;
 			let jsonValue = this.field(field, group[field.localName], opt);
-			assert$1(jsonValue !== void 0);
+			assert(jsonValue !== void 0);
 			json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
 		}
 		return json;
@@ -1697,13 +1691,13 @@ var ReflectionJsonWriter = class {
 	field(field, value, options) {
 		let jsonValue = void 0;
 		if (field.kind == "map") {
-			assert$1(typeof value == "object" && value !== null);
+			assert(typeof value == "object" && value !== null);
 			const jsonObj = {};
 			switch (field.V.kind) {
 				case "scalar":
 					for (const [entryKey, entryValue] of Object.entries(value)) {
 						const val = this.scalar(field.V.T, entryValue, field.name, false, true);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonObj[entryKey.toString()] = val;
 					}
 					break;
@@ -1711,37 +1705,37 @@ var ReflectionJsonWriter = class {
 					const messageType = field.V.T();
 					for (const [entryKey, entryValue] of Object.entries(value)) {
 						const val = this.message(messageType, entryValue, field.name, options);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonObj[entryKey.toString()] = val;
 					}
 					break;
 				case "enum":
 					const enumInfo = field.V.T();
 					for (const [entryKey, entryValue] of Object.entries(value)) {
-						assert$1(entryValue === void 0 || typeof entryValue == "number");
+						assert(entryValue === void 0 || typeof entryValue == "number");
 						const val = this.enum(enumInfo, entryValue, field.name, false, true, options.enumAsInteger);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonObj[entryKey.toString()] = val;
 					}
 			}
 			if (options.emitDefaultValues || Object.keys(jsonObj).length > 0) jsonValue = jsonObj;
 		} else if (field.repeat) {
-			assert$1(Array.isArray(value));
+			assert(Array.isArray(value));
 			const jsonArr = [];
 			switch (field.kind) {
 				case "scalar":
 					for (let i = 0; i < value.length; i++) {
 						const val = this.scalar(field.T, value[i], field.name, field.opt, true);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonArr.push(val);
 					}
 					break;
 				case "enum":
 					const enumInfo = field.T();
 					for (let i = 0; i < value.length; i++) {
-						assert$1(value[i] === void 0 || typeof value[i] == "number");
+						assert(value[i] === void 0 || typeof value[i] == "number");
 						const val = this.enum(enumInfo, value[i], field.name, field.opt, true, options.enumAsInteger);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonArr.push(val);
 					}
 					break;
@@ -1749,7 +1743,7 @@ var ReflectionJsonWriter = class {
 					const messageType = field.T();
 					for (let i = 0; i < value.length; i++) {
 						const val = this.message(messageType, value[i], field.name, options);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonArr.push(val);
 					}
 			}
@@ -1771,12 +1765,12 @@ var ReflectionJsonWriter = class {
 	enum(type, value, fieldName, optional, emitDefaultValues, enumAsInteger) {
 		if (type[0] == "google.protobuf.NullValue") return !emitDefaultValues && !optional ? void 0 : null;
 		if (value === void 0) {
-			assert$1(optional);
+			assert(optional);
 			return;
 		}
 		if (value === 0 && !emitDefaultValues && !optional) return void 0;
-		assert$1(typeof value == "number");
-		assert$1(Number.isInteger(value));
+		assert(typeof value == "number");
+		assert(Number.isInteger(value));
 		if (enumAsInteger || !type[1].hasOwnProperty(value)) return value;
 		if (type[2]) return type[2] + type[1][value];
 		return type[1][value];
@@ -1787,7 +1781,7 @@ var ReflectionJsonWriter = class {
 	}
 	scalar(type, value, fieldName, optional, emitDefaultValues) {
 		if (value === void 0) {
-			assert$1(optional);
+			assert(optional);
 			return;
 		}
 		const ed = emitDefaultValues || optional;
@@ -1806,34 +1800,34 @@ var ReflectionJsonWriter = class {
 			case ScalarType.FLOAT: assertFloat32(value);
 			case ScalarType.DOUBLE:
 				if (value === 0) return ed ? 0 : void 0;
-				assert$1(typeof value == "number");
+				assert(typeof value == "number");
 				if (Number.isNaN(value)) return "NaN";
 				if (value === Number.POSITIVE_INFINITY) return "Infinity";
 				if (value === Number.NEGATIVE_INFINITY) return "-Infinity";
 				return value;
 			case ScalarType.STRING:
 				if (value === "") return ed ? "" : void 0;
-				assert$1(typeof value == "string");
+				assert(typeof value == "string");
 				return value;
 			case ScalarType.BOOL:
 				if (value === false) return ed ? false : void 0;
-				assert$1(typeof value == "boolean");
+				assert(typeof value == "boolean");
 				return value;
 			case ScalarType.UINT64:
 			case ScalarType.FIXED64:
-				assert$1(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
+				assert(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
 				let ulong = PbULong.from(value);
 				if (ulong.isZero() && !ed) return void 0;
 				return ulong.toString();
 			case ScalarType.INT64:
 			case ScalarType.SFIXED64:
 			case ScalarType.SINT64:
-				assert$1(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
+				assert(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
 				let long = PbLong.from(value);
 				if (long.isZero() && !ed) return void 0;
 				return long.toString();
 			case ScalarType.BYTES:
-				assert$1(value instanceof Uint8Array);
+				assert(value instanceof Uint8Array);
 				if (!value.byteLength) return ed ? "" : void 0;
 				return base64encode$1(value);
 		}
@@ -2028,20 +2022,20 @@ var ReflectionBinaryWriter = class {
 				case "enum":
 					let T = field.kind == "enum" ? ScalarType.INT32 : field.T;
 					if (repeated) {
-						assert$1(Array.isArray(value));
+						assert(Array.isArray(value));
 						if (repeated == RepeatType.PACKED) this.packed(writer, T, field.no, value);
 						else for (const item of value) this.scalar(writer, T, field.no, item, true);
-					} else if (value === void 0) assert$1(field.opt);
+					} else if (value === void 0) assert(field.opt);
 					else this.scalar(writer, T, field.no, value, emitDefault || field.opt);
 					break;
 				case "message":
 					if (repeated) {
-						assert$1(Array.isArray(value));
+						assert(Array.isArray(value));
 						for (const item of value) this.message(writer, options, field.T(), field.no, item);
 					} else this.message(writer, options, field.T(), field.no, value);
 					break;
 				case "map":
-					assert$1(typeof value == "object" && value !== null);
+					assert(typeof value == "object" && value !== null);
 					for (const [key, val] of Object.entries(value)) this.mapEntry(writer, options, field, key, val);
 			}
 		}
@@ -2061,7 +2055,7 @@ var ReflectionBinaryWriter = class {
 				keyValue = Number.parseInt(key);
 				break;
 			case ScalarType.BOOL:
-				assert$1(key == "true" || key == "false");
+				assert(key == "true" || key == "false");
 				keyValue = key == "true";
 		}
 		this.scalar(writer, field.K, 1, keyValue, true);
@@ -2096,7 +2090,7 @@ var ReflectionBinaryWriter = class {
 	*/
 	packed(writer, type, fieldNo, value) {
 		if (!value.length) return;
-		assert$1(type !== ScalarType.BYTES && type !== ScalarType.STRING);
+		assert(type !== ScalarType.BYTES && type !== ScalarType.STRING);
 		writer.tag(fieldNo, WireType.LengthDelimited);
 		writer.fork();
 		let [, method] = this.scalarInfo(type);
@@ -4346,8 +4340,8 @@ function getBackendIdsFromToken() {
 			workflowRunBackendId: scopeParts[1],
 			workflowJobRunBackendId: scopeParts[2]
 		};
-		debug$3(`Workflow Run Backend ID: ${ids.workflowRunBackendId}`);
-		debug$3(`Workflow Job Run Backend ID: ${ids.workflowJobRunBackendId}`);
+		debug(`Workflow Run Backend ID: ${ids.workflowRunBackendId}`);
+		debug(`Workflow Job Run Backend ID: ${ids.workflowJobRunBackendId}`);
 		return ids;
 	}
 	throw InvalidJwtError;
@@ -4378,7 +4372,7 @@ function maskSigUrl(url) {
 			setSecret(encodeURIComponent(signature));
 		}
 	} catch (error) {
-		debug$3(`Failed to parse URL: ${url} ${error instanceof Error ? error.message : String(error)}`);
+		debug(`Failed to parse URL: ${url} ${error instanceof Error ? error.message : String(error)}`);
 	}
 }
 /**
@@ -4404,7 +4398,7 @@ function maskSigUrl(url) {
 */
 function maskSecretUrls(body) {
 	if (typeof body !== "object" || body === null) {
-		debug$3("body is not an object or is null");
+		debug("body is not an object or is null");
 		return;
 	}
 	if ("signed_upload_url" in body && typeof body.signed_upload_url === "string") maskSigUrl(body.signed_upload_url);
@@ -4454,7 +4448,7 @@ var ArtifactHttpClient = class {
 	request(service, method, contentType, data) {
 		return __awaiter$10(this, void 0, void 0, function* () {
 			const url = new URL(`/twirp/${service}/${method}`, this.baseUrl).href;
-			debug$3(`[Request] ${method} ${url}`);
+			debug(`[Request] ${method} ${url}`);
 			const headers = { "Content-Type": contentType };
 			try {
 				const { body } = yield this.retryableRequest(() => __awaiter$10(this, void 0, void 0, function* () {
@@ -4480,11 +4474,11 @@ var ArtifactHttpClient = class {
 					const statusCode = response.message.statusCode;
 					if (statusCode === HttpCodes.TooManyRequests) retryAfterSeconds = this.getRetryAfterSeconds(response);
 					rawBody = yield response.readBody();
-					debug$3(`[Response] - ${response.message.statusCode}`);
-					debug$3(`Headers: ${JSON.stringify(response.message.headers, null, 2)}`);
+					debug(`[Response] - ${response.message.statusCode}`);
+					debug(`Headers: ${JSON.stringify(response.message.headers, null, 2)}`);
 					const body = JSON.parse(rawBody);
 					maskSecretUrls(body);
-					debug$3(`Body: ${JSON.stringify(body, null, 2)}`);
+					debug(`Body: ${JSON.stringify(body, null, 2)}`);
 					if (this.isSuccessStatusCode(statusCode)) return {
 						response,
 						body
@@ -4496,7 +4490,7 @@ var ArtifactHttpClient = class {
 						errorMessage = `${errorMessage}: ${body.msg}`;
 					}
 				} catch (error) {
-					if (error instanceof SyntaxError) debug$3(`Raw Body: ${rawBody}`);
+					if (error instanceof SyntaxError) debug(`Raw Body: ${rawBody}`);
 					if (error instanceof UsageError) throw error;
 					if (NetworkError.isNetworkErrorCode(error === null || error === void 0 ? void 0 : error.code)) throw new NetworkError(error === null || error === void 0 ? void 0 : error.code);
 					isRetryable = true;
@@ -7387,424 +7381,551 @@ var require_src = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	if (typeof process === "undefined" || process.type === "renderer" || process.browser === true || process.__nwjs) module.exports = require_browser();
 	else module.exports = require_node$1();
 }));
-// tooling/artifact-transport/node_modules/agent-base/dist/index.js
-var INTERNAL = Symbol("AgentBaseInternalState");
-var Agent$1 = class extends http$1.Agent {
-	constructor(opts) {
-		super(opts);
-		this[INTERNAL] = {};
-	}
-	/**
-	* Determine whether this is an `http` or `https` request.
-	*/
-	isSecureEndpoint(options) {
-		if (options) {
-			if (typeof options.secureEndpoint === "boolean") return options.secureEndpoint;
-			if (typeof options.protocol === "string") return options.protocol === "https:";
-		}
-		const { stack } = /* @__PURE__ */ new Error();
-		if (typeof stack !== "string") return false;
-		return stack.split("\n").some((l) => l.indexOf("(https.js:") !== -1 || l.indexOf("node:https:") !== -1);
-	}
-	incrementSockets(name) {
-		if (this.maxSockets === Infinity && this.maxTotalSockets === Infinity) return null;
-		if (!this.sockets[name]) this.sockets[name] = [];
-		const fakeSocket = new net.Socket({ writable: false });
-		this.sockets[name].push(fakeSocket);
-		this.totalSocketCount++;
-		return fakeSocket;
-	}
-	decrementSockets(name, socket) {
-		if (!this.sockets[name] || socket === null) return;
-		const sockets = this.sockets[name];
-		const index = sockets.indexOf(socket);
-		if (index !== -1) {
-			sockets.splice(index, 1);
-			this.totalSocketCount--;
-			if (sockets.length === 0) delete this.sockets[name];
-		}
-	}
-	getName(options) {
-		if (this.isSecureEndpoint(options)) return Agent.prototype.getName.call(this, options);
-		return super.getName(options);
-	}
-	createSocket(req, options, cb) {
-		const connectOpts = {
-			...options,
-			secureEndpoint: this.isSecureEndpoint(options)
+// tooling/artifact-transport/node_modules/agent-base/dist/helpers.js
+var require_helpers$1 = /* @__PURE__ */ __commonJSMin(((exports, module, this$7) => {
+	var __createBinding = this$7 && this$7.__createBinding || (Object.create ? (function(o, m, k, k2) {
+		if (k2 === void 0) k2 = k;
+		var desc = Object.getOwnPropertyDescriptor(m, k);
+		if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
+			enumerable: true,
+			get: function() {
+				return m[k];
+			}
 		};
-		const name = this.getName(connectOpts);
-		const fakeSocket = this.incrementSockets(name);
-		Promise.resolve().then(() => this.connect(req, connectOpts)).then((socket) => {
-			this.decrementSockets(name, fakeSocket);
-			if (typeof socket.addRequest === "function") try {
-				return socket.addRequest(req, connectOpts);
-			} catch (err) {
-				return cb(err);
-			}
-			this[INTERNAL].currentSocket = socket;
-			super.createSocket(req, options, cb);
-		}, (err) => {
-			this.decrementSockets(name, fakeSocket);
-			cb(err);
+		Object.defineProperty(o, k2, desc);
+	}) : (function(o, m, k, k2) {
+		if (k2 === void 0) k2 = k;
+		o[k2] = m[k];
+	}));
+	var __setModuleDefault = this$7 && this$7.__setModuleDefault || (Object.create ? (function(o, v) {
+		Object.defineProperty(o, "default", {
+			enumerable: true,
+			value: v
 		});
-	}
-	createConnection() {
-		const socket = this[INTERNAL].currentSocket;
-		this[INTERNAL].currentSocket = void 0;
-		if (!socket) throw new Error("No socket was returned in the `connect()` function");
-		return socket;
-	}
-	get defaultPort() {
-		return this[INTERNAL].defaultPort ?? (this.protocol === "https:" ? 443 : 80);
-	}
-	set defaultPort(v) {
-		if (this[INTERNAL]) this[INTERNAL].defaultPort = v;
-	}
-	get protocol() {
-		return this[INTERNAL].protocol ?? (this.isSecureEndpoint() ? "https:" : "http:");
-	}
-	set protocol(v) {
-		if (this[INTERNAL]) this[INTERNAL].protocol = v;
-	}
-};
-// tooling/artifact-transport/node_modules/https-proxy-agent/dist/parse-proxy-response.js
-var import_src = /* @__PURE__ */ __toESM(require_src(), 1);
-var debug$2 = (0, import_src.default)("https-proxy-agent:parse-proxy-response");
-function parseProxyResponse(socket) {
-	return new Promise((resolve, reject) => {
-		let buffersLength = 0;
-		const buffers = [];
-		function read() {
-			const b = socket.read();
-			if (b) ondata(b);
-			else socket.once("readable", read);
-		}
-		function cleanup() {
-			socket.removeListener("end", onend);
-			socket.removeListener("error", onerror);
-			socket.removeListener("readable", read);
-		}
-		function onend() {
-			cleanup();
-			debug$2("onend");
-			reject(/* @__PURE__ */ new Error("Proxy connection ended before receiving CONNECT response"));
-		}
-		function onerror(err) {
-			cleanup();
-			debug$2("onerror %o", err);
-			reject(err);
-		}
-		function ondata(b) {
-			buffers.push(b);
-			buffersLength += b.length;
-			const buffered = Buffer.concat(buffers, buffersLength);
-			const endOfHeaders = buffered.indexOf("\r\n\r\n");
-			if (endOfHeaders === -1) {
-				debug$2("have not received end of HTTP headers yet...");
-				read();
-				return;
-			}
-			const headerParts = buffered.slice(0, endOfHeaders).toString("ascii").split("\r\n");
-			const firstLine = headerParts.shift();
-			if (!firstLine) {
-				socket.destroy();
-				return reject(/* @__PURE__ */ new Error("No header received from proxy CONNECT response"));
-			}
-			const firstLineParts = firstLine.split(" ");
-			const statusCode = +firstLineParts[1];
-			const statusText = firstLineParts.slice(2).join(" ");
-			const headers = {};
-			for (const header of headerParts) {
-				if (!header) continue;
-				const firstColon = header.indexOf(":");
-				if (firstColon === -1) {
-					socket.destroy();
-					return reject(/* @__PURE__ */ new Error(`Invalid header from proxy CONNECT response: "${header}"`));
-				}
-				const key = header.slice(0, firstColon).toLowerCase();
-				const value = header.slice(firstColon + 1).trimStart();
-				const current = headers[key];
-				if (typeof current === "string") headers[key] = [current, value];
-				else if (Array.isArray(current)) current.push(value);
-				else headers[key] = value;
-			}
-			debug$2("got proxy server response: %o %o", firstLine, headers);
-			cleanup();
-			resolve({
-				connect: {
-					statusCode,
-					statusText,
-					headers
-				},
-				buffered
-			});
-		}
-		socket.on("error", onerror);
-		socket.on("end", onend);
-		read();
+	}) : function(o, v) {
+		o["default"] = v;
 	});
-}
-// tooling/artifact-transport/node_modules/proxy-agent-negotiate/dist/index.js
-function createNegotiateAuth() {
-	return async ({ response, scheme }) => {
-		if (scheme.toLowerCase() !== "negotiate") throw new Error(`Expected Negotiate scheme but got "${scheme}"`);
-		let kerberos;
+	var __importStar = this$7 && this$7.__importStar || function(mod) {
+		if (mod && mod.__esModule) return mod;
+		var result = {};
+		if (mod != null) {
+			for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+		}
+		__setModuleDefault(result, mod);
+		return result;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.req = exports.json = exports.toBuffer = void 0;
+	var http = __importStar(__require("http"));
+	var https = __importStar(__require("https"));
+	async function toBuffer(stream) {
+		let length = 0;
+		const chunks = [];
+		for await (const chunk of stream) {
+			length += chunk.length;
+			chunks.push(chunk);
+		}
+		return Buffer.concat(chunks, length);
+	}
+	exports.toBuffer = toBuffer;
+	async function json(stream) {
+		const str = (await toBuffer(stream)).toString("utf8");
 		try {
-			kerberos = await import("./__vite-optional-peer-dep_kerberos_proxy-agent-negotiate-eJ-BzrX2.mjs");
-		} catch {
-			throw new Error("The \"kerberos\" package is required for Negotiate proxy authentication. Install it with: npm install kerberos");
+			return JSON.parse(str);
+		} catch (_err) {
+			const err = _err;
+			err.message += ` (input: ${str})`;
+			throw err;
 		}
-		const proxyAuthenticate = response.headers["proxy-authenticate"] || "";
-		const challengeHeader = Array.isArray(proxyAuthenticate) ? proxyAuthenticate[0] : proxyAuthenticate;
-		const serverToken = typeof challengeHeader === "string" && challengeHeader.includes(" ") ? challengeHeader.split(" ").slice(1).join(" ") : void 0;
-		const token = await (await kerberos.initializeClient("HTTP@proxy", { mechOID: kerberos.GSS_MECH_OID_SPNEGO })).step(serverToken || "");
-		if (!token) throw new Error("Kerberos client.step() returned no token");
-		return { headers: { "Proxy-Authorization": `Negotiate ${token}` } };
-	};
-}
-// tooling/artifact-transport/node_modules/https-proxy-agent/dist/index.js
-var debug$1 = (0, import_src.default)("https-proxy-agent");
-var setServernameFromNonIpHost = (options) => {
-	if (options.servername === void 0 && options.host && !net.isIP(options.host)) return {
-		...options,
-		servername: options.host
-	};
-	return options;
-};
-/**
-* The `HttpsProxyAgent` implements an HTTP Agent subclass that connects to
-* the specified "HTTP(s) proxy server" in order to proxy HTTPS requests.
-*
-* Outgoing HTTP requests are first tunneled through the proxy server using the
-* `CONNECT` HTTP request method to establish a connection to the proxy server,
-* and then the proxy server connects to the destination target and issues the
-* HTTP request from the proxy server.
-*
-* `https:` requests have their socket connection upgraded to TLS once
-* the connection to the proxy server has been established.
-*/
-var HttpsProxyAgent = class extends Agent$1 {
-	constructor(proxy, opts) {
-		super(opts);
-		this.options = { path: void 0 };
-		this.proxy = typeof proxy === "string" ? new URL$1(proxy) : proxy;
-		this.proxyHeaders = opts?.headers ?? {};
-		debug$1("Creating new HttpsProxyAgent instance: %o", this.proxy.href);
-		if (opts?.negotiate) this.onProxyAuth = createNegotiateAuth();
-		else if (opts?.onProxyAuth) this.onProxyAuth = opts.onProxyAuth;
-		const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, "");
-		const port = this.proxy.port ? parseInt(this.proxy.port, 10) : this.proxy.protocol === "https:" ? 443 : 80;
-		this.connectOpts = {
-			ALPNProtocols: ["http/1.1"],
-			...opts ? omit$2(opts, "headers", "onProxyAuth", "negotiate") : null,
-			host,
-			port
+	}
+	exports.json = json;
+	function req(url, opts = {}) {
+		const req = ((typeof url === "string" ? url : url.href).startsWith("https:") ? https : http).request(url, opts);
+		const promise = new Promise((resolve, reject) => {
+			req.once("response", resolve).once("error", reject).end();
+		});
+		req.then = promise.then.bind(promise);
+		return req;
+	}
+	exports.req = req;
+}));
+// tooling/artifact-transport/node_modules/agent-base/dist/index.js
+var require_dist$3 = /* @__PURE__ */ __commonJSMin(((exports, module, this$6) => {
+	var __createBinding = this$6 && this$6.__createBinding || (Object.create ? (function(o, m, k, k2) {
+		if (k2 === void 0) k2 = k;
+		var desc = Object.getOwnPropertyDescriptor(m, k);
+		if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
+			enumerable: true,
+			get: function() {
+				return m[k];
+			}
 		};
-	}
-	/**
-	* Called when the node-core HTTP client library is creating a
-	* new HTTP request.
-	*/
-	async connect(req, opts) {
-		const { proxy } = this;
-		if (!opts.host) throw new TypeError("No \"host\" provided");
-		let socket;
-		if (proxy.protocol === "https:") {
-			debug$1("Creating `tls.Socket`: %o", this.connectOpts);
-			socket = tls.connect(setServernameFromNonIpHost(this.connectOpts));
-		} else {
-			debug$1("Creating `net.Socket`: %o", this.connectOpts);
-			socket = net.connect(this.connectOpts);
-		}
-		const headers = typeof this.proxyHeaders === "function" ? this.proxyHeaders() : { ...this.proxyHeaders };
-		const host = net.isIPv6(opts.host) ? `[${opts.host}]` : opts.host;
-		let payload = `CONNECT ${host}:${opts.port} HTTP/1.1\r\n`;
-		if (proxy.username || proxy.password) {
-			const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
-			headers["Proxy-Authorization"] = `Basic ${Buffer.from(auth).toString("base64")}`;
-		}
-		headers.Host = `${host}:${opts.port}`;
-		if (!headers["Proxy-Connection"]) headers["Proxy-Connection"] = this.keepAlive ? "Keep-Alive" : "close";
-		for (const name of Object.keys(headers)) payload += `${name}: ${headers[name]}\r\n`;
-		const proxyResponsePromise = parseProxyResponse(socket);
-		socket.write(`${payload}\r\n`);
-		const { connect, buffered } = await proxyResponsePromise;
-		req.emit("proxyConnect", connect);
-		this.emit("proxyConnect", connect, req);
-		req.emit("proxy", {
-			proxy: this.proxy.href,
-			socket
+		Object.defineProperty(o, k2, desc);
+	}) : (function(o, m, k, k2) {
+		if (k2 === void 0) k2 = k;
+		o[k2] = m[k];
+	}));
+	var __setModuleDefault = this$6 && this$6.__setModuleDefault || (Object.create ? (function(o, v) {
+		Object.defineProperty(o, "default", {
+			enumerable: true,
+			value: v
 		});
-		if (connect.statusCode === 200) {
-			req.once("socket", resume);
-			if (opts.secureEndpoint) {
-				debug$1("Upgrading socket connection to TLS");
-				return tls.connect({
-					...omit$2(setServernameFromNonIpHost(opts), "host", "path", "port"),
-					socket
-				});
-			}
-			return socket;
-		}
-		if (connect.statusCode === 407 && this.onProxyAuth) {
-			debug$1("Got 407 response, invoking onProxyAuth callback");
-			socket.destroy();
-			const proxyAuthenticate = connect.headers["proxy-authenticate"] || "";
-			const scheme = Array.isArray(proxyAuthenticate) ? proxyAuthenticate[0].split(/\s/)[0] : proxyAuthenticate.split(/\s/)[0];
-			const authResponse = await this.onProxyAuth({
-				response: connect,
-				scheme
-			});
-			return this._connectWithAuth(req, opts, authResponse.headers);
-		}
-		socket.destroy();
-		const fakeSocket = new net.Socket({ writable: false });
-		fakeSocket.readable = true;
-		req.once("socket", (s) => {
-			debug$1("Replaying proxy buffer for failed request");
-			assert(s.listenerCount("data") > 0);
-			s.push(buffered);
-			s.push(null);
-		});
-		return fakeSocket;
-	}
-	/**
-	* Retry a CONNECT request with additional auth headers.
-	*/
-	async _connectWithAuth(req, opts, authHeaders) {
-		const { proxy } = this;
-		let socket;
-		if (proxy.protocol === "https:") socket = tls.connect(setServernameFromNonIpHost(this.connectOpts));
-		else socket = net.connect(this.connectOpts);
-		const headers = typeof this.proxyHeaders === "function" ? this.proxyHeaders() : { ...this.proxyHeaders };
-		const host = net.isIPv6(opts.host) ? `[${opts.host}]` : opts.host;
-		let payload = `CONNECT ${host}:${opts.port} HTTP/1.1\r\n`;
-		if (proxy.username || proxy.password) {
-			const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
-			headers["Proxy-Authorization"] = `Basic ${Buffer.from(auth).toString("base64")}`;
-		}
-		Object.assign(headers, authHeaders);
-		headers.Host = `${host}:${opts.port}`;
-		if (!headers["Proxy-Connection"]) headers["Proxy-Connection"] = this.keepAlive ? "Keep-Alive" : "close";
-		for (const name of Object.keys(headers)) payload += `${name}: ${headers[name]}\r\n`;
-		const proxyResponsePromise = parseProxyResponse(socket);
-		socket.write(`${payload}\r\n`);
-		const { connect } = await proxyResponsePromise;
-		req.emit("proxyConnect", connect);
-		this.emit("proxyConnect", connect, req);
-		if (connect.statusCode === 200) {
-			req.once("socket", resume);
-			if (opts.secureEndpoint) {
-				debug$1("Upgrading socket connection to TLS");
-				return tls.connect({
-					...omit$2(setServernameFromNonIpHost(opts), "host", "path", "port"),
-					socket
-				});
-			}
-			return socket;
-		}
-		socket.destroy();
-		throw new Error(`Proxy authentication failed with status ${connect.statusCode} after retry`);
-	}
-};
-HttpsProxyAgent.protocols = ["http", "https"];
-function resume(socket) {
-	setImmediate(() => {
-		socket.resume();
+	}) : function(o, v) {
+		o["default"] = v;
 	});
-}
-function omit$2(obj, ...keys) {
-	const ret = {};
-	let key;
-	for (key in obj) if (!keys.includes(key)) ret[key] = obj[key];
-	return ret;
-}
-// tooling/artifact-transport/node_modules/http-proxy-agent/dist/index.js
-var debug = (0, import_src.default)("http-proxy-agent");
-/**
-* The `HttpProxyAgent` implements an HTTP Agent subclass that connects
-* to the specified "HTTP proxy server" in order to proxy HTTP requests.
-*/
-var HttpProxyAgent = class extends Agent$1 {
-	constructor(proxy, opts) {
-		super(opts);
-		this.proxy = typeof proxy === "string" ? new URL$1(proxy) : proxy;
-		this.proxyHeaders = opts?.headers ?? {};
-		debug("Creating new HttpProxyAgent instance: %o", this.proxy.href);
-		if (opts?.negotiate) this.onProxyAuth = createNegotiateAuth();
-		else if (opts?.onProxyAuth) this.onProxyAuth = opts.onProxyAuth;
-		const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, "");
-		const port = this.proxy.port ? parseInt(this.proxy.port, 10) : this.proxy.protocol === "https:" ? 443 : 80;
-		this.connectOpts = {
-			...opts ? omit$1(opts, "headers", "onProxyAuth", "negotiate") : null,
-			host,
-			port
-		};
-	}
-	addRequest(req, opts) {
-		req._header = null;
-		this.setRequestProps(req, opts);
-		super.addRequest(req, opts);
-	}
-	setRequestProps(req, opts) {
-		const { proxy } = this;
-		const base = `${opts.secureEndpoint ? "https:" : "http:"}//${req.getHeader("host") || "localhost"}`;
-		const url = new URL$1(req.path, base);
-		if (opts.port !== 80) url.port = String(opts.port);
-		req.path = String(url);
-		const headers = typeof this.proxyHeaders === "function" ? this.proxyHeaders() : { ...this.proxyHeaders };
-		if (proxy.username || proxy.password) {
-			const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
-			headers["Proxy-Authorization"] = `Basic ${Buffer.from(auth).toString("base64")}`;
+	var __importStar = this$6 && this$6.__importStar || function(mod) {
+		if (mod && mod.__esModule) return mod;
+		var result = {};
+		if (mod != null) {
+			for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
 		}
-		if (!headers["Proxy-Connection"]) headers["Proxy-Connection"] = this.keepAlive ? "Keep-Alive" : "close";
-		for (const name of Object.keys(headers)) {
-			const value = headers[name];
-			if (value) req.setHeader(name, value);
+		__setModuleDefault(result, mod);
+		return result;
+	};
+	var __exportStar = this$6 && this$6.__exportStar || function(m, exports) {
+		for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Agent = void 0;
+	var net = __importStar(__require("net"));
+	var http = __importStar(__require("http"));
+	var https_1 = __require("https");
+	__exportStar(require_helpers$1(), exports);
+	var INTERNAL = Symbol("AgentBaseInternalState");
+	var Agent = class extends http.Agent {
+		constructor(opts) {
+			super(opts);
+			this[INTERNAL] = {};
 		}
-	}
-	async connect(req, opts) {
-		req._header = null;
-		if (!req.path.includes("://")) this.setRequestProps(req, opts);
-		let first;
-		let endOfHeaders;
-		debug("Regenerating stored HTTP header string for request");
-		req._implicitHeader();
-		if (req.outputData && req.outputData.length > 0) {
-			debug("Patching connection write() output buffer with updated header");
-			first = req.outputData[0].data;
-			endOfHeaders = first.indexOf("\r\n\r\n") + 4;
-			req.outputData[0].data = req._header + first.substring(endOfHeaders);
-			debug("Output buffer: %o", req.outputData[0].data);
+		/**
+		* Determine whether this is an `http` or `https` request.
+		*/
+		isSecureEndpoint(options) {
+			if (options) {
+				if (typeof options.secureEndpoint === "boolean") return options.secureEndpoint;
+				if (typeof options.protocol === "string") return options.protocol === "https:";
+			}
+			const { stack } = /* @__PURE__ */ new Error();
+			if (typeof stack !== "string") return false;
+			return stack.split("\n").some((l) => l.indexOf("(https.js:") !== -1 || l.indexOf("node:https:") !== -1);
 		}
-		let socket;
-		if (this.proxy.protocol === "https:") {
-			debug("Creating `tls.Socket`: %o", this.connectOpts);
-			socket = tls.connect(this.connectOpts);
-		} else {
-			debug("Creating `net.Socket`: %o", this.connectOpts);
-			socket = net.connect(this.connectOpts);
+		incrementSockets(name) {
+			if (this.maxSockets === Infinity && this.maxTotalSockets === Infinity) return null;
+			if (!this.sockets[name]) this.sockets[name] = [];
+			const fakeSocket = new net.Socket({ writable: false });
+			this.sockets[name].push(fakeSocket);
+			this.totalSocketCount++;
+			return fakeSocket;
 		}
-		await once(socket, "connect");
-		const connect = { socket };
-		req.emit("proxyConnect", connect);
-		this.emit("proxyConnect", connect, req);
-		req.emit("proxy", {
-			proxy: this.proxy.href,
-			socket
+		decrementSockets(name, socket) {
+			if (!this.sockets[name] || socket === null) return;
+			const sockets = this.sockets[name];
+			const index = sockets.indexOf(socket);
+			if (index !== -1) {
+				sockets.splice(index, 1);
+				this.totalSocketCount--;
+				if (sockets.length === 0) delete this.sockets[name];
+			}
+		}
+		getName(options) {
+			if (this.isSecureEndpoint(options)) return https_1.Agent.prototype.getName.call(this, options);
+			return super.getName(options);
+		}
+		createSocket(req, options, cb) {
+			const connectOpts = {
+				...options,
+				secureEndpoint: this.isSecureEndpoint(options)
+			};
+			const name = this.getName(connectOpts);
+			const fakeSocket = this.incrementSockets(name);
+			Promise.resolve().then(() => this.connect(req, connectOpts)).then((socket) => {
+				this.decrementSockets(name, fakeSocket);
+				if (socket instanceof http.Agent) try {
+					return socket.addRequest(req, connectOpts);
+				} catch (err) {
+					return cb(err);
+				}
+				this[INTERNAL].currentSocket = socket;
+				super.createSocket(req, options, cb);
+			}, (err) => {
+				this.decrementSockets(name, fakeSocket);
+				cb(err);
+			});
+		}
+		createConnection() {
+			const socket = this[INTERNAL].currentSocket;
+			this[INTERNAL].currentSocket = void 0;
+			if (!socket) throw new Error("No socket was returned in the `connect()` function");
+			return socket;
+		}
+		get defaultPort() {
+			return this[INTERNAL].defaultPort ?? (this.protocol === "https:" ? 443 : 80);
+		}
+		set defaultPort(v) {
+			if (this[INTERNAL]) this[INTERNAL].defaultPort = v;
+		}
+		get protocol() {
+			return this[INTERNAL].protocol ?? (this.isSecureEndpoint() ? "https:" : "http:");
+		}
+		set protocol(v) {
+			if (this[INTERNAL]) this[INTERNAL].protocol = v;
+		}
+	};
+	exports.Agent = Agent;
+}));
+// tooling/artifact-transport/node_modules/https-proxy-agent/dist/parse-proxy-response.js
+var require_parse_proxy_response = /* @__PURE__ */ __commonJSMin(((exports, module, this$5) => {
+	var __importDefault = this$5 && this$5.__importDefault || function(mod) {
+		return mod && mod.__esModule ? mod : { "default": mod };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.parseProxyResponse = void 0;
+	var debug = (0, __importDefault(require_src()).default)("https-proxy-agent:parse-proxy-response");
+	function parseProxyResponse(socket) {
+		return new Promise((resolve, reject) => {
+			let buffersLength = 0;
+			const buffers = [];
+			function read() {
+				const b = socket.read();
+				if (b) ondata(b);
+				else socket.once("readable", read);
+			}
+			function cleanup() {
+				socket.removeListener("end", onend);
+				socket.removeListener("error", onerror);
+				socket.removeListener("readable", read);
+			}
+			function onend() {
+				cleanup();
+				debug("onend");
+				reject(/* @__PURE__ */ new Error("Proxy connection ended before receiving CONNECT response"));
+			}
+			function onerror(err) {
+				cleanup();
+				debug("onerror %o", err);
+				reject(err);
+			}
+			function ondata(b) {
+				buffers.push(b);
+				buffersLength += b.length;
+				const buffered = Buffer.concat(buffers, buffersLength);
+				const endOfHeaders = buffered.indexOf("\r\n\r\n");
+				if (endOfHeaders === -1) {
+					debug("have not received end of HTTP headers yet...");
+					read();
+					return;
+				}
+				const headerParts = buffered.slice(0, endOfHeaders).toString("ascii").split("\r\n");
+				const firstLine = headerParts.shift();
+				if (!firstLine) {
+					socket.destroy();
+					return reject(/* @__PURE__ */ new Error("No header received from proxy CONNECT response"));
+				}
+				const firstLineParts = firstLine.split(" ");
+				const statusCode = +firstLineParts[1];
+				const statusText = firstLineParts.slice(2).join(" ");
+				const headers = {};
+				for (const header of headerParts) {
+					if (!header) continue;
+					const firstColon = header.indexOf(":");
+					if (firstColon === -1) {
+						socket.destroy();
+						return reject(/* @__PURE__ */ new Error(`Invalid header from proxy CONNECT response: "${header}"`));
+					}
+					const key = header.slice(0, firstColon).toLowerCase();
+					const value = header.slice(firstColon + 1).trimStart();
+					const current = headers[key];
+					if (typeof current === "string") headers[key] = [current, value];
+					else if (Array.isArray(current)) current.push(value);
+					else headers[key] = value;
+				}
+				debug("got proxy server response: %o %o", firstLine, headers);
+				cleanup();
+				resolve({
+					connect: {
+						statusCode,
+						statusText,
+						headers
+					},
+					buffered
+				});
+			}
+			socket.on("error", onerror);
+			socket.on("end", onend);
+			read();
 		});
-		return socket;
 	}
-};
-HttpProxyAgent.protocols = ["http", "https"];
-function omit$1(obj, ...keys) {
-	const ret = {};
-	let key;
-	for (key in obj) if (!keys.includes(key)) ret[key] = obj[key];
-	return ret;
-}
+	exports.parseProxyResponse = parseProxyResponse;
+}));
+// tooling/artifact-transport/node_modules/https-proxy-agent/dist/index.js
+var require_dist$2 = /* @__PURE__ */ __commonJSMin(((exports, module, this$4) => {
+	var __createBinding = this$4 && this$4.__createBinding || (Object.create ? (function(o, m, k, k2) {
+		if (k2 === void 0) k2 = k;
+		var desc = Object.getOwnPropertyDescriptor(m, k);
+		if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
+			enumerable: true,
+			get: function() {
+				return m[k];
+			}
+		};
+		Object.defineProperty(o, k2, desc);
+	}) : (function(o, m, k, k2) {
+		if (k2 === void 0) k2 = k;
+		o[k2] = m[k];
+	}));
+	var __setModuleDefault = this$4 && this$4.__setModuleDefault || (Object.create ? (function(o, v) {
+		Object.defineProperty(o, "default", {
+			enumerable: true,
+			value: v
+		});
+	}) : function(o, v) {
+		o["default"] = v;
+	});
+	var __importStar = this$4 && this$4.__importStar || function(mod) {
+		if (mod && mod.__esModule) return mod;
+		var result = {};
+		if (mod != null) {
+			for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+		}
+		__setModuleDefault(result, mod);
+		return result;
+	};
+	var __importDefault = this$4 && this$4.__importDefault || function(mod) {
+		return mod && mod.__esModule ? mod : { "default": mod };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.HttpsProxyAgent = void 0;
+	var net = __importStar(__require("net"));
+	var tls = __importStar(__require("tls"));
+	var assert_1 = __importDefault(__require("assert"));
+	var debug_1 = __importDefault(require_src());
+	var agent_base_1 = require_dist$3();
+	var url_1 = __require("url");
+	var parse_proxy_response_1 = require_parse_proxy_response();
+	var debug = (0, debug_1.default)("https-proxy-agent");
+	var setServernameFromNonIpHost = (options) => {
+		if (options.servername === void 0 && options.host && !net.isIP(options.host)) return {
+			...options,
+			servername: options.host
+		};
+		return options;
+	};
+	/**
+	* The `HttpsProxyAgent` implements an HTTP Agent subclass that connects to
+	* the specified "HTTP(s) proxy server" in order to proxy HTTPS requests.
+	*
+	* Outgoing HTTP requests are first tunneled through the proxy server using the
+	* `CONNECT` HTTP request method to establish a connection to the proxy server,
+	* and then the proxy server connects to the destination target and issues the
+	* HTTP request from the proxy server.
+	*
+	* `https:` requests have their socket connection upgraded to TLS once
+	* the connection to the proxy server has been established.
+	*/
+	var HttpsProxyAgent = class extends agent_base_1.Agent {
+		constructor(proxy, opts) {
+			super(opts);
+			this.options = { path: void 0 };
+			this.proxy = typeof proxy === "string" ? new url_1.URL(proxy) : proxy;
+			this.proxyHeaders = opts?.headers ?? {};
+			debug("Creating new HttpsProxyAgent instance: %o", this.proxy.href);
+			const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, "");
+			const port = this.proxy.port ? parseInt(this.proxy.port, 10) : this.proxy.protocol === "https:" ? 443 : 80;
+			this.connectOpts = {
+				ALPNProtocols: ["http/1.1"],
+				...opts ? omit(opts, "headers") : null,
+				host,
+				port
+			};
+		}
+		/**
+		* Called when the node-core HTTP client library is creating a
+		* new HTTP request.
+		*/
+		async connect(req, opts) {
+			const { proxy } = this;
+			if (!opts.host) throw new TypeError("No \"host\" provided");
+			let socket;
+			if (proxy.protocol === "https:") {
+				debug("Creating `tls.Socket`: %o", this.connectOpts);
+				socket = tls.connect(setServernameFromNonIpHost(this.connectOpts));
+			} else {
+				debug("Creating `net.Socket`: %o", this.connectOpts);
+				socket = net.connect(this.connectOpts);
+			}
+			const headers = typeof this.proxyHeaders === "function" ? this.proxyHeaders() : { ...this.proxyHeaders };
+			const host = net.isIPv6(opts.host) ? `[${opts.host}]` : opts.host;
+			let payload = `CONNECT ${host}:${opts.port} HTTP/1.1\r\n`;
+			if (proxy.username || proxy.password) {
+				const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
+				headers["Proxy-Authorization"] = `Basic ${Buffer.from(auth).toString("base64")}`;
+			}
+			headers.Host = `${host}:${opts.port}`;
+			if (!headers["Proxy-Connection"]) headers["Proxy-Connection"] = this.keepAlive ? "Keep-Alive" : "close";
+			for (const name of Object.keys(headers)) payload += `${name}: ${headers[name]}\r\n`;
+			const proxyResponsePromise = (0, parse_proxy_response_1.parseProxyResponse)(socket);
+			socket.write(`${payload}\r\n`);
+			const { connect, buffered } = await proxyResponsePromise;
+			req.emit("proxyConnect", connect);
+			this.emit("proxyConnect", connect, req);
+			if (connect.statusCode === 200) {
+				req.once("socket", resume);
+				if (opts.secureEndpoint) {
+					debug("Upgrading socket connection to TLS");
+					return tls.connect({
+						...omit(setServernameFromNonIpHost(opts), "host", "path", "port"),
+						socket
+					});
+				}
+				return socket;
+			}
+			socket.destroy();
+			const fakeSocket = new net.Socket({ writable: false });
+			fakeSocket.readable = true;
+			req.once("socket", (s) => {
+				debug("Replaying proxy buffer for failed request");
+				(0, assert_1.default)(s.listenerCount("data") > 0);
+				s.push(buffered);
+				s.push(null);
+			});
+			return fakeSocket;
+		}
+	};
+	HttpsProxyAgent.protocols = ["http", "https"];
+	exports.HttpsProxyAgent = HttpsProxyAgent;
+	function resume(socket) {
+		socket.resume();
+	}
+	function omit(obj, ...keys) {
+		const ret = {};
+		let key;
+		for (key in obj) if (!keys.includes(key)) ret[key] = obj[key];
+		return ret;
+	}
+}));
+// tooling/artifact-transport/node_modules/http-proxy-agent/dist/index.js
+var require_dist$1 = /* @__PURE__ */ __commonJSMin(((exports, module, this$3) => {
+	var __createBinding = this$3 && this$3.__createBinding || (Object.create ? (function(o, m, k, k2) {
+		if (k2 === void 0) k2 = k;
+		var desc = Object.getOwnPropertyDescriptor(m, k);
+		if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
+			enumerable: true,
+			get: function() {
+				return m[k];
+			}
+		};
+		Object.defineProperty(o, k2, desc);
+	}) : (function(o, m, k, k2) {
+		if (k2 === void 0) k2 = k;
+		o[k2] = m[k];
+	}));
+	var __setModuleDefault = this$3 && this$3.__setModuleDefault || (Object.create ? (function(o, v) {
+		Object.defineProperty(o, "default", {
+			enumerable: true,
+			value: v
+		});
+	}) : function(o, v) {
+		o["default"] = v;
+	});
+	var __importStar = this$3 && this$3.__importStar || function(mod) {
+		if (mod && mod.__esModule) return mod;
+		var result = {};
+		if (mod != null) {
+			for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+		}
+		__setModuleDefault(result, mod);
+		return result;
+	};
+	var __importDefault = this$3 && this$3.__importDefault || function(mod) {
+		return mod && mod.__esModule ? mod : { "default": mod };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.HttpProxyAgent = void 0;
+	var net = __importStar(__require("net"));
+	var tls = __importStar(__require("tls"));
+	var debug_1 = __importDefault(require_src());
+	var events_1 = __require("events");
+	var agent_base_1 = require_dist$3();
+	var url_1 = __require("url");
+	var debug = (0, debug_1.default)("http-proxy-agent");
+	/**
+	* The `HttpProxyAgent` implements an HTTP Agent subclass that connects
+	* to the specified "HTTP proxy server" in order to proxy HTTP requests.
+	*/
+	var HttpProxyAgent = class extends agent_base_1.Agent {
+		constructor(proxy, opts) {
+			super(opts);
+			this.proxy = typeof proxy === "string" ? new url_1.URL(proxy) : proxy;
+			this.proxyHeaders = opts?.headers ?? {};
+			debug("Creating new HttpProxyAgent instance: %o", this.proxy.href);
+			const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, "");
+			const port = this.proxy.port ? parseInt(this.proxy.port, 10) : this.proxy.protocol === "https:" ? 443 : 80;
+			this.connectOpts = {
+				...opts ? omit(opts, "headers") : null,
+				host,
+				port
+			};
+		}
+		addRequest(req, opts) {
+			req._header = null;
+			this.setRequestProps(req, opts);
+			super.addRequest(req, opts);
+		}
+		setRequestProps(req, opts) {
+			const { proxy } = this;
+			const base = `${opts.secureEndpoint ? "https:" : "http:"}//${req.getHeader("host") || "localhost"}`;
+			const url = new url_1.URL(req.path, base);
+			if (opts.port !== 80) url.port = String(opts.port);
+			req.path = String(url);
+			const headers = typeof this.proxyHeaders === "function" ? this.proxyHeaders() : { ...this.proxyHeaders };
+			if (proxy.username || proxy.password) {
+				const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
+				headers["Proxy-Authorization"] = `Basic ${Buffer.from(auth).toString("base64")}`;
+			}
+			if (!headers["Proxy-Connection"]) headers["Proxy-Connection"] = this.keepAlive ? "Keep-Alive" : "close";
+			for (const name of Object.keys(headers)) {
+				const value = headers[name];
+				if (value) req.setHeader(name, value);
+			}
+		}
+		async connect(req, opts) {
+			req._header = null;
+			if (!req.path.includes("://")) this.setRequestProps(req, opts);
+			let first;
+			let endOfHeaders;
+			debug("Regenerating stored HTTP header string for request");
+			req._implicitHeader();
+			if (req.outputData && req.outputData.length > 0) {
+				debug("Patching connection write() output buffer with updated header");
+				first = req.outputData[0].data;
+				endOfHeaders = first.indexOf("\r\n\r\n") + 4;
+				req.outputData[0].data = req._header + first.substring(endOfHeaders);
+				debug("Output buffer: %o", req.outputData[0].data);
+			}
+			let socket;
+			if (this.proxy.protocol === "https:") {
+				debug("Creating `tls.Socket`: %o", this.connectOpts);
+				socket = tls.connect(this.connectOpts);
+			} else {
+				debug("Creating `net.Socket`: %o", this.connectOpts);
+				socket = net.connect(this.connectOpts);
+			}
+			await (0, events_1.once)(socket, "connect");
+			return socket;
+		}
+	};
+	HttpProxyAgent.protocols = ["http", "https"];
+	exports.HttpProxyAgent = HttpProxyAgent;
+	function omit(obj, ...keys) {
+		const ret = {};
+		let key;
+		for (key in obj) if (!keys.includes(key)) ret[key] = obj[key];
+		return ret;
+	}
+}));
 // tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/proxyPolicy.js
+var import_dist = require_dist$2();
+var import_dist$1 = require_dist$1();
 var HTTPS_PROXY = "HTTPS_PROXY";
 var HTTP_PROXY = "HTTP_PROXY";
 var ALL_PROXY = "ALL_PROXY";
@@ -7900,10 +8021,10 @@ function setProxyAgentOnRequest(request, cachedAgents, proxyUrl) {
 	const isInsecure = new URL(request.url).protocol !== "https:";
 	if (request.tlsSettings) logger$4.warning("TLS settings are not supported in combination with custom Proxy, certificates provided to the client will be ignored.");
 	if (isInsecure) {
-		if (!cachedAgents.httpProxyAgent) cachedAgents.httpProxyAgent = new HttpProxyAgent(proxyUrl);
+		if (!cachedAgents.httpProxyAgent) cachedAgents.httpProxyAgent = new import_dist$1.HttpProxyAgent(proxyUrl);
 		request.agent = cachedAgents.httpProxyAgent;
 	} else {
-		if (!cachedAgents.httpsProxyAgent) cachedAgents.httpsProxyAgent = new HttpsProxyAgent(proxyUrl);
+		if (!cachedAgents.httpsProxyAgent) cachedAgents.httpsProxyAgent = new import_dist.HttpsProxyAgent(proxyUrl);
 		request.agent = cachedAgents.httpsProxyAgent;
 	}
 }
@@ -11291,9 +11412,9 @@ function readAttributeStr(xmlData, i) {
 * and moving to the next starting position — one full backtrack per
 * position, which is quadratic in the length of the run.
 *
-* A single forward-only scan can never backtrack, so it can't be made slow
-* this way no matter how much whitespace the input contains — it's always
-* proportional to the length of the string, once.
+* The scan is forward-only: the cursor never moves backwards, so each
+* character is visited a constant number of times and the cost is linear
+* in the length of the string.
 *
 * Each returned token mirrors the shape the old regex match array had, so
 * the validation logic below (which reads token[1]..token[6]) didn't need
@@ -11320,7 +11441,7 @@ function scanAttributeTokens(attrStr) {
 		while (i < len && isWhiteSpace(attrStr[i])) i++;
 		if (i >= len) break;
 		if (attrStr[i] === "=") {
-			i = tokenStart + 1;
+			i++;
 			continue;
 		}
 		const leadingWs = attrStr.slice(tokenStart, i);
@@ -14559,7 +14680,10 @@ function resolveNameSpace(tagname) {
 	}
 	return tagname;
 }
-var attrsRegx = /* @__PURE__ */ new RegExp("([^\\s=]+)\\s*(=\\s*(['\"])([\\s\\S]*?)\\3)?", "gm");
+var attrsRegx = /([^\s=]+)\s*(=\s*(?:"([^"]*)"|'([^']*)'))?/gm;
+function attrValue(match) {
+	return match[3] !== void 0 ? match[3] : match[4];
+}
 function buildAttributesMap(attrStr, jPath, tagName, force = false) {
 	const options = this.options;
 	if (force === true || options.ignoreAttributes !== true && typeof attrStr === "string") {
@@ -14571,7 +14695,7 @@ function buildAttributesMap(attrStr, jPath, tagName, force = false) {
 		const rawAttrsForMatcher = {};
 		for (let i = 0; i < len; i++) {
 			const attrName = this.resolveNameSpace(matches[i][1]);
-			const oldVal = matches[i][4];
+			const oldVal = attrValue(matches[i]);
 			if (attrName.length && oldVal !== void 0) {
 				let val = oldVal;
 				if (options.trimValues) val = val.trim();
@@ -14591,7 +14715,7 @@ function buildAttributesMap(attrStr, jPath, tagName, force = false) {
 			if (attrName.length) {
 				if (options.transformAttributeName) aName = options.transformAttributeName(aName);
 				aName = sanitizeName(aName, options);
-				if (matches[i][4] !== void 0) {
+				if (attrValue(matches[i]) !== void 0) {
 					const oldVal = processedVals[i];
 					const newVal = options.attributeValueProcessor(attrName, oldVal, jPathStr);
 					if (newVal === null || newVal === void 0) attrs[aName] = oldVal;
@@ -14846,7 +14970,6 @@ function isItStopNode() {
 * @returns 
 */
 function tagExpWithClosingIndex(xmlData, i, closingChar = ">") {
-	let attrBoundary = 0;
 	const len = xmlData.length;
 	const closeCode0 = closingChar.charCodeAt(0);
 	const closeCode1 = closingChar.length > 1 ? closingChar.charCodeAt(1) : -1;
@@ -14854,10 +14977,10 @@ function tagExpWithClosingIndex(xmlData, i, closingChar = ">") {
 	let segmentStart = i;
 	for (let index = i; index < len; index++) {
 		const code = xmlData.charCodeAt(index);
-		if (attrBoundary) {
-			if (code === attrBoundary) attrBoundary = 0;
-		} else if (code === 34 || code === 39) attrBoundary = code;
-		else if (code === closeCode0) {
+		if (code === 34 || code === 39) {
+			index = xmlData.indexOf(xmlData[index], index + 1);
+			if (index === -1) return;
+		} else if (code === closeCode0) {
 			if (closeCode1 !== -1) {
 				if (xmlData.charCodeAt(index + 1) === closeCode1) {
 					result += xmlData.substring(segmentStart, index);
@@ -14873,7 +14996,7 @@ function tagExpWithClosingIndex(xmlData, i, closingChar = ">") {
 					index
 				};
 			}
-		} else if (code === 9 && !attrBoundary) {
+		} else if (code === 9) {
 			result += xmlData.substring(segmentStart, index) + " ";
 			segmentStart = index + 1;
 		}
@@ -15158,6 +15281,30 @@ function safeCdata(val) {
 function escapeAttribute(val) {
 	return valToStr(val).replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
+/**
+* Resolve a tag or attribute name through sanitizeName if configured.
+* Validation via xml-naming's qName is performed first; the sanitizeName
+* callback is invoked only when the name is invalid. If sanitizeName is
+* false (default), no validation occurs and the name is used as-is.
+*
+* @param {string}  name        - raw name from the JS object
+* @param {boolean} isAttribute - true when resolving an attribute name
+* @param {object}  options
+* @param {Matcher} matcher     - current matcher state (readonly from callback perspective)
+* @param {function} qNameValidator - function to validate tag names
+*/
+function resolveName(name, isAttribute, options, matcher, validator) {
+	if (!options.sanitizeName) return name;
+	const isPI = !isAttribute && name[0] === "?";
+	const bare = isPI ? name.slice(1) : name;
+	if (validator(bare)) return name;
+	const result = options.sanitizeName(bare, {
+		isAttribute,
+		matcher: matcher.readOnly()
+	});
+	if (typeof result !== "string" || !validator(result)) throw new Error(`sanitizeName returned an invalid XML name for "${bare}"`);
+	return isPI ? "?" + result : result;
+}
 // tooling/artifact-transport/node_modules/fast-xml-builder/src/orderedJs2Xml.js
 var EOL$2 = "\n";
 /**
@@ -15179,26 +15326,6 @@ function detectXmlVersionFromArray(jArray, options) {
 		}
 	}
 	return "1.0";
-}
-/**
-* Resolve a tag or attribute name through sanitizeName if configured.
-* Validation via xml-naming's qName is performed first; the sanitizeName
-* callback is invoked only when the name is invalid. If sanitizeName is
-* false (default), no validation occurs and the name is used as-is.
-*
-* @param {string}  name        - raw name from the JS object
-* @param {boolean} isAttribute - true when resolving an attribute name
-* @param {object}  options
-* @param {Matcher} matcher     - current matcher state (readonly from callback perspective)
-* @param {function} qNameValidator - function to validate tag names
-*/
-function resolveTagName$1(name, isAttribute, options, matcher, qNameValidator) {
-	if (!options.sanitizeName) return name;
-	if (qNameValidator(name)) return name;
-	return options.sanitizeName(name, {
-		isAttribute,
-		matcher: matcher.readOnly()
-	});
 }
 /**
 * @param {array} jArray
@@ -15234,7 +15361,7 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, qName
 		const tagObj = arr[i];
 		const rawTagName = propName(tagObj);
 		if (rawTagName === void 0) continue;
-		const tagName = rawTagName === options.textNodeName || rawTagName === options.cdataPropName || rawTagName === options.commentPropName || rawTagName[0] === "?" ? rawTagName : resolveTagName$1(rawTagName, false, options, matcher, qNameValidator);
+		const tagName = rawTagName === options.textNodeName || rawTagName === options.cdataPropName || rawTagName === options.commentPropName ? rawTagName : resolveName(rawTagName, false, options, matcher, qNameValidator);
 		const attrValues = extractAttributeValues(tagObj[":@"], options);
 		matcher.push(tagName, attrValues);
 		const isStopNode = checkStopNode(matcher, stopNodeExpressions);
@@ -15276,7 +15403,7 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, qName
 		if (newIdentation !== "") newIdentation += options.indentBy;
 		const tagStart = indentation + `<${tagName}${attr_to_str(tagObj[":@"], options, isStopNode, matcher, qNameValidator)}`;
 		let tagValue;
-		if (isStopNode) tagValue = getRawContent(tagObj[rawTagName], options);
+		if (isStopNode) tagValue = getRawContent(tagObj[rawTagName], options, matcher.getDepth());
 		else tagValue = arrToStr(tagObj[rawTagName], options, newIdentation, matcher, stopNodeExpressions, qNameValidator);
 		if (options.unpairedTags.indexOf(tagName) !== -1) {
 			if (options.suppressUnpairedNode) xmlStr += tagStart + ">";
@@ -15314,7 +15441,8 @@ function extractAttributeValues(attrMap, options) {
 * Extract raw content from a stopNode without any processing
 * This preserves the content exactly as-is, including special characters
 */
-function getRawContent(arr, options) {
+function getRawContent(arr, options, depth = 0) {
+	if (options.maxNestedTags && depth > options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
 	if (!Array.isArray(arr)) {
 		if (arr !== void 0 && arr !== null) return valToStr(arr);
 		return "";
@@ -15329,7 +15457,7 @@ function getRawContent(arr, options) {
 		else if (tagName && tagName[0] === "?") continue;
 		else if (tagName) {
 			const attStr = attr_to_str_raw(item[":@"], options);
-			const nestedContent = getRawContent(item[tagName], options);
+			const nestedContent = getRawContent(item[tagName], options, depth + 1);
 			if (!nestedContent || nestedContent.length === 0) content += `<${tagName}${attStr}/>`;
 			else content += `<${tagName}${attStr}>${nestedContent}</${tagName}>`;
 		}
@@ -15366,7 +15494,7 @@ function attr_to_str(attrMap, options, isStopNode, matcher, qNameValidator) {
 	if (attrMap && !options.ignoreAttributes) for (let attr in attrMap) {
 		if (!Object.prototype.hasOwnProperty.call(attrMap, attr)) continue;
 		const cleanAttrName = attr.substr(options.attributeNamePrefix.length);
-		const resolvedAttrName = isStopNode ? cleanAttrName : resolveTagName$1(cleanAttrName, true, options, matcher, qNameValidator);
+		const resolvedAttrName = isStopNode ? cleanAttrName : resolveName(cleanAttrName, true, options, matcher, qNameValidator);
 		let attrVal;
 		if (isStopNode) attrVal = attrMap[attr];
 		else {
@@ -15501,26 +15629,6 @@ function detectXmlVersionFromObj(jObj, options) {
 	}
 	return "1.0";
 }
-/**
-* Resolve a tag or attribute name through sanitizeName if configured.
-* Validation via xml-naming's qName is performed first; the sanitizeName
-* callback is invoked only when the name is invalid. If sanitizeName is
-* false (default), no validation occurs and the name is used as-is.
-*
-* @param {string}  name        - raw name from the JS object
-* @param {boolean} isAttribute - true when resolving an attribute name
-* @param {object}  options
-* @param {Matcher} matcher     - current matcher state (readonly from callback perspective)
-* @param {function} qNameValidator - function to validate tag names
-*/
-function resolveTagName(name, isAttribute, options, matcher, qNameValidator) {
-	if (!options.sanitizeName) return name;
-	if (qNameValidator(name)) return name;
-	return options.sanitizeName(name, {
-		isAttribute,
-		matcher: matcher.readOnly()
-	});
-}
 Builder.prototype.build = function(jObj) {
 	if (this.options.preserveOrder) return toXml(jObj, this.options);
 	else {
@@ -15538,7 +15646,7 @@ Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 	const isCurrentStopNode = this.checkStopNode(matcher);
 	for (let key in jObj) {
 		if (!Object.prototype.hasOwnProperty.call(jObj, key)) continue;
-		const resolvedKey = key === this.options.textNodeName || key === this.options.cdataPropName || key === this.options.commentPropName || this.options.attributesGroupName && key === this.options.attributesGroupName || this.isAttribute(key) || key[0] === "?" ? key : resolveTagName(key, false, this.options, matcher, qNameValidator);
+		const resolvedKey = key === this.options.textNodeName || key === this.options.cdataPropName || key === this.options.commentPropName || this.options.attributesGroupName && key === this.options.attributesGroupName || this.isAttribute(key) ? key : resolveName(key, false, this.options, matcher, qNameValidator);
 		if (typeof jObj[key] === "undefined") {
 			if (this.isAttribute(key)) val += "";
 		} else if (jObj[key] === null) {
@@ -15550,7 +15658,7 @@ Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 		else if (typeof jObj[key] !== "object") {
 			const attr = this.isAttribute(key);
 			if (attr && !this.ignoreAttributesFn(attr, jPath)) {
-				const resolvedAttr = resolveTagName(attr, true, this.options, matcher, qNameValidator);
+				const resolvedAttr = resolveName(attr, true, this.options, matcher, qNameValidator);
 				attrStr += this.buildAttrPairStr(resolvedAttr, valToStr(jObj[key]), isCurrentStopNode);
 			} else if (!attr) {
 				if (key === this.options.textNodeName) {
@@ -15606,7 +15714,7 @@ Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 			const Ks = Object.keys(jObj[key]);
 			const L = Ks.length;
 			for (let j = 0; j < L; j++) {
-				const resolvedAttr = resolveTagName(Ks[j], true, this.options, matcher, qNameValidator);
+				const resolvedAttr = resolveName(Ks[j], true, this.options, matcher, qNameValidator);
 				attrStr += this.buildAttrPairStr(resolvedAttr, valToStr(jObj[key][Ks[j]]), isCurrentStopNode);
 			}
 		} else val += this.processTextOrObjNode(jObj[key], resolvedKey, level, matcher, qNameValidator);
@@ -15628,7 +15736,7 @@ function processTextOrObjNode(object, key, level, matcher, qNameValidator) {
 	const attrValues = this.extractAttributes(object);
 	matcher.push(key, attrValues);
 	if (this.checkStopNode(matcher)) {
-		const rawContent = this.buildRawContent(object);
+		const rawContent = this.buildRawContent(object, matcher.getDepth());
 		const attrStr = this.buildAttributesForStopNode(object);
 		matcher.pop();
 		return this.buildObjectNode(rawContent, key, attrStr, level);
@@ -15661,7 +15769,8 @@ Builder.prototype.extractAttributes = function(obj) {
 	}
 	return hasAttrs ? attrValues : null;
 };
-Builder.prototype.buildRawContent = function(obj) {
+Builder.prototype.buildRawContent = function(obj, depth = 0) {
+	if (this.options.maxNestedTags && depth >= this.options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
 	if (typeof obj === "string") return obj;
 	if (typeof obj !== "object" || obj === null) return String(obj);
 	if (obj[this.options.textNodeName] !== void 0) return obj[this.options.textNodeName];
@@ -15675,13 +15784,13 @@ Builder.prototype.buildRawContent = function(obj) {
 		else if (Array.isArray(value)) {
 			for (let item of value) if (typeof item === "string" || typeof item === "number") content += `<${key}>${item}</${key}>`;
 			else if (typeof item === "object" && item !== null) {
-				const nestedContent = this.buildRawContent(item);
+				const nestedContent = this.buildRawContent(item, depth + 1);
 				const nestedAttrs = this.buildAttributesForStopNode(item);
 				if (nestedContent === "") content += `<${key}${nestedAttrs}/>`;
 				else content += `<${key}${nestedAttrs}>${nestedContent}</${key}>`;
 			}
 		} else if (typeof value === "object" && value !== null) {
-			const nestedContent = this.buildRawContent(value);
+			const nestedContent = this.buildRawContent(value, depth + 1);
 			const nestedAttrs = this.buildAttributesForStopNode(value);
 			if (nestedContent === "") content += `<${key}${nestedAttrs}/>`;
 			else content += `<${key}${nestedAttrs}>${nestedContent}</${key}>`;
@@ -39033,7 +39142,7 @@ function uploadToBlobStorage(authenticatedUploadURL, uploadStream, contentType) 
 		const maxConcurrency = getConcurrency();
 		const bufferSize = getUploadChunkSize();
 		const blockBlobClient = new BlobClient(authenticatedUploadURL).getBlockBlobClient();
-		debug$3(`Uploading artifact to blob storage with maxConcurrency: ${maxConcurrency}, bufferSize: ${bufferSize}, contentType: ${contentType}`);
+		debug(`Uploading artifact to blob storage with maxConcurrency: ${maxConcurrency}, bufferSize: ${bufferSize}, contentType: ${contentType}`);
 		const uploadCallback = (progress) => {
 			info(`Uploaded bytes ${progress.loadedBytes}`);
 			uploadByteCount = progress.loadedBytes;
@@ -39126,15 +39235,17 @@ var require_balanced_match = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var balanced = require_balanced_match();
 	module.exports = expandTop;
-	var escSlash = "\0SLASH" + Math.random() + "\0";
-	var escOpen = "\0OPEN" + Math.random() + "\0";
-	var escClose = "\0CLOSE" + Math.random() + "\0";
-	var escComma = "\0COMMA" + Math.random() + "\0";
-	var escPeriod = "\0PERIOD" + Math.random() + "\0";
+	var escSlash = "\0SLASH" + Math.random().toFixed(16) + "\0";
+	var escOpen = "\0OPEN" + Math.random().toFixed(16) + "\0";
+	var escClose = "\0CLOSE" + Math.random().toFixed(16) + "\0";
+	var escComma = "\0COMMA" + Math.random().toFixed(16) + "\0";
+	var escPeriod = "\0PERIOD" + Math.random().toFixed(16) + "\0";
 	var EXPANSION_MAX = 1e5;
 	var EXPANSION_MAX_LENGTH = 4e6;
 	var EXPANSION_MAX_DEPTH = 1e3;
 	var EXPANSION_MAX_REWRITES = 1e3;
+	var EXPANSION_MAX_STEPS = 2e7;
+	var CALL_STEPS = 16;
 	function numeric(str) {
 		return parseInt(str, 10) == str ? parseInt(str, 10) : str.charCodeAt(0);
 	}
@@ -39147,11 +39258,54 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	function pushAll(target, items) {
 		for (var i = 0; i < items.length; i++) target.push(items[i]);
 	}
-	function parseCommaParts(str) {
+	function balancedWithBudget(str, masked, budget) {
+		if (budget.remaining < 0) return;
+		var r = balanced.range("{", "}", masked);
+		var unmatched = r !== void 0 && masked.indexOf("{") < r[0];
+		budget.remaining -= r && !unmatched ? r[1] + 1 : str.length;
+		if (!r || budget.remaining < 0) return;
+		return {
+			end: r[1],
+			pre: str.slice(0, r[0]),
+			body: str.slice(r[0] + 1, r[1]),
+			post: str.slice(r[1] + 1),
+			unmatched
+		};
+	}
+	function maskUnmatchedOpens(masked, budget) {
+		budget.remaining -= masked.length;
+		var open = [];
+		for (var i = 0; i < masked.length; i++) {
+			var c = masked.charCodeAt(i);
+			if (c === 123) open.push(i);
+			else if (c === 125 && open.length) open.pop();
+		}
+		var out = "";
+		var last = 0;
+		for (var j = 0; j < open.length; j++) {
+			out += masked.slice(last, open[j]) + "\0";
+			last = open[j] + 1;
+		}
+		return out + masked.slice(last);
+	}
+	function commaSetFollows(str, budget) {
+		budget.remaining -= str.length;
+		if (budget.remaining < 0) return false;
+		var close = false;
+		for (var i = str.length - 1; i >= 0; i--) {
+			var c = str.charCodeAt(i);
+			if (c === 125) close = true;
+			else if (c === 10 || c === 13 || c === 8232 || c === 8233) close = false;
+			else if (c === 44 && close && str.charCodeAt(i + 1) !== 44) return true;
+		}
+		return false;
+	}
+	function parseCommaParts(str, budget) {
 		var parts = [];
 		var carry = "";
 		for (;;) {
-			var m = balanced("{", "}", str);
+			var m = balancedWithBudget(str, str, budget);
+			if (budget.remaining < 0) return;
 			if (!m) {
 				var tail = str.split(",");
 				tail[0] = carry + tail[0];
@@ -39173,15 +39327,19 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 			str = post;
 		}
 	}
+	function bound(value, fallback) {
+		return value == null || isNaN(value) ? fallback : value;
+	}
 	function expandTop(str, options) {
 		if (!str) return [];
 		options = options || {};
-		var max = options.max == null ? EXPANSION_MAX : options.max;
-		var maxLength = options.maxLength == null ? EXPANSION_MAX_LENGTH : options.maxLength;
-		var maxDepth = options.maxDepth == null ? EXPANSION_MAX_DEPTH : options.maxDepth;
-		var maxRewrites = options.maxRewrites == null ? EXPANSION_MAX_REWRITES : options.maxRewrites;
+		var max = bound(options.max, EXPANSION_MAX);
+		var maxLength = bound(options.maxLength, EXPANSION_MAX_LENGTH);
+		var maxDepth = bound(options.maxDepth, EXPANSION_MAX_DEPTH);
+		var maxRewrites = bound(options.maxRewrites, EXPANSION_MAX_REWRITES);
+		var maxSteps = bound(options.maxSteps, EXPANSION_MAX_STEPS);
 		if (str.substr(0, 2) === "{}") str = "\\{\\}" + str.substr(2);
-		return expand(escapeBraces(str), max, maxLength, maxDepth, 0, maxRewrites, true).map(unescapeBraces);
+		return expand(escapeBraces(str), max, maxLength, maxDepth, 0, maxRewrites, { remaining: maxSteps }, true).map(unescapeBraces);
 	}
 	function embrace(str) {
 		return "{" + str + "}";
@@ -39195,20 +39353,29 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	function gte(i, y) {
 		return i >= y;
 	}
-	function combine(acc, pre, values, max, maxLength, dropEmpties) {
+	function combine(acc, pre, values, max, maxLength, dropEmpties, budget) {
 		var out = [];
 		var length = 0;
-		for (var a = 0; a < acc.length; a++) for (var v = 0; v < values.length; v++) {
-			if (out.length >= max) return out;
-			var expansion = acc[a] + pre + values[v];
-			if (dropEmpties && !expansion) continue;
-			if (length + expansion.length > maxLength) return out;
-			out.push(expansion);
-			length += expansion.length;
+		var nonEmpty;
+		outer: for (var a = 0; a < acc.length; a++) {
+			var prefix = acc[a] + pre;
+			var vs = values;
+			if (dropEmpties && !prefix) {
+				if (!nonEmpty) nonEmpty = values.filter(Boolean);
+				vs = nonEmpty;
+			}
+			for (var v = 0; v < vs.length; v++) {
+				if (out.length >= max) break outer;
+				var expansion = prefix + vs[v];
+				if (length + expansion.length > maxLength) break outer;
+				out.push(expansion);
+				length += expansion.length;
+			}
 		}
+		budget.remaining -= out.length;
 		return out;
 	}
-	function expandSequence(body, isAlphaSequence, max, maxLength) {
+	function expandSequence(body, isAlphaSequence, max, maxLength, budget) {
 		var n = body.split(/\.\./);
 		var N = [];
 		/* c8 ignore start */
@@ -39224,8 +39391,11 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 			test = gte;
 		}
 		var pad = n.some(isPadded);
+		var cost = pad ? width : 1;
 		var length = 0;
 		for (var i = x; test(i, y) && N.length < max; i += incr) {
+			budget.remaining -= cost;
+			if (budget.remaining < 0) return;
 			var c;
 			if (isAlphaSequence) {
 				c = String.fromCharCode(i);
@@ -39247,21 +39417,28 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		}
 		return N;
 	}
-	function expand(str, max, maxLength, maxDepth, depth, maxRewrites, isTop) {
+	function expand(str, max, maxLength, maxDepth, depth, maxRewrites, budget, isTop) {
+		budget.remaining -= CALL_STEPS;
 		if (depth > maxDepth) return [str];
 		var acc = [""];
 		var rewrites = 0;
 		var dropEmpties = false;
 		var firstGroup = true;
+		var masked = str;
 		for (;;) {
-			const m = balanced("{", "}", str);
-			if (!m) return combine(acc, str, [""], max, maxLength, dropEmpties);
+			const m = balancedWithBudget(str, masked, budget);
+			if (!m) return combine(acc, str, [""], max, maxLength, dropEmpties, budget);
+			if (m.unmatched) masked = maskUnmatchedOpens(masked, budget);
 			const pre = m.pre;
+			var literal = function() {
+				return combine(acc, pre + "{" + m.body + "}" + m.post, [""], max, maxLength, dropEmpties, budget);
+			};
 			if (/\$$/.test(pre)) {
-				acc = combine(acc, pre + "{" + m.body + "}", [""], max, maxLength, dropEmpties && !m.post.length);
+				acc = combine(acc, pre + "{" + m.body + "}", [""], max, maxLength, dropEmpties && !m.post.length, budget);
 				firstGroup = false;
 				if (!m.post.length) break;
 				str = m.post;
+				masked = masked.slice(m.end + 1);
 				continue;
 			}
 			var isNumericSequence = /^-?\d+\.\.-?\d+(?:\.\.-?\d+)?$/.test(m.body);
@@ -39269,29 +39446,37 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 			var isSequence = isNumericSequence || isAlphaSequence;
 			var isOptions = m.body.indexOf(",") >= 0;
 			if (!isSequence && !isOptions) {
-				if (rewrites < maxRewrites && m.post.match(/,(?!,).*\}/)) {
+				if (rewrites < maxRewrites && commaSetFollows(m.post, budget)) {
 					rewrites++;
 					str = m.pre + "{" + m.body + escClose + m.post;
+					masked = masked.slice(0, m.end) + escClose + masked.slice(m.end + 1);
 					isTop = true;
 					continue;
 				}
-				return combine(acc, pre + "{" + m.body + "}" + m.post, [""], max, maxLength, dropEmpties);
+				return literal();
 			}
 			if (firstGroup) {
 				dropEmpties = isTop && !isSequence;
 				firstGroup = false;
 			}
 			var values;
-			if (isSequence) values = expandSequence(m.body, isAlphaSequence, max, maxLength);
-			else {
-				var n = parseCommaParts(m.body);
+			if (isSequence) {
+				values = expandSequence(m.body, isAlphaSequence, max, maxLength, budget);
+				if (!values) return literal();
+			} else {
+				var n = parseCommaParts(m.body, budget);
+				if (!n) return literal();
 				if (n.length === 1 && n[0] !== void 0) {
-					n = expand(n[0], max, maxLength, maxDepth, depth + 1, maxRewrites, false).map(embrace);
+					n = expand(n[0], max, maxLength, maxDepth, depth + 1, maxRewrites, budget, false).map(embrace);
+					if (budget.remaining < 0) return literal();
 					/* c8 ignore start */
 					if (n.length === 1) {
-						acc = combine(acc, pre + n[0], [""], max, maxLength, dropEmpties && !m.post.length);
+						var single = combine(acc, pre + n[0], [""], max, maxLength, dropEmpties && !m.post.length, budget);
+						if (budget.remaining < 0) return literal();
+						acc = single;
 						if (!m.post.length) break;
 						str = m.post;
+						masked = masked.slice(m.end + 1);
 						continue;
 					}
 				}
@@ -39300,7 +39485,8 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 				values = [];
 				var valuesLength = 0;
 				outer: for (var j = 0; j < n.length; j++) {
-					var expanded = expand(n[j], max, maxLength, maxDepth, depth + 1, maxRewrites, false);
+					var expanded = expand(n[j], max, maxLength, maxDepth, depth + 1, maxRewrites, budget, false);
+					if (budget.remaining < 0) return literal();
 					for (var k = 0; k < expanded.length; k++) {
 						var v = expanded[k];
 						if (dropsEmpties && !v) continue;
@@ -39310,9 +39496,12 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 					}
 				}
 			}
-			acc = combine(acc, pre, values, max, maxLength, dropEmpties && !m.post.length);
+			var next = combine(acc, pre, values, max, maxLength, dropEmpties && !m.post.length, budget);
+			if (budget.remaining < 0) return literal();
+			acc = next;
 			if (!m.post.length) break;
 			str = m.post;
+			masked = masked.slice(m.end + 1);
 		}
 		return acc;
 	}
@@ -40363,7 +40552,7 @@ function _asyncMap(eachfn, arr, iteratee, callback) {
 function isArrayLike(value) {
 	return value && typeof value.length === "number" && value.length >= 0 && value.length % 1 === 0;
 }
-function once$1(fn) {
+function once(fn) {
 	function wrapper(...args) {
 		if (fn === null) return;
 		var callFn = fn;
@@ -40495,7 +40684,7 @@ function eachOfLimit(coll, limit, iteratee, callback) {
 	return eachOfLimit$2(limit)(coll, wrapAsync(iteratee), callback);
 }
 function eachOfArrayLike(coll, iteratee, callback) {
-	callback = once$1(callback);
+	callback = once(callback);
 	var index = 0, completed = 0, { length } = coll, canceled = false;
 	if (length === 0) callback(null);
 	function iteratorCallback(err, value) {
@@ -40945,7 +41134,7 @@ function auto(tasks, concurrency, callback) {
 		callback = concurrency;
 		concurrency = null;
 	}
-	callback = once$1(callback || promiseCallback());
+	callback = once(callback || promiseCallback());
 	var numTasks = Object.keys(tasks).length;
 	if (!numTasks) return callback(null);
 	if (!concurrency) concurrency = numTasks;
@@ -41623,7 +41812,7 @@ function cargo(worker, concurrency, payload) {
 *
 */
 function reduce(coll, memo, iteratee, callback) {
-	callback = once$1(callback);
+	callback = once(callback);
 	var _iteratee = wrapAsync(iteratee);
 	return eachOfSeries$1(coll, (x, i, iterCb) => {
 		_iteratee(memo, x, (err, v) => {
@@ -42893,7 +43082,7 @@ function groupBySeries(coll, iteratee, callback) {
 * @returns {Promise} a promise, if no callback is passed
 */
 function mapValuesLimit(obj, limit, iteratee, callback) {
-	callback = once$1(callback);
+	callback = once(callback);
 	var newObj = {};
 	var _iteratee = wrapAsync(iteratee);
 	return eachOfLimit$2(limit)(obj, (val, key, next) => {
@@ -43565,7 +43754,7 @@ function priorityQueue(worker, concurrency) {
 * });
 */
 function race(tasks, callback) {
-	callback = once$1(callback);
+	callback = once(callback);
 	if (!Array.isArray(tasks)) return callback(/* @__PURE__ */ new TypeError("First argument to race must be an array of functions"));
 	if (!tasks.length) return callback();
 	for (var i = 0, l = tasks.length; i < l; i++) wrapAsync(tasks[i])(callback);
@@ -44705,7 +44894,7 @@ function transform(coll, accumulator, iteratee, callback) {
 		iteratee = accumulator;
 		accumulator = Array.isArray(coll) ? [] : {};
 	}
-	callback = once$1(callback || promiseCallback());
+	callback = once(callback || promiseCallback());
 	var _iteratee = wrapAsync(iteratee);
 	eachOf$1(coll, (v, k, cb) => {
 		_iteratee(accumulator, v, k, cb);
@@ -44935,7 +45124,7 @@ function until(test, iteratee, callback) {
 * }
 */
 function waterfall(tasks, callback) {
-	callback = once$1(callback);
+	callback = once(callback);
 	if (!Array.isArray(tasks)) return callback(/* @__PURE__ */ new Error("First argument to waterfall must be an array of functions"));
 	if (!tasks.length) return callback();
 	var taskIndex = 0;
@@ -44962,7 +45151,7 @@ var init_async = __esmMin((() => {
 	breakLoop = {};
 	eachOfLimit$2 = (limit) => {
 		return (obj, iteratee, callback) => {
-			callback = once$1(callback);
+			callback = once(callback);
 			if (limit <= 0) throw new RangeError("concurrency limit cannot be less than 1");
 			if (!obj) return callback(null);
 			if (isAsyncGenerator(obj)) return asyncEachOfLimit(obj, limit, iteratee, callback);
@@ -63088,7 +63277,7 @@ var require_headers = /* @__PURE__ */ __commonJSMin(((exports) => {
 		b4a.write(buf, encodeOct(opts.uid, 6), 108);
 		b4a.write(buf, encodeOct(opts.gid, 6), 116);
 		encodeSize(opts.size, buf, 124);
-		b4a.write(buf, encodeOct(opts.mtime.getTime() / 1e3 | 0, 11), 136);
+		encodeSize(Math.floor(opts.mtime.getTime() / 1e3) || 0, buf, 136);
 		buf[156] = ZERO_OFFSET + toTypeflag(opts.type);
 		if (opts.linkname) b4a.write(buf, opts.linkname, 157);
 		b4a.copy(USTAR_MAGIC, buf, MAGIC_OFFSET);
@@ -63202,14 +63391,14 @@ var require_headers = /* @__PURE__ */ __commonJSMin(((exports) => {
 		return ZEROS.slice(0, n - val.length) + val + " ";
 	}
 	function encodeSizeBin(num, buf, off) {
-		buf[off] = 128;
+		buf[off] = num < 0 ? 255 : 128;
 		for (let i = 11; i > 0; i--) {
 			buf[off + i] = num & 255;
 			num = Math.floor(num / 256);
 		}
 	}
 	function encodeSize(num, buf, off) {
-		if (num.toString(8).length > 11) encodeSizeBin(num, buf, off);
+		if (num < 0 || num.toString(8).length > 11) encodeSizeBin(num, buf, off);
 		else b4a.write(buf, encodeOct(num, 11), off);
 	}
 	function parse256(buf) {
@@ -63227,7 +63416,7 @@ var require_headers = /* @__PURE__ */ __commonJSMin(((exports) => {
 		let sum = 0;
 		const l = tuple.length;
 		for (i = 0; i < l; i++) sum += tuple[i] * Math.pow(256, i);
-		return positive ? sum : -1 * sum;
+		return positive ? sum : -(sum + 1);
 	}
 	function decodeOct(val, offset, length) {
 		val = val.subarray(offset, offset + length);
@@ -63307,6 +63496,7 @@ var require_extract$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			this.header = header;
 			this.offset = offset;
 			this._parent = self;
+			this.on("error", noop);
 		}
 		_read(cb) {
 			if (this.header.size === 0) this.push(null);
@@ -63340,6 +63530,7 @@ var require_extract$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			this._longHeader = false;
 			this._callback = noop;
 			this._locked = false;
+			this._updating = false;
 			this._finished = false;
 			this._pax = null;
 			this._paxGlobal = null;
@@ -63423,9 +63614,9 @@ var require_extract$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					this._gnuLongLinkPath = headers.decodeLongPath(buf, this._filenameEncoding);
 					break;
 				case "pax-global-header":
-					this._paxGlobal = headers.decodePax(buf);
+					this._paxGlobal = validatePax(headers.decodePax(buf));
 					break;
-				case "pax-header": this._pax = this._paxGlobal === null ? headers.decodePax(buf) : Object.assign({}, this._paxGlobal, headers.decodePax(buf));
+				case "pax-header": this._pax = this._paxGlobal === null ? validatePax(headers.decodePax(buf)) : Object.assign({}, this._paxGlobal, validatePax(headers.decodePax(buf)));
 			}
 		}
 		_consumeLongHeader() {
@@ -63456,10 +63647,17 @@ var require_extract$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			return new Source(this, this._header, this._offset);
 		}
 		_update() {
+			if (this._updating) return;
+			this._updating = true;
+			const done = this._consume();
+			this._updating = false;
+			if (done) this._continueWrite(null);
+		}
+		_consume() {
 			while (this._buffer.buffered > 0 && !this.destroying) {
 				if (this._missing > 0) {
 					if (this._stream !== null) {
-						if (this._consumeStream() === false) return;
+						if (this._consumeStream() === false) return false;
 						continue;
 					}
 					if (this._longHeader === true) {
@@ -63472,9 +63670,9 @@ var require_extract$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					continue;
 				}
 				if (this._buffer.buffered < 512) break;
-				if (this._stream !== null || this._consumeHeader() === false) return;
+				if (this._stream !== null || this._consumeHeader() === false) return false;
 			}
-			this._continueWrite(null);
+			return true;
 		}
 		_continueWrite(err) {
 			const cb = this._callback;
@@ -63594,6 +63792,13 @@ var require_extract$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return new Extract(opts);
 	};
 	function noop() {}
+	function validatePax(pax) {
+		if (hasNull(pax.path) || hasNull(pax.linkpath)) throw new Error("Invalid tar header: pax path contains a null byte.");
+		return pax;
+	}
+	function hasNull(str) {
+		return typeof str === "string" && str.indexOf("\0") !== -1;
+	}
 	function overflow(size) {
 		size &= 511;
 		return size && 512 - size;
@@ -63661,7 +63866,7 @@ var require_pack = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			if (this._pack._finalized) return cb(/* @__PURE__ */ new Error("pack stream is already finalized"));
 			this._pack._stream = this;
 			if (!this._isLinkname) this._pack._encode(this.header);
-			if (this._isVoid) {
+			if (this._isVoid && !this._isLinkname) {
 				this._finish();
 				this._continuePack(null);
 			}
@@ -64451,7 +64656,7 @@ var WaterMarkedUploadStream = class extends stream.Transform {
 };
 function createRawFileUploadStream(filePath) {
 	return __awaiter$8(this, void 0, void 0, function* () {
-		debug$3(`Creating raw file upload stream for: ${filePath}`);
+		debug(`Creating raw file upload stream for: ${filePath}`);
 		const bufferSize = getUploadChunkSize();
 		const uploadStream = new WaterMarkedUploadStream(bufferSize);
 		let sourcePath = filePath;
@@ -64496,7 +64701,7 @@ var __awaiter$7 = function(thisArg, _arguments, P, generator) {
 };
 function createZipUploadStream(uploadSpecification_1) {
 	return __awaiter$7(this, arguments, void 0, function* (uploadSpecification, compressionLevel = 6) {
-		debug$3(`Creating Artifact archive with compressionLevel: ${compressionLevel}`);
+		debug(`Creating Artifact archive with compressionLevel: ${compressionLevel}`);
 		const zip = import_archiver.default.create("zip", {
 			highWaterMark: getUploadChunkSize(),
 			zlib: { level: compressionLevel }
@@ -64511,8 +64716,8 @@ function createZipUploadStream(uploadSpecification_1) {
 			zip.file(sourcePath, { name: file.destinationPath });
 		} else zip.append("", { name: file.destinationPath });
 		const zipUploadStream = new WaterMarkedUploadStream(getUploadChunkSize());
-		debug$3(`Zip write high watermark value ${zipUploadStream.writableHighWaterMark}`);
-		debug$3(`Zip read high watermark value ${zipUploadStream.readableHighWaterMark}`);
+		debug(`Zip write high watermark value ${zipUploadStream.writableHighWaterMark}`);
+		debug(`Zip read high watermark value ${zipUploadStream.readableHighWaterMark}`);
 		zip.pipe(zipUploadStream);
 		zip.finalize();
 		return zipUploadStream;
@@ -64533,10 +64738,10 @@ var zipWarningCallback = (error) => {
 	}
 };
 var zipFinishCallback = () => {
-	debug$3("Zip stream for upload has finished.");
+	debug("Zip stream for upload has finished.");
 };
 var zipEndCallback = () => {
-	debug$3("Zip stream for upload has ended.");
+	debug("Zip stream for upload has ended.");
 };
 // tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/types.js
 /**
@@ -65683,7 +65888,7 @@ function expand(template, context) {
 			}
 			expression.split(/,/g).forEach(function(variable) {
 				var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
-				values.push(getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
+				values.push(...getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
 			});
 			if (operator && operator !== "+") {
 				var separator = ",";
@@ -69296,16 +69501,112 @@ var require_define_properties = /* @__PURE__ */ __commonJSMin(((exports, module)
 var require_util_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = __require("util").inspect;
 }));
+// tooling/artifact-transport/node_modules/object-inspect/stringWidthRanges.js
+var require_stringWidthRanges = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	module.exports = Array.prototype.join.call([
+		"00.v,02n.w,0gw.33,07n.6,07b.18,01.0,01.1,01.1,01.0,01k.5,0a.a,01.0,01a.k,0g.0,02t.7,01.5,02.1,01.3,",
+		"0x.0,01.0,0u.q,02j.a,01m.8,09.0,0o.3,01.8,01.2,01.4,017.2,01g.1,05.8,016.1k,01j.0,01.0,04.7,04.0,",
+		"03.6,0a.1,0t.0,01m.0,04.3,08.0,0k.1,0q.0,02.1,01l.0,04.1,04.1,02.2,03.0,0u.1,03.0,0b.1,01l.0,04.4,",
+		"01.1,04.0,0k.1,0m.5,01.0,01m.0,02.0,01.3,08.0,07.1,0b.1,0u.0,01p.0,0c.0,01e.0,03.0,01j.0,01.2,05.2,",
+		"01.3,07.1,0b.1,0t.0,01m.0,02.0,06.0,05.1,0k.1,0s.1,01l.1,04.3,08.0,0k.1,0t.0,020.0,07.2,01.0,02i.0,",
+		"02.6,0c.7,02q.0,02.8,0b.6,021.1,0r.0,01.0,01.0,01j.d,01.4,01.1,05.a,01.z,09.0,02u.3,01.5,01.1,02.1,",
+		"0p.1,04.2,0g.3,0d.0,02.1,06.0,0f.0,22q.2n,0e5.2,0qa.2,0t.1,0u.1,0u.1,01s.1,01.6,08.0,02.a,09.0,",
+		"019.4,039.1,0y.0,03a.2,04.1,09.0,06.2,063.1,02.0,01m.0,01.6,01.0,01.0,02.7,06.9,02.0,01c.19,02.b,",
+		"0k.3,01c.0,01.4,01.0,05.0,014.8,0c.1,0w.3,02.1,01.2,01k.0,01.1,03.0,01.2,01m.7,02.1,048.2,01.c,01.6,",
+		"04.0,06.0,03.1,05i.1r,0ej.4,0q.4,01d.4,01.9,02o.w,2fd.1,2d.1,25a.3,23.0,22.0,2eh.1,2l.1,2q.7,2g.b,",
+		"217.0,2a.5,23.0,2d.0,28.1,2h.1,25.1,28.0,25.0,2l.0,27.1,21.0,24.0,22.0,27.0,24.1,2s.0,2z.0,21.0,",
+		"24.2,21.0,21p.2,2o.0,2e.0,2nv.1,21f.0,24.0,0bd.2,03x.0,02o.v,23k.p,21.2g,2c.5x,2q.26,22.2d,22.2u,",
+		"25.16,21.2l,21.2d,29.1b,21.13,28.mkc,23.1i,0bs.3,01.9,0w.1,028.1,07k.0,03.0,04.0,0p.1,05.0,047.1,",
+		"0q.h,0d.0,012.7,0p.a,2e.s,03.2,01c.0,02.3,02.1,013.0,01v.5,02.1,02.1,0c.0,08.0,01b.0,01f.0,01.2,",
+		"02.1,05.1,01.0,016.1,08.0,06m.0,02.0,04.0,2i.8mb,26l8.e7,0u.0,0kh.f,20.9,06.f,20.y,21.i,21.3,043.0,",
+		"21.2n,23j.6,0i.2,0e9.0,06a.0,045.4,01ae.2,01.1,05.3,014.2,04.0,04l.1,0fx.3,01t.4,08t.1,025.5,01y.a,",
+		"01d.3,03f.0,01i.e,015.0,02.1,0a.2,01d.3,02.1,02.0,04.0,0a.0,01e.2,010.4,01.7,01q.0,0c.1,01g.8,0a.3,",
+		"02.0,02n.2,02.0,01.1,06.0,02.0,04d.0,03.7,0l.1,01l.1,03.0,011.6,03.4,01y.5,0d.0,01.0,01.0,0e.1,",
+		"02d.7,02.2,01.0,0n.0,02c.5,01.0,04.1,01.1,06m.3,06.1,01.1,0r.1,02d.7,02.0,01.1,02y.0,01.0,02.5,01.0,",
+		"02t.0,01.0,02.3,01.4,077.8,01.1,074.1,01.0,04.0,040.3,02.1,04.0,0w.9,014.5,02.3,08.0,09.5,02.2,",
+		"01a.c,01.1,05i.0,01.2,01.0,05l.6,01.5,01.0,02a.l,02.6,01.1,01.1,03e.5,03.0,01.1,01.6,01.0,020.1,",
+		"03.0,01.0,09n.1,0b.1,01g.4,05.0,01.0,0n.0,0445.g,06.e,08ug.b,03.2,01xc.4,01n.6,0t4.0,01r.3,225.4,",
+		"2b.6,29.5p1,215.v,22p.36,26pp.3,21.6,21.1,21.82,2f.0,2t.2,22.0,2e.3,28.az,01wh.1,01.3,03mk.19,02.m,",
+		"2ev.1,30.4,02.2,09.f,02.6,0u.3,2d.1,30.3,03l.2,257.2e,29.m,01ah.1i,04.1d,08.0,0e.0,0m.4,01.e,011s.6,",
+		"01.g,02.6,01.1,01.4,02s.0,04g.6,0af.0,01p.3,0e4.3,072.1,06r.0,02.0,07.1,05.0,0d6.6,031.6,21bt.0,",
+		"25m.0,25a.0,22.9,223.s,2d.17,24.8,27.1,2e.5,24a.w,2c.8,21.1x,21.l,2c.16,24.4,2c.g,23.0,23.1y,21.0,",
+		"21.56,22.1q,2d.3,21.n,2i.0,2q.1,2d.0,22e.2c,21c.1x,26.0,23.2,22.3,23.3,2b.1,27.8,26b.b,24.0,27v.1a,",
+		"21.9,21.54,234.c,23.a,23.1k,21.0,24.f,22.b,24.9,2zr.1ekd,22.1ekd,0e1oj.0,0u.2n,03k.6n"
+	], "");
+}));
+// tooling/artifact-transport/node_modules/object-inspect/stringWidth.js
+var require_stringWidth = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var $charCodeAt = String.prototype.charCodeAt;
+	var $indexOf = String.prototype.indexOf;
+	var $normalize = String.prototype.normalize;
+	var $slice = String.prototype.slice;
+	var $split = String.prototype.split;
+	var $floor = Math.floor;
+	var $parseInt = parseInt;
+	var ranges = require_stringWidthRanges();
+	var starts = [];
+	var ends = [];
+	var widths = [];
+	var tokens = $split.call(ranges, ",");
+	var previousEnd = -1;
+	for (var t = 0; t < tokens.length; t++) {
+		var dot = $indexOf.call(tokens[t], ".");
+		starts[t] = previousEnd + 1 + $parseInt($slice.call(tokens[t], 1, dot), 36);
+		previousEnd = starts[t] + $parseInt($slice.call(tokens[t], dot + 1), 36);
+		ends[t] = previousEnd;
+		widths[t] = Number($slice.call(tokens[t], 0, 1));
+	}
+	function codePointWidth(code) {
+		var low = 0;
+		var high = starts.length - 1;
+		while (low <= high) {
+			var mid = $floor((low + high) / 2);
+			if (code < starts[mid]) high = mid - 1;
+			else if (code > ends[mid]) low = mid + 1;
+			else return widths[mid];
+		}
+		return 1;
+	}
+	function unicodeWidth(str) {
+		var width = 0;
+		for (var i = 0; i < str.length; i++) {
+			var code = $charCodeAt.call(str, i);
+			if (code >= 55296 && code <= 56319 && i + 1 < str.length) {
+				var next = $charCodeAt.call(str, i + 1);
+				if (next >= 56320 && next <= 57343) {
+					code = (code - 55296) * 1024 + (next - 56320) + 65536;
+					i += 1;
+				}
+			}
+			width += codePointWidth(code);
+		}
+		return width;
+	}
+	module.exports = function getStringWidth(str) {
+		var width = 0;
+		for (var i = 0; i < str.length; i++) {
+			var code = $charCodeAt.call(str, i);
+			if (code >= 127) {
+				var rest = $slice.call(str, i);
+				return width + unicodeWidth($normalize ? $normalize.call(rest, "NFC") : rest);
+			}
+			width += code >= 32 ? 1 : 0;
+		}
+		return width;
+	};
+}));
 // tooling/artifact-transport/node_modules/object-inspect/index.js
 var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var hasMap = typeof Map === "function" && Map.prototype;
 	var mapSizeDescriptor = Object.getOwnPropertyDescriptor && hasMap ? Object.getOwnPropertyDescriptor(Map.prototype, "size") : null;
 	var mapSize = hasMap && mapSizeDescriptor && typeof mapSizeDescriptor.get === "function" ? mapSizeDescriptor.get : null;
 	var mapForEach = hasMap && Map.prototype.forEach;
+	var mapEntries = hasMap && Map.prototype.entries;
 	var hasSet = typeof Set === "function" && Set.prototype;
 	var setSizeDescriptor = Object.getOwnPropertyDescriptor && hasSet ? Object.getOwnPropertyDescriptor(Set.prototype, "size") : null;
 	var setSize = hasSet && setSizeDescriptor && typeof setSizeDescriptor.get === "function" ? setSizeDescriptor.get : null;
 	var setForEach = hasSet && Set.prototype.forEach;
+	var setValues = hasSet && Set.prototype.values;
 	var weakMapHas = typeof WeakMap === "function" && WeakMap.prototype ? WeakMap.prototype.has : null;
 	var weakSetHas = typeof WeakSet === "function" && WeakSet.prototype ? WeakSet.prototype.has : null;
 	var weakRefDeref = typeof WeakRef === "function" && WeakRef.prototype ? WeakRef.prototype.deref : null;
@@ -69322,15 +69623,44 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	var $join = Array.prototype.join;
 	var $arrSlice = Array.prototype.slice;
 	var $floor = Math.floor;
+	var $max = Math.max;
+	var $min = Math.min;
+	var $round = Math.round;
+	var $sqrt = Math.sqrt;
 	var bigIntValueOf = typeof BigInt === "function" ? BigInt.prototype.valueOf : null;
 	var gOPS = Object.getOwnPropertySymbols;
 	var symToString = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? Symbol.prototype.toString : null;
 	var hasShammedSymbols = typeof Symbol === "function" && typeof Symbol.iterator === "object";
-	var toStringTag = typeof Symbol === "function" && Symbol.toStringTag && (typeof Symbol.toStringTag === hasShammedSymbols ? "object" : "symbol") ? Symbol.toStringTag : null;
+	var toStringTag = typeof Symbol === "function" && Symbol.toStringTag && (hasShammedSymbols ? typeof Symbol.toStringTag === "object" : typeof Symbol.toStringTag === "symbol") ? Symbol.toStringTag : null;
 	var isEnumerable = Object.prototype.propertyIsEnumerable;
 	var gPO = (typeof Reflect === "function" ? Reflect.getPrototypeOf : Object.getPrototypeOf) || ([].__proto__ === Array.prototype ? function(O) {
 		return O.__proto__;
 	} : null);
+	var mapIteratorNext = mapEntries && gPO ? gPO(mapEntries.call(/* @__PURE__ */ new Map())).next : null;
+	var setIteratorNext = setValues && gPO ? gPO(setValues.call(/* @__PURE__ */ new Set())).next : null;
+	var typedArrayProto = typeof Uint8Array === "function" && gPO ? gPO(Uint8Array.prototype) : null;
+	var typedArrayTag = typedArrayProto && toStringTag ? getterOf(typedArrayProto, toStringTag) : null;
+	var typedArrayLength = typedArrayProto ? getterOf(typedArrayProto, "length") : null;
+	var typedArrayToString = /^\[object (?:Int8|Uint8|Uint8Clamped|Int16|Uint16|Int32|Uint32|Float16|Float32|Float64|BigInt64|BigUint64)Array\]$/;
+	var typedArrayLengths = { __proto__: null };
+	if (!typedArrayLength) {
+		var TypedArrays = [
+			typeof Int8Array === "function" && Int8Array,
+			typeof Uint8Array === "function" && Uint8Array,
+			typeof Uint8ClampedArray === "function" && Uint8ClampedArray,
+			typeof Int16Array === "function" && Int16Array,
+			typeof Uint16Array === "function" && Uint16Array,
+			typeof Int32Array === "function" && Int32Array,
+			typeof Uint32Array === "function" && Uint32Array,
+			typeof Float32Array === "function" && Float32Array,
+			typeof Float64Array === "function" && Float64Array
+		];
+		for (var ta = 0; ta < TypedArrays.length; ta++) {
+			var TypedArray = TypedArrays[ta];
+			var lengthGetter = TypedArray && getterOf(TypedArray.prototype, "length");
+			if (lengthGetter) typedArrayLengths[toStr(new TypedArray(0))] = lengthGetter;
+		}
+	}
 	function addNumericSeparator(num, str) {
 		if (num === Infinity || num === -Infinity || num !== num || num && num > -1e3 && num < 1e3 || $test.call(/e/, str)) return str;
 		var sepRegex = /[0-9](?=(?:[0-9]{3})+(?![0-9]))/g;
@@ -69345,6 +69675,7 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return $replace.call(str, sepRegex, "$&_");
 	}
 	var utilInspect = require_util_inspect();
+	var getStringWidth = require_stringWidth();
 	var inspectCustom = utilInspect.custom;
 	var inspectSymbol = isSymbol(inspectCustom) ? inspectCustom : null;
 	var quotes = {
@@ -69357,15 +69688,20 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		"double": /(["\\])/g,
 		single: /(['\\])/g
 	};
-	module.exports = function inspect_(obj, options, depth, seen) {
+	module.exports = function inspect_(obj, options, depth, seen, breakState) {
 		var opts = options || {};
 		if (has(opts, "quoteStyle") && !has(quotes, opts.quoteStyle)) throw new TypeError("option \"quoteStyle\" must be \"single\" or \"double\"");
-		if (has(opts, "maxStringLength") && (typeof opts.maxStringLength === "number" ? opts.maxStringLength < 0 && opts.maxStringLength !== Infinity : opts.maxStringLength !== null)) throw new TypeError("option \"maxStringLength\", if provided, must be a positive integer, Infinity, or `null`");
+		if (has(opts, "maxStringLength") && (typeof opts.maxStringLength === "number" ? opts.maxStringLength < 0 && opts.maxStringLength !== Infinity : opts.maxStringLength !== null)) throw new TypeError("option \"maxStringLength\", if provided, must be a non-negative integer, Infinity, or `null`");
+		if (has(opts, "maxCollectionLength") && opts.maxCollectionLength !== null && opts.maxCollectionLength !== Infinity && !(typeof opts.maxCollectionLength === "number" && opts.maxCollectionLength >= 0 && $floor(opts.maxCollectionLength) === opts.maxCollectionLength)) throw new TypeError("option \"maxCollectionLength\", if provided, must be a non-negative integer, Infinity, or `null`");
+		var maxCollectionLength = typeof opts.maxCollectionLength === "number" ? opts.maxCollectionLength : Infinity;
 		var customInspect = has(opts, "customInspect") ? opts.customInspect : true;
 		if (typeof customInspect !== "boolean" && customInspect !== "symbol") throw new TypeError("option \"customInspect\", if provided, must be `true`, `false`, or `'symbol'`");
 		if (has(opts, "indent") && opts.indent !== null && opts.indent !== "	" && !(parseInt(opts.indent, 10) === opts.indent && opts.indent > 0)) throw new TypeError("option \"indent\" must be \"\\t\", an integer > 0, or `null`");
 		if (has(opts, "numericSeparator") && typeof opts.numericSeparator !== "boolean") throw new TypeError("option \"numericSeparator\", if provided, must be `true` or `false`");
 		var numericSeparator = opts.numericSeparator;
+		if (has(opts, "multilineStrings") && typeof opts.multilineStrings !== "boolean") throw new TypeError("option \"multilineStrings\", if provided, must be `true` or `false`");
+		var hasBreakLength = has(opts, "breakLength");
+		if (hasBreakLength && opts.breakLength !== Infinity && (typeof opts.breakLength !== "number" || opts.breakLength < 0 || parseInt(opts.breakLength, 10) !== opts.breakLength)) throw new TypeError("option \"breakLength\", if provided, must be a non-negative integer or `Infinity`");
 		if (typeof obj === "undefined") return "undefined";
 		if (obj === null) return "null";
 		if (typeof obj === "boolean") return obj ? "true" : "false";
@@ -69382,24 +69718,47 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		var maxDepth = typeof opts.depth === "undefined" ? 5 : opts.depth;
 		if (typeof depth === "undefined") depth = 0;
 		if (depth >= maxDepth && maxDepth > 0 && typeof obj === "object") return isArray(obj) ? "[Array]" : "[Object]";
-		var indent = getIndent(opts, depth);
+		var indent = getIndent(hasBreakLength && (typeof opts.indent === "undefined" || opts.indent === null) ? { indent: 2 } : opts, depth);
+		var layout = hasBreakLength ? {
+			breakLength: opts.breakLength,
+			depth,
+			indent,
+			maxCollectionLength,
+			state: breakState || { currentDepth: depth }
+		} : null;
 		if (typeof seen === "undefined") seen = [];
 		else if (indexOf(seen, obj) >= 0) return "[Circular]";
 		function inspect(value, from, noIndent) {
+			var nextSeen = seen;
 			if (from) {
-				seen = $arrSlice.call(seen);
-				seen.push(from);
+				nextSeen = $arrSlice.call(seen);
+				nextSeen.push(from);
 			}
-			if (noIndent) {
+			if (noIndent && !layout) {
 				var newOpts = { depth: opts.depth };
 				if (has(opts, "quoteStyle")) newOpts.quoteStyle = opts.quoteStyle;
-				return inspect_(value, newOpts, depth + 1, seen);
+				if (has(opts, "maxCollectionLength")) newOpts.maxCollectionLength = opts.maxCollectionLength;
+				return inspect_(value, newOpts, depth + 1, nextSeen);
 			}
-			return inspect_(value, opts, depth + 1, seen);
+			return inspect_(value, opts, depth + 1, nextSeen, layout ? layout.state : breakState);
+		}
+		function enter() {
+			if (layout) {
+				var previousDepth = layout.state.currentDepth;
+				layout.state.currentDepth = depth;
+				return previousDepth;
+			}
+			return null;
+		}
+		function leaveIfEmpty(entries, previousDepth) {
+			if (layout && entries.length === 0) layout.state.currentDepth = previousDepth;
 		}
 		if (typeof obj === "function" && !isRegExp(obj)) {
 			var name = nameOf(obj);
+			var fnDepth = enter();
 			var keys = arrObjKeys(obj, inspect);
+			leaveIfEmpty(keys, fnDepth);
+			if (layout && keys.length > 0) return breakLines(keys, bracesOf("{", "}", "[Function" + (name ? ": " + name : " (anonymous)") + "]", " "), layout);
 			return "[Function" + (name ? ": " + name : " (anonymous)") + "]" + (keys.length > 0 ? " { " + $join.call(keys, ", ") + " }" : "");
 		}
 		if (isSymbol(obj)) {
@@ -69417,14 +69776,19 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		}
 		if (isArray(obj)) {
 			if (obj.length === 0) return "[]";
-			var xs = arrObjKeys(obj, inspect);
+			enter();
+			var xs = arrObjKeys(obj, inspect, maxCollectionLength);
+			if (layout) return breakLines(xs, bracesOf("[", "]", "", " "), layout, obj);
 			if (indent && !singleLineValues(xs)) return "[" + indentedJoin(xs, indent) + "]";
 			return "[ " + $join.call(xs, ", ") + " ]";
 		}
 		if (isError(obj)) {
+			var errorDepth = enter();
 			var parts = arrObjKeys(obj, inspect);
-			if (!("cause" in Error.prototype) && "cause" in obj && !isEnumerable.call(obj, "cause")) return "{ [" + String(obj) + "] " + $join.call($concat.call("[cause]: " + inspect(obj.cause), parts), ", ") + " }";
+			if (!("cause" in Error.prototype) && "cause" in obj && !isEnumerable.call(obj, "cause")) parts = $concat.call(["[cause]: " + inspect(obj.cause)], parts);
+			leaveIfEmpty(parts, errorDepth);
 			if (parts.length === 0) return "[" + String(obj) + "]";
+			if (layout) return breakLines(parts, bracesOf("{ [" + String(obj) + "]", "}", "", " "), layout);
 			return "{ [" + String(obj) + "] " + $join.call(parts, ", ") + " }";
 		}
 		if (typeof obj === "object" && customInspect) {
@@ -69433,17 +69797,35 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		}
 		if (isMap(obj)) {
 			var mapParts = [];
-			if (mapForEach) mapForEach.call(obj, function(value, key) {
-				mapParts.push(inspect(key, obj, true) + " => " + inspect(value, obj));
+			var mapDepth = enter();
+			if (mapIteratorNext && maxCollectionLength < mapSize.call(obj)) {
+				var mapIterator = mapEntries.call(obj);
+				var mapStep;
+				while (mapParts.length < maxCollectionLength && !(mapStep = mapIteratorNext.call(mapIterator)).done) mapParts.push(inspect(mapStep.value[0], obj, true) + " => " + inspect(mapStep.value[1], obj));
+			} else if (mapForEach) mapForEach.call(obj, function(value, key) {
+				if (mapParts.length < maxCollectionLength) mapParts.push(inspect(key, obj, true) + " => " + inspect(value, obj));
 			});
-			return collectionOf("Map", mapSize.call(obj), mapParts, indent);
+			var mapLength = mapSize.call(obj);
+			if (maxCollectionLength !== Infinity && mapLength > mapParts.length) mapParts.push(moreItems(mapLength - mapParts.length));
+			leaveIfEmpty(mapParts, mapDepth);
+			if (layout) return breakLines(mapParts, bracesOf("Map (" + mapLength + ") {", "}", "", ""), layout);
+			return collectionOf("Map", mapLength, mapParts, indent);
 		}
 		if (isSet(obj)) {
 			var setParts = [];
-			if (setForEach) setForEach.call(obj, function(value) {
-				setParts.push(inspect(value, obj));
+			var setDepth = enter();
+			if (setIteratorNext && maxCollectionLength < setSize.call(obj)) {
+				var setIterator = setValues.call(obj);
+				var setStep;
+				while (setParts.length < maxCollectionLength && !(setStep = setIteratorNext.call(setIterator)).done) setParts.push(inspect(setStep.value, obj));
+			} else if (setForEach) setForEach.call(obj, function(value) {
+				if (setParts.length < maxCollectionLength) setParts.push(inspect(value, obj));
 			});
-			return collectionOf("Set", setSize.call(obj), setParts, indent);
+			var setLength = setSize.call(obj);
+			if (maxCollectionLength !== Infinity && setLength > setParts.length) setParts.push(moreItems(setLength - setParts.length));
+			leaveIfEmpty(setParts, setDepth);
+			if (layout) return breakLines(setParts, bracesOf("Set (" + setLength + ") {", "}", "", ""), layout);
+			return collectionOf("Set", setLength, setParts, indent);
 		}
 		if (isWeakMap(obj)) return weakCollectionOf("WeakMap");
 		if (isWeakSet(obj)) return weakCollectionOf("WeakSet");
@@ -69455,12 +69837,15 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		if (typeof window !== "undefined" && obj === window) return "{ [object Window] }";
 		if (typeof globalThis !== "undefined" && obj === globalThis || typeof global !== "undefined" && obj === global) return "{ [object globalThis] }";
 		if (!isDate(obj) && !isRegExp(obj)) {
-			var ys = arrObjKeys(obj, inspect);
+			var objectDepth = enter();
+			var ys = arrObjKeys(obj, inspect, maxCollectionLength);
+			leaveIfEmpty(ys, objectDepth);
 			var isPlainObject = gPO ? gPO(obj) === Object.prototype : obj instanceof Object || obj.constructor === Object;
-			var protoTag = obj instanceof Object ? "" : "null prototype";
+			var protoTag = (gPO ? gPO(obj) === null : !(obj instanceof Object)) ? "null prototype" : "";
 			var stringTag = !isPlainObject && toStringTag && Object(obj) === obj && toStringTag in obj ? $slice.call(toStr(obj), 8, -1) : protoTag ? "Object" : "";
 			var tag = (isPlainObject || typeof obj.constructor !== "function" ? "" : obj.constructor.name ? obj.constructor.name + " " : "") + (stringTag || protoTag ? "[" + $join.call($concat.call([], stringTag || [], protoTag || []), ": ") + "] " : "");
 			if (ys.length === 0) return tag + "{}";
+			if (layout) return breakLines(ys, bracesOf(tag + "{", "}", "", " "), layout);
 			if (indent) return tag + "{" + indentedJoin(ys, indent) + "}";
 			return tag + "{ " + $join.call(ys, ", ") + " }";
 		}
@@ -69523,6 +69908,22 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	}
 	function toStr(obj) {
 		return objectToString.call(obj);
+	}
+	function isTypedArray(obj) {
+		if (typedArrayTag) return !!typedArrayTag.call(obj);
+		return !toStringTag && $test.call(typedArrayToString, toStr(obj));
+	}
+	function getTypedArrayLength(obj) {
+		if (typedArrayLength) return typedArrayLength.call(obj);
+		var getter = typedArrayLengths[toStr(obj)];
+		return getter ? getter.call(obj) : obj.length;
+	}
+	function getterOf(obj, key) {
+		var descriptor = Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+		return descriptor && typeof descriptor.get === "function" ? descriptor.get : null;
+	}
+	function moreItems(count) {
+		return "... " + count + " more item" + (count > 1 ? "s" : "");
 	}
 	function nameOf(f) {
 		if (f.name) return f.name;
@@ -69608,7 +70009,7 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		}
 		var quoteRE = quoteREs[opts.quoteStyle || "single"];
 		quoteRE.lastIndex = 0;
-		return wrapQuotes($replace.call($replace.call(str, quoteRE, "\\$1"), /[\x00-\x1f]/g, lowbyte), "single", opts);
+		return wrapQuotes($replace.call($replace.call(str, quoteRE, "\\$1"), opts.multilineStrings ? /[\x00-\x09\x0b-\x1f]/g : /[\x00-\x1f]/g, lowbyte), "single", opts);
 	}
 	function lowbyte(c) {
 		var n = c.charCodeAt(0);
@@ -69632,6 +70033,79 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		var joinedEntries = indent ? indentedJoin(entries, indent) : $join.call(entries, ", ");
 		return type + " (" + size + ") {" + joinedEntries + "}";
 	}
+	function isBelowBreakLength(entries, start, breakLength) {
+		if (breakLength === Infinity) return singleLineValues(entries);
+		var totalLength = entries.length + start;
+		if (totalLength + entries.length > breakLength) return false;
+		for (var i = 0; i < entries.length; i++) {
+			totalLength += entries[i].length;
+			if (totalLength > breakLength) return false;
+		}
+		return true;
+	}
+	function padTo(str, width, atStart) {
+		var fill = width > str.length ? $join.call(Array(width - str.length + 1), " ") : "";
+		return atStart ? fill + str : str + fill;
+	}
+	function groupArrayElements(entries, layout, value) {
+		var separatorSpace = 2;
+		var totalLength = 0;
+		var maxLength = 0;
+		var outputLength = entries.length;
+		if (layout.maxCollectionLength < entries.length) outputLength -= 1;
+		var dataLen = [];
+		for (var i = 0; i < outputLength; i++) {
+			dataLen[i] = getStringWidth(entries[i]);
+			totalLength += dataLen[i] + separatorSpace;
+			if (maxLength < dataLen[i]) maxLength = dataLen[i];
+		}
+		var actualMax = maxLength + separatorSpace;
+		var indentationLvl = layout.indent.prev.length;
+		if (actualMax * 3 + indentationLvl >= layout.breakLength || totalLength / actualMax <= 5 && maxLength > 6) return entries;
+		var averageBias = $sqrt(actualMax - totalLength / entries.length);
+		var biasedMax = $max(actualMax - 3 - averageBias, 1);
+		var columns = $min($round($sqrt(2.5 * biasedMax * outputLength) / biasedMax), $floor((layout.breakLength - indentationLvl) / actualMax), 12, 15);
+		if (columns <= 1) return entries;
+		var maxLineLength = [];
+		for (var c = 0; c < columns; c++) {
+			var lineMaxLength = 0;
+			for (var j = c; j < entries.length; j += columns) if (dataLen[j] > lineMaxLength) lineMaxLength = dataLen[j];
+			maxLineLength[c] = lineMaxLength + separatorSpace;
+		}
+		var numeric = true;
+		for (var k = 0; k < entries.length && numeric; k++) numeric = typeof value[k] === "number" || typeof value[k] === "bigint";
+		var grouped = [];
+		for (var row = 0; row < outputLength; row += columns) {
+			var max = $min(row + columns, outputLength);
+			var str = "";
+			var col = row;
+			for (; col < max - 1; col++) str += padTo(entries[col] + ", ", maxLineLength[col - row] + (entries[col].length - dataLen[col]), numeric);
+			var lastPadding = maxLineLength[col - row] + (entries[col].length - dataLen[col]) - separatorSpace;
+			str += numeric ? padTo(entries[col], lastPadding, true) : entries[col];
+			grouped.push(str);
+		}
+		if (outputLength < entries.length) grouped.push(entries[outputLength]);
+		return grouped;
+	}
+	function bracesOf(opening, closing, base, padding) {
+		return [
+			opening,
+			closing,
+			base,
+			padding
+		];
+	}
+	function breakLines(entries, braces, layout, arrayValue) {
+		var output = arrayValue && entries.length > 6 ? groupArrayElements(entries, layout, arrayValue) : entries;
+		var base = braces[2] ? braces[2] + " " : "";
+		if (layout.state.currentDepth - layout.depth < 3 && output.length === entries.length) {
+			if (isBelowBreakLength(output, output.length + layout.indent.prev.length + braces[0].length + braces[2].length + 10, layout.breakLength)) {
+				var joined = $join.call(output, ", ");
+				if (indexOf(joined, "\n") < 0) return base + braces[0] + braces[3] + joined + braces[3] + braces[1];
+			}
+		}
+		return base + braces[0] + indentedJoin(output, layout.indent) + braces[1];
+	}
 	function singleLineValues(xs) {
 		for (var i = 0; i < xs.length; i++) if (indexOf(xs[i], "\n") >= 0) return false;
 		return true;
@@ -69651,12 +70125,19 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		var lineJoiner = "\n" + indent.prev + indent.base;
 		return lineJoiner + $join.call(xs, "," + lineJoiner) + "\n" + indent.prev;
 	}
-	function arrObjKeys(obj, inspect) {
+	function arrObjKeys(obj, inspect, maxLength) {
 		var isArr = isArray(obj);
+		var limit = typeof maxLength === "number" ? maxLength : Infinity;
+		var typedLength = !isArr && limit !== Infinity && isTypedArray(obj) ? getTypedArrayLength(obj) : null;
+		if (typeof typedLength !== "number" || typedLength <= limit) typedLength = null;
 		var xs = [];
 		if (isArr) {
-			xs.length = obj.length;
-			for (var i = 0; i < obj.length; i++) xs[i] = has(obj, i) ? inspect(obj[i], obj) : "";
+			xs.length = obj.length < limit ? obj.length : limit;
+			for (var i = 0; i < obj.length && i < limit; i++) xs[i] = has(obj, i) ? inspect(obj[i], obj) : "";
+			if (obj.length > limit) xs.push(moreItems(obj.length - limit));
+		} else if (typedLength !== null) {
+			for (var t = 0; t < limit; t++) xs.push(t + ": " + inspect(obj[t], obj));
+			xs.push(moreItems(typedLength - limit));
 		}
 		var syms = typeof gOPS === "function" ? gOPS(obj) : [];
 		var symMap;
@@ -69667,6 +70148,7 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		for (var key in obj) {
 			if (!has(obj, key)) continue;
 			if (isArr && String(Number(key)) === key && key < obj.length) continue;
+			if (typedLength !== null && String(Number(key)) === key && key < typedLength) continue;
 			if (hasShammedSymbols && symMap["$" + key] instanceof Symbol) continue;
 			else if ($test.call(/[^\w$]/, key)) xs.push(inspect(key, obj) + ": " + inspect(obj[key], obj));
 			else xs.push(key + ": " + inspect(obj[key], obj));
@@ -74145,7 +74627,7 @@ function streamExtract(url, directory, skipDecompress) {
 			return yield streamExtractExternal(url, directory, { skipDecompress });
 		} catch (error) {
 			retryCount++;
-			debug$3(`Failed to download artifact after ${retryCount} retries due to ${error.message}. Retrying in 5 seconds...`);
+			debug(`Failed to download artifact after ${retryCount} retries due to ${error.message}. Retrying in 5 seconds...`);
 			yield new Promise((resolve) => setTimeout(resolve, 5e3));
 		}
 		throw new Error(`Artifact download failed after ${retryCount} retries.`);
@@ -74166,8 +74648,8 @@ function streamExtractExternal(url_1, directory_1) {
 		const filenamePlain = contentDisposition.match(/(?<!\*)filename\s*=\s*['"]?([^;\r\n"']*)['"]?/i);
 		const rawName = (filenameStar === null || filenameStar === void 0 ? void 0 : filenameStar[1]) || (filenamePlain === null || filenamePlain === void 0 ? void 0 : filenamePlain[1]);
 		if (rawName) fileName = path.basename(decodeURIComponent(rawName.trim()));
-		debug$3(`Content-Type: ${contentType}, mimeType: ${mimeType}, urlEndsWithZip: ${urlEndsWithZip}, isZip: ${isZip}, skipDecompress: ${skipDecompress}`);
-		debug$3(`Content-Disposition: ${contentDisposition}, fileName: ${fileName}`);
+		debug(`Content-Type: ${contentType}, mimeType: ${mimeType}, urlEndsWithZip: ${urlEndsWithZip}, isZip: ${isZip}, skipDecompress: ${skipDecompress}`);
+		debug(`Content-Disposition: ${contentDisposition}, fileName: ${fileName}`);
 		let sha256Digest = void 0;
 		return new Promise((resolve, reject) => {
 			const timerFn = () => {
@@ -74177,7 +74659,7 @@ function streamExtractExternal(url_1, directory_1) {
 			};
 			const timer = setTimeout(timerFn, timeout);
 			const onError = (error) => {
-				debug$3(`response.message: Artifact download failed: ${error.message}`);
+				debug(`response.message: Artifact download failed: ${error.message}`);
 				clearTimeout(timer);
 				reject(error);
 			};
@@ -74230,8 +74712,8 @@ function downloadArtifactPublic(artifactId, repositoryOwner, repositoryName, tok
 			if (options === null || options === void 0 ? void 0 : options.expectedHash) {
 				if ((options === null || options === void 0 ? void 0 : options.expectedHash) !== extractResponse.sha256Digest) {
 					digestMismatch = true;
-					debug$3(`Computed digest: ${extractResponse.sha256Digest}`);
-					debug$3(`Expected digest: ${options.expectedHash}`);
+					debug(`Computed digest: ${extractResponse.sha256Digest}`);
+					debug(`Expected digest: ${options.expectedHash}`);
 				}
 			}
 		} catch (error) {
@@ -74271,8 +74753,8 @@ function downloadArtifactInternal(artifactId, options) {
 			if (options === null || options === void 0 ? void 0 : options.expectedHash) {
 				if ((options === null || options === void 0 ? void 0 : options.expectedHash) !== extractResponse.sha256Digest) {
 					digestMismatch = true;
-					debug$3(`Computed digest: ${extractResponse.sha256Digest}`);
-					debug$3(`Expected digest: ${options.expectedHash}`);
+					debug(`Computed digest: ${extractResponse.sha256Digest}`);
+					debug(`Expected digest: ${options.expectedHash}`);
 				}
 			}
 		} catch (error) {
@@ -74287,9 +74769,9 @@ function downloadArtifactInternal(artifactId, options) {
 function resolveOrCreateDirectory() {
 	return __awaiter$4(this, arguments, void 0, function* (downloadPath = getGitHubWorkspaceDir()) {
 		if (!(yield exists(downloadPath))) {
-			debug$3(`Artifact destination folder does not exist, creating: ${downloadPath}`);
+			debug(`Artifact destination folder does not exist, creating: ${downloadPath}`);
 			yield fs$1.mkdir(downloadPath, { recursive: true });
-		} else debug$3(`Artifact destination folder already exists: ${downloadPath}`);
+		} else debug(`Artifact destination folder already exists: ${downloadPath}`);
 		return downloadPath;
 	});
 }
@@ -74308,7 +74790,7 @@ function getRetryOptions(defaultOptions, retries = defaultMaxRetryNumber, exempt
 	const retryOptions = { enabled: true };
 	if (exemptStatusCodes.length > 0) retryOptions.doNotRetry = exemptStatusCodes;
 	const requestOptions = Object.assign(Object.assign({}, defaultOptions.request), { retries });
-	debug$3(`GitHub client configured with: (retries: ${requestOptions.retries}, retry-exempt-status-code: ${(_a = retryOptions.doNotRetry) !== null && _a !== void 0 ? _a : "octokit default: [400, 401, 403, 404, 422]"})`);
+	debug(`GitHub client configured with: (retries: ${requestOptions.retries}, retry-exempt-status-code: ${(_a = retryOptions.doNotRetry) !== null && _a !== void 0 ? _a : "octokit default: [400, 401, 403, 404, 422]"})`);
 	return [retryOptions, requestOptions];
 }
 // tooling/artifact-transport/node_modules/@octokit/plugin-request-log/dist-src/version.js
@@ -75613,7 +76095,7 @@ function getArtifactPublic(artifactName, workflowRunId, repositoryOwner, reposit
 		let artifact = getArtifactResp.data.artifacts[0];
 		if (getArtifactResp.data.artifacts.length > 1) {
 			artifact = getArtifactResp.data.artifacts.sort((a, b) => b.id - a.id)[0];
-			debug$3(`More than one artifact found for a single name, returning newest (id: ${artifact.id})`);
+			debug(`More than one artifact found for a single name, returning newest (id: ${artifact.id})`);
 		}
 		return { artifact: {
 			name: artifact.name,
@@ -75641,7 +76123,7 @@ function getArtifactInternal(artifactName) {
 		let artifact = res.artifacts[0];
 		if (res.artifacts.length > 1) {
 			artifact = res.artifacts.sort((a, b) => Number(b.databaseId) - Number(a.databaseId))[0];
-			debug$3(`More than one artifact found for a single name, returning newest (id: ${artifact.databaseId})`);
+			debug(`More than one artifact found for a single name, returning newest (id: ${artifact.databaseId})`);
 		}
 		return { artifact: {
 			name: artifact.name,
@@ -75715,7 +76197,7 @@ function deleteArtifactInternal(artifactName) {
 		let artifact = listRes.artifacts[0];
 		if (listRes.artifacts.length > 1) {
 			artifact = listRes.artifacts.sort((a, b) => Number(b.databaseId) - Number(a.databaseId))[0];
-			debug$3(`More than one artifact found for a single name, returning newest (id: ${artifact.databaseId})`);
+			debug(`More than one artifact found for a single name, returning newest (id: ${artifact.databaseId})`);
 		}
 		const req = {
 			workflowRunBackendId: artifact.workflowRunBackendId,
@@ -75793,7 +76275,7 @@ function listArtifactsPublic(workflowRunId_1, repositoryOwner_1, repositoryName_
 		});
 		currentPageNumber++;
 		for (; currentPageNumber <= numberOfPages; currentPageNumber++) {
-			debug$3(`Fetching page ${currentPageNumber} of artifact list`);
+			debug(`Fetching page ${currentPageNumber} of artifact list`);
 			const { data: listArtifactResponse } = yield github.request("GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts", {
 				owner: repositoryOwner,
 				repo: repositoryName,

@@ -82,9 +82,12 @@ export const REFERENCE_RECIPE = Object.freeze({
   version: 1,
   sourceCommit: pin.sourceRevision,
   sourceTree: "b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2",
-  maven: "3.10.0",
-  mavenZipSha512:
-    "22d31676d5b92ed53308c19ecded3245d0efd0cddfec51ec7bab62f4f13ad70ddddceff8e62940e0e8e2421f3cde8106737f4becec0aa034ffeff2a754e88337",
+  maven: Object.freeze({
+    version: "3.10.2",
+    revision: "61b8bc355f4c4325463c22aa9afe4e7811a290f8",
+    zipSha512:
+      "a24007fbf26eb885de8ba07c54fa05bb12e97082d16bfcd37283708b9db60232768435a0165ef0ed7c1309af843c11bf797f9959b9ca0a7343b055a165d8761c",
+  }),
   help: "org.apache.maven.plugins:maven-help-plugin:3.5.2",
   dependency: "org.apache.maven.plugins:maven-dependency-plugin:3.11.0",
   declaredSignature: "org.codehaus.mojo.signature:java18:1.0:signature",
@@ -97,6 +100,15 @@ export const REFERENCE_RECIPE = Object.freeze({
   environmentPolicy: "EXACT_IMAGE_CONTROLLED_JVM_V1",
   crossImageEquivalence: false,
 });
+
+export function referenceMavenDirectory(runnerTemp) {
+  const { version } = REFERENCE_RECIPE.maven;
+  return join(
+    runnerTemp,
+    `reference-maven-${version}`,
+    `apache-maven-${version}`,
+  );
+}
 
 export const REFERENCE_JVM_OPTIONS = Object.freeze([
   "-Duser.language=en",
@@ -274,6 +286,9 @@ export const referenceRecipeIdentity = () =>
     ),
     nativeCollectorSha256: sha256(
       readFileSync(join(here, "reference-native-build.mjs")),
+    ),
+    mavenBootstrapSha256: sha256(
+      readFileSync(join(here, "install-reference-maven.mjs")),
     ),
     costObservationSha256: sha256(
       readFileSync(join(here, "reference-cost-observation.mjs")),

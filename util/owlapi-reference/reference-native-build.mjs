@@ -337,11 +337,8 @@ export function prepareReferenceBuild({
     `maven-version-${execution.length}`,
     10_000,
   );
-  if (
-    !mavenVersion.startsWith(
-      "Apache Maven 3.10.0 (c43a36b8d67be7e0805a411bc0898af1a51f5472)",
-    )
-  )
+  const { version, revision } = REFERENCE_RECIPE.maven;
+  if (!mavenVersion.startsWith(`Apache Maven ${version} (${revision})`))
     fail("unqualified Maven version");
   const environment = JSON.parse(
     run(
