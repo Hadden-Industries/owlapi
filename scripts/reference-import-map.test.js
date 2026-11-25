@@ -6,7 +6,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { PACKAGE_NAME, PACKAGE_VERSION } from "./package-identity.mjs";
@@ -76,6 +76,7 @@ async function withLocalGraph(run, { rebased = false } = {}) {
 const traceFixture = (
   { applicationPath, packageRoot },
   configure = () => {},
+  fixtureModules = ["main.js", "exercise.js"],
 ) => {
   const packageEntry = "../node_modules/owlapi/index.js";
   const packageScope = "../node_modules/owlapi/";
@@ -101,7 +102,7 @@ const traceFixture = (
   return generateReferenceImportMap({
     applicationPath,
     packageRoot,
-    fixtureModules: ["main.js", "exercise.js"],
+    fixtureModules,
     createGenerator: () => ({ link: async () => trace, getMap: () => map }),
   });
 };
@@ -234,12 +235,110 @@ describe("reference import-map evidence", () => {
             }),
           ).rejects.toThrow(/Unclassified local reference map URL/u);
         }
-        const map = await traceFixture(fixture, (map) => {
-          map.imports.extra = "./exercise.js";
-          map.scopes["./"] = { extra: "./exercise.js" };
-        });
+        mkdirSync(join(fixture.app, "helpers"));
+        writeFileSync(
+          join(fixture.app, "helpers", "exercise.js"),
+          "export {};\n",
+        );
+        const map = await traceFixture(
+          fixture,
+          (map) => {
+            map.imports.extra = "./exercise.js";
+            map.scopes["./helpers/"] = { extra: "./helpers/exercise.js" };
+          },
+          ["main.js", "exercise.js", "helpers/exercise.js"],
+        );
         expect(map.imports.extra).toBe("./exercise.js");
-        expect(map.scopes["./"]).toEqual({ extra: "./exercise.js" });
+        expect(map.scopes["./helpers/"]).toEqual({
+          extra: "./helpers/exercise.js",
+        });
+        await expect(
+          traceFixture(fixture, (map) => {
+            map.scopes["./"] = { extra: "./exercise.js" };
+          }),
+        ).rejects.toThrow(/Unclassified local reference map URL/u);
+      },
+      { rebased: true },
+    );
+  });
+
+  it("admits the physical path of a staged file when the application root is an alias", async () => {
+    await withLocalGraph(
+      async (fixture) => {
+        const alias = join(dirname(fixture.app), "app-alias");
+        symlinkSync(fixture.app, alias, "junction");
+        const map = await traceFixture(
+          { ...fixture, applicationPath: join(alias, "main.js") },
+          (draft) => {
+            draft.imports.extra = pathToFileURL(fixture.fixtureModule).href;
+          },
+        );
+        expect(map.imports.extra).toBe("./exercise.js");
+      },
+      { rebased: true },
+    );
+  });
+
+  it("refuses nested installed fixture modules and local filenames the fixture server cannot serve", async () => {
+    await withLocalGraph(
+      async (fixture) => {
+        mkdirSync(join(fixture.app, "helpers", "node_modules"), {
+          recursive: true,
+        });
+        writeFileSync(
+          join(fixture.app, "helpers", "node_modules", "nested.js"),
+          "export {};\n",
+        );
+        await expect(
+          traceFixture(fixture, undefined, [
+            "main.js",
+            "exercise.js",
+            "helpers/node_modules/nested.js",
+          ]),
+        ).rejects.toThrow(/Invalid staged fixture module/u);
+        writeFileSync(join(fixture.packageRoot, "literal%.js"), "export {};\n");
+        await expect(
+          traceFixture(fixture, (_, trace) => {
+            trace.dynamicDeps.push("../node_modules/owlapi/literal%25.js");
+          }),
+        ).rejects.toThrow(/Unclassified local reference map URL/u);
+      },
+      { rebased: true },
+    );
+  });
+
+  it.each([PROVIDER_URL, "./exercise.js", "prefix/"])(
+    "refuses a mapping key that can't be preserved by mirroring: %s",
+    async (key) => {
+      await withLocalGraph(
+        async (fixture) => {
+          await expect(
+            traceFixture(fixture, (map) => {
+              map.imports[key] = PROVIDER_URL;
+            }),
+          ).rejects.toThrow(/Unsupported reference map specifier/u);
+        },
+        { rebased: true },
+      );
+    },
+  );
+
+  it("refuses in-package aliases that change the projected module base", async () => {
+    await withLocalGraph(
+      async (fixture) => {
+        const realDirectory = join(fixture.packageRoot, "real");
+        mkdirSync(realDirectory);
+        writeFileSync(join(realDirectory, "module.js"), "export {};\n");
+        symlinkSync(
+          realDirectory,
+          join(fixture.packageRoot, "alias"),
+          "junction",
+        );
+        await expect(
+          traceFixture(fixture, (map) => {
+            map.imports.extra = "../node_modules/owlapi/alias/module.js";
+          }),
+        ).rejects.toThrow(/Unclassified local reference map URL/u);
       },
       { rebased: true },
     );
@@ -404,6 +503,36 @@ describe("reference import-map evidence", () => {
     ).toThrow(/HTTPS/u);
   });
 
+  it("pins a relative provider query at its browser URL while storing the encoded disk variant", async () => {
+    const url = "https://ga.jspm.io/npm:example@1.0.0/part+one.js?mode=browser";
+    const result = await hydrateReferenceImportMap({
+      map: { integrity: { [url]: PROVIDER_INTEGRITY } },
+      mirrorRoot: process.cwd(),
+      fetchImplementation: async () => ({
+        status: 200,
+        url,
+        redirected: false,
+        arrayBuffer: async () => PROVIDER_BYTES,
+      }),
+      mkdirImplementation() {},
+      writeImplementation() {},
+    });
+    expect(result.localMap.integrity).toEqual({
+      "./provider/ga.jspm.io/npm:example@1.0.0/part+one.js?mode=browser":
+        PROVIDER_INTEGRITY,
+    });
+    expect(result.localMap.imports[url]).toBe(
+      "./provider/ga.jspm.io/npm:example@1.0.0/part+one.js?mode=browser",
+    );
+    expect(result.localMap.scopes["./provider/ga.jspm.io/"]).toEqual({
+      "/npm:example@1.0.0/part+one.js?mode=browser":
+        "./provider/ga.jspm.io/npm:example@1.0.0/part+one.js?mode=browser",
+    });
+    expect(result.inventory[0].localPath).toBe(
+      "provider/ga.jspm.io/npm%3Aexample%401.0.0/part%2Bone.js.__query-6830ed8c21d79fd4e3825eed232dff5f5a377a9ad24e43a139284c9f0e28ca2a",
+    );
+  });
+
   it.each([
     "https://example.com/a.js",
     "https://ga.jspm.io:443/a.js",
@@ -536,20 +665,22 @@ describe("reference import-map evidence", () => {
     });
 
     expect(result.localMap.imports.example).toBe(
-      "./provider/ga.jspm.io/npm%3Aexample%401.0.0/index.js",
+      "./provider/ga.jspm.io/npm:example@1.0.0/index.js",
     );
     expect(
       result.localMap.integrity[
-        "./provider/ga.jspm.io/npm%3Aexample%401.0.0/index.js"
+        "./provider/ga.jspm.io/npm:example@1.0.0/index.js"
       ],
     ).toBe(integrity);
     expect(result.inventory).toHaveLength(1);
     expect(writes).toHaveProperty("size", 1);
     expect(result.localMap.scopes["./provider/ga.jspm.io/"]).toEqual({
-      dependency: "./provider/ga.jspm.io/npm%3Aexample%401.0.0/index.js",
+      dependency: "./provider/ga.jspm.io/npm:example@1.0.0/index.js",
+      "/npm:example@1.0.0/index.js":
+        "./provider/ga.jspm.io/npm:example@1.0.0/index.js",
     });
     expect(
-      result.localMap.scopes["./provider/ga.jspm.io/npm%3Aexample%401.0.0/"],
+      result.localMap.scopes["./provider/ga.jspm.io/npm:example@1.0.0/"],
     ).toBeDefined();
   });
 });

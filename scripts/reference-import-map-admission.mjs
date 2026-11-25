@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { isStrictDescendantPath } from "./release-file-utils.mjs";
 
 const PROVIDER_ORIGIN = "https://ga.jspm.io";
+const PROVIDER_MIRROR_PREFIX = `provider/${new URL(PROVIDER_ORIGIN).hostname}/`;
 const PACKAGE_PREFIX = "./package/owlapi/";
 const RUNTIME_BASE = new URL("https://owlapi.invalid/");
 
@@ -21,24 +22,25 @@ const asUrl = (value, base) => {
   return new URL(value, base);
 };
 
+const unsafeSegment = (segment) =>
+  !segment ||
+  segment === "." ||
+  segment === ".." ||
+  /[/%\\\p{Cc}]/u.test(segment);
+
 const pathSegments = (url, scope) => {
   const path = url.pathname.slice(1, scope ? -1 : undefined);
   return path.split("/").map((segment) => {
     const decoded = decodeURIComponent(segment);
-    if (
-      !decoded ||
-      decoded === "." ||
-      decoded === ".." ||
-      /[/%\\\p{Cc}]/u.test(decoded)
-    ) {
+    if (unsafeSegment(decoded)) {
       throw new Error(`Unsafe reference map path segment in ${url.href}`);
     }
     return decoded;
   });
 };
 
-// A provider URL has one spelling. Mirror filenames encode individual segments
-// because the fixture server serves the encoded request path from disk.
+// Keep URL semantics in the browser and allocate portable, unambiguous disk
+// names separately. Relative imports must resolve to the same pinned URL.
 const providerLocation = (value, scope) => {
   const url = asUrl(value);
   if (url.protocol !== "https:" || url.origin !== PROVIDER_ORIGIN) {
@@ -81,11 +83,25 @@ const providerLocation = (value, scope) => {
     throw new Error(`Nonportable reference provider mirror path: ${value}`);
   }
   const path = encoded.join("/");
-  return `provider/${url.hostname}/${path}${scope && path ? "/" : ""}${suffix}`;
+  return {
+    localPath: `${PROVIDER_MIRROR_PREFIX}${path}${scope && path ? "/" : ""}${suffix}`,
+    browserPath: `./${PROVIDER_MIRROR_PREFIX}${url.pathname.slice(1)}${url.search}`,
+  };
 };
 
 /** Return the mirror-relative file path for an admitted JSPM module URL. */
-export const toLocalProviderPath = (value) => providerLocation(value, false);
+export const toLocalProviderPath = (value) =>
+  providerLocation(value, false).localPath;
+
+/** Resolve only a selected-provider request to its encoded file in the mirror. */
+export const providerPathForRequest = (path, search) => {
+  if (!path.startsWith(PROVIDER_MIRROR_PREFIX)) {
+    throw new Error(`Request is outside the selected provider mirror: ${path}`);
+  }
+  return toLocalProviderPath(
+    `${PROVIDER_ORIGIN}/${path.slice(PROVIDER_MIRROR_PREFIX.length)}${search}`,
+  );
+};
 
 /** Require exactly one repository-profile SHA-384 SRI token. */
 export const assertSha384Integrity = (integrity, url) => {
@@ -108,10 +124,14 @@ const relativeUrlPath = (base, path) =>
 const samePath = (left, right) => relative(left, right) === "";
 const withinScope = (root, path, scope) =>
   isStrictDescendantPath(root, path) || (scope && samePath(root, path));
-const fixtureNamespace = (name) =>
-  !/^(?:node_modules|package|provider|runtime)(?:\/|$)/iu.test(name);
 const installedDependency = (name) =>
   /(?:^|\/)node_modules(?:\/|$)/iu.test(name);
+const fixtureNamespace = (name) =>
+  !installedDependency(name) &&
+  !/^(?:package|provider|runtime)(?:\/|$)/iu.test(name);
+const serveableLocalPath = (name) =>
+  !name ||
+  name.split("/").every((part) => !unsafeSegment(decodeURIComponent(part)));
 
 /** Classify JSPM file URLs against the installed package and the exact runtime copy list. */
 export const generatedUrlClassifier = ({
@@ -124,7 +144,9 @@ export const generatedUrlClassifier = ({
   const realPackageRoot = realpathSync(packageRoot);
   const base = pathToFileURL(applicationPath);
   const fixtures = new Map();
-  const fixtureScopes = new Set([""]);
+  // An application-root scope would also match the relocated provider and
+  // package trees. Fixture scopes stay inside explicitly staged subtrees.
+  const fixtureScopes = new Set();
   for (const name of fixtureModules) {
     const path = resolve(applicationRoot, name);
     const realPath = realpathSync(path);
@@ -133,7 +155,8 @@ export const generatedUrlClassifier = ({
       !isStrictDescendantPath(applicationRoot, path) ||
       !isStrictDescendantPath(realApplicationRoot, realPath) ||
       !fixtureNamespace(entry) ||
-      !fixtureNamespace(relativeUrlPath(realApplicationRoot, realPath)) ||
+      !serveableLocalPath(entry) ||
+      entry !== relativeUrlPath(realApplicationRoot, realPath) ||
       !statSync(realPath).isFile()
     ) {
       throw new Error(`Invalid staged fixture module: ${name}`);
@@ -173,8 +196,9 @@ export const generatedUrlClassifier = ({
         const entry = relativeUrlPath(realPackageRoot, realPath);
         if (
           withinScope(realPackageRoot, realPath, scope) &&
-          !installedDependency(relativeUrlPath(localRoot, path)) &&
+          entry === relativeUrlPath(localRoot, path) &&
           !installedDependency(entry) &&
+          serveableLocalPath(entry) &&
           (scope
             ? statSync(realPath).isDirectory()
             : statSync(realPath).isFile())
@@ -193,10 +217,8 @@ export const generatedUrlClassifier = ({
             const realPath = realpathSync(path);
             if (
               scope
-                ? withinScope(realApplicationRoot, realPath, true) &&
-                  fixtureNamespace(
-                    relativeUrlPath(realApplicationRoot, realPath),
-                  )
+                ? isStrictDescendantPath(realApplicationRoot, realPath) &&
+                  entry === relativeUrlPath(realApplicationRoot, realPath)
                 : samePath(fixtures.get(entry), realPath)
             ) {
               result = { url: `./${entry}${scope && entry ? "/" : ""}` };
@@ -222,7 +244,7 @@ const reviewedUrlClassifier = (value, scope) => {
       (value.startsWith(PACKAGE_PREFIX)
         ? !installedDependency(entry)
         : fixtureNamespace(entry)) &&
-      (scope || entry)
+      entry
     ) {
       return { url: value };
     }
@@ -268,7 +290,17 @@ const projectMap = (map, classify, trace) => {
   const imports = (mappings) =>
     Object.fromEntries(
       entries(mappings, "mappings").map(([key, value]) => {
-        if (!key) throw new Error("Empty reference map specifier");
+        // URL-key and prefix mappings need their own relocation rules. The
+        // traced fixture uses exact bare-specifier mappings.
+        if (
+          !key ||
+          key !== key.trim() ||
+          /^(?:\/|\.\.?\/)|[\\\p{Cc}]/u.test(key) ||
+          URL.canParse(key) ||
+          key.endsWith("/")
+        ) {
+          throw new Error(`Unsupported reference map specifier: ${key}`);
+        }
         const target = classify(value, false);
         if (target.provider) targets.add(target.url);
         return [key, target.url];
@@ -350,13 +382,18 @@ export const planProviderMirror = (map, runtimeRoot) => {
   const scopes = new Set();
   const translate = (value, scope = false) => {
     if (!value.startsWith(`${PROVIDER_ORIGIN}/`)) return value;
-    if (paths.has(value)) return `./${paths.get(value)}`;
-    const path = providerLocation(value, scope);
-    if (!isStrictDescendantPath(providerRoot, resolve(runtimeRoot, path))) {
+    if (paths.has(value)) return paths.get(value).browserPath;
+    const location = providerLocation(value, scope);
+    if (
+      !isStrictDescendantPath(
+        providerRoot,
+        resolve(runtimeRoot, location.localPath),
+      )
+    ) {
       throw new Error(`Provider mirror path escaped its root: ${value}`);
     }
     // The portable mirror must also be unambiguous on case-insensitive volumes.
-    const key = path.replace(/\/$/u, "").toLowerCase();
+    const key = location.localPath.replace(/\/$/u, "").toLowerCase();
     if (files.has(key) || (scope ? scopes.has(key) : directories.has(key))) {
       throw new Error(`Provider mirror path collision: ${value}`);
     }
@@ -371,8 +408,8 @@ export const planProviderMirror = (map, runtimeRoot) => {
         throw new Error(`Provider mirror path collision: ${value}`);
       directories.add(parent);
     }
-    paths.set(value, path);
-    return `./${path}`;
+    paths.set(value, location);
+    return location.browserPath;
   };
   const imports = (mappings) =>
     Object.fromEntries(
@@ -400,7 +437,29 @@ export const planProviderMirror = (map, runtimeRoot) => {
   const modules = Object.entries(map.integrity).map(([url, integrity]) => ({
     url,
     integrity,
-    localPath: paths.get(url),
+    localPath: paths.get(url).localPath,
   }));
+  if (modules.length) {
+    // Literal URL imports also appear in the trace even when JSPM emits no
+    // mapping for them. Redirect only the admitted URLs. Origin-relative
+    // aliases apply to provider referrers and cannot change fixture imports.
+    const absoluteAliases = {};
+    const rootedAliases = {};
+    for (const { url } of modules) {
+      const { pathname, search } = new URL(url);
+      const { browserPath } = paths.get(url);
+      absoluteAliases[url] = browserPath;
+      rootedAliases[`${pathname}${search}`] = browserPath;
+    }
+    const providerScope = `./${PROVIDER_MIRROR_PREFIX}`;
+    localMap.imports = { ...localMap.imports, ...absoluteAliases };
+    localMap.scopes = {
+      ...localMap.scopes,
+      [providerScope]: {
+        ...localMap.scopes?.[providerScope],
+        ...rootedAliases,
+      },
+    };
+  }
   return { localMap, modules };
 };

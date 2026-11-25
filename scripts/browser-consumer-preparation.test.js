@@ -24,8 +24,10 @@ const REPLACEMENT_PIN =
   "sha384-o5TJSkK43MFut3k3W/kYknQVHavDIZPAB2IFiilcQywKTfaTJv9fC+Flk8t0+Whq";
 const NEW_PIN =
   "sha384-z0dQZuTpVhlJhRpzBVjQTCgdq+BUSh89DMD4c8ea5gn4XTF+416jeLVKPWSl2O8q";
-const EXISTING_MIRROR = "./provider/ga.jspm.io/npm%3Aexample%401.0.0/index.js";
-const NEW_MIRROR = "./provider/ga.jspm.io/npm%3Aother%402.0.0/index.js";
+const EXISTING_MIRROR = "./provider/ga.jspm.io/npm:example@1.0.0/index.js";
+const NEW_MIRROR = "./provider/ga.jspm.io/npm:other@2.0.0/index.js";
+const EXISTING_FILE = "provider/ga.jspm.io/npm%3Aexample%401.0.0/index.js";
+const NEW_FILE = "provider/ga.jspm.io/npm%3Aother%402.0.0/index.js";
 const candidatePackage = { name: PACKAGE_NAME, version: PACKAGE_VERSION };
 const json = (object) => `${JSON.stringify(object, null, 2)}\n`;
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -96,7 +98,8 @@ async function withPreparation(run) {
         candidateDirectory,
         outputDirectory,
         reviewedMapPath,
-        stageFixtures: async () => {
+        stageFixtures: async ({ outputDirectory: output }) => {
+          const fixtureDirectory = join(output, "import-map");
           const packageRoot = join(fixtureDirectory, "node_modules", "owlapi");
           mkdirSync(packageRoot, { recursive: true });
           writeFileSync(
@@ -199,6 +202,26 @@ describe("browser-consumer preparation and publication", () => {
         expect(staged).toBe(false);
         expect(existsSync(outputDirectory)).toBe(false);
         expectUnpublished();
+      },
+    );
+  });
+
+  it("stages from a private verified copy if the retained path changes after admission", async () => {
+    await withPreparation(
+      async ({ prepare, tarballPath: retained, tarball }) => {
+        let installPath;
+        await expect(
+          prepare({
+            stageFixtures: async ({ tarballPath }) => {
+              installPath = tarballPath;
+              writeFileSync(retained, "different retained bytes\n");
+              expect(sha256(readFileSync(tarballPath))).toBe(tarball.sha256);
+              throw new Error("Stop after observing the install input");
+            },
+          }),
+        ).rejects.toThrow("Stop after observing the install input");
+        expect(installPath).not.toBe(retained);
+        expect(existsSync(installPath)).toBe(false);
       },
     );
   });
@@ -311,6 +334,33 @@ describe("browser-consumer preparation and publication", () => {
     );
   });
 
+  it("refuses raw approval records with duplicate decoded member names", async () => {
+    await withPreparation(
+      async ({
+        prepare,
+        authorization,
+        approvalPath,
+        expectUnpublished,
+        fetches,
+      }) => {
+        const raw = json(authorization).replace(
+          '"replacementIntegrity":',
+          `"replacementIntegrit\\u0079": "${NEW_PIN}",\n      "replacementIntegrity":`,
+        );
+        expect(JSON.parse(raw)).toEqual(authorization);
+        writeFileSync(approvalPath, raw);
+        await expect(
+          prepare({
+            writeReviewedMap: true,
+            approvedProviderPinChangesPath: approvalPath,
+          }),
+        ).rejects.toThrow(/duplicate/i);
+        expectUnpublished();
+        expect(fetches).toEqual([]);
+      },
+    );
+  });
+
   it("refuses an approval option in routine mode and an absent reviewed baseline in refresh mode", async () => {
     await withPreparation(
       async ({ prepare, reviewedMapPath, approvalPath, outputDirectory }) => {
@@ -381,6 +431,7 @@ describe("browser-consumer preparation and publication", () => {
           reviewedMapPath,
           reviewedDirectory,
           fixtureDirectory,
+          outputDirectory,
           startingBytes,
           manifestPath,
         }) => {
@@ -410,6 +461,17 @@ describe("browser-consumer preparation and publication", () => {
           expect(readdirSync(reviewedDirectory)).toEqual([
             "reference-import-map.json",
           ]);
+          const retryOutput = `${outputDirectory}-retry`;
+          await prepare({
+            existingPin: EXISTING_PIN,
+            writeReviewedMap: !swapped,
+            outputDirectory: retryOutput,
+          });
+          expect(readFileSync(reviewedMapPath)).toEqual(staged);
+          expect(
+            existsSync(join(retryOutput, "browser-consumer-manifest.json")),
+          ).toBe(true);
+          expect(existsSync(manifestPath)).toBe(false);
         },
       );
     },
@@ -450,12 +512,22 @@ describe("browser-consumer preparation and publication", () => {
       );
       const expectedGenerated = json(mapFor(REPLACEMENT_PIN, true));
       const expectedLocal = {
-        imports: importsFor("./package/owlapi/index.js"),
+        imports: {
+          ...importsFor("./package/owlapi/index.js"),
+          [EXISTING]: EXISTING_MIRROR,
+          [NEW]: NEW_MIRROR,
+        },
         integrity: {
           [EXISTING_MIRROR]: REPLACEMENT_PIN,
           [NEW_MIRROR]: NEW_PIN,
         },
-        scopes: { "./package/owlapi/": { example: EXISTING_MIRROR } },
+        scopes: {
+          "./package/owlapi/": { example: EXISTING_MIRROR },
+          "./provider/ga.jspm.io/": {
+            "/npm:example@1.0.0/index.js": EXISTING_MIRROR,
+            "/npm:other@2.0.0/index.js": NEW_MIRROR,
+          },
+        },
       };
       const expectedInventory = {
         schemaVersion: 1,
@@ -464,14 +536,14 @@ describe("browser-consumer preparation and publication", () => {
         modules: [
           {
             providerUrl: EXISTING,
-            localPath: EXISTING_MIRROR.slice(2),
+            localPath: EXISTING_FILE,
             integrity: REPLACEMENT_PIN,
             bytes: 26,
             sha256: sha256("export const answer = 43;\n"),
           },
           {
             providerUrl: NEW,
-            localPath: NEW_MIRROR.slice(2),
+            localPath: NEW_FILE,
             integrity: NEW_PIN,
             bytes: 11,
             sha256: sha256("export {};\n"),
@@ -504,7 +576,7 @@ describe("browser-consumer preparation and publication", () => {
           ).toEqual(expectedLocal);
           expect(existsSync(manifestPath)).toBe(false);
           expect(
-            readFileSync(join(runtimeDirectory, EXISTING_MIRROR), "utf8"),
+            readFileSync(join(runtimeDirectory, EXISTING_FILE), "utf8"),
           ).toBe("export const answer = 43;\n");
           renameSync(temporaryPath, destination);
           replaced = true;
@@ -529,8 +601,7 @@ describe("browser-consumer preparation and publication", () => {
           generatedSha256: sha256(expectedGenerated),
           provider: "jspm.io",
           providerModuleCount: 2,
-          reviewedPath:
-            "test/consumers/browser/import-map/reference-import-map.json",
+          reviewedPath: reviewedMapPath,
         },
       });
     });

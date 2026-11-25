@@ -2,6 +2,7 @@ import { createReadStream, existsSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join, resolve } from "node:path";
 
+import { providerPathForRequest } from "./reference-import-map-admission.mjs";
 import { isStrictDescendantPath } from "./release-file-utils.mjs";
 
 const CONTENT_TYPES = Object.freeze({
@@ -19,36 +20,42 @@ const modeRoot = (root, mode) =>
     ? join(root, mode, "runtime")
     : join(root, mode, "dist");
 
-// Provider mirror files already use encoded names. Other staged files retain
-// their filesystem names and are addressed by the decoded URL path.
 const resolveRequestPath = (root, requestUrl) => {
-  const url = new URL(requestUrl, "http://127.0.0.1");
-  let segments = url.pathname.split("/").filter(Boolean);
-  const mode = segments.shift();
-  if (!new Set(["bundler", "import-map", "worker"]).has(mode)) {
-    return undefined;
-  }
-  const provider = mode === "import-map" && segments[0] === "provider";
-  if (!provider) {
-    try {
-      segments = segments.map(decodeURIComponent);
-    } catch {
+  try {
+    const url = new URL(requestUrl, "http://127.0.0.1");
+    const [, mode, ...segments] = url.pathname.split("/");
+    if (!new Set(["bundler", "import-map", "worker"]).has(mode)) {
       return undefined;
     }
-    if (segments.some((segment) => /[/%\\\p{Cc}]/u.test(segment)))
-      return undefined;
+    const requestedPath = segments.join("/") || "index.html";
+    let localPath;
+    if (mode === "import-map" && segments[0] === "provider") {
+      // Retain the browser URL exactly, including the query on a relative
+      // import, and resolve it to the admitted provider's encoded disk name.
+      localPath = providerPathForRequest(requestedPath, url.search);
+    } else {
+      const decoded = segments.map(decodeURIComponent);
+      if (
+        decoded.some(
+          (segment) =>
+            /[/%\\\p{Cc}]/u.test(segment) ||
+            (process.platform === "win32" && /[:<>"|?*]/u.test(segment)),
+        )
+      )
+        return undefined;
+      localPath = decoded.join("/") || "index.html";
+    }
+    const base = resolve(modeRoot(root, mode));
+    const path = resolve(base, localPath);
+    if (!isStrictDescendantPath(base, path)) return undefined;
+    return {
+      path,
+      contentType:
+        CONTENT_TYPES[extname(requestedPath)] ?? "application/octet-stream",
+    };
+  } catch {
+    return undefined;
   }
-  const base = resolve(modeRoot(root, mode));
-  const path = resolve(base, segments.join("/") || "index.html");
-  if (!isStrictDescendantPath(base, path)) return undefined;
-  const contentPath = provider
-    ? path.replace(/\.__query-[a-f0-9]{64}$/u, "")
-    : path;
-  return {
-    path,
-    contentType:
-      CONTENT_TYPES[extname(contentPath)] ?? "application/octet-stream",
-  };
 };
 
 export const startBrowserFixtureServer = async ({ root, port = 0 }) => {

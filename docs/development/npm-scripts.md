@@ -3,6 +3,54 @@
 Run these commands from the checkout root after [setting up the development tools](../../CONTRIBUTING.md#set-up-the-development-tools).
 The [package manifest](../../package.json) defines each command.
 
+## Qualify browser consumers
+
+Build or admit one exact candidate, prepare it into a fresh local directory, and run all three engines against that fixture.
+Add `--project chromium`, `--project firefox`, or `--project webkit` to select an individual engine when the other receipts already cover the same candidate.
+
+```text
+npm run build:release-candidate -- --output <candidate-directory>
+npm run prepare:browser-consumers -- --candidate <candidate-directory> --output <fresh-fixture-directory>
+npm run test:browser -- --fixture-root <fresh-fixture-directory>
+```
+
+Preparation checks the tarball SHA-256 before installing it.
+It verifies each traced JSPM module against the tracked reference map's SHA-384 pin and injects those pins at the local mirror URLs.
+`browser-consumer-manifest.json` records the tarball, the exact generated map's SHA-256 and `referenceImportMap.integrityScope` as `provider-only`.
+Read a historical manifest with its producing revision and original map to establish its integrity scope.
+
+Retain the candidate manifest and tarball digest, browser-consumer manifest, generated and local maps, injected `index.html`, provider inventory and verified mirror archive with the browser receipts.
+Record the producing commit and runner identity.
+Include the job and attempt identities for hosted receipts.
+Combine receipts only after confirming that they cover the same revision and admitted candidate and that the required originals are retained.
+The [browser integrity decision](../adr/0014-browser-provider-integrity.md) and [§2.46](../implementation-plan.md#246-decision-use-jspm-only-as-the-exact-pinned-reference-import-map-tool-and-provider) govern qualification.
+
+### Refresh the reviewed map
+
+Hold single-writer checkout custody.
+Start with the approved [reviewed map](../../test/consumers/browser/import-map/reference-import-map.json).
+Restore that exact revision if the file is missing.
+Run the named preparation command with `--write-reviewed-map` and a fresh output directory, then review the resulting graph and provider pin diff.
+
+For a changed digest at an existing provider URL, independently authenticate the exact new bytes and obtain the maintainer's approval before refreshing.
+Use a separately authenticated provider attestation or an exact reproduction from authenticated inputs and the provider transformation.
+Pass `--approved-provider-pin-changes <file>` with `--write-reviewed-map`.
+The JSON record must contain both of these fields.
+
+- `startingMapSha256` is the lowercase SHA-256 of the starting reviewed file's exact bytes.
+- `replacements` is an array with exactly one entry for each changed digest at an existing URL.
+  Each entry contains `url`, `previousIntegrity`, `replacementIntegrity`, `evidenceReference` and `decisionReference`.
+
+Retain the approval record and the referenced evidence and maintainer decision with the new candidate.
+Once the revision is reviewed, qualify the exact candidate afresh in Chromium, Firefox and WebKit.
+
+Preparation stages and verifies the fixture before replacing the tracked map.
+Use both the successful command receipt and complete manifest as evidence of preparation.
+If the command stops before replacement, keep the starting map and retry with a fresh output directory.
+If it stops after replacement, compare the tracked bytes with `reference-import-map.generated.json` from the interrupted attempt before treating the draft as reviewed.
+Preserve the attempt evidence and qualify through the ordinary reviewed-revision route.
+If the tracked bytes match neither the starting map nor the staged generated map, retain the attempt and investigate the competing change before retrying.
+
 ## Check and format files
 
 | To do this                       | Run this                                                              |

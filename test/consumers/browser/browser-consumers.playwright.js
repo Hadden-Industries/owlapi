@@ -199,15 +199,14 @@ for (const mode of ["bundler", "import-map"]) {
       await expect(inlineMap).toHaveCount(1);
       const { integrity } = JSON.parse(await inlineMap.textContent());
       expect(Object.keys(reviewed.integrity).length).toBeGreaterThan(0);
-      expect(Object.values(integrity).sort()).toEqual(
-        Object.values(reviewed.integrity).sort(),
+      const expected = Object.fromEntries(
+        Object.entries(reviewed.integrity).map(([url, pin]) => {
+          const provider = "https://ga.jspm.io/";
+          expect(url.startsWith(provider)).toBe(true);
+          return [`./provider/ga.jspm.io/${url.slice(provider.length)}`, pin];
+        }),
       );
-      for (const key of Object.keys(integrity)) {
-        expect(key).toMatch(/^\.\/provider\/ga\.jspm\.io\//u);
-        expect(new URL(key, page.url()).href).toMatch(
-          `${BASE_URL}/import-map/provider/ga.jspm.io/`,
-        );
-      }
+      expect(integrity).toEqual(expected);
     }
   });
 }

@@ -1,8 +1,9 @@
+import { readFileSync } from "node:fs";
+import { openJsonSourceSession } from "@hadden-industries/json-quality";
 import {
   assertSha384Integrity,
   toLocalProviderPath,
 } from "./reference-import-map-admission.mjs";
-import { readJson } from "./reference-import-map.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 
 const hasFields = (object, fields) =>
@@ -17,8 +18,48 @@ const validReference = (value) =>
   value.trim().length > 0 &&
   !/\p{Cc}/u.test(value);
 
+// Validate the same captured bytes that are parsed below. JSON.parse alone
+// collapses duplicate decoded member names in a maintainer's approval record.
+const readApproval = async (path) => {
+  const bytes = readFileSync(path);
+  const session = await openJsonSourceSession();
+  try {
+    const source = {
+      async *open() {
+        for (let offset = 0; offset < bytes.length; offset += 65536) {
+          yield bytes.subarray(offset, offset + 65536);
+        }
+      },
+    };
+    let terminal;
+    for await (const event of session.check(
+      source,
+      {
+        formatContract: "preserved-bytes",
+        normalization: "preserve",
+        expected: {
+          sha256: sha256Buffer(bytes),
+          byteLength: String(bytes.length),
+          diagnostics: [],
+        },
+      },
+      { retainValues: false },
+    )) {
+      if (event.ruleId === "json/no-duplicate-keys") {
+        throw new Error("Duplicate member in provider pin approval record");
+      }
+      if (event.type === "terminal") terminal = event;
+    }
+    if (!terminal?.contractSatisfied)
+      throw new Error("Malformed provider pin approval record");
+    return JSON.parse(bytes.toString("utf8"));
+  } finally {
+    await session.close();
+  }
+};
+
 /** Authorize each changed existing URL against the exact starting reviewed bytes. */
-export const assertApprovedProviderPinChanges = ({
+export const assertApprovedProviderPinChanges = async ({
   startingBytes,
   startingPins,
   generatedPins,
@@ -32,7 +73,7 @@ export const assertApprovedProviderPinChanges = ({
   );
   const errors = [];
   if (approvalPath !== undefined) {
-    const approval = readJson(approvalPath);
+    const approval = await readApproval(approvalPath);
     if (
       !hasFields(approval, ["startingMapSha256", "replacements"]) ||
       !Array.isArray(approval.replacements) ||

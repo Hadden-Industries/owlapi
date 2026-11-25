@@ -15,7 +15,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, dirname, join } from "node:path";
+import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { build } from "vite";
@@ -168,6 +168,35 @@ const stageBrowserConsumerFixtures = async (options) => {
       "Run browser-consumer preparation through its named npm script so the accepted local npm CLI is authoritative.",
     );
   }
+  const fixtures = Object.fromEntries(
+    MODES.map((mode) => [mode, installFixture({ ...options, mode })]),
+  );
+  for (const mode of ["bundler", "worker"]) {
+    const { directory } = fixtures[mode];
+    await build({
+      base: "./",
+      root: directory,
+      logLevel: "info",
+      worker: { format: "es" },
+      build: { emptyOutDir: true, outDir: join(directory, "dist") },
+    });
+  }
+  return fixtures["import-map"];
+};
+
+// Bind all three npm installs to one verified copy even if the external
+// retained tarball path changes after admission.
+const stageAdmittedCandidate = async ({
+  candidateDirectory,
+  candidateManifest,
+  outputDirectory,
+  npmCli,
+  stageFixtures,
+}) => {
+  const { fileName, sha256 } = candidateManifest.tarball;
+  if (basename(fileName) !== fileName || !fileName.endsWith(".tgz")) {
+    throw new Error("Candidate tarball must be a .tgz basename");
+  }
   const temporaryRoot = mkdtempSync(
     join(tmpdir(), "owlapi-browser-consumers-"),
   );
@@ -177,25 +206,22 @@ const stageBrowserConsumerFixtures = async (options) => {
     );
   }
   try {
-    const fixtures = Object.fromEntries(
-      MODES.map((mode) => [
-        mode,
-        installFixture({ ...options, mode, temporaryRoot }),
-      ]),
-    );
-    for (const mode of ["bundler", "worker"]) {
-      const { directory } = fixtures[mode];
-      await build({
-        base: "./",
-        root: directory,
-        logLevel: "info",
-        worker: { format: "es" },
-        build: { emptyOutDir: true, outDir: join(directory, "dist") },
-      });
+    const tarballPath = join(temporaryRoot, fileName);
+    copyFileSync(join(candidateDirectory, fileName), tarballPath);
+    if (sha256File(tarballPath) !== sha256) {
+      throw new Error(
+        "Retained candidate tarball no longer matches its manifest",
+      );
     }
-    return fixtures["import-map"];
+    mkdirSync(outputDirectory, { recursive: true });
+    return await stageFixtures({
+      candidateManifest,
+      outputDirectory,
+      tarballPath,
+      npmCli,
+      temporaryRoot,
+    });
   } finally {
-    // Only the unique temporary npm-cache root is eligible for recursive cleanup.
     rmSync(temporaryRoot, { recursive: true, force: true });
   }
 };
@@ -262,22 +288,14 @@ export const prepareBrowserConsumers = async ({
     join(candidateDirectory, "candidate-manifest.json"),
   );
   assertPackageIdentity(candidateManifest.package);
-  const { fileName, sha256 } = candidateManifest.tarball;
-  if (basename(fileName) !== fileName)
-    throw new Error("Candidate tarball must be a basename");
-  const tarballPath = join(candidateDirectory, fileName);
-  if (sha256File(tarballPath) !== sha256) {
-    throw new Error(
-      "Retained candidate tarball no longer matches its manifest",
-    );
-  }
-  mkdirSync(outputDirectory, { recursive: true });
-  const { directory, packageRoot, fixtureModules } = await stageFixtures({
-    candidateManifest,
-    outputDirectory,
-    tarballPath,
-    npmCli,
-  });
+  const { directory, packageRoot, fixtureModules } =
+    await stageAdmittedCandidate({
+      candidateDirectory,
+      candidateManifest,
+      outputDirectory,
+      npmCli,
+      stageFixtures,
+    });
   const generatedMap = await generateReferenceImportMap({
     applicationPath: join(directory, "main.js"),
     packageRoot,
@@ -286,7 +304,7 @@ export const prepareBrowserConsumers = async ({
   });
   const generatedMapText = stableJson(generatedMap);
   if (writeReviewedMap) {
-    assertApprovedProviderPinChanges({
+    await assertApprovedProviderPinChanges({
       startingBytes,
       startingPins: reviewedMap.integrity,
       generatedPins: generatedMap.integrity,
@@ -358,8 +376,9 @@ export const prepareBrowserConsumers = async ({
       integrityScope: "provider-only",
       provider: "jspm.io",
       providerModuleCount: inventory.length,
-      reviewedPath:
-        "test/consumers/browser/import-map/reference-import-map.json",
+      reviewedPath: isStrictDescendantPath(REPOSITORY_ROOT, reviewedMapPath)
+        ? relative(REPOSITORY_ROOT, reviewedMapPath).split(sep).join("/")
+        : resolve(reviewedMapPath),
     },
   });
   if (writeReviewedMap) {
