@@ -72,6 +72,32 @@ const fixture = async (run) => {
 };
 
 describe("native dependency graph contract", () => {
+  test("records the reviewed map as an input and atomic refresh output of the named browser command", () => {
+    const command = "scripts/prepare-browser-consumers.mjs";
+    const map = "test/consumers/browser/import-map/reference-import-map.json";
+    const { relationships } = observeFileDependencies(
+      [command],
+      (source) =>
+        source === command
+          ? readFileSync(
+              new URL("./prepare-browser-consumers.mjs", import.meta.url),
+              "utf8",
+            )
+          : null,
+      new Set([command, map]),
+    );
+    expect(relationships).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ from: command, to: map, kind: "reads-file" }),
+        expect.objectContaining({
+          from: map,
+          to: command,
+          kind: "generated-by",
+        }),
+      ]),
+    );
+  });
+
   test(
     "follows inputs, generated worker outputs and job-scoped reports in the same graph",
     async () =>

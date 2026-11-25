@@ -392,6 +392,17 @@ function parseAccesses(source, text, linter) {
       );
     }
     if (
+      module === "scripts/browser-consumer-preparation.mjs" &&
+      name === "prepareBrowserConsumers"
+    ) {
+      // Preparation always reads this path. Refresh mode atomically replaces it.
+      const reviewedMap = evaluate(
+        propertyValue(node.arguments[0], "reviewedMapPath"),
+      );
+      record("reads-file", reviewedMap, node);
+      record("writes-file", reviewedMap, node);
+    }
+    if (
       module === "util/owlapi-reference/run-import-closure-contract.mjs" &&
       name === "compileOntologyReferenceOracles"
     ) {

@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 
 const BASE_URL = process.env.OWLAPI_BROWSER_BASE_URL;
@@ -187,6 +188,27 @@ for (const mode of ["bundler", "import-map"]) {
     page,
   }) => {
     await runConsumer(page, mode);
+    if (mode === "import-map") {
+      const reviewed = JSON.parse(
+        readFileSync(
+          new URL("./import-map/reference-import-map.json", import.meta.url),
+          "utf8",
+        ),
+      );
+      const inlineMap = page.locator('script[type="importmap"]');
+      await expect(inlineMap).toHaveCount(1);
+      const { integrity } = JSON.parse(await inlineMap.textContent());
+      expect(Object.keys(reviewed.integrity).length).toBeGreaterThan(0);
+      expect(Object.values(integrity).sort()).toEqual(
+        Object.values(reviewed.integrity).sort(),
+      );
+      for (const key of Object.keys(integrity)) {
+        expect(key).toMatch(/^\.\/provider\/ga\.jspm\.io\//u);
+        expect(new URL(key, page.url()).href).toMatch(
+          `${BASE_URL}/import-map/provider/ga.jspm.io/`,
+        );
+      }
+    }
   });
 }
 

@@ -269,6 +269,45 @@ describe("reference import-map evidence", () => {
     );
   });
 
+  it("refuses nested installed dependencies and fixture aliases to dependency directories", async () => {
+    await withLocalGraph(
+      async (fixture) => {
+        const nested = join(
+          fixture.packageRoot,
+          "internal",
+          "node_modules",
+          "nested",
+        );
+        mkdirSync(nested, { recursive: true });
+        writeFileSync(join(nested, "index.js"), "export {};\n");
+        await expect(
+          traceFixture(fixture, (map) => {
+            map.imports.dependency =
+              "../node_modules/owlapi/internal/node_modules/nested/index.js";
+          }),
+        ).rejects.toThrow(/Unclassified local reference map URL/u);
+        await expect(
+          traceFixture(fixture, (map) => {
+            map.scopes["../node_modules/owlapi/internal/node_modules/nested/"] =
+              {};
+          }),
+        ).rejects.toThrow(/Unclassified local reference map URL/u);
+
+        const sibling = join(fixture.app, "node_modules", "sibling");
+        mkdirSync(sibling, { recursive: true });
+        writeFileSync(join(sibling, "index.js"), "export {};\n");
+        symlinkSync(sibling, join(fixture.app, "alias"), "junction");
+        await expect(
+          generateReferenceImportMap({
+            ...fixture,
+            fixtureModules: ["main.js", "exercise.js", "alias/index.js"],
+          }),
+        ).rejects.toThrow(/Invalid staged fixture module/u);
+      },
+      { rebased: true },
+    );
+  });
+
   it("refuses hydration redirects at the request boundary and writes no refused bytes", async () => {
     const writes = [];
     let redirectMode;

@@ -1,344 +1,39 @@
-import { spawnSync } from "node:child_process";
-import {
-  copyFileSync,
-  cpSync,
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
-import { tmpdir } from "node:os";
-import { basename, join, resolve } from "node:path";
+import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseArgs } from "node:util";
 
-import { build } from "vite";
-import { documentationExampleModules } from "./documentation-examples.mjs";
-import { README_EXAMPLE_IDS } from "./release-documentation.mjs";
+import { prepareBrowserConsumers } from "./browser-consumer-preparation.mjs";
 
-import {
-  hydrateReferenceImportMap,
-  generateReferenceImportMap,
-  readJson,
-  stableJson,
-  writeJson,
-} from "./reference-import-map.mjs";
-import {
-  isStrictDescendantPath,
-  sha256Buffer,
-  sha256File,
-} from "./release-file-utils.mjs";
-
-const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
-const FIXTURE_SOURCE_ROOT = join(
-  REPOSITORY_ROOT,
+const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
+const reviewedMapPath = join(
+  repositoryRoot,
   "test",
   "consumers",
   "browser",
-);
-const SHARED_EXERCISE_PATH = join(
-  FIXTURE_SOURCE_ROOT,
-  "_shared",
-  "exercise-package.js",
-);
-const REVIEWED_MAP_PATH = join(
-  FIXTURE_SOURCE_ROOT,
   "import-map",
   "reference-import-map.json",
 );
-const MODES = Object.freeze(["bundler", "import-map", "worker"]);
 
-const argumentValue = (name) => {
-  const index = process.argv.indexOf(name);
-  if (index === -1 || !process.argv[index + 1]) {
-    throw new Error(`Missing required ${name} argument`);
-  }
-  return process.argv[index + 1];
-};
-
-const candidateDirectory = resolve(argumentValue("--candidate"));
-const outputDirectory = resolve(argumentValue("--output"));
-const writeReviewedMap = process.argv.includes("--write-reviewed-map");
-
-if (existsSync(outputDirectory) && readdirSync(outputDirectory).length > 0) {
+const { values } = parseArgs({
+  options: {
+    candidate: { type: "string" },
+    output: { type: "string" },
+    "write-reviewed-map": { type: "boolean" },
+    "approved-provider-pin-changes": { type: "string" },
+  },
+});
+if (!values.candidate || !values.output) {
   throw new Error(
-    `Browser-consumer output already exists at ${outputDirectory}; preserve or remove it explicitly before rebuilding.`,
+    "Browser-consumer preparation requires --candidate and --output",
   );
 }
-mkdirSync(outputDirectory, { recursive: true });
-
-const npmCli = process.env.npm_execpath;
-if (!npmCli) {
-  throw new Error(
-    "Run browser-consumer preparation through its named npm script so the accepted local npm CLI is authoritative.",
-  );
-}
-
-const candidateManifest = readJson(
-  join(candidateDirectory, "candidate-manifest.json"),
-);
-const tarballPath = join(
-  candidateDirectory,
-  candidateManifest.tarball.fileName,
-);
-if (sha256File(tarballPath) !== candidateManifest.tarball.sha256) {
-  throw new Error("Retained candidate tarball no longer matches its manifest");
-}
-
-const temporaryRoot = mkdtempSync(join(tmpdir(), "owlapi-browser-consumers-"));
-if (!isStrictDescendantPath(tmpdir(), temporaryRoot)) {
-  throw new Error(`Refusing to use unexpected temporary path ${temporaryRoot}`);
-}
-
-const runNpm = (arguments_, cwd, cacheDirectory) => {
-  const result = spawnSync(process.execPath, [npmCli, ...arguments_], {
-    cwd,
-    encoding: "utf8",
-    env: { ...process.env, npm_config_cache: cacheDirectory },
-    maxBuffer: 128 * 1024 * 1024,
-  });
-  if (result.status !== 0) {
-    throw new Error(
-      `npm ${arguments_.join(" ")} failed in ${cwd}:\n${result.stdout}${result.stderr}`,
-    );
-  }
-};
-
-const installFixture = (mode) => {
-  const fixtureDirectory = join(outputDirectory, mode);
-  cpSync(join(FIXTURE_SOURCE_ROOT, mode), fixtureDirectory, {
-    recursive: true,
-  });
-  copyFileSync(
-    join(REPOSITORY_ROOT, "scripts", "canonical-json.mjs"),
-    join(fixtureDirectory, "json-identity.mjs"),
-  );
-  copyFileSync(
-    SHARED_EXERCISE_PATH,
-    join(fixtureDirectory, "exercise-package.js"),
-  );
-  copyFileSync(
-    join(REPOSITORY_ROOT, "test", "import-closure", "public-contract.js"),
-    join(fixtureDirectory, "public-contract.js"),
-  );
-  copyFileSync(
-    join(REPOSITORY_ROOT, "test", "import-closure", "rc2-public-contract.js"),
-    join(fixtureDirectory, "rc2-public-contract.js"),
-  );
-  for (const name of [
-    "public-model-cases.js",
-    "public-model-probes.js",
-    "acquisition-contracts.js",
-    "writer-configuration.js",
-  ])
-    copyFileSync(
-      join(REPOSITORY_ROOT, "test", "consumers", "owl-contract", name),
-      join(fixtureDirectory, name),
-    );
-  const closureDocuments = Object.fromEntries(
-    ["root", "left", "right", "leaf"].map((name) => [
-      name,
-      readFileSync(
-        join(
-          REPOSITORY_ROOT,
-          "test",
-          "import-closure",
-          "fixtures",
-          "closure",
-          `${name}.ofn`,
-        ),
-        "utf8",
-      ),
-    ]),
-  );
-  writeFileSync(
-    join(fixtureDirectory, "import-closure-documents.js"),
-    `export default ${JSON.stringify(closureDocuments)};\n`,
-    "utf8",
-  );
-  writeFileSync(
-    join(fixtureDirectory, "package.json"),
-    stableJson({
-      name: `owlapi-browser-${mode}-consumer`,
-      version: "0.0.0",
-      private: true,
-      type: "module",
-      dependencies: {
-        owlapi: `file:${tarballPath.replaceAll("\\", "/")}`,
-      },
-    }),
-    "utf8",
-  );
-  runNpm(
-    [
-      "install",
-      "--ignore-scripts",
-      "--package-lock=false",
-      "--no-audit",
-      "--no-fund",
-    ],
-    fixtureDirectory,
-    join(temporaryRoot, `${mode}-npm-cache`),
-  );
-
-  const installedManifest = readJson(
-    join(fixtureDirectory, "node_modules", "owlapi", "package.json"),
-  );
-  if (
-    installedManifest.name !== candidateManifest.package.name ||
-    installedManifest.version !== candidateManifest.package.version
-  ) {
-    throw new Error(
-      `The ${mode} fixture installed an unexpected package identity`,
-    );
-  }
-  const examples = documentationExampleModules(
-    readFileSync(
-      join(fixtureDirectory, "node_modules", "owlapi", "README.md"),
-      "utf8",
-    ),
-  );
-  for (const [id, source] of Object.entries(examples))
-    writeFileSync(join(fixtureDirectory, `readme-${id}.js`), source);
-  writeFileSync(
-    join(fixtureDirectory, "exercise-documentation.js"),
-    `${Object.keys(examples)
-      .map(
-        (id, index) =>
-          `import { exercise as example${index} } from "./readme-${id}.js";`,
-      )
-      .join(
-        "\n",
-      )}\nexport async function exerciseDocumentation() { ${Object.keys(
-      examples,
-    )
-      .map((_, index) => `await example${index}();`)
-      .join(" ")} return { examples: ${Object.keys(examples).length} }; }\n`,
-  );
-  return fixtureDirectory;
-};
-
-try {
-  const fixtureDirectories = Object.fromEntries(
-    MODES.map((mode) => [mode, installFixture(mode)]),
-  );
-
-  for (const mode of ["bundler", "worker"]) {
-    await build({
-      base: "./",
-      root: fixtureDirectories[mode],
-      logLevel: "info",
-      worker: { format: "es" },
-      build: {
-        emptyOutDir: true,
-        outDir: join(fixtureDirectories[mode], "dist"),
-      },
-    });
-  }
-
-  const importMapDirectory = fixtureDirectories["import-map"];
-  const generatedMap = await generateReferenceImportMap({
-    applicationPath: join(importMapDirectory, "main.js"),
-    packageRoot: join(importMapDirectory, "node_modules", "owlapi"),
-  });
-  const generatedMapText = stableJson(generatedMap);
-  if (writeReviewedMap) {
-    writeFileSync(REVIEWED_MAP_PATH, generatedMapText, "utf8");
-  } else if (
-    !existsSync(REVIEWED_MAP_PATH) ||
-    stableJson(readJson(REVIEWED_MAP_PATH)) !== generatedMapText
-  ) {
-    throw new Error(
-      "Generated reference import map differs from the committed reviewed map",
-    );
-  }
-
-  const runtimeDirectory = join(importMapDirectory, "runtime");
-  mkdirSync(runtimeDirectory, { recursive: true });
-  copyFileSync(
-    join(importMapDirectory, "main.js"),
-    join(runtimeDirectory, "main.js"),
-  );
-  copyFileSync(
-    join(importMapDirectory, "exercise-package.js"),
-    join(runtimeDirectory, "exercise-package.js"),
-  );
-  for (const fileName of [
-    "exercise-documentation.js",
-    ...README_EXAMPLE_IDS.map((id) => `readme-${id}.js`),
-    "json-identity.mjs",
-    "public-contract.js",
-    "rc2-public-contract.js",
-    "import-closure-documents.js",
-    "public-model-cases.js",
-    "public-model-probes.js",
-    "acquisition-contracts.js",
-    "writer-configuration.js",
-  ]) {
-    copyFileSync(
-      join(importMapDirectory, fileName),
-      join(runtimeDirectory, fileName),
-    );
-  }
-  cpSync(
-    join(importMapDirectory, "node_modules", "owlapi"),
-    join(runtimeDirectory, "package", "owlapi"),
-    { recursive: true },
-  );
-
-  const { inventory, localMap } = await hydrateReferenceImportMap({
-    map: generatedMap,
-    mirrorRoot: runtimeDirectory,
-  });
-  writeJson(
-    join(importMapDirectory, "reference-import-map.generated.json"),
-    generatedMap,
-  );
-  writeJson(join(importMapDirectory, "provider-inventory.json"), {
-    schemaVersion: 1,
-    provider: "jspm.io",
-    conditions: ["production", "browser", "module"],
-    modules: inventory,
-  });
-  writeJson(
-    join(runtimeDirectory, "reference-import-map.local.json"),
-    localMap,
-  );
-
-  const html = readFileSync(join(importMapDirectory, "index.html"), "utf8");
-  const marker = "<!-- REFERENCE_IMPORT_MAP -->";
-  if (!html.includes(marker)) {
-    throw new Error("Import-map fixture is missing its injection marker");
-  }
-  const importMapElement = `<script type="importmap">\n${JSON.stringify(localMap, null, 2)}\n    </script>`;
-  writeFileSync(
-    join(runtimeDirectory, "index.html"),
-    html.replace(marker, importMapElement),
-    "utf8",
-  );
-
-  writeJson(join(outputDirectory, "browser-consumer-manifest.json"), {
-    schemaVersion: 1,
-    package: candidateManifest.package,
-    candidate: {
-      directory: basename(candidateDirectory),
-      tarball: candidateManifest.tarball,
-    },
-    consumers: MODES,
-    referenceImportMap: {
-      generatedSha256: sha256Buffer(Buffer.from(generatedMapText)),
-      provider: "jspm.io",
-      providerModuleCount: inventory.length,
-      reviewedPath:
-        "test/consumers/browser/import-map/reference-import-map.json",
-    },
-  });
-
-  process.stdout.write(`${outputDirectory}\n`);
-} finally {
-  // The only recursively removed path is the unique mkdtemp child validated
-  // above; retained candidate and browser evidence directories are untouched.
-  rmSync(temporaryRoot, { recursive: true, force: true });
-}
+const outputDirectory = resolve(values.output);
+await prepareBrowserConsumers({
+  candidateDirectory: resolve(values.candidate),
+  outputDirectory,
+  reviewedMapPath,
+  writeReviewedMap: values["write-reviewed-map"],
+  approvedProviderPinChangesPath: values["approved-provider-pin-changes"],
+  npmCli: process.env.npm_execpath,
+});
+process.stdout.write(`${outputDirectory}\n`);

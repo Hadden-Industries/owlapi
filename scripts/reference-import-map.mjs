@@ -134,63 +134,14 @@ export const verifySubresourceIntegrity = (bytes, integrity) => {
   );
 };
 
-const normalizeLocalPackageUrl = (url, packageUrl) => {
-  if (typeof url !== "string") {
-    return url;
-  }
-  const relativeNodeModulesPrefix = "./node_modules/owlapi/";
-  if (url.startsWith(relativeNodeModulesPrefix)) {
-    return `./package/owlapi/${url.slice(relativeNodeModulesPrefix.length)}`;
-  }
-  if (url.startsWith(packageUrl)) {
-    return `./package/owlapi/${url.slice(packageUrl.length)}`;
-  }
-  return url;
-};
-
-const normalizeGeneratedMap = (map, packageUrl) => ({
-  ...(map.imports
-    ? {
-        imports: Object.fromEntries(
-          Object.entries(map.imports).map(([key, value]) => [
-            key,
-            normalizeLocalPackageUrl(value, packageUrl),
-          ]),
-        ),
-      }
-    : {}),
-  ...(map.scopes
-    ? {
-        scopes: Object.fromEntries(
-          Object.entries(map.scopes).map(([scope, mappings]) => [
-            normalizeLocalPackageUrl(scope, packageUrl),
-            Object.fromEntries(
-              Object.entries(mappings).map(([key, value]) => [
-                key,
-                normalizeLocalPackageUrl(value, packageUrl),
-              ]),
-            ),
-          ]),
-        ),
-      }
-    : {}),
-  ...(map.integrity
-    ? {
-        integrity: Object.fromEntries(
-          Object.entries(map.integrity).map(([url, integrity]) => [
-            normalizeLocalPackageUrl(url, packageUrl),
-            integrity,
-          ]),
-        ),
-      }
-    : {}),
-});
-
-const linkReferenceMap = async ({
+/** Trace the staged package and fixture and return their provider-only reference map. */
+export const generateReferenceImportMap = async ({
   applicationPath,
   packageRoot,
+  fixtureModules,
   createGenerator = (options) => new Generator(options),
 }) => {
+  const application = resolve(applicationPath);
   const resolvedPackageRoot = resolve(packageRoot);
   assertPackageIdentity(
     JSON.parse(
@@ -198,8 +149,14 @@ const linkReferenceMap = async ({
     ),
   );
   const packageUrl = withTrailingSlash(pathToFileURL(resolvedPackageRoot).href);
+  const classify = generatedUrlClassifier({
+    applicationPath: application,
+    packageRoot: resolvedPackageRoot,
+    fixtureModules,
+  });
+  const mapUrl = pathToFileURL(application);
   const generator = createGenerator({
-    baseUrl: pathToFileURL(`${dirname(resolve(applicationPath))}${sep}`),
+    baseUrl: pathToFileURL(`${dirname(application)}${sep}`),
     cache: false,
     customResolver(specifier, parentUrl) {
       return resolveReferenceBrowserDependency({
@@ -215,51 +172,18 @@ const linkReferenceMap = async ({
     fetchRetries: 2,
     integrity: true,
     ignore: excludeNodeXmlParserFallback,
-    mapUrl: pathToFileURL(resolve(applicationPath)),
+    mapUrl,
     resolutions: { owlapi: packageUrl },
   });
 
-  const trace = await generator.link(
-    pathToFileURL(resolve(applicationPath)).href,
-  );
-  return { map: generator.getMap(), packageUrl, trace };
-};
-
-const requirePublicSpecifiers = (map) => {
+  const trace = await generator.link(mapUrl.href);
+  const map = projectGeneratedReferenceMap(generator.getMap(), trace, classify);
   for (const specifier of BROWSER_CONSUMER_SPECIFIERS) {
     if (!map.imports?.[specifier]) {
       throw new Error(`Generated reference map omits ${specifier}`);
     }
   }
-};
-
-/** Trace either the provider-only projection or the pre-cutover fixture map. */
-export const generateReferenceImportMap = async ({
-  applicationPath,
-  packageRoot,
-  fixtureModules,
-  createGenerator,
-}) => {
-  const application = resolve(applicationPath);
-  const installed = resolve(packageRoot);
-  const { map, packageUrl, trace } = await linkReferenceMap({
-    applicationPath: application,
-    packageRoot: installed,
-    createGenerator,
-  });
-  const projected = fixtureModules
-    ? projectGeneratedReferenceMap(
-        map,
-        trace,
-        generatedUrlClassifier({
-          applicationPath: application,
-          packageRoot: installed,
-          fixtureModules,
-        }),
-      )
-    : normalizeGeneratedMap(map, packageUrl);
-  requirePublicSpecifiers(projected);
-  return stableObject(projected);
+  return stableObject(map);
 };
 
 /** Mirror complete, admitted provider responses and preserve their expected SRI tokens. */
@@ -272,7 +196,7 @@ export const hydrateReferenceImportMap = async ({
 }) => {
   const resolvedMirrorRoot = resolve(mirrorRoot);
   const { localMap, modules } = planProviderMirror(
-    admitReviewedReferenceMap(map, { legacy: true }),
+    admitReviewedReferenceMap(map),
     resolvedMirrorRoot,
   );
   const inventory = [];

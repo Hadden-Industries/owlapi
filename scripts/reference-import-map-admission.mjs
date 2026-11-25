@@ -110,6 +110,8 @@ const withinScope = (root, path, scope) =>
   isStrictDescendantPath(root, path) || (scope && samePath(root, path));
 const fixtureNamespace = (name) =>
   !/^(?:node_modules|package|provider|runtime)(?:\/|$)/iu.test(name);
+const installedDependency = (name) =>
+  /(?:^|\/)node_modules(?:\/|$)/iu.test(name);
 
 /** Classify JSPM file URLs against the installed package and the exact runtime copy list. */
 export const generatedUrlClassifier = ({
@@ -131,6 +133,7 @@ export const generatedUrlClassifier = ({
       !isStrictDescendantPath(applicationRoot, path) ||
       !isStrictDescendantPath(realApplicationRoot, realPath) ||
       !fixtureNamespace(entry) ||
+      !fixtureNamespace(relativeUrlPath(realApplicationRoot, realPath)) ||
       !statSync(realPath).isFile()
     ) {
       throw new Error(`Invalid staged fixture module: ${name}`);
@@ -167,27 +170,38 @@ export const generatedUrlClassifier = ({
         : realPackageRoot;
       if (withinScope(localRoot, path, scope)) {
         const realPath = realpathSync(path);
+        const entry = relativeUrlPath(realPackageRoot, realPath);
         if (
           withinScope(realPackageRoot, realPath, scope) &&
+          !installedDependency(relativeUrlPath(localRoot, path)) &&
+          !installedDependency(entry) &&
           (scope
             ? statSync(realPath).isDirectory()
             : statSync(realPath).isFile())
         ) {
-          const entry = relativeUrlPath(realPackageRoot, realPath);
           result = {
             url: `${PACKAGE_PREFIX}${entry}${scope && entry ? "/" : ""}`,
           };
         }
-      } else if (withinScope(applicationRoot, path, scope)) {
-        const entry = relativeUrlPath(applicationRoot, path);
-        const realPath = realpathSync(path);
-        if (
-          scope
-            ? fixtureScopes.has(entry) &&
-              withinScope(realApplicationRoot, realPath, true)
-            : fixtures.has(entry) && samePath(fixtures.get(entry), realPath)
-        ) {
-          result = { url: `./${entry}${scope && entry ? "/" : ""}` };
+      } else {
+        const fixtureRoot = withinScope(applicationRoot, path, scope)
+          ? applicationRoot
+          : realApplicationRoot;
+        if (withinScope(fixtureRoot, path, scope)) {
+          const entry = relativeUrlPath(fixtureRoot, path);
+          if ((scope ? fixtureScopes : fixtures).has(entry)) {
+            const realPath = realpathSync(path);
+            if (
+              scope
+                ? withinScope(realApplicationRoot, realPath, true) &&
+                  fixtureNamespace(
+                    relativeUrlPath(realApplicationRoot, realPath),
+                  )
+                : samePath(fixtures.get(entry), realPath)
+            ) {
+              result = { url: `./${entry}${scope && entry ? "/" : ""}` };
+            }
+          }
         }
       }
       if (!result)
@@ -205,7 +219,9 @@ const reviewedUrlClassifier = (value, scope) => {
     const entry = segments.map(encodeURIComponent).join("/");
     if (
       value === `./${entry}${scope && entry ? "/" : ""}` &&
-      (value.startsWith(PACKAGE_PREFIX) || fixtureNamespace(entry)) &&
+      (value.startsWith(PACKAGE_PREFIX)
+        ? !installedDependency(entry)
+        : fixtureNamespace(entry)) &&
       (scope || entry)
     ) {
       return { url: value };
@@ -241,7 +257,7 @@ const checkCoverage = (required, available, message) => {
   if (missing.length) throw new Error(`${message}: ${missing.join(", ")}`);
 };
 
-const projectMap = (map, classify, { trace, localIntegrity }) => {
+const projectMap = (map, classify, trace) => {
   for (const [key] of entries(map, "root")) {
     if (!["imports", "scopes", "integrity"].includes(key)) {
       throw new Error(`Unknown reference map field: ${key}`);
@@ -278,7 +294,7 @@ const projectMap = (map, classify, { trace, localIntegrity }) => {
       const target = classify(value, false);
       assertSha384Integrity(digest, value);
       if (target.provider) pins.add(target.url);
-      else if (localIntegrity === "refuse")
+      else if (!trace)
         throw new Error(
           `First-party integrity is outside the reviewed pin scope: ${value}`,
         );
@@ -309,24 +325,21 @@ const projectMap = (map, classify, { trace, localIntegrity }) => {
     pins,
     "Reference provider targets without integrity pins",
   );
-  projected.integrity =
-    localIntegrity === "discard"
-      ? Object.fromEntries([...pins].map((url) => [url, integrity[url]]))
-      : integrity;
+  projected.integrity = Object.fromEntries(
+    [...pins].map((url) => [url, integrity[url]]),
+  );
   return projected;
 };
 
 /** Admit all generated URL positions and require the provider trace and pin set to agree. */
 export const projectGeneratedReferenceMap = (map, trace, classify) => {
   if (!trace) throw new Error("Missing JSPM dependency trace");
-  return projectMap(map, classify, { trace, localIntegrity: "discard" });
+  return projectMap(map, classify, trace);
 };
 
 /** Recheck the canonical URL and pin profile before a reviewed map can supply bytes. */
-export const admitReviewedReferenceMap = (map, { legacy = false } = {}) =>
-  projectMap(map, reviewedUrlClassifier, {
-    localIntegrity: legacy ? "keep" : "refuse",
-  });
+export const admitReviewedReferenceMap = (map) =>
+  projectMap(map, reviewedUrlClassifier);
 
 /** Validate and rewrite only URL positions, before any provider fetch can write a file. */
 export const planProviderMirror = (map, runtimeRoot) => {
@@ -384,8 +397,10 @@ export const planProviderMirror = (map, runtimeRoot) => {
       ]),
     ),
   };
-  const modules = Object.entries(map.integrity)
-    .filter(([url]) => url.startsWith(`${PROVIDER_ORIGIN}/`))
-    .map(([url, integrity]) => ({ url, integrity, localPath: paths.get(url) }));
+  const modules = Object.entries(map.integrity).map(([url, integrity]) => ({
+    url,
+    integrity,
+    localPath: paths.get(url),
+  }));
   return { localMap, modules };
 };

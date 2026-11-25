@@ -1379,7 +1379,7 @@ The import map belongs to the application because its base URL, CSP, hosting lay
 `owlapi` therefore supplies a generated, tested reference example but does not install a global map, publish a universal map as package metadata, or introduce a sixth public subpath.
 The example is merged inline into the consuming document as required by the HTML import-map model.
 
-Phase 19 uses exact `@jspm/generator@2.16.3` under §2.46 as release/development tooling to trace static imports and statically analyzable literal `import()` calls from the packed package. Its provider is `jspm.io`, its environment is `production`/`browser`/`module`, and integrity metadata is mandatory. The exact generator version and development-dependency/configuration diff remain subject to the configuration approval in §17.26.1.
+Phase 19 uses the generator and lockfile selection in §2.46 to trace static imports and statically analyzable literal `import()` calls from the packed package. Its provider is `jspm.io`, its environment is `production`/`browser`/`module`, and SHA-384 integrity metadata is required for the provider closure. The exact generator version and development-dependency/configuration diff remain subject to the configuration approval in §17.26.1.
 Neither the generator nor provider is a production dependency or a URL hard-coded into package source.
 
 The reference path **MUST** prove the actual accepted capability surface rather than a reduced no-build edition.
@@ -2182,7 +2182,9 @@ No workflow follows `latest` or silently updates the release CLI.
 
 ### 2.46 Decision: use JSPM only as the exact-pinned reference import-map tool and provider
 
-Phase 19 **MUST** add exact `@jspm/generator@2.16.3` as a development dependency and configure the named reference-generation npm script with:
+The [25 November 2026 browser integrity amendment](adr/0014-browser-provider-integrity.md) binds first-party bytes at tarball admission and fixture source selection, limits map integrity to the provider closure and governs exact same-URL replacement approvals.
+
+Phase 19 **MUST** use the locked `@jspm/generator` development dependency (`2.18.0` at the amendment) and configure the named reference-generation npm script with:
 
 ```js
 {
@@ -2192,15 +2194,14 @@ Phase 19 **MUST** add exact `@jspm/generator@2.16.3` as a development dependency
 }
 ```
 
-The generator links the seven entry points from the unpacked retained `owlapi` tarball and traces their static and statically analyzable literal dynamic-import closure.
-`owlapi` itself therefore remains the locally inspected candidate; only browser-loadable third-party dependency resolutions use the provider.
-The checked reference map names all seven public specifiers, exact package versions, scopes where required and integrity metadata for every provider asset that can carry it.
+Preparation verifies the retained tarball's SHA-256 before installing it and checks the installed package identity. The generator links the browser fixture and public entry points from that installation and traces their static and statically analyzable literal dynamic-import closure.
+The checked reference map names the browser public specifiers, exact package versions and scopes where required. Its SHA-384 pins cover the JSPM module URLs in the trace, including relative transitive imports. Preparation admits local targets and scopes against the installed package and the explicit staging list. Tarball admission and the producing revision identify the first-party inputs.
 It uses documented upstream browser ESM entry points where available.
 Generation fails on a floating version, missing public root, unresolved lazy import, unresolved CommonJS/UMD execution at browser runtime or integrity omission.
 An audited provider conversion of a private CommonJS dependency is permitted only when the converted module and every introduced shim are explicit members of the governed closure rather than hidden runtime behavior.
 
 The repository commits the small version-specific reference map and generator configuration, not downloaded provider modules or a package-owned universal map.
-The required Playwright job hydrates the exact resolved module closure, checks every response against the generated integrity metadata and creates an ephemeral, mechanically equivalent local mirror/map for Chromium, Firefox and WebKit.
+The required Playwright route compares the full projected map with the checked reference map and checks each unredirected HTTP 200 provider response against the reviewed SHA-384 pin before mirroring it. It injects the provider pins at the corresponding mirror URLs. Chromium, Firefox and WebKit qualify the installed package through the native import map, bundler and worker.
 Mirroring does not perform another source transformation after the provider has supplied the governed ESM graph.
 The release gate inventories and reviews every provider conversion and shim exactly like any other third-party release input.
 
@@ -2217,7 +2218,7 @@ Provider module retrieval is application-directed code loading, not package tele
 
 No `es-module-shims`, import-map polyfill, CDN client or generated provider bundle enters the package runtime or tarball.
 A future change of generator or provider requires an exact configuration/dependency review, regenerated map, licence/security review, new evidence archive and the complete three-engine map suite.
-A provider byte or URL change for otherwise unchanged governed inputs is reported as drift and fails closed; it is never accepted by silently refreshing the checked map, integrity value or evidence archive.
+A provider byte or URL change for otherwise unchanged governed inputs fails routine preparation. An explicit refresh with a changed pin at an existing URL requires a one-to-one approval record bound to the starting map's SHA-256 and each exact old and new pin, supported by independently authenticated replacement bytes and a maintainer decision. Stage the evidence before atomically replacing the reviewed map and publish the success manifest last. Retain the approval and requalify the exact candidate in all three engines.
 
 ### 2.47 Decision: fix the SBOM and evidence-schema toolchain
 
@@ -7004,9 +7005,9 @@ Under §2.57, three separate `ubuntu-24.04` jobs each install only the selected 
 
 All three fixtures install the retained tarball as an ordinary dependency.
 They must not use a workspace, source alias, repository-relative package import or unexported path.
-The import-map fixture additionally uses `scripts/generate-reference-import-map.mjs` to trace the seven public roots and their static/literal-dynamic production closure with exact `@jspm/generator@2.16.3` and the §2.46 `jspm.io`/`production`+`browser`+`module`/integrity configuration. Link the six roots from the unpacked retained tarball and use the provider only for the browser-loadable external closure. Commit a human-reviewable version-pinned map example for the current package version, inject its JSON inline before the first dependent module, and make the generated-vs-reviewed comparison a package gate. Do not inject `es-module-shims`. Fail on an unpinned package URL, missing integrity metadata, an omitted public root, an unresolved lazy import, unresolved CommonJS/UMD semantics reaching browser execution, an unregistered provider conversion/shim, or a stale mapping.
+The import-map fixture uses `scripts/prepare-browser-consumers.mjs` to verify the retained tarball and trace the staged fixture and browser public roots with the locked §2.46 JSPM configuration. Commit a version-pinned reference map with the static and dynamic provider closure and its SHA-384 pins. Compare the generated projection with the reviewed map and inject the local mirror map inline before the first dependent module. Do not inject `es-module-shims`. Fail on an unclassified URL, inadequate provider pin coverage, an omitted public root, an unresolved lazy import, unresolved CommonJS/UMD semantics reaching browser execution, an unregistered provider conversion/shim, or a stale mapping.
 
-Before browser execution, hydrate every referenced provider module, validate its bytes against the generated integrity metadata and build the ephemeral local mirror/map required by §2.46 without an additional project-owned source transformation.
+Before browser execution, hydrate every traced provider module and verify its bytes against the reviewed integrity pins. Preserve the provider hashes at the mirror URLs in the injected map and retain the manifest, generated map, mirror inventory and browser receipts for the producing revision and tarball under §2.46.
 Run the native document test against that local mirror in every required engine.
 Establish one successful exact-candidate public-provider proof before publication; classify inability to establish it as `EXTERNAL_BLOCKED`.
 After that proof exists, report a later fresh public-URL health observation separately so a transient outage is neither a product failure nor a false availability guarantee.
