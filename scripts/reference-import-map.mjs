@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, relative, resolve, sep } from "node:path";
+import { dirname, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { Generator } from "@jspm/generator";
@@ -8,6 +8,14 @@ import {
   assertPackageIdentity,
   NODE_ONLY_PUBLIC_SUBPATHS,
 } from "./package-identity.mjs";
+import {
+  admitReviewedReferenceMap,
+  generatedUrlClassifier,
+  planProviderMirror,
+  projectGeneratedReferenceMap,
+} from "./reference-import-map-admission.mjs";
+
+export { toLocalProviderPath } from "./reference-import-map-admission.mjs";
 
 const repositoryManifest = JSON.parse(
   readFileSync(new URL("../package.json", import.meta.url), "utf8"),
@@ -104,42 +112,6 @@ export const resolveReferenceBrowserDependency = ({
   );
 };
 
-export const toLocalProviderPath = (providerUrl) => {
-  const url = new URL(providerUrl);
-  if (url.protocol !== "https:") {
-    throw new Error(`Reference provider URL must use HTTPS: ${providerUrl}`);
-  }
-  if (url.username || url.password || url.hash) {
-    throw new Error(
-      `Reference provider URL has unsupported URL data: ${providerUrl}`,
-    );
-  }
-  const querySuffix = url.search
-    ? `.__query-${createHash("sha256").update(url.search).digest("hex")}`
-    : "";
-  const path = url.pathname
-    .split("/")
-    .filter(Boolean)
-    .map((segment) => encodeURIComponent(decodeURIComponent(segment)))
-    .join("/");
-  return `provider/${url.hostname}/${path || "index.js"}${querySuffix}`;
-};
-
-const toLocalProviderScope = (providerUrl) => {
-  const url = new URL(providerUrl);
-  if (url.protocol !== "https:" || !providerUrl.endsWith("/")) {
-    throw new Error(
-      `Reference provider scope is not an HTTPS base: ${providerUrl}`,
-    );
-  }
-  const path = url.pathname
-    .split("/")
-    .filter(Boolean)
-    .map((segment) => encodeURIComponent(decodeURIComponent(segment)))
-    .join("/");
-  return `./provider/${url.hostname}/${path ? `${path}/` : ""}`;
-};
-
 export const verifySubresourceIntegrity = (bytes, integrity) => {
   const entries = integrity.trim().split(/\s+/u);
   if (entries.length === 0 || entries.includes("")) {
@@ -214,9 +186,10 @@ const normalizeGeneratedMap = (map, packageUrl) => ({
     : {}),
 });
 
-export const generateReferenceImportMap = async ({
+const linkReferenceMap = async ({
   applicationPath,
   packageRoot,
+  createGenerator = (options) => new Generator(options),
 }) => {
   const resolvedPackageRoot = resolve(packageRoot);
   assertPackageIdentity(
@@ -225,7 +198,7 @@ export const generateReferenceImportMap = async ({
     ),
   );
   const packageUrl = withTrailingSlash(pathToFileURL(resolvedPackageRoot).href);
-  const generator = new Generator({
+  const generator = createGenerator({
     baseUrl: pathToFileURL(`${dirname(resolve(applicationPath))}${sep}`),
     cache: false,
     customResolver(specifier, parentUrl) {
@@ -246,42 +219,50 @@ export const generateReferenceImportMap = async ({
     resolutions: { owlapi: packageUrl },
   });
 
-  await generator.link(pathToFileURL(resolve(applicationPath)).href);
-  const map = normalizeGeneratedMap(generator.getMap(), packageUrl);
+  const trace = await generator.link(
+    pathToFileURL(resolve(applicationPath)).href,
+  );
+  return { map: generator.getMap(), packageUrl, trace };
+};
 
+const requirePublicSpecifiers = (map) => {
   for (const specifier of BROWSER_CONSUMER_SPECIFIERS) {
     if (!map.imports?.[specifier]) {
       throw new Error(`Generated reference map omits ${specifier}`);
     }
   }
-  for (const [url, integrity] of Object.entries(map.integrity ?? {})) {
-    if (!integrity || (!url.startsWith("https://") && !url.startsWith("./"))) {
-      throw new Error(
-        `Generated reference map has invalid integrity for ${url}`,
-      );
-    }
-  }
-  return stableObject(map);
 };
 
-const rewriteMapUrls = (value, replacements) => {
-  if (typeof value === "string") {
-    return replacements.get(value) ?? value;
-  }
-  if (Array.isArray(value)) {
-    return value.map((entry) => rewriteMapUrls(entry, replacements));
-  }
-  if (!value || typeof value !== "object") {
-    return value;
-  }
-  return Object.fromEntries(
-    Object.entries(value).map(([key, entry]) => [
-      replacements.get(key) ?? key,
-      rewriteMapUrls(entry, replacements),
-    ]),
-  );
+/** Trace either the provider-only projection or the pre-cutover fixture map. */
+export const generateReferenceImportMap = async ({
+  applicationPath,
+  packageRoot,
+  fixtureModules,
+  createGenerator,
+}) => {
+  const application = resolve(applicationPath);
+  const installed = resolve(packageRoot);
+  const { map, packageUrl, trace } = await linkReferenceMap({
+    applicationPath: application,
+    packageRoot: installed,
+    createGenerator,
+  });
+  const projected = fixtureModules
+    ? projectGeneratedReferenceMap(
+        map,
+        trace,
+        generatedUrlClassifier({
+          applicationPath: application,
+          packageRoot: installed,
+          fixtureModules,
+        }),
+      )
+    : normalizeGeneratedMap(map, packageUrl);
+  requirePublicSpecifiers(projected);
+  return stableObject(projected);
 };
 
+/** Mirror complete, admitted provider responses and preserve their expected SRI tokens. */
 export const hydrateReferenceImportMap = async ({
   map,
   mirrorRoot,
@@ -290,84 +271,62 @@ export const hydrateReferenceImportMap = async ({
   writeImplementation = writeFileSync,
 }) => {
   const resolvedMirrorRoot = resolve(mirrorRoot);
-  const replacements = new Map();
-  const inventory = [];
-  const providerEntries = Object.entries(map.integrity ?? {}).filter(([url]) =>
-    url.startsWith("https://"),
+  const { localMap, modules } = planProviderMirror(
+    admitReviewedReferenceMap(map, { legacy: true }),
+    resolvedMirrorRoot,
   );
-
-  for (const scopeUrl of Object.keys(map.scopes ?? {})) {
-    if (!scopeUrl.startsWith("https://")) {
-      continue;
-    }
-    replacements.set(scopeUrl, toLocalProviderScope(scopeUrl));
-  }
-
-  for (const [providerUrl, integrity] of providerEntries) {
-    const localPath = toLocalProviderPath(providerUrl);
+  const inventory = [];
+  for (const { url: providerUrl, integrity, localPath } of modules) {
     const outputPath = resolve(resolvedMirrorRoot, localPath);
-    const outputRelativePath = relative(resolvedMirrorRoot, outputPath);
-    if (
-      outputRelativePath === "" ||
-      outputRelativePath === ".." ||
-      outputRelativePath.startsWith(`..${sep}`)
-    ) {
-      throw new Error(`Provider mirror path escaped its root: ${providerUrl}`);
+    let response;
+    try {
+      response = await fetchImplementation(providerUrl, {
+        headers: {
+          Accept: "application/javascript, text/javascript;q=0.9, */*;q=0.1",
+        },
+        redirect: "error",
+      });
+    } catch (cause) {
+      throw new Error(
+        `Reference provider request failed or refused a redirect for ${providerUrl}`,
+        { cause },
+      );
     }
-
-    const response = await fetchImplementation(providerUrl, {
-      headers: {
-        Accept: "application/javascript, text/javascript;q=0.9, */*;q=0.1",
-      },
-      redirect: "follow",
-    });
-    if (!response.ok || response.url !== providerUrl) {
+    if (
+      response.status !== 200 ||
+      response.redirected !== false ||
+      response.url !== providerUrl
+    ) {
       throw new Error(
         `Reference provider fetch failed or redirected for ${providerUrl}: ${response.status} ${response.url}`,
       );
     }
     const bytes = Buffer.from(await response.arrayBuffer());
-    verifySubresourceIntegrity(bytes, integrity);
+    try {
+      verifySubresourceIntegrity(bytes, integrity);
+    } catch (cause) {
+      const observed = `sha384-${createHash("sha384").update(bytes).digest("base64")}`;
+      throw new Error(
+        `Reference provider bytes do not match for ${providerUrl}. Expected ${integrity}, observed ${observed}`,
+        { cause },
+      );
+    }
     mkdirImplementation(dirname(outputPath), { recursive: true });
     writeImplementation(outputPath, bytes);
-    const browserPath = `./${localPath.replaceAll("\\", "/")}`;
-    replacements.set(providerUrl, browserPath);
     inventory.push({
       bytes: bytes.byteLength,
       integrity,
-      localPath: localPath.replaceAll("\\", "/"),
+      localPath,
       providerUrl,
       sha256: createHash("sha256").update(bytes).digest("hex"),
     });
-  }
-
-  const referencedProviderUrls = new Set();
-  const collectUrls = (value) => {
-    if (typeof value === "string" && value.startsWith("https://")) {
-      referencedProviderUrls.add(value);
-    } else if (value && typeof value === "object") {
-      for (const [key, entry] of Object.entries(value)) {
-        if (key.startsWith("https://")) {
-          referencedProviderUrls.add(key);
-        }
-        collectUrls(entry);
-      }
-    }
-  };
-  collectUrls(map);
-  for (const url of referencedProviderUrls) {
-    if (!replacements.has(url)) {
-      throw new Error(
-        `Reference provider URL lacks hydrated integrity evidence: ${url}`,
-      );
-    }
   }
 
   return {
     inventory: inventory.sort((left, right) =>
       compareCodeUnits(left.providerUrl, right.providerUrl),
     ),
-    localMap: stableObject(rewriteMapUrls(map, replacements)),
+    localMap: stableObject(localMap),
   };
 };
 
