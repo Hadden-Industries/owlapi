@@ -9,6 +9,9 @@ import { StringDocumentSource } from "../io/index.js";
 import { OWL2ELProfile } from "./owl2ELProfile.js";
 import { OWL2QLProfile } from "./owl2QLProfile.js";
 import { OWL2RLProfile } from "./owl2RLProfile.js";
+import { inspectProfileRules } from "../internal/profiles/profileRules.js";
+import { readOntologySnapshot } from "../model/owlOntology.js";
+import { defaultBehaviorProfileDefinition } from "../internal/behavior/ontologyBehaviorContext.js";
 
 const fixture = JSON.parse(
   readFileSync(
@@ -386,3 +389,132 @@ test.each(profiles)(
     );
   },
 );
+
+test("OWL2ELProfile succeeds under wrapped global Promise", async () => {
+  const manager = new OWLOntologyManager();
+  const el = profiles[0];
+  const ontology = await manager.loadOntologyFromOntologyDocument(
+    new StringDocumentSource(
+      `Prefix(:=<urn:profiles:>) Ontology(
+        Declaration(ObjectProperty(:p))
+        Declaration(ObjectProperty(:q))
+        Declaration(Class(:C))
+        SubObjectPropertyOf(ObjectPropertyChain(:p :q) :q)
+        ObjectPropertyRange(:q :C)
+      )`,
+      { format: "functional" },
+    ),
+  );
+  const OriginalPromise = globalThis.Promise;
+  globalThis.Promise = class WrappedPromise extends OriginalPromise {};
+  try {
+    const report = await el.checkOntology(ontology);
+    expect(report.isInProfile()).toBe(true);
+  } finally {
+    globalThis.Promise = OriginalPromise;
+  }
+});
+
+test("inspectProfileRules resumes EL range checks across cooperative Pass-2 yields and wrapped Promises", async () => {
+  const manager = new OWLOntologyManager();
+  const loadEl = async (body) =>
+    manager.loadOntologyFromOntologyDocument(
+      new StringDocumentSource(`Prefix(:=<urn:profiles:>) Ontology(${body})`, {
+        format: "functional",
+      }),
+    );
+  const policy = defaultBehaviorProfileDefinition.owlLanguageProfilePolicy;
+
+  const noChainOnt = await loadEl(`
+    Declaration(ObjectProperty(:p))
+    Declaration(Class(:C))
+    ObjectPropertyRange(:p :C)
+  `);
+  let noChainChecks = 0;
+  let noChainYields = 0;
+  const noChainViolations = [];
+  const noChainResult = inspectProfileRules(
+    "EL",
+    [],
+    [],
+    {
+      check() {},
+      depth() {},
+      shouldYield() {
+        noChainChecks += 1;
+        // Pass 1 calls shouldYield() 3 times (one per axiom); Pass 2 starts on check #4.
+        return noChainChecks >= 4;
+      },
+      async yieldTurn() {
+        noChainYields += 1;
+        await Promise.resolve();
+      },
+    },
+    (code, detail) => noChainViolations.push({ code, ...detail }),
+    policy,
+    {
+      skipNodes: true,
+      members: [{ scope: 0, snapshot: readOntologySnapshot(noChainOnt) }],
+      allTrusted: true,
+    },
+  );
+  await noChainResult;
+  expect(noChainYields).toBeGreaterThan(0);
+  expect(noChainViolations).toEqual([]);
+
+  const validChainOnt = await loadEl(`
+    Declaration(ObjectProperty(:p))
+    Declaration(ObjectProperty(:q))
+    Declaration(Class(:C))
+    SubObjectPropertyOf(ObjectPropertyChain(:p :q) :q)
+    ObjectPropertyRange(:q :C)
+  `);
+  const invalidChainOnt = await loadEl(`
+    Declaration(ObjectProperty(:p))
+    Declaration(ObjectProperty(:q))
+    Declaration(ObjectProperty(:r))
+    Declaration(Class(:C))
+    SubObjectPropertyOf(ObjectPropertyChain(:p :r) :q)
+    ObjectPropertyRange(:q :C)
+  `);
+  const OriginalPromise = globalThis.Promise;
+  globalThis.Promise = class WrappedPromise extends OriginalPromise {};
+  try {
+    for (const [ont, expectedViolations] of [
+      [validChainOnt, []],
+      [invalidChainOnt, ["EL_CHAIN_RANGE_NOT_IMPOSED_ON_LAST_PROPERTY"]],
+    ]) {
+      let yields = 0;
+      const violations = [];
+      const result = inspectProfileRules(
+        "EL",
+        [],
+        [],
+        {
+          check() {},
+          depth() {},
+          shouldYield() {
+            return true;
+          },
+          async yieldTurn() {
+            yields += 1;
+            await OriginalPromise.resolve();
+          },
+        },
+        (code, detail) => violations.push({ code, ...detail }),
+        policy,
+        {
+          skipNodes: true,
+          members: [{ scope: 0, snapshot: readOntologySnapshot(ont) }],
+          allTrusted: true,
+        },
+      );
+      expect(result).toBeDefined();
+      await result;
+      expect(yields).toBeGreaterThan(0);
+      expect(violations.map((v) => v.code)).toEqual(expectedViolations);
+    }
+  } finally {
+    globalThis.Promise = OriginalPromise;
+  }
+});

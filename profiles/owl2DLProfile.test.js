@@ -8,6 +8,13 @@ import {
   OWLObjectKind as K,
   StringDocumentSource,
 } from "../index.js";
+import { createProfileStepCursor } from "../internal/profiles/modelTraversal.js";
+import { inspectPropertyHierarchy } from "../internal/profiles/propertyHierarchy.js";
+import {
+  readOntologySnapshot,
+  readProfileClosure,
+} from "../model/owlOntology.js";
+import { defaultBehaviorProfileDefinition } from "../internal/behavior/ontologyBehaviorContext.js";
 
 const profile = new OWL2DLProfile();
 const prefix = "Prefix(:=<urn:profile:>) ";
@@ -577,3 +584,106 @@ test.each([{ timeoutMs: 0 }, { maxDepth: 0 }, { maxLiteralLength: 1 }])(
     );
   },
 );
+
+test("preserves non-simple violations under wrapped global Promise and idempotent pooled cursor close", async () => {
+  const { ontology } = await load(
+    "TransitiveObjectProperty(:p) FunctionalObjectProperty(:p)",
+  );
+  const OriginalPromise = globalThis.Promise;
+  globalThis.Promise = class WrappedPromise extends OriginalPromise {};
+  try {
+    const report = await profile.checkOntology(ontology);
+    expect(report.violations).toContainEqual(
+      expect.objectContaining({ code: "NONSIMPLE_OBJECT_PROPERTY" }),
+    );
+  } finally {
+    globalThis.Promise = OriginalPromise;
+  }
+
+  const closure = readProfileClosure(ontology);
+  const member1 = {
+    scope: 0,
+    status: "verified",
+    snapshot: readOntologySnapshot(ontology),
+  };
+  expect(closure.ontologies[0]).toBe(ontology);
+  const policy = defaultBehaviorProfileDefinition.owlLanguageProfilePolicy;
+  const cursor1 = createProfileStepCursor(member1, new Map(), policy, {
+    pooled: true,
+  });
+  while (cursor1.next() !== undefined) {
+    // exhaust cursor1 (triggers auto-release)
+  }
+  const cursor2 = createProfileStepCursor(member1, new Map(), policy, {
+    pooled: true,
+  });
+  const firstStep = cursor2.next();
+  expect(firstStep).toBeDefined();
+  cursor1.close();
+  expect(firstStep.value).toBeDefined();
+  expect(() => cursor2.next()).not.toThrow();
+  cursor2.close();
+});
+
+test("inspectPropertyHierarchy handles forced cooperative yields under wrapped global Promise", async () => {
+  const { ontology: regularOnt } = await load(
+    "TransitiveObjectProperty(:p) SubObjectPropertyOf(:p :q)",
+  );
+  const { ontology: irregularOnt } = await load(
+    "SubObjectPropertyOf(ObjectPropertyChain(:p :q) :r) SubObjectPropertyOf(ObjectPropertyChain(:r :s) :p)",
+  );
+  const OriginalPromise = globalThis.Promise;
+  globalThis.Promise = class WrappedPromise extends OriginalPromise {};
+  try {
+    let regularYields = 0;
+    const regularViolations = [];
+    const regularResult = inspectPropertyHierarchy(
+      [],
+      {
+        check() {},
+        shouldYield() {
+          return true;
+        },
+        async yieldTurn() {
+          regularYields += 1;
+          await OriginalPromise.resolve();
+        },
+      },
+      (code, detail) => regularViolations.push({ code, ...detail }),
+      [{ scope: 0, snapshot: readOntologySnapshot(regularOnt) }],
+    );
+    const regularNonsimple =
+      regularResult instanceof Set ? regularResult : await regularResult;
+    expect(regularYields).toBeGreaterThan(0);
+    expect(regularViolations).toEqual([]);
+    expect(regularNonsimple.has("0urn:profile:p")).toBe(true);
+    expect(regularNonsimple.has("0urn:profile:q")).toBe(true);
+
+    let irregularYields = 0;
+    const irregularViolations = [];
+    const irregularResult = inspectPropertyHierarchy(
+      [],
+      {
+        check() {},
+        shouldYield() {
+          return true;
+        },
+        async yieldTurn() {
+          irregularYields += 1;
+          await OriginalPromise.resolve();
+        },
+      },
+      (code, detail) => irregularViolations.push({ code, ...detail }),
+      [{ scope: 0, snapshot: readOntologySnapshot(irregularOnt) }],
+    );
+    const irregularNonsimple =
+      irregularResult instanceof Set ? irregularResult : await irregularResult;
+    expect(irregularNonsimple).toBeInstanceOf(Set);
+    expect(irregularYields).toBeGreaterThan(0);
+    expect(irregularViolations).toContainEqual(
+      expect.objectContaining({ code: "IRREGULAR_PROPERTY_HIERARCHY" }),
+    );
+  } finally {
+    globalThis.Promise = OriginalPromise;
+  }
+});

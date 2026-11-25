@@ -333,29 +333,29 @@ const finishImposedRanges = async (
   return result;
 };
 
-const inspectELRangesAsync = async (
-  members,
-  ranges,
-  rangeNodes,
-  parents,
-  imposed,
-  hasSubChains,
-  budget,
-  violate,
-  validationPolicy,
-  nativeKeys,
-  startM,
-  startA,
-  inSecondPass,
-  pendingStartM,
-  pendingStartA,
-  pendingIter,
-  pendingRange,
-  pendingResult,
-  pendingLastSet,
-  pendingHeadPromise,
-  pendingLastPromise,
-) => {
+const inspectELRangesAsync = async (state, resume) => {
+  const {
+    members,
+    ranges,
+    rangeNodes,
+    parents,
+    imposed,
+    budget,
+    violate,
+    validationPolicy,
+    nativeKeys,
+  } = state;
+  let { hasSubChains } = state;
+  const {
+    pendingIter,
+    pendingRange,
+    pendingResult,
+    pendingLastSet,
+    pendingHeadPromise,
+    pendingLastPromise,
+  } = resume;
+  let { inSecondPass, startM, startA } = resume;
+  const yieldFirst = resume.yieldFirst !== false;
   const imposedRanges = async (property) => {
     const key = elKey(property, nativeKeys);
     if (imposed.has(key)) return imposed.get(key);
@@ -391,7 +391,7 @@ const inspectELRangesAsync = async (
     }
     set.add(elKey(sup, nativeKeys));
   };
-  const handleRangeAxiom = (value) => {
+  const handleRangeAxiom = async (value) => {
     const kind = value.kind;
     if (kind === K.SUB_PROPERTY_CHAIN_AXIOM) {
       hasSubChains = true;
@@ -401,6 +401,7 @@ const inspectELRangesAsync = async (
       const props = value.properties;
       for (let i = 0; i < props.length; i++) {
         budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
         edge(props[i], props[0]);
         edge(props[0], props[i]);
       }
@@ -417,29 +418,26 @@ const inspectELRangesAsync = async (
     }
   };
   if (!inSecondPass) {
-    await budget.yieldTurn();
+    if (yieldFirst) await budget.yieldTurn();
     for (let m = startM; m < members.length; m++) {
       const stored = readSnapshotAxioms(members[m].snapshot);
       for (let a = m === startM ? startA : 0; a < stored.length; a++) {
-        if (m !== startM || a !== startA) {
+        if (!yieldFirst || m !== startM || a !== startA) {
           budget.check();
           if (budget.shouldYield()) await budget.yieldTurn();
         }
-        handleRangeAxiom(stored.valueAt(a));
+        await handleRangeAxiom(stored.valueAt(a));
       }
     }
     startM = 0;
     startA = 0;
-  } else {
-    startM = pendingStartM;
-    startA = pendingStartA;
   }
   for (let m = startM; m < members.length; m++) {
     const { scope, snapshot } = members[m];
     const stored = readSnapshotAxioms(snapshot);
     if (!hasSubChains) {
       for (let a = m === startM ? startA : 0; a < stored.length; a++) {
-        if (!(inSecondPass && m === pendingStartM && a === pendingStartA)) {
+        if (!(inSecondPass && m === resume.startM && a === resume.startA)) {
           budget.check();
           if (budget.shouldYield()) await budget.yieldTurn();
         } else {
@@ -450,7 +448,7 @@ const inspectELRangesAsync = async (
     }
     for (let a = m === startM ? startA : 0; a < stored.length; a++) {
       const value = stored.valueAt(a);
-      if (inSecondPass && m === pendingStartM && a === pendingStartA) {
+      if (inSecondPass && m === resume.startM && a === resume.startA) {
         inSecondPass = false;
         if (pendingIter) {
           await budget.yieldTurn();
@@ -554,27 +552,30 @@ const inspectELRanges = (
     set.add(elKey(sup, nativeKeys));
   };
   let hasSubChains = false;
+  const makeState = () => ({
+    members,
+    ranges,
+    rangeNodes,
+    parents,
+    imposed,
+    hasSubChains,
+    budget,
+    violate,
+    validationPolicy,
+    nativeKeys,
+  });
   for (let m = 0; m < members.length; m++) {
     const stored = readSnapshotAxioms(members[m].snapshot);
     for (let a = 0; a < stored.length; a++) {
       const value = stored.valueAt(a);
       budget.check();
       if (budget.shouldYield()) {
-        return inspectELRangesAsync(
-          members,
-          ranges,
-          rangeNodes,
-          parents,
-          imposed,
-          hasSubChains,
-          budget,
-          violate,
-          validationPolicy,
-          nativeKeys,
-          m,
-          a,
-          false,
-        );
+        return inspectELRangesAsync(makeState(), {
+          inSecondPass: false,
+          startM: m,
+          startA: a,
+          yieldFirst: true,
+        });
       }
       const kind = value.kind;
       if (kind === K.SUB_PROPERTY_CHAIN_AXIOM) {
@@ -598,21 +599,12 @@ const inspectELRanges = (
                 edge(props[k], props[0]);
                 edge(props[0], props[k]);
               }
-              return inspectELRangesAsync(
-                members,
-                ranges,
-                rangeNodes,
-                parents,
-                imposed,
-                hasSubChains,
-                budget,
-                violate,
-                validationPolicy,
-                nativeKeys,
-                a + 1 < stored.length ? m : m + 1,
-                a + 1 < stored.length ? a + 1 : 0,
-                false,
-              );
+              return inspectELRangesAsync(makeState(), {
+                inSecondPass: false,
+                startM: a + 1 < stored.length ? m : m + 1,
+                startA: a + 1 < stored.length ? a + 1 : 0,
+                yieldFirst: false,
+              });
             })();
           }
           edge(props[i], props[0]);
@@ -637,23 +629,12 @@ const inspectELRanges = (
       for (let a = 0; a < stored.length; a++) {
         budget.check();
         if (budget.shouldYield()) {
-          return inspectELRangesAsync(
-            members,
-            ranges,
-            rangeNodes,
-            parents,
-            imposed,
-            false,
-            budget,
-            violate,
-            validationPolicy,
-            nativeKeys,
-            m,
-            a,
-            true,
-            m,
-            a,
-          );
+          return inspectELRangesAsync(makeState(), {
+            inSecondPass: true,
+            startM: m,
+            startA: a,
+            yieldFirst: true,
+          });
         }
       }
     }
@@ -756,104 +737,51 @@ const inspectELRanges = (
       const value = stored.valueAt(a);
       budget.check();
       if (budget.shouldYield()) {
-        return inspectELRangesAsync(
-          members,
-          ranges,
-          rangeNodes,
-          parents,
-          imposed,
-          hasSubChains,
-          budget,
-          violate,
-          validationPolicy,
-          nativeKeys,
-          m,
-          a,
-          true,
-          m,
-          a,
-        );
+        return inspectELRangesAsync(makeState(), {
+          inSecondPass: true,
+          startM: m,
+          startA: a,
+          yieldFirst: true,
+        });
       }
       if (value.kind !== K.SUB_PROPERTY_CHAIN_AXIOM) continue;
       const headRanges = imposedRangesSync(value.superProperty);
-      if (headRanges instanceof Promise) {
-        return inspectELRangesAsync(
-          members,
-          ranges,
-          rangeNodes,
-          parents,
-          imposed,
-          hasSubChains,
-          budget,
-          violate,
-          validationPolicy,
-          nativeKeys,
-          m,
-          a,
-          true,
-          m,
-          a,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          headRanges,
-          undefined,
-        );
+      if (!(headRanges instanceof Set)) {
+        return inspectELRangesAsync(makeState(), {
+          inSecondPass: true,
+          startM: m,
+          startA: a,
+          yieldFirst: true,
+          pendingHeadPromise: headRanges,
+        });
       }
       const lastRanges = validationPolicy.elLastChainPropertyInheritsRanges
         ? imposedRangesSync(value.chain.at(-1))
         : (ranges.get(elKey(value.chain.at(-1), nativeKeys)) ?? new Set());
-      if (lastRanges instanceof Promise) {
-        return inspectELRangesAsync(
-          members,
-          ranges,
-          rangeNodes,
-          parents,
-          imposed,
-          hasSubChains,
-          budget,
-          violate,
-          validationPolicy,
-          nativeKeys,
-          m,
-          a,
-          true,
-          m,
-          a,
-          undefined,
-          undefined,
-          headRanges,
-          undefined,
-          undefined,
-          lastRanges,
-        );
+      if (!(lastRanges instanceof Set)) {
+        return inspectELRangesAsync(makeState(), {
+          inSecondPass: true,
+          startM: m,
+          startA: a,
+          yieldFirst: true,
+          pendingResult: headRanges,
+          pendingLastPromise: lastRanges,
+        });
       }
       const iter = headRanges[Symbol.iterator]();
       for (let step = iter.next(); !step.done; step = iter.next()) {
         budget.check();
         if (budget.shouldYield()) {
-          return inspectELRangesAsync(
-            members,
-            ranges,
-            rangeNodes,
-            parents,
-            imposed,
-            hasSubChains,
-            budget,
-            violate,
-            validationPolicy,
-            nativeKeys,
-            m,
-            a,
-            true,
-            m,
-            a,
-            iter,
-            step.value,
-            headRanges,
-            lastRanges,
-          );
+          return inspectELRangesAsync(makeState(), {
+            inSecondPass: true,
+            startM: m,
+            startA: a,
+            yieldFirst: true,
+            pendingIter: iter,
+            pendingRange: step.value,
+            pendingResult: headRanges,
+            pendingLastSet: lastRanges,
+          });
         }
         const range = step.value;
         if (!lastRanges.has(range))
@@ -1014,13 +942,13 @@ export const inspectProfileRules = (
         break;
     }
   };
-  const finishAxiomsAsync = async (startM, startA) => {
-    await budget.yieldTurn();
+  const finishAxiomsAsync = async (startM, startA, yieldFirst = true) => {
+    if (yieldFirst) await budget.yieldTurn();
     for (let m = startM; m < context.members.length; m++) {
       const { scope, snapshot } = context.members[m];
       const stored = readSnapshotAxioms(snapshot);
       for (let a = m === startM ? startA : 0; a < stored.length; a++) {
-        if (m !== startM || a !== startA) {
+        if (!yieldFirst || m !== startM || a !== startA) {
           budget.check();
           if (budget.shouldYield()) await budget.yieldTurn();
         }
@@ -1071,7 +999,7 @@ export const inspectProfileRules = (
             } finally {
               nodeCursor.close();
             }
-            await finishAxiomsAsync(0, 0);
+            await finishAxiomsAsync(0, 0, false);
           })();
         }
         visitNode(node);

@@ -255,22 +255,33 @@ function traversalWorkspace(measure) {
 const entityStackNodes = [];
 const entityStackFields = [];
 const entityStackPos = [];
+const entitySeen = new Set();
+let entityStackBusy = false;
 function collectFactoryEntities(root, emitEntity) {
-  entityStackNodes.length = 1;
-  entityStackFields.length = 1;
-  entityStackPos.length = 1;
-  entityStackNodes[0] = root;
-  entityStackFields[0] = structuralFields.get(root.kind);
-  entityStackPos[0] = 0;
+  const pooled = !entityStackBusy;
+  const nodes = pooled ? entityStackNodes : [];
+  const fields = pooled ? entityStackFields : [];
+  const pos = pooled ? entityStackPos : [];
+  const seen = pooled ? entitySeen : new Set();
+  if (pooled) {
+    entityStackBusy = true;
+    seen.clear();
+  }
+  nodes.length = 1;
+  fields.length = 1;
+  pos.length = 1;
+  nodes[0] = root;
+  fields[0] = structuralFields.get(root.kind);
+  pos[0] = 0;
   try {
-    while (entityStackNodes.length) {
-      const level = entityStackNodes.length - 1;
-      const node = entityStackNodes[level];
-      const names = entityStackFields[level];
-      const index = entityStackPos[level];
+    while (nodes.length) {
+      const level = nodes.length - 1;
+      const node = nodes[level];
+      const names = fields[level];
+      const index = pos[level];
       const length = names ? names.length : node.length;
       if (index < length) {
-        entityStackPos[level] = index + 1;
+        pos[level] = index + 1;
         const child = node[names ? names[index] : index];
         if (
           !child ||
@@ -280,9 +291,11 @@ function collectFactoryEntities(root, emitEntity) {
           continue;
         }
         if (Array.isArray(child)) {
-          entityStackNodes.push(child);
-          entityStackFields.push(undefined);
-          entityStackPos.push(0);
+          if (seen.has(child)) continue;
+          seen.add(child);
+          nodes.push(child);
+          fields.push(undefined);
+          pos.push(0);
           continue;
         }
         const kind = child.kind;
@@ -292,21 +305,26 @@ function collectFactoryEntities(root, emitEntity) {
           continue;
         }
         const childFields = structuralFields.get(kind);
-        if (childFields) {
-          entityStackNodes.push(child);
-          entityStackFields.push(childFields);
-          entityStackPos.push(0);
+        if (childFields && !seen.has(child)) {
+          seen.add(child);
+          nodes.push(child);
+          fields.push(childFields);
+          pos.push(0);
         }
         continue;
       }
-      entityStackNodes.pop();
-      entityStackFields.pop();
-      entityStackPos.pop();
+      nodes.pop();
+      fields.pop();
+      pos.pop();
     }
   } finally {
-    entityStackNodes.length = 0;
-    entityStackFields.length = 0;
-    entityStackPos.length = 0;
+    if (pooled) {
+      nodes.length = 0;
+      fields.length = 0;
+      pos.length = 0;
+      seen.clear();
+      entityStackBusy = false;
+    }
   }
 }
 

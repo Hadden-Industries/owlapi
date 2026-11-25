@@ -1,4 +1,5 @@
 import { parseIri } from "@hyperjump/uri";
+import { SIMPLE_ASCII_IRI } from "../parsing/iriCharacters.js";
 import { ResourceLimitError } from "../../io/errors.js";
 import { ENTITY_KINDS, OWLObjectKind as K } from "../../model/kinds.js";
 import {
@@ -99,8 +100,6 @@ const statusOf = (violations, unresolved) =>
 const frozen = (entries) =>
   Object.freeze(entries.map((entry) => Object.freeze(entry)));
 const validIriStrings = new Set();
-const SIMPLE_ASCII_IRI =
-  /^(?:https?:\/\/[A-Za-z0-9._-]+(?::\d+)?(?:\/[A-Za-z0-9._~!$&'()*+,;=:@/-]*)?|urn:[A-Za-z0-9][A-Za-z0-9-]*:[A-Za-z0-9._~!$&'()*+,;=:@/-]+)(?:#[A-Za-z0-9._~!$&'()*+,;=:@/-]*)?$/u;
 
 const isValidProfileIri = (iriString) => {
   if (SIMPLE_ASCII_IRI.test(iriString) || validIriStrings.has(iriString))
@@ -415,11 +414,11 @@ const checkModel = async (
     }
     for (const from of datatypeDependencies.keys()) {
       let dep = reachable(datatypeDependencies, from, budget, false);
-      if (dep instanceof Promise) dep = await dep;
+      if (!(dep instanceof Set)) dep = await dep;
       if (dep.has(from)) violate("CYCLIC_DATATYPE_DEFINITION", { iri: from });
     }
     let nonsimple = inspectPropertyHierarchy(axioms, budget, violate, members);
-    if (nonsimple instanceof Promise) nonsimple = await nonsimple;
+    if (!(nonsimple instanceof Set)) nonsimple = await nonsimple;
     const checkedLiterals = new Set(),
       checkedEntities = new Set();
     const secondNodeCursor = createScopedNodeCursor(

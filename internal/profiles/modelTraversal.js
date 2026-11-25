@@ -52,6 +52,7 @@ let pooledFramesBusy = false;
 const createPooledFramePool = (scope, sourceVerified) => {
   if (pooledFramesBusy) return createFramePool(scope, sourceVerified);
   pooledFramesBusy = true;
+  let released = false;
   return {
     frames: pooledFrames,
     frame(depth) {
@@ -96,6 +97,8 @@ const createPooledFramePool = (scope, sourceVerified) => {
       return item;
     },
     release() {
+      if (released) return;
+      released = true;
       for (let i = 0; i < pooledFrames.length; i++) {
         const item = pooledFrames[i];
         item.value = undefined;

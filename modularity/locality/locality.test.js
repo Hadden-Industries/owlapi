@@ -398,3 +398,20 @@ test.each([
     );
   },
 );
+
+test("extracts cleanly from a 20-level shared-subexpression factory DAG without exponential blowup", async () => {
+  const leaf = f.getOWLClass(IRI.create("urn:locality:DagLeaf"));
+  let shared = leaf;
+  for (let i = 0; i < 20; i += 1) {
+    shared = f.getOWLObjectIntersectionOf([
+      shared,
+      f.getOWLObjectComplementOf(shared),
+    ]);
+  }
+  const axiom = f.getOWLSubClassOfAxiom(shared, leaf);
+  const extractor = new SyntacticLocalityModuleExtractor(LocalityClass.BOTTOM, [
+    axiom,
+  ]);
+  const moduleAxioms = await extractor.extract([leaf]);
+  expect(moduleAxioms).toEqual([axiom]);
+});

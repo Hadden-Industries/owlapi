@@ -198,7 +198,7 @@ const analyzePropertyRelations = (
   const compIter = composite[Symbol.iterator]();
   for (let step = compIter.next(); !step.done; step = compIter.next()) {
     const reached = reachable(hierarchy, step.value, budget);
-    if (reached instanceof Promise) {
+    if (!(reached instanceof Set)) {
       return analyzePropertyRelationsAsync(
         hierarchy,
         order,
@@ -235,7 +235,7 @@ const analyzePropertyRelations = (
     for (let k = 0; k < keys.length; k++) {
       const from = keys[k];
       const above = reachable(order, from, budget, false);
-      if (above instanceof Promise) {
+      if (!(above instanceof Set)) {
         return analyzePropertyRelationsAsync(
           hierarchy,
           order,
@@ -266,7 +266,7 @@ const analyzePropertyRelations = (
   for (let fStep = fromIter.next(); !fStep.done; fStep = fromIter.next()) {
     const from = fStep.value;
     const above = reachable(order, from, budget, false);
-    if (above instanceof Promise) {
+    if (!(above instanceof Set)) {
       return analyzePropertyRelationsAsync(
         hierarchy,
         order,
@@ -289,7 +289,7 @@ const analyzePropertyRelations = (
       const to = tStep.value;
       if (!hierarchyCache.has(to)) {
         const h = reachable(hierarchy, to, budget);
-        if (h instanceof Promise) {
+        if (!(h instanceof Set)) {
           return analyzePropertyRelationsAsync(
             hierarchy,
             order,
