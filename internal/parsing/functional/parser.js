@@ -12,6 +12,13 @@ import {
   UnsupportedConstructError,
 } from "../../../io/errors.js";
 import { IRI } from "../../../model/structural.js";
+import { OWLObjectKind } from "../../../model/kinds.js";
+import {
+  swrlClassAtom,
+  swrlObjectPropertyAtom,
+  swrlRule,
+  swrlVariable,
+} from "../../model/swrl.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
 import { requireTwoDistinctBooleanOperands } from "../../model/setConstructs.js";
 import { OntologyBehaviorContext } from "../../behavior/ontologyBehaviorContext.js";
@@ -230,6 +237,11 @@ export class OWLFunctionalSyntaxOWLParser {
         found: keyword.value || keyword.type,
       });
     }
+    if (
+      keyword.value === "DLSafeRule" &&
+      this.#owlSyntaxPolicy.supportsScopedSwrl
+    )
+      return yield* this.#parseSwrlRule();
     if (UNSUPPORTED_FUNCTIONAL_CONSTRUCTS.has(keyword.value)) {
       throw new UnsupportedConstructError(
         `Functional construct ${keyword.value} is outside the initial 0.1 scope`,
@@ -460,6 +472,88 @@ export class OWLFunctionalSyntaxOWLParser {
           { found: keyword.value },
         );
     }
+  }
+
+  *#parseSwrlRule() {
+    const start = this.#expectWord(
+      "DLSafeRule",
+      this.#lexer.consume() ?? (yield READ_TOKEN),
+    );
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const annotations = yield* this.#parseAxiomAnnotations();
+    for (const annotation of annotations) {
+      if (
+        annotation.annotations.length ||
+        annotation.value.kind !== OWLObjectKind.LITERAL
+      )
+        this.#unsupportedRuleMember("Annotation", start);
+    }
+    const body = yield* this.#parseSwrlSide("Body");
+    const head = yield* this.#parseSwrlSide("Head");
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
+    return {
+      functionalKeyword: "DLSafeRule",
+      value: swrlRule(body, head, annotations),
+    };
+  }
+
+  *#parseSwrlSide(name) {
+    this.#expectWord(name, this.#lexer.consume() ?? (yield READ_TOKEN));
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const atoms = [];
+    while ((this.#lexer.peek() ?? (yield PEEK_TOKEN)).type !== ")") {
+      const atom = this.#expectType(
+        "WORD",
+        this.#lexer.consume() ?? (yield READ_TOKEN),
+      );
+      if (atom.value !== "ClassAtom" && atom.value !== "ObjectPropertyAtom")
+        this.#unsupportedRuleMember(atom.value, atom);
+      this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+      const predicate = this.#lexer.consume() ?? (yield READ_TOKEN);
+      if (predicate.type === "WORD")
+        this.#unsupportedRuleMember(predicate.value, predicate);
+      const iri = this.#parseIri(predicate);
+      const first = yield* this.#parseSwrlVariable();
+      atoms.push(
+        atom.value === "ClassAtom"
+          ? swrlClassAtom(this.#dataFactory.getOWLClass(iri), first)
+          : swrlObjectPropertyAtom(
+              this.#dataFactory.getOWLObjectProperty(iri),
+              first,
+              yield* this.#parseSwrlVariable(),
+            ),
+      );
+      this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
+      const pause = this.#cooperate();
+      if (pause) yield pause;
+    }
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
+    return atoms;
+  }
+
+  *#parseSwrlVariable() {
+    const token = this.#lexer.consume() ?? (yield READ_TOKEN);
+    if (
+      this.#isIri(token) ||
+      token.type === "STRING" ||
+      token.type === "NODE_ID"
+    )
+      this.#unsupportedRuleMember("SWRLConstant", token);
+    this.#expectWord("Variable", token);
+    this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
+    const iri = yield* this.#readIri();
+    this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
+    return swrlVariable(iri);
+  }
+
+  #unsupportedRuleMember(construct, token) {
+    throw new UnsupportedConstructError(
+      "Unsupported DLSafeRule member: " + construct,
+      {
+        ...locationDetails(token, this.#configuration),
+        construct,
+      },
+    );
   }
 
   *#parseDeclaration() {

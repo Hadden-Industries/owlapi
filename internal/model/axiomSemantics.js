@@ -1,4 +1,4 @@
-import { AXIOM_KINDS, OWLObjectKind } from "../../model/kinds.js";
+import { AXIOM_KINDS_WITH_SWRL, OWLObjectKind } from "../../model/kinds.js";
 import {
   IRI,
   OWLStructuralObject,
@@ -11,6 +11,7 @@ import { captureStructuralKey } from "../collections/structuralProjection.js";
 import { DenseBitSet } from "../collections/denseBitSet.js";
 
 const LOGICALITY_BY_AXIOM_KIND = new Map([
+  [OWLObjectKind.SWRL_RULE, true],
   [OWLObjectKind.DECLARATION_AXIOM, false],
   [OWLObjectKind.SUBCLASS_OF_AXIOM, true],
   [OWLObjectKind.EQUIVALENT_CLASSES_AXIOM, true],
@@ -52,8 +53,8 @@ const LOGICALITY_BY_AXIOM_KIND = new Map([
 ]);
 
 if (
-  LOGICALITY_BY_AXIOM_KIND.size !== AXIOM_KINDS.length ||
-  AXIOM_KINDS.some((kind) => !LOGICALITY_BY_AXIOM_KIND.has(kind))
+  LOGICALITY_BY_AXIOM_KIND.size !== AXIOM_KINDS_WITH_SWRL.length ||
+  AXIOM_KINDS_WITH_SWRL.some((kind) => !LOGICALITY_BY_AXIOM_KIND.has(kind))
 ) {
   throw new Error(
     "The logical-axiom classification must cover every supported axiom kind",

@@ -3,6 +3,24 @@ export const RDF_NAMESPACE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 export const RDFS_NAMESPACE = "http://www.w3.org/2000/01/rdf-schema#";
 export const OWL_NAMESPACE = "http://www.w3.org/2002/07/owl#";
 export const XSD_NAMESPACE = "http://www.w3.org/2001/XMLSchema#";
+export const SWRL_NAMESPACE = "http://www.w3.org/2003/11/swrl#";
+export const SWRL_VOCABULARY = Object.freeze(
+  Object.fromEntries(
+    [
+      "Imp",
+      "body",
+      "head",
+      "AtomList",
+      "Variable",
+      "ClassAtom",
+      "IndividualPropertyAtom",
+      "classPredicate",
+      "propertyPredicate",
+      "argument1",
+      "argument2",
+    ].map((name) => [name, SWRL_NAMESPACE + name]),
+  ),
+);
 export const XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
 export const XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
 export const XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";

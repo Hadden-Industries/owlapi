@@ -7,6 +7,7 @@ import { javaJsonLdContextIRIs } from "./jsonLdProviderPolicy.js";
  */
 const normativeDocumentStoragePolicy = Object.freeze({
   targetPublication: "replace-complete",
+  supportsScopedSwrl: false,
   xmlLiteralRepresentation: "escaped",
   rejectsUnknownFormatParameters: true,
   functionalStringDatatypeDefault: "explicit",
@@ -24,6 +25,7 @@ const normativeDocumentStoragePolicy = Object.freeze({
 });
 const javaDocumentStoragePolicy = Object.freeze({
   targetPublication: "append",
+  supportsScopedSwrl: true,
   xmlLiteralRepresentation: "embedded",
   rejectsUnknownFormatParameters: false,
   functionalStringDatatypeDefault: "omit",
@@ -115,6 +117,7 @@ const definitions = new Map([
       }),
       owlSyntaxPolicy: Object.freeze({
         rejectsUndeclaredOwlXmlAttributes: true,
+        supportsScopedSwrl: false,
         requiresUnaryFunctionalDataRestrictions: false,
       }),
       owlLanguageProfilePolicy: Object.freeze({
@@ -272,6 +275,7 @@ const definitions = new Map([
       }),
       owlSyntaxPolicy: Object.freeze({
         rejectsUndeclaredOwlXmlAttributes: false,
+        supportsScopedSwrl: true,
         requiresUnaryFunctionalDataRestrictions: true,
       }),
       owlLanguageProfilePolicy: Object.freeze({

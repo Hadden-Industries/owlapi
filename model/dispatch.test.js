@@ -11,6 +11,7 @@ import {
   OWLDataFactory,
   OWLObjectKind,
   OWL_OBJECT_KINDS,
+  OWL_OBJECT_KINDS_WITH_SWRL,
   dispatchClassExpression,
 } from "./index.js";
 
@@ -121,7 +122,7 @@ describe("canonical kind dispatch", () => {
       "OWLAnnotationPropertyDomainAxiom",
       "OWLAnnotationPropertyRangeAxiom",
     ]);
-    expect(new Set(OWL_OBJECT_KINDS)).toEqual(
+    expect(new Set(OWL_OBJECT_KINDS_WITH_SWRL)).toEqual(
       new Set(Object.values(OWLObjectKind)),
     );
   });

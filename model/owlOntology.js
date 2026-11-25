@@ -4,7 +4,7 @@ import {
 } from "../internal/model/ontologyState.js";
 import { captureStructuralKey } from "../internal/collections/structuralProjection.js";
 import {
-  AXIOM_KINDS,
+  AXIOM_KINDS_WITH_SWRL as AXIOM_KINDS,
   CLASS_EXPRESSION_KINDS,
   ENTITY_KINDS,
   INDIVIDUAL_KINDS,

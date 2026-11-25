@@ -1,4 +1,8 @@
-import { AXIOM_KINDS, ENTITY_KINDS, OWLObjectKind } from "./kinds.js";
+import {
+  AXIOM_KINDS_WITH_SWRL as AXIOM_KINDS,
+  ENTITY_KINDS,
+  OWLObjectKind,
+} from "./kinds.js";
 import {
   capturedKeysEqual,
   compareCapturedKeys,

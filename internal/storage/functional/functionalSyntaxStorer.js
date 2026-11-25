@@ -13,6 +13,7 @@ import {
 const rendererOptions = (format, policy) => {
   const parameters = readStorageFormatParameters(format, policy);
   return {
+    supportsScopedSwrl: policy.supportsScopedSwrl,
     forceXsdString:
       policy.functionalStringDatatypeDefault === "explicit" ||
       readForceStringDatatype(parameters),

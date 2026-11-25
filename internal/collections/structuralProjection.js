@@ -1,4 +1,7 @@
-import { AXIOM_KINDS, OWLObjectKind } from "../../model/kinds.js";
+import {
+  AXIOM_KINDS_WITH_SWRL as AXIOM_KINDS,
+  OWLObjectKind,
+} from "../../model/kinds.js";
 import { structuralFields } from "../model/structuralFields.js";
 
 // Constructor field order differs from the canonical tuple in these two kinds.

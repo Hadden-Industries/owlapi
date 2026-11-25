@@ -1,5 +1,6 @@
 import { OWLObjectKind as K } from "../../model/kinds.js";
 import { ResourceLimitError } from "../../io/errors.js";
+import { swrlConstructors } from "./swrl.js";
 import {
   EMPTY_STRUCTURAL_SET,
   IRI,
@@ -157,7 +158,10 @@ const validateExplicitStructure = (value, factory) => {
         .map((field) =>
           field === setField ? repeatSingleton(value[field]) : value[field],
         );
-      rebuilt = factory[`get${value.kind}`](...args);
+      const swrlConstructor = swrlConstructors.get(value.kind);
+      rebuilt = swrlConstructor
+        ? swrlConstructor(...args)
+        : factory[`get${value.kind}`](...args);
     }
     if (key(rebuilt) !== key(value)) return fail();
     if (validatedShapes.has(value)) validatedStructureNodes.add(value);

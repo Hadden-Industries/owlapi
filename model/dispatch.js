@@ -1,12 +1,14 @@
 import {
   ANNOTATION_VALUE_KINDS,
   AXIOM_KINDS,
+  AXIOM_KINDS_WITH_SWRL,
   CLASS_EXPRESSION_KINDS,
   DATA_PROPERTY_EXPRESSION_KINDS,
   DATA_RANGE_KINDS,
   INDIVIDUAL_KINDS,
   OBJECT_PROPERTY_EXPRESSION_KINDS,
   OWL_OBJECT_KINDS,
+  OWL_OBJECT_KINDS_WITH_SWRL,
 } from "./kinds.js";
 import { isCanonicalStructuralObject } from "./structural.js";
 
@@ -50,11 +52,22 @@ const dispatch = (value, handlers, kinds, category) => {
   return handlers[value.kind](value);
 };
 
-export const dispatchOwlObject = (value, handlers) =>
-  dispatch(value, handlers, OWL_OBJECT_KINDS, "OWL object");
+/** Select the extended exported domain to dispatch SWRL values exhaustively. */
+export const dispatchOwlObject = (
+  value,
+  handlers,
+  domain = OWL_OBJECT_KINDS,
+) => {
+  if (domain !== OWL_OBJECT_KINDS && domain !== OWL_OBJECT_KINDS_WITH_SWRL)
+    throw new TypeError("Unknown OWL object dispatch domain");
+  return dispatch(value, handlers, domain, "OWL object");
+};
 
-export const dispatchAxiom = (value, handlers) =>
-  dispatch(value, handlers, AXIOM_KINDS, "axiom");
+export const dispatchAxiom = (value, handlers, domain = AXIOM_KINDS) => {
+  if (domain !== AXIOM_KINDS && domain !== AXIOM_KINDS_WITH_SWRL)
+    throw new TypeError("Unknown axiom dispatch domain");
+  return dispatch(value, handlers, domain, "axiom");
+};
 
 export const dispatchClassExpression = (value, handlers) =>
   dispatch(value, handlers, CLASS_EXPRESSION_KINDS, "class expression");

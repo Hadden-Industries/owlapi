@@ -430,6 +430,23 @@ const renderers = Object.freeze({
   ),
 });
 
+const swrlRenderers = Object.freeze({
+  ...renderers,
+  [OWLObjectKind.SWRL_VARIABLE]: form("Variable", ["iri"]),
+  [OWLObjectKind.SWRL_CLASS_ATOM]: form("ClassAtom", ["predicate", "argument"]),
+  [OWLObjectKind.SWRL_OBJECT_PROPERTY_ATOM]: form("ObjectPropertyAtom", [
+    "predicate",
+    "firstArgument",
+    "secondArgument",
+  ]),
+  [OWLObjectKind.SWRL_RULE]: (rule, render) =>
+    application("DLSafeRule", [
+      ...rule.annotations.map(render),
+      application("Body", rule.body.map(render)),
+      application("Head", rule.head.map(render)),
+    ]),
+});
+
 export const FUNCTIONAL_SYNTAX_RENDERER_KINDS = Object.freeze(
   Object.keys(renderers),
 );
@@ -437,16 +454,17 @@ export const FUNCTIONAL_SYNTAX_RENDERER_KINDS = Object.freeze(
 /** Render complete, validated productions as bounded text fragments. */
 export function* renderFunctionalSyntaxChunks(
   snapshot,
-  { forceXsdString = true } = {},
+  { forceXsdString = true, supportsScopedSwrl = false } = {},
 ) {
   const labels = new Map();
+  const handlers = supportsScopedSwrl ? swrlRenderers : renderers;
   const render = (object) => {
-    if (!object || !Object.hasOwn(renderers, object.kind)) {
+    if (!object || !Object.hasOwn(handlers, object.kind)) {
       notRepresentable(
         `No Functional Syntax rendering for structural kind ${object?.kind}`,
       );
     }
-    return renderers[object.kind](object, render, labels, { forceXsdString });
+    return handlers[object.kind](object, render, labels, { forceXsdString });
   };
   yield* fragments(joined(["Ontology(", render(snapshot.ontologyID), "\n"]));
   for (const values of [

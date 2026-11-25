@@ -5,6 +5,10 @@ import { structuralFields } from "./structuralFields.js";
 // differs from the package's structural-key normalization and never changes it.
 const typeIndices = Object.freeze({
   IRI: 0,
+  SWRLRule: 2033,
+  SWRLClassAtom: 6001,
+  SWRLObjectPropertyAtom: 6003,
+  SWRLVariable: 6006,
   OWLAnnotation: 5001,
   OWLAnnotationAssertionAxiom: 2034,
   OWLAnnotationProperty: 1006,

@@ -1,6 +1,6 @@
 import {
   OWLObjectKind as K,
-  AXIOM_KINDS,
+  AXIOM_KINDS_WITH_SWRL,
   ENTITY_KINDS,
 } from "../../model/kinds.js";
 export const structuralFields = new Map();
@@ -125,5 +125,12 @@ register(
   ],
   ["property", "subject", "value"],
 );
-for (const kind of AXIOM_KINDS)
+register([K.SWRL_VARIABLE], ["iri"]);
+register([K.SWRL_CLASS_ATOM], ["predicate", "argument"]);
+register(
+  [K.SWRL_OBJECT_PROPERTY_ATOM],
+  ["predicate", "firstArgument", "secondArgument"],
+);
+register([K.SWRL_RULE], ["body", "head"]);
+for (const kind of AXIOM_KINDS_WITH_SWRL)
   structuralFields.set(kind, [...structuralFields.get(kind), "annotations"]);

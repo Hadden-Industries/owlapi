@@ -1,4 +1,8 @@
-import { AXIOM_KINDS, OWLObjectKind as K } from "../../model/kinds.js";
+import {
+  AXIOM_KINDS_WITH_SWRL,
+  OWL_OBJECT_KINDS_WITH_SWRL,
+  OWLObjectKind as K,
+} from "../../model/kinds.js";
 import { readOntologySnapshot } from "../../model/owlOntology.js";
 import {
   isCanonicalStructuralObject,
@@ -9,11 +13,10 @@ import {
   checkStructuralKeyReceiver,
   validateStructuralGraph,
 } from "./structuralValidation.js";
-import { OWL_OBJECT_KINDS } from "../../model/kinds.js";
 
 const records = new WeakMap();
-const supportedKinds = new Set(OWL_OBJECT_KINDS);
-const axiomKindsSet = new Set(AXIOM_KINDS);
+const supportedKinds = new Set(OWL_OBJECT_KINDS_WITH_SWRL);
+const axiomKindsSet = new Set(AXIOM_KINDS_WITH_SWRL);
 const kinds = Object.freeze({
   ADD_AXIOM: axiomKindsSet,
   REMOVE_AXIOM: axiomKindsSet,

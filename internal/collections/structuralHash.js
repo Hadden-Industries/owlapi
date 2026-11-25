@@ -7,9 +7,9 @@ import {
   tupleFields,
 } from "./structuralProjection.js";
 import {
-  AXIOM_KINDS,
+  AXIOM_KINDS_WITH_SWRL as AXIOM_KINDS,
   ENTITY_KINDS,
-  OWL_OBJECT_KINDS,
+  OWL_OBJECT_KINDS_WITH_SWRL as OWL_OBJECT_KINDS,
   OWLObjectKind,
 } from "../../model/kinds.js";
 

@@ -1,10 +1,4 @@
-export const OWLObjectKind = Object.freeze({
-  // TODO(OWLAPI parity): SWRL rules, atoms, arguments, and built-ins exposed by
-  // Java OWLAPI 5.5.1 are deferred as one explicit family. They are not valid
-  // `OWLObjectKind` values in the initial 0.1 package, so OWLDataFactory has no silent or
-  // partial SWRL construction path. Implement the public SWRL structural model,
-  // equality, dispatch, factory, parser/mapping support, and differential tests
-  // together before adding kinds. Verification: capability `swrl` (DEFERRED).
+const owlKinds = {
   IRI: "IRI",
   LITERAL: "OWLLiteral",
   ANONYMOUS_INDIVIDUAL: "OWLAnonymousIndividual",
@@ -82,6 +76,14 @@ export const OWLObjectKind = Object.freeze({
   SUB_ANNOTATION_PROPERTY_AXIOM: "OWLSubAnnotationPropertyOfAxiom",
   ANNOTATION_PROPERTY_DOMAIN_AXIOM: "OWLAnnotationPropertyDomainAxiom",
   ANNOTATION_PROPERTY_RANGE_AXIOM: "OWLAnnotationPropertyRangeAxiom",
+};
+
+export const OWLObjectKind = Object.freeze({
+  ...owlKinds,
+  SWRL_RULE: "SWRLRule",
+  SWRL_CLASS_ATOM: "SWRLClassAtom",
+  SWRL_OBJECT_PROPERTY_ATOM: "SWRLObjectPropertyAtom",
+  SWRL_VARIABLE: "SWRLVariable",
 });
 
 export const CLASS_EXPRESSION_KINDS = Object.freeze([
@@ -184,4 +186,13 @@ export const AXIOM_KINDS = Object.freeze([
   OWLObjectKind.ANNOTATION_PROPERTY_RANGE_AXIOM,
 ]);
 
-export const OWL_OBJECT_KINDS = Object.freeze(Object.values(OWLObjectKind));
+/** Original exhaustive visitor domain used by rc.3 applications. */
+export const OWL_OBJECT_KINDS = Object.freeze(Object.values(owlKinds));
+/** Opt-in domains for consumers that also handle the supported SWRL values. */
+export const OWL_OBJECT_KINDS_WITH_SWRL = Object.freeze(
+  Object.values(OWLObjectKind),
+);
+export const AXIOM_KINDS_WITH_SWRL = Object.freeze([
+  ...AXIOM_KINDS,
+  OWLObjectKind.SWRL_RULE,
+]);
