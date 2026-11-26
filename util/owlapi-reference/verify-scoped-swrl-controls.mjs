@@ -141,7 +141,13 @@ for (const id of ["simple", "changed-head", "edited-annotated"]) {
   );
   await retain("native-result.json", bytes);
   for (const pin of artifacts) {
-    await verifyPinnedFile(join(directory, pin.name), { ...pin, id: pin.name });
+    assert.ok(
+      await verifyPinnedFile(join(directory, pin.name), {
+        ...pin,
+        id: pin.name,
+      }),
+      `Missing retained SWRL control artifact: ${pin.name}`,
+    );
   }
   assert.equal(result.javaLoad.status, "completed");
   assert.equal(
