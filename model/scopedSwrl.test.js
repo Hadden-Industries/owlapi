@@ -20,7 +20,7 @@ import {
   OWL_OBJECT_KINDS_WITH_SWRL,
   dispatchOwlObject,
 } from "../index.js";
-import { scopedSwrlCases } from "../util/owlapi-reference/fixtures/swrl/cases.mjs";
+import { scopedSwrlCases } from "../util/owlapi-reference/scoped-swrl-fixtures.mjs";
 import { jest } from "@jest/globals";
 import { CompactRdfGraph } from "../internal/rdfjs/compactRdfGraph.js";
 

@@ -7,7 +7,7 @@ import {
   comparisonJavaTools,
 } from "./comparison-oracle.mjs";
 import { sha256 } from "./comparison-evidence.mjs";
-import { scopedSwrlCases } from "./fixtures/swrl/cases.mjs";
+import { scopedSwrlCases } from "./scoped-swrl-fixtures.mjs";
 
 const [classpathFile, javaHome, output] = process.argv.slice(2);
 if (!output)

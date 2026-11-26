@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { oracleLockPath } from "./comparison-oracle.mjs";
-import { scopedSwrlCases } from "./fixtures/swrl/cases.mjs";
+import { scopedSwrlCases } from "./scoped-swrl-fixtures.mjs";
 
 const { oracle, observations: reference } = JSON.parse(
   await readFile(
