@@ -1,8 +1,8 @@
 import { setTimeout as delay } from "node:timers/promises";
 
-// Retirement reads the complete list of open PRs and rechecks one original PR by number.
+// Retirement rechecks the original PR and, on the current API, its native merge event.
 const retirementPullPath =
-  /^\/pulls(?:\/[1-9]\d*|\?state=open&per_page=100&page=[1-9]\d*)$/u;
+  /^(?:\/pulls(?:\/[1-9]\d*|\?state=open&per_page=100&page=[1-9]\d*)|\/issues\/[1-9]\d*\/events\?per_page=100&page=[1-9]\d*)$/u;
 
 const transientReadCodes = new Set([
   "ECONNRESET",

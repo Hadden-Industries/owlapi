@@ -974,6 +974,14 @@ describe("read-only release dispatch CI admission", () => {
       expect(result.source.receipt.checks.java.original.runAttempt).toBe(1);
     },
   );
+  test("scheduled maintenance can inspect a verified successor without gaining release dispatch authority", async () => {
+    const f = await dispatch(true);
+    f.context.eventName = "schedule";
+    await expect(admit(f)).rejects.toThrow(/dispatch/u);
+    await expect(admit(f, f.read, verifyRetentionCi)).resolves.toMatchObject({
+      main: { run: { id: f.mainRun.id } },
+    });
+  });
   test("retirement admits the exact successful upstream main push without widening release dispatch authority", async () => {
     const f = await dispatch(true);
     f.context.eventName = "workflow_run";

@@ -4041,7 +4041,7 @@ function validateCandidateRetention(workflow, violations) {
         inputs: {
           retention_history_object: {
             description:
-              "Optional signed protected history object for candidate retirement",
+              "Optional signed custody object for retiring backed-up release evidence",
             type: "string",
             required: false,
           },
@@ -4112,7 +4112,7 @@ function validateCandidateRetention(workflow, violations) {
     violations,
     steps(job).length === 3 &&
       isDeepStrictEqual(apply, {
-        name: "Verify custody and retire eligible predecessor artifacts",
+        name: "Verify the successor and retire unclaimed candidate artifacts",
         env: {
           GH_TOKEN: "${{ github.token }}",
           OWLAPI_RUNTIME_MATRIX: "${{ steps.freeze.outputs.matrix }}",

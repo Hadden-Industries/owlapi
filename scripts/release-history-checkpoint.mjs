@@ -328,6 +328,18 @@ function openCheckpointTree(commit, readGit, loadBlob) {
   return { index, files: checkpointPayloads(index, inventory, loadBlob) };
 }
 
+/** Read an existing history object's claims for retention only. Its contents can protect originals, never authorize a write. */
+export function readRetentionHistoryFiles(tag, objectId) {
+  assert.match(tag, historyTag);
+  assert.match(objectId, oidPattern);
+  localHistoryRef("refs/tags/" + tag, objectId);
+  const commit = git("rev-parse", "--verify", objectId + "^{commit}")
+    .toString()
+    .trim();
+  assert.match(commit, oidPattern);
+  return openCheckpointTree(commit, git, historyBlob).files;
+}
+
 /** Reverify an exact checkpoint object already admitted by the immutable seal.
  * The caller owns the historical timestamp and signer registry. This route has
  * no authority to admit a new live checkpoint or fetch missing Git objects. */

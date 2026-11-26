@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-/** Apply JSON Quality’s per-ID retirement procedure to OwlAPI’s signed custody and release controls. */
+/** Recheck the verified successor and live claims before each candidate retirement. */
 import assert from "node:assert/strict";
 import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
 import { CI_WORKFLOW, retirementTrigger } from "./ci-verification.mjs";
@@ -14,8 +14,6 @@ const oid = /^[a-f0-9]{40}$/u;
 const digest = /^sha256:[a-f0-9]{64}$/u;
 const sameRepo = (record) =>
   record?.id === REPOSITORY_ID && record.full_name === REPOSITORY;
-export const retirementTag = (head) =>
-  "owlapi-release-history/retention-" + head;
 
 /** A workflow-run notification nominates a successful same-repository main push. The CI verifier reopens that exact run. */
 export function assertRetirementWriter(env, event) {
@@ -51,7 +49,7 @@ export function assertRetirementWriter(env, event) {
   } else {
     assert.ok(
       !env.RETENTION_HISTORY_OBJECT,
-      "Automatic retirement selects the successor's protected checkpoint",
+      "A custody checkpoint requires an explicit owner dispatch",
     );
   }
   return retirementTrigger({
@@ -232,6 +230,65 @@ export async function readOpenPullClaims(read) {
   throw new Error("Open PR inventory exceeds the complete lookup bound");
 }
 
+// API 2026-03-10 omits merge_commit_sha from the PR resource. Its merged
+// event identifies the landed commit even for a squash or rebase merge.
+async function landedPullCommit(read, pr) {
+  if (pr.merge_commit_sha !== undefined && pr.merge_commit_sha !== null) {
+    assert.match(pr.merge_commit_sha, oid);
+    return pr.merge_commit_sha;
+  }
+  let landed;
+  for (let page = 1; page <= 10; page++) {
+    const events = await read(
+      "/issues/" + pr.number + "/events?per_page=100&page=" + page,
+    );
+    assert.ok(
+      Array.isArray(events) && events.length <= 100,
+      "Incomplete pull request events",
+    );
+    for (const event of events) {
+      assert.ok(
+        positive(event?.id) && typeof event.event === "string",
+        "Invalid pull request event",
+      );
+      if (event.event !== "merged") continue;
+      assert.ok(
+        !landed && oid.test(event.commit_id),
+        "Ambiguous pull request merge event",
+      );
+      landed = event.commit_id;
+    }
+    if (events.length < 100) {
+      assert.ok(landed, "Missing pull request merge event");
+      return landed;
+    }
+  }
+  throw new Error("Pull request events exceed the complete lookup bound");
+}
+
+/** An earlier producer stays protected while its PR is open or its landed commit is claimed. */
+export async function unusedProducerPull(
+  read,
+  number,
+  openPulls,
+  releaseCommits,
+) {
+  const pr = await read("/pulls/" + number);
+  assert.ok(
+    pr?.number === number && pr.base?.repo?.id === REPOSITORY_ID,
+    "Source pull request identity changed",
+  );
+  if (pr.state !== "closed") return false;
+  assert.equal(
+    typeof pr.merged,
+    "boolean",
+    "Incomplete producer PR merge identity",
+  );
+  if (!pr.merged) return true;
+  const landed = await landedPullCommit(read, pr);
+  return !openPulls.commits.has(landed) && !releaseCommits?.has(landed);
+}
+
 export function sameArtifact(original, live, now) {
   return (
     positive(original?.id) &&
@@ -286,7 +343,7 @@ export function supersededCiOrigin(artifact, run, successor, pulls) {
       positive(run.pull_requests[0].number) &&
       run.pull_requests[0].base?.repo?.id === REPOSITORY_ID &&
       run.pull_requests[0].head?.repo?.id === REPOSITORY_ID &&
-      oid.test(run.pull_requests[0].head?.sha) &&
+      run.pull_requests[0].head?.sha === run.head_sha &&
       !pulls.numbers.has(run.pull_requests[0].number) &&
       !pulls.commits.has(run.pull_requests[0].head.sha)
     );

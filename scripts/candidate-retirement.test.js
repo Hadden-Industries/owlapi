@@ -17,6 +17,7 @@ import { UBUNTU } from "./ubuntu-runner.mjs";
 
 const commit = "a".repeat(40),
   oldCommit = "b".repeat(40),
+  oldLanding = "f".repeat(40),
   objectId = "c".repeat(40),
   digest = "sha256:" + "d".repeat(64);
 const now = Date.parse("2026-11-26T12:00:00Z");
@@ -26,8 +27,11 @@ const repo = {
   default_branch: "main",
 };
 const ciPath = ".github/workflows/ci.yml",
-  completePath = ".github/workflows/release-completion.yml";
+  completePath = ".github/workflows/release-completion.yml",
+  releasePath = ".github/workflows/release.yml",
+  stagePath = ".github/workflows/stage-release.yml";
 const historyTag = "owlapi-release-history/retention-" + commit;
+const olderPullEvents = "/issues/7/events?per_page=100&page=";
 function run(id, event, head, extra = {}) {
   return {
     id,
@@ -89,12 +93,23 @@ function fixture() {
   const main = run(30, "push", commit),
     producer = run(20, "pull_request", "8".repeat(40)),
     older = run(10, "pull_request", oldCommit);
+  producer.pull_requests[0].number = 8;
   const rehearsal = run(12, "workflow_dispatch", oldCommit, {
     path: completePath,
   });
-  const runs = [main, producer, older, rehearsal],
+  const runs = [main, producer, older],
     pulls = [],
-    refs = [];
+    refs = [],
+    annotatedTags = new Map(),
+    historyFiles = new Map();
+  const pull = {
+    number: 7,
+    state: "closed",
+    merged: true,
+    base: { repo: { id: REPOSITORY_ID } },
+    head: { sha: oldCommit, repo: { id: REPOSITORY_ID } },
+  };
+  const pullEvents = [{ id: 71, event: "merged", commit_id: oldLanding }];
   const old = artifact(101, older, "candidate", 3),
     oldProof = artifact(102, older, "proof", 3),
     candidate = artifact(301, producer, "candidate", 1),
@@ -212,25 +227,34 @@ function fixture() {
   const reads = [],
     deletes = [],
     logs = [];
-  const read = jest.fn(async (path) => {
+  const read = jest.fn(async (path, { accept404 = false } = {}) => {
     reads.push(path);
     if (path === "/branches/main") return github;
-    if (path.startsWith("/git/matching-refs/")) return refs;
-    if (path === "/git/ref/tags/" + historyTag)
-      return {
-        ref: "refs/tags/" + historyTag,
-        object: { type: "tag", sha: objectId },
-      };
+    if (path === "/actions/cache/usage")
+      return { active_caches_size_in_bytes: 513 };
+    if (path.startsWith("/git/matching-refs/tags/"))
+      return structuredClone(
+        refs.filter(({ ref }) =>
+          ref.startsWith(path.replace("/git/matching-refs/", "refs/")),
+        ),
+      );
+    if (path.startsWith("/git/ref/tags/")) {
+      const ref = refs.find(
+        ({ ref }) => ref === path.replace("/git/ref/", "refs/"),
+      );
+      if (ref || accept404) return structuredClone(ref ?? null);
+    }
+    if (path.startsWith("/git/tags/")) {
+      const tag = annotatedTags.get(path.slice("/git/tags/".length));
+      if (tag) return structuredClone(tag);
+    }
     if (path === "/actions/runs/12/attempts/1") return rehearsal;
     if (path === "/actions/jobs/812") return job;
-    if (path === "/pulls/7")
-      return {
-        number: 7,
-        state: "closed",
-        merged: true,
-        merge_commit_sha: "f".repeat(40),
-        base: { repo: { id: REPOSITORY_ID } },
-      };
+    if (path === "/pulls/7") return structuredClone(pull);
+    if (path.startsWith(olderPullEvents)) {
+      const start = (Number(path.slice(olderPullEvents.length)) - 1) * 100;
+      return structuredClone(pullEvents.slice(start, start + 100));
+    }
     if (path === "/actions/artifacts/911") return replayArtifact;
     if (path === "/actions/artifacts?per_page=100&page=1")
       return {
@@ -290,7 +314,12 @@ function fixture() {
     env,
     event,
     client: { read, write },
-    openCheckpoint: async () => checkpoint(),
+    openCheckpoint: jest.fn(async () => checkpoint()),
+    readHistoryFiles: jest.fn(async (tag, sha) => {
+      const entry = historyFiles.get(sha);
+      expect(entry?.tag).toBe(tag);
+      return entry.files;
+    }),
     qualifySuccessor: async () => ({
       landed: { commit },
       main: {
@@ -316,7 +345,11 @@ function fixture() {
     rehearsal,
     runs,
     pulls,
+    pull,
+    pullEvents,
     refs,
+    annotatedTags,
+    historyFiles,
     old,
     oldProof,
     candidate,
@@ -336,8 +369,162 @@ function fixture() {
     replayArtifact,
   };
 }
+function ownerDispatch(f, sha) {
+  Object.assign(f.args.env, {
+    GITHUB_EVENT_NAME: "workflow_dispatch",
+    GITHUB_ACTOR: "maksymshostak",
+    GITHUB_TRIGGERING_ACTOR: "maksymshostak",
+    RETENTION_HISTORY_OBJECT: sha,
+  });
+  f.args.event = {
+    repository: repo,
+    inputs: { retention_history_object: sha },
+  };
+}
+function addHistoryRef(f, tag, name, content, sha) {
+  const id = sha ?? (f.historyFiles.size + 1).toString(16).padStart(40, "0");
+  f.refs.push({ ref: "refs/tags/" + tag, object: { type: "tag", sha: id } });
+  f.historyFiles.set(id, {
+    tag,
+    files: new Map([[name, Buffer.from(JSON.stringify(content))]]),
+  });
+}
+function addVersionTag(f, source, annotated) {
+  const tag = "v0.1.0-rc.1";
+  const target = { type: "commit", sha: source };
+  const sha = "2".repeat(40);
+  f.refs.push({
+    ref: "refs/tags/" + tag,
+    object: annotated ? { type: "tag", sha } : target,
+  });
+  if (annotated) f.annotatedTags.set(sha, { tag, sha, object: target });
+}
+function manualFixture() {
+  const f = fixture();
+  f.runs.push(f.rehearsal);
+  addHistoryRef(f, historyTag, "retention.json", f.decisions, objectId);
+  ownerDispatch(f, objectId);
+  return f;
+}
+function preview(f, env = f.args.env) {
+  const {
+    client,
+    openCheckpoint,
+    readHistoryFiles,
+    qualifySuccessor,
+    now,
+    log,
+  } = f.args;
+  return reportReleaseRetention(env, {
+    client,
+    openCheckpoint,
+    readHistoryFiles,
+    qualifySuccessor,
+    now,
+    summary: log,
+  });
+}
+test("ordinary retirement removes superseded CI originals without a custody checkpoint", async () => {
+  const f = fixture();
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+  expect(f.args.openCheckpoint).not.toHaveBeenCalled();
+  expect(f.deletes).toEqual([
+    "/actions/artifacts/101",
+    "/actions/artifacts/102",
+  ]);
+  expect(f.inventory.map(({ id }) => id)).toEqual([301, 302, 303, 304]);
+});
+test("owner dispatch with an empty history input uses routine retirement", async () => {
+  const f = fixture();
+  ownerDispatch(f, "");
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+  expect(f.args.openCheckpoint).not.toHaveBeenCalled();
+});
+test.each([
+  ["pull request landing", "success"],
+  ["pull request landing", "failure"],
+  ["direct main push", "success"],
+  ["direct main push", "failure"],
+])(
+  "holds originals from a %s with a native release run that completed with %s",
+  async (origin, conclusion) => {
+    const f = fixture();
+    const direct = origin === "direct main push";
+    if (direct) {
+      Object.assign(f.older, {
+        event: "push",
+        head_branch: "main",
+        pull_requests: [],
+      });
+      for (const item of [f.old, f.oldProof])
+        item.workflow_run.head_branch = "main";
+    }
+    f.runs.push(
+      run(31, "workflow_dispatch", direct ? oldCommit : oldLanding, {
+        path: releasePath,
+        conclusion,
+      }),
+    );
+
+    await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
+    expect(f.write).not.toHaveBeenCalled();
+  },
+);
+test("completed release writers for unrelated commits leave routine originals eligible", async () => {
+  const f = fixture();
+  f.runs.push(
+    run(41, "workflow_dispatch", "4".repeat(40), { path: stagePath }),
+    run(42, "workflow_dispatch", "5".repeat(40), {
+      path: releasePath,
+      conclusion: "failure",
+    }),
+  );
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+});
+test.each([
+  [
+    "signed stage intent",
+    (f) =>
+      addHistoryRef(f, "owlapi-release-history/stage-26", "stage-intent.json", {
+        commit: oldLanding,
+      }),
+  ],
+  [
+    "signed seal operation",
+    (f) =>
+      addHistoryRef(f, "owlapi-release-history/seal-27", "operation.json", {
+        source: oldCommit,
+      }),
+  ],
+  ["annotated version tag", (f) => addVersionTag(f, oldLanding, true)],
+  ["lightweight version tag", (f) => addVersionTag(f, oldLanding, false)],
+])(
+  "a %s still protects its originals after native release records are gone",
+  async (_name, claim) => {
+    const f = fixture();
+    claim(f);
+
+    await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
+    expect(f.write).not.toHaveBeenCalled();
+  },
+);
+test("malformed protected history stops routine retirement before any write", async () => {
+  const f = fixture();
+  addHistoryRef(f, "owlapi-release-history/stage-26", "stage-intent.json", {
+    commit: "not-a-commit",
+  });
+
+  await expect(retireSupersededCandidates(f.args)).rejects.toThrow(
+    /release source/i,
+  );
+  expect(f.write).not.toHaveBeenCalled();
+});
 test("the production read transport admits only the required PR lookups during retirement", async () => {
   const f = fixture();
+  addVersionTag(f, "4".repeat(40), true);
   const http = jest.fn(async (address, options) => {
     expect(options.method ?? "GET").toBe("GET");
     const root = "https://api.github.com/repos/" + REPOSITORY;
@@ -360,12 +547,25 @@ test("the production read transport admits only the required PR lookups during r
   });
   f.args.client = { read: (...args) => client.read(...args), write: f.write };
   await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+  expect(f.reads).toEqual(
+    expect.arrayContaining([
+      "/pulls?state=open&per_page=100&page=1",
+      "/pulls/7",
+      olderPullEvents + "1",
+      "/git/matching-refs/tags/owlapi-release-history/",
+      "/git/matching-refs/tags/v",
+      "/git/tags/" + "2".repeat(40),
+    ]),
+  );
   const count = http.mock.calls.length;
   for (const path of [
     "/pulls?state=all&per_page=100&page=1",
     "/pulls/7/merge",
     "/pulls/0",
     "/pulls?state=open&per_page=100&page=0",
+    "/issues/7/events",
+    "/issues/7/events?per_page=100&page=0",
+    "/issues/7/events?per_page=99&page=1",
   ]) {
     await expect(client.read(path)).rejects.toThrow(
       "Unexpected GitHub evidence path",
@@ -373,7 +573,39 @@ test("the production read transport admits only the required PR lookups during r
   }
   expect(http).toHaveBeenCalledTimes(count);
 });
-test("retires only authorized earlier CI originals and reopens the ID immediately before one delete", async () => {
+test("the exact landing SHA in the PR detail remains valid release-claim evidence", async () => {
+  const f = fixture();
+  f.pull.merge_commit_sha = oldLanding;
+  f.pullEvents.length = 0;
+  f.runs.push(run(31, "workflow_dispatch", oldLanding, { path: releasePath }));
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
+  expect(f.reads).not.toContain(olderPullEvents + "1");
+  expect(f.write).not.toHaveBeenCalled();
+});
+test.each(["missing", "invalid", "ambiguous"])(
+  "holds originals when native merge evidence is %s",
+  async (variant) => {
+    const f = fixture();
+    if (variant === "missing") f.pullEvents.length = 0;
+    if (variant === "invalid") f.pullEvents[0].commit_id = "not-a-commit";
+    if (variant === "ambiguous") {
+      f.pullEvents.push(
+        ...Array.from({ length: 99 }, (_, index) => ({
+          id: 100 + index,
+          event: "labeled",
+        })),
+        { id: 199, event: "merged", commit_id: "5".repeat(40) },
+      );
+    }
+
+    await expect(retireSupersededCandidates(f.args)).rejects.toThrow(/merge/i);
+    expect(f.write).not.toHaveBeenCalled();
+    if (variant === "ambiguous")
+      expect(f.reads).toContain(olderPullEvents + "2");
+  },
+);
+test("reopens each earlier CI original between exact-ID deletions", async () => {
   const f = fixture();
   await retireSupersededCandidates(f.args);
   expect(f.deletes).toEqual([
@@ -381,39 +613,28 @@ test("retires only authorized earlier CI originals and reopens the ID immediatel
     "/actions/artifacts/102",
   ]);
   expect(f.logs.join("\n")).toMatch(/101/);
-  expect(
-    f.reads.filter((p) => p === "/actions/artifacts/101").length,
-  ).toBeGreaterThan(0);
+  const reads = f.read.mock.invocationCallOrder;
+  const writes = f.write.mock.invocationCallOrder;
+  for (const [index, path] of f.deletes.entries()) {
+    const recheck = reads[f.reads.lastIndexOf(path)];
+    expect(recheck).toBeLessThan(writes[index]);
+    if (index > 0) expect(recheck).toBeGreaterThan(writes[index - 1]);
+  }
   expect(
     f.reads.filter((p) => p.startsWith("/pulls?")).length,
   ).toBeGreaterThanOrEqual(3);
 });
 test.each([
-  "no checkpoint",
   "dry-run checkpoint",
   "failed rehearsal",
   "foreign rehearsal",
   "unverified backup",
-  "active replay",
-  "open PR",
-  "PR head changed",
-  "ambiguous PR",
-  "foreign PR source",
-  "release artifact",
-  "newer run",
+  "unproven original custody",
   "signed protected",
   "unsettled writer",
-  "unrelated trigger",
-  "moved head",
-])("holds on %s", async (variant) => {
-  const f = fixture();
+])("signed custody holds on %s", async (variant) => {
+  const f = manualFixture();
   switch (variant) {
-    case "no checkpoint": {
-      const read = f.args.client.read;
-      f.args.client.read = async (path, opts) =>
-        path.startsWith("/git/ref/tags/") ? null : read(path, opts);
-      break;
-    }
     case "dry-run checkpoint":
       f.decisions.schemaVersion = 1;
       break;
@@ -426,11 +647,56 @@ test.each([
     case "unverified backup":
       f.decisions.replayed.forEach((c) => (c.verifiedBackup = false));
       break;
+    case "unproven original custody":
+      f.decisions.replayed.forEach((c) => (c.actionsCopiesUnavailable = false));
+      break;
+    case "signed protected":
+      f.decisions.protectedIds = [101, 102];
+      break;
+    case "unsettled writer":
+      f.runs.push(run(42, "workflow_dispatch", commit, { path: stagePath }));
+      break;
+  }
+  const refusals = {
+    "dry-run checkpoint": /signed retirement authorization/i,
+    "failed rehearsal": /replay job/i,
+    "foreign rehearsal": /foreign hosted/i,
+  };
+  const action = retireSupersededCandidates(f.args);
+  if (refusals[variant])
+    await expect(action).rejects.toThrow(refusals[variant]);
+  else await expect(action).resolves.toEqual([]);
+  expect(f.write).not.toHaveBeenCalled();
+});
+test.each([
+  "active replay",
+  "active unrelated writer",
+  "open PR",
+  "PR head changed",
+  "ambiguous PR",
+  "foreign PR source",
+  "release artifact",
+  "newer run",
+  "unrelated trigger",
+  "unprotected workflow ref",
+  "moved head",
+])("routine retirement holds on %s", async (variant) => {
+  const f = fixture();
+  switch (variant) {
     case "active replay":
       f.runs.push(
         run(44, "workflow_dispatch", commit, {
           path: ".github/workflows/recipient-material-replay.yml",
           status: "in_progress",
+          conclusion: null,
+        }),
+      );
+      break;
+    case "active unrelated writer":
+      f.runs.push(
+        run(42, "workflow_dispatch", "7".repeat(40), {
+          path: stagePath,
+          status: "queued",
           conclusion: null,
         }),
       );
@@ -460,34 +726,25 @@ test.each([
       f.older.pull_requests = [];
       break;
     case "release artifact":
-      f.older.path = ".github/workflows/release.yml";
+      f.older.path = releasePath;
       break;
     case "newer run":
       for (const a of [f.old, f.oldProof])
         a.created_at = new Date(now).toISOString();
       break;
-    case "signed protected":
-      f.decisions.protectedIds = [101, 102];
-      break;
-    case "unsettled writer":
-      f.runs.push(
-        run(42, "workflow_dispatch", commit, {
-          path: ".github/workflows/stage-release.yml",
-        }),
-      );
-      break;
     case "unrelated trigger":
       f.args.event.workflow_run.event = "pull_request";
+      break;
+    case "unprotected workflow ref":
+      f.args.env.GITHUB_REF_PROTECTED = "false";
       break;
     case "moved head":
       f.github.commit.sha = "c".repeat(40);
       break;
   }
   const refusals = {
-    "dry-run checkpoint": /signed retirement authorization/i,
-    "failed rehearsal": /replay job/i,
-    "foreign rehearsal": /foreign hosted/i,
     "unrelated trigger": /upstream/i,
+    "unprotected workflow ref": /true/u,
     "moved head": /main moved/i,
   };
   const action = retireSupersededCandidates(f.args);
@@ -510,38 +767,28 @@ test.each(["mainReceipt", "sourceReceipt"])(
     expect(f.deletes).toEqual(["/actions/artifacts/101"]);
   },
 );
-test("automatic authorization also requires the signed tag's own successor-specific name", async () => {
+test("an existing signed replay cannot override routine release holds", async () => {
   const f = fixture(),
-    open = f.args.openCheckpoint,
-    read = f.read,
-    other = "owlapi-release-history/manual-retirement";
-  f.args.openCheckpoint = async (...args) => ({
-    ...(await open(...args)),
-    tag: other,
-  });
-  f.args.client.read = async (path, options) =>
-    path === "/git/ref/tags/" + other
-      ? { ref: "refs/tags/" + other, object: { type: "tag", sha: objectId } }
-      : read(path, options);
-  await expect(retireSupersededCandidates(f.args)).rejects.toThrow(/tag name/);
+    retention = f.args.openCheckpoint;
+  addHistoryRef(f, historyTag, "retention.json", f.decisions, objectId);
+  addVersionTag(f, oldLanding, false);
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
+  f.args.env.RETENTION_HISTORY_OBJECT = objectId;
+  await expect(retireSupersededCandidates(f.args)).rejects.toThrow(
+    /explicit owner dispatch/i,
+  );
+  expect(retention).not.toHaveBeenCalled();
   expect(f.write).not.toHaveBeenCalled();
-  f.args.env = {
-    ...f.args.env,
-    GITHUB_EVENT_NAME: "workflow_dispatch",
-    GITHUB_ACTOR: "maksymshostak",
-    GITHUB_TRIGGERING_ACTOR: "maksymshostak",
-    RETENTION_HISTORY_OBJECT: objectId,
-  };
-  f.args.event = {
-    repository: repo,
-    inputs: { retention_history_object: objectId },
-  };
+
+  ownerDispatch(f, objectId);
   await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+  expect(retention).toHaveBeenCalledWith(expect.anything(), objectId);
 });
 test.each(["releaseId", "sealCheckpoint"])(
   "binds the representative hosted rehearsal's %s independently of the individual backup attestations",
   async (field) => {
-    const f = fixture();
+    const f = manualFixture();
     f.decisions.hostedReplay[field] =
       field === "releaseId" ? 12 : "7".repeat(40);
     await expect(retireSupersededCandidates(f.args)).rejects.toThrow(
@@ -566,6 +813,21 @@ test("a new replay claim after the first retirement keeps the remaining original
   };
   await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101]);
   expect(f.deletes).toEqual(["/actions/artifacts/101"]);
+});
+test("a new signed per-artifact hold after the first retirement protects the remaining ID", async () => {
+  const f = fixture();
+  f.args.client.write = async (...args) => {
+    const result = await f.write(...args);
+    addHistoryRef(f, "owlapi-release-history/retention-26", "retention.json", {
+      ...f.decisions,
+      protectedIds: [102],
+    });
+    return result;
+  };
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101]);
+  expect(f.deletes).toEqual(["/actions/artifacts/101"]);
+  expect(f.inventory.map(({ id }) => id)).toContain(102);
 });
 test("an outstanding material observation in the candidate's original CI run protects its recovery inputs", async () => {
   const f = fixture();
@@ -592,7 +854,7 @@ test("a generic completed job cannot replace the authenticated original custody 
     "self-hosted",
     "different native output",
   ]) {
-    const f = fixture();
+    const f = manualFixture();
     if (variant === "missing") f.retained.delete("artifact-911.zip");
     if (variant === "self-hosted") f.job.runner_group_name = "Default";
     if (variant === "different")
@@ -624,51 +886,50 @@ test("a merged producer PR remains protected when its landed commit is an open P
   await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
   expect(f.write).not.toHaveBeenCalled();
 });
-test("the initial report excludes already claimed PRs and retires unrelated eligible IDs in the same batch", async () => {
-  const f = fixture();
-  f.pulls.push({
-    number: 81,
-    state: "open",
-    base: { repo: { id: REPOSITORY_ID }, sha: "f".repeat(40) },
-    head: { sha: "e".repeat(40) },
-    merge_commit_sha: null,
-  });
-  const separate = run(13, "pull_request", "4".repeat(40));
-  separate.pull_requests[0].number = 17;
-  const another = artifact(105, separate, "proof", 3);
-  f.runs.push(separate);
-  f.inventory.push(another);
-  f.decisions.replayed.push({ ...f.decisions.replayed[0], id: 105, runId: 13 });
-  const native = f.read;
-  f.args.client.read = async (p, options) =>
-    p === "/pulls/17"
-      ? {
-          number: 17,
-          state: "closed",
-          merged: false,
-          merge_commit_sha: null,
-          base: { repo: { id: REPOSITORY_ID } },
-        }
-      : native(p, options);
-  const result = await reportReleaseRetention(
-    {
+test.each(["open pull request", "native release"])(
+  "a mixed batch reports and retires only originals outside the %s claim",
+  async (claim) => {
+    const f = fixture();
+    if (claim === "open pull request") {
+      f.pulls.push({
+        number: 81,
+        state: "open",
+        base: { repo: { id: REPOSITORY_ID }, sha: oldLanding },
+        head: { sha: "e".repeat(40) },
+        merge_commit_sha: null,
+      });
+    } else {
+      f.runs.push(
+        run(31, "workflow_dispatch", oldLanding, { path: releasePath }),
+      );
+    }
+    const separate = run(13, "pull_request", "4".repeat(40));
+    separate.pull_requests[0].number = 17;
+    const another = artifact(105, separate, "proof", 3);
+    f.runs.push(separate);
+    f.inventory.push(another);
+    const native = f.read;
+    f.args.client.read = async (p, options) =>
+      p === "/pulls/17"
+        ? {
+            number: 17,
+            state: "closed",
+            merged: false,
+            merge_commit_sha: null,
+            base: { repo: { id: REPOSITORY_ID } },
+            head: { sha: separate.head_sha, repo: { id: REPOSITORY_ID } },
+          }
+        : native(p, options);
+    const result = await preview(f, {
       ...f.args.env,
-      GITHUB_EVENT_NAME: "workflow_dispatch",
-      RETENTION_HISTORY_OBJECT: objectId,
-    },
-    {
-      client: f.args.client,
-      openCheckpoint: f.args.openCheckpoint,
-      qualifySuccessor: f.args.qualifySuccessor,
-      now: f.args.now,
-      summary: f.args.log,
-    },
-  );
-  expect(result.eligibleIds).toEqual([105]);
-  expect(f.reads.filter((path) => path === "/pulls/7")).toHaveLength(1);
-  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([105]);
-  expect(f.deletes).toEqual(["/actions/artifacts/105"]);
-});
+      GITHUB_EVENT_NAME: "schedule",
+    });
+    expect(result.eligibleIds).toEqual([105]);
+    expect(f.write).not.toHaveBeenCalled();
+    await expect(retireSupersededCandidates(f.args)).resolves.toEqual([105]);
+    expect(f.deletes).toEqual(["/actions/artifacts/105"]);
+  },
+);
 test("a source PR reopening after the open-list snapshot protects its original", async () => {
   const f = fixture(),
     native = f.read;
@@ -680,7 +941,7 @@ test("a source PR reopening after the open-list snapshot protects its original",
   expect(f.write).not.toHaveBeenCalled();
 });
 test("a signed cleared completion receipt remains usable after the original hosted records expire", async () => {
-  const f = fixture();
+  const f = manualFixture();
   f.retained.set(
     "origin-12-1-release-completion-12-1.json",
     Buffer.from(
@@ -744,18 +1005,8 @@ test("a changed direct artifact read or an incomplete run inventory prevents ret
   }
 });
 test("owner dispatch requires the owner on a rerun and the exact submitted history object", async () => {
-  const f = fixture();
-  f.args.env = {
-    ...f.args.env,
-    GITHUB_EVENT_NAME: "workflow_dispatch",
-    GITHUB_ACTOR: "maksymshostak",
-    GITHUB_TRIGGERING_ACTOR: "retrying-user",
-    RETENTION_HISTORY_OBJECT: objectId,
-  };
-  f.args.event = {
-    repository: repo,
-    inputs: { retention_history_object: objectId },
-  };
+  const f = manualFixture();
+  f.args.env.GITHUB_TRIGGERING_ACTOR = "retrying-user";
   await expect(retireSupersededCandidates(f.args)).rejects.toThrow(/owner/);
   f.args.env.GITHUB_TRIGGERING_ACTOR = "maksymshostak";
   f.args.event.inputs.retention_history_object = "9".repeat(40);
@@ -808,23 +1059,33 @@ test("a native retirement needs the exact documented 204 to acknowledge its effe
     request.mockRestore();
   }
 });
-test("the maintenance observer reports the same eligible IDs without applying a write authorization", async () => {
+test("scheduled maintenance previews routine retirement and leaves the inventory intact", async () => {
   const f = fixture();
-  const result = await reportReleaseRetention(
-    {
-      ...f.args.env,
-      GITHUB_EVENT_NAME: "workflow_dispatch",
-      RETENTION_HISTORY_OBJECT: objectId,
-    },
-    {
-      client: f.args.client,
-      openCheckpoint: f.args.openCheckpoint,
-      qualifySuccessor: f.args.qualifySuccessor,
-      now: f.args.now,
-      summary: f.args.log,
-    },
-  );
+  f.args.env.GITHUB_EVENT_NAME = "schedule";
+  f.args.event = { repository: repo, schedule: "17 5 * * 3" };
+
+  const result = await preview(f);
   expect(result.eligibleIds).toEqual([101, 102]);
+  expect(f.args.openCheckpoint).not.toHaveBeenCalled();
+  expect(f.logs.join("\n")).toMatch(
+    /Dry-run:.*Eligible artifact IDs: 101, 102/u,
+  );
+  await expect(retireSupersededCandidates(f.args)).rejects.toThrow(
+    /upstream|workflow event/i,
+  );
+  expect(f.write).not.toHaveBeenCalled();
+  expect(f.inventory.map(({ id }) => id)).toEqual([
+    101, 102, 301, 302, 303, 304,
+  ]);
+});
+test("a manual maintenance preview reports the signed custody selection read-only", async () => {
+  const f = manualFixture();
+  const result = await preview(f);
+  expect(result.eligibleIds).toEqual([101, 102]);
+  expect(f.args.openCheckpoint).toHaveBeenCalledWith(
+    expect.anything(),
+    objectId,
+  );
   expect(f.write).not.toHaveBeenCalled();
   expect(f.logs.join("\n")).toMatch(/Dry-run/u);
 });

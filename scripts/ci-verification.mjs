@@ -1063,7 +1063,11 @@ export function retirementTrigger(context) {
 }
 
 export async function verifyRetentionCi(options) {
-  const trigger = retirementTrigger(options.context);
+  // Scheduled maintenance previews the same selection with its read-only token.
+  const trigger =
+    options.context.eventName === "schedule"
+      ? null
+      : retirementTrigger(options.context);
   const result = await verifyProtectedMainCi(options);
   if (trigger)
     requireFact(

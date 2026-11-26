@@ -1,4 +1,4 @@
-/** Observe retained bytes and identify redundant CI candidates under signed custody. */
+/** Observe retained bytes and retire superseded CI candidates after checking their release and recovery claims. */
 import {
   REPOSITORY as repository,
   REPOSITORY_ID,
@@ -15,16 +15,18 @@ import {
 import { GitHubReleaseClient } from "./github-release.mjs";
 import {
   readCheckpoint,
+  readRetentionHistoryFiles,
   unresolvedReservations,
 } from "./release-history-checkpoint.mjs";
+import { createReleaseClaimReader } from "./retirement-release-claims.mjs";
 import { readRetentionCiEvidence } from "./release-ci-qualification.mjs";
 import {
   assertRetirementWriter,
   readOpenPullClaims,
   retireSelectedCandidates,
-  retirementTag,
   sameArtifact,
   supersededCiOrigin,
+  unusedProducerPull,
   verifyRetirementRehearsal,
 } from "./candidate-retirement.mjs";
 import { parseArtifactName } from "../tooling/artifact-transport/identity.mjs";
@@ -125,6 +127,7 @@ export function selectRedundantArtifacts({
   successor,
   currentHead,
   decisions,
+  releaseClaims,
   activeConsumer,
   openWriter,
   complete,
@@ -133,11 +136,13 @@ export function selectRedundantArtifacts({
   if (!complete) return hold("Provider inventory is incomplete.");
   if (!successor || successor.commit !== currentHead)
     return hold("No verified successor on current protected main.");
-  if (!decisions) return hold("No signed custody replay is available.");
+  if (!decisions && !releaseClaims)
+    return hold("Release references are unavailable.");
   if (
-    !validIdList(decisions.protectedIds) ||
-    !settledRunKeys(decisions.settledRuns) ||
-    !Array.isArray(decisions.replayed)
+    decisions &&
+    (!validIdList(decisions.protectedIds) ||
+      !settledRunKeys(decisions.settledRuns) ||
+      !Array.isArray(decisions.replayed))
   )
     return hold("The signed custody inventory is malformed.");
   if (activeConsumer || openWriter)
@@ -162,12 +167,18 @@ export function selectRedundantArtifacts({
     return hold("The verified successor is no longer available.");
   const protectedIds = new Set([
     ...current.map((record) => record.id),
-    ...decisions.protectedIds,
+    ...(decisions ? decisions.protectedIds : releaseClaims.protectedIds),
   ]);
+  const replayed =
+    decisions && new Map(decisions.replayed.map((entry) => [entry.id, entry]));
   const eligible = [];
-  for (const custody of decisions.replayed) {
-    const artifact = live.get(custody.id);
-    if (!artifact || protectedIds.has(custody.id)) continue;
+  for (const artifact of live.values()) {
+    if (
+      protectedIds.has(artifact.id) ||
+      artifact.workflow_run?.repository_id !== successor.repositoryId ||
+      artifact.workflow_run?.head_repository_id !== successor.repositoryId
+    )
+      continue;
     const logical = parseArtifactName(artifact.name)?.logical ?? "";
     if (
       !/^(?:package-proof-\d+-\d+|hadden-industries-owlapi-[\d.]+(?:-rc\.\d+)?-candidate-\d+-\d+)$/u.test(
@@ -175,23 +186,25 @@ export function selectRedundantArtifacts({
       )
     )
       continue;
+    const custody = replayed?.get(artifact.id);
     if (
-      artifact.digest !== custody.digest ||
-      artifact.workflow_run?.id !== custody.runId ||
-      artifact.workflow_run?.repository_id !== successor.repositoryId ||
-      artifact.workflow_run?.head_repository_id !== successor.repositoryId ||
-      !/^[a-f0-9]{64}$/u.test(custody.manifestSha256) ||
-      custody.actionsCopiesUnavailable !== true ||
-      custody.verifiedBackup !== true ||
-      custody.result !== "STAGE_SEAL_AND_RECOVERY_VERIFIED"
+      decisions &&
+      (!custody ||
+        artifact.digest !== custody.digest ||
+        artifact.workflow_run.id !== custody.runId ||
+        !/^[a-f0-9]{64}$/u.test(custody.manifestSha256) ||
+        custody.actionsCopiesUnavailable !== true ||
+        custody.verifiedBackup !== true ||
+        custody.result !== "STAGE_SEAL_AND_RECOVERY_VERIFIED")
     )
       continue;
-    eligible.push(custody.id);
+    eligible.push(artifact.id);
   }
   return {
     eligibleIds: [...new Set(eligible)].sort((a, b) => a - b),
-    reason:
-      "Exact redundant IDs with signed offline replay and a verified successor.",
+    reason: decisions
+      ? "Exact redundant IDs with signed offline replay and a verified successor."
+      : "Earlier CI candidates with a verified successor and no observed release or recovery claim.",
   };
 }
 
@@ -243,34 +256,40 @@ const sameExecution = (original, live) =>
   live.repository?.id === REPOSITORY_ID &&
   live.head_repository?.id === REPOSITORY_ID;
 
-/** Both the observer and the writer use the same successor, signed custody claims, open PRs, and active consumers. */
+async function hasOutstandingReservation(client, checkpoint) {
+  const ref = await client.read("/git/ref/tags/" + checkpoint.tag);
+  assert.ok(
+    ref?.ref === "refs/tags/" + checkpoint.tag &&
+      ref.object?.type === "tag" &&
+      ref.object.sha === checkpoint.objectId,
+    "Signed retention ref moved",
+  );
+  return unresolvedReservations(client, checkpoint);
+}
+
+/** The observer and writer inspect the same release references, open PRs and verified successor. */
 async function readRetirementSnapshot({
   client,
   head,
   checkpoint,
   decisions,
+  readClaims,
   proof,
   now,
   inventory: collected,
   target,
 }) {
   const read = (path) => client.read(path);
-  const [listed, runs, pulls, reserved, ref] = await Promise.all([
+  const [listed, runs, pulls, reserved, releaseClaims] = await Promise.all([
     collected ??
       (target
         ? readRunArtifacts(read, target.workflow_run.id)
         : readArtifactInventory(read)),
     readWorkflowRuns(read),
     readOpenPullClaims(read),
-    unresolvedReservations(client, checkpoint),
-    read("/git/ref/tags/" + checkpoint.tag),
+    checkpoint ? hasOutstandingReservation(client, checkpoint) : false,
+    checkpoint ? undefined : readClaims(),
   ]);
-  assert.ok(
-    ref.ref === "refs/tags/" + checkpoint.tag &&
-      ref.object?.type === "tag" &&
-      ref.object.sha === checkpoint.objectId,
-    "Signed retention ref moved",
-  );
   assert.ok(
     runs.every(
       (run) => validId(run.id) && typeof run.path === "string" && run.path,
@@ -282,12 +301,24 @@ async function readRetirementSnapshot({
     (run) =>
       consumers.includes(workflowFile(run)) && run.status !== "completed",
   );
-  const openWriter =
-    reserved ||
-    outstandingWriterRuns(
-      runs.filter((run) => writers.includes(workflowFile(run))),
-      decisions.settledRuns,
-    );
+  const writerRuns = runs.filter((run) => writers.includes(workflowFile(run)));
+  const openWriter = decisions
+    ? reserved || outstandingWriterRuns(writerRuns, decisions.settledRuns)
+    : writerRuns.some((run) => run.status !== "completed");
+  if (releaseClaims) {
+    // A release can promote only a direct FULL main producer or the PR which landed on its exact checkout.
+    releaseClaims.commits.add(head);
+    for (const run of writerRuns.filter(
+      (r) => workflowFile(r) === "release.yml",
+    )) {
+      assert.match(
+        run.head_sha,
+        /^[a-f0-9]{40}$/u,
+        "Unidentified release qualification source",
+      );
+      releaseClaims.commits.add(run.head_sha);
+    }
+  }
   const { candidate, proof: packageProof } = proof.qualifiedPackage;
   const successor = {
     commit: proof.landed.commit,
@@ -355,6 +386,7 @@ async function readRetirementSnapshot({
     successor,
     currentHead: main.commit?.sha,
     decisions,
+    releaseClaims,
     activeConsumer,
     openWriter,
     complete,
@@ -372,26 +404,14 @@ async function readRetirementSnapshot({
       continue;
     const origin = byId.get(artifact.workflow_run.id);
     if (!supersededCiOrigin(artifact, origin, successor, pulls)) continue;
+    if (releaseClaims?.commits.has(origin.head_sha)) continue;
     if (origin.event === "pull_request") {
       const [{ number }] = origin.pull_requests;
-      if (!prEligibility.has(number)) {
-        const pr = await read("/pulls/" + number);
-        assert.ok(
-          pr?.number === number && pr.base?.repo?.id === REPOSITORY_ID,
-          "Source pull request identity changed",
-        );
-        if (pr.state === "closed")
-          assert.ok(
-            typeof pr.merged === "boolean" &&
-              (!pr.merged || /^[a-f0-9]{40}$/u.test(pr.merge_commit_sha)),
-            "Incomplete producer PR merge identity",
-          );
+      if (!prEligibility.has(number))
         prEligibility.set(
           number,
-          pr.state === "closed" &&
-            (!pr.merged || !pulls.commits.has(pr.merge_commit_sha)),
+          await unusedProducerPull(read, number, pulls, releaseClaims?.commits),
         );
-      }
       if (!prEligibility.get(number)) continue;
     }
     eligibleIds.push(artifact.id);
@@ -399,7 +419,7 @@ async function readRetirementSnapshot({
   eligibleIds.sort((a, b) => a - b);
   const reason =
     approved.size && !eligibleIds.length
-      ? "No authorized original belongs to an unused earlier CI candidate."
+      ? "The remaining originals are in use or lack an eligible earlier CI origin."
       : selected.reason;
   return { inventory, eligibleIds, reason };
 }
@@ -408,11 +428,37 @@ async function readRetirementSnapshot({
 const writeSummary = (env, message) =>
   appendFileSync(env.GITHUB_STEP_SUMMARY, message + "\n");
 
+/** The optional owner dispatch replays exact originals already in recovery custody. Routine cleanup reads existing claims. */
+async function retentionAuthority(
+  env,
+  client,
+  openCheckpoint,
+  readHistoryFiles,
+  preview,
+) {
+  const objectId = env.RETENTION_HISTORY_OBJECT;
+  if (!objectId)
+    return {
+      readClaims: createReleaseClaimReader(
+        (path) => client.read(path),
+        readHistoryFiles,
+      ),
+    };
+  assert.match(objectId, /^[a-f0-9]{40}$/u);
+  const checkpoint = await openCheckpoint(client, objectId);
+  assert.equal(checkpoint.objectId, objectId);
+  const decisions = custodyDecisions(checkpoint, env.GITHUB_SHA);
+  if (!preview || decisions.schemaVersion === 2)
+    await verifyRetirementRehearsal(client, checkpoint, decisions);
+  return { checkpoint, decisions };
+}
+
 export async function reportReleaseRetention(
   env = process.env,
   {
     client = retentionClient(env),
     openCheckpoint = readCheckpoint,
+    readHistoryFiles = readRetentionHistoryFiles,
     qualifySuccessor = readRetentionCiEvidence,
     now = Date.now,
     summary = (text) => writeSummary(env, text),
@@ -452,26 +498,22 @@ export async function reportReleaseRetention(
         ".",
     ].join("\n"),
   );
-  let outcome = hold("No signed custody replay is available.");
-  if (env.RETENTION_HISTORY_OBJECT) {
-    const checkpoint = await openCheckpoint(
-      client,
-      env.RETENTION_HISTORY_OBJECT,
-    );
-    const decisions = custodyDecisions(checkpoint, env.GITHUB_SHA);
-    if (decisions.schemaVersion === 2)
-      await verifyRetirementRehearsal(client, checkpoint, decisions);
-    const proof = await qualifySuccessor(env);
-    outcome = await readRetirementSnapshot({
-      client,
-      head: env.GITHUB_SHA,
-      checkpoint,
-      decisions,
-      proof,
-      now,
-      inventory,
-    });
-  }
+  const authority = await retentionAuthority(
+    env,
+    client,
+    openCheckpoint,
+    readHistoryFiles,
+    true,
+  );
+  const proof = await qualifySuccessor(env);
+  const outcome = await readRetirementSnapshot({
+    client,
+    head: env.GITHUB_SHA,
+    ...authority,
+    proof,
+    now,
+    inventory,
+  });
   summary(
     "\nDry-run: " +
       outcome.reason +
@@ -482,12 +524,13 @@ export async function reportReleaseRetention(
   return { eligibleIds: outcome.eligibleIds, reason: outcome.reason };
 }
 
-/** Opt in with a protected, signed write-authorizing checkpoint. Old reporting records cannot issue a deletion. */
+/** Retire unused CI originals automatically, or apply exact replay attestations on an explicit owner dispatch. */
 export async function retireSupersededCandidates({
   env = process.env,
   event = JSON.parse(readFileSync(env.GITHUB_EVENT_PATH, "utf8")),
   client = retentionClient(env, true),
   openCheckpoint = readCheckpoint,
+  readHistoryFiles = readRetentionHistoryFiles,
   qualifySuccessor = readRetentionCiEvidence,
   now = Date.now,
   log = (message) => {
@@ -504,35 +547,13 @@ export async function retireSupersededCandidates({
       main.commit?.sha === head,
     "Protected main moved",
   );
-  let objectId = env.RETENTION_HISTORY_OBJECT;
-  if (!objectId) {
-    const tag = retirementTag(head);
-    const reference = await client.read("/git/ref/tags/" + tag, {
-      accept404: true,
-    });
-    if (!reference) {
-      log(
-        "Retirement held: no signed authorization for this protected-main successor.",
-      );
-      return [];
-    }
-    assert.ok(
-      reference.ref === "refs/tags/" + tag && reference.object?.type === "tag",
-      "Unexpected retention authorization ref",
-    );
-    objectId = reference.object.sha;
-  }
-  assert.match(objectId, /^[a-f0-9]{40}$/u);
-  const checkpoint = await openCheckpoint(client, objectId);
-  assert.equal(checkpoint.objectId, objectId);
-  if (!env.RETENTION_HISTORY_OBJECT)
-    assert.equal(
-      checkpoint.tag,
-      retirementTag(head),
-      "Automatic retirement requires the signed successor-specific tag name",
-    );
-  const decisions = custodyDecisions(checkpoint, head);
-  await verifyRetirementRehearsal(client, checkpoint, decisions);
+  const authority = await retentionAuthority(
+    env,
+    client,
+    openCheckpoint,
+    readHistoryFiles,
+    false,
+  );
   const proof = await qualifySuccessor(env);
   if (trigger)
     assert.ok(
@@ -548,8 +569,7 @@ export async function retireSupersededCandidates({
       readRetirementSnapshot({
         client,
         head,
-        checkpoint,
-        decisions,
+        ...authority,
         proof,
         now,
         target,
@@ -577,7 +597,7 @@ if (
     } catch (error) {
       writeSummary(
         process.env,
-        "\nDry-run: verified inventory or custody proof is unavailable. Retain all artifacts.",
+        "\nDry-run: the successor, reference inventory or requested custody proof is unavailable. Retain all artifacts.",
       );
       throw error;
     }

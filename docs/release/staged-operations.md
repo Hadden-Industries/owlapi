@@ -345,14 +345,33 @@ A signed version 1 `retention.json` supports the read-only observer.
 
 ### Retire superseded CI candidates
 
-`candidate-retention.yml` runs after a successful protected-main CI push.
-The release owner can also dispatch it on protected `main` with an exact signed `retention_history_object`.
-Automatic runs require the protected annotated tag `owlapi-release-history/retention-<successor SHA>` and verify that the signer used that exact tag name.
-When that tag is absent, the job reports a hold.
-Candidate retirement and exceptional material replay share the release writer queue.
+`candidate-retention.yml` automatically retires unused CI candidates after a successful protected-main CI push qualifies a successor.
+An owner dispatch with the input left blank uses the same policy.
+Scheduled maintenance previews the eligible IDs in its job summary.
 
-Authorize retirement after a hosted signed-custody rehearsal and verification of the independent encrypted backup.
-Use the existing protected history process.
+The writer considers only older candidate bundles and package proofs from completed same-repository CI.
+It protects open pull requests, live recipient-material cases, and the successor candidate, package proof and verification receipts from both the landed and producing CI runs.
+Active consumers and release operations pause cleanup.
+For a direct main build it checks the source commit.
+For a closed, merged PR it also checks the commit on which the PR landed.
+Any release qualification on that commit, a version tag, or a stage or release operation in protected history keeps the corresponding CI originals.
+Existing history can also protect an individual artifact ID.
+These protections survive deletion of the native qualification run.
+For example, after PR A lands, a newer qualified PR B can retire A's unused bundle and proof.
+If A entered release qualification, automatic cleanup retains them.
+
+Before each deletion the writer reopens the complete successor, checks the live references again and verifies the original artifact ID, name, digest, byte length and producing run.
+An incomplete observation prevents deletion.
+Candidate retirement and exceptional material replay share the release writer queue.
+Each attempt and GitHub acknowledgement goes in the existing logs and job summary.
+An ambiguous response stops the batch.
+Reconcile that exact ID before a later run.
+[JSON Quality retirement procedure](https://github.com/Hadden-Industries/json-quality/blob/78e901148f829cd1dd44953de22791fea6aa7f2d/scripts/candidate-retention.js)
+
+### Retire a backed-up release original
+
+To retire a release-associated CI original after proving stage, seal and recovery can use its independent encrypted backup, the release owner can dispatch the same workflow on protected `main` with an exact signed `retention_history_object`.
+This exceptional route requires a hosted custody rehearsal.
 In the signed `retention.json`, set `schemaVersion` to `2` and `purpose` to `RETIRE_SUPERSEDED_CI_CANDIDATES`.
 Supply these records.
 
@@ -369,14 +388,8 @@ Supply these records.
   When native records have expired, the signed history can supply the existing disclosure-cleared ZIP as `artifact-ID.zip` and the original `run`, `producer` job and `artifact` records as `origin-RUN-ATTEMPT-release-completion-RUN-ATTEMPT.json`.
   Restricted originals stay in their authorized private custody.
 
-The writer reopens the verified successor candidate, package proof, and both the main and producing CI verification receipts before every deletion.
-It considers only signed, earlier candidate or package-proof IDs from completed same-repository CI.
-It holds originals needed by open pull requests, live pending recipient-material observations, active readers, and outstanding writer attempts or reservations.
-Before each deletion it rechecks mutable provider state and the original ID, name, digest, byte length and source.
-Each attempt and GitHub acknowledgement goes in the existing logs and job summary.
-An ambiguous response stops the batch.
-Reconcile that exact ID before a later run, which selects again from the remaining native inventory.
-[JSON Quality retirement procedure](https://github.com/Hadden-Industries/json-quality/blob/78e901148f829cd1dd44953de22791fea6aa7f2d/scripts/candidate-retention.js)
+Outstanding writer attempts or reservations hold the exceptional retirement.
+Each eligible original must match its signed replay record.
 
 Signed checkpoint readers validate the complete Git tree and materialize only selected members.
 For schema 2 an indexed logical member can list two to sixteen `parts`, each with exact `name`, `bytes` and `sha256`.
