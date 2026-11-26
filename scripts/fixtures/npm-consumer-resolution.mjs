@@ -43,15 +43,22 @@ export async function installResolutionFixture(
         version: "1.0.0",
         dependencies: {
           "node-types": "*",
+          alternative: "^1",
           older: "npm:leaf@^1.0.0",
           plugin: "1.0.0",
         },
         peerDependencies: { host: "^1" },
-        optionalDependencies: { foreign: "1.0.0" },
+        acceptDependencies: { alternative: "^2" },
+        optionalDependencies: {
+          foreign: "1.0.0",
+          wrapper: "1.0.0",
+          future: "1.0.0",
+        },
       },
     ],
     ["host", { name: "host", version: "1.0.0" }],
     ["node-types", { name: "node-types", version }],
+    ["alternative", { name: "alternative", version: "2.0.0" }],
     ["older", { name: "leaf", version: "1.0.0" }],
     [
       "plugin",
@@ -59,6 +66,14 @@ export async function installResolutionFixture(
     ],
     ["leaf", { name: "leaf", version: "2.0.0" }],
     ["foreign", { name: "foreign", version: "1.0.0", os: [foreign] }],
+    [
+      "wrapper",
+      { name: "wrapper", version: "1.0.0", dependencies: { foreign: "1.0.0" } },
+    ],
+    [
+      "future",
+      { name: "future", version: "1.0.0", engines: { node: ">=900.0.0" } },
+    ],
   ];
   let tarball;
   for (const [binding, data] of definitions) {
@@ -96,7 +111,9 @@ export async function installResolutionFixture(
       ...data,
       resolved,
       integrity,
-      ...(data.name === "foreign" ? { optional: true } : {}),
+      ...(["foreign", "wrapper", "future"].includes(data.name)
+        ? { optional: true }
+        : {}),
     };
     await native("cacache").put(join(cache, "_cacache"), resolved, bytes);
   }

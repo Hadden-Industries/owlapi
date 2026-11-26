@@ -17,6 +17,7 @@ import {
 import { readConsumerResolutionProof } from "./release-ci-package.mjs";
 import { installResolutionFixture } from "./fixtures/npm-consumer-resolution.mjs";
 import { zipArchive } from "./fixtures/zip-archive.mjs";
+import { readZipArchiveFiles } from "./release-zip.mjs";
 import { PACKAGE_NAME } from "./package-identity.mjs";
 import { isStrictDescendantPath } from "./release-file-utils.mjs";
 
@@ -36,6 +37,9 @@ test("replay exact alias and scoped npm installs, preserving typed edges and ind
         version,
       );
       const opts = { npmCli, dependencyName, tarball };
+      const marker = "PRIVATE_FIXTURE_MARKER";
+      const privatePath = join(root, "private-audit-original");
+      writeFileSync(privatePath, marker, { flag: "wx", mode: 0o600 });
       const observation = await captureConsumerResolution(root, opts);
       const members = [
         {
@@ -53,6 +57,9 @@ test("replay exact alias and scoped npm installs, preserving typed edges and ind
           { path: "resolution.json", content: JSON.stringify(record) },
           ...extra,
         ]);
+        if (!extra.length)
+          for (const { content } of readZipArchiveFiles(bytes))
+            expect(content.includes(Buffer.from(marker))).toBe(false);
         return readConsumerResolutionProof({
           ...opts,
           platform: currentResolutionPlatform(),
@@ -68,15 +75,7 @@ test("replay exact alias and scoped npm installs, preserving typed edges and ind
       }
       // The private original is retrievable by the local test operator. Only graph
       // evidence enters this trial ZIP; a production evaluator needs its own custody.
-      const privatePath = join(root, "private-audit-original");
-      writeFileSync(privatePath, "PRIVATE_FIXTURE_MARKER", {
-        flag: "wx",
-        mode: 0o600,
-      });
-      expect(readFileSync(privatePath, "utf8")).toBe("PRIVATE_FIXTURE_MARKER");
-      expect(
-        zipArchive(members).includes(Buffer.from("PRIVATE_FIXTURE_MARKER")),
-      ).toBe(false);
+      expect(readFileSync(privatePath, "utf8")).toBe(marker);
       const observed = await reopen(observation);
       expect(observed.graph.edges).toContainEqual({
         from: "node_modules/reader",
@@ -105,6 +104,48 @@ test("replay exact alias and scoped npm installs, preserving typed edges and ind
           .map((n) => n.version)
           .sort(),
       ).toEqual(["1.0.0", "2.0.0"]);
+      for (const name of ["wrapper", "future"])
+        expect(observed.graph.edges).toContainEqual({
+          from: "node_modules/reader",
+          name,
+          type: "optional",
+          spec: "1.0.0",
+          to: null,
+        });
+      // A root extension is excluded from the trusted measurement surface.
+      writeFileSync(join(root, ".npm-extension.mjs"), "");
+      await expect(captureConsumerResolution(root, opts)).rejects.toThrow(
+        /extension/,
+      );
+      rmSync(join(root, ".npm-extension.mjs"));
+      const lockPath = join(root, "package-lock.json");
+      const originalLock = readFileSync(lockPath);
+      const forged = JSON.parse(originalLock);
+      forged.packages["node_modules/" + dependencyName].peerDependencies = {
+        rogue: "*",
+      };
+      writeFileSync(lockPath, JSON.stringify(forged));
+      await expect(captureConsumerResolution(root, opts)).rejects.toThrow(
+        /peerDependencies/,
+      );
+      delete forged.packages["node_modules/" + dependencyName].peerDependencies;
+      forged.packages["node_modules/rogue"] = {
+        ...forged.packages["node_modules/host"],
+        extraneous: true,
+      };
+      writeFileSync(lockPath, JSON.stringify(forged));
+      await expect(captureConsumerResolution(root, opts)).rejects.toThrow(
+        /extraneous/i,
+      );
+      writeFileSync(lockPath, originalLock);
+      expect(observed.graph.edges).toContainEqual({
+        from: "node_modules/reader",
+        name: "alternative",
+        type: "prod",
+        spec: "^1",
+        accept: "^2",
+        to: "node_modules/alternative",
+      });
       results.push(observed);
       const changed = structuredClone(observed);
       changed.graph.edges.find(
@@ -139,6 +180,9 @@ test("replay exact alias and scoped npm installs, preserving typed edges and ind
   const delta = compareConsumerResolutions(...results);
   expect(delta.edges).toEqual([]);
   expect(delta.occurrences).toHaveLength(1);
+  expect(delta.occurrences[0].requestedBy.after).toMatchObject([
+    { from: "node_modules/reader", name: "node-types", spec: "*" },
+  ]);
   expect(delta.occurrences[0]).toMatchObject({
     before: { name: "node-types", version: "26.6.10" },
     after: { name: "node-types", version: "26.6.11" },

@@ -116,14 +116,27 @@ function readInputs(directory, { tarball, dependencyName, registryTarball }) {
   } else {
     assert.deepEqual(manifest, subject, "Packed producer manifest differs");
   }
-  assert.deepEqual(
-    root.dependencies ?? {},
-    subject.dependencies ?? {},
-    "Candidate direct dependencies differ",
-  );
+  for (const field of [
+    "dependencies",
+    "peerDependencies",
+    "peerDependenciesMeta",
+    "optionalDependencies",
+    "acceptDependencies",
+    "bundleDependencies",
+    "bundledDependencies",
+    "workspaces",
+  ]) {
+    assert.deepEqual(
+      root[field] ?? {},
+      subject[field] ?? {},
+      "Candidate lock differs from packed " + field,
+    );
+  }
   for (const [path, entry] of Object.entries(registryEntries)) {
-    if (path)
+    if (path) {
       assert.ok(entry && !entry.link, "Unsupported registry occurrence link");
+      assert.ok(!entry.extraneous, "Extraneous registry lock occurrence");
+    }
   }
   const indexed = indexRegistryOccurrences(registryEntries);
   const archiveById = new Map(
@@ -152,20 +165,72 @@ function readInputs(directory, { tarball, dependencyName, registryTarball }) {
 }
 
 /** The caller supplies the platform observed by its trusted native lane when replaying a lock. */
-export function currentResolutionPlatform() {
-  const result = { os: process.platform, cpu: process.arch };
-  if (process.platform === "linux")
-    result.libc = process.report.getReport().header.glibcVersionRuntime
-      ? "glibc"
-      : "musl";
+export function currentResolutionPlatform(
+  npmCli = process.env.OWLAPI_CONSUMER_NPM ?? process.env.npm_execpath,
+) {
+  const result = {
+    os: process.platform,
+    cpu: process.arch,
+    node: process.versions.node,
+  };
+  if (result.os === "linux") {
+    const libc = createRequire(npmCli)("npm-install-checks").currentEnv.libc(
+      result.os,
+    );
+    if (libc) result.libc = libc;
+  }
   return result;
 }
 
-function graphOf(tree, inputs, native, platform, actual) {
+// An incompatible required descendant removes its optional parent. Reachability from
+// the active candidate then naturally excludes siblings used only by that branch.
+function omittedOptionalNodes(tree, native, platform, npmVersion) {
+  const { checkPlatform, checkEngine } = native("npm-install-checks");
+  const omitted = new Set();
+  for (const node of tree.inventory.values()) {
+    if (!node.optional) continue;
+    try {
+      checkPlatform(node.package, false, platform);
+      checkEngine(node.package, npmVersion, platform.node);
+    } catch (error) {
+      if (!["EBADENGINE", "EBADPLATFORM"].includes(error.code)) throw error;
+      omitted.add(node);
+    }
+  }
+  for (const child of omitted)
+    for (const edge of child.edgesIn)
+      if (!edge.optional && !edge.dev) omitted.add(edge.from);
+  return omitted;
+}
+
+function nativeTree(native, directory) {
+  const Arborist = native("@npmcli/arborist");
+  // The inspector never evaluates a package-supplied npm extension.
+  return new Arborist({
+    path: directory,
+    ignoreExtension: true,
+    ignoreScripts: true,
+    offline: true,
+  });
+}
+
+function graphOf(tree, inputs, native, platform, actual, npmVersion) {
   const { location, subject, integrity, origins } = inputs;
   const semver = native("semver"),
     npa = native("npm-package-arg");
-  const { checkPlatform } = native("npm-install-checks");
+  const omitted = actual
+    ? new Set()
+    : omittedOptionalNodes(tree, native, platform, npmVersion);
+  if (!actual && location) {
+    const reachable = new Set([tree]);
+    for (const n of reachable)
+      for (const edge of n.edgesOut.values())
+        if (!edge.dev && edge.to) reachable.add(edge.to);
+    assert.ok(
+      [...tree.inventory.values()].every((n) => reachable.has(n)),
+      "Extraneous unreachable occurrence in native lock",
+    );
+  }
   const root = tree.inventory.get(location);
   assert.ok(
     root &&
@@ -223,31 +288,45 @@ function graphOf(tree, inputs, native, platform, actual) {
         !edge.workspace && edge.valid && !edge.peerConflicted,
         "Invalid native npm edge " + from + " -> " + edge.name,
       );
-      const requested = npa.resolve(edge.name, edge.rawSpec);
-      const destination =
-        requested.type === "alias" ? requested.subSpec : requested;
-      assert.ok(
-        ["range", "version"].includes(destination.type),
-        "Ineligible dependency specifier: " + edge.name,
+      const requests = [edge.spec, ...(edge.accept ? [edge.accept] : [])].map(
+        (spec) => {
+          const request = npa.resolve(edge.name, spec);
+          const dest = request.type === "alias" ? request.subSpec : request;
+          assert.ok(
+            ["range", "version"].includes(dest.type),
+            "Ineligible dependency specifier: " + edge.name,
+          );
+          return dest;
+        },
       );
       // Only producer-root policy can legitimately affect its own graph.
       if (location)
         assert.equal(edge.spec, edge.rawSpec, "Unexpected consumer override");
-      let target = edge.to;
-      if (target && edge.optional) {
-        try {
-          checkPlatform(target.package, false, platform);
-        } catch (error) {
-          if (error.code !== "EBADPLATFORM") throw error;
-          target = null;
-        }
-      }
+      const target = omitted.has(edge.to) ? null : edge.to;
       if (target) {
-        assert.equal(
-          target.packageName,
-          destination.name,
-          "Alias target identity differs",
+        assert.ok(
+          requests.some(
+            (req) =>
+              req.name === target.packageName &&
+              semver.satisfies(target.version, req.fetchSpec),
+          ),
+          "Target differs from requested npm identity or range",
         );
+        if (
+          node === root &&
+          Object.hasOwn(subject.dependencies ?? {}, edge.name)
+        ) {
+          assert.equal(
+            target.packageName,
+            edge.name,
+            "Direct package identity differs",
+          );
+          assert.equal(
+            target.version,
+            subject.dependencies[edge.name],
+            "Direct package version differs",
+          );
+        }
         pending.push(target);
       } else {
         assert.ok(
@@ -260,6 +339,7 @@ function graphOf(tree, inputs, native, platform, actual) {
         name: edge.name,
         type: edge.type,
         spec: edge.rawSpec,
+        ...(edge.accept ? { accept: edge.accept } : {}),
         ...(edge.spec !== edge.rawSpec ? { effectiveSpec: edge.spec } : {}),
         to: target ? canonicalLocation(target.location) : null,
       });
@@ -281,11 +361,17 @@ function graphOf(tree, inputs, native, platform, actual) {
 export async function captureConsumerResolution(directory, options) {
   directory = realpathSync(directory);
   const native = createRequire(options.npmCli);
-  const Arborist = native("@npmcli/arborist");
+  assert.ok(
+    !readdirSync(directory).some((name) =>
+      /^\.npm-extension\.(?:cjs|mjs)$/iu.test(name),
+    ),
+    "Unexpected consumer npm extension",
+  );
   const inputs = readInputs(directory, options);
-  const platform = currentResolutionPlatform();
-  const locked = await new Arborist({ path: directory }).loadVirtual();
-  const expected = graphOf(locked, inputs, native, platform, false);
+  const platform = currentResolutionPlatform(options.npmCli);
+  const npmVersion = native("../package.json").version;
+  const locked = await nativeTree(native, directory).loadVirtual();
+  const expected = graphOf(locked, inputs, native, platform, false, npmVersion);
   if (inputs.location) {
     const root = join(directory, inputs.location);
     assert.ok(
@@ -295,10 +381,10 @@ export async function captureConsumerResolution(directory, options) {
     );
     checkPayload(root, inputs.entries);
   }
-  const actual = await new Arborist({ path: directory }).loadActual({
+  const actual = await nativeTree(native, directory).loadActual({
     forceActual: true,
   });
-  const graph = graphOf(actual, inputs, native, platform, true);
+  const graph = graphOf(actual, inputs, native, platform, true, npmVersion);
   assert.deepEqual(
     graph,
     expected,
@@ -359,10 +445,15 @@ export async function replayConsumerResolution(directory, options, observed) {
   assert.equal(observed.tarballSha256, sha256Buffer(options.tarball));
   assert.equal(observed.manifestSha256, sha256Buffer(inputs.manifestBytes));
   assert.equal(observed.lockSha256, sha256Buffer(inputs.lockBytes));
-  const tree = await new (native("@npmcli/arborist"))({
-    path: resolve(directory),
-  }).loadVirtual();
-  const expected = graphOf(tree, inputs, native, options.platform, false);
+  const tree = await nativeTree(native, resolve(directory)).loadVirtual();
+  const expected = graphOf(
+    tree,
+    inputs,
+    native,
+    options.platform,
+    false,
+    options.observedNpm,
+  );
   assert.deepEqual(
     observed.graph,
     expected,
@@ -410,12 +501,29 @@ export function compareConsumerResolutions(before, after) {
     }
     return delta;
   }
+  const parents = (edges) => {
+    const index = new Map();
+    for (const edge of edges) {
+      if (edge.to === null) continue;
+      if (!index.has(edge.to)) index.set(edge.to, []);
+      index.get(edge.to).push(edge);
+    }
+    return index;
+  };
+  const oldParents = parents(before.graph.edges),
+    newParents = parents(after.graph.edges);
+  const occurrences = differences(
+    before.graph.nodes,
+    after.graph.nodes,
+    (n) => n.location,
+  );
+  for (const change of occurrences)
+    change.requestedBy = {
+      before: oldParents.get(change.before?.location) ?? [],
+      after: newParents.get(change.after?.location) ?? [],
+    };
   return {
-    occurrences: differences(
-      before.graph.nodes,
-      after.graph.nodes,
-      (n) => n.location,
-    ),
+    occurrences,
     edges: differences(before.graph.edges, after.graph.edges, (e) =>
       canonicalJson([e.from, e.name]),
     ),
