@@ -18,9 +18,9 @@ import { OWLOntologyLoaderConfiguration } from "../../model/owlOntologyLoaderCon
 import { IRI, StructuralSet } from "../../model/structural.js";
 import { normalizeCardinality } from "../model/cardinality.js";
 import {
+  createSwrlRdfRuleBuilder,
   swrlClassAtom,
   swrlObjectPropertyAtom,
-  swrlRule,
   swrlVariable,
 } from "../model/swrl.js";
 import { OntologyBuildBuffer } from "../model/ontologyBuildBuffer.js";
@@ -33,6 +33,9 @@ import { selectOntologyGraph } from "../rdfjs/graphPolicy.js";
 import { isCompactRdfGraph } from "../rdfjs/compactRdfGraph.js";
 import {
   BUILT_IN_ANNOTATION_PROPERTIES,
+  BUILT_IN_DATA_PROPERTIES,
+  BUILT_IN_OBJECT_PROPERTIES,
+  OWL1_OBJECT_PROPERTY_TYPES,
   OWL_BUILT_IN_DATATYPES,
   OWL_NAMESPACE,
   OWL_VOCABULARY,
@@ -61,11 +64,6 @@ const DECLARATION_CONSTRUCTORS = new Map([
 ]);
 const SUBJECT_TERM_TYPES = new Set(["BlankNode", "NamedNode"]);
 const NAMED_NODE_TERM_TYPES = new Set(["NamedNode"]);
-const OWL1_OBJECT_PROPERTY_TYPES = new Set([
-  OWL_VOCABULARY.InverseFunctionalProperty,
-  OWL_VOCABULARY.SymmetricProperty,
-  OWL_VOCABULARY.TransitiveProperty,
-]);
 import { ENTITY_DECLARATION_TYPES } from "./entityDeclarations.js";
 const ENTITY_KIND_BY_ROLE = new Map(
   Object.entries(ENTITY_DECLARATION_TYPES).map(([kind, role]) => [role, kind]),
@@ -632,10 +630,7 @@ class RdfGraphInterpreter {
   #consumed = new Set();
   #consumedRows;
   #consumptionKeys = new WeakMap();
-  #dataPropertyIris = new Set([
-    OWL_VOCABULARY.bottomDataProperty,
-    OWL_VOCABULARY.topDataProperty,
-  ]);
+  #dataPropertyIris = new Set(BUILT_IN_DATA_PROPERTIES);
   #dataRangeCache = new Map();
   #dataRangeStack = new Set();
   #dataFactory;
@@ -658,10 +653,7 @@ class RdfGraphInterpreter {
   #listOwners = new Map();
   #objectPropertyExpressionCache = new Map();
   #objectPropertyExpressionStack = new Set();
-  #objectPropertyIris = new Set([
-    OWL_VOCABULARY.bottomObjectProperty,
-    OWL_VOCABULARY.topObjectProperty,
-  ]);
+  #objectPropertyIris = new Set(BUILT_IN_OBJECT_PROPERTIES);
   #owl1DataRangeNodes = new Set();
   #ontologyHeaderReferencePropertyIris = new Set([
     OWL_VOCABULARY.backwardCompatibleWith,
@@ -680,6 +672,7 @@ class RdfGraphInterpreter {
   #namedRoles;
   #roleProofScope;
   #retainedStatements = [];
+  #swrlRuleSides = new Set();
   #transaction;
 
   constructor({
@@ -797,6 +790,7 @@ class RdfGraphInterpreter {
       this.#classExpressionCache,
       this.#dataRangeCache,
       this.#objectPropertyExpressionCache,
+      this.#swrlRuleSides,
     ])
       for (const expression of cache.values()) {
         cachedVisits.set(expression, false);
@@ -1728,6 +1722,7 @@ class RdfGraphInterpreter {
   async #readDeclarations(includeAxiomAnnotations = true) {
     const ruleTypes = [];
     const variableTypes = [];
+    const variables = new Map();
     const inferredObjectPropertyIris = new Set();
     const declarations = [];
     const explicitObjectPropertyIris = new Set();
@@ -1738,6 +1733,11 @@ class RdfGraphInterpreter {
         : null;
     let visited = 0;
     for (const currentQuad of this.#read.quads) {
+      visited += 1;
+      if (visited % CHECK_INTERVAL === 0) {
+        const yielded = this.#execution.cooperate();
+        if (yielded) await yielded;
+      }
       if (
         currentQuad.predicate.value !== RDF_VOCABULARY.type ||
         currentQuad.object.termType !== "NamedNode"
@@ -1750,8 +1750,10 @@ class RdfGraphInterpreter {
         includeAxiomAnnotations &&
         objectValue === SWRL.Variable &&
         currentQuad.subject.termType === "NamedNode"
-      )
+      ) {
         variableTypes.push(currentQuad);
+        variables.set(currentQuad.subject.value, undefined);
+      }
       if (
         this.#supportsScopedSwrl &&
         includeAxiomAnnotations &&
@@ -1819,13 +1821,6 @@ class RdfGraphInterpreter {
       } else if (objectValue === RDFS_VOCABULARY.Datatype) {
         this.#datatypeIris.add(subject.value);
       }
-      visited += 1;
-      if (visited % CHECK_INTERVAL === 0) {
-        {
-          const yielded = this.#execution.cooperate();
-          if (yielded) await yielded;
-        }
-      }
     }
 
     this.#resolvePropertyCategoryPunning();
@@ -1851,8 +1846,14 @@ class RdfGraphInterpreter {
       this.#inferImplicitPropertyCategories();
     if (includeAxiomAnnotations) this.#indexReifications();
     if (ruleTypes.length) {
-      await this.#readSwrlRules(ruleTypes);
-      for (const row of variableTypes) this.#consume(row);
+      await this.#readSwrlRules(ruleTypes, variables);
+      for (let index = 0; index < variableTypes.length; index += 1) {
+        this.#consume(variableTypes[index]);
+        if ((index + 1) % CHECK_INTERVAL === 0) {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
+      }
     }
     for (const { constructorName, currentQuad, subject } of declarations) {
       this.#recordDiscoveredRole(
@@ -5272,15 +5273,23 @@ class RdfGraphInterpreter {
     );
   }
 
-  async #readSwrlRules(ruleTypes) {
-    // Only roots discovered in the selected graph enter this pass. The read view
-    // indexes all subsequent lookups by subject, including shared variables.
+  async #readSwrlRules(ruleTypes, variables) {
     const lists = new Map();
+    const atoms = new Map();
+    const { prepareSide, buildRule } = createSwrlRdfRuleBuilder();
+    const empty = prepareSide([]);
+    let visited = 0;
+    const checkpoint = () => {
+      visited += 1;
+      if (visited % CHECK_INTERVAL === 0) return this.#execution.cooperate();
+    };
     for (const type of ruleTypes) {
       const subject = type.subject;
       const claimed = [type];
       const annotations = [];
       for (const row of this.#outgoing(subject)) {
+        const yielded = checkpoint();
+        if (yielded) await yielded;
         const predicate = row.predicate.value;
         if (
           predicate === RDF_VOCABULARY.type ||
@@ -5320,57 +5329,94 @@ class RdfGraphInterpreter {
       }
       const side = async (predicate) => {
         const edge = this.#exactlyZeroOrOne(subject, predicate);
-        if (!edge) return [];
+        if (!edge) return empty;
         claimed.push(edge);
         const key = termKey(edge.object);
         if (!lists.has(key)) {
-          const atoms = await this.#rdfList(
+          const items = await this.#rdfList(
             edge.object,
-            (atom) => this.#readSwrlAtom(atom, claimed),
+            async (atom) => {
+              const key = termKey(atom);
+              let value = atoms.get(key);
+              if (value === undefined) {
+                value = await this.#readSwrlAtom(
+                  atom,
+                  claimed,
+                  variables,
+                  checkpoint,
+                );
+                atoms.set(key, value);
+              }
+              return value;
+            },
             edge,
-            (cell, first, rest) => {
+            async (cell, first, rest) => {
               claimed.push(first, rest);
-              for (const row of this.#outgoing(cell, RDF_VOCABULARY.type))
+              for (const row of this.#outgoing(cell, RDF_VOCABULARY.type)) {
+                const yielded = checkpoint();
+                if (yielded) await yielded;
                 if (
                   row.object.value === SWRL.AtomList ||
                   row.object.value === RDF_NAMESPACE + "List"
                 )
                   claimed.push(row);
+              }
             },
           );
-          lists.set(key, atoms);
+          this.#execution.check();
+          lists.set(key, items.length ? prepareSide(items) : empty);
         }
         return lists.get(key);
       };
       const body = await side(SWRL.body);
       const head = await side(SWRL.head);
-      const rule = swrlRule(body, head, annotations);
-      for (const row of claimed) this.#consume(row);
+      this.#execution.check();
+      const rule = buildRule(body, head, annotations);
+      this.#swrlRuleSides.add(rule.body);
+      this.#swrlRuleSides.add(rule.head);
+      for (const row of claimed) {
+        this.#consume(row);
+        const yielded = checkpoint();
+        if (yielded) await yielded;
+      }
+      this.#execution.check();
       this.#transaction.addAxiom(rule);
       const pause = this.#execution.cooperate();
       if (pause) await pause;
     }
   }
 
-  #readSwrlAtom(atom, claimed) {
-    const types = this.#outgoing(atom, RDF_VOCABULARY.type).filter(
-      (row) =>
+  async #readSwrlAtom(atom, claimed, variables, checkpoint) {
+    let typeRow;
+    for (const row of this.#outgoing(atom, RDF_VOCABULARY.type)) {
+      const yielded = checkpoint();
+      if (yielded) await yielded;
+      if (
         row.object.termType === "NamedNode" &&
-        row.object.value.startsWith(SWRL_NAMESPACE),
-    );
-    if (types.length !== 1)
+        row.object.value.startsWith(SWRL_NAMESPACE)
+      ) {
+        if (typeRow) {
+          typeRow = undefined;
+          break;
+        }
+        typeRow = row;
+      }
+    }
+    if (!typeRow)
       throw new OWLSyntaxError("Expected one SWRL atom type", {
         subject: atom.value,
       });
-    const type = types[0].object.value;
+    const type = typeRow.object.value;
     if (type !== SWRL.ClassAtom && type !== SWRL.IndividualPropertyAtom)
       this.#unsupportedRuleMember(type, atom);
-    claimed.push(types[0]);
+    claimed.push(typeRow);
     const isClass = type === SWRL.ClassAtom;
     const predicateField = isClass
       ? SWRL.classPredicate
       : SWRL.propertyPredicate;
     for (const row of this.#outgoing(atom)) {
+      const yielded = checkpoint();
+      if (yielded) await yielded;
       const p = row.predicate.value;
       if (
         isSwrlStructuralProperty(p) &&
@@ -5393,15 +5439,14 @@ class RdfGraphInterpreter {
       this.#unsupportedRuleMember("SWRLComplexPredicate", atom);
     const variable = (property) => {
       const arg = field(property);
-      const decl =
-        arg.termType === "NamedNode" &&
-        this.#outgoing(arg, RDF_VOCABULARY.type).filter(
-          (row) =>
-            row.object.termType === "NamedNode" &&
-            row.object.value === SWRL.Variable,
-        )[0];
-      if (!decl) this.#unsupportedRuleMember("SWRLConstant", atom);
-      return swrlVariable(this.#iri.create(arg.value));
+      if (arg.termType !== "NamedNode" || !variables.has(arg.value))
+        this.#unsupportedRuleMember("SWRLConstant", atom);
+      let value = variables.get(arg.value);
+      if (value === undefined) {
+        value = swrlVariable(this.#iri.create(arg.value));
+        variables.set(arg.value, value);
+      }
+      return value;
     };
     const iri = this.#iri.create(predicate.value);
     const first = variable(SWRL.argument1);
@@ -5470,7 +5515,7 @@ class RdfGraphInterpreter {
       }
       const first = this.#exactlyOne(node, RDF_VOCABULARY.first);
       const rest = this.#exactlyOne(node, RDF_VOCABULARY.rest);
-      if (claimCell) claimCell(node, first, rest);
+      if (claimCell) await claimCell(node, first, rest);
       else {
         this.#consume(first);
         this.#consume(rest);
@@ -6119,7 +6164,12 @@ export class RdfToOwlTranslator {
     const input = await this.#prepareReconstructionInput(dataset, options);
     // eslint-disable-next-line no-useless-assignment -- Release the original graph before reconstructing from the projection.
     dataset = undefined;
-    return this.#reconstruct(input);
+    return this.#reconstruct(
+      input,
+      options.declarationEntities,
+      undefined,
+      options.sourceRoles,
+    );
   }
 
   async #reconstruct(

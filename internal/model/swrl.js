@@ -3,6 +3,7 @@ import {
   OWLStructuralObject,
   StructuralSet,
   createFactoryStructuralObject,
+  createRdfSwrlTupleFactory,
   createStructuralPair,
   createStructuralUnary,
   isCanonicalStructuralObject,
@@ -56,11 +57,17 @@ function ruleSide(atoms) {
   return Object.freeze([...result]);
 }
 
-/** Iterate each side in encounter order. The explicit tuple compares each side as a set. */
-export function swrlRule(body, head, annotations = []) {
+function ruleFromSides(
+  body,
+  head,
+  annotations,
+  canonicalBody,
+  canonicalHead,
+  createRule,
+) {
   const fields = {
-    body: ruleSide(body),
-    head: ruleSide(head),
+    body,
+    head,
     annotations: normalizeStructuralSet(annotations, "annotations"),
   };
   for (const annotation of fields.annotations) {
@@ -69,15 +76,46 @@ export function swrlRule(body, head, annotations = []) {
       throw new TypeError("Expected a direct literal rule annotation");
   }
   const sides = [
-    normalizeStructuralSet(fields.body, "body"),
-    normalizeStructuralSet(fields.head, "head"),
+    canonicalBody ?? normalizeStructuralSet(body, "body"),
+    canonicalHead ?? normalizeStructuralSet(head, "head"),
   ];
-  return new OWLStructuralObject(
-    K.SWRL_RULE,
-    fields,
-    [...sides, fields.annotations],
-    { componentsWithoutAnnotations: sides },
-  );
+  const components = [...sides, fields.annotations];
+  const options = { componentsWithoutAnnotations: sides };
+  if (createRule) return createRule(fields, components, options);
+  return new OWLStructuralObject(K.SWRL_RULE, fields, components, options);
+}
+
+/** Iterate each side in encounter order. The explicit tuple compares each side as a set. */
+export function swrlRule(body, head, annotations = []) {
+  return ruleFromSides(ruleSide(body), ruleSide(head), annotations);
+}
+
+/** Prepare each RDF list once and reuse its immutable ordered and canonical views. */
+export function createSwrlRdfRuleBuilder() {
+  const prepared = new WeakSet();
+  const { rememberSide, createRule } = createRdfSwrlTupleFactory();
+  return {
+    prepareSide(atoms) {
+      const ordered = ruleSide(atoms);
+      const canonical = normalizeStructuralSet(ordered, "rule side");
+      rememberSide(canonical);
+      const side = Object.freeze({ ordered, canonical });
+      prepared.add(side);
+      return side;
+    },
+    buildRule(body, head, annotations) {
+      if (!prepared.has(body) || !prepared.has(head))
+        throw new TypeError("Expected prepared RDF rule sides");
+      return ruleFromSides(
+        body.ordered,
+        head.ordered,
+        annotations,
+        body.canonical,
+        head.canonical,
+        createRule,
+      );
+    },
+  };
 }
 
 export const swrlConstructors = new Map([

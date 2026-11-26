@@ -30,6 +30,7 @@ const FACTORY_ANNOTATED_UNARY = Symbol("factory annotated unary");
 const FACTORY_ANNOTATED_PAIR = Symbol("factory annotated pair");
 const IRI_TOKEN = Symbol("IRI");
 const COPY = Symbol("copy axiom annotations");
+const RDF_SWRL = Symbol("prepared RDF SWRL rule");
 
 const pairSpecs = new Map();
 const getPairSpec = (firstField, secondField) => {
@@ -72,6 +73,45 @@ export const usesNativeStructuralKeys = () =>
 
 const projectComponents = (values, tuples = new Map()) =>
   values.map((value) => structuralTuple(value, tuples));
+const nativeArray = Array;
+const nativeArrayMap = Object.getOwnPropertyDescriptor(
+  Array.prototype,
+  "map",
+)?.value;
+const nativeArraySpecies = Object.getOwnPropertyDescriptor(
+  Array,
+  Symbol.species,
+)?.get;
+
+function canReuseSideProjection(side) {
+  return (
+    Array === nativeArray &&
+    nativeTupleSerialization() &&
+    !("toStructuralTuple" in side) &&
+    nativeArrayMap !== undefined &&
+    Object.getOwnPropertyDescriptor(Array.prototype, "map")?.value ===
+      nativeArrayMap &&
+    Object.getOwnPropertyDescriptor(Array.prototype, "constructor")?.value ===
+      nativeArray &&
+    nativeArraySpecies !== undefined &&
+    Object.getOwnPropertyDescriptor(Array, Symbol.species)?.get ===
+      nativeArraySpecies
+  );
+}
+
+function projectRdfSwrlComponents(values, tuples, sides) {
+  return values.map((value, index) => {
+    if (index >= 2 || !sides.has(value) || !canReuseSideProjection(value))
+      return structuralTuple(value, tuples);
+    let projected = sides.get(value);
+    if (projected === undefined) {
+      projected = Object.freeze(projectComponents(value, tuples));
+      sides.set(value, projected);
+    }
+    return projected;
+  });
+}
+
 function structuralTuple(value, tuples) {
   if (value && typeof value === "object") {
     const tuple = readPackageTuple(value, tuples);
@@ -685,13 +725,15 @@ export class OWLStructuralObject {
       }
       if (!this.#flags) {
         const tuples = new Map();
+        const project =
+          token === RDF_SWRL ? projectRdfSwrlComponents : projectComponents;
         const tuple = Object.freeze([
           kind,
-          ...projectComponents(components, tuples),
+          ...project(components, tuples, extra),
         ]);
         const body = options.componentsWithoutAnnotations
           ? Object.freeze(
-              projectComponents(options.componentsWithoutAnnotations, tuples),
+              project(options.componentsWithoutAnnotations, tuples, extra),
             )
           : undefined;
         explicitTuples.set(this, { tuple, body });
@@ -759,6 +801,41 @@ export class OWLStructuralObject {
       other.structuralKeyWithoutAnnotations()
     );
   }
+}
+
+/** Scope projection sharing to validated, native SWRL sides in one RDF load. */
+export function createRdfSwrlTupleFactory() {
+  const sides = new WeakMap();
+  return {
+    rememberSide(side) {
+      if (
+        !trustedFrozenArrays.has(side) ||
+        Object.getPrototypeOf(side) !== Array.prototype ||
+        Reflect.ownKeys(side).length !== side.length + 1
+      )
+        return;
+      for (let index = 0; index < side.length; index++) {
+        const atom = Object.getOwnPropertyDescriptor(side, index);
+        if (
+          !atom ||
+          !Object.hasOwn(atom, "value") ||
+          stableComponent(atom.value) !== 2
+        )
+          return;
+      }
+      sides.set(side, undefined);
+    },
+    createRule(fields, components, options) {
+      return new OWLStructuralObject(
+        OWLObjectKind.SWRL_RULE,
+        fields,
+        components,
+        options,
+        RDF_SWRL,
+        sides,
+      );
+    },
+  };
 }
 
 const copyAxiomAnnotations = (axiom, annotations) => {

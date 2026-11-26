@@ -208,6 +208,20 @@ export const XSD_VOCABULARY = Object.freeze({
   string: xsd("string"),
 });
 
+export const BUILT_IN_DATA_PROPERTIES = Object.freeze([
+  OWL_VOCABULARY.bottomDataProperty,
+  OWL_VOCABULARY.topDataProperty,
+]);
+export const BUILT_IN_OBJECT_PROPERTIES = Object.freeze([
+  OWL_VOCABULARY.bottomObjectProperty,
+  OWL_VOCABULARY.topObjectProperty,
+]);
+export const OWL1_OBJECT_PROPERTY_TYPES = new Set([
+  OWL_VOCABULARY.InverseFunctionalProperty,
+  OWL_VOCABULARY.SymmetricProperty,
+  OWL_VOCABULARY.TransitiveProperty,
+]);
+
 export const BUILT_IN_ANNOTATION_PROPERTIES = new Set([
   RDFS_VOCABULARY.comment,
   RDFS_VOCABULARY.isDefinedBy,
