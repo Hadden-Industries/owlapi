@@ -41,10 +41,7 @@ function legacyStageHistory(controller, localRepository) {
     ).toString("utf8");
     return mandatoryGuard.test(source) && stageAdmission.test(source);
   };
-  assert.ok(
-    hasMandatoryStage(controller),
-    "The running stage controller has no reviewed reconciliation guard",
-  );
+  // The first activation stays authoritative if later controllers refactor the guard.
   const stageChanges = git(
     "log",
     "--first-parent",

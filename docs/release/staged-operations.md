@@ -217,7 +217,7 @@ Previously released versions use the evidence contract under which they were pub
 
 Use a signed `seal` operation with the original draft ID, verified `public.json`, `publicRun`, `publicAttempt`, its `publicController` SHA and recoverable source and qualification material.
 Preserve native run and artifact metadata in `origin-RUN-ATTEMPT-LOGICAL.json` with `run` and `artifact` as the original REST responses.
-Store the verified ZIP in `artifact-ID.zip`.
+Store disclosure-cleared original ZIPs in `artifact-ID.zip`.
 For a delayed seal, keep the qualification advisory upload identified by the native stage journal.
 Its signed recovery member `audit-origin-RUN-ATTEMPT.json` contains the original `run`, `job` and `artifact` API records and refers to the same `artifact-ID.zip`.
 Sealing can reopen that exact decision even after GitHub removes the original qualification listing.
@@ -225,7 +225,9 @@ For the promoted CI candidate and its package proof, also retain the original pr
 Preserve `public-run-origin.json` with the final native `run`, `latestJobs`, original `attempts` job inventories keyed by attempt, and original `artifacts` inventory.
 Successful lanes from earlier attempts keep their original timed job execution and artifact identity when other lanes rerun.
 After expiry the reader checks those original identities and bytes in the owner-signed checkpoint.
-Include a disclosure-reviewed `public-inventory.json` with `manifestSha256` and a `files` list containing the original qualification ZIPs, rights dispositions and corresponding source material cleared for public distribution.
+Include a disclosure-reviewed `public-inventory.json` with `manifestSha256` and a `files` list containing the cleared qualification evidence, rights dispositions and corresponding source material approved for public distribution.
+For a submitted legacy stage, list `artifact-ID-legacy-proof.json` in `files` for its original producer proof. The signed qualification manifest binds the ID to the exact native ZIP digest. The writer reads the live ZIP by that ID, rechecks the original eligibility, and generates the cleared projection.
+Keep the raw legacy producer ZIP outside public Git and release assets. If it expires and no separately authorized private retrieval is available, the seal remains pending.
 The GitHub-only writer verifies the public artifact and all lane receipts, adds release evidence and the indexed evidence archive, then seals that same draft.
 Reserve it as `owlapi-release-history/seal-VERSION-RUN_NUMBER`.
 Asset work can resume once the earlier signed reservation cites the native skipped writer step or its original `seal-no-request.json`.

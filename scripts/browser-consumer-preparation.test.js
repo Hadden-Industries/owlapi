@@ -11,6 +11,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { createRequire } from "node:module";
 
 import { prepareBrowserConsumers } from "./browser-consumer-preparation.mjs";
 import { PACKAGE_NAME, PACKAGE_VERSION } from "./package-identity.mjs";
@@ -64,12 +65,26 @@ async function withPreparation(run) {
     const approvalPath = join(root, "approved.json");
     mkdirSync(candidateDirectory);
     mkdirSync(reviewedDirectory);
+    const source = join(root, "package");
+    mkdirSync(source);
+    writeFileSync(join(source, "package.json"), json(candidatePackage));
+    writeFileSync(join(source, "index.js"), "export const firstParty = 1;\n");
+    const tarballPath = join(candidateDirectory, "candidate.tgz");
+    createRequire(process.env.npm_execpath)("tar").c(
+      {
+        sync: true,
+        gzip: true,
+        portable: true,
+        noMtime: true,
+        cwd: root,
+        file: tarballPath,
+      },
+      ["package/package.json", "package/index.js"],
+    );
     const tarball = {
       fileName: "candidate.tgz",
-      sha256: sha256("retained candidate bytes\n"),
+      sha256: sha256(readFileSync(tarballPath)),
     };
-    const tarballPath = join(candidateDirectory, tarball.fileName);
-    writeFileSync(tarballPath, "retained candidate bytes\n");
     writeFileSync(
       join(candidateDirectory, "candidate-manifest.json"),
       json({ package: candidatePackage, tarball }),
@@ -92,6 +107,7 @@ async function withPreparation(run) {
     const prepare = ({
       existingPin = REPLACEMENT_PIN,
       includeNew = true,
+      duringHydration,
       ...options
     } = {}) =>
       prepareBrowserConsumers({
@@ -140,6 +156,7 @@ async function withPreparation(run) {
         }),
         fetchImplementation: async (url, { redirect }) => {
           fetches.push({ url, redirect });
+          duringHydration?.(runtimeDirectory);
           const body =
             url === NEW
               ? "export {};\n"
@@ -224,6 +241,23 @@ describe("browser-consumer preparation and publication", () => {
         expect(existsSync(installPath)).toBe(false);
       },
     );
+  });
+
+  it("refuses a changed served OwlAPI file before publishing the browser manifest", async () => {
+    await withPreparation(async ({ prepare, expectUnpublished }) => {
+      await expect(
+        prepare({
+          existingPin: EXISTING_PIN,
+          includeNew: false,
+          duringHydration: (runtime) =>
+            writeFileSync(
+              join(runtime, "package", "owlapi", "index.js"),
+              "export const firstParty = 2;\n",
+            ),
+        }),
+      ).rejects.toThrow(/Changed first-party payload/u);
+      expectUnpublished();
+    });
   });
 
   it("refuses routine drift without hydrating or changing the reviewed map", async () => {

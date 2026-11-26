@@ -18,7 +18,7 @@ const orderEdges = (a, b) => compare(a.from, b.from) || compare(a.name, b.name);
 const sri = (bytes) =>
   "sha512-" + createHash("sha512").update(bytes).digest("base64");
 
-function checkPayload(directory, entries) {
+function checkPayload(directory, entries, { allowNestedInstall = true } = {}) {
   const expected = new Map(entries.map((entry) => [entry.path, entry.content]));
   assert.equal(
     expected.size,
@@ -32,7 +32,8 @@ function checkPayload(directory, entries) {
       withFileTypes: true,
     })) {
       const path = parent ? parent + "/" + child.name : child.name;
-      if (path === "node_modules" && child.isDirectory()) continue;
+      if (allowNestedInstall && path === "node_modules" && child.isDirectory())
+        continue;
       if (child.isDirectory()) {
         pending.push(path);
         continue;
@@ -49,6 +50,17 @@ function checkPayload(directory, entries) {
     }
   }
   assert.equal(expected.size, 0, "Missing first-party payload member");
+}
+
+/** Verify the exact first-party files served by a prepared browser fixture. */
+export function assertServedPackagePayload(directory, tarball) {
+  assert.ok(
+    lstatSync(directory).isDirectory(),
+    "Served first-party package must be a regular directory",
+  );
+  checkPayload(directory, readGzipTarEntries(tarball), {
+    allowNestedInstall: false,
+  });
 }
 
 function readInputs(directory, { tarball, dependencyName, registryTarball }) {

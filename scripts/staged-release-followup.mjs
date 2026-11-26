@@ -53,7 +53,10 @@ import {
   readPublicEvidence,
 } from "./release-public-proof.mjs";
 import { submittedStagePolicy } from "./release-stage-continuation.mjs";
-import { projectLegacyProducerProof } from "./release-legacy-proof-disclosure.mjs";
+import {
+  projectLegacyProducerProof,
+  readLiveLegacyProducerProof,
+} from "./release-legacy-proof-disclosure.mjs";
 import { matchesLogicalArtifact } from "../tooling/artifact-transport/identity.mjs";
 import {
   assertPublicTestAfter,
@@ -816,12 +819,13 @@ async function verifyQualificationDisclosure(
   const { manifest, read, candidate } = ctx;
   const projections = new Map();
   const legacy = ctx.recipientPolicy === 1;
-  const legacyProjection = async (artifact, original) => {
-    const name = "artifact-" + artifact.id + ".zip";
-    assert.ok(
-      publicIndex.files.includes(name),
-      "Qualification projection requires disclosure review",
-    );
+  const legacyProjection = async (artifact, locator) => {
+    const bytes = await readLiveLegacyProducerProof(client, {
+      original: artifact,
+      locator,
+      publicIndex,
+      checkpoint,
+    });
     const runtime = validateRuntimePolicy(
       parse(
         readControllerBlob(manifest.commit, "docs/release/runtime-policy.json"),
@@ -829,7 +833,7 @@ async function verifyQualificationDisclosure(
     );
     const projection = await projectLegacyProducerProof({
       original: artifact,
-      bytes: await originalBytes(client, original),
+      bytes,
       manifest,
       manifestSha256: ctx.operation.manifestSha256,
       tarball: read(manifest.assets.tarball.name),
@@ -843,7 +847,7 @@ async function verifyQualificationDisclosure(
       },
       npm: runtime.npm,
     });
-    projections.set(name, projection);
+    projections.set(projection.name, projection);
   };
   const verify = (artifact) => {
     const name = "artifact-" + artifact.id + ".zip";
@@ -880,23 +884,13 @@ async function verifyQualificationDisclosure(
         verify(artifact);
         continue;
       }
-      const native = await originArtifact(
-        client,
-        {
-          runId: manifest.runId,
-          attempt: manifest.attempt,
-          filename: manifest.workflow,
-          commit: manifest.commit,
-          logical,
-          artifactId: artifact.id,
-        },
-        checkpoint,
-      );
-      assert.deepEqual(
-        [native.id, native.name, native.digest, native.size_in_bytes],
-        [artifact.id, artifact.name, artifact.digest, artifact.bytes],
-      );
-      await legacyProjection(artifact, native);
+      await legacyProjection(artifact, {
+        runId: manifest.runId,
+        attempt: manifest.attempt,
+        filename: manifest.workflow,
+        commit: manifest.commit,
+        logical,
+      });
     }
     return projections;
   }
@@ -935,22 +929,22 @@ async function verifyQualificationDisclosure(
       continue;
     }
     distinct.add(descriptor.id);
-    const legacyPackageProof = legacy && descriptor.id === ci.packageProof.id;
-    if (!legacyPackageProof) verify(descriptor);
-    const original = await originArtifact(
-      client,
-      {
-        runId: run.runId,
-        attempt,
-        filename: CI_WORKFLOW,
-        commit: run.providerHead,
-        logical,
-        artifactId: descriptor.id,
-        ciRun: run,
-        ciProducer: producer,
-      },
-      checkpoint,
-    );
+    const locator = {
+      runId: run.runId,
+      attempt,
+      filename: CI_WORKFLOW,
+      commit: run.providerHead,
+      logical,
+      artifactId: descriptor.id,
+      ciRun: run,
+      ciProducer: producer,
+    };
+    if (legacy && descriptor.id === ci.packageProof.id) {
+      await legacyProjection(descriptor, locator);
+      continue;
+    }
+    verify(descriptor);
+    const original = await originArtifact(client, locator, checkpoint);
     assert.deepEqual(
       [
         original.id,
@@ -970,7 +964,6 @@ async function verifyQualificationDisclosure(
       ],
       "Qualification ZIP differs from its original native inventory",
     );
-    if (legacyPackageProof) await legacyProjection(descriptor, original);
   }
   return projections;
 }

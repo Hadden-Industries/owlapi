@@ -1,4 +1,4 @@
-import { expect, test } from "@jest/globals";
+import { expect, jest, test } from "@jest/globals";
 import { execFileSync } from "node:child_process";
 import {
   mkdirSync,
@@ -41,7 +41,12 @@ import {
 } from "./installed-consumer-fixtures.mjs";
 import { canonicalJson, stableJson } from "./canonical-json.mjs";
 import { isStrictDescendantPath } from "./release-file-utils.mjs";
-import { projectLegacyProducerProof } from "./release-legacy-proof-disclosure.mjs";
+import {
+  projectLegacyProducerProof,
+  readLiveLegacyProducerProof,
+} from "./release-legacy-proof-disclosure.mjs";
+import { physicalName } from "../tooling/artifact-transport/identity.mjs";
+import { REPOSITORY } from "./release-identity.mjs";
 import {
   appendQualificationDisclosure,
   readStagedArchive,
@@ -303,11 +308,11 @@ test("a legacy producer ZIP keeps its original eligibility and digests without p
   };
   const projection = await projectLegacyProducerProof(args);
   const originalName = `artifact-${original.id}.zip`;
-  const publicIndex = { manifestSha256, files: [originalName] };
+  const publicIndex = { manifestSha256, files: [projection.name] };
   expect(() =>
     appendQualificationDisclosure(new Map(), {
       manifest,
-      publicIndex,
+      publicIndex: { ...publicIndex, files: [originalName] },
       read: () => zip,
       projections: new Map(),
     }),
@@ -321,7 +326,7 @@ test("a legacy producer ZIP keeps its original eligibility and digests without p
         "The public writer attempted to read the restricted original",
       );
     },
-    projections: new Map([[originalName, projection]]),
+    projections: new Map([[projection.name, projection]]),
   });
   const archive = gzipSync(
     Buffer.from(
@@ -363,6 +368,98 @@ test("a legacy producer ZIP keeps its original eligibility and digests without p
       bytes: Buffer.concat([zip, Buffer.from("changed")]),
     }),
   ).rejects.toThrow(/ZIP size differs/u);
+});
+
+test("legacy disclosure uses an explicitly approved projection and never recovers its original from public Git", async () => {
+  const zip = zipArchive([
+    {
+      path: "npm-audit-full.json",
+      content: "restricted native report fixture",
+    },
+  ]);
+  const run = {
+    id: 55,
+    run_attempt: 1,
+    path: ".github/workflows/release.yml",
+    event: "workflow_dispatch",
+    head_branch: "main",
+    head_sha: "b".repeat(40),
+    status: "completed",
+    conclusion: "success",
+    repository: { full_name: REPOSITORY },
+    head_repository: { full_name: REPOSITORY },
+  };
+  const logical = "package-proof-55-1";
+  const original = {
+    id: 91,
+    name: physicalName({
+      logical,
+      run: run.id,
+      attempt: 1,
+      producer: "a".repeat(16),
+      invocation: "b".repeat(32),
+      ordinal: 0,
+    }),
+    digest: `sha256:${sha(zip)}`,
+    bytes: zip.length,
+  };
+  const native = {
+    ...original,
+    size_in_bytes: zip.length,
+    expired: false,
+    workflow_run: { id: 55, head_sha: run.head_sha },
+  };
+  const client = {
+    read: jest.fn(async (path) => {
+      if (path === "/actions/runs/55/attempts/1") return run;
+      if (path.startsWith("/actions/runs/55/artifacts?"))
+        return { total_count: 1, artifacts: [native] };
+      if (path === "/actions/artifacts/91") return native;
+      throw new Error(`Unexpected proof lookup ${path}`);
+    }),
+  };
+  const download = jest.fn(async () => zip);
+  const input = {
+    original,
+    locator: {
+      runId: "55",
+      attempt: "1",
+      filename: run.path,
+      commit: run.head_sha,
+      logical,
+    },
+    publicIndex: { files: ["artifact-91-legacy-proof.json"] },
+    checkpoint: { files: new Map() },
+  };
+  const read = (overrides) =>
+    readLiveLegacyProducerProof(
+      client,
+      { ...input, ...overrides },
+      { download },
+    );
+  await expect(
+    read({ publicIndex: { files: ["artifact-91.zip"] } }),
+  ).rejects.toThrow(/cannot be provided or approved/u);
+  await expect(read({ publicIndex: { files: [] } })).rejects.toThrow(
+    /requires explicit disclosure review/u,
+  );
+  await expect(
+    read({ checkpoint: { files: new Map([["artifact-91.zip", zip]]) } }),
+  ).rejects.toThrow(/cannot be provided or approved/u);
+  await expect(
+    read({
+      checkpoint: {
+        files: new Map([["renamed.json", zip]]),
+        index: { files: [{ name: "renamed.json", sha256: sha(zip) }] },
+      },
+    }),
+  ).rejects.toThrow(/another public history name/u);
+  expect(client.read).not.toHaveBeenCalled();
+  await expect(read()).resolves.toEqual(zip);
+  expect(download).toHaveBeenCalledWith(client, native, 16 * 1024 * 1024);
+  native.expired = true;
+  await expect(read()).rejects.toThrow(/seal remains pending/u);
+  expect(download).toHaveBeenCalledTimes(1);
 });
 
 test("native differences are admitted through the exact v2 producer ZIP while wrong edges are refused", async () => {

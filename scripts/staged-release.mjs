@@ -317,9 +317,14 @@ export async function originArtifact(
     ciRun = ciProducer,
     nativeProducer,
     runArtifacts,
+    requireLiveOriginal = false,
   },
   checkpoint,
 ) {
+  assert.ok(
+    !requireLiveOriginal || checkpoint === undefined,
+    "Live-only artifact reads cannot consult public checkpoint custody",
+  );
   id(runId);
   id(attempt);
   const receiptName =
@@ -526,6 +531,11 @@ export async function originArtifact(
     throw new Error("Contradictory listed artifact identity");
   assert.equal(a.workflow_run?.id, run.id);
   assert.equal(a.workflow_run.head_sha, commit);
+  if (requireLiveOriginal)
+    assert.ok(
+      current?.expired === false,
+      "The original Actions artifact is unavailable or expired",
+    );
   if (!current || a.expired) {
     const bytes = checkpoint?.files.get("artifact-" + a.id + ".zip");
     assert.ok(

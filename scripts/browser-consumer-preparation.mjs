@@ -27,6 +27,7 @@ import {
   verifyTestedConsumerResolution,
 } from "./release-consumer-evidence.mjs";
 import { qualifyCiConsumerInstall } from "./ci-recipient-attribution.mjs";
+import { assertServedPackagePayload } from "./release-consumer-resolution.mjs";
 import {
   BROWSER_CONSUMER_MODES as MODES,
   BROWSER_PREPARATION_NAME,
@@ -263,7 +264,7 @@ const stageAdmittedCandidate = async ({
       );
     }
     mkdirSync(outputDirectory, { recursive: true });
-    return await stageFixtures({
+    const staged = await stageFixtures({
       candidateManifest,
       outputDirectory,
       tarballPath,
@@ -272,6 +273,7 @@ const stageAdmittedCandidate = async ({
       temporaryRoot,
       verifyConsumerEvidence,
     });
+    return { ...staged, admittedTarball: tarball };
   } finally {
     rmSync(temporaryRoot, { recursive: true, force: true });
   }
@@ -340,15 +342,20 @@ export const prepareBrowserConsumers = async ({
     join(candidateDirectory, "candidate-manifest.json"),
   );
   assertPackageIdentity(candidateManifest.package);
-  const { directory, packageRoot, fixtureModules, npmAttributions } =
-    await stageAdmittedCandidate({
-      candidateDirectory,
-      candidateManifest,
-      outputDirectory,
-      npmCli,
-      stageFixtures,
-      verifyConsumerEvidence,
-    });
+  const {
+    directory,
+    packageRoot,
+    fixtureModules,
+    npmAttributions,
+    admittedTarball,
+  } = await stageAdmittedCandidate({
+    candidateDirectory,
+    candidateManifest,
+    outputDirectory,
+    npmCli,
+    stageFixtures,
+    verifyConsumerEvidence,
+  });
   const generatedMap = await generateReferenceImportMap({
     applicationPath: join(directory, "main.js"),
     packageRoot,
@@ -418,6 +425,10 @@ export const prepareBrowserConsumers = async ({
     "utf8",
   );
 
+  assertServedPackagePayload(
+    join(runtimeDirectory, "package", "owlapi"),
+    admittedTarball,
+  );
   const manifest = stableJson({
     schemaVersion: npmAttributions ? 2 : 1,
     ...(npmAttributions

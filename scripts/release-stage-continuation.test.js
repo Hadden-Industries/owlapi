@@ -82,6 +82,9 @@ const withStageHistory = (callback) => {
     const currentTree = stages(
       readFileSync(new URL("./staged-release.mjs", import.meta.url)),
     );
+    const refactoredTree = stages(
+      "async function stage() { const grant = await requireReconciledQualification(); await submit(grant); }\n",
+    );
     const commit = (tree, name, ...parents) =>
       git([
         "commit-tree",
@@ -106,6 +109,7 @@ const withStageHistory = (callback) => {
       localRepository,
       legacyTree,
       currentTree,
+      refactoredTree,
       commit,
       qualification,
       submitted,
@@ -123,6 +127,7 @@ test.each(["linear", "merge", "squash"])(
       ({
         localRepository,
         currentTree,
+        refactoredTree,
         commit,
         qualification,
         submitted,
@@ -135,8 +140,8 @@ test.each(["linear", "merge", "squash"])(
           ...(integration === "merge" ? [feature] : []),
         );
         const modernCommit = commit(
-          currentTree,
-          "Subsequent protected main work",
+          refactoredTree,
+          "Refactored the Stage guard on protected main",
           activation,
         );
         const source = { controller: modernCommit, localRepository };
