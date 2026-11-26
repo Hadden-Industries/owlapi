@@ -1,35 +1,47 @@
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { captureInstalledIdentity } from "./compare-java-js.mjs";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
+import { verifyPinnedFile } from "./comparison-fixtures.mjs";
+import { loadPublicApi } from "./qualify-universal-ontology.mjs";
 import {
   admitReleasedClasspath,
   compileComparisonOracle,
 } from "./comparison-oracle.mjs";
 import { scopedSwrlCases } from "./scoped-swrl-fixtures.mjs";
 
-const [runDirectory, classpathFile, javaHome, destination] =
+const [runDirectory, candidateDirectory, classpathFile, javaHome, destination] =
   process.argv.slice(2);
 if (!destination)
   throw new Error(
-    "Supply the comparison run, released classpath file, selected JDK home and a new output directory",
+    "Supply the comparison run, candidate directory, released classpath file, selected JDK home and a new output directory",
   );
 const run = resolve(runDirectory);
 const attempt = JSON.parse(await readFile(join(run, "attempt.json"), "utf8"));
-const consumer = createRequire(join(run, "consumer", "package.json"));
-const api = await import(pathToFileURL(consumer.resolve("owlapi")).href);
+const consumerDirectory = join(run, "consumer");
+const observeCandidate = () =>
+  captureInstalledIdentity(candidateDirectory, consumerDirectory);
+const candidate = await observeCandidate();
+assert.deepEqual(candidate, attempt.candidate);
+const api = await loadPublicApi({
+  consumerDirectory,
+  packageDirectory: join(consumerDirectory, "node_modules", "owlapi"),
+});
 const environment = { classpathFile, javaHome, javaHeapMiB: 256 };
 const classpath = await admitReleasedClasspath(environment);
 const output = resolve(destination);
 await mkdir(output);
 const native = await compileComparisonOracle(environment, output, classpath);
+assert.deepEqual(native.identity, attempt.oracle);
 const fixtures = new Map(
   (await scopedSwrlCases()).map((entry) => [entry.id, entry.text]),
 );
 const report = {
-  tarballSha256: attempt.candidate.tarballSha256,
+  attemptId: attempt.attemptId,
+  comparisonExecutionId: attempt.executionId,
+  tarballSha256: candidate.tarballSha256,
+  installedContentSha256: candidate.contentSha256,
   oracle: native.identity,
   controls: [],
 };
@@ -84,14 +96,21 @@ for (const id of ["simple", "changed-head", "edited-annotated"]) {
   const path = join(directory, "expected.rdf");
   const functionalPath = join(directory, "model.ofn");
   const jsRdfXmlPath = join(directory, "model.rdf");
-  await writeFile(path, expected);
+  const artifacts = [];
+  async function retain(name, content) {
+    const bytes = Buffer.from(content);
+    const pin = { name, byteLength: bytes.length, sha256: sha256(bytes) };
+    await writeFile(join(directory, name), bytes, { flag: "wx" });
+    artifacts.push(pin);
+  }
+  await retain("expected.rdf", expected);
   for (const [format, file] of [
-    [api.OWLDocumentFormats.FUNCTIONAL, functionalPath],
-    [api.OWLDocumentFormats.RDF_XML, jsRdfXmlPath],
+    [api.OWLDocumentFormats.FUNCTIONAL, "model.ofn"],
+    [api.OWLDocumentFormats.RDF_XML, "model.rdf"],
   ]) {
     const target = new api.StringDocumentTarget();
     await manager.saveOntology(ontology, format, target);
-    await writeFile(file, target.toString());
+    await retain(file, target.toString());
   }
   const caseId = comparisonIdentity({
     id,
@@ -101,6 +120,8 @@ for (const id of ["simple", "changed-head", "edited-annotated"]) {
   const executionId = comparisonIdentity({
     caseId,
     tarball: report.tarballSha256,
+    comparisonExecutionId: attempt.executionId,
+    artifacts,
     native: native.identity,
   });
   const { result, bytes } = await native.run(
@@ -118,7 +139,10 @@ for (const id of ["simple", "changed-head", "edited-annotated"]) {
     },
     directory,
   );
-  await writeFile(join(directory, "native-result.json"), bytes, { flag: "wx" });
+  await retain("native-result.json", bytes);
+  for (const pin of artifacts) {
+    await verifyPinnedFile(join(directory, pin.name), { ...pin, id: pin.name });
+  }
   assert.equal(result.javaLoad.status, "completed");
   assert.equal(
     result.javaLoad.ontology.counts.axioms,
@@ -137,12 +161,13 @@ for (const id of ["simple", "changed-head", "edited-annotated"]) {
     caseId,
     executionId,
     axioms: ontology.getAxiomCount(),
-    nativeResultSha256: sha256(bytes),
+    artifacts,
     structure: result.structure.status,
     nativeRdfXmlReload: result.jsRdfXmlNativeReload.comparison.status,
     networkAttempts: result.networkAttempts,
   });
 }
+assert.deepEqual(await observeCandidate(), candidate);
 await writeFile(
   join(output, "controls.json"),
   JSON.stringify(report, null, 2) + "\n",

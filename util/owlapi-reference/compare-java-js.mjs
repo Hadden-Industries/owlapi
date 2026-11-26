@@ -1229,7 +1229,10 @@ function publicCorpusRow({
 }
 
 /** Bind installed qualification to the original tarball and actual module bytes. */
-async function captureInstalledIdentity(candidateDirectory, consumerDirectory) {
+export async function captureInstalledIdentity(
+  candidateDirectory,
+  consumerDirectory,
+) {
   const candidate = await readJson(
     join(candidateDirectory, "candidate-manifest.json"),
   );
