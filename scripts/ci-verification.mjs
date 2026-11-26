@@ -1032,7 +1032,50 @@ async function verifyExactMainQualification({
  * FULL producer. The callback verifies package evidence before the final live
  * head and producer check. CI equivalence alone establishes no release gates.
  */
-export async function verifyReleaseCi({
+export async function verifyReleaseCi(options) {
+  requireFact(
+    options.context.eventName === "workflow_dispatch",
+    "Release dispatch must name the trusted main checkout.",
+  );
+  return verifyProtectedMainCi(options);
+}
+
+/** A cleanup trigger nominates a run. The normal protected-main verifier independently selects its own successful original. */
+export function retirementTrigger(context) {
+  if (context.eventName === "workflow_dispatch") return null;
+  const trigger = context.event?.workflow_run;
+  requireFact(
+    context.eventName === "workflow_run" &&
+      context.event.action === "completed" &&
+      trigger?.path === CI_WORKFLOW &&
+      trigger.event === "push" &&
+      trigger.head_branch === "main" &&
+      trigger.head_sha === context.sha &&
+      trigger.status === "completed" &&
+      trigger.conclusion === "success" &&
+      id(trigger.id) &&
+      id(trigger.run_attempt) &&
+      sameRepository(trigger.repository, context) &&
+      sameRepository(trigger.head_repository, context),
+    "Retirement requires a successful upstream CI push on the current protected main.",
+  );
+  return trigger;
+}
+
+export async function verifyRetentionCi(options) {
+  const trigger = retirementTrigger(options.context);
+  const result = await verifyProtectedMainCi(options);
+  if (trigger)
+    requireFact(
+      result.main.run.id === trigger.id &&
+        result.main.run.run_attempt === trigger.run_attempt &&
+        result.main.run.event === "push",
+      "Upstream trigger differs from the independently verified main CI run or attempt.",
+    );
+  return result;
+}
+
+async function verifyProtectedMainCi({
   context,
   read,
   downloadReceipt,
@@ -1043,8 +1086,7 @@ export async function verifyReleaseCi({
 }) {
   const started = performance.now();
   requireFact(
-    context.eventName === "workflow_dispatch" &&
-      context.ref === "refs/heads/main" &&
+    context.ref === "refs/heads/main" &&
       context.repository === REPOSITORY &&
       sameRepository(context.event?.repository, context) &&
       context.event.repository.default_branch === "main" &&

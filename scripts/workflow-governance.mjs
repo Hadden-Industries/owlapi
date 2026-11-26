@@ -57,6 +57,8 @@ const ACTION_DIRECTORY = join(REPOSITORY_ROOT, ".github", "actions");
 const SHARED_SETUP = "./.github/actions/setup-producer";
 const SCANCODE_SETUP = "./.github/actions/setup-scancode";
 const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
+const candidateRetentionWorkflow = "candidate-retention.yml";
+const runtimeFreezer = "./.github/actions/freeze-runtime-matrix";
 const recipientEvidenceRetentionDays = 30;
 const advisoryWorkflow = "release-audit-evaluator.yml";
 const advisoryRetention = `\${{ inputs.purpose == 'public' && ${recipientEvidenceRetentionDays} || 90 }}`;
@@ -77,6 +79,7 @@ const setupInputs = (step) => ({ ...SETUP_DEFAULTS, ...step?.with });
 
 const ISSUE_FORM_DIRECTORY = join(REPOSITORY_ROOT, ".github", "ISSUE_TEMPLATE");
 const EXPECTED_WORKFLOWS = [
+  candidateRetentionWorkflow,
   "ci.yml",
   "extended-tests.yml",
   "github-release.yml",
@@ -260,6 +263,12 @@ const entries = (value) => Object.entries(value ?? {});
 const steps = (job) => (Array.isArray(job?.steps) ? job.steps : []);
 const jobs = (workflow) => Object.values(workflow?.jobs ?? {});
 const allSteps = (workflow) => jobs(workflow).flatMap(steps);
+const hasWorkflowTrigger = (triggers, event) =>
+  typeof triggers === "string"
+    ? triggers === event
+    : Array.isArray(triggers)
+      ? triggers.includes(event)
+      : Object.hasOwn(triggers ?? {}, event);
 const actionSteps = (job, action) =>
   steps(job).filter((step) =>
     action.startsWith("./")
@@ -432,21 +441,24 @@ const validateSharedSetupMetadata = (metadata, document, violations) => {
     violations,
   );
   requireFields(
-    actionSteps[2]?.env,
+    actionSteps[2],
     {
-      OWLAPI_NODE_FAMILY: "${{ inputs.node-family }}",
-      OWLAPI_NPM_TIMEOUT_MINUTES: "${{ inputs.npm-timeout-minutes }}",
+      env: {
+        OWLAPI_NODE_FAMILY: "${{ inputs.node-family }}",
+        OWLAPI_NPM_TIMEOUT_MINUTES: "${{ inputs.npm-timeout-minutes }}",
+      },
     },
     "Shared npm deadline",
     violations,
   );
-  for (const index of [3, 4])
+  for (const index of [3, 4]) {
     requireFields(
-      actionSteps[index]?.env,
-      { OWLAPI_NODE_FAMILY: "${{ inputs.node-family }}" },
+      actionSteps[index],
+      { env: { OWLAPI_NODE_FAMILY: "${{ inputs.node-family }}" } },
       "Shared runtime assertion/seed",
       violations,
     );
+  }
 };
 
 const validateActionUses = (fileName, workflow, document, violations) => {
@@ -473,7 +485,10 @@ const validateActionUses = (fileName, workflow, document, violations) => {
             ].includes(jobId)) ||
             (["ci.yml", "release.yml"].includes(fileName) &&
               Boolean(referenceConsumerFamily(jobId)) &&
-              step.uses === "./.github/actions/qualify-consumer"),
+              step.uses === "./.github/actions/qualify-consumer") ||
+            (fileName === candidateRetentionWorkflow &&
+              jobId === "retire" &&
+              step.uses === runtimeFreezer),
           `${fileName}:${jobId}: unexpected consumer action`,
         );
         add(
@@ -732,6 +747,11 @@ const recipientCheckpointSelection = (file) =>
 const npmAuthority = { ...readAuthority, "id-token": "write" };
 const githubAuthority = { ...readAuthority, contents: "write" };
 const protectedReleaseBranch = `github.repository == '${REPOSITORY}' && github.ref == 'refs/heads/main'`;
+const serializedReleaseConcurrency = {
+  group: "owlapi-release",
+  "cancel-in-progress": false,
+  queue: "max",
+};
 
 const advisoryUse = `./.github/workflows/${advisoryWorkflow}`;
 const qualificationAdvisoryGuard = `\${{ ${qualificationAdvisoryCondition} }}`;
@@ -907,6 +927,11 @@ function validateAdvisoryWorkload(workflows, violations) {
 
 function validateRecipientMaterialReplay(workflow, installed, violations) {
   const file = "recipient-material-replay.yml";
+  add(
+    violations,
+    isDeepStrictEqual(workflow?.concurrency, serializedReleaseConcurrency),
+    `${file}: shared serialized release group required`,
+  );
   const {
     scan,
     replay,
@@ -939,6 +964,7 @@ function validateRecipientMaterialReplay(workflow, installed, violations) {
     violations,
     workflow &&
       sameInventory(Object.keys(workflow), [
+        "concurrency",
         "jobs",
         "name",
         "on",
@@ -1681,11 +1707,7 @@ function validateOperationJobs(file, workflow, violations) {
   } else if (file !== "release-completion.yml")
     add(
       violations,
-      isDeepStrictEqual(workflow.concurrency, {
-        group: "owlapi-release",
-        "cancel-in-progress": false,
-        queue: "max",
-      }),
+      isDeepStrictEqual(workflow.concurrency, serializedReleaseConcurrency),
       file + ": shared serialized release group required",
     );
 }
@@ -3983,6 +4005,125 @@ const validateQualityTooling = (workflows, violations) => {
   );
 };
 
+function validateCandidateRetention(workflow, violations) {
+  const job = workflow.jobs?.retire;
+  const [checkout, freeze, apply] = steps(job);
+  add(
+    violations,
+    sameInventory(Object.keys(workflow), [
+      "name",
+      "on",
+      "permissions",
+      "concurrency",
+      "jobs",
+    ]) &&
+      sameInventory(Object.keys(workflow.jobs ?? {}), ["retire"]) &&
+      sameInventory(Object.keys(job ?? {}), [
+        "name",
+        "if",
+        "runs-on",
+        "timeout-minutes",
+        "permissions",
+        "defaults",
+        "steps",
+      ]) &&
+      workflow.name === "Retire predecessor candidate artifacts" &&
+      job.name === workflow.name &&
+      job["runs-on"] === UBUNTU.label &&
+      job["timeout-minutes"] === 25 &&
+      isDeepStrictEqual(job.defaults, { run: { shell: "bash" } }),
+    `${candidateRetentionWorkflow}: only the isolated retirement job is allowed`,
+  );
+  add(
+    violations,
+    isDeepStrictEqual(workflow.on, {
+      workflow_dispatch: {
+        inputs: {
+          retention_history_object: {
+            description:
+              "Optional signed protected history object for candidate retirement",
+            type: "string",
+            required: false,
+          },
+        },
+      },
+      workflow_run: {
+        workflows: ["CI"],
+        types: ["completed"],
+        branches: ["main"],
+      },
+    }),
+    `${candidateRetentionWorkflow}: only the reviewed triggers and optional history input are allowed`,
+  );
+  add(
+    violations,
+    job?.if ===
+      [
+        protectedReleaseBranch,
+        "&& github.ref_protected",
+        "&& ((github.event_name == 'workflow_dispatch'",
+        "&& github.actor == 'maksymshostak'",
+        "&& github.triggering_actor == 'maksymshostak')",
+        "|| (github.event_name == 'workflow_run'",
+        "&& github.event.workflow_run.name == 'CI'",
+        "&& github.event.workflow_run.path == '.github/workflows/ci.yml'",
+        "&& github.event.workflow_run.event == 'push'",
+        "&& github.event.workflow_run.conclusion == 'success'",
+        "&& github.event.workflow_run.head_branch == 'main'",
+        "&& github.event.workflow_run.repository.full_name == github.repository",
+        "&& github.event.workflow_run.head_repository.full_name == github.repository))",
+      ].join(" "),
+    `${candidateRetentionWorkflow}: retirement requires protected main and either the owner or the exact successful main CI push`,
+  );
+  add(
+    violations,
+    isDeepStrictEqual(workflow.concurrency, serializedReleaseConcurrency),
+    `${candidateRetentionWorkflow}: shared serialized release group required`,
+  );
+  add(
+    violations,
+    isDeepStrictEqual(job?.permissions, {
+      contents: "read",
+      actions: "write",
+      "pull-requests": "read",
+      checks: "read",
+    }),
+    `${candidateRetentionWorkflow}: exact retirement permissions required`,
+  );
+  add(
+    violations,
+    isDeepStrictEqual(checkout, {
+      uses: actionReference("actions/checkout"),
+      with: {
+        ref: "${{ github.sha }}",
+        "fetch-depth": 0,
+        "fetch-tags": true,
+        "persist-credentials": false,
+      },
+    }),
+    `${candidateRetentionWorkflow}: exact protected checkout with history and tags required`,
+  );
+  add(
+    violations,
+    isDeepStrictEqual(freeze, { id: "freeze", uses: runtimeFreezer }),
+    `${candidateRetentionWorkflow}: the closed runtime freezer accepts no overrides`,
+  );
+  add(
+    violations,
+    steps(job).length === 3 &&
+      isDeepStrictEqual(apply, {
+        name: "Verify custody and retire eligible predecessor artifacts",
+        env: {
+          GH_TOKEN: "${{ github.token }}",
+          OWLAPI_RUNTIME_MATRIX: "${{ steps.freeze.outputs.matrix }}",
+          RETENTION_HISTORY_OBJECT: "${{ inputs.retention_history_object }}",
+        },
+        run: "node scripts/release-retention.mjs --apply",
+      }),
+    `${candidateRetentionWorkflow}: only the scoped retirement controller may receive the token and history input`,
+  );
+}
+
 const validateMaintenanceReporter = (workflow, violations) => {
   add(
     violations,
@@ -4396,6 +4537,31 @@ const validateConsumerRuntimeControls = (
         occurrences(action, "permissions") === 0,
       `${name}: consumer setup cannot gain publishing or cross-run authority`,
     );
+    if (name === "freeze-runtime-matrix") {
+      add(
+        violations,
+        sameInventory(Object.keys(action), [
+          "name",
+          "description",
+          "outputs",
+          "runs",
+        ]) &&
+          sameInventory(Object.keys(action.runs ?? {}), ["using", "steps"]) &&
+          sameInventory(Object.keys(action.outputs ?? {}), [
+            "matrix",
+            "sha256",
+          ]) &&
+          action.outputs?.matrix?.value ===
+            "${{ steps.freeze.outputs.matrix }}" &&
+          action.outputs?.sha256?.value ===
+            "${{ steps.freeze.outputs.sha256 }}" &&
+          isDeepStrictEqual(body, [
+            { uses: SHARED_SETUP },
+            { id: "freeze", shell: "bash", run: expectedSteps[name][1] },
+          ]),
+        `${candidateRetentionWorkflow}: only the closed runtime freezer may run before the controller`,
+      );
+    }
     if (name === "setup-consumer") {
       requireFields(
         body[4]?.with,
@@ -5173,11 +5339,18 @@ export const auditRepositoryControls = ({
     for (const event of ["pull_request_target", "workflow_run"])
       add(
         violations,
-        !Object.hasOwn(workflow.on ?? {}, event),
+        (fileName === candidateRetentionWorkflow && event === "workflow_run") ||
+          !hasWorkflowTrigger(workflow.on, event),
         `${fileName}: forbidden workflow construct ${event}`,
       );
     validateActionUses(fileName, workflow, document, violations);
     for (const [jobId, job] of entries(workflow.jobs)) {
+      add(
+        violations,
+        job?.permissions?.actions !== "write" ||
+          (fileName === candidateRetentionWorkflow && jobId === "retire"),
+        `${fileName}:${jobId} has Actions write authority outside candidate retirement`,
+      );
       for (const step of actionSteps(job, "actions/setup-java")) {
         const corpusShadow =
           fileName === "release.yml" && jobId === "corpus_shard";
@@ -5260,6 +5433,10 @@ export const auditRepositoryControls = ({
     );
   }
   validateMaintenanceReporter(workflows["maintenance.yml"] ?? {}, violations);
+  validateCandidateRetention(
+    workflows[candidateRetentionWorkflow] ?? {},
+    violations,
+  );
   validateSourceGovernanceHistory(workflows, violations);
   add(
     violations,

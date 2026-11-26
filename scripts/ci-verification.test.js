@@ -21,6 +21,7 @@ import {
   selectBaseQualification,
   verifyBaseQualification,
   verifyReleaseCi,
+  verifyRetentionCi,
   readJobInventory,
 } from "./ci-verification.mjs";
 import { verifyPromotedAdmission } from "./release-qualification-manifest.mjs";
@@ -943,8 +944,8 @@ describe("read-only release dispatch CI admission", () => {
     }
     return f;
   };
-  const admit = (f, read = f.read) =>
-    verifyReleaseCi({
+  const admit = (f, read = f.read, verify = verifyReleaseCi) =>
+    verify({
       context: f.context,
       read,
       downloadReceipt: async ({ artifact }) =>
@@ -973,6 +974,27 @@ describe("read-only release dispatch CI admission", () => {
       expect(result.source.receipt.checks.java.original.runAttempt).toBe(1);
     },
   );
+  test("retirement admits the exact successful upstream main push without widening release dispatch authority", async () => {
+    const f = await dispatch(true);
+    f.context.eventName = "workflow_run";
+    f.context.event = {
+      ...f.context.event,
+      action: "completed",
+      workflow_run: { ...f.mainRun },
+    };
+    await expect(admit(f)).rejects.toThrow(/dispatch/u);
+    await expect(admit(f, f.read, verifyRetentionCi)).resolves.toMatchObject({
+      main: { run: { id: f.mainRun.id } },
+    });
+    f.context.event.workflow_run = { ...f.mainRun, id: f.mainRun.id + 1 };
+    await expect(admit(f, f.read, verifyRetentionCi)).rejects.toThrow(
+      /trigger|upstream/u,
+    );
+    f.context.event.workflow_run = { ...f.mainRun, event: "pull_request" };
+    await expect(admit(f, f.read, verifyRetentionCi)).rejects.toThrow(
+      /trigger|upstream/u,
+    );
+  });
   test("same-name evidence from a different native check app prevents release admission", async () => {
     const f = await dispatch(true);
     const check = Object.values(f.responses).find(

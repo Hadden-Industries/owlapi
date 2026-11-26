@@ -41,13 +41,23 @@ import { prepareRecipientMaterial } from "../util/third-party-evidence/recipient
 import { readCanonicalMaterialFromGit } from "./recipient-material-git-source.mjs";
 import { qualificationAdvisoryMarker } from "./qualification-advisory-binding.mjs";
 
-// Keep this archived fixture on its v2 policy after the checkout starts issuing v3.
+// Keep the original v2 policy and model the later public controller with its own immutable registry.
+const advisoryCasePath = "docs/release/dependency-advisory-cases.json";
+const operationBoundController = "e".repeat(40);
+let operationControllerFixture;
 const { readControllerBlob } = await import("./release-controller-blob.mjs");
 jest.unstable_mockModule("./release-controller-blob.mjs", () => ({
-  readControllerBlob: (controller, path) =>
-    path === "docs/release/dependency-advisory-cases.json"
+  readControllerBlob: (controller, path) => {
+    if (controller === operationBoundController) {
+      const { sourceCommit, registry } = operationControllerFixture;
+      return path === advisoryCasePath
+        ? registry
+        : readControllerBlob(sourceCommit, path);
+    }
+    return path === advisoryCasePath
       ? Buffer.from(stableJson({ schemaVersion: 1, cases: [] }))
-      : readControllerBlob(controller, path),
+      : readControllerBlob(controller, path);
+  },
 }));
 
 // This test has no GitHub OIDC identity. Keep content binding and archived
@@ -226,9 +236,17 @@ function indexed(version, names) {
 }
 
 /** Create a signed test receipt with its original evaluator upload identity. */
-function signedAdvisory({ workflow, job, entries, observedAt, decidedAt }) {
+function signedAdvisory({
+  workflow,
+  job,
+  entries,
+  observedAt,
+  decidedAt,
+  schemaVersion = 2,
+  selectedCase,
+}) {
   const decision = {
-    schemaVersion: 2,
+    schemaVersion,
     evaluator: {
       workflow,
       controller: job.head_sha,
@@ -240,7 +258,18 @@ function signedAdvisory({ workflow, job, entries, observedAt, decidedAt }) {
     subjects: entries
       .map(canonicalJson)
       .sort()
-      .map((entry) => ({ ...JSON.parse(entry), observedAt })),
+      .map((entry, index) => {
+        const original = JSON.parse(entry);
+        const result = { ...original, observedAt };
+        if (selectedCase?.lockSha256 === original.subject.lockSha256) {
+          result.caseEvidence = {
+            id: `11111111-1111-4111-8111-${String(index + 1).padStart(12, "0")}`,
+            caseIds: [selectedCase.id],
+            expiresAt: selectedCase.expiresAt,
+          };
+        }
+        return result;
+      }),
     decidedAt,
     decision: "ACCEPTED",
   };
@@ -392,7 +421,7 @@ test("a lost seal acknowledgement preserves the exact admitted advisory marker d
   ).rejects.toThrow("postdates provider publication");
 });
 
-async function prepareArchivedPublicFixture(root) {
+async function prepareArchivedPublicFixture(root, { caseExpiresAt } = {}) {
   const npmCli = process.env.npm_execpath;
   const sourceCommit = execFileSync("git", ["rev-parse", "HEAD"], {
     cwd: new URL("../", import.meta.url),
@@ -465,12 +494,15 @@ async function prepareArchivedPublicFixture(root) {
   const registryTarball = `https://registry.npmjs.org/${PACKAGE_NAME}/-/owlapi-${PACKAGE_VERSION}.tgz`;
   const integrity =
     "sha512-" + createHash("sha512").update(tarball).digest("base64");
+  const publicController = caseExpiresAt
+    ? operationBoundController
+    : sourceCommit;
   const { evidence: published } = fixture(8);
   published.source = sourceCommit;
   published.stage.commit = sourceCommit;
   published.publicAdvisory = {
     ...published.publicAdvisory,
-    controller: sourceCommit,
+    controller: publicController,
   };
   published.assets.tarball.bytes = tarball.length;
   published.assets.tarball.sha256 = sha256Buffer(tarball);
@@ -597,7 +629,7 @@ async function prepareArchivedPublicFixture(root) {
     ),
   );
   const origin = {
-    commit: sourceCommit,
+    commit: publicController,
     run: advisory.runId,
     attempt: advisory.attempt,
   };
@@ -838,12 +870,38 @@ async function prepareArchivedPublicFixture(root) {
       consumers: testedConsumers,
     });
   }
+  let selectedCase;
+  if (caseExpiresAt) {
+    selectedCase = {
+      id: "public-retain-original",
+      kind: "RETAIN_ORIGINAL",
+      role: "recipient",
+      scope: "production",
+      lockSha256: publicEntries[0].subject.lockSha256,
+      owner: "fixture-owner",
+      review: "GHSA-2222-3333-4444",
+      approvedAt: "2026-11-26T11:00:00.000Z",
+      expiresAt: caseExpiresAt,
+    };
+    operationControllerFixture = {
+      sourceCommit,
+      registry: Buffer.from(
+        stableJson({
+          schemaVersion: 2,
+          receiptSchemaVersion: 3,
+          cases: [selectedCase],
+        }),
+      ),
+    };
+  }
   const cleared = signedAdvisory({
     workflow: ".github/workflows/release-registry.yml",
     job: evaluator,
     entries: publicEntries,
     observedAt: "2026-11-26T12:00:02.000Z",
     decidedAt: "2026-11-26T12:00:03.500Z",
+    schemaVersion: selectedCase ? 3 : 2,
+    selectedCase,
   });
   archiveAdvisory(originals, "public", cleared);
   published.publicAdvisory.descriptor = cleared.descriptor;
@@ -1085,4 +1143,48 @@ describe("archived native public release", () => {
       "Public tests did not use the required fixtures and inputs",
     );
   });
+});
+
+test("an archived v3 public advisory survives 24 hours and respects its selected case deadline", async () => {
+  const temp = realpathSync(tmpdir());
+  const root = mkdtempSync(join(temp, "owlapi-archive-v3-test-"));
+  expect(isStrictDescendantPath(temp, root)).toBe(true);
+  try {
+    const caseExpiresAt = "2026-11-28T12:00:02.000Z";
+    const { originals, published, recovered, evaluator } =
+      await prepareArchivedPublicFixture(root, { caseExpiresAt });
+    const decision = JSON.parse(originals.get("public-advisory.json"));
+    expect(decision.schemaVersion).toBe(3);
+    expect(published.publicAdvisory.controller).toBe(operationBoundController);
+    expect(JSON.parse(originals.get("public-advisory-job.json"))).toEqual(
+      evaluator,
+    );
+    expect(decision.subjects).toContainEqual(
+      expect.objectContaining({
+        caseEvidence: expect.objectContaining({
+          caseIds: ["public-retain-original"],
+          expiresAt: caseExpiresAt,
+        }),
+      }),
+    );
+    const sealAuthorizedAt = "2026-11-28T12:00:01.999Z";
+    expect(
+      Date.parse(sealAuthorizedAt) - Date.parse(decision.decidedAt),
+    ).toBeGreaterThan(24 * 60 * 60_000);
+    const release = { ...recovered, publishedAt: "2026-11-28T12:00:10Z" };
+    await expect(
+      verifyArchivedPublicRelease(originals, published, {
+        ...release,
+        sealAuthorizedAt,
+      }),
+    ).resolves.toEqual(published.publicAdvisory);
+    await expect(
+      verifyArchivedPublicRelease(originals, published, {
+        ...release,
+        sealAuthorizedAt: caseExpiresAt,
+      }),
+    ).rejects.toThrow("Private advisory case evidence is invalid or expired");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });

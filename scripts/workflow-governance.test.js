@@ -36,6 +36,205 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each([
+    [
+      "another CI workflow",
+      ["on", "workflow_run", "workflows"],
+      ["Maintenance"],
+      /reviewed triggers/u,
+    ],
+    [
+      "an incomplete CI event",
+      ["on", "workflow_run", "types"],
+      ["requested"],
+      /reviewed triggers/u,
+    ],
+    [
+      "a different source branch",
+      ["on", "workflow_run", "branches"],
+      ["release"],
+      /reviewed triggers/u,
+    ],
+    [
+      "a direct push trigger",
+      ["on", "push"],
+      { branches: ["main"] },
+      /reviewed triggers/u,
+    ],
+    [
+      "arbitrary manual inputs",
+      ["on", "workflow_dispatch", "inputs", "script"],
+      { type: "string" },
+      /reviewed triggers/u,
+    ],
+    [
+      "a separate writer group",
+      ["concurrency", "group"],
+      "owlapi-retention",
+      /shared serialized release group/u,
+    ],
+    [
+      "a cancelled running predecessor",
+      ["concurrency", "cancel-in-progress"],
+      true,
+      /shared serialized release group/u,
+    ],
+    [
+      "a bounded pending queue",
+      ["concurrency", "queue"],
+      "single",
+      /shared serialized release group/u,
+    ],
+    [
+      "extra write permissions",
+      ["jobs", "retire", "permissions", "contents"],
+      "write",
+      /exact retirement permissions/u,
+    ],
+    ["an extra job", ["jobs", "retire_again"], {}, /isolated retirement job/u],
+    [
+      "a deployment environment",
+      ["jobs", "retire", "environment"],
+      "release-manual",
+      /isolated retirement job/u,
+    ],
+    [
+      "an unpinned runner",
+      ["jobs", "retire", "runs-on"],
+      "ubuntu-latest",
+      /runtime projection drift/u,
+    ],
+    [
+      "the event's head checkout",
+      ["jobs", "retire", "steps", 0, "with", "ref"],
+      "${{ github.event.workflow_run.head_sha }}",
+      /exact protected checkout/u,
+    ],
+    [
+      "a shallow checkout",
+      ["jobs", "retire", "steps", 0, "with", "fetch-depth"],
+      1,
+      /exact protected checkout/u,
+    ],
+    [
+      "a checkout without tags",
+      ["jobs", "retire", "steps", 0, "with", "fetch-tags"],
+      false,
+      /exact protected checkout/u,
+    ],
+    [
+      "persisted checkout credentials",
+      ["jobs", "retire", "steps", 0, "with", "persist-credentials"],
+      true,
+      /exact protected checkout/u,
+    ],
+    [
+      "token access during freezing",
+      ["jobs", "retire", "steps", 1, "env", "GH_TOKEN"],
+      "${{ github.token }}",
+      /closed runtime freezer/u,
+    ],
+    [
+      "an untrusted token",
+      ["jobs", "retire", "steps", 2, "env", "GH_TOKEN"],
+      "${{ secrets.PUBLISH_TOKEN }}",
+      /scoped retirement controller/u,
+    ],
+    [
+      "direct input interpolation",
+      ["jobs", "retire", "steps", 2, "run"],
+      "node scripts/release-retention.mjs --apply ${{ inputs.retention_history_object }}",
+      /scoped retirement controller/u,
+    ],
+    [
+      "an additional command",
+      ["jobs", "retire", "steps", 3],
+      { run: "npm test" },
+      /scoped retirement controller/u,
+    ],
+  ])("candidate retirement rejects %s", (_name, path, value, expected) => {
+    expect(
+      mutateWorkflow("candidate-retention.yml", (doc) =>
+        doc.setIn(path, value),
+      ),
+    ).toEqual(expect.arrayContaining([expect.stringMatching(expected)]));
+  });
+
+  test.each([
+    "github.repository == 'Hadden-Industries/owlapi'",
+    "github.ref == 'refs/heads/main'",
+    "github.ref_protected",
+    "github.actor == 'maksymshostak'",
+    "github.triggering_actor == 'maksymshostak'",
+    "github.event.workflow_run.name == 'CI'",
+    "github.event.workflow_run.path == '.github/workflows/ci.yml'",
+    "github.event.workflow_run.event == 'push'",
+    "github.event.workflow_run.conclusion == 'success'",
+    "github.event.workflow_run.head_branch == 'main'",
+    "github.event.workflow_run.repository.full_name == github.repository",
+    "github.event.workflow_run.head_repository.full_name == github.repository",
+  ])("candidate retirement requires %s", (check) => {
+    expect(
+      mutateWorkflow("candidate-retention.yml", (doc) => {
+        const path = ["jobs", "retire", "if"];
+        doc.setIn(path, doc.getIn(path).replace(check, "true"));
+      }),
+    ).toContain(
+      "candidate-retention.yml: retirement requires protected main and either the owner or the exact successful main CI push",
+    );
+  });
+
+  test.each([
+    ["workflow_run"],
+    [["workflow_dispatch", "workflow_run"]],
+    [{ workflow_run: { workflows: ["CI"], types: ["completed"] } }],
+  ])(
+    "candidate retirement is the only workflow_run entry point (%j)",
+    (trigger) => {
+      expect(
+        mutateWorkflow("maintenance.yml", (doc) => doc.set("on", trigger)),
+      ).toContain("maintenance.yml: forbidden workflow construct workflow_run");
+    },
+  );
+
+  test("candidate retirement has the sole Actions write permission", () => {
+    expect(
+      mutateWorkflow("extended-tests.yml", (doc) => {
+        doc.setIn(
+          ["jobs", "third_party_evidence_shard", "permissions", "actions"],
+          "write",
+        );
+      }),
+    ).toContain(
+      "extended-tests.yml:third_party_evidence_shard has Actions write authority outside candidate retirement",
+    );
+  });
+
+  test("candidate retirement rejects token access via its runtime composites", () => {
+    const freeze = parseDocument(
+      readFileSync(".github/actions/freeze-runtime-matrix/action.yml", "utf8"),
+    );
+    freeze.setIn(
+      ["runs", "steps", 1, "env", "GH_TOKEN"],
+      "${{ github.token }}",
+    );
+    const setup = parseDocument(
+      readFileSync(".github/actions/setup-producer/action.yml", "utf8"),
+    );
+    setup.setIn(["runs", "steps", 2, "env", "GH_TOKEN"], "${{ github.token }}");
+    expect(
+      auditRepositoryControls({
+        consumerActionOverrides: { "freeze-runtime-matrix": freeze.toString() },
+        setupSourceOverride: setup.toString(),
+      }).violations,
+    ).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(/closed runtime freezer/u),
+        expect.stringMatching(/Shared npm deadline/u),
+      ]),
+    );
+  });
+
   test("maintenance transports the candidate for one day and never gains deletion authority", () => {
     expect(
       mutateWorkflow("maintenance.yml", (doc) => {
@@ -1451,6 +1650,23 @@ describe("repository workflow governance", () => {
     );
   });
 
+  test.each([
+    ["group", "owlapi-recipient-material-replay"],
+    ["cancel-in-progress", true],
+    ["queue", "single"],
+  ])(
+    "material replay rejects changed release serialization (%s)",
+    (key, value) => {
+      expect(
+        mutateWorkflow("recipient-material-replay.yml", (doc) =>
+          doc.setIn(["concurrency", key], value),
+        ),
+      ).toContain(
+        "recipient-material-replay.yml: shared serialized release group required",
+      );
+    },
+  );
+
   test("material replay requires its original successful scan and closed archive", () => {
     expect(
       mutateWorkflow("recipient-material-replay.yml", (doc) => {
@@ -1508,6 +1724,7 @@ describe("repository workflow governance", () => {
     const report = auditRepositoryControls();
 
     expect(report.workflowFiles).toEqual([
+      "candidate-retention.yml",
       "ci.yml",
       "extended-tests.yml",
       "github-release.yml",
@@ -1537,6 +1754,7 @@ describe("repository workflow governance", () => {
   });
 
   test.each([
+    "candidate-retention.yml",
     "ci.yml",
     "release.yml",
     "release-reconciliation.yml",

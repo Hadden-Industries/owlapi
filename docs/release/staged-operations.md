@@ -339,14 +339,42 @@ Ordinary CI diagnostics for July reconciliation expire after 14 days.
 Release-capable candidates and their required proof retain the 90-day ceiling.
 The immutable completion workflow retains its exact completion receipt.
 
-The protected maintenance storage job reports compressed bytes and projected byte-days by purpose.
+The protected maintenance job reports compressed bytes, projected byte-days and retirement eligibility in the job summary.
 Cache bytes are measured separately.
-An optional signed `retention.json` records `schemaVersion: 1`, the protected-main `successor` SHA, numeric `protectedIds`, exact `{runId, attempt}` entries in `settledRuns`, and the `replayed` inventory.
-Each replay item records the original artifact `id`, `runId`, `digest` and `manifestSha256`, a result of `STAGE_SEAL_AND_RECOVERY_VERIFIED`, and affirmative `actionsCopiesUnavailable` and `verifiedBackup` observations.
-The operator's separate evidence includes the signed replay and verified encrypted backup.
-The observer holds candidates while a required original, the successor's candidate or package proof, or a writer or consumer claim remains unresolved.
-Read the eligibility result in the job summary.
-Keep early deletion disabled until hosted signed-custody replay succeeds.
+A signed version 1 `retention.json` supports the read-only observer.
+
+### Retire superseded CI candidates
+
+`candidate-retention.yml` runs after a successful protected-main CI push.
+The release owner can also dispatch it on protected `main` with an exact signed `retention_history_object`.
+Automatic runs look for the protected annotated tag `owlapi-release-history/retention-<successor SHA>`.
+When that tag is absent, the job reports a hold.
+Candidate retirement and exceptional material replay share the release writer queue.
+
+Authorize retirement after a hosted signed-custody rehearsal and verification of the independent encrypted backup.
+Use the existing protected history process.
+In the signed `retention.json`, set `schemaVersion` to `2` and `purpose` to `RETIRE_SUPERSEDED_CI_CANDIDATES`.
+Supply these records.
+
+- `successor` is the exact protected-main commit.
+  `protectedIds` names the artifact IDs still needed by any release, open case or other evidence owner.
+  `settledRuns` names the exact `runId` and `attempt` for each settled release writer.
+- Each `replayed` entry names one original `id`, `runId`, ZIP `digest` including the `sha256:` prefix, and hexadecimal `manifestSha256`.
+  Its `result` is `STAGE_SEAL_AND_RECOVERY_VERIFIED`.
+  The custodian attests `actionsCopiesUnavailable: true` and `verifiedBackup: true` for that original.
+- `hostedReplay` binds the successful read-only `release-completion.yml` rehearsal by numeric `runId`, `attempt`, `jobId`, `artifactId`, the original 40-character `controller` SHA and the completion ZIP's `artifactDigest` including its `sha256:` prefix.
+  The writer authenticates the original GitHub-hosted completion step, upload interval and `IMMUTABLE_VERIFIED` receipt.
+  When native records have expired, the signed history can supply the existing disclosure-cleared ZIP as `artifact-ID.zip` and the original `run`, `producer` job and `artifact` records as `origin-RUN-ATTEMPT-release-completion-RUN-ATTEMPT.json`.
+  Restricted originals stay in their authorized private custody.
+
+The writer reopens the verified successor candidate and package proof.
+It considers only signed, earlier candidate or package-proof IDs from completed same-repository CI.
+It holds originals needed by open pull requests, live pending recipient-material observations, active readers, and outstanding writer attempts or reservations.
+Before each deletion it rechecks mutable provider state and the original ID, name, digest, byte length and source.
+Each attempt and GitHub acknowledgement goes in the existing logs and job summary.
+An ambiguous response stops the batch.
+Reconcile that exact ID before a later run, which selects again from the remaining native inventory.
+[JSON Quality retirement procedure](https://github.com/Hadden-Industries/json-quality/blob/78e901148f829cd1dd44953de22791fea6aa7f2d/scripts/candidate-retention.js)
 
 Signed checkpoint readers validate the complete Git tree and materialize only selected members.
 For schema 2 an indexed logical member can list two to sixteen `parts`, each with exact `name`, `bytes` and `sha256`.

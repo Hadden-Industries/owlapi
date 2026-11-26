@@ -18,6 +18,11 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: owlapi-release
+  cancel-in-progress: false
+  queue: max
+
 jobs:
   scan:
     name: Recipient material / Scan

@@ -149,7 +149,10 @@ export class GitHubReleaseClient {
    * HTTP results are deliberately reported as ambiguous so the caller can only
    * reconcile through a read; this method never retries a mutation.
    */
-  async write(path, { method, body, headers = {}, upload = false }) {
+  async write(
+    path,
+    { method, body, headers = {}, upload = false, expectedStatus },
+  ) {
     if (!path.startsWith("/")) {
       throw new Error("GitHub writes must use a repository-relative API path.");
     }
@@ -163,6 +166,8 @@ export class GitHubReleaseClient {
         signal: AbortSignal.timeout(30_000),
       });
       if (response.ok) {
+        if (expectedStatus !== undefined && response.status !== expectedStatus)
+          return { state: "AMBIGUOUS", status: response.status };
         return {
           state: "CONFIRMED",
           value: response.status === 204 ? null : await response.json(),

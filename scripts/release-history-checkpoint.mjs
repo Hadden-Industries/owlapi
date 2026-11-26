@@ -599,6 +599,11 @@ export function verifyControllerDelta(
       (p) =>
         /^\.github\/(workflows|actions)\//u.test(p) ||
         [
+          ".github/actionlint.yaml",
+          "scripts/candidate-retirement.mjs",
+          "scripts/candidate-retirement.test.js",
+          "scripts/ci-verification.mjs",
+          "scripts/ci-verification.test.js",
           "scripts/github-release.mjs",
           "scripts/github-evidence-reader.mjs",
           "scripts/public-archive-verification.mjs",

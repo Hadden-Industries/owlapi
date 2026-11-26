@@ -260,13 +260,15 @@ export async function readAcknowledgedInventory(
 }
 
 export async function readWorkflowRuns(read, filename) {
+  const path =
+    filename === undefined
+      ? "/actions/runs"
+      : "/actions/workflows/" + filename + "/runs";
   const runs = [];
   const ids = new Set();
   let expected;
   for (let page = 1; ; page++) {
-    const data = await read(
-      "/actions/workflows/" + filename + "/runs?per_page=100&page=" + page,
-    );
+    const data = await read(path + "?per_page=100&page=" + page);
     expected ??= data.total_count;
     if (
       !Number.isSafeInteger(expected) ||

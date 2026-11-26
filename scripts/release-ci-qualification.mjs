@@ -1,7 +1,7 @@
 /** Read-only release CI shadow verdict. No package, registry or repository writes. */
 import { pathToFileURL } from "node:url";
 import { contextFromEnvironment, emit } from "./ci-verification-command.mjs";
-import { verifyReleaseCi } from "./ci-verification.mjs";
+import { verifyReleaseCi, verifyRetentionCi } from "./ci-verification.mjs";
 import { FROZEN_RUNTIME_MATRIX } from "./ci-qualification.mjs";
 import { runtimeDigest } from "./consumer-runtime-matrix.mjs";
 import { projectPromotedCi } from "./promoted-release-proof.mjs";
@@ -15,7 +15,16 @@ import {
 } from "./release-ci-package.mjs";
 
 /** The caller owns fresh release-only obligations even when CI evidence is valid. */
-export async function readReleaseCiEvidence(env = process.env) {
+export function readReleaseCiEvidence(env = process.env) {
+  return readMainCiEvidence(env, verifyReleaseCi);
+}
+
+/** The retention workflow can be driven by the exact verified upstream push as well as an owner dispatch. */
+export function readRetentionCiEvidence(env = process.env) {
+  return readMainCiEvidence(env, verifyRetentionCi);
+}
+
+async function readMainCiEvidence(env, verify) {
   if (!FROZEN_RUNTIME_MATRIX)
     throw new Error("The release needs its frozen runtime matrix.");
   const context = contextFromEnvironment(env);
@@ -36,7 +45,7 @@ export async function readReleaseCiEvidence(env = process.env) {
   });
   const download = (artifact, maximumBytes) =>
     downloadReleaseArtifact(client, artifact, maximumBytes, { deadline });
-  return verifyReleaseCi({
+  return verify({
     context,
     read,
     downloadReceipt: async ({ artifact }) => {
