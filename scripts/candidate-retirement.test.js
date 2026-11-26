@@ -237,8 +237,12 @@ function fixture() {
         total_count: inventory.length,
         artifacts: structuredClone(inventory),
       };
-    if (path === "/actions/runs/10/artifacts?per_page=100&page=1") {
-      const owned = inventory.filter((a) => a.workflow_run.id === older.id);
+    const artifactRun =
+      /^\/actions\/runs\/(\d+)\/artifacts\?per_page=100&page=1$/u.exec(path);
+    if (artifactRun) {
+      const owned = inventory.filter(
+        (a) => a.workflow_run.id === Number(artifactRun[1]),
+      );
       return { total_count: owned.length, artifacts: structuredClone(owned) };
     }
     if (path === "/actions/runs?per_page=100&page=1")
@@ -620,6 +624,51 @@ test("a merged producer PR remains protected when its landed commit is an open P
   await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
   expect(f.write).not.toHaveBeenCalled();
 });
+test("the initial report excludes already claimed PRs and retires unrelated eligible IDs in the same batch", async () => {
+  const f = fixture();
+  f.pulls.push({
+    number: 81,
+    state: "open",
+    base: { repo: { id: REPOSITORY_ID }, sha: "f".repeat(40) },
+    head: { sha: "e".repeat(40) },
+    merge_commit_sha: null,
+  });
+  const separate = run(13, "pull_request", "4".repeat(40));
+  separate.pull_requests[0].number = 17;
+  const another = artifact(105, separate, "proof", 3);
+  f.runs.push(separate);
+  f.inventory.push(another);
+  f.decisions.replayed.push({ ...f.decisions.replayed[0], id: 105, runId: 13 });
+  const native = f.read;
+  f.args.client.read = async (p, options) =>
+    p === "/pulls/17"
+      ? {
+          number: 17,
+          state: "closed",
+          merged: false,
+          merge_commit_sha: null,
+          base: { repo: { id: REPOSITORY_ID } },
+        }
+      : native(p, options);
+  const result = await reportReleaseRetention(
+    {
+      ...f.args.env,
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      RETENTION_HISTORY_OBJECT: objectId,
+    },
+    {
+      client: f.args.client,
+      openCheckpoint: f.args.openCheckpoint,
+      qualifySuccessor: f.args.qualifySuccessor,
+      now: f.args.now,
+      summary: f.args.log,
+    },
+  );
+  expect(result.eligibleIds).toEqual([105]);
+  expect(f.reads.filter((path) => path === "/pulls/7")).toHaveLength(1);
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([105]);
+  expect(f.deletes).toEqual(["/actions/artifacts/105"]);
+});
 test("a source PR reopening after the open-list snapshot protects its original", async () => {
   const f = fixture(),
     native = f.read;
@@ -652,6 +701,23 @@ test("a signed cleared completion receipt remains usable after the original host
       ? null
       : lookup(path, options);
   await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+});
+test("a closed-PR decision is cached only within one inspection, never across deletion checks", async () => {
+  const f = fixture(),
+    read = f.args.client.read;
+  let details = 0;
+  f.args.client.read = async (path, opts) => {
+    if (path === "/pulls/7" && ++details > 1)
+      return {
+        number: 7,
+        state: "open",
+        base: { repo: { id: REPOSITORY_ID } },
+      };
+    return read(path, opts);
+  };
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
+  expect(details).toBe(2);
+  expect(f.write).not.toHaveBeenCalled();
 });
 test("a changed direct artifact read or an incomplete run inventory prevents retirement", async () => {
   for (const failure of ["digest", "size", "run", "expiry", "incomplete"]) {

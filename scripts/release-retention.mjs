@@ -361,40 +361,42 @@ async function readRetirementSnapshot({
     now: when,
   });
   const approved = new Set(selected.eligibleIds);
-  const eligibleIds = inventory
-    .filter(
-      (a) =>
-        approved.has(a.id) &&
-        !pendingSources.has(a.workflow_run.id) &&
-        supersededCiOrigin(a, byId.get(a.workflow_run.id), successor, pulls),
+  const prEligibility = new Map();
+  const eligibleIds = [];
+  for (const artifact of inventory) {
+    if (
+      !approved.has(artifact.id) ||
+      (target && artifact.id !== target.id) ||
+      pendingSources.has(artifact.workflow_run.id)
     )
-    .map((a) => a.id)
-    .sort((a, b) => a - b);
-  if (target && eligibleIds.includes(target.id)) {
-    const origin = byId.get(target.workflow_run.id);
+      continue;
+    const origin = byId.get(artifact.workflow_run.id);
+    if (!supersededCiOrigin(artifact, origin, successor, pulls)) continue;
     if (origin.event === "pull_request") {
       const [{ number }] = origin.pull_requests;
-      const pr = await read("/pulls/" + number);
-      assert.ok(
-        pr?.number === number && pr.base?.repo?.id === REPOSITORY_ID,
-        "Source pull request identity changed",
-      );
-      if (pr.state !== "closed")
-        return { ...hold("The source pull request remains open."), inventory };
-      assert.ok(
-        typeof pr.merged === "boolean" &&
-          (!pr.merged || /^[a-f0-9]{40}$/u.test(pr.merge_commit_sha)),
-        "Incomplete producer PR merge identity",
-      );
-      if (pr.merged && pulls.commits.has(pr.merge_commit_sha))
-        return {
-          ...hold(
-            "An open pull request still claims the merged producer commit.",
-          ),
-          inventory,
-        };
+      if (!prEligibility.has(number)) {
+        const pr = await read("/pulls/" + number);
+        assert.ok(
+          pr?.number === number && pr.base?.repo?.id === REPOSITORY_ID,
+          "Source pull request identity changed",
+        );
+        if (pr.state === "closed")
+          assert.ok(
+            typeof pr.merged === "boolean" &&
+              (!pr.merged || /^[a-f0-9]{40}$/u.test(pr.merge_commit_sha)),
+            "Incomplete producer PR merge identity",
+          );
+        prEligibility.set(
+          number,
+          pr.state === "closed" &&
+            (!pr.merged || !pulls.commits.has(pr.merge_commit_sha)),
+        );
+      }
+      if (!prEligibility.get(number)) continue;
     }
+    eligibleIds.push(artifact.id);
   }
+  eligibleIds.sort((a, b) => a - b);
   const reason =
     approved.size && !eligibleIds.length
       ? "No authorized original belongs to an unused earlier CI candidate."
