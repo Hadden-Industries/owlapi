@@ -107,52 +107,73 @@ const canonicalAttributes = (element) =>
       );
     });
 
-const canonicalizeNode = (node, renderedNamespaces) => {
-  switch (node.nodeType) {
-    case ELEMENT_NODE: {
-      const namespaces = visibleNamespaces(node, renderedNamespaces);
-      const childNamespaceContext = new Map(renderedNamespaces);
-      let output = `<${node.nodeName}`;
-      for (const [prefix, namespaceURI] of namespaces) {
-        childNamespaceContext.set(prefix, namespaceURI);
-        output += prefix
-          ? ` xmlns:${prefix}="${escapeCanonicalAttribute(namespaceURI)}"`
-          : ` xmlns="${escapeCanonicalAttribute(namespaceURI)}"`;
+export function canonicalizeRdfXmlLiteral(element) {
+  const renderedNamespaces = new Map();
+  const frames = [{ next: element.firstChild }];
+  let output = "";
+  while (frames.length) {
+    const frame = frames.at(-1);
+    const node = frame.next;
+    if (!node) {
+      frames.pop();
+      if (frame.name !== undefined) {
+        output += `</${frame.name}>`;
+        // Restore only the bindings changed on entry. Siblings see the same
+        // rendered namespaces as their parent even if an earlier child rebound one.
+        for (const [prefix, previous] of frame.changedNamespaces) {
+          if (previous === undefined) renderedNamespaces.delete(prefix);
+          else renderedNamespaces.set(prefix, previous);
+        }
       }
-      for (const attribute of canonicalAttributes(node)) {
-        output += ` ${attribute.name}="${escapeCanonicalAttribute(
-          attribute.value,
-        )}"`;
-      }
-      output += ">";
-      for (const child of childNodes(node)) {
-        output += canonicalizeNode(child, childNamespaceContext);
-      }
-      return `${output}</${node.nodeName}>`;
+      continue;
     }
-    case TEXT_NODE:
-    case CDATA_SECTION_NODE:
-      return escapeCanonicalText(node.data ?? node.nodeValue ?? "");
-    case PROCESSING_INSTRUCTION_NODE: {
-      const data = node.data || "";
-      return `<?${node.target || node.nodeName}${data ? ` ${data}` : ""}?>`;
+    frame.next = node.nextSibling;
+    switch (node.nodeType) {
+      case ELEMENT_NODE: {
+        const changedNamespaces = [];
+        output += `<${node.nodeName}`;
+        for (const [prefix, namespaceURI] of visibleNamespaces(
+          node,
+          renderedNamespaces,
+        )) {
+          changedNamespaces.push([prefix, renderedNamespaces.get(prefix)]);
+          renderedNamespaces.set(prefix, namespaceURI);
+          output += prefix
+            ? ` xmlns:${prefix}="${escapeCanonicalAttribute(namespaceURI)}"`
+            : ` xmlns="${escapeCanonicalAttribute(namespaceURI)}"`;
+        }
+        for (const attribute of canonicalAttributes(node)) {
+          output += ` ${attribute.name}="${escapeCanonicalAttribute(
+            attribute.value,
+          )}"`;
+        }
+        output += ">";
+        frames.push({
+          next: node.firstChild,
+          name: node.nodeName,
+          changedNamespaces,
+        });
+        break;
+      }
+      case TEXT_NODE:
+      case CDATA_SECTION_NODE:
+        output += escapeCanonicalText(node.data ?? node.nodeValue ?? "");
+        break;
+      case PROCESSING_INSTRUCTION_NODE: {
+        const data = node.data || "";
+        output += `<?${node.target || node.nodeName}${data ? ` ${data}` : ""}?>`;
+        break;
+      }
+      case COMMENT_NODE:
+        output += `<!--${node.data ?? node.nodeValue ?? ""}-->`;
+        break;
+      case DOCUMENT_FRAGMENT_NODE:
+        frames.push({ next: node.firstChild });
+        break;
     }
-    case COMMENT_NODE:
-      return `<!--${node.data ?? node.nodeValue ?? ""}-->`;
-    case DOCUMENT_FRAGMENT_NODE:
-      return childNodes(node)
-        .map((child) => canonicalizeNode(child, renderedNamespaces))
-        .join("");
-    default:
-      return "";
   }
-};
-
-const canonicalizeChildren = (element) =>
-  childNodes(element)
-    .map((child) => canonicalizeNode(child, new Map()))
-    .join("")
-    .normalize("NFC");
+  return output.normalize("NFC");
+}
 
 const attributeNS = (element, namespaceURI, localName) =>
   xmlAttributes(element).find(
@@ -219,7 +240,7 @@ const classifyXmlLiterals = (
   const parseType = attributeNS(element, RDF_NAMESPACE, "parseType")?.value;
   if (parseType !== undefined && !RDF_NON_LITERAL_PARSE_TYPES.has(parseType)) {
     classifications.push({
-      canonicalValue: canonicalizeChildren(element),
+      canonicalValue: canonicalizeRdfXmlLiteral(element),
       kind: "PARSE_TYPE_LITERAL",
     });
     for (const child of childNodes(element)) {
@@ -1165,7 +1186,7 @@ export class RdfXmlSyntaxAdapter {
             metadata: identity,
             noteLiteral: (value) => classifications.push(value),
             canonicalizeLiteral: async (fragment) =>
-              canonicalizeChildren(
+              canonicalizeRdfXmlLiteral(
                 (
                   await xmlParserAdapter.parsePreparedXml(
                     fragment,

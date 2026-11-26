@@ -229,6 +229,29 @@ describe("RdfXmlSyntaxAdapter RDF/XML semantics", () => {
     ).toBe(1);
   });
 
+  it("restores namespace bindings between XML literal siblings", async () => {
+    const source = new StringDocumentSource(
+      rdfDocument(
+        '<rdf:Description rdf:about="urn:test:subject"><ex:markup rdf:parseType="Literal">' +
+          '<n:outer xmlns:n="urn:outer:"><n:item xmlns:n="urn:inner:"/>' +
+          "<n:item>cafe\u0301</n:item></n:outer>" +
+          '<n:last xmlns:n="urn:outer:"/></ex:markup></rdf:Description>',
+      ),
+    );
+    const dataset = await new RdfXmlSyntaxAdapter().parse(
+      source,
+      configuration({}),
+    );
+    const [quad] = [...dataset];
+    expect(quad.object).toEqual(
+      rdfDataFactory.literal(
+        '<n:outer xmlns:n="urn:outer:"><n:item xmlns:n="urn:inner:"></n:item>' +
+          '<n:item>café</n:item></n:outer><n:last xmlns:n="urn:outer:"></n:last>',
+        rdfDataFactory.namedNode(RDF_XML_LITERAL),
+      ),
+    );
+  });
+
   it("preserves XML Base, typed and language literals, resources, and collections", async () => {
     const adapter = new RdfXmlSyntaxAdapter();
     const source = new StringDocumentSource(`
