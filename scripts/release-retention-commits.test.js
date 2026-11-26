@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { dirname, join, sep } from "node:path";
 import { checkoutGitEnvironment } from "./release-git-environment.mjs";
 import {
   readRetentionGitCommits,
@@ -196,7 +196,7 @@ test("inherited repository and object-store selectors cannot redirect retention 
         GIT_TEST_ASSUME_DIFFERENT_OWNER: "1",
         GIT_CONFIG_COUNT: "1",
         GIT_CONFIG_KEY_0: "safe.directory",
-        GIT_CONFIG_VALUE_0: directory.replaceAll("\\", "/"),
+        GIT_CONFIG_VALUE_0: directory.replaceAll(sep, "/"),
         GIT_CONFIG_PARAMETERS: "'core.abbrev'='12'",
       };
       const prior = new Map(
