@@ -39,8 +39,13 @@ import {
   INSTALLED_TEST_SCRIPTS,
   productionInstallScriptPolicy,
 } from "./installed-consumer-fixtures.mjs";
-import { stableJson } from "./canonical-json.mjs";
+import { canonicalJson, stableJson } from "./canonical-json.mjs";
 import { isStrictDescendantPath } from "./release-file-utils.mjs";
+import { projectLegacyProducerProof } from "./release-legacy-proof-disclosure.mjs";
+import {
+  appendQualificationDisclosure,
+  readStagedArchive,
+} from "./staged-release-followup.mjs";
 
 const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stem = "hadden-industries-owlapi-" + PACKAGE_VERSION;
@@ -245,6 +250,119 @@ test("current CI admission refuses a correctly authenticated legacy proof", asyn
   await expect(f.admit(undefined, { expectedProofVersion: 2 })).rejects.toThrow(
     /ZIP member count differs from its expected inventory/iu,
   );
+});
+
+test("a legacy producer ZIP keeps its original eligibility and digests without publishing raw audit bytes", async () => {
+  const f = fixture();
+  const reports = [
+    "transport-audit.json",
+    "npm-audit-full.json",
+    "npm-audit-production.json",
+    "normal-consumer-npm-audit-production.json",
+  ];
+  for (const path of reports)
+    f.evidence[path] = {
+      ...f.evidence[path],
+      fixtureRestrictedExcerpt: `historical private output ${path}`,
+    };
+  const admitted = await f.admit();
+  const zip = zipArchive(
+    Object.entries(f.evidence).map(([path, report]) => ({
+      path,
+      content: JSON.stringify(report),
+    })),
+  );
+  const original = {
+    id: admitted.proof.id,
+    name: admitted.proof.name,
+    digest: admitted.proof.digest,
+    bytes: admitted.proof.size_in_bytes,
+  };
+  expect(original.digest).toBe(`sha256:${sha(zip)}`);
+  const manifest = {
+    schemaVersion: 2,
+    package: admitted.package,
+    assets: admitted.assets,
+    ci: {
+      packageProof: original,
+      candidate: admitted.candidate,
+      evidence: admitted.evidence,
+      main: { receipt: { id: 92 } },
+      build: { receipt: { id: 93 } },
+    },
+  };
+  const manifestSha256 = sha(stableJson(manifest));
+  const args = {
+    original,
+    bytes: zip,
+    manifest,
+    manifestSha256,
+    tarball: f.files[stem + ".tgz"],
+    sbom: Buffer.from(f.files[stem + ".cdx.json"]),
+    checksum: f.files.SHA256SUMS,
+  };
+  const projection = await projectLegacyProducerProof(args);
+  const originalName = `artifact-${original.id}.zip`;
+  const publicIndex = { manifestSha256, files: [originalName] };
+  expect(() =>
+    appendQualificationDisclosure(new Map(), {
+      manifest,
+      publicIndex,
+      read: () => zip,
+      projections: new Map(),
+    }),
+  ).toThrow(/raw npm audit output/u);
+  const publicFiles = new Map();
+  appendQualificationDisclosure(publicFiles, {
+    manifest,
+    publicIndex,
+    read: () => {
+      throw new Error(
+        "The public writer attempted to read the restricted original",
+      );
+    },
+    projections: new Map([[originalName, projection]]),
+  });
+  const archive = gzipSync(
+    Buffer.from(
+      canonicalJson({
+        schemaVersion: 2,
+        checkpoint: "1".repeat(40),
+        files: [...publicFiles].map(([name, bytes]) => ({
+          name,
+          bytes: bytes.length,
+          sha256: sha(bytes),
+          base64: bytes.toString("base64"),
+        })),
+      }),
+    ),
+  );
+  const sealed = readStagedArchive(archive).files;
+  expect(sealed.has(originalName)).toBe(false);
+  expect(sealed.size).toBe(1);
+  const disclosed = sealed
+    .get(`artifact-${original.id}-legacy-proof.json`)
+    .toString("utf8");
+  const record = JSON.parse(disclosed);
+  expect(record).toMatchObject({
+    original,
+    manifestSha256,
+    lockedAndLocklessGraphsEquivalent: true,
+    productionIdentities: [`${PACKAGE_NAME}@${PACKAGE_VERSION}`],
+  });
+  for (const path of reports) {
+    expect(record.nativeMembers[path]).toEqual({
+      bytes: Buffer.byteLength(JSON.stringify(f.evidence[path])),
+      sha256: sha(JSON.stringify(f.evidence[path])),
+    });
+    expect(disclosed).not.toContain(f.evidence[path].fixtureRestrictedExcerpt);
+  }
+  await expect(
+    projectLegacyProducerProof({
+      ...args,
+      bytes: Buffer.concat([zip, Buffer.from("changed")]),
+    }),
+  ).rejects.toThrow(/ZIP size differs/u);
 });
 
 test("native differences are admitted through the exact v2 producer ZIP while wrong edges are refused", async () => {

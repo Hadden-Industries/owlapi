@@ -20,6 +20,7 @@ import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import { assertHealthyNpmGraph } from "./npm-production-graph.mjs";
 import {
   captureResolutionEvidence,
+  verifyTestedConsumerResolution,
   prepareTarballConsumer,
 } from "./release-consumer-evidence.mjs";
 import { compareConsumerResolutions } from "./release-consumer-resolution.mjs";
@@ -342,6 +343,11 @@ try {
     const observed = await measure(directory, mode, dependencyName);
     const delta = compareConsumerResolutions(baseline, observed);
     runInstalledConsumerScripts(directory, dependencyName, env);
+    await verifyTestedConsumerResolution(
+      directory,
+      { tarball, npmCli, dependencyName },
+      observed,
+    );
     process.stdout.write(
       mode +
         ": " +

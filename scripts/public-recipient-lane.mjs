@@ -32,7 +32,10 @@ import {
   INSTALLED_TEST_SCRIPTS,
   writeInstalledConsumerFixtures,
 } from "./installed-consumer-fixtures.mjs";
-import { captureResolutionEvidence } from "./release-consumer-evidence.mjs";
+import {
+  captureResolutionEvidence,
+  verifyTestedConsumerResolution,
+} from "./release-consumer-evidence.mjs";
 import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
 import { stableJson } from "./canonical-json.mjs";
 import {
@@ -140,12 +143,16 @@ export async function runPublicRecipientLane(
         };
         continue;
       }
-      const evidence = await captureResolutionEvidence(directory, {
+      const resolutionOptions = {
         tarball,
         dependencyName,
         npmCli,
         registryTarball,
-      });
+      };
+      const evidence = await captureResolutionEvidence(
+        directory,
+        resolutionOptions,
+      );
       if (!trusted) {
         consumers[variant] = { identity, evidence };
         continue;
@@ -172,13 +179,10 @@ export async function runPublicRecipientLane(
           throw new Error("A public installed-package contract check failed");
         }
       }
-      assert.equal(
-        sha256Buffer(readFileSync(join(directory, "package.json"))),
-        evidence.resolution.manifestSha256,
-      );
-      assert.equal(
-        sha256Buffer(readFileSync(join(directory, "package-lock.json"))),
-        evidence.resolution.lockSha256,
+      await verifyTestedConsumerResolution(
+        directory,
+        resolutionOptions,
+        evidence.resolution,
       );
       consumers[variant] = {
         resolutionSha256: original.resolutionSha256,

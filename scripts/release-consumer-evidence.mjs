@@ -1,6 +1,7 @@
 /** Portable original bytes for a single installed npm graph. Native location and
  * range semantics are owned by release-consumer-resolution and the selected npm. */
 import assert from "node:assert/strict";
+import { jsonEquals } from "./canonical-json.mjs";
 import {
   copyFileSync,
   mkdtempSync,
@@ -77,6 +78,19 @@ export async function captureResolutionEvidence(directory, options) {
     lock: decode(lock),
     resolution,
   };
+}
+
+/** Require the eligible graph and installed first-party payload to survive the product tests. */
+export async function verifyTestedConsumerResolution(
+  directory,
+  options,
+  expected,
+) {
+  const tested = await captureConsumerResolution(directory, options);
+  assert.ok(
+    jsonEquals(tested, expected),
+    "Installed consumer changed during its qualification tests",
+  );
 }
 
 /** Reopen only the fixed manifest/lock pair. Replay performs no installation or registry reads. */

@@ -20,7 +20,10 @@ import {
   PACKAGE_VERSION,
 } from "./package-identity.mjs";
 import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
-import { prepareTarballConsumer } from "./release-consumer-evidence.mjs";
+import {
+  prepareTarballConsumer,
+  verifyTestedConsumerResolution,
+} from "./release-consumer-evidence.mjs";
 import { qualifyCiConsumerInstall } from "./ci-recipient-attribution.mjs";
 import {
   captureConsumerSources,
@@ -163,6 +166,11 @@ export const qualifyOwlContract = async ({
       "Installed public contract assertions",
     );
     writeFileSync(join(output, "native.ndjson"), nativeText);
+    await verifyTestedConsumerResolution(
+      temporary,
+      { tarball, npmCli, dependencyName: "owlapi" },
+      attribution.evidence.resolution,
+    );
     const identity = {
       workflow: environment.GITHUB_WORKFLOW ?? "LOCAL",
       runId: environment.GITHUB_RUN_ID

@@ -53,6 +53,8 @@ import {
   readPublicEvidence,
 } from "./release-public-proof.mjs";
 import { submittedStagePolicy } from "./release-stage-continuation.mjs";
+import { projectLegacyProducerProof } from "./release-legacy-proof-disclosure.mjs";
+import { matchesLogicalArtifact } from "../tooling/artifact-transport/identity.mjs";
 import {
   assertPublicTestAfter,
   publicEvaluatorExecution,
@@ -82,7 +84,7 @@ import {
   observeNpmVersion,
   selectNpmCliForVersion,
 } from "./assert-workflow-runtime.mjs";
-import { CI_RUNTIME } from "./runtime-policy.mjs";
+import { CI_RUNTIME, validateRuntimePolicy } from "./runtime-policy.mjs";
 import { CI_WORKFLOW } from "./ci-verification.mjs";
 import { canonicalJson } from "./canonical-json.mjs";
 
@@ -118,7 +120,7 @@ const qualificationZipRoster = (manifest) => {
   );
 };
 
-function assertDisclosedQualificationZip(name, bytes, roster, reconciled) {
+function assertDisclosedQualificationZip(name, bytes, roster) {
   if (!zipMember(name, bytes)) return;
   const expected = roster?.get(name);
   assert.ok(
@@ -127,17 +129,37 @@ function assertDisclosedQualificationZip(name, bytes, roster, reconciled) {
   );
   assert.equal(bytes.length, expected.bytes);
   assert.equal(`sha256:${hash(bytes)}`, expected.digest);
-  if (reconciled)
+  assert.ok(
+    readZipArchiveFilesWith(bytes, {
+      crc32,
+      maximumUncompressedBytes: 48 * 1024 * 1024,
+    }).every(
+      ({ path, content }) => !rawAuditMember(path) && !zipMember(path, content),
+    ),
+    "Qualification ZIP contains raw npm audit output or a nested ZIP",
+  );
+}
+
+/** Apply disclosed substitutions before any entry can reach a new seal asset. */
+export function appendQualificationDisclosure(
+  archiveEntries,
+  { manifest, publicIndex, read, projections },
+) {
+  const zipRoster = qualificationZipRoster(manifest);
+  for (const name of publicIndex.files) {
+    assert.ok(!archiveEntries.has(name), "Duplicate public archive entry");
     assert.ok(
-      readZipArchiveFilesWith(bytes, {
-        crc32,
-        maximumUncompressedBytes: 48 * 1024 * 1024,
-      }).every(
-        ({ path, content }) =>
-          !rawAuditMember(path) && !zipMember(path, content),
-      ),
-      "Qualification ZIP contains raw npm audit output or a nested ZIP",
+      !rawAuditMember(name),
+      "Raw npm audit output is outside the public evidence inventory",
     );
+    const disclosed = projections.get(name) ?? { name, bytes: read(name) };
+    assert.ok(
+      !archiveEntries.has(disclosed.name),
+      "Duplicate public archive entry",
+    );
+    assertDisclosedQualificationZip(disclosed.name, disclosed.bytes, zipRoster);
+    archiveEntries.set(disclosed.name, disclosed.bytes);
+  }
 }
 const asset = (name, bytes) => ({
   name,
@@ -225,7 +247,18 @@ export async function readStageContext(client, env, checkpoint, mode, renewal) {
     integrity: manifest.integrity,
   });
   assert.equal(operation.stageId, receipt.stageId);
-  const recipientPolicy = submittedStagePolicy(manifest, receipt);
+  if (manifest.consumerResolutionPolicy === undefined) {
+    const main = await client.read("/branches/main");
+    assert.ok(
+      main.name === "main" &&
+        main.protected === true &&
+        main.commit?.sha === env.GITHUB_SHA,
+      "Legacy stages require the running protected main controller",
+    );
+  }
+  const recipientPolicy = submittedStagePolicy(manifest, receipt, {
+    controller: env.GITHUB_SHA,
+  });
   verifyControllerDelta(
     operation.source,
     operation.controller,
@@ -781,6 +814,37 @@ async function verifyQualificationDisclosure(
   publicIndex,
 ) {
   const { manifest, read, candidate } = ctx;
+  const projections = new Map();
+  const legacy = ctx.recipientPolicy === 1;
+  const legacyProjection = async (artifact, original) => {
+    const name = "artifact-" + artifact.id + ".zip";
+    assert.ok(
+      publicIndex.files.includes(name),
+      "Qualification projection requires disclosure review",
+    );
+    const runtime = validateRuntimePolicy(
+      parse(
+        readControllerBlob(manifest.commit, "docs/release/runtime-policy.json"),
+      ),
+    );
+    const projection = await projectLegacyProducerProof({
+      original: artifact,
+      bytes: await originalBytes(client, original),
+      manifest,
+      manifestSha256: ctx.operation.manifestSha256,
+      tarball: read(manifest.assets.tarball.name),
+      sbom: read(manifest.assets.sbom.name),
+      checksum: read(manifest.assets.checksums.name),
+      platform: {
+        os: "linux",
+        cpu: "x64",
+        libc: "glibc",
+        node: runtime.node[runtime.canonicalNodeMajor],
+      },
+      npm: runtime.npm,
+    });
+    projections.set(name, projection);
+  };
   const verify = (artifact) => {
     const name = "artifact-" + artifact.id + ".zip";
     assert.ok(
@@ -804,8 +868,37 @@ async function verifyQualificationDisclosure(
     }
   };
   if (qualificationBaseSchema(manifest) === 1) {
-    for (const artifact of manifest.artifacts) verify(artifact);
-    return;
+    const logical = `package-proof-${manifest.runId}-${manifest.attempt}`;
+    for (const artifact of manifest.artifacts) {
+      if (
+        !legacy ||
+        !matchesLogicalArtifact(artifact.name, logical, {
+          run: manifest.runId,
+          attempt: manifest.attempt,
+        })
+      ) {
+        verify(artifact);
+        continue;
+      }
+      const native = await originArtifact(
+        client,
+        {
+          runId: manifest.runId,
+          attempt: manifest.attempt,
+          filename: manifest.workflow,
+          commit: manifest.commit,
+          logical,
+          artifactId: artifact.id,
+        },
+        checkpoint,
+      );
+      assert.deepEqual(
+        [native.id, native.name, native.digest, native.size_in_bytes],
+        [artifact.id, artifact.name, artifact.digest, artifact.bytes],
+      );
+      await legacyProjection(artifact, native);
+    }
+    return projections;
   }
   const ci = manifest.ci;
   verify(ci.candidate);
@@ -842,7 +935,8 @@ async function verifyQualificationDisclosure(
       continue;
     }
     distinct.add(descriptor.id);
-    verify(descriptor);
+    const legacyPackageProof = legacy && descriptor.id === ci.packageProof.id;
+    if (!legacyPackageProof) verify(descriptor);
     const original = await originArtifact(
       client,
       {
@@ -876,7 +970,9 @@ async function verifyQualificationDisclosure(
       ],
       "Qualification ZIP differs from its original native inventory",
     );
+    if (legacyPackageProof) await legacyProjection(descriptor, original);
   }
+  return projections;
 }
 
 async function readPublicLabels() {
@@ -961,18 +1057,18 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   // Only the owner's explicit public inventory can cross from the private checkpoint to release assets.
   const publicIndex = parse(read("public-inventory.json"));
   assert.equal(publicIndex.manifestSha256, operation.manifestSha256);
-  await verifyQualificationDisclosure(client, ctx, checkpoint, publicIndex);
-  const zipRoster = qualificationZipRoster(manifest);
-  for (const name of publicIndex.files) {
-    assert.ok(!archiveEntries.has(name), "Duplicate public archive entry");
-    assert.ok(
-      !rawAuditMember(name),
-      "Raw npm audit output is outside the public evidence inventory",
-    );
-    const bytes = read(name);
-    assertDisclosedQualificationZip(name, bytes, zipRoster, reconciled);
-    archiveEntries.set(name, bytes);
-  }
+  const projections = await verifyQualificationDisclosure(
+    client,
+    ctx,
+    checkpoint,
+    publicIndex,
+  );
+  appendQualificationDisclosure(archiveEntries, {
+    manifest,
+    publicIndex,
+    read,
+    projections,
+  });
   archiveEntries.set("public-inventory.json", read("public-inventory.json"));
   let publicAdvisory, checkCurrentAdvisory;
   if (reconciled) {
@@ -1336,7 +1432,7 @@ export function readStagedArchive(archive) {
         ? qualificationZipRoster(parse(files.get("manifest.json")))
         : undefined;
     for (const [name, bytes] of files)
-      assertDisclosedQualificationZip(name, bytes, zipRoster, true);
+      assertDisclosedQualificationZip(name, bytes, zipRoster);
   }
   return {
     schemaVersion: record.schemaVersion,

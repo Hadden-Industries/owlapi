@@ -22,7 +22,10 @@ import { fileURLToPath } from "node:url";
 import { build } from "vite";
 import { documentationExampleModules } from "./documentation-examples.mjs";
 import { assertPackageIdentity } from "./package-identity.mjs";
-import { prepareTarballConsumer } from "./release-consumer-evidence.mjs";
+import {
+  prepareTarballConsumer,
+  verifyTestedConsumerResolution,
+} from "./release-consumer-evidence.mjs";
 import { qualifyCiConsumerInstall } from "./ci-recipient-attribution.mjs";
 import {
   BROWSER_CONSUMER_MODES as MODES,
@@ -208,6 +211,17 @@ const stageBrowserConsumerFixtures = async (options) => {
       worker: { format: "es" },
       build: { emptyOutDir: true, outDir: join(directory, "dist") },
     });
+  }
+  for (const { directory, attribution } of Object.values(fixtures)) {
+    await verifyTestedConsumerResolution(
+      directory,
+      {
+        tarball: options.tarball,
+        npmCli: options.npmCli,
+        dependencyName: "owlapi",
+      },
+      attribution.evidence.resolution,
+    );
   }
   return {
     ...fixtures["import-map"],
