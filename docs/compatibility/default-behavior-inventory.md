@@ -8,7 +8,7 @@ The current Java authority is the formal release commit `f760b3a4c107c6d5f90f856
 The original `d7e997a5` and `b61ebe2d` research pins and historical receipts remain unchanged.
 Current generators and behavior tests use the released authority explicitly.
 
-The named Java profile reconstructs the documented SWRL subset in compatible RDF and Functional Syntax.
+The named Java profile reconstructs the documented SWRL subset in compatible RDF/XML and Functional Syntax.
 Unsupported rule members reject the document.
 OWL language-profile checkers assess the resulting axioms separately.
 [Rule fields, list ownership and dispatch](behavior-profiles.md#structural-swrl-rules)

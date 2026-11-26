@@ -1045,7 +1045,7 @@ const createMaterialFacts = () => [
     relationship: "GENERATED_FROM_THIRD_PARTY",
     name: "Java OWLAPI behavioral reference fixtures",
     versionOrRevision:
-      "OWLAPI 5.5.1 at d7e997a53b470e32700de89cc610d9daf01ea769",
+      "Historical reference checkout d7e997a53b470e32700de89cc610d9daf01ea769 for KRSS1. Scoped SWRL observations use the released OWLAPI 5.5.1 Maven artifacts from f760b3a4c107c6d5f90f856e5680c39b18af646f.",
     licenseAssessments: [
       licenseAssessment({
         scope: "Observable Java OWLAPI behavior and source provenance",
@@ -1063,10 +1063,13 @@ const createMaterialFacts = () => [
         distributionDisposition: "REPOSITORY_ONLY_NOT_IN_PACKAGE",
       }),
     ],
-    sourceUrl:
-      "https://github.com/owlcs/owlapi/tree/d7e997a53b470e32700de89cc610d9daf01ea769",
+    sourceUrl: "https://github.com/owlcs/owlapi",
     evidenceFiles: [
       evidenceFile("docs/compatibility/krss1-behavioral-oracle.json"),
+      evidenceFile(
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+      ),
+      evidenceFile("util/owlapi-reference/fixtures/swrl/java-5.5.1.json"),
     ],
     treeEvidence: treeEvidence("util/owlapi-reference/fixtures"),
     attributionText: [

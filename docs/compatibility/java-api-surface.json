@@ -501,15 +501,16 @@
       "id": "model.AXIOM_KINDS_WITH_SWRL",
       "jsExport": "AXIOM_KINDS_WITH_SWRL",
       "kind": "CONSTANT",
-      "summary": "An immutable vocabulary used to classify supported OWL structural values.",
+      "summary": "Frozen axiom kind list for exhaustive dispatch including SWRLRule.",
       "capabilityIds": [
-        "model.exhaustive-kind-dispatch"
+        "model.exhaustive-kind-dispatch",
+        "swrl.java-structural-subset"
       ],
       "capabilityStatus": "REQUIRED_V1",
       "progress": "COMPLETE",
       "exposure": "PUBLIC",
       "stability": "PRERELEASE",
-      "firstPublicReleaseTarget": "0.1.0-alpha.0",
+      "firstPublicReleaseTarget": "0.1.0",
       "publicSpecifier": "@hadden-industries/owlapi/model",
       "sourceModule": "model/kinds.js",
       "javaPackage": "org.semanticweb.owlapi.model",
@@ -564,10 +565,11 @@
       "omittedMembers": [],
       "publicErrors": [],
       "semanticQualifications": [
-        "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation."
+        "Pass this optional domain as the third dispatch argument to require handlers for all represented kinds, including SWRL."
       ],
       "verification": [
-        "model/model.test.js",
+        "model/scopedSwrl.test.js",
+        "model/dispatch.test.js",
         "test/package-boundary.test.mjs"
       ],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
@@ -1735,15 +1737,16 @@
       "id": "model.OWL_OBJECT_KINDS_WITH_SWRL",
       "jsExport": "OWL_OBJECT_KINDS_WITH_SWRL",
       "kind": "CONSTANT",
-      "summary": "An immutable vocabulary used to classify supported OWL structural values.",
+      "summary": "Frozen OWL object kind list for exhaustive dispatch including represented SWRL rules, atoms and variables.",
       "capabilityIds": [
-        "model.exhaustive-kind-dispatch"
+        "model.exhaustive-kind-dispatch",
+        "swrl.java-structural-subset"
       ],
       "capabilityStatus": "REQUIRED_V1",
       "progress": "COMPLETE",
       "exposure": "PUBLIC",
       "stability": "PRERELEASE",
-      "firstPublicReleaseTarget": "0.1.0-alpha.0",
+      "firstPublicReleaseTarget": "0.1.0",
       "publicSpecifier": "@hadden-industries/owlapi/model",
       "sourceModule": "model/kinds.js",
       "javaPackage": "org.semanticweb.owlapi.model",
@@ -1837,10 +1840,11 @@
       "omittedMembers": [],
       "publicErrors": [],
       "semanticQualifications": [
-        "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation."
+        "Pass this optional domain as the third dispatch argument to require handlers for all represented kinds, including SWRL."
       ],
       "verification": [
-        "model/model.test.js",
+        "model/scopedSwrl.test.js",
+        "model/dispatch.test.js",
         "test/package-boundary.test.mjs"
       ],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
@@ -2099,7 +2103,8 @@
       "kind": "FUNCTION",
       "summary": "Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.",
       "capabilityIds": [
-        "model.exhaustive-kind-dispatch"
+        "model.exhaustive-kind-dispatch",
+        "swrl.java-structural-subset"
       ],
       "capabilityStatus": "REQUIRED_V1",
       "progress": "COMPLETE",
@@ -2114,7 +2119,8 @@
       "relationship": "JS_EXTENSION",
       "compatibility": "NOT_APPLICABLE",
       "callShapes": [
-        "dispatchAxiom(...arguments)"
+        "dispatchAxiom(value, handlers)",
+        "dispatchAxiom(value, handlers, AXIOM_KINDS_WITH_SWRL)"
       ],
       "supportedMembers": [
         "constructor"
@@ -2122,10 +2128,11 @@
       "omittedMembers": [],
       "publicErrors": [],
       "semanticQualifications": [
-        "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation."
+        "The default domain is AXIOM_KINDS. Pass the exported AXIOM_KINDS_WITH_SWRL constant to visit represented SWRL values. Each kind in the selected domain requires a callable handler. An unknown domain or kind, or a missing handler, raises TypeError."
       ],
       "verification": [
-        "model/model.test.js",
+        "model/scopedSwrl.test.js",
+        "model/dispatch.test.js",
         "test/package-boundary.test.mjs"
       ],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
@@ -2321,7 +2328,8 @@
       "kind": "FUNCTION",
       "summary": "Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.",
       "capabilityIds": [
-        "model.exhaustive-kind-dispatch"
+        "model.exhaustive-kind-dispatch",
+        "swrl.java-structural-subset"
       ],
       "capabilityStatus": "REQUIRED_V1",
       "progress": "COMPLETE",
@@ -2336,7 +2344,8 @@
       "relationship": "JS_EXTENSION",
       "compatibility": "NOT_APPLICABLE",
       "callShapes": [
-        "dispatchOwlObject(...arguments)"
+        "dispatchOwlObject(value, handlers)",
+        "dispatchOwlObject(value, handlers, OWL_OBJECT_KINDS_WITH_SWRL)"
       ],
       "supportedMembers": [
         "constructor"
@@ -2344,10 +2353,11 @@
       "omittedMembers": [],
       "publicErrors": [],
       "semanticQualifications": [
-        "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation."
+        "The default domain is OWL_OBJECT_KINDS. Pass the exported OWL_OBJECT_KINDS_WITH_SWRL constant to visit represented SWRL values. Each kind in the selected domain requires a callable handler. An unknown domain or kind, or a missing handler, raises TypeError."
       ],
       "verification": [
-        "model/model.test.js",
+        "model/scopedSwrl.test.js",
+        "model/dispatch.test.js",
         "test/package-boundary.test.mjs"
       ],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."

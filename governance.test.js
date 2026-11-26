@@ -821,6 +821,18 @@ describe("owlapi governance artifacts", () => {
         // tests and the current ledger govern their semantics.
         const behaviorFields =
           {
+            "model.dispatchAxiom": [
+              "callShapes",
+              "capabilityIds",
+              "semanticQualifications",
+              "verification",
+            ],
+            "model.dispatchOwlObject": [
+              "callShapes",
+              "capabilityIds",
+              "semanticQualifications",
+              "verification",
+            ],
             "apibinding.OWLManager": ["capabilityIds", "progress"],
             "model.OWLDataFactory": [
               "supportedMembers",
@@ -2076,7 +2088,26 @@ describe("owlapi governance artifacts", () => {
       registry.namespaces.find((namespace) => namespace.id === "io/node")
         .firstPublicReleaseTarget,
     ).toBe("0.1.0-rc.3");
-    for (const id of ["io.StreamDocumentSource", "io.StreamDocumentTarget"])
+    for (const [name, domain] of [
+      ["dispatchAxiom", "AXIOM_KINDS"],
+      ["dispatchOwlObject", "OWL_OBJECT_KINDS"],
+    ]) {
+      const visitor = registry.bindings.find(
+        ({ jsExport }) => jsExport === name,
+      );
+      expect(visitor.callShapes).toEqual([
+        `${name}(value, handlers)`,
+        `${name}(value, handlers, ${domain}_WITH_SWRL)`,
+      ]);
+      expect(visitor.capabilityIds).toContain("swrl.java-structural-subset");
+      expect(visitor.verification).toContain("model/scopedSwrl.test.js");
+    }
+    for (const id of [
+      "io.StreamDocumentSource",
+      "io.StreamDocumentTarget",
+      "model.AXIOM_KINDS_WITH_SWRL",
+      "model.OWL_OBJECT_KINDS_WITH_SWRL",
+    ])
       expect(
         registry.bindings.find((binding) => binding.id === id)
           .firstPublicReleaseTarget,

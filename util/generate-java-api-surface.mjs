@@ -329,10 +329,55 @@ const RC2_BINDING_METADATA = Object.freeze({
   ),
 });
 
+const SWRL_DISPATCH_METADATA = Object.freeze({
+  firstPublicReleaseTarget: "0.1.0",
+  capabilityIds: [
+    "model.exhaustive-kind-dispatch",
+    "swrl.java-structural-subset",
+  ],
+  semanticQualifications: [
+    "Pass this optional domain as the third dispatch argument to require handlers for all represented kinds, including SWRL.",
+  ],
+  verification: [
+    "model/scopedSwrl.test.js",
+    "model/dispatch.test.js",
+    "test/package-boundary.test.mjs",
+  ],
+});
+
 // These approved adaptations must not inherit the OWL-name heuristic: a native
 // Error suffix, private atomic target state, and io ownership differ from Java.
 const PARITY_BINDING_METADATA = Object.freeze({
   ...RC2_BINDING_METADATA,
+  ...Object.fromEntries(
+    Object.entries({
+      dispatchAxiom: "AXIOM_KINDS",
+      dispatchOwlObject: "OWL_OBJECT_KINDS",
+    }).map(([name, domain]) => [
+      name,
+      {
+        ...SWRL_DISPATCH_METADATA,
+        firstPublicReleaseTarget: "0.1.0-alpha.0",
+        callShapes: [
+          `${name}(value, handlers)`,
+          `${name}(value, handlers, ${domain}_WITH_SWRL)`,
+        ],
+        semanticQualifications: [
+          `The default domain is ${domain}. Pass the exported ${domain}_WITH_SWRL constant to visit represented SWRL values. Each kind in the selected domain requires a callable handler. An unknown domain or kind, or a missing handler, raises TypeError.`,
+        ],
+      },
+    ]),
+  ),
+  AXIOM_KINDS_WITH_SWRL: {
+    ...SWRL_DISPATCH_METADATA,
+    summary:
+      "Frozen axiom kind list for exhaustive dispatch including SWRLRule.",
+  },
+  OWL_OBJECT_KINDS_WITH_SWRL: {
+    ...SWRL_DISPATCH_METADATA,
+    summary:
+      "Frozen OWL object kind list for exhaustive dispatch including represented SWRL rules, atoms and variables.",
+  },
   RDFXMLDocumentFormat: {
     javaType: "org.semanticweb.owlapi.formats.RDFXMLDocumentFormat",
     sourceModule: "formats/rdfXMLDocumentFormat.js",

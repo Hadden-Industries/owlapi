@@ -1,4 +1,4 @@
-<!-- registry-sha256: 5ce2a3f6c8be5a5418f0dea91b92cf4c59702f31361a18d2de47eeceaf275088 -->
+<!-- registry-sha256: 3e0274c08616a786ada8cbe1434d9cfcd800c98f08d73145d6b260523465e26e -->
 
 # owlapi API reference
 
@@ -74,19 +74,19 @@ Use this export only through its documented package specifier; do not infer addi
 
 ## `AXIOM_KINDS_WITH_SWRL`
 
-An immutable vocabulary used to classify supported OWL structural values.
+Frozen axiom kind list for exhaustive dispatch including SWRLRule.
 
 - Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- First public release target: `0.1.0-alpha.0`
+- First public release target: `0.1.0`
 - Call shape: import { AXIOM_KINDS_WITH_SWRL } from "owlapi/model"
 - Supported members: OWLDeclarationAxiom; OWLSubClassOfAxiom; OWLEquivalentClassesAxiom; OWLDisjointClassesAxiom; OWLDisjointUnionAxiom; OWLSubObjectPropertyOfAxiom; OWLSubPropertyChainOfAxiom; OWLEquivalentObjectPropertiesAxiom; OWLDisjointObjectPropertiesAxiom; OWLObjectPropertyDomainAxiom; OWLObjectPropertyRangeAxiom; OWLInverseObjectPropertiesAxiom; OWLFunctionalObjectPropertyAxiom; OWLInverseFunctionalObjectPropertyAxiom; OWLReflexiveObjectPropertyAxiom; OWLIrreflexiveObjectPropertyAxiom; OWLSymmetricObjectPropertyAxiom; OWLAsymmetricObjectPropertyAxiom; OWLTransitiveObjectPropertyAxiom; OWLSubDataPropertyOfAxiom; OWLEquivalentDataPropertiesAxiom; OWLDisjointDataPropertiesAxiom; OWLDataPropertyDomainAxiom; OWLDataPropertyRangeAxiom; OWLFunctionalDataPropertyAxiom; OWLDatatypeDefinitionAxiom; OWLHasKeyAxiom; OWLSameIndividualAxiom; OWLDifferentIndividualsAxiom; OWLClassAssertionAxiom; OWLObjectPropertyAssertionAxiom; OWLNegativeObjectPropertyAssertionAxiom; OWLDataPropertyAssertionAxiom; OWLNegativeDataPropertyAssertionAxiom; OWLAnnotationAssertionAxiom; OWLSubAnnotationPropertyOfAxiom; OWLAnnotationPropertyDomainAxiom; OWLAnnotationPropertyRangeAxiom; SWRLRule
 - Omitted Java members: none recorded
 - Public errors: none specific
-- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.
-- Evidence: model/model.test.js, test/package-boundary.test.mjs
+- Qualification: Pass this optional domain as the third dispatch argument to require handlers for all represented kinds, including SWRL.
+- Evidence: model/scopedSwrl.test.js, model/dispatch.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
 
@@ -434,19 +434,19 @@ Use this export only through its documented package specifier; do not infer addi
 
 ## `OWL_OBJECT_KINDS_WITH_SWRL`
 
-An immutable vocabulary used to classify supported OWL structural values.
+Frozen OWL object kind list for exhaustive dispatch including represented SWRL rules, atoms and variables.
 
 - Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- First public release target: `0.1.0-alpha.0`
+- First public release target: `0.1.0`
 - Call shape: import { OWL_OBJECT_KINDS_WITH_SWRL } from "owlapi/model"
 - Supported members: IRI; OWLLiteral; OWLAnonymousIndividual; OWLAnnotation; OWLImportsDeclaration; OWLOntologyID; OWLClass; OWLDatatype; OWLObjectProperty; OWLDataProperty; OWLAnnotationProperty; OWLNamedIndividual; OWLObjectInverseOf; OWLObjectIntersectionOf; OWLObjectUnionOf; OWLObjectComplementOf; OWLObjectOneOf; OWLObjectSomeValuesFrom; OWLObjectAllValuesFrom; OWLObjectHasValue; OWLObjectHasSelf; OWLObjectMinCardinality; OWLObjectMaxCardinality; OWLObjectExactCardinality; OWLDataSomeValuesFrom; OWLDataAllValuesFrom; OWLDataHasValue; OWLDataMinCardinality; OWLDataMaxCardinality; OWLDataExactCardinality; OWLDataIntersectionOf; OWLDataUnionOf; OWLDataComplementOf; OWLDataOneOf; OWLDatatypeRestriction; OWLFacetRestriction; OWLDeclarationAxiom; OWLSubClassOfAxiom; OWLEquivalentClassesAxiom; OWLDisjointClassesAxiom; OWLDisjointUnionAxiom; OWLSubObjectPropertyOfAxiom; OWLSubPropertyChainOfAxiom; OWLEquivalentObjectPropertiesAxiom; OWLDisjointObjectPropertiesAxiom; OWLObjectPropertyDomainAxiom; OWLObjectPropertyRangeAxiom; OWLInverseObjectPropertiesAxiom; OWLFunctionalObjectPropertyAxiom; OWLInverseFunctionalObjectPropertyAxiom; OWLReflexiveObjectPropertyAxiom; OWLIrreflexiveObjectPropertyAxiom; OWLSymmetricObjectPropertyAxiom; OWLAsymmetricObjectPropertyAxiom; OWLTransitiveObjectPropertyAxiom; OWLSubDataPropertyOfAxiom; OWLEquivalentDataPropertiesAxiom; OWLDisjointDataPropertiesAxiom; OWLDataPropertyDomainAxiom; OWLDataPropertyRangeAxiom; OWLFunctionalDataPropertyAxiom; OWLDatatypeDefinitionAxiom; OWLHasKeyAxiom; OWLSameIndividualAxiom; OWLDifferentIndividualsAxiom; OWLClassAssertionAxiom; OWLObjectPropertyAssertionAxiom; OWLNegativeObjectPropertyAssertionAxiom; OWLDataPropertyAssertionAxiom; OWLNegativeDataPropertyAssertionAxiom; OWLAnnotationAssertionAxiom; OWLSubAnnotationPropertyOfAxiom; OWLAnnotationPropertyDomainAxiom; OWLAnnotationPropertyRangeAxiom; SWRLRule; SWRLClassAtom; SWRLObjectPropertyAtom; SWRLVariable
 - Omitted Java members: none recorded
 - Public errors: none specific
-- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.
-- Evidence: model/model.test.js, test/package-boundary.test.mjs
+- Qualification: Pass this optional domain as the third dispatch argument to require handlers for all represented kinds, including SWRL.
+- Evidence: model/scopedSwrl.test.js, model/dispatch.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
 
@@ -567,12 +567,12 @@ Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - First public release target: `0.1.0-alpha.0`
-- Call shape: dispatchAxiom(...arguments)
+- Call shape: dispatchAxiom(value, handlers); dispatchAxiom(value, handlers, AXIOM_KINDS_WITH_SWRL)
 - Supported members: constructor
 - Omitted Java members: none recorded
 - Public errors: none specific
-- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.
-- Evidence: model/model.test.js, test/package-boundary.test.mjs
+- Qualification: The default domain is AXIOM_KINDS. Pass the exported AXIOM_KINDS_WITH_SWRL constant to visit represented SWRL values. Each kind in the selected domain requires a callable handler. An unknown domain or kind, or a missing handler, raises TypeError.
+- Evidence: model/scopedSwrl.test.js, model/dispatch.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
 
@@ -675,12 +675,12 @@ Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - First public release target: `0.1.0-alpha.0`
-- Call shape: dispatchOwlObject(...arguments)
+- Call shape: dispatchOwlObject(value, handlers); dispatchOwlObject(value, handlers, OWL_OBJECT_KINDS_WITH_SWRL)
 - Supported members: constructor
 - Omitted Java members: none recorded
 - Public errors: none specific
-- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.
-- Evidence: model/model.test.js, test/package-boundary.test.mjs
+- Qualification: The default domain is OWL_OBJECT_KINDS. Pass the exported OWL_OBJECT_KINDS_WITH_SWRL constant to visit represented SWRL values. Each kind in the selected domain requires a callable handler. An unknown domain or kind, or a missing handler, raises TypeError.
+- Evidence: model/scopedSwrl.test.js, model/dispatch.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
 
