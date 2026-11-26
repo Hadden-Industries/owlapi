@@ -5,6 +5,7 @@ import { PACKAGE_NAME } from "./package-identity.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
 import { INSTALLED_TEST_SCRIPTS } from "./installed-consumer-fixtures.mjs";
 import { readCiConsumerDecisionMembers } from "./ci-recipient-attribution.mjs";
+import { createMaterialRecordInterner } from "./material-record-interning.mjs";
 
 function fixture() {
   const identity = {
@@ -24,6 +25,8 @@ function fixture() {
     osRelease: "runner",
   };
   const originals = {};
+  const materialOriginals = {};
+  const material = createMaterialRecordInterner();
   const keep = (input) => {
     const bytes = stableJson(input),
       key = sha256Buffer(Buffer.from(bytes));
@@ -56,14 +59,24 @@ function fixture() {
       graph: { nodes: [], edges: [] },
       manifests: {},
     });
-    const materialSha256 = keep({
+    const materialText = stableJson({
       status: "PASSED",
       subject: {
         resolutionSha256: resolution,
         tarballSha256,
         lockSha256: lock,
       },
+      artifacts: [{ artifactId: "shared archive" }],
+      decisions: [
+        {
+          location: "node_modules/archive",
+          disposition: "STANDING_EXTERNAL_RUNTIME_RULE",
+        },
+      ],
     });
+    const materialSha256 = sha256Buffer(Buffer.from(materialText));
+    materialOriginals[materialSha256] = materialText;
+    material.add(materialSha256, materialText);
     const decisionSha256 = keep({
       schemaVersion: 1,
       result: "PASS",
@@ -107,19 +120,21 @@ function fixture() {
   const scope = { identity, candidateArtifact, tarballSha256 };
   return {
     scope,
+    materialOriginals,
     packet: {
-      schemaVersion: 1,
+      schemaVersion: 2,
       result: "PASS",
       ...scope,
       runtime,
       subjects,
       originals,
+      material: material.tables,
     },
   };
 }
 
 test("keeps alias and scoped inputs and the original native runtime independently scoped", () => {
-  const { scope, packet } = fixture();
+  const { scope, packet, materialOriginals } = fixture();
   const { installed, decisions } = readStandalonePortabilityProof(
     packet,
     scope,
@@ -131,10 +146,29 @@ test("keeps alias and scoped inputs and the original native runtime independentl
     ["portability-scoped", PACKAGE_NAME],
   ]);
   expect(installed[0][1].evidence.lock).not.toBe(installed[1][1].evidence.lock);
-  for (const [role, attribution] of installed)
-    expect(
-      readCiConsumerDecisionMembers(decisions, attribution).decision.role,
-    ).toBe(role);
+  expect(Object.keys(packet.material.artifacts)).toHaveLength(1);
+  expect(Object.keys(packet.material.dispositions)).toHaveLength(1);
+  for (const [role, attribution] of installed) {
+    const original = readCiConsumerDecisionMembers(decisions, attribution);
+    expect(original.decision.role).toBe(role);
+    expect(original.materialBytes.toString("utf8")).toBe(
+      materialOriginals[original.decision.materialSha256],
+    );
+  }
+});
+
+test("an independently rehashed row cannot change the exact retained material record", () => {
+  const { scope, packet } = fixture();
+  const [previous] = Object.keys(packet.material.artifacts);
+  const changed = { artifactId: "different archive" };
+  const digest = sha256Buffer(Buffer.from(stableJson(changed)));
+  delete packet.material.artifacts[previous];
+  packet.material.artifacts[digest] = changed;
+  for (const recipe of Object.values(packet.material.materials))
+    recipe.artifacts = [digest];
+  expect(() => readStandalonePortabilityProof(packet, scope)).toThrow(
+    /reconstruct exact standalone material original/iu,
+  );
 });
 
 test.each(["post-test graph", "job", "original lock"])(

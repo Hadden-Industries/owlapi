@@ -9,7 +9,12 @@ import {
 } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
-import { isStrictDescendantPath } from "./release-file-utils.mjs";
+import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
+import { readGzipTarFile } from "./release-artifacts.mjs";
+import {
+  assertNpmSbomInventory,
+  flattenNpmGraph,
+} from "./npm-production-graph.mjs";
 import { indexRegistryOccurrences } from "../util/third-party-evidence/lock-graph.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
 import {
@@ -26,9 +31,9 @@ const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
 const publicSpec = (dependencyName, version = PACKAGE_VERSION) =>
   dependencyName === "owlapi" ? `npm:${PACKAGE_NAME}@${version}` : version;
 
-const expectedRoot = (value, dependencyName) => {
+const expectedRoot = (value, dependencyName, legacy = false) => {
   const invalid = [
-    "overrides",
+    ...(!legacy ? ["overrides"] : []),
     "workspaces",
     "devDependencies",
     "optionalDependencies",
@@ -50,6 +55,7 @@ export const verifyRegistryInstallation = ({
   directory,
   dependencyName,
   metadata,
+  legacyStageTarball,
 }) => {
   if (![PACKAGE_NAME, "owlapi"].includes(dependencyName))
     throw new Error("Unexpected consumer dependency name.");
@@ -62,8 +68,12 @@ export const verifyRegistryInstallation = ({
   const installedManifest = join(packageRoot, "package.json");
   const entry = lock.packages?.[`node_modules/${dependencyName}`];
   if (
-    !expectedRoot(consumer, dependencyName) ||
-    !expectedRoot(lock.packages?.[""], dependencyName) ||
+    !expectedRoot(consumer, dependencyName, Boolean(legacyStageTarball)) ||
+    !expectedRoot(
+      lock.packages?.[""],
+      dependencyName,
+      Boolean(legacyStageTarball),
+    ) ||
     lock.lockfileVersion !== 3 ||
     !entry ||
     entry.link ||
@@ -160,6 +170,7 @@ export const installRegistryConsumer = ({
   metadata,
   npmCli = process.env.npm_execpath,
   original,
+  legacyStageTarball,
 }) => {
   assertPackageIdentity(metadata);
   assertRegistryTarballUrl(metadata.dist?.tarball);
@@ -168,6 +179,13 @@ export const installRegistryConsumer = ({
       "Run registry qualification through npm with an approved dependency name.",
     );
   mkdirSync(directory);
+  assert.ok(
+    !original || !legacyStageTarball,
+    "Legacy stage overrides cannot enter a reconciled replay",
+  );
+  const overrides =
+    legacyStageTarball &&
+    JSON.parse(readGzipTarFile(legacyStageTarball, "package.json")).overrides;
   const manifest = join(directory, "package.json");
   const lock = join(directory, "package-lock.json");
   if (original) {
@@ -201,6 +219,7 @@ export const installRegistryConsumer = ({
           private: true,
           type: "module",
           dependencies: { [dependencyName]: publicSpec(dependencyName) },
+          ...(overrides ? { overrides } : {}),
         },
         null,
         2,
@@ -252,9 +271,55 @@ export const installRegistryConsumer = ({
     directory,
     dependencyName,
     metadata,
+    legacyStageTarball,
   });
   return { identity, environment, npmArguments: arguments_ };
 };
+
+/** Previously submitted stages retain their original installed-versus-locked equality contract. */
+export function observeLegacyRegistryGraph({
+  directory,
+  environment,
+  dependencyName,
+  npmCli = process.env.npm_execpath,
+  sbom,
+}) {
+  const readGraph = (extra) =>
+    JSON.parse(
+      execFileSync(
+        process.execPath,
+        [npmCli, "ls", "--all", "--omit=dev", "--json", ...extra],
+        {
+          cwd: directory,
+          env: environment,
+          encoding: "utf8",
+          maxBuffer: 8 * 1024 * 1024,
+          timeout: 120000,
+          windowsHide: true,
+          stdio: "pipe",
+        },
+      ),
+    );
+  const graph = readGraph([]);
+  const identitiesFor = (tree) =>
+    flattenNpmGraph(tree.dependencies?.[dependencyName], PACKAGE_NAME);
+  const identities = identitiesFor(graph);
+  assert.deepEqual(
+    identitiesFor(readGraph(["--package-lock-only"])),
+    identities,
+    "Public installed and locked production graphs differ",
+  );
+  if (sbom) assertNpmSbomInventory(sbom, identities);
+  return {
+    graph,
+    identities,
+    lockSha256: sha256Buffer(
+      readFileSync(join(directory, "package-lock.json")),
+    ),
+    manifest: readJson(join(directory, "package.json")),
+    manifestSha256: sha256Buffer(readFileSync(join(directory, "package.json"))),
+  };
+}
 
 /** Refresh metadata without authentication, redirect or cache ambiguity. */
 export const fetchRegistryMetadata = async (version = PACKAGE_VERSION) => {

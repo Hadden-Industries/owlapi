@@ -17,6 +17,7 @@ jobs:
     outputs:
       matrix: ${{ steps.public.outputs.matrix }}
       recipient_input: ${{ steps.public.outputs.recipient_input }}
+      recipient_policy: ${{ steps.public.outputs.recipient_policy }}
     timeout-minutes: 80
     permissions:
       contents: read
@@ -48,6 +49,7 @@ jobs:
   public_observation:
     name: Public observation (${{ matrix.runner }}, ${{ matrix.node }})
     needs: registry
+    if: needs.registry.outputs.recipient_policy == '2'
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 50
     permissions:
@@ -85,6 +87,7 @@ jobs:
           compression-level: 6
   material:
     needs: [registry, public_observation]
+    if: needs.registry.outputs.recipient_policy == '2'
     runs-on: ubuntu-26.04
     timeout-minutes: 100
     permissions:
@@ -144,6 +147,7 @@ jobs:
   public_recipient:
     name: Public recipient (${{ matrix.runner }}, ${{ matrix.node }})
     needs: [registry, material, advisory]
+    if: ${{ !cancelled() && needs.registry.result == 'success' && ((needs.registry.outputs.recipient_policy == '1' && needs.material.result == 'skipped' && needs.advisory.result == 'skipped') || (needs.registry.outputs.recipient_policy == '2' && needs.material.result == 'success' && needs.advisory.result == 'success')) }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 50
     permissions:
@@ -171,6 +175,7 @@ jobs:
       - run: node scripts/consumer-runtime-tools.mjs prepare
       - name: Admit the protected advisory result for this public recipient
         id: authorization
+        if: needs.registry.outputs.recipient_policy == '2'
         env:
           GH_TOKEN: ${{ github.token }}
           HISTORY_OBJECT: ${{ inputs.history_object }}
@@ -181,9 +186,12 @@ jobs:
           check-latest: false
           cache: ""
           package-manager-cache: false
-      - env:
+      - if: needs.registry.outputs.recipient_policy == '2'
+        env:
           PUBLIC_REPLAY_PLAN_SHA256: ${{ steps.authorization.outputs.plan_sha256 }}
         run: node scripts/public-recipient-lane.mjs test
+      - if: needs.registry.outputs.recipient_policy == '1'
+        run: node scripts/public-recipient-lane.mjs legacy
       - name: Retain public recipient proof
         uses: ./.github/actions/retain-artifact
         with:

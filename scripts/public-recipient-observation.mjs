@@ -35,7 +35,13 @@ export function publicPlatform(lane) {
   };
 }
 
-export function publicIdentity(mode, input, registryTarball) {
+/** Describe an ordinary live identity, or one using the admitted archive subpaths. */
+export function publicIdentity(
+  mode,
+  input,
+  registryTarball,
+  subpaths = PUBLIC_SUBPATHS,
+) {
   const dependencyName = PUBLIC_CONSUMERS[mode];
   assert.ok(dependencyName);
   assertPackageIdentity(input.package, input.package.version);
@@ -49,7 +55,7 @@ export function publicIdentity(mode, input, registryTarball) {
         : input.package.version,
     resolved: assertRegistryTarballUrl(registryTarball),
     integrity: input.integrity,
-    importSpecifiers: PUBLIC_SUBPATHS.map((suffix) => dependencyName + suffix),
+    importSpecifiers: subpaths.map((suffix) => dependencyName + suffix),
   };
 }
 
@@ -74,7 +80,7 @@ export function packPublicObservation({ lane, input, origin, consumers }) {
   return { schemaVersion: 2, lane, input, origin, index, originals };
 }
 
-/** Required separate native graphs remain distinct even when their package identities overlap. */
+/** Replay separate native graphs. A historical caller supplies the sorted subpaths from its admitted tarball. */
 export async function readPublicObservation(
   packet,
   {
@@ -85,6 +91,7 @@ export async function readPublicObservation(
     npmCli,
     registryTarball,
     consumerNpm = CI_RUNTIME.consumerNpm,
+    archivedExportSubpaths,
   },
 ) {
   assert.deepEqual(Object.keys(packet).sort(), [
@@ -126,9 +133,22 @@ export async function readPublicObservation(
       "manifest",
       "resolution",
     ]);
+    let identity = item.identity;
+    if (archivedExportSubpaths) {
+      // The manifest defines the exported set. The producer's presentation order
+      // is independent of the order of JSON members in the tarball.
+      assert.ok(Array.isArray(identity?.importSpecifiers));
+      identity = {
+        ...identity,
+        importSpecifiers: identity.importSpecifiers.toSorted(),
+      };
+    }
     assert.deepEqual(
-      item.identity,
-      publicIdentity(mode, input, registryTarball),
+      identity,
+      publicIdentity(mode, input, registryTarball, archivedExportSubpaths),
+      archivedExportSubpaths
+        ? "Archived public identity differs from the published package"
+        : undefined,
     );
     const resolutionBytes = open(item.resolution);
     const evidence = {

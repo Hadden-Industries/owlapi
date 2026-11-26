@@ -1,5 +1,8 @@
 import { PACKAGE_FILE_STEM, REPOSITORY as repo } from "./release-identity.mjs";
-import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
+import {
+  assertImmutableQualificationAssets,
+  validateStagedReleaseEvidence,
+} from "./staged-evidence.mjs";
 import assert from "node:assert/strict";
 import { qualificationBaseSchema } from "./corpus-qualification-manifest.mjs";
 import { execFileSync } from "node:child_process";
@@ -35,9 +38,11 @@ import {
   originalBytes,
   originalManifest,
   readStageJournal,
-  verifyNewStageAdvisories,
 } from "./staged-release.mjs";
-import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
+import {
+  hasZipDirectory,
+  readZipArchiveFilesWith,
+} from "./release-zip-core.mjs";
 import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
 import { PACKAGE_NAME, NPM_REGISTRY } from "./package-identity.mjs";
@@ -45,9 +50,18 @@ import {
   publicRecipientInput,
   qualificationRuntimeMatrix,
   readPublicAuditSubjects,
+  readPublicEvidence,
 } from "./release-public-proof.mjs";
+import { submittedStagePolicy } from "./release-stage-continuation.mjs";
+import {
+  assertPublicTestAfter,
+  publicEvaluatorExecution,
+  publicExecutionWindow,
+} from "./public-reconciliation-proof.mjs";
 import {
   archiveAdvisory,
+  assertTimedUpload,
+  reopenStageQualificationAdvisory,
   verifyHostedAdvisoryReceipt,
 } from "./release-audit-job.mjs";
 import { qualificationAdvisoryMarker } from "./qualification-advisory-binding.mjs";
@@ -58,6 +72,11 @@ import {
   assertAdvisoryCasesCurrent,
   assertAdvisoryDecisionCurrent,
 } from "./release-audit-evaluator.mjs";
+import {
+  latestRecordedTime,
+  releaseTime,
+  sealAuthorizationTime,
+} from "./release-native-time.mjs";
 import {
   findNpmCliCandidates,
   observeNpmVersion,
@@ -79,6 +98,47 @@ const rawAuditMember = (name) =>
   /(?:^|\/)(?:npm-audit-[^/]+|normal-consumer-npm-audit-production|transport-audit)\.json$/iu.test(
     name,
   );
+const zipMember = (name, bytes) =>
+  /\.zip$/iu.test(name) || hasZipDirectory(bytes);
+const qualificationZipRoster = (manifest) => {
+  const descriptors =
+    qualificationBaseSchema(manifest) === 1
+      ? manifest.artifacts
+      : [
+          manifest.ci.candidate,
+          manifest.ci.main.receipt,
+          manifest.ci.build.receipt,
+          manifest.ci.packageProof,
+        ];
+  return new Map(
+    descriptors.map((descriptor) => [
+      `artifact-${descriptor.id}.zip`,
+      descriptor,
+    ]),
+  );
+};
+
+function assertDisclosedQualificationZip(name, bytes, roster, reconciled) {
+  if (!zipMember(name, bytes)) return;
+  const expected = roster?.get(name);
+  assert.ok(
+    expected,
+    "ZIP is outside the authenticated qualification ZIP roster",
+  );
+  assert.equal(bytes.length, expected.bytes);
+  assert.equal(`sha256:${hash(bytes)}`, expected.digest);
+  if (reconciled)
+    assert.ok(
+      readZipArchiveFilesWith(bytes, {
+        crc32,
+        maximumUncompressedBytes: 48 * 1024 * 1024,
+      }).every(
+        ({ path, content }) =>
+          !rawAuditMember(path) && !zipMember(path, content),
+      ),
+      "Qualification ZIP contains raw npm audit output or a nested ZIP",
+    );
+}
 const asset = (name, bytes) => ({
   name,
   bytes: bytes.length,
@@ -109,11 +169,6 @@ export async function readStageContext(client, env, checkpoint, mode, renewal) {
     renewal?.controller ?? operation.controller,
     env.GITHUB_SHA,
     "Operation requires owner approval for the executing controller",
-  );
-  verifyControllerDelta(
-    operation.source,
-    operation.controller,
-    checkpoint.files,
   );
   const origin = {
     ...env,
@@ -170,6 +225,13 @@ export async function readStageContext(client, env, checkpoint, mode, renewal) {
     integrity: manifest.integrity,
   });
   assert.equal(operation.stageId, receipt.stageId);
+  const recipientPolicy = submittedStagePolicy(manifest, receipt);
+  verifyControllerDelta(
+    operation.source,
+    operation.controller,
+    checkpoint.files,
+    { alreadySubmittedLegacyStage: recipientPolicy === 1 },
+  );
   const ref = await client.read("/git/ref/tags/" + tag);
   assert.equal(ref.object.type, "tag");
   assert.equal(ref.object.sha, operation.tagObject);
@@ -198,6 +260,7 @@ export async function readStageContext(client, env, checkpoint, mode, renewal) {
     journal,
     retentionFailure: a.retentionFailure,
     receipt,
+    recipientPolicy,
     privateProof,
     read,
   };
@@ -325,10 +388,17 @@ export async function attachMissingAssets(client, release, items, read) {
   return bound;
 }
 
-async function readWriterAttempt(client, checkpoint, origin, kind) {
+async function readWriterAttempt(
+  client,
+  checkpoint,
+  origin,
+  kind,
+  { requireNumber = true } = {},
+) {
   assert.ok(origin && origin.attempt === "1");
   assert.match(origin.runId, /^[1-9]\d{0,15}$/u);
-  assert.match(String(origin.number), /^[1-9]\d{0,9}$/u);
+  const bindRunNumber = requireNumber || origin.number !== undefined;
+  if (bindRunNumber) assert.match(String(origin.number), /^[1-9]\d{0,9}$/u);
   const logical = "github-release-" + origin.runId + "-1";
   const retained = checkpoint.files.get(
     "origin-" + origin.runId + "-1-" + logical + ".json",
@@ -344,7 +414,8 @@ async function readWriterAttempt(client, checkpoint, origin, kind) {
   };
   const runPath = "/actions/runs/" + origin.runId + "/attempts/1";
   const run = await available(runPath, saved?.run);
-  assert.equal(String(run.run_number), String(origin.number));
+  if (bindRunNumber)
+    assert.equal(String(run.run_number), String(origin.number));
   assert.deepEqual(
     [
       String(run.id),
@@ -387,7 +458,7 @@ async function readWriterAttempt(client, checkpoint, origin, kind) {
   const skipped =
     steps[0]?.conclusion === "skipped" ||
     (steps.length === 0 && job.conclusion === "skipped");
-  return { logical, skipped, step: steps[0] };
+  return { logical, skipped, step: steps[0], run, job };
 }
 
 async function readWriterRecords(client, checkpoint, origin, kind, attempt) {
@@ -612,7 +683,9 @@ async function registryProof(client, ctx) {
     await import("./qualify-public-registry.mjs");
   const { manifest, receipt } = ctx;
   const matrix = qualificationRuntimeMatrix(manifest);
-  const input = publicRecipientInput(ctx, matrix, { reconciled: true });
+  const input = publicRecipientInput(ctx, matrix, {
+    reconciled: ctx.recipientPolicy === 2,
+  });
   const sbom = qualifiedSbom(ctx);
   const proof = await qualifyPublicRegistry({
     candidate: {
@@ -621,6 +694,7 @@ async function registryProof(client, ctx) {
       integrity: manifest.integrity,
     },
     stagedSbom: sbom,
+    recipientPolicy: ctx.recipientPolicy,
     outputPath: ".release/followup/public.json",
     stageOrigin: { ...receipt, approvedAt: approval.approvedAt },
     publication: () => ({ ...receipt, acceptedAt: approval.approvedAt }),
@@ -634,6 +708,8 @@ async function registryProof(client, ctx) {
     process.env.GITHUB_OUTPUT,
     "matrix=" +
       JSON.stringify(matrix) +
+      "\nrecipient_policy=" +
+      ctx.recipientPolicy +
       "\nrecipient_input=" +
       JSON.stringify(input) +
       "\n",
@@ -714,7 +790,10 @@ async function verifyQualificationDisclosure(
     const original = read(name);
     assert.equal("sha256:" + hash(original), artifact.digest);
     assert.equal(original.length, artifact.bytes);
-    if (artifact.id === manifest.ci?.packageProof?.id) {
+    if (
+      ctx.recipientPolicy === 2 &&
+      artifact.id === manifest.ci?.packageProof?.id
+    ) {
       const allowed = ["candidate-manifest.json", "consumer-resolutions.json"];
       const members = readZipArchiveFilesWith(original, {
         crc32,
@@ -722,14 +801,6 @@ async function verifyQualificationDisclosure(
         maximumUncompressedBytes: 16 * 1024 * 1024,
       });
       assert.deepEqual(members.map(({ path }) => path).sort(), allowed);
-    } else if (qualificationBaseSchema(manifest) === 1) {
-      assert.ok(
-        readZipArchiveFilesWith(original, {
-          crc32,
-          maximumUncompressedBytes: 48 * 1024 * 1024,
-        }).every(({ path }) => !rawAuditMember(path)),
-        "Qualification disclosure includes obsolete native audit material",
-      );
     }
   };
   if (qualificationBaseSchema(manifest) === 1) {
@@ -854,10 +925,13 @@ async function assertSealPreimages(client, ctx, report, expected) {
 
 async function seal(client, ctx, checkpoint, renewal, execution) {
   const { operation, manifest, receipt, read } = ctx;
+  assert.ok([1, 2].includes(ctx.recipientPolicy));
+  const reconciled = ctx.recipientPolicy === 2;
   const operationBytes = read("operation.json");
   checkSealSettings(operationBytes, renewal);
   const tag = "v" + operation.version;
   const report = parse(read("public.json"));
+  assert.equal(report.schemaVersion, ctx.recipientPolicy);
   assert.equal(report.result, "PASS");
   assert.equal(report.coordinate, PACKAGE_NAME + "@" + operation.version);
   assert.equal(report.tarballSha256, manifest.assets.tarball.sha256);
@@ -888,97 +962,141 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   const publicIndex = parse(read("public-inventory.json"));
   assert.equal(publicIndex.manifestSha256, operation.manifestSha256);
   await verifyQualificationDisclosure(client, ctx, checkpoint, publicIndex);
+  const zipRoster = qualificationZipRoster(manifest);
   for (const name of publicIndex.files) {
     assert.ok(!archiveEntries.has(name), "Duplicate public archive entry");
     assert.ok(
       !rawAuditMember(name),
       "Raw npm audit output is outside the public evidence inventory",
     );
-    archiveEntries.set(name, read(name));
+    const bytes = read(name);
+    assertDisclosedQualificationZip(name, bytes, zipRoster, reconciled);
+    archiveEntries.set(name, bytes);
   }
   archiveEntries.set("public-inventory.json", read("public-inventory.json"));
-  // Reopen the exact qualification that the protected stage actually admitted. A public
-  // registry decision is a later observation and cannot substitute for that admission.
-  const qualification = await verifyNewStageAdvisories(client, {
-    env: {
-      QUALIFICATION_RUN: operation.qualificationRun,
-      QUALIFICATION_ATTEMPT: operation.qualificationAttempt,
-      MANIFEST_SHA256: operation.manifestSha256,
-    },
-    checkpoint,
-    manifest,
-    manifestBytes: ctx.manifestBytes,
-    candidate: ctx.candidate,
-    now: Date.parse(receipt.qualificationAdvisory.verifiedAt),
-  });
-  assert.deepEqual(
-    qualificationAdvisoryMarker(qualification),
-    receipt.qualificationAdvisory,
-    "Qualification changed after staging",
-  );
-  assertAdvisoryCasesCurrent(qualification.decision);
-  archiveAdvisory(archiveEntries, "qualification", qualification);
-  const runtimeBytes = readControllerBlob(
-    manifest.commit,
-    "docs/release/runtime-policy.json",
-  );
-  const originalPolicy = parse(runtimeBytes);
-  const matrix = qualificationRuntimeMatrix(manifest, originalPolicy);
-  assert.ok(
-    !archiveEntries.has("qualified-runtime-policy.json"),
-    "Duplicate qualified runtime policy",
-  );
-  archiveEntries.set("qualified-runtime-policy.json", runtimeBytes);
-  const npmCli = producerNpm();
-  const tarball = read(manifest.assets.tarball.name);
-  const measured = await withAuditNpmClients(npmCli, (npmCliForVersion) =>
-    readPublicAuditSubjects(
+  let publicAdvisory, checkCurrentAdvisory;
+  if (reconciled) {
+    // Reopen the exact qualification that the protected stage actually admitted. A public
+    // registry decision is a later observation and cannot substitute for that admission.
+    const npmCli = producerNpm();
+    const qualification = await reopenStageQualificationAdvisory(client, {
+      checkpoint,
+      manifest,
+      stage: receipt,
+      npmCli,
+    });
+    assert.deepEqual(
+      qualificationAdvisoryMarker(qualification),
+      receipt.qualificationAdvisory,
+      "Qualification changed after staging",
+    );
+    assertAdvisoryCasesCurrent(qualification.decision);
+    archiveAdvisory(archiveEntries, "qualification", qualification);
+    const runtimeBytes = readControllerBlob(
+      manifest.commit,
+      "docs/release/runtime-policy.json",
+    );
+    const originalPolicy = parse(runtimeBytes);
+    const matrix = qualificationRuntimeMatrix(manifest, originalPolicy);
+    assert.ok(
+      !archiveEntries.has("qualified-runtime-policy.json"),
+      "Duplicate qualified runtime policy",
+    );
+    archiveEntries.set("qualified-runtime-policy.json", runtimeBytes);
+    const tarball = read(manifest.assets.tarball.name);
+    const measured = await withAuditNpmClients(npmCli, (npmCliForVersion) =>
+      readPublicAuditSubjects(
+        client,
+        checkpoint,
+        operation,
+        matrix,
+        publicRecipientInput(ctx, matrix, { reconciled: true }),
+        {
+          tarball,
+          npmCli: npmCliForVersion(CI_RUNTIME.consumerNpm),
+          pinnedReport: read("public.json"),
+          complete: true,
+        },
+      ),
+    );
+    const verified = await verifyHostedAdvisoryReceipt({
+      client,
+      checkpoint,
+      entries: measured.entries,
+      npmCli,
+      runId: operation.publicRun,
+      attempt: operation.publicAttempt,
+      controller: operation.publicController,
+      workflow: ".github/workflows/release-registry.yml",
+    });
+    publicAdvisory = {
+      runId: operation.publicRun,
+      attempt: operation.publicAttempt,
+      controller: operation.publicController,
+      policySha256: verified.decision.policySha256,
+      descriptor: verified.descriptor,
+    };
+    assert.equal(measured.testAdvisories.length, matrix.include.length);
+    const evaluatorTiming = publicEvaluatorExecution(verified.job);
+    const { start: evaluationStart, end: evaluationEnd } =
+      publicExecutionWindow(evaluatorTiming);
+    const { attempt: materialAttempt, timing: materialTiming } =
+      measured.materialExecution;
+    assert.ok(
+      verified.job.run_attempt >= materialAttempt &&
+        evaluationStart >= publicExecutionWindow(materialTiming).end,
+      "Public advisory preceded the original material job",
+    );
+    assert.ok(
+      releaseTime(verified.decision.decidedAt) >= evaluationStart &&
+        releaseTime(verified.decision.decidedAt) <=
+          latestRecordedTime(evaluatorTiming.completedAt),
+      "The public advisory was issued outside its original evaluator job",
+    );
+    let lastPublicCompletion = evaluationEnd;
+    for (const tested of measured.testAdvisories) {
+      assert.deepEqual(
+        tested.descriptor,
+        verified.descriptor,
+        "A public test used a different protected advisory decision",
+      );
+      assert.ok(
+        tested.attempt >= verified.job.run_attempt,
+        "Public replay is from an earlier attempt than its advisory",
+      );
+      assertPublicTestAfter(tested.execution, evaluatorTiming, "advisory");
+      lastPublicCompletion = Math.max(
+        lastPublicCompletion,
+        publicExecutionWindow(tested.execution).end,
+      );
+    }
+    archiveAdvisory(measured.files, "public", verified);
+    for (const [name, bytes] of measured.files) {
+      assert.ok(!archiveEntries.has(name));
+      archiveEntries.set(name, bytes);
+    }
+    checkCurrentAdvisory = (sealTime) => {
+      assert.ok(
+        lastPublicCompletion <= sealTime,
+        "The native seal cannot run before public testing finishes",
+      );
+      assertAdvisoryDecisionCurrent(verified.decision, sealTime);
+      assertAdvisoryCasesCurrent(qualification.decision, sealTime);
+    };
+  } else {
+    const matrix = qualificationRuntimeMatrix(manifest);
+    for (const [name, bytes] of await readPublicEvidence(
       client,
       checkpoint,
       operation,
       matrix,
-      publicRecipientInput(ctx, matrix, { reconciled: true }),
-      {
-        tarball,
-        npmCli: npmCliForVersion(CI_RUNTIME.consumerNpm),
-        pinnedReport: read("public.json"),
-        complete: true,
-      },
-    ),
-  );
-  const verified = await verifyHostedAdvisoryReceipt({
-    client,
-    checkpoint,
-    entries: measured.entries,
-    npmCli,
-    runId: operation.publicRun,
-    attempt: operation.publicAttempt,
-    controller: operation.publicController,
-    workflow: ".github/workflows/release-registry.yml",
-  });
-  const publicAdvisory = {
-    runId: operation.publicRun,
-    attempt: operation.publicAttempt,
-    controller: operation.publicController,
-    policySha256: verified.decision.policySha256,
-    descriptor: verified.descriptor,
-  };
-  assert.equal(measured.testAdvisories.length, matrix.include.length);
-  for (const tested of measured.testAdvisories) {
-    assert.deepEqual(
-      tested.descriptor,
-      verified.descriptor,
-      "A public test used a different protected advisory decision",
-    );
-    assert.ok(
-      Date.parse(tested.startedAt) >= Date.parse(verified.job.completed_at),
-      "A public test started before the original protected advisory job completed",
-    );
-  }
-  archiveAdvisory(measured.files, "public", verified);
-  for (const [name, bytes] of measured.files) {
-    assert.ok(!archiveEntries.has(name));
-    archiveEntries.set(name, bytes);
+      publicRecipientInput(ctx, matrix),
+      read("public.json"),
+      qualifiedSbom(ctx),
+    )) {
+      assert.ok(!archiveEntries.has(name));
+      archiveEntries.set(name, bytes);
+    }
   }
   archiveEntries.set("manifest.json", ctx.manifestBytes);
   archiveEntries.set("stage-journal.jsonl", ctx.journal);
@@ -992,7 +1110,7 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   const archive = gzipSync(
     Buffer.from(
       canonicalJson({
-        schemaVersion: 3,
+        schemaVersion: reconciled ? 3 : 2,
         checkpoint: checkpoint.objectId,
         files: [...archiveEntries].map(([name, bytes]) => ({
           ...asset(name, bytes),
@@ -1009,13 +1127,13 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   const evidence = Buffer.from(
     JSON.stringify(
       {
-        schemaVersion: 8,
+        schemaVersion: reconciled ? 8 : 7,
         releaseId: operation.releaseId,
         source: manifest.commit,
         tagObject: operation.tagObject,
         stage: ctx.receipt,
         publicVerification: report,
-        publicAdvisory,
+        ...(reconciled ? { publicAdvisory } : {}),
         archive: archiveInfo,
         assets: manifest.assets,
       },
@@ -1062,10 +1180,17 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   const draft = await assertSealPreimages(client, ctx, report, expected);
   assertReleaseAssets({ assets: draft.assets, expected });
   checkSealSettings(operationBytes, renewal);
-  assertAdvisoryDecisionCurrent(verified.decision);
-  assertAdvisoryCasesCurrent(qualification.decision);
+  const sealTime = Date.now();
+  checkCurrentAdvisory?.(sealTime);
   const record = {
     state: "SEAL_REQUESTED",
+    ...(reconciled
+      ? {
+          authorizedAt: new Date(sealTime).toISOString(),
+          releaseEvidenceSchema: 8,
+          publicAdvisory,
+        }
+      : {}),
     ...(renewal ? { settingsCheckpoint: renewal.checkpoint } : {}),
     checkpoint: checkpoint.objectId,
     controller: renewal?.controller ?? operation.controller,
@@ -1075,8 +1200,6 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
     releaseId: operation.releaseId,
     tagObject: operation.tagObject,
     source: manifest.commit,
-    releaseEvidenceSchema: 8,
-    publicAdvisory,
     runId: execution.runId,
     attempt: execution.attempt,
     assets: expected.map((item) => {
@@ -1109,6 +1232,8 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   assertReleaseId(result.value, operation.releaseId);
   assert.equal(result.value.tag_name, tag);
   assert.equal(result.value.draft, false);
+  if (reconciled)
+    sealAuthorizationTime(record.authorizedAt, result.value.published_at);
   return { ...record, state: "SEALED" };
 }
 export async function reconcilePublishedSeal(client, request) {
@@ -1136,6 +1261,8 @@ export async function reconcilePublishedSeal(client, request) {
     ],
   );
   assertReleaseAssets({ assets: release.assets, expected: request.assets });
+  if (request.releaseEvidenceSchema === 8)
+    sealAuthorizationTime(request.authorizedAt, release.published_at);
   return { ...request, state: "SEALED" };
 }
 
@@ -1203,6 +1330,13 @@ export function readStagedArchive(archive) {
       [...files.keys()].every((name) => !rawAuditMember(name)),
       "Raw npm audit output is outside the public evidence inventory",
     );
+    const zipRoster =
+      files.has("manifest.json") &&
+      [...files].some(([name, bytes]) => zipMember(name, bytes))
+        ? qualificationZipRoster(parse(files.get("manifest.json")))
+        : undefined;
+    for (const [name, bytes] of files)
+      assertDisclosedQualificationZip(name, bytes, zipRoster, true);
   }
   return {
     schemaVersion: record.schemaVersion,
@@ -1210,8 +1344,7 @@ export function readStagedArchive(archive) {
     files,
   };
 }
-async function recoverSeal(client, checkpoint) {
-  const origin = parse(checkpoint.files.get("seal-origin.json"));
+async function originalSealRequest(client, checkpoint, origin, recoverSeal) {
   const a = await originArtifact(
     client,
     {
@@ -1220,7 +1353,7 @@ async function recoverSeal(client, checkpoint) {
       commit: origin.controller,
       filename: ".github/workflows/github-release.yml",
       logical: "github-release-" + origin.runId + "-" + origin.attempt,
-      recoverSeal: true,
+      recoverSeal,
     },
     checkpoint,
   );
@@ -1232,7 +1365,73 @@ async function recoverSeal(client, checkpoint) {
     "Missing attributable seal request",
   );
   const request = parse(file.content);
-  assert.equal(hash(file.content), origin.requestSha256);
+  assert.equal(request.state, "SEAL_REQUESTED");
+  if (request.releaseEvidenceSchema === 8) {
+    assert.deepEqual(
+      [request.runId, request.attempt, request.controller, request.checkpoint],
+      [origin.runId, origin.attempt, origin.controller, origin.checkpoint],
+    );
+    const { run, job, step } = await readWriterAttempt(
+      client,
+      checkpoint,
+      origin,
+      "seal",
+      { requireNumber: false },
+    );
+    assert.ok(positive(job.id), "Missing original native seal job identity");
+    assert.ok(
+      step?.status === "completed" &&
+        (step.conclusion === "success" ||
+          (recoverSeal && step.conclusion === "failure")),
+      "Missing original native seal writer step",
+    );
+    const authorized = releaseTime(request.authorizedAt);
+    assert.equal(
+      request.authorizedAt,
+      new Date(authorized).toISOString(),
+      "Missing precise native seal authorization time",
+    );
+    assert.ok(
+      authorized >= releaseTime(step.started_at) &&
+        authorized <= latestRecordedTime(step.completed_at),
+      "Seal authorization is outside its original native writer step",
+    );
+    assertTimedUpload(
+      a,
+      run,
+      job,
+      "github-release-" + origin.runId + "-" + origin.attempt,
+      "Retain original operation evidence",
+    );
+  }
+  return { request, bytes: file.content };
+}
+
+/** The signed standalone successful receipt must agree with the protected writer's original request. */
+export async function verifyOriginalSealRecord(client, checkpoint, record) {
+  const { request } = await originalSealRequest(
+    client,
+    checkpoint,
+    record,
+    false,
+  );
+  assert.deepEqual(
+    record,
+    { ...request, state: "SEALED" },
+    "Standalone seal differs from the original authorized request",
+  );
+  return record;
+}
+
+async function recoverSeal(client, checkpoint) {
+  const origin = parse(checkpoint.files.get("seal-origin.json"));
+  const { request, bytes } = await originalSealRequest(
+    client,
+    checkpoint,
+    origin,
+    true,
+  );
+  assert.equal(hash(bytes), origin.requestSha256);
   assert.deepEqual(
     [request.checkpoint, request.controller],
     [origin.checkpoint, origin.controller],
@@ -1294,6 +1493,8 @@ export async function completeRelease(client, env, checkpoint) {
     ? parse(checkpoint.files.get("seal.json"))
     : await recoverSeal(client, checkpoint);
   assert.equal(record.state, "SEALED");
+  if (record.releaseEvidenceSchema === 8 && checkpoint.files.has("seal.json"))
+    await verifyOriginalSealRecord(client, checkpoint, record);
   assert.match(record.version, /^\d+\.\d+\.\d+(?:-rc\.\d+)?$/u);
   const tag = "v" + record.version;
   assert.ok(positive(record.releaseId));
@@ -1358,6 +1559,8 @@ export async function completeRelease(client, env, checkpoint) {
       parse(originals.get(stem + ".release-evidence.json")),
     );
     evidenceSchema = evidence.schemaVersion;
+    if (evidenceSchema === 8)
+      assertImmutableQualificationAssets(evidence.assets, originals);
     assert.equal(
       evidenceSchema,
       record.releaseEvidenceSchema ?? 7,
@@ -1389,6 +1592,7 @@ export async function completeRelease(client, env, checkpoint) {
         tarball: originals.get(stem + ".tgz"),
         npmCli: producerNpm(),
         publishedAt: release.published_at,
+        sealAuthorizedAt: record.authorizedAt,
       });
     } else assert.ok([1, 2].includes(archive.schemaVersion));
   } finally {

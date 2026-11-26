@@ -2,6 +2,10 @@
  * Native metadata may be recovered only from the admitted history checkpoint. */
 import assert from "node:assert/strict";
 import { readControllerBlob } from "./release-controller-blob.mjs";
+import {
+  assertQualificationAdvisory,
+  qualificationSubjectsSha256,
+} from "./qualification-advisory-binding.mjs";
 import * as zlib from "node:zlib";
 import { canonicalJson } from "./canonical-json.mjs";
 import { readRunArtifacts } from "./github-evidence-reader.mjs";
@@ -222,6 +226,128 @@ export function assertTimedUpload(artifact, run, job, logical, stepName) {
   );
 }
 
+async function readAdvisoryMembers(client, checkpoint, job, artifact) {
+  assert.ok(artifact.size_in_bytes <= maxReceiptZip);
+  const retained = checkpoint?.files.get("artifact-" + artifact.id + ".zip");
+  const zip = artifact.expired
+    ? retained
+    : await originalOrSaved(
+        () => downloadReleaseArtifact(client, artifact, maxReceiptZip),
+        retained,
+      );
+  assert.ok(
+    Buffer.isBuffer(zip) &&
+      zip.length === artifact.size_in_bytes &&
+      "sha256:" + hash(zip) === artifact.digest,
+    "Missing or changed original advisory ZIP",
+  );
+  const members = readZipArchiveFilesWith(zip, {
+    crc32: zlib.crc32,
+    expectedNames: new Set(auditReceiptFilenames),
+    maximumUncompressedBytes: maxReceiptZip,
+  });
+  assert.equal(members.length, 2);
+  const statement = evidence(members, "receipt.json"),
+    signature = evidence(members, "receipt.sigstore.json");
+  const descriptor = {
+    jobId: job.id,
+    artifactId: artifact.id,
+    artifactDigest: artifact.digest,
+    statementSha256: hash(statement),
+    signatureSha256: hash(signature),
+  };
+  return { statement, signature, descriptor };
+}
+
+/** Reopen the exact decision already independently verified by the original protected stage.
+ * Direct native IDs and signed recovery data outlive Actions run and artifact listings. */
+export async function reopenStageQualificationAdvisory(
+  client,
+  { checkpoint, manifest, stage, npmCli },
+) {
+  const marker = assertQualificationAdvisory(stage.qualificationAdvisory);
+  const expected = {
+    workflow: ".github/workflows/release.yml",
+    runId: manifest.runId,
+    attempt: manifest.attempt,
+    controller: manifest.commit,
+  };
+  assert.deepEqual(
+    [stage.qualificationRun, stage.qualificationAttempt, stage.commit],
+    [expected.runId, expected.attempt, expected.controller],
+  );
+  assert.equal(manifest.consumerResolutionPolicy, 2);
+  const originKey =
+    "audit-origin-" + expected.runId + "-" + expected.attempt + ".json";
+  const savedBytes = checkpoint?.files.get(originKey),
+    saved = savedBytes && JSON.parse(savedBytes);
+  const run = await originalOrSaved(
+    () =>
+      client.read(
+        "/actions/runs/" + expected.runId + "/attempts/" + expected.attempt,
+      ),
+    saved?.run,
+  );
+  assertProtectedReleaseRun(run, expected);
+  const { artifactId, jobId } = marker.descriptor;
+  const job = await originalOrSaved(
+    () => client.read("/actions/jobs/" + jobId),
+    saved?.job,
+  );
+  checkedNativeJob([job], jobName, run);
+  assert.equal(job.id, jobId);
+  const artifact = await originalOrSaved(
+    () => client.read("/actions/artifacts/" + artifactId),
+    saved?.artifact,
+  );
+  assert.equal(artifact.id, artifactId);
+  assert.equal(artifact.digest, marker.descriptor.artifactDigest);
+  assertTimedUpload(
+    artifact,
+    run,
+    job,
+    "release-advisory-" + run.id + "-" + job.run_attempt,
+    uploadStep,
+  );
+  const original = await readAdvisoryMembers(client, checkpoint, job, artifact);
+  assert.deepEqual(
+    original.descriptor,
+    marker.descriptor,
+    "Different original qualification receipt",
+  );
+  const { subjects } = JSON.parse(original.statement);
+  const entries = subjects.map(({ source, subject }) => ({ source, subject }));
+  assert.equal(
+    qualificationSubjectsSha256(entries),
+    marker.subjectsSha256,
+    "Different original stage subjects",
+  );
+  assert.ok(
+    entries.length &&
+      entries.every(
+        ({ subject }) =>
+          subject.tarballSha256 === manifest.assets.tarball.sha256,
+      ),
+  );
+  const now = Date.parse(marker.verifiedAt);
+  const decision = await verifyArchivedAdvisoryReceipt({
+    ...original,
+    ...expected,
+    job,
+    entries,
+    now,
+    npmCli,
+  });
+  assert.equal(decision.policySha256, marker.policySha256);
+  return {
+    ...original,
+    decision,
+    job,
+    verificationTime: now,
+    origin: { run, job, artifact },
+  };
+}
+
 function evidence(entries, name) {
   const matches = entries.filter((e) => e.path === name);
   assert.equal(matches.length, 1);
@@ -242,6 +368,7 @@ export function archiveAdvisory(files, prefix, verified) {
     "check_run_url",
     "status",
     "conclusion",
+    ...(prefix === "public" ? ["started_at", "completed_at"] : []),
   ];
   const job = Object.fromEntries(fields.map((key) => [key, verified.job[key]]));
   for (const [suffix, bytes] of [
@@ -408,37 +535,12 @@ export async function verifyHostedAdvisoryReceipt({
     );
   }
   assertTimedUpload(artifact, run, job, logical, uploadStep);
-  assert.ok(artifact.size_in_bytes <= maxReceiptZip);
-  const retained = publicRecipientTest
-    ? undefined
-    : checkpoint?.files.get("artifact-" + artifact.id + ".zip");
-  const zip = artifact.expired
-    ? retained
-    : await originalOrSaved(
-        () => downloadReleaseArtifact(client, artifact, maxReceiptZip),
-        retained,
-      );
-  assert.ok(
-    Buffer.isBuffer(zip) &&
-      zip.length === artifact.size_in_bytes &&
-      "sha256:" + hash(zip) === artifact.digest,
-    "Missing or changed original advisory ZIP",
+  const { statement, signature, descriptor } = await readAdvisoryMembers(
+    client,
+    publicRecipientTest ? undefined : checkpoint,
+    job,
+    artifact,
   );
-  const members = readZipArchiveFilesWith(zip, {
-    crc32: zlib.crc32,
-    expectedNames: new Set(auditReceiptFilenames),
-    maximumUncompressedBytes: maxReceiptZip,
-  });
-  assert.equal(members.length, 2);
-  const statement = evidence(members, "receipt.json"),
-    signature = evidence(members, "receipt.sigstore.json");
-  const descriptor = {
-    jobId: job.id,
-    artifactId: artifact.id,
-    artifactDigest: artifact.digest,
-    statementSha256: hash(statement),
-    signatureSha256: hash(signature),
-  };
   const decision = await verifyArchivedAdvisoryReceipt({
     statement,
     signature,

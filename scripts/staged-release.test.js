@@ -1575,6 +1575,15 @@ test.each([false, true])(
       );
     }
     const inventory = (jobs) => ({ jobs, total_count: jobs.length });
+    const inactive = {
+      id: 488,
+      name: "material",
+      status: "completed",
+      conclusion: "skipped",
+      run_id: run.id,
+      head_sha: sha,
+      run_attempt: 2 + offset,
+    };
     const read = (path) => {
       if (path.includes("/artifacts?"))
         return { total_count: records.length, artifacts: records };
@@ -1588,7 +1597,8 @@ test.each([false, true])(
               ...job,
               id: 300 + job.id,
               run_attempt: 2 + offset,
-            })),
+            }))
+            .concat(inactive),
         );
       if (path.includes("/jobs?")) {
         const attempt = Number(path.split("/")[5]);
@@ -1612,6 +1622,9 @@ test.each([false, true])(
     expect(
       JSON.parse(verified.get("public-jobs.json")).map((job) => job.attempt),
     ).toEqual([1 + offset, 1 + offset, 2 + offset]);
+    inactive.conclusion = "success";
+    await expect(replay()).rejects.toThrow();
+    inactive.conclusion = "skipped";
     const linux = records.find((artifact) =>
       artifact.name.startsWith("public-recipient-"),
     );

@@ -1,6 +1,9 @@
 /** Share byte-identical measurements across the material decisions of a public run. */
 import assert from "node:assert/strict";
-import { stableJson } from "./canonical-json.mjs";
+import {
+  createMaterialRecordInterner,
+  createMaterialRecordReconstructor,
+} from "./material-record-interning.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 
 const hex = /^[a-f0-9]{64}$/u;
@@ -22,15 +25,8 @@ function original(digests, key) {
 
 export function packPublicMaterial({ input, origin, lanes, originals }) {
   const decisions = {},
-    materials = {},
-    artifacts = {},
-    dispositions = {},
     used = new Set();
-  const index = (row, dictionary) => {
-    const key = digest(stableJson(row));
-    dictionary[key] = row;
-    return key;
-  };
+  const material = createMaterialRecordInterner();
   for (const lane of Object.values(lanes)) {
     for (const key of Object.values(lane.decisions)) {
       const decision = original(originals, key);
@@ -38,25 +34,8 @@ export function packPublicMaterial({ input, origin, lanes, originals }) {
       const { materialSha256 } = JSON.parse(decision);
       used.add(key);
       used.add(materialSha256);
-      if (Object.hasOwn(materials, materialSha256)) continue;
-      const text = original(originals, materialSha256);
-      const record = JSON.parse(text);
-      assert.equal(
-        stableJson(record),
-        text,
-        "Public material decisions must retain a canonical original",
-      );
-      const {
-        artifacts: archiveRows,
-        decisions: locationRows,
-        ...header
-      } = record;
-      assert.ok(Array.isArray(archiveRows) && Array.isArray(locationRows));
-      materials[materialSha256] = {
-        header,
-        artifacts: archiveRows.map((row) => index(row, artifacts)),
-        dispositions: locationRows.map((row) => index(row, dispositions)),
-      };
+      if (!Object.hasOwn(material.tables.materials, materialSha256))
+        material.add(materialSha256, original(originals, materialSha256));
     }
   }
   assert.deepEqual(
@@ -70,9 +49,7 @@ export function packPublicMaterial({ input, origin, lanes, originals }) {
     origin,
     lanes,
     decisions,
-    materials,
-    artifacts,
-    dispositions,
+    ...material.tables,
   };
 }
 
@@ -91,88 +68,28 @@ export function unpackPublicMaterial(packet) {
   ]);
   assert.equal(packet.schemaVersion, 3);
   const originals = {};
-  const decisions = new Set(),
-    materials = new Set(),
-    artifacts = new Map(),
-    dispositions = new Map();
-  let size = 0;
-  const retain = (key, bytes) => {
-    size += Buffer.byteLength(bytes);
-    assert.ok(
-      size <= expansionLimit && Buffer.byteLength(bytes) <= bodyLimit,
-      "Public material expansion exceeds its bound",
-    );
-    assert.equal(
-      digest(bytes),
-      key,
-      "Could not reconstruct exact public material original",
-    );
-    originals[key] = bytes;
-  };
-  const row = (key, dictionary, seen, include) => {
-    assert.match(key, hex);
-    assert.ok(Object.hasOwn(dictionary, key), "Missing public material row");
-    const value = dictionary[key];
-    if (!seen.has(key)) {
-      const bytes = stableJson(value);
-      assert.equal(digest(bytes), key, "Public material row digest changed");
-      seen.set(key, Buffer.byteLength(bytes));
-    }
-    include(seen.get(key));
-    return value;
-  };
+  const decisions = new Set();
+  const material = createMaterialRecordReconstructor(packet, {
+    expansionLimit,
+    label: "Public material",
+  });
   for (const lane of Object.values(packet.lanes)) {
     for (const key of Object.values(lane.decisions)) {
       if (decisions.has(key)) continue;
       const decision = original(packet.decisions, key);
-      retain(key, decision);
+      material.accountOriginal(decision);
+      originals[key] = decision;
       decisions.add(key);
       const { materialSha256 } = JSON.parse(decision);
-      if (materials.has(materialSha256)) continue;
-      assert.match(materialSha256, hex);
-      const recipe = packet.materials[materialSha256];
-      assert.deepEqual(keys(recipe), ["artifacts", "dispositions", "header"]);
-      assert.ok(
-        !Object.hasOwn(recipe.header, "artifacts") &&
-          !Object.hasOwn(recipe.header, "decisions"),
-      );
-      assert.ok(
-        Array.isArray(recipe.artifacts) && Array.isArray(recipe.dispositions),
-      );
-      let recordSize = Buffer.byteLength(stableJson(recipe.header));
-      const include = (rowSize) => {
-        recordSize += rowSize;
-        assert.ok(
-          recordSize <= bodyLimit && size + recordSize <= expansionLimit,
-          "Public material expansion exceeds its bound",
-        );
-      };
-      retain(
-        materialSha256,
-        stableJson({
-          ...recipe.header,
-          artifacts: recipe.artifacts.map((key) =>
-            row(key, packet.artifacts, artifacts, include),
-          ),
-          decisions: recipe.dispositions.map((key) =>
-            row(key, packet.dispositions, dispositions, include),
-          ),
-        }),
-      );
-      materials.add(materialSha256);
+      originals[materialSha256] = material.open(materialSha256);
     }
   }
-  for (const [used, declared] of [
-    [decisions, packet.decisions],
-    [materials, packet.materials],
-    [artifacts, packet.artifacts],
-    [dispositions, packet.dispositions],
-  ])
-    assert.deepEqual(
-      [...used.keys()].sort(),
-      keys(declared),
-      "Unrequested rows in the public material proof",
-    );
+  material.assertClosed();
+  assert.deepEqual(
+    [...decisions].sort(),
+    keys(packet.decisions),
+    "Unrequested rows in the public material proof",
+  );
   return {
     schemaVersion: 2,
     input: packet.input,

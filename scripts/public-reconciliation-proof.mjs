@@ -21,6 +21,7 @@ import { unpackPublicMaterial } from "./public-material-packet.mjs";
 import { assertPublicAdvisoryDescriptor } from "./public-recipient-plan.mjs";
 import { verifyHostedAdvisoryReceipt } from "./release-audit-job.mjs";
 import { advisoryDecisionExpiry } from "./release-audit-evaluator.mjs";
+import { latestRecordedTime, releaseTime } from "./release-native-time.mjs";
 import {
   assertPublicMaterialDecision,
   PUBLIC_MATERIAL,
@@ -55,6 +56,33 @@ const requestedOrigin = (op) => ({
   run: op.publicRun,
   attempt: op.publicAttempt,
 });
+
+export function publicExecutionWindow(execution) {
+  assert.deepEqual(Object.keys(execution).sort(), ["completedAt", "startedAt"]);
+  const start = releaseTime(execution.startedAt),
+    end = releaseTime(execution.completedAt);
+  assert.ok(start <= end, "Invalid original public job duration");
+  return { start, end };
+}
+
+export function assertPublicMaterialTime(observedAt, execution) {
+  const { start } = publicExecutionWindow(execution);
+  const observed = releaseTime(observedAt);
+  assert.ok(
+    observed >= start && observed <= latestRecordedTime(execution.completedAt),
+    "Public material decision is outside its original execution",
+  );
+}
+
+export function assertPublicTestAfter(test, prerequisite, source) {
+  const { start } = publicExecutionWindow(test);
+  const { end } = publicExecutionWindow(prerequisite);
+  assert.ok(start >= end, `Public replay preceded the original ${source} job`);
+}
+
+export function publicEvaluatorExecution(job) {
+  return { startedAt: job.started_at, completedAt: job.completed_at };
+}
 
 function assertPublicRun(run, operation, complete, rightsPending = false) {
   assert.deepEqual(
@@ -506,6 +534,7 @@ export function readMaterialLane(
   return { decisions: retained.decisions, records };
 }
 
+/** Bind each test receipt to its exact inputs and required producer fixture roster. */
 export function assertPublicTestRecord(
   record,
   {
@@ -516,28 +545,33 @@ export function assertPublicTestRecord(
     materialSha256,
     decisions,
     advisory,
+    installedTestScripts = INSTALLED_TEST_SCRIPTS,
   },
 ) {
   assertPublicAdvisoryDescriptor(advisory);
-  assert.deepEqual(record, {
-    schemaVersion: 2,
-    lane,
-    input,
-    origin: origin(testSource),
-    observation: selected.artifact,
-    materialSha256,
-    advisory,
-    consumers: Object.fromEntries(
-      Object.entries(selected.consumers).map(([mode, observation]) => [
-        mode,
-        {
-          resolutionSha256: observation.resolutionSha256,
-          decisionSha256: decisions[mode],
-          installedTests: INSTALLED_TEST_SCRIPTS,
-        },
-      ]),
-    ),
-  });
+  assert.deepEqual(
+    record,
+    {
+      schemaVersion: 2,
+      lane,
+      input,
+      origin: origin(testSource),
+      observation: selected.artifact,
+      materialSha256,
+      advisory,
+      consumers: Object.fromEntries(
+        Object.entries(selected.consumers).map(([mode, observation]) => [
+          mode,
+          {
+            resolutionSha256: observation.resolutionSha256,
+            decisionSha256: decisions[mode],
+            installedTests: installedTestScripts,
+          },
+        ]),
+      ),
+    },
+    "Public tests did not use the required fixtures and inputs",
+  );
 }
 
 /** The product job reopens the exact captured lock selected by the successful scanner job. */
@@ -800,13 +834,7 @@ export async function readPublicAuditSubjects(
       records,
     )) {
       const observed = selected.consumers[mode];
-      assert.ok(
-        Date.parse(decision.observedAt) >=
-          Date.parse(retained.execution.startedAt) &&
-          Date.parse(decision.observedAt) <=
-            Date.parse(retained.execution.completedAt),
-        "Public material decision is outside its original execution",
-      );
+      assertPublicMaterialTime(decision.observedAt, retained.execution);
       await verifyPublicMaterialRecord(
         materialReader,
         { decision, material: bytes },
@@ -839,13 +867,14 @@ export async function readPublicAuditSubjects(
     assertPublicAdvisoryDescriptor(record.advisory);
     testAdvisories.push({
       descriptor: record.advisory,
-      startedAt: tested.execution.startedAt,
+      execution: tested.execution,
+      attempt: tested.source.attempt,
     });
     assert.ok(
-      Date.parse(tested.execution.startedAt) >=
-        Date.parse(retained.execution.completedAt),
-      "Public replay preceded the retained material job",
+      tested.source.attempt >= retained.source.attempt,
+      "Public replay is from an earlier attempt than its material proof",
     );
+    assertPublicTestAfter(tested.execution, retained.execution, "material");
     assertPublicTestRecord(record, {
       lane,
       input,
@@ -860,7 +889,11 @@ export async function readPublicAuditSubjects(
       packet: selected.packet.index,
       artifact: selected.artifact,
       source: selected.source,
-      tests: { artifact: tested.artifact, source: tested.source },
+      tests: {
+        artifact: tested.artifact,
+        source: tested.source,
+        execution: tested.execution,
+      },
     };
   }
   assert.deepEqual(
@@ -885,9 +918,13 @@ export async function readPublicAuditSubjects(
       "public-native.json",
       Buffer.from(
         stableJson({
-          schemaVersion: 2,
+          schemaVersion: 3,
           registry: batch.registry,
-          material: { artifact: retained.artifact, source: retained.source },
+          material: {
+            artifact: retained.artifact,
+            source: retained.source,
+            execution: retained.execution,
+          },
           lanes: native,
           originals,
         }),
@@ -909,5 +946,9 @@ export async function readPublicAuditSubjects(
     files,
     report: batch.report,
     testAdvisories,
+    materialExecution: {
+      attempt: retained.source.attempt,
+      timing: retained.execution,
+    },
   };
 }

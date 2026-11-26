@@ -28,6 +28,14 @@ const filename = ".github/workflows/release-registry.yml";
 const parse = (bytes) =>
   JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
 const isId = (n) => Number.isSafeInteger(n) && n > 0;
+const inactiveCurrentPublicJobs = new Set([
+  "public_observation",
+  "Public observation (${{ matrix.runner }}, ${{ matrix.node }})",
+  "material",
+  "advisory",
+  "Release advisory",
+  "Release advisory / Evaluate",
+]);
 
 export function qualificationRuntimeMatrix(manifest, policy = CI_RUNTIME) {
   const matrix = validateFrozenMatrix(
@@ -80,6 +88,10 @@ const nativeJobs = (response, names, run, allowSkippedMatrix = false) => {
     response.jobs.length,
   );
   for (const job of response.jobs) {
+    const inactiveCurrentJob =
+      inactiveCurrentPublicJobs.has(job.name) &&
+      job.status === "completed" &&
+      job.conclusion === "skipped";
     const skippedMatrix =
       allowSkippedMatrix &&
       job.status === "completed" &&
@@ -89,14 +101,16 @@ const nativeJobs = (response, names, run, allowSkippedMatrix = false) => {
         "Public recipient (${{ matrix.runner }}, ${{ matrix.node }})",
       ].includes(job.name);
     assert.ok(
-      (names.includes(job.name) || skippedMatrix) &&
+      (names.includes(job.name) || skippedMatrix || inactiveCurrentJob) &&
         isId(job.id) &&
         isId(job.run_attempt),
     );
     assert.equal(job.run_id, run.id);
     assert.equal(job.head_sha, run.head_sha);
   }
-  return response.jobs;
+  return response.jobs.filter(
+    ({ name }) => !inactiveCurrentPublicJobs.has(name),
+  );
 };
 
 const requirePublicRun = (run, operation) => {
@@ -141,6 +155,7 @@ export async function readPublicEvidence(
   pinnedReport,
   sbom,
 ) {
+  assert.equal(input.schemaVersion, 1);
   const runId = operation.publicRun;
   assert.match(runId, /^[1-9]\d{0,15}$/u);
   assert.match(operation.publicAttempt, /^[1-9]\d{0,2}$/u);

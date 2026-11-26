@@ -41,9 +41,10 @@ The replay receipt covers the recorded role and original lock.
 FULL qualification still requires the complete roster under the active admission policy.
 An unresolved licence or notice disposition stays with the rights owner under the exceptional evidence procedure.
 For a fresh full qualification, the signed checkpoint can index previously authenticated scanner results in `recipient-material-measurements.json` and case-specific decisions in `recipient-material-cases.json`.
-Each scanner index entry identifies its original role, commit, tarball and resolution SHA-256, native OS, CPU, Node and npm, and both the pending observation and scanner artifact IDs and SHA-256 digests.
-The fresh macOS job uses the exact retained lock for a matching role and runtime.
-Other matching archives can reuse those measurements by exact SRI while retaining their own resolution and test evidence.
+Each scanner index entry identifies its original logical `job`, role, commit, tarball and resolution SHA-256, native OS, CPU, Node and npm, and both the pending observation and scanner artifact IDs and SHA-256 digests.
+Use `consumer_runtime` for a matrix lane and the native portability job ID for a standalone job.
+The fresh macOS job uses the exact retained lock for a matching job, role and runtime.
+Other jobs can reuse exact-SRI archive measurements and retain their own resolution and test evidence.
 Each standalone portability job retains one indexed proof of its alias and scoped tests and the graphs measured before and after execution.
 The case index refers to the original job artifact and its digest.
 The matching `recipient-material-<caseSha256>.json` binds the rights owner's decision to the original material and scope.
@@ -207,7 +208,8 @@ The stage journal records the qualification decision, its original upload and th
 The registry run supplies a separate signed decision for the newly observed public installations.
 Current standalone evidence uses schema version 8.
 Its archive uses version 3 and carries the signed decisions, their original job identities, the frozen runtime policy and the distinct public inputs needed to replay them after Actions expires.
-The release owner can verify the earlier decision at its recorded admission time and the public decision at sealing.
+Completion verifies qualification freshness at the original stage check, then checks that any qualification case was still current at seal authorization.
+It verifies the public decision at seal authorization and checks the original material and evaluator job times against each successful recipient test, including jobs copied from an earlier attempt.
 Signature readback uses the public Sigstore trust root retained in the protected controller revision and the transparency proofs in the signature bundle.
 The root matches the selected npm distribution's public Sigstore seed.
 The runtime update check verifies that binding before a new controller can issue evidence.
@@ -216,6 +218,9 @@ Previously released versions use the evidence contract under which they were pub
 Use a signed `seal` operation with the original draft ID, verified `public.json`, `publicRun`, `publicAttempt`, its `publicController` SHA and recoverable source and qualification material.
 Preserve native run and artifact metadata in `origin-RUN-ATTEMPT-LOGICAL.json` with `run` and `artifact` as the original REST responses.
 Store the verified ZIP in `artifact-ID.zip`.
+For a delayed seal, keep the qualification advisory upload identified by the native stage journal.
+Its signed recovery member `audit-origin-RUN-ATTEMPT.json` contains the original `run`, `job` and `artifact` API records and refers to the same `artifact-ID.zip`.
+Sealing can reopen that exact decision even after GitHub removes the original qualification listing.
 For the promoted CI candidate and its package proof, also retain the original producer job response as `producer`.
 Preserve `public-run-origin.json` with the final native `run`, `latestJobs`, original `attempts` job inventories keyed by attempt, and original `artifacts` inventory.
 Successful lanes from earlier attempts keep their original timed job execution and artifact identity when other lanes rerun.
@@ -227,7 +232,10 @@ Asset work can resume once the earlier signed reservation cites the native skipp
 For either writer give the prior `origin` the exact `reservation` tag object, `runId`, native run `number`, `attempt` and `controller`.
 An earlier `seal-request.json` requires read-only reconciliation.
 Submit the resulting `seal.json` in a checkpoint to `release-completion.yml`.
-It independently checks the immutable release, tag, all five asset digests and native GitHub release and asset attestations.
+The original writer records `authorizedAt` in `seal-request.json` immediately before asking GitHub to publish.
+For current evidence, completion checks that `seal.json` agrees with the original native request, that authorization occurred during the original seal step, and that it preceded the provider's recorded publication.
+When native records may expire, preserve the original seal artifact and include its original attempt job inventory as `jobs` alongside `run` and `artifact` in the signed origin member.
+Completion independently checks the immutable release, tag, all five asset digests and native GitHub release and asset attestations.
 Preserve that post-seal receipt in signed history.
 If the seal PATCH succeeded but its acknowledgement was lost, use the original retained `seal-request.json` and submit a signed `seal-origin.json` to the same read-only completion workflow.
 It binds `runId`, `attempt`, `controller`, original seal `checkpoint` and `requestSha256`.

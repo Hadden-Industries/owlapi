@@ -136,12 +136,6 @@ export async function readPendingMacRecipientCase(client, env) {
   const run = await client.read(`/actions/runs/${source.runId}`);
   sameRepositoryRun(run, source.commit);
   assert.equal(run.id, source.runId);
-  assert.equal(run.status, "completed");
-  assert.equal(
-    run.conclusion,
-    "failure",
-    "Recovery needs an unsuccessful qualified material observation",
-  );
   assert.ok(["CI", "Release"].includes(source.workflow));
   assert.equal(
     run.path,
@@ -157,6 +151,22 @@ export async function readPendingMacRecipientCase(client, env) {
     Number.isSafeInteger(source.attempt) &&
       source.attempt > 0 &&
       source.attempt <= run.run_attempt,
+  );
+  // A later partial rerun may succeed. Custody and failure belong to the
+  // original observation attempt, whose run coordinates are checked separately.
+  const originalAttempt = await client.read(
+    `/actions/runs/${run.id}/attempts/${source.attempt}`,
+  );
+  sameRepositoryRun(originalAttempt, source.commit);
+  assert.equal(originalAttempt.id, run.id);
+  assert.equal(originalAttempt.run_attempt, source.attempt);
+  assert.equal(originalAttempt.path, run.path);
+  assert.equal(originalAttempt.event, run.event);
+  assert.equal(originalAttempt.status, "completed");
+  assert.equal(
+    originalAttempt.conclusion,
+    "failure",
+    "The original recipient attempt must have failed",
   );
   const standalone =
     pending.schemaVersion === 2

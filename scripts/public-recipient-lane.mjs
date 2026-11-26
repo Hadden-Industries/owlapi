@@ -20,6 +20,7 @@ import { assertConsumerNpm } from "./consumer-runtime-tools.mjs";
 import {
   fetchRegistryMetadata,
   installRegistryConsumer,
+  observeLegacyRegistryGraph,
 } from "./public-registry-consumer.mjs";
 import {
   PACKAGE_NAME,
@@ -54,12 +55,13 @@ export async function runPublicRecipientLane(
   } = {},
 ) {
   assert.ok(
-    ["observe", "test"].includes(mode),
+    ["observe", "test", "legacy"].includes(mode),
     "Select public observation or test",
   );
   const matrix = validateFrozenMatrix(JSON.parse(env.OWLAPI_RUNTIME_MATRIX));
   const input = JSON.parse(env.OWLAPI_PUBLIC_RECIPIENT);
-  assert.equal(input.schemaVersion, 2);
+  const legacy = mode === "legacy";
+  assert.equal(input.schemaVersion, legacy ? 1 : 2);
   assert.deepEqual(input.package, {
     name: PACKAGE_NAME,
     version: PACKAGE_VERSION,
@@ -74,7 +76,7 @@ export async function runPublicRecipientLane(
   assert.ok(lane);
   assert.equal(lane.node, env.OWLAPI_EXPECTED_NODE);
   const npmCli = env.OWLAPI_CONSUMER_NPM;
-  assertConsumerNpm(npmCli);
+  const npm = assertConsumerNpm(npmCli);
   const origin = {
     commit: env.GITHUB_SHA,
     run: env.GITHUB_RUN_ID,
@@ -115,7 +117,29 @@ export async function runPublicRecipientLane(
         metadata,
         npmCli,
         ...(original ? { original } : {}),
+        ...(legacy ? { legacyStageTarball: tarball } : {}),
       });
+      if (legacy) {
+        writeInstalledConsumerFixtures(directory, dependencyName);
+        for (const script of INSTALLED_TEST_SCRIPTS)
+          execFileSync(process.execPath, [script], {
+            cwd: directory,
+            env: environment,
+            timeout: 120000,
+            stdio: "pipe",
+          });
+        consumers[variant] = {
+          identity,
+          installedTests: INSTALLED_TEST_SCRIPTS,
+          ...observeLegacyRegistryGraph({
+            directory,
+            environment,
+            dependencyName,
+            npmCli,
+          }),
+        };
+        continue;
+      }
       const evidence = await captureResolutionEvidence(directory, {
         tarball,
         dependencyName,
@@ -165,7 +189,14 @@ export async function runPublicRecipientLane(
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
-  if (!trusted) {
+  if (legacy) {
+    mkdirSync(".release/public-lane", { recursive: true });
+    writeFileSync(
+      ".release/public-lane/lane.json",
+      JSON.stringify({ lane, consumers, npm, ...origin, input }) + "\n",
+      { flag: "wx" },
+    );
+  } else if (!trusted) {
     mkdirSync(".release/public-observation", { recursive: true });
     writeFileSync(
       ".release/public-observation/observation.json",

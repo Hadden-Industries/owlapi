@@ -5,12 +5,27 @@ import { REPOSITORY_ID } from "./release-identity.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { readPublicObservation } from "./public-recipient-observation.mjs";
 import {
+  readArchivedInstalledTestScripts,
+  readArchivedPublicExportSubpaths,
+} from "./release-public-archive-rosters.mjs";
+import {
+  assertPublicMaterialTime,
+  assertPublicTestAfter,
   assertPublicTestRecord,
+  publicEvaluatorExecution,
+  publicExecutionWindow,
   publicLaneKey,
   readMaterialLane,
   readMaterialPacket,
   verifyPublicMaterialRecord,
 } from "./public-reconciliation-proof.mjs";
+import { assertConsistentArchives } from "./release-resolution-proof.mjs";
+import { assertAdvisoryCasesCurrent } from "./release-audit-evaluator.mjs";
+import {
+  latestRecordedTime,
+  releaseTime,
+  sealAuthorizationTime,
+} from "./release-native-time.mjs";
 import { prepareRecipientMaterial } from "../util/third-party-evidence/recipient-material.mjs";
 import { readCanonicalMaterialFromGit } from "./recipient-material-git-source.mjs";
 import {
@@ -97,6 +112,15 @@ export async function readArchivedPublicInputs(
   );
   assert.deepEqual(parse(files.get("recipient-input.json")), input);
   const report = parse(files.get("public.json"));
+  assert.equal(
+    report.integrity,
+    manifest.integrity,
+    "Archived registry SRI differs from the qualified manifest",
+  );
+  const archivedExportSubpaths = readArchivedPublicExportSubpaths(
+    tarball,
+    input,
+  );
   assert.deepEqual(report, record.publicVerification);
   assert.equal(report.schemaVersion, 2);
   const retainedBytes = files.get("public-native.json");
@@ -109,7 +133,7 @@ export async function readArchivedPublicInputs(
     "registry",
     "schemaVersion",
   ]);
-  assert.equal(retained.schemaVersion, 2);
+  assert.equal(retained.schemaVersion, 3);
   const origin = {
     commit: operation.publicController,
     run: operation.publicRun,
@@ -123,8 +147,45 @@ export async function readArchivedPublicInputs(
       record.publicAdvisory.controller,
     ],
   );
+  const installedTestScripts = readArchivedInstalledTestScripts(origin.commit);
+  assert.deepEqual(keys(retained.registry), ["artifact", "source"]);
+  assert.deepEqual(keys(retained.material), [
+    "artifact",
+    "execution",
+    "source",
+  ]);
   assertOriginal(retained.registry, origin, `release-registry-${origin.run}-`);
   assertOriginal(retained.material, origin, `public-material-${origin.run}-`);
+  const materialTime = publicExecutionWindow(retained.material.execution);
+  const evaluator = parse(files.get("public-advisory-job.json"));
+  assert.deepEqual(
+    [
+      evaluator.id,
+      String(evaluator.run_id),
+      evaluator.head_sha,
+      evaluator.status,
+      evaluator.conclusion,
+    ],
+    [
+      record.publicAdvisory.descriptor.jobId,
+      origin.run,
+      origin.commit,
+      "completed",
+      "success",
+    ],
+  );
+  assert.ok(
+    positive(evaluator.run_attempt) &&
+      evaluator.run_attempt >= retained.material.source.attempt &&
+      evaluator.run_attempt <= Number(origin.attempt),
+    "The archived advisory has a different producing attempt",
+  );
+  const evaluation = publicEvaluatorExecution(evaluator);
+  const evaluatorTime = publicExecutionWindow(evaluation);
+  assert.ok(
+    evaluatorTime.start >= materialTime.end,
+    "Public advisory preceded the original material job",
+  );
   const materialBytes = files.get("public-material.json");
   const material = readMaterialPacket(materialBytes, input, origin);
   assert.deepEqual(material.origin, sourceOrigin(retained.material.source));
@@ -134,17 +195,35 @@ export async function readArchivedPublicInputs(
   const originals = new Set(),
     decisionsUsed = new Set();
   const entries = new Map();
-  // The public controller's reviewed delta leaves the qualified corpus intact.
-  // Even after the working tree changes, its original evidence is in Git.
-  const materialReader = await prepareRecipientMaterial({
-    npmCli,
-    readCanonicalBytes: readCanonicalMaterialFromGit(operation.source),
-  });
+  const observations = [];
+  let lastTestCompletion = evaluatorTime.end;
   for (const lane of matrix.include) {
     const key = publicLaneKey(lane);
-    const { packet, artifact, source, tests } = retained.lanes[key];
+    const laneProof = retained.lanes[key];
+    assert.deepEqual(keys(laneProof), [
+      "artifact",
+      "packet",
+      "source",
+      "tests",
+    ]);
+    const { packet, artifact, source, tests } = laneProof;
+    assert.deepEqual(keys(tests), ["artifact", "execution", "source"]);
     assertOriginal({ artifact, source }, origin, `public-observation-${key}-`);
     assertOriginal(tests, origin, `public-recipient-${key}-`);
+    assert.ok(
+      tests.source.attempt >= evaluator.run_attempt,
+      "Public replay is from an earlier attempt than its advisory",
+    );
+    assertPublicTestAfter(
+      tests.execution,
+      retained.material.execution,
+      "material",
+    );
+    assertPublicTestAfter(tests.execution, evaluation, "advisory");
+    lastTestCompletion = Math.max(
+      lastTestCompletion,
+      publicExecutionWindow(tests.execution).end,
+    );
     const selected = {};
     for (const item of Object.values(packet)) {
       for (const member of [item.manifest, item.lock, item.resolution]) {
@@ -171,9 +250,32 @@ export async function readArchivedPublicInputs(
         npmCli,
         registryTarball: report.tarballUrl,
         consumerNpm: policy.consumerNpm,
+        archivedExportSubpaths,
       },
     );
-    const observation = { consumers, artifact, source };
+    observations.push({
+      lane,
+      key,
+      tests,
+      observation: { consumers, artifact, source },
+    });
+  }
+  assert.deepEqual([...originals].sort(), keys(retained.originals));
+  assertConsistentArchives(
+    observations.flatMap(({ observation }) =>
+      Object.values(observation.consumers).map(
+        ({ evidence }) => evidence.resolution,
+      ),
+    ),
+  );
+  // The public controller's reviewed delta leaves the qualified corpus intact.
+  // Even after the working tree changes, its original evidence is in Git.
+  const materialReader = await prepareRecipientMaterial({
+    npmCli,
+    readCanonicalBytes: readCanonicalMaterialFromGit(operation.source),
+  });
+  for (const { lane, key, tests, observation } of observations) {
+    const { consumers, source } = observation;
     const { decisions, records } = readMaterialLane(
       material,
       lane,
@@ -181,6 +283,10 @@ export async function readArchivedPublicInputs(
       decisionsUsed,
     );
     for (const [mode, selected] of Object.entries(records)) {
+      assertPublicMaterialTime(
+        selected.decision.observedAt,
+        retained.material.execution,
+      );
       await verifyPublicMaterialRecord(
         materialReader,
         selected,
@@ -204,15 +310,20 @@ export async function readArchivedPublicInputs(
       testSource: tests.source,
       materialSha256: sha256Buffer(materialBytes),
       advisory: record.publicAdvisory.descriptor,
+      installedTestScripts,
     });
     for (const { subject } of Object.values(consumers)) {
       const entry = { subject, source };
       entries.set(canonicalJson(entry), entry);
     }
   }
-  assert.deepEqual([...originals].sort(), keys(retained.originals));
   assert.deepEqual([...decisionsUsed].sort(), keys(material.originals));
-  return { operation, entries: [...entries.values()] };
+  return {
+    operation,
+    entries: [...entries.values()],
+    evaluator,
+    lastTestCompletion,
+  };
 }
 
 /** Recheck the exact qualification accepted before the stage request using its native journal and the archived signature. */
@@ -221,7 +332,7 @@ export async function verifyArchivedQualification(
   record,
   operation,
   npmCli,
-  publishedAt,
+  sealTime,
 ) {
   const manifestBytes = files.get("manifest.json"),
     manifest = parse(manifestBytes);
@@ -263,10 +374,10 @@ export async function verifyArchivedQualification(
       ({ subject }) => subject.tarballSha256 === manifest.assets.tarball.sha256,
     ),
   );
-  const now = Date.parse(marker.verifiedAt);
+  const now = releaseTime(marker.verifiedAt);
   assert.ok(
-    now <= Date.parse(publishedAt),
-    "Qualification verification is dated after publication",
+    Number.isSafeInteger(sealTime) && now <= sealTime,
+    "Qualification verification is dated after native seal authorization",
   );
   const decision = await verifyArchivedAdvisoryReceipt({
     statement,
@@ -282,13 +393,15 @@ export async function verifyArchivedQualification(
     npmCli,
   });
   assert.equal(decision.policySha256, marker.policySha256);
+  assertAdvisoryCasesCurrent(decision, sealTime);
 }
 
 export async function verifyArchivedPublicRelease(
   files,
   record,
-  { tarball, npmCli, publishedAt, client },
+  { tarball, npmCli, publishedAt, sealAuthorizedAt, client },
 ) {
+  const sealTime = sealAuthorizationTime(sealAuthorizedAt, publishedAt);
   // Check the frozen policy digest against the qualifying manifest before it may select a tool.
   const policy = validateRuntimePolicy(
     parse(files.get("qualified-runtime-policy.json")),
@@ -296,32 +409,28 @@ export async function verifyArchivedPublicRelease(
   const manifestBytes = files.get("manifest.json");
   assert.equal(sha256Buffer(manifestBytes), record.stage.manifestSha256);
   qualificationRuntimeMatrix(parse(manifestBytes), policy);
-  const { operation, entries } = await withAuditNpmClients(
-    npmCli,
-    (npmCliForVersion) =>
-      readArchivedPublicInputs(files, record, {
-        tarball,
-        npmCli: npmCliForVersion(policy.consumerNpm),
-        client,
-      }),
-    policy.consumerNpm,
-  );
-  await verifyArchivedQualification(
-    files,
-    record,
-    operation,
-    npmCli,
-    publishedAt,
-  );
+  const { operation, entries, evaluator, lastTestCompletion } =
+    await withAuditNpmClients(
+      npmCli,
+      (npmCliForVersion) =>
+        readArchivedPublicInputs(files, record, {
+          tarball,
+          npmCli: npmCliForVersion(policy.consumerNpm),
+          client,
+        }),
+      policy.consumerNpm,
+    );
+  await verifyArchivedQualification(files, record, operation, npmCli, sealTime);
   const { descriptor, policySha256, runId, attempt, controller } =
     record.publicAdvisory;
   assert.deepEqual(
     [runId, attempt, controller],
     [operation.publicRun, operation.publicAttempt, operation.publicController],
   );
-  const job = parse(files.get("public-advisory-job.json"));
-  const now = Date.parse(publishedAt);
-  assert.ok(Number.isFinite(now), "Missing immutable publication time");
+  assert.ok(
+    lastTestCompletion <= sealTime,
+    "The native seal was authorized before public testing finished",
+  );
   const decision = await verifyArchivedAdvisoryReceipt({
     statement: files.get("public-advisory.json"),
     signature: files.get("public-advisory.sigstore.json"),
@@ -330,11 +439,17 @@ export async function verifyArchivedPublicRelease(
     attempt,
     controller,
     workflow,
-    job,
+    job: evaluator,
     entries,
-    now,
+    now: sealTime,
     npmCli,
   });
   assert.equal(decision.policySha256, policySha256);
+  const decided = releaseTime(decision.decidedAt);
+  assert.ok(
+    decided >= releaseTime(evaluator.started_at) &&
+      decided <= latestRecordedTime(evaluator.completed_at),
+    "The archived advisory was issued outside its original evaluator job",
+  );
   return record.publicAdvisory;
 }

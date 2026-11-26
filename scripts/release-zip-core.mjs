@@ -37,6 +37,16 @@ const findZipEndOfCentralDirectory = (archive) => {
   throw new Error("ZIP archive has no valid end-of-central-directory record.");
 };
 
+/** Detect the bounded ZIP trailer independently of the advertised filename. */
+export function hasZipDirectory(archive) {
+  try {
+    findZipEndOfCentralDirectory(archive);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 const assertSafeZipPath = (path) => {
   if (
     typeof path !== "string" ||

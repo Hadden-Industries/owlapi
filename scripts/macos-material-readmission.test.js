@@ -11,6 +11,7 @@ const platform = {
   npm: CI_RUNTIME.consumerNpm,
 };
 const row = {
+  job: "consumer_runtime",
   role: "portability-alias",
   commit: "a".repeat(40),
   tarballSha256: "b".repeat(64),
@@ -35,6 +36,7 @@ test("selects the exact original lock only for its role and original native runt
   expect(
     selectMacMeasurements(index([row]), {
       ...row,
+      job: "portability_macos_node_26",
       platform: { ...platform, npm: CI_RUNTIME.npm },
     }),
   ).toEqual({ entries: [row], replay: null });
@@ -55,6 +57,7 @@ test("selects the exact original lock only for its role and original native runt
 test("an npm 12 standalone original is selectable without treating it as a floor-client lock", () => {
   const producer = {
     ...row,
+    job: "portability_macos_node_26",
     platform: { ...platform, npm: CI_RUNTIME.npm },
     resolutionSha256: "7".repeat(64),
   };
@@ -70,6 +73,7 @@ test("an npm 12 standalone original is selectable without treating it as a floor
 
 const proof = {
   checkpoint: "1".repeat(40),
+  job: row.job,
   scannerArtifacts: [row.scannerArtifactSha256],
   replayedResolutionSha256: row.resolutionSha256,
 };

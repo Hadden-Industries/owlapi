@@ -1,9 +1,17 @@
-import { expect, test } from "@jest/globals";
+import {
+  afterAll,
+  beforeAll,
+  describe,
+  expect,
+  jest,
+  test,
+} from "@jest/globals";
 import { gzipSync } from "node:zlib";
-import { createHash } from "node:crypto";
+import { createHash, generateKeyPairSync, sign, verify } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import {
+  cpSync,
   mkdtempSync,
   mkdirSync,
   readFileSync,
@@ -12,44 +20,71 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { canonicalJson, stableJson } from "./canonical-json.mjs";
 import { sha256Buffer, isStrictDescendantPath } from "./release-file-utils.mjs";
-import { assertChannelCompletionEvidence } from "./release-channel-operation.mjs";
 import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
-import {
-  readStagedArchive,
-  reconcilePublishedSeal,
-} from "./staged-release-followup.mjs";
 import {
   PACKAGE_FILE_STEM,
   PACKAGE_NAME,
+  REPOSITORY,
   REPOSITORY_ID,
 } from "./release-identity.mjs";
-import { PACKAGE_VERSION } from "./package-identity.mjs";
+import { PACKAGE_VERSION, PUBLIC_SUBPATHS } from "./package-identity.mjs";
 import { qualificationMatrix } from "./consumer-runtime-matrix.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
 import { captureResolutionEvidence } from "./release-consumer-evidence.mjs";
-import { publicRecipientInput } from "./release-public-proof.mjs";
-import { publicLaneKey } from "./public-reconciliation-proof.mjs";
-import {
+import { physicalName } from "../tooling/artifact-transport/identity.mjs";
+import { zipArchive } from "./fixtures/zip-archive.mjs";
+import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
+import { prepareRecipientMaterial } from "../util/third-party-evidence/recipient-material.mjs";
+import { readCanonicalMaterialFromGit } from "./recipient-material-git-source.mjs";
+import { qualificationAdvisoryMarker } from "./qualification-advisory-binding.mjs";
+
+// This test has no GitHub OIDC identity. Keep content binding and archived
+// authority selection real, with a local key at the Sigstore boundary.
+const sigstore = await import("./release-audit-evaluator-sigstore.mjs");
+const testKeys = generateKeyPairSync("ed25519");
+jest.unstable_mockModule("./release-audit-evaluator-sigstore.mjs", () => ({
+  ...sigstore,
+  verifyAuditStatement: async (signature, statement) => {
+    if (!verify(null, statement, testKeys.publicKey, signature))
+      throw new Error("The archived test signature is invalid");
+  },
+}));
+const { archiveAdvisory, auditPolicySha256 } =
+  await import("./release-audit-job.mjs");
+const { buildReleaseAuditSubject } =
+  await import("./release-audit-evaluator.mjs");
+const { readArchivedPublicInputs, verifyArchivedPublicRelease } =
+  await import("./public-archive-verification.mjs");
+const { readStagedArchive, reconcilePublishedSeal } =
+  await import("./staged-release-followup.mjs");
+const { assertChannelCompletionEvidence } =
+  await import("./release-channel-operation.mjs");
+const { publicRecipientInput } = await import("./release-public-proof.mjs");
+const { publicLaneKey } = await import("./public-reconciliation-proof.mjs");
+const {
   PUBLIC_CONSUMERS,
   packPublicObservation,
   publicIdentity,
   publicPlatform,
   publicResolutionDigest,
-} from "./public-recipient-observation.mjs";
-import { INSTALLED_TEST_SCRIPTS } from "./installed-consumer-fixtures.mjs";
-import { physicalName } from "../tooling/artifact-transport/identity.mjs";
-import { readArchivedPublicInputs } from "./public-archive-verification.mjs";
-import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
-import { prepareRecipientMaterial } from "../util/third-party-evidence/recipient-material.mjs";
-import { readCanonicalMaterialFromGit } from "./recipient-material-git-source.mjs";
+} = await import("./public-recipient-observation.mjs");
 
 const source = "a".repeat(40),
   tagObject = "b".repeat(40);
 const hash = "a".repeat(64);
 const stem = `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}`;
+const archivedFixtureScripts = [
+  "installed-package-smoke.mjs",
+  "installed-package-boundary.mjs",
+  "installed-package-import-purity.mjs",
+  "installed-package-no-network.mjs",
+  "installed-package-import-closure.mjs",
+  "installed-node-transport.mjs",
+  "installed-documentation.mjs",
+];
 const member = (name) => ({ name, bytes: 12, sha256: hash });
 const descriptor = {
   artifactDigest: `sha256:${hash}`,
@@ -164,8 +199,9 @@ test("channel admission follows immutable v8 evidence and refuses a deleted or d
 });
 
 function indexed(version, names) {
-  const files = names.map((name) => {
-    const bytes = Buffer.from("fixture");
+  const files = names.map((entry) => {
+    const [name, bytes] =
+      typeof entry === "string" ? [entry, Buffer.from("fixture")] : entry;
     return {
       name,
       bytes: bytes.length,
@@ -178,6 +214,58 @@ function indexed(version, names) {
       canonicalJson({ schemaVersion: version, checkpoint: source, files }),
     ),
   );
+}
+
+/** Create a signed test receipt with its original evaluator upload identity. */
+function signedAdvisory({ workflow, job, entries, observedAt, decidedAt }) {
+  const decision = {
+    schemaVersion: 2,
+    evaluator: {
+      workflow,
+      controller: job.head_sha,
+      runId: job.run_id,
+      attempt: job.run_attempt,
+      checkRunId: Number(job.check_run_url.split("/").at(-1)),
+    },
+    policySha256: auditPolicySha256(job.head_sha),
+    subjects: entries
+      .map(canonicalJson)
+      .sort()
+      .map((entry) => ({ ...JSON.parse(entry), observedAt })),
+    decidedAt,
+    decision: "ACCEPTED",
+  };
+  const statement = Buffer.from(canonicalJson(decision) + "\n");
+  const signature = sign(null, statement, testKeys.privateKey);
+  const zip = zipArchive([
+    { path: "receipt.json", content: statement },
+    { path: "receipt.sigstore.json", content: signature },
+  ]);
+  const descriptor = {
+    artifactDigest: `sha256:${sha256Buffer(zip)}`,
+    artifactId: job.id + 2500,
+    jobId: job.id,
+    signatureSha256: sha256Buffer(signature),
+    statementSha256: sha256Buffer(statement),
+  };
+  return { descriptor, decision, job, statement, signature };
+}
+
+function evaluatorJob(controller, runId, id, runner, startedAt, completedAt) {
+  return {
+    id,
+    name: "Release advisory / Evaluate",
+    run_id: Number(runId),
+    run_attempt: 1,
+    head_sha: controller,
+    runner_id: 12,
+    labels: [runner],
+    check_run_url: `https://api.github.com/repos/${REPOSITORY}/check-runs/${id + 1500}`,
+    status: "completed",
+    conclusion: "success",
+    started_at: startedAt,
+    completed_at: completedAt,
+  };
 }
 
 test("reconciled indexed archives require native and signed originals and cannot carry obsolete raw audits", () => {
@@ -200,6 +288,52 @@ test("reconciled indexed archives require native and signed originals and cannot
   expect(() =>
     readStagedArchive(indexed(3, [...names, "npm-audit-full.json"])),
   ).toThrow("Raw npm audit output");
+  const unapprovedZip = zipArchive([
+    { path: "nested/npm-audit-full.json", content: Buffer.from("fixture") },
+  ]);
+  expect(() =>
+    readStagedArchive(indexed(3, [...names, ["extra.zip", unapprovedZip]])),
+  ).toThrow(/qualification ZIP roster/u);
+  expect(() =>
+    readStagedArchive(indexed(3, [...names, ["extra.json", unapprovedZip]])),
+  ).toThrow(/qualification ZIP roster/u);
+  const nativeZip = zipArchive([
+    { path: "manifest.json", content: Buffer.from("{}") },
+  ]);
+  const qualification = (zip) => [
+    "manifest.json",
+    Buffer.from(
+      stableJson({
+        schemaVersion: 1,
+        artifacts: [
+          { id: 42, bytes: zip.length, digest: `sha256:${sha256Buffer(zip)}` },
+        ],
+      }),
+    ),
+  ];
+  expect(
+    readStagedArchive(
+      indexed(3, [
+        ...names,
+        qualification(nativeZip),
+        ["artifact-42.zip", nativeZip],
+      ]),
+    ).files.get("artifact-42.zip"),
+  ).toEqual(nativeZip);
+  expect(() =>
+    readStagedArchive(
+      indexed(3, [
+        ...names,
+        qualification(unapprovedZip),
+        ["artifact-42.zip", unapprovedZip],
+      ]),
+    ),
+  ).toThrow(/raw npm audit output/u);
+  expect(
+    readStagedArchive(
+      indexed(2, [["artifact-42.zip", unapprovedZip]]),
+    ).files.get("artifact-42.zip"),
+  ).toEqual(unapprovedZip);
   expect(
     readStagedArchive(indexed(2, ["recipient-input.json"])).schemaVersion,
   ).toBe(2);
@@ -211,6 +345,7 @@ test("a lost seal acknowledgement preserves the exact admitted advisory marker d
   const request = {
     ...completion,
     state: "SEAL_REQUESTED",
+    authorizedAt: "2026-11-26T12:35:00.500Z",
     prerelease: true,
     notesSha256: sha256Buffer(Buffer.from(notes)),
   };
@@ -222,6 +357,7 @@ test("a lost seal acknowledgement preserves the exact admitted advisory marker d
         tag_name: `v${PACKAGE_VERSION}`,
         immutable: true,
         draft: false,
+        published_at: "2026-11-26T12:35:00Z",
         prerelease: true,
         name: `owlapi ${PACKAGE_VERSION}`,
         body: notes,
@@ -239,338 +375,661 @@ test("a lost seal acknowledgement preserves the exact admitted advisory marker d
     releaseEvidenceSchema: 8,
     publicAdvisory: advisory,
   });
+  await expect(
+    reconcilePublishedSeal(client, {
+      ...request,
+      authorizedAt: "2026-11-26T12:35:01.000Z",
+    }),
+  ).rejects.toThrow("postdates provider publication");
 });
 
-test("reopens the complete staged public matrix and original material after Actions expiry", async () => {
-  const npmCli = process.env.OWLAPI_CONSUMER_NPM ?? process.env.npm_execpath;
-  const temp = realpathSync(tmpdir());
-  const root = mkdtempSync(join(temp, "owlapi-archive-native-test-"));
-  expect(isStrictDescendantPath(temp, root)).toBe(true);
-  try {
-    const sourceCommit = execFileSync("git", ["rev-parse", "HEAD"], {
-      cwd: new URL("../", import.meta.url),
-      encoding: "utf8",
-      windowsHide: true,
-    }).trim();
-    expect(() =>
-      readCanonicalMaterialFromGit(sourceCommit)("package-lock.json", 16),
-    ).toThrow(/unavailable or oversized/u);
-    expect(() =>
-      readCanonicalMaterialFromGit("0".repeat(40))(
-        "package-lock.json",
-        2 * 1024 * 1024,
-      ),
-    ).toThrow(/unavailable or oversized/u);
-    const leafName = "@rdfjs/data-model";
-    const leafPath = `node_modules/${leafName}`;
-    const sourceLock = JSON.parse(
-      execFileSync(
-        "git",
-        ["cat-file", "blob", `${sourceCommit}:package-lock.json`],
-        {
-          cwd: new URL("../", import.meta.url),
-          windowsHide: true,
-          maxBuffer: 2 * 1024 * 1024,
-        },
-      ),
-    );
-    const leaf = sourceLock.packages[leafPath];
-    const leafManifest = readFileSync(
-      new URL(`../${leafPath}/package.json`, import.meta.url),
-    );
-    expect(JSON.parse(leafManifest)).toMatchObject({
-      name: leafName,
-      version: leaf.version,
-      license: "MIT",
-    });
-    const firstParty = {
-      name: PACKAGE_NAME,
-      version: PACKAGE_VERSION,
-      type: "module",
-      dependencies: { [leafName]: leaf.version },
-    };
-    mkdirSync(join(root, "package"));
-    writeFileSync(join(root, "package/package.json"), stableJson(firstParty));
-    const archivePath = join(root, "candidate.tgz");
-    await createRequire(npmCli)("tar").c(
+async function prepareArchivedPublicFixture(root) {
+  const npmCli = process.env.npm_execpath;
+  const sourceCommit = execFileSync("git", ["rev-parse", "HEAD"], {
+    cwd: new URL("../", import.meta.url),
+    encoding: "utf8",
+    windowsHide: true,
+  }).trim();
+  expect(() =>
+    readCanonicalMaterialFromGit(sourceCommit)("package-lock.json", 16),
+  ).toThrow(/unavailable or oversized/u);
+  expect(() =>
+    readCanonicalMaterialFromGit("0".repeat(40))(
+      "package-lock.json",
+      2 * 1024 * 1024,
+    ),
+  ).toThrow(/unavailable or oversized/u);
+  const leafName = "@rdfjs/data-model";
+  const leafPath = `node_modules/${leafName}`;
+  const sourceLock = JSON.parse(
+    execFileSync(
+      "git",
+      ["cat-file", "blob", `${sourceCommit}:package-lock.json`],
       {
-        file: archivePath,
-        cwd: root,
-        gzip: true,
-        portable: true,
-        noMtime: true,
+        cwd: new URL("../", import.meta.url),
+        windowsHide: true,
+        maxBuffer: 2 * 1024 * 1024,
       },
-      ["package"],
-    );
-    const tarball = readFileSync(archivePath);
-    const registryTarball = `https://registry.npmjs.org/${PACKAGE_NAME}/-/owlapi-${PACKAGE_VERSION}.tgz`;
-    const integrity =
-      "sha512-" + createHash("sha512").update(tarball).digest("base64");
-    const { evidence: published } = fixture(8);
-    published.source = sourceCommit;
-    published.stage.commit = sourceCommit;
-    published.publicAdvisory = {
-      ...published.publicAdvisory,
-      controller: sourceCommit,
-    };
-    published.assets.tarball.sha256 = sha256Buffer(tarball);
-    published.publicVerification.tarballSha256 =
-      published.assets.tarball.sha256;
-    published.publicVerification.tarballUrl = registryTarball;
-    published.publicVerification.provenance.sourceCommit = sourceCommit;
-    const originalPolicy = { ...CI_RUNTIME, npmMinimum: "10.0.0" };
-    const versions = [
-      ...new Set([...CI_RUNTIME.minimums, ...Object.values(CI_RUNTIME.node)]),
-    ].map((version) => ({ version: `v${version}` }));
-    const matrix = qualificationMatrix(versions, originalPolicy);
-    expect(matrix.policySha256).not.toBe(
-      qualificationMatrix(versions).policySha256,
-    );
-    const manifest = {
-      schemaVersion: 1,
-      package: { name: PACKAGE_NAME, version: PACKAGE_VERSION },
-      integrity,
-      assets: published.assets,
-      commit: published.source,
-      runId: "514",
-      attempt: "1",
-      runtimeMatrix: matrix,
-    };
-    const originals = new Map();
-    const put = (name, value) =>
-      originals.set(name, Buffer.from(stableJson(value)));
-    put("manifest.json", manifest);
-    put("qualified-runtime-policy.json", originalPolicy);
-    const origin = {
-      commit: sourceCommit,
-      run: advisory.runId,
-      attempt: advisory.attempt,
-    };
-    const operation = {
-      type: "seal",
-      source: sourceCommit,
-      tagObject,
-      releaseId: published.releaseId,
-      manifestSha256: sha256Buffer(originals.get("manifest.json")),
-      publicRun: origin.run,
-      publicAttempt: origin.attempt,
-      publicController: origin.commit,
-    };
-    const input = publicRecipientInput(
-      { operation, manifest, receipt: published.stage },
-      matrix,
-      { reconciled: true },
-    );
-    put("operation.json", operation);
-    put("recipient-input.json", input);
-    put("public.json", published.publicVerification);
-    const consumers = {};
-    for (const [mode, dependencyName] of Object.entries(PUBLIC_CONSUMERS)) {
-      const directory = join(root, mode);
-      const installed = join(directory, `node_modules/${dependencyName}`);
-      mkdirSync(installed, { recursive: true });
-      writeFileSync(join(installed, "package.json"), stableJson(firstParty));
-      mkdirSync(join(directory, leafPath), { recursive: true });
-      writeFileSync(join(directory, leafPath, "package.json"), leafManifest);
-      const identity = publicIdentity(mode, input, registryTarball);
-      const consumer = {
-        name: "owlapi-registry-consumer",
-        private: true,
-        dependencies: { [dependencyName]: identity.specifier },
-      };
-      writeFileSync(join(directory, "package.json"), stableJson(consumer));
-      writeFileSync(
-        join(directory, "package-lock.json"),
-        stableJson({
-          lockfileVersion: 3,
-          packages: {
-            "": consumer,
-            [`node_modules/${dependencyName}`]: {
-              name: PACKAGE_NAME,
-              version: PACKAGE_VERSION,
-              dependencies: firstParty.dependencies,
-              resolved: registryTarball,
-              integrity,
-            },
-            [leafPath]: leaf,
-          },
-        }),
-      );
-      consumers[mode] = {
-        identity,
-        evidence: await captureResolutionEvidence(directory, {
-          tarball,
-          dependencyName,
-          npmCli,
-          registryTarball,
-        }),
-      };
-    }
-    let nextId = 0;
-    const native = (logical) => {
-      const id = ++nextId;
-      return {
+    ),
+  );
+  const leaf = sourceLock.packages[leafPath];
+  const leafManifest = readFileSync(
+    new URL(`../${leafPath}/package.json`, import.meta.url),
+  );
+  expect(JSON.parse(leafManifest)).toMatchObject({
+    name: leafName,
+    version: leaf.version,
+    license: "MIT",
+  });
+  const firstParty = {
+    name: PACKAGE_NAME,
+    version: PACKAGE_VERSION,
+    type: "module",
+    exports: {
+      ".": "./index.js",
+      "./model/legacy": "./model/legacy/index.js",
+      "./io/node": "./io/node/index.js",
+    },
+    dependencies: { [leafName]: leaf.version },
+  };
+  mkdirSync(join(root, "package"));
+  writeFileSync(join(root, "package/package.json"), stableJson(firstParty));
+  for (const target of Object.values(firstParty.exports)) {
+    const path = join(root, "package", target);
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, "export {};\n");
+  }
+  const archivePath = join(root, "candidate.tgz");
+  await createRequire(npmCli)("tar").c(
+    {
+      file: archivePath,
+      cwd: root,
+      gzip: true,
+      portable: true,
+      noMtime: true,
+    },
+    ["package"],
+  );
+  const tarball = readFileSync(archivePath);
+  const archivedSubpaths = ["", "/model/legacy", "/io/node"];
+  expect(archivedSubpaths).not.toEqual(PUBLIC_SUBPATHS);
+  const registryTarball = `https://registry.npmjs.org/${PACKAGE_NAME}/-/owlapi-${PACKAGE_VERSION}.tgz`;
+  const integrity =
+    "sha512-" + createHash("sha512").update(tarball).digest("base64");
+  const { evidence: published } = fixture(8);
+  published.source = sourceCommit;
+  published.stage.commit = sourceCommit;
+  published.publicAdvisory = {
+    ...published.publicAdvisory,
+    controller: sourceCommit,
+  };
+  published.assets.tarball.bytes = tarball.length;
+  published.assets.tarball.sha256 = sha256Buffer(tarball);
+  published.publicVerification.tarballSha256 = published.assets.tarball.sha256;
+  published.publicVerification.tarballUrl = registryTarball;
+  published.publicVerification.integrity = integrity;
+  published.publicVerification.provenance.sourceCommit = sourceCommit;
+  // Use the available native producer npm for a historical fixture policy
+  // that covers its Node family on every retained platform without provisioning.
+  const family = CI_RUNTIME.canonicalNodeMajor;
+  const originalPolicy = {
+    ...CI_RUNTIME,
+    minimums: CI_RUNTIME.minimums.filter((version) =>
+      version.startsWith(`${family}.`),
+    ),
+    node: { [family]: CI_RUNTIME.node[family] },
+    consumerNpm: CI_RUNTIME.npm,
+  };
+  const versions = [
+    ...new Set([...CI_RUNTIME.minimums, ...Object.values(CI_RUNTIME.node)]),
+  ].map((version) => ({ version: `v${version}` }));
+  const matrix = qualificationMatrix(versions, originalPolicy);
+  expect(matrix.policySha256).not.toBe(
+    qualificationMatrix(versions).policySha256,
+  );
+  const manifest = {
+    schemaVersion: 1,
+    consumerResolutionPolicy: 2,
+    package: { name: PACKAGE_NAME, version: PACKAGE_VERSION },
+    integrity,
+    assets: published.assets,
+    commit: published.source,
+    runId: "514",
+    attempt: "1",
+    runtimeMatrix: matrix,
+  };
+  const originals = new Map();
+  const put = (name, value) =>
+    originals.set(name, Buffer.from(stableJson(value)));
+  put("manifest.json", manifest);
+  put("qualified-runtime-policy.json", originalPolicy);
+  const producerDirectory = join(root, "qualification-producer");
+  cpSync(join(root, "package"), producerDirectory, { recursive: true });
+  mkdirSync(join(producerDirectory, leafPath), { recursive: true });
+  writeFileSync(
+    join(producerDirectory, leafPath, "package.json"),
+    leafManifest,
+  );
+  writeFileSync(
+    join(producerDirectory, "package-lock.json"),
+    stableJson({
+      lockfileVersion: 3,
+      packages: { "": firstParty, [leafPath]: leaf },
+    }),
+  );
+  const qualification = await captureResolutionEvidence(producerDirectory, {
+    tarball,
+    npmCli,
+  });
+  const qualificationSubject = buildReleaseAuditSubject({
+    tarballSha256: published.assets.tarball.sha256,
+    manifestBytes: Buffer.from(qualification.manifest),
+    lockBytes: Buffer.from(qualification.lock),
+    graphSha256: publicResolutionDigest(qualification.resolution.graph),
+    role: "producer",
+    scope: "production",
+    platform: {
+      ...qualification.resolution.platform,
+      npm: qualification.resolution.npm,
+    },
+  });
+  const runner = CI_RUNTIME.consumerPlatforms.find(
+    ({ os }) => os === "linux",
+  ).runner;
+  const qualified = signedAdvisory({
+    workflow: ".github/workflows/release.yml",
+    job: evaluatorJob(
+      sourceCommit,
+      manifest.runId,
+      560,
+      runner,
+      "2026-11-24T12:00:00Z",
+      "2026-11-24T12:05:00Z",
+    ),
+    entries: [
+      {
+        subject: qualificationSubject,
         source: {
           repositoryId: REPOSITORY_ID,
-          commit: origin.commit,
-          runId: Number(origin.run),
-          attempt: Number(origin.attempt),
-          jobId: id,
-          artifactSha256: hash,
+          commit: sourceCommit,
+          runId: Number(manifest.runId),
+          attempt: Number(manifest.attempt),
+          jobId: 556,
+          artifactSha256: "e".repeat(64),
         },
-        artifact: {
-          id,
-          bytes: 12,
-          digest: `sha256:${hash}`,
-          name: physicalName({
-            logical,
-            run: origin.run,
-            attempt: origin.attempt,
-            producer: "a".repeat(16),
-            invocation: "b".repeat(32),
-            ordinal: 0,
-          }),
+      },
+    ],
+    observedAt: "2026-11-24T12:02:00.000Z",
+    decidedAt: "2026-11-24T12:03:00.000Z",
+  });
+  archiveAdvisory(originals, "qualification", qualified);
+  const { state, stageId, ...stage } = published.stage;
+  const stageRequest = {
+    ...stage,
+    schemaVersion: 1,
+    workflow: ".github/workflows/stage-release.yml",
+    manifestSha256: sha256Buffer(originals.get("manifest.json")),
+    qualificationRun: manifest.runId,
+    qualificationAttempt: manifest.attempt,
+    channel: "pilot",
+    controller: sourceCommit,
+    qualificationAdvisory: qualificationAdvisoryMarker({
+      ...qualified,
+      verificationTime: Date.parse("2026-11-24T12:06:00.000Z"),
+    }),
+  };
+  published.stage = { ...stageRequest, state, stageId };
+  originals.set(
+    "stage-journal.jsonl",
+    Buffer.from(
+      [{ ...stageRequest, state: "REQUESTED" }, published.stage]
+        .map((row) => JSON.stringify(row) + "\n")
+        .join(""),
+    ),
+  );
+  const origin = {
+    commit: sourceCommit,
+    run: advisory.runId,
+    attempt: advisory.attempt,
+  };
+  const operation = {
+    type: "seal",
+    source: sourceCommit,
+    tagObject,
+    releaseId: published.releaseId,
+    manifestSha256: stageRequest.manifestSha256,
+    stageRun: stageRequest.runId,
+    stageAttempt: stageRequest.attempt,
+    stageController: stageRequest.controller,
+    publicRun: origin.run,
+    publicAttempt: origin.attempt,
+    publicController: origin.commit,
+  };
+  const input = publicRecipientInput(
+    { operation, manifest, receipt: published.stage },
+    matrix,
+    { reconciled: true },
+  );
+  put("operation.json", operation);
+  put("recipient-input.json", input);
+  put("public.json", published.publicVerification);
+  const consumers = {};
+  for (const [mode, dependencyName] of Object.entries(PUBLIC_CONSUMERS)) {
+    const directory = join(root, mode);
+    const installed = join(directory, `node_modules/${dependencyName}`);
+    mkdirSync(installed, { recursive: true });
+    cpSync(join(root, "package"), installed, { recursive: true });
+    mkdirSync(join(directory, leafPath), { recursive: true });
+    writeFileSync(join(directory, leafPath, "package.json"), leafManifest);
+    const identity = {
+      ...publicIdentity(mode, input, registryTarball),
+      importSpecifiers: archivedSubpaths.map((path) => dependencyName + path),
+    };
+    const consumer = {
+      name: "owlapi-registry-consumer",
+      private: true,
+      dependencies: { [dependencyName]: identity.specifier },
+    };
+    writeFileSync(join(directory, "package.json"), stableJson(consumer));
+    writeFileSync(
+      join(directory, "package-lock.json"),
+      stableJson({
+        lockfileVersion: 3,
+        packages: {
+          "": consumer,
+          [`node_modules/${dependencyName}`]: {
+            name: PACKAGE_NAME,
+            version: PACKAGE_VERSION,
+            dependencies: firstParty.dependencies,
+            resolved: registryTarball,
+            integrity,
+          },
+          [leafPath]: leaf,
         },
-      };
+      }),
+    );
+    consumers[mode] = {
+      identity,
+      evidence: await captureResolutionEvidence(directory, {
+        tarball,
+        dependencyName,
+        npmCli,
+        registryTarball,
+      }),
     };
-    const index = {
-      schemaVersion: 2,
-      registry: native(`release-registry-${origin.run}-${origin.attempt}`),
-      material: native(`public-material-${origin.run}-${origin.attempt}`),
-      lanes: {},
-      originals: {},
-    };
-    const material = {
-      schemaVersion: 2,
-      origin,
-      input,
-      lanes: {},
-      originals: {},
-    };
-    const tests = new Map();
-    const materialWriter = await prepareRecipientMaterial({ npmCli });
-    for (const lane of matrix.include) {
-      const laneKey = publicLaneKey(lane);
-      const platform = publicPlatform(lane);
-      const observed = Object.fromEntries(
-        Object.entries(consumers).map(([mode, consumer]) => [
-          mode,
-          {
-            ...consumer,
-            evidence: {
-              ...consumer.evidence,
-              resolution: {
-                ...consumer.evidence.resolution,
-                platform,
-                npm: CI_RUNTIME.consumerNpm,
-              },
-            },
-          },
-        ]),
-      );
-      const packed = packPublicObservation({
-        lane,
-        input,
-        origin,
-        consumers: observed,
-      });
-      const observation = native(
-        `public-observation-${laneKey}-${origin.attempt}`,
-      );
-      const tested = native(`public-recipient-${laneKey}-${origin.attempt}`);
-      index.lanes[laneKey] = {
-        ...observation,
-        packet: packed.index,
-        tests: tested,
-      };
-      Object.assign(index.originals, packed.originals);
-      const decisions = {},
-        testedConsumers = {};
-      for (const [
-        mode,
-        {
-          evidence: { resolution, lock },
-        },
-      ] of Object.entries(observed)) {
-        const resolutionSha256 = packed.index[mode].resolution;
-        const materialDirectory = join(root, `material-${laneKey}-${mode}`);
-        const nativeMaterial = await materialWriter.collect({
-          directory: materialDirectory,
-          resolution,
-          lockfileBytes: Buffer.from(lock),
-        });
-        expect(nativeMaterial.status).toBe("PASSED");
-        expect(nativeMaterial.artifacts).toMatchObject([
-          {
-            name: leafName,
-            integrity: leaf.integrity,
-            source: "CANONICAL_CORPUS",
-          },
-        ]);
-        const savedMaterial = readFileSync(
-          join(materialDirectory, "recipient-material.json"),
-          "utf8",
-        );
-        const materialSha256 = sha256Buffer(Buffer.from(savedMaterial));
-        const decision = stableJson({
-          schemaVersion: 1,
-          result: "PASS",
-          role: `public-${mode}`,
-          observedAt: "2026-11-26T12:00:00Z",
-          resolutionSha256,
-          materialSha256,
-          subject: {
-            tarballSha256: resolution.tarballSha256,
-            manifestSha256: resolution.manifestSha256,
-            lockSha256: resolution.lockSha256,
-            graphSha256: publicResolutionDigest(resolution.graph),
-            role: "recipient",
-            scope: "production",
-            platform: { ...platform, npm: CI_RUNTIME.consumerNpm },
-          },
-        });
-        material.originals[materialSha256] = savedMaterial;
-        const decisionSha256 = sha256Buffer(Buffer.from(decision));
-        material.originals[decisionSha256] = decision;
-        decisions[mode] = decisionSha256;
-        testedConsumers[mode] = {
-          resolutionSha256,
-          decisionSha256,
-          installedTests: INSTALLED_TEST_SCRIPTS,
-        };
-      }
-      material.lanes[laneKey] = { ...observation, decisions };
-      tests.set(laneKey, {
-        schemaVersion: 2,
-        lane,
-        input,
-        origin,
-        observation: observation.artifact,
-        consumers: testedConsumers,
-        advisory: published.publicAdvisory.descriptor,
-      });
-    }
-    put("public-native.json", index);
-    const publishMaterial = () => {
-      put("public-material.json", material);
-      const materialSha256 = sha256Buffer(
-        originals.get("public-material.json"),
-      );
-      for (const [key, proof] of tests)
-        put(`public-recipient-${key}.json`, { ...proof, materialSha256 });
-    };
-    publishMaterial();
-    const client = {
-      async read() {
-        throw new Error("Actions artifacts have expired");
+  }
+  let nextId = 0;
+  const native = (prefix, attempt = Number(origin.attempt)) => {
+    const id = ++nextId;
+    return {
+      source: {
+        repositoryId: REPOSITORY_ID,
+        commit: origin.commit,
+        runId: Number(origin.run),
+        attempt,
+        jobId: id,
+        artifactSha256: hash,
+      },
+      artifact: {
+        id,
+        bytes: 12,
+        digest: `sha256:${hash}`,
+        name: physicalName({
+          logical: `${prefix}-${attempt}`,
+          run: origin.run,
+          attempt: String(attempt),
+          producer: "a".repeat(16),
+          invocation: "b".repeat(32),
+          ordinal: 0,
+        }),
       },
     };
-    const accepted = await readArchivedPublicInputs(originals, published, {
-      tarball,
-      npmCli,
-      client,
+  };
+  const index = {
+    schemaVersion: 3,
+    registry: native(`release-registry-${origin.run}`, 1),
+    material: {
+      ...native(`public-material-${origin.run}`, 1),
+      execution: {
+        startedAt: "2026-11-26T11:59:59Z",
+        completedAt: "2026-11-26T12:00:01Z",
+      },
+    },
+    lanes: {},
+    originals: {},
+  };
+  const material = {
+    schemaVersion: 2,
+    origin: { ...origin, attempt: "1" },
+    input,
+    lanes: {},
+    originals: {},
+  };
+  const tests = new Map();
+  const publicEntries = [];
+  const evaluator = evaluatorJob(
+    origin.commit,
+    origin.run,
+    published.publicAdvisory.descriptor.jobId,
+    runner,
+    "2026-11-26T12:00:02Z",
+    "2026-11-26T12:00:04Z",
+  );
+  const materialWriter = await prepareRecipientMaterial({ npmCli });
+  for (const lane of matrix.include) {
+    const laneKey = publicLaneKey(lane);
+    const platform = publicPlatform(lane);
+    const observed = Object.fromEntries(
+      Object.entries(consumers).map(([mode, consumer]) => [
+        mode,
+        {
+          ...consumer,
+          evidence: {
+            ...consumer.evidence,
+            resolution: {
+              ...consumer.evidence.resolution,
+              platform,
+              npm: originalPolicy.consumerNpm,
+            },
+          },
+        },
+      ]),
+    );
+    const packed = packPublicObservation({
+      lane,
+      input,
+      origin: { ...origin, attempt: "1" },
+      consumers: observed,
     });
+    const observation = native(`public-observation-${laneKey}`, 1);
+    const testAttempt = lane === matrix.include[0] ? 1 : 2;
+    const tested = {
+      ...native(`public-recipient-${laneKey}`, testAttempt),
+      execution:
+        testAttempt === 1
+          ? {
+              startedAt: "2026-11-26T12:00:04Z",
+              completedAt: "2026-11-26T12:01:04Z",
+            }
+          : {
+              startedAt: "2026-11-26T12:05:00Z",
+              completedAt: "2026-11-26T12:06:00Z",
+            },
+    };
+    index.lanes[laneKey] = {
+      ...observation,
+      packet: packed.index,
+      tests: tested,
+    };
+    Object.assign(index.originals, packed.originals);
+    const decisions = {},
+      testedConsumers = {};
+    for (const [
+      mode,
+      {
+        evidence: { resolution, lock },
+      },
+    ] of Object.entries(observed)) {
+      const resolutionSha256 = packed.index[mode].resolution;
+      const materialDirectory = join(root, `material-${laneKey}-${mode}`);
+      const nativeMaterial = await materialWriter.collect({
+        directory: materialDirectory,
+        resolution,
+        lockfileBytes: Buffer.from(lock),
+      });
+      expect(nativeMaterial.status).toBe("PASSED");
+      expect(nativeMaterial.artifacts).toMatchObject([
+        {
+          name: leafName,
+          integrity: leaf.integrity,
+          source: "CANONICAL_CORPUS",
+        },
+      ]);
+      const savedMaterial = readFileSync(
+        join(materialDirectory, "recipient-material.json"),
+        "utf8",
+      );
+      const materialSha256 = sha256Buffer(Buffer.from(savedMaterial));
+      const subject = {
+        tarballSha256: resolution.tarballSha256,
+        manifestSha256: resolution.manifestSha256,
+        lockSha256: resolution.lockSha256,
+        graphSha256: publicResolutionDigest(resolution.graph),
+        role: "recipient",
+        scope: "production",
+        platform: { ...platform, npm: originalPolicy.consumerNpm },
+      };
+      const decision = stableJson({
+        schemaVersion: 1,
+        result: "PASS",
+        role: `public-${mode}`,
+        observedAt: "2026-11-26T12:00:00Z",
+        resolutionSha256,
+        materialSha256,
+        subject,
+      });
+      publicEntries.push({ subject, source: observation.source });
+      material.originals[materialSha256] = savedMaterial;
+      const decisionSha256 = sha256Buffer(Buffer.from(decision));
+      material.originals[decisionSha256] = decision;
+      decisions[mode] = decisionSha256;
+      testedConsumers[mode] = {
+        resolutionSha256,
+        decisionSha256,
+        installedTests: archivedFixtureScripts,
+      };
+    }
+    material.lanes[laneKey] = { ...observation, decisions };
+    tests.set(laneKey, {
+      schemaVersion: 2,
+      lane,
+      input,
+      origin: { ...origin, attempt: String(testAttempt) },
+      observation: observation.artifact,
+      consumers: testedConsumers,
+    });
+  }
+  const cleared = signedAdvisory({
+    workflow: ".github/workflows/release-registry.yml",
+    job: evaluator,
+    entries: publicEntries,
+    observedAt: "2026-11-26T12:00:02.000Z",
+    decidedAt: "2026-11-26T12:00:03.500Z",
+  });
+  archiveAdvisory(originals, "public", cleared);
+  published.publicAdvisory.descriptor = cleared.descriptor;
+  published.publicAdvisory.policySha256 = cleared.decision.policySha256;
+  put("public-native.json", index);
+  const publishMaterial = (files, material, tests) => {
+    const materialBytes = Buffer.from(stableJson(material));
+    files.set("public-material.json", materialBytes);
+    const materialSha256 = sha256Buffer(materialBytes);
+    for (const [key, proof] of tests)
+      files.set(
+        `public-recipient-${key}.json`,
+        Buffer.from(
+          stableJson({
+            ...proof,
+            materialSha256,
+            advisory: published.publicAdvisory.descriptor,
+          }),
+        ),
+      );
+  };
+  publishMaterial(originals, material, tests);
+  const client = {
+    async read() {
+      throw Object.assign(new Error("Actions artifacts have expired"), {
+        httpStatus: 410,
+      });
+    },
+  };
+  const archiveBytes = indexed(3, [...originals]);
+  published.archive.bytes = archiveBytes.length;
+  published.archive.sha256 = sha256Buffer(archiveBytes);
+  validateStagedReleaseEvidence(published);
+  const archive = readStagedArchive(archiveBytes);
+  const recovered = {
+    tarball,
+    npmCli,
+    client,
+    sealAuthorizedAt: "2026-11-26T12:06:01.000Z",
+    publishedAt: "2026-11-27T13:00:00Z",
+  };
+  return {
+    originals: archive.files,
+    published,
+    recovered,
+    stageRequest,
+    matrix,
+    index,
+    evaluator,
+    leafPath,
+    leafName,
+    material,
+    tests,
+    publishMaterial,
+  };
+}
+
+describe("archived native public release", () => {
+  let root, fixture;
+  beforeAll(async () => {
+    const temp = realpathSync(tmpdir());
+    root = mkdtempSync(join(temp, "owlapi-archive-native-test-"));
+    expect(isStrictDescendantPath(temp, root)).toBe(true);
+    fixture = await prepareArchivedPublicFixture(root);
+  });
+  afterAll(() => {
+    if (root) rmSync(root, { recursive: true, force: true });
+  });
+
+  test("reopens the complete staged public matrix and both decisions after Actions expiry", async () => {
+    const { originals, published, recovered, stageRequest } = fixture;
+    await expect(
+      verifyArchivedPublicRelease(originals, published, recovered),
+    ).resolves.toEqual(published.publicAdvisory);
+    await expect(
+      verifyArchivedPublicRelease(originals, published, {
+        ...recovered,
+        sealAuthorizedAt: "2026-11-27T12:30:00.000Z",
+      }),
+    ).rejects.toThrow("Release audit observation is stale or inconsistent");
+    const changedStage = new Map(originals);
+    const alteredAck = { ...published.stage, channel: "latest" };
+    changedStage.set(
+      "stage-journal.jsonl",
+      Buffer.from(
+        `${JSON.stringify({ ...stageRequest, state: "REQUESTED" })}\n${JSON.stringify(alteredAck)}\n`,
+      ),
+    );
+    await expect(
+      verifyArchivedPublicRelease(changedStage, published, recovered),
+    ).rejects.toThrow(
+      "Staging acknowledgement differs from its original request",
+    );
+  });
+
+  const expectInvalidIndex = async (mutate, expected) => {
+    const { originals, published, recovered, index } = fixture;
+    const invalid = structuredClone(index);
+    mutate(invalid);
+    const changed = new Map(originals).set(
+      "public-native.json",
+      Buffer.from(stableJson(invalid)),
+    );
+    await expect(
+      readArchivedPublicInputs(changed, published, recovered),
+    ).rejects.toThrow(expected);
+  };
+  test("replays the original runtime, export and archive identities", async () => {
+    const { originals, published, recovered, matrix, leafPath, leafName } =
+      fixture;
+    const firstLane = publicLaneKey(matrix.include[0]);
+    const accepted = await readArchivedPublicInputs(
+      originals,
+      published,
+      recovered,
+    );
     expect(accepted.entries).toHaveLength(matrix.include.length * 2);
+    expect(accepted.lastTestCompletion).toBe(
+      Date.parse("2026-11-26T12:06:00Z"),
+    );
+    const contradictoryReport = {
+      ...published.publicVerification,
+      integrity: "sha512-" + Buffer.alloc(64).toString("base64"),
+    };
+    const changedReport = new Map(originals).set(
+      "public.json",
+      Buffer.from(stableJson(contradictoryReport)),
+    );
+    await expect(
+      readArchivedPublicInputs(
+        changedReport,
+        { ...published, publicVerification: contradictoryReport },
+        recovered,
+      ),
+    ).rejects.toThrow("Archived registry SRI differs");
+    await expectInvalidIndex((invalid) => {
+      invalid.lanes[firstLane].packet.alias.identity.importSpecifiers = [
+        "owlapi",
+        "owlapi/io/node",
+        "owlapi/io/node",
+      ];
+    }, "Archived public identity differs from the published package");
+    await expectInvalidIndex((invalid) => {
+      const packet = invalid.lanes[firstLane].packet.alias;
+      const lock = JSON.parse(invalid.originals[packet.lock]);
+      const resolution = JSON.parse(invalid.originals[packet.resolution]);
+      const integrity =
+        "sha512-" +
+        createHash("sha512")
+          .update("contradictory registry occurrence")
+          .digest("base64");
+      lock.packages[leafPath].integrity = integrity;
+      const lockBytes = stableJson(lock);
+      packet.lock = sha256Buffer(Buffer.from(lockBytes));
+      invalid.originals[packet.lock] = lockBytes;
+      resolution.lockSha256 = packet.lock;
+      resolution.graph.nodes.find(
+        ({ location }) => location === leafPath,
+      ).integrity = integrity;
+      const resolutionBytes = stableJson(resolution);
+      delete invalid.originals[packet.resolution];
+      packet.resolution = sha256Buffer(Buffer.from(resolutionBytes));
+      invalid.originals[packet.resolution] = resolutionBytes;
+    }, "Inconsistent observed archive for " + leafName);
+  });
+
+  test("checks the material and advisory timeline for each original attempt", async () => {
+    const { originals, published, recovered, matrix, evaluator } = fixture;
+    const firstLane = publicLaneKey(matrix.include[0]);
+    await expectInvalidIndex((invalid) => {
+      invalid.material.execution.startedAt = "2026-11-26T12:00:01Z";
+    }, "Public material decision is outside its original execution");
+    await expectInvalidIndex((invalid) => {
+      invalid.lanes[firstLane].tests.execution.startedAt =
+        "2026-11-26T12:00:00Z";
+    }, "Public replay preceded the original material job");
+    await expectInvalidIndex((invalid) => {
+      invalid.lanes[firstLane].tests.execution.startedAt =
+        "2026-11-26T12:00:03Z";
+    }, "Public replay preceded the original advisory job");
+    const changed = new Map(originals).set(
+      "public-advisory-job.json",
+      Buffer.from(stableJson({ ...evaluator, run_attempt: 2 })),
+    );
+    await expect(
+      readArchivedPublicInputs(changed, published, recovered),
+    ).rejects.toThrow("earlier attempt than its advisory");
+  });
+
+  test("requires every original material decision and the original fixture roster", async () => {
+    const { originals, published, recovered, matrix, publishMaterial } =
+      fixture;
+    const material = structuredClone(fixture.material);
+    const tests = structuredClone(fixture.tests);
+    const changedFiles = new Map(originals);
     const firstLane = publicLaneKey(matrix.include[0]);
     const decisionSha256 = material.lanes[firstLane].decisions.alias;
     const decision = JSON.parse(material.originals[decisionSha256]);
@@ -590,29 +1049,31 @@ test("reopens the complete staged public matrix and original material after Acti
     material.originals[changedDecisionHash] = changedDecision;
     material.lanes[firstLane].decisions.alias = changedDecisionHash;
     tests.get(firstLane).consumers.alias.decisionSha256 = changedDecisionHash;
-    publishMaterial();
+    publishMaterial(changedFiles, material, tests);
     await expect(
-      readArchivedPublicInputs(originals, published, { tarball, npmCli }),
+      readArchivedPublicInputs(changedFiles, published, recovered),
     ).rejects.toThrow(/material decision differs/u);
     delete material.originals[changedHash];
-    publishMaterial();
+    publishMaterial(changedFiles, material, tests);
     await expect(
-      readArchivedPublicInputs(originals, published, { tarball, npmCli }),
+      readArchivedPublicInputs(changedFiles, published, recovered),
     ).rejects.toThrow();
-    material.originals[decision.materialSha256] = saved;
-    material.originals[decisionSha256] = stableJson(decision);
-    delete material.originals[changedHash];
-    delete material.originals[changedDecisionHash];
-    material.lanes[firstLane].decisions.alias = decisionSha256;
-    tests.get(firstLane).consumers.alias.decisionSha256 = decisionSha256;
-    publishMaterial();
-    originals.delete(
-      `public-recipient-${publicLaneKey(matrix.include[0])}.json`,
+    const testName = `public-recipient-${firstLane}.json`;
+    const missingTest = new Map(originals);
+    missingTest.delete(testName);
+    await expect(
+      readArchivedPublicInputs(missingTest, published, recovered),
+    ).rejects.toThrow();
+    const alteredTests = JSON.parse(originals.get(testName));
+    alteredTests.consumers.scoped.installedTests.pop();
+    const alteredRoster = new Map(originals).set(
+      testName,
+      Buffer.from(stableJson(alteredTests)),
     );
     await expect(
-      readArchivedPublicInputs(originals, published, { tarball, npmCli }),
-    ).rejects.toThrow();
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
+      readArchivedPublicInputs(alteredRoster, published, recovered),
+    ).rejects.toThrow(
+      "Public tests did not use the required fixtures and inputs",
+    );
+  });
 });

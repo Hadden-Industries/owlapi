@@ -1,6 +1,32 @@
 import assert from "node:assert/strict";
+import { sha256Buffer } from "./release-file-utils.mjs";
+import { formatSha256Sums } from "./release-artifacts.mjs";
 import { PACKAGE_NAME } from "./package-identity.mjs";
 import { assertQualificationAdvisory } from "./qualification-advisory-binding.mjs";
+/** Check the three qualified assets against the immutable bytes fetched from the release. */
+export function assertImmutableQualificationAssets(assets, originals) {
+  for (const key of ["tarball", "sbom", "checksums"]) {
+    const descriptor = assets[key],
+      bytes = originals.get(descriptor.name);
+    assert.ok(
+      Buffer.isBuffer(bytes) &&
+        descriptor.bytes === bytes.length &&
+        descriptor.sha256 === sha256Buffer(bytes),
+      "Immutable qualification asset differs: " + key,
+    );
+  }
+  const expected = formatSha256Sums(
+    [assets.tarball, assets.sbom].map(({ name, sha256 }) => ({
+      fileName: name,
+      sha256,
+    })),
+  );
+  assert.ok(
+    originals.get(assets.checksums.name).equals(Buffer.from(expected)),
+    "Immutable checksum inventory differs from the qualified assets",
+  );
+}
+
 export function validateStagedReleaseEvidence(record) {
   assert.ok([7, 8].includes(record.schemaVersion));
   const current = record.schemaVersion === 8;

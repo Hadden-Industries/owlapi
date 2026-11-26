@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import { REPOSITORY } from "./release-identity.mjs";
 import {
   readPublicationHistory,
@@ -24,7 +25,10 @@ import {
   releaseChannel,
   assertRegistryTarballUrl,
 } from "./package-identity.mjs";
-import { installRegistryConsumer } from "./public-registry-consumer.mjs";
+import {
+  installRegistryConsumer,
+  observeLegacyRegistryGraph,
+} from "./public-registry-consumer.mjs";
 import { verifyRegistryProvenance } from "./registry-provenance.mjs";
 import {
   verifyRegistryTarball,
@@ -144,7 +148,13 @@ const requireSuccess = (result, label) => {
   return result;
 };
 
-const exerciseFreshConsumers = async (metadata, tarball, origin) => {
+const exerciseFreshConsumers = async (
+  metadata,
+  tarball,
+  origin,
+  sbom,
+  recipientPolicy,
+) => {
   const root = mkdtempSync(join(tmpdir(), "owlapi-public-registry-"));
   try {
     const provenance = await verifyRegistryProvenance({
@@ -157,7 +167,9 @@ const exerciseFreshConsumers = async (metadata, tarball, origin) => {
       staged: Boolean(origin),
     });
     // The public matrix measures and tests its own independently resolved variants.
-    if (origin) return { provenance };
+    const legacyStageTarball =
+      origin && recipientPolicy === 1 ? tarball : undefined;
+    if (origin && !legacyStageTarball) return { provenance };
     const results = {};
     for (const [mode, dependencyName] of [
       ["scoped", PACKAGE_NAME],
@@ -168,6 +180,7 @@ const exerciseFreshConsumers = async (metadata, tarball, origin) => {
         directory,
         dependencyName,
         metadata,
+        legacyStageTarball,
       });
       writeInstalledConsumerFixtures(directory, dependencyName);
       for (const script of INSTALLED_TEST_SCRIPTS) {
@@ -207,6 +220,14 @@ const exerciseFreshConsumers = async (metadata, tarball, origin) => {
         installedTests: INSTALLED_TEST_SCRIPTS,
         dependencyGraph: graph,
         signatureAudit: signatures,
+        ...(legacyStageTarball
+          ? observeLegacyRegistryGraph({
+              directory,
+              environment,
+              dependencyName,
+              sbom,
+            })
+          : {}),
       };
     }
     return { consumer: results, provenance };
@@ -226,6 +247,7 @@ export const qualifyPublicRegistry = async ({
   outputPath,
   stageOrigin,
   stagedSbom,
+  recipientPolicy = 2,
   publication = () =>
     readPublicationAttempt({
       client: new GitHubReleaseClient({
@@ -239,6 +261,15 @@ export const qualifyPublicRegistry = async ({
   now = () => new Date().toISOString(),
   log = (value) => process.stdout.write(`${JSON.stringify(value)}\n`),
 }) => {
+  if (stageOrigin && recipientPolicy === 1)
+    assert.ok(
+      stagedSbom,
+      "Legacy stage verification requires its qualified production SBOM",
+    );
+  assert.ok(
+    [1, 2].includes(recipientPolicy),
+    "Unknown public recipient policy",
+  );
   const { version } = candidate.package;
   const observations = [];
   const pendingReport = {
@@ -334,13 +365,14 @@ export const qualifyPublicRegistry = async ({
       registryTarball,
       stageOrigin,
       stagedSbom,
+      ...(stageOrigin && recipientPolicy === 1 ? [recipientPolicy] : []),
     );
     observations.push({
       state: "VERIFICATION_PASSED",
       verifiedAt: now(),
     });
     const report = {
-      schemaVersion: stageOrigin ? 2 : 1,
+      schemaVersion: stageOrigin ? recipientPolicy : 1,
       result: "PASS",
       verifiedAt: now(),
       registry,
@@ -353,7 +385,7 @@ export const qualifyPublicRegistry = async ({
       }),
       tarballUrl: metadata.dist.tarball,
       npmPublishedAt: metadata.time ?? null,
-      ...(!stageOrigin ? { consumer } : {}),
+      ...(!stageOrigin || recipientPolicy === 1 ? { consumer } : {}),
       provenance,
       publication: pendingReport.publication,
       availability: {

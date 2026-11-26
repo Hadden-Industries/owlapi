@@ -194,6 +194,15 @@ async function collect(scope) {
 
 /** Publish the stage outcome without writing provider or tool exception details. */
 export function publicMaterialFailureCode(error) {
+  if (
+    error?.classification === "CONTROL_FAILURE" &&
+    [
+      "SCANCODE_COMMAND_REQUIRED",
+      "SCANCODE_NATIVE_COMMAND_REQUIRED",
+      "SCANCODE_EXECUTION_FAILED",
+    ].includes(error.code)
+  )
+    return "PUBLIC_MATERIAL_UNAVAILABLE";
   if (error?.code === "RECIPIENT_MATERIAL_RIGHTS_PENDING")
     return "PUBLIC_MATERIAL_RIGHTS_PENDING";
   if (

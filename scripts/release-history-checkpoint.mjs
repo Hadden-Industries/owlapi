@@ -507,7 +507,79 @@ export async function verifyReservations(
   return { preceding, lastWriterAt };
 }
 
-export function verifyControllerDelta(source, controller, files) {
+// These qualification and material controls changed with reconciliation.
+// For already submitted stages, product, lock and rights inputs
+// retain the original controller-delta boundary.
+const legacyFollowupControls = new Set([
+  "aggregate-consumer-runtimes",
+  "browser-consumer-evidence",
+  "browser-consumer-preparation",
+  "build-release-candidate",
+  "ci-check-coverage-command",
+  "ci-consumer-evidence-verification",
+  "ci-recipient-attribution",
+  "ci-recipient-material-pending",
+  "ci-recipient-scanner",
+  "consumer-runtime-matrix",
+  "consumer-runtime-tools",
+  "installed-consumer-fixtures",
+  "macos-material-job-selection",
+  "macos-material-readmission",
+  "material-record-interning",
+  "owl-contract-evidence",
+  "pending-mac-attempt",
+  "promoted-audit-subjects",
+  "promoted-release-proof",
+  "public-archive-qualification",
+  "public-material-packet",
+  "public-recipient-admission",
+  "public-recipient-plan",
+  "public-reconciliation-proof",
+  "qualification-advisory-binding",
+  "qualification-audit-batch",
+  "qualify-consumer-runtime",
+  "qualify-installed-candidate",
+  "qualify-owl-contract",
+  "rc3-recovery-workflow",
+  "recipient-material-case",
+  "recipient-material-case-authority",
+  "recipient-material-case-offline",
+  "recipient-material-case-readmission",
+  "recipient-material-case-replay",
+  "recipient-material-git-source",
+  "replay-ci-recipient-material",
+  "run-browser-tests",
+  "run-release-advisory",
+  "stage-qualification-recovery",
+  "standalone-portability-proof",
+]);
+const legacyEvidenceControls = new Set([
+  "acquisition",
+  "blob-store",
+  "evidence-manifest",
+  "recipient-material-inputs",
+  "recipient-material",
+]);
+const isLegacyFollowupControl = (path) => {
+  const match =
+    /^(scripts|util\/third-party-evidence)\/([a-z0-9-]+)(?:\.test)?\.(?:mjs|js)$/u.exec(
+      path,
+    );
+  return Boolean(
+    match &&
+    (match[1] === "scripts"
+      ? legacyFollowupControls
+      : legacyEvidenceControls
+    ).has(match[2]),
+  );
+};
+
+export function verifyControllerDelta(
+  source,
+  controller,
+  files,
+  { alreadySubmittedLegacyStage = false } = {},
+) {
   for (const oid of [source, controller]) assert.match(oid, /^[a-f0-9]{40}$/u);
   if (source === controller) return;
   git("merge-base", "--is-ancestor", source, controller);
@@ -544,7 +616,8 @@ export function verifyControllerDelta(source, controller, files) {
         /^scripts\/(staged-|release-|verify-immutable-release|public-recipient-lane|qualify-public-registry|registry-provenance)/u.test(
           p,
         ) ||
-        /^docs\/(release|plans)\//u.test(p),
+        /^docs\/(release|plans)\//u.test(p) ||
+        (alreadySubmittedLegacyStage && isLegacyFollowupControl(p)),
     ),
     "Controller delta includes product or unreviewed paths",
   );

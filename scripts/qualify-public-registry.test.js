@@ -248,6 +248,48 @@ test("the built-in waiter supplies the verified tarball to the report and consum
   }
 });
 
+test("legacy continuation retains the original consumer observations while reconciled stage uses its separate matrix evidence", async () => {
+  const f = reportFixture();
+  const { metadata, tarball } = f.available;
+  const stageOrigin = {
+    channel: "pilot",
+    before: { pilot: null },
+    approvedAt: "2026-10-10T00:00:00.000Z",
+  };
+  const stagedSbom = { components: [] };
+  const options = {
+    ...f.options,
+    candidate: { ...f.options.candidate, integrity: metadata.dist.integrity },
+    stageOrigin,
+    stagedSbom,
+  };
+  try {
+    f.options.verifyConsumers.mockResolvedValue({
+      consumer: { alias: { identities: ["fixture"] } },
+      provenance: {},
+    });
+    expect(
+      await qualifyPublicRegistry({ ...options, recipientPolicy: 1 }),
+    ).toMatchObject({
+      schemaVersion: 1,
+      result: "PASS",
+      consumer: { alias: { identities: ["fixture"] } },
+    });
+    expect(f.options.verifyConsumers).toHaveBeenLastCalledWith(
+      metadata,
+      tarball,
+      stageOrigin,
+      stagedSbom,
+      1,
+    );
+    const reconciled = await qualifyPublicRegistry(options);
+    expect(reconciled.schemaVersion).toBe(2);
+    expect(reconciled).not.toHaveProperty("consumer");
+  } finally {
+    f.cleanup();
+  }
+});
+
 test.each(["SHA-256", "SHA-512"])(
   "rechecks the %s of bytes supplied by a substitute waiter",
   async (algorithm) => {

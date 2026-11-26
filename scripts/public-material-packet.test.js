@@ -6,6 +6,7 @@ import {
   unpackPublicMaterial,
 } from "./public-material-packet.mjs";
 import { publicMaterialFailureCode } from "./public-material-job.mjs";
+import { AcquisitionError } from "../util/acquire-npm-package-evidence.mjs";
 
 const hash = (value) => sha256Buffer(Buffer.from(value));
 
@@ -74,6 +75,24 @@ test("projects safe public stage codes without reproducing vendor text", () => {
   expect(publicMaterialFailureCode(new Error(privateMessage))).toBe(
     "PUBLIC_MATERIAL_UNAVAILABLE",
   );
+  expect(
+    publicMaterialFailureCode(
+      new AcquisitionError(
+        "CONTROL_FAILURE",
+        "SCANCODE_EXECUTION_FAILED",
+        privateMessage,
+      ),
+    ),
+  ).toBe("PUBLIC_MATERIAL_UNAVAILABLE");
+  expect(
+    publicMaterialFailureCode(
+      new AcquisitionError(
+        "CONTROL_FAILURE",
+        "SCANCODE_FINDINGS_INVALID",
+        privateMessage,
+      ),
+    ),
+  ).toBe("PUBLIC_MATERIAL_REJECTED");
   expect(publicMaterialFailureCode(new SyntaxError(privateMessage))).toBe(
     "PUBLIC_MATERIAL_REJECTED",
   );

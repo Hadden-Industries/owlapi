@@ -6,6 +6,7 @@ import { GitHubReleaseClient } from "./github-release.mjs";
 import { readCheckpoint } from "./release-history-checkpoint.mjs";
 import { REPOSITORY } from "./release-identity.mjs";
 import { CANONICAL_NODE, CI_RUNTIME } from "./runtime-policy.mjs";
+import { standalonePortabilityRuntimes } from "./consumer-runtime-matrix.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { withAuditNpmClients } from "./release-audit-runtimes.mjs";
 import {
@@ -23,13 +24,28 @@ const validId = (value) => Number.isSafeInteger(value) && value > 0;
 const fields = (value, keys) =>
   assert.ok(jsonEquals(Object.keys(value).sort(), [...keys].sort()));
 
+function supportsMacJob(job, platform) {
+  if (platform.os !== "darwin" || platform.cpu !== "arm64") return false;
+  if (job === "consumer_runtime")
+    return platform.npm === CI_RUNTIME.consumerNpm;
+  const runtime = standalonePortabilityRuntimes[job];
+  return (
+    runtime?.platform?.os === "darwin" &&
+    jsonEquals({ ...runtime.platform, npm: runtime.npm }, platform)
+  );
+}
+
 /** Source and archive measurements may be reused across installs. The exact
- * original lock is selected only for its own native role and runtime. */
+ * original lock is selected only for its own logical job, role and runtime. */
 export function selectMacMeasurements(
   bytes,
-  { commit, tarballSha256, role, platform },
+  { commit, tarballSha256, job, role, platform },
 ) {
   if (!bytes) return { entries: [], replay: null };
+  assert.ok(
+    supportsMacJob(job, platform),
+    "Unsupported Mac measurement job or runtime",
+  );
   assert.ok(
     Buffer.isBuffer(bytes) && bytes.length <= 64 * 1024,
     "Signed scanner selection exceeds its bounds",
@@ -44,6 +60,7 @@ export function selectMacMeasurements(
   for (const row of index.measurements) {
     fields(row, [
       "role",
+      "job",
       "commit",
       "tarballSha256",
       "resolutionSha256",
@@ -74,7 +91,12 @@ export function selectMacMeasurements(
           row.platform.node === CANONICAL_NODE),
     );
     assert.match(row.platform.node, /^[1-9]\d*\.\d+\.\d+$/u);
+    assert.ok(
+      supportsMacJob(row.job, row.platform),
+      "Signed measurement names a job outside its approved runtime",
+    );
     const key = canonicalJson([
+      row.job,
       row.role,
       row.commit,
       row.tarballSha256,
@@ -104,7 +126,10 @@ export function selectMacMeasurements(
     );
   const replay =
     entries.find(
-      (row) => row.role === role && jsonEquals(row.platform, platform),
+      (row) =>
+        row.job === job &&
+        row.role === role &&
+        jsonEquals(row.platform, platform),
     ) ?? null;
   return { entries, replay };
 }
@@ -127,6 +152,11 @@ async function authenticateOriginal(client, row, tarball, npmCli) {
           RECIPIENT_OBSERVATION: `${row.observationArtifactId}:${row.observationArtifactSha256}`,
         });
         const { pending } = original;
+        assert.equal(
+          pending.source.job ?? "consumer_runtime",
+          row.job,
+          "Signed measurement covers another original native job",
+        );
         assert.equal(
           pending.role,
           row.role,
@@ -220,6 +250,7 @@ export async function openMacRecipientMeasurements({
     evidence: originals.get(replay),
     archiveMeasurements: {
       checkpoint: checkpoint.objectId,
+      job: scope.job,
       scannerArtifacts: entries.map((row) => row.scannerArtifactSha256),
       replayedResolutionSha256: replay?.resolutionSha256 ?? null,
     },
@@ -260,6 +291,7 @@ export async function loadMacRecipientMeasurements({
     scope: {
       commit: environment.GITHUB_SHA,
       tarballSha256: sha256Buffer(tarball),
+      job: environment.GITHUB_JOB,
       role,
       platform: { ...platform, npm },
     },

@@ -1577,9 +1577,17 @@ function validateOperationJobs(file, workflow, violations) {
     const execute = recipientSteps.find(
       (step) => step.run === "node scripts/public-recipient-lane.mjs test",
     );
+    const legacy = recipientSteps.find(
+      (step) => step.run === "node scripts/public-recipient-lane.mjs legacy",
+    );
+    const reconciled = "needs.registry.outputs.recipient_policy == '2'";
     add(
       violations,
       registry?.if === protectedReleaseBranch &&
+        registry.outputs?.recipient_policy ===
+          "${{ steps.public.outputs.recipient_policy }}" &&
+        observe?.if === reconciled &&
+        material?.if === reconciled &&
         sameInventory(needs(observe), ["registry"]) &&
         isDeepStrictEqual(commands(observe), [
           "node scripts/consumer-runtime-tools.mjs prepare",
@@ -1588,18 +1596,24 @@ function validateOperationJobs(file, workflow, violations) {
         sameInventory(needs(material), ["registry", "public_observation"]) &&
         scanner?.if === "steps.inputs.outputs.novel == 'true'" &&
         sameInventory(needs(recipient), ["registry", "material", "advisory"]) &&
+        recipient?.if ===
+          "${{ !cancelled() && needs.registry.result == 'success' && ((needs.registry.outputs.recipient_policy == '1' && needs.material.result == 'skipped' && needs.advisory.result == 'skipped') || (needs.registry.outputs.recipient_policy == '2' && needs.material.result == 'success' && needs.advisory.result == 'success')) }}" &&
         isDeepStrictEqual(commands(recipient), [
           "node scripts/consumer-runtime-tools.mjs prepare",
           "node scripts/public-recipient-admission.mjs",
           "node scripts/public-recipient-lane.mjs test",
+          "node scripts/public-recipient-lane.mjs legacy",
         ]) &&
         authorize &&
         execute &&
+        legacy &&
         selectRuntime &&
-        !authorize.if &&
+        authorize.if === reconciled &&
         !authorize["continue-on-error"] &&
-        !execute.if &&
+        execute.if === reconciled &&
         !execute["continue-on-error"] &&
+        legacy.if === "needs.registry.outputs.recipient_policy == '1'" &&
+        !legacy["continue-on-error"] &&
         isDeepStrictEqual(authorize.env, {
           GH_TOKEN: "${{ github.token }}",
           HISTORY_OBJECT: "${{ inputs.history_object }}",
@@ -1612,6 +1626,8 @@ function validateOperationJobs(file, workflow, violations) {
           recipientSteps.indexOf(selectRuntime) &&
         recipientSteps.indexOf(selectRuntime) <
           recipientSteps.indexOf(execute) &&
+        recipientSteps.indexOf(selectRuntime) <
+          recipientSteps.indexOf(legacy) &&
         isDeepStrictEqual(actionSteps(recipient, "actions/checkout")[0]?.with, {
           ref: "${{ github.sha }}",
           "fetch-depth": 0,

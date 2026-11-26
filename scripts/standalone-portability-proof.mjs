@@ -12,6 +12,10 @@ import { PACKAGE_NAME } from "./package-identity.mjs";
 import { recipientMaterialMember } from "./recipient-material-case.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { standalonePortabilityRuntimes } from "./consumer-runtime-matrix.mjs";
+import {
+  createMaterialRecordInterner,
+  createMaterialRecordReconstructor,
+} from "./material-record-interning.mjs";
 
 export const STANDALONE_PORTABILITY_PROOF = "standalone-portability.json";
 export const STANDALONE_PORTABILITY_UPLOAD =
@@ -61,6 +65,7 @@ export function writeStandalonePortabilityProof(
   assert.match(candidateDigest, /^sha256:[a-f0-9]{64}$/u);
   const candidateArtifact = { id: candidateId, digest: candidateDigest };
   const originals = {};
+  const material = createMaterialRecordInterner();
   const preserve = (text) => {
     const key = hashText(text);
     originalText(originals, key, text);
@@ -82,7 +87,7 @@ export function writeStandalonePortabilityProof(
       "utf8",
     );
     assert.equal(preserve(decisionText), decision.decisionSha256);
-    assert.equal(preserve(materialText), retained.materialSha256);
+    material.add(retained.materialSha256, materialText);
     subjects[mode] = {
       installedTests,
       afterExecutionSha256,
@@ -93,7 +98,7 @@ export function writeStandalonePortabilityProof(
     };
   }
   const packet = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     result: report.result,
     identity,
     candidateArtifact,
@@ -101,6 +106,7 @@ export function writeStandalonePortabilityProof(
     runtime: report.runtime,
     subjects,
     originals,
+    material: material.tables,
   };
   readStandalonePortabilityProof(packet, {
     identity,
@@ -134,8 +140,9 @@ export function readStandalonePortabilityProof(
     "runtime",
     "subjects",
     "originals",
+    "material",
   ]);
-  assert.equal(packet.schemaVersion, 1);
+  assert.equal(packet.schemaVersion, 2);
   assert.equal(packet.result, "PASS");
   assert.ok(
     jsonEquals(packet.identity, identity),
@@ -168,6 +175,11 @@ export function readStandalonePortabilityProof(
     "Standalone portability ran on another runtime",
   );
   assertFields(packet.subjects, ["alias", "scoped"]);
+  assertFields(packet.material, ["materials", "artifacts", "dispositions"]);
+  const material = createMaterialRecordReconstructor(packet.material, {
+    expansionLimit: 4 * 1024 * 1024,
+    label: "Standalone material",
+  });
   const referenced = new Set();
   function original(key) {
     assert.match(key, digest);
@@ -175,6 +187,7 @@ export function readStandalonePortabilityProof(
     const text = packet.originals[key];
     assert.equal(typeof text, "string");
     assert.equal(hashText(text), key, "Retained standalone original changed");
+    if (!referenced.has(key)) material.accountOriginal(text);
     referenced.add(key);
     return text;
   }
@@ -219,7 +232,7 @@ export function readStandalonePortabilityProof(
     );
     const decisionText = original(item.decision.decisionSha256);
     const retained = JSON.parse(decisionText);
-    const materialText = original(retained.materialSha256);
+    const materialText = material.open(retained.materialSha256);
     decisions.set(
       `eligibility/decisions/${item.decision.decisionSha256}.json`,
       Buffer.from(decisionText),
@@ -238,5 +251,6 @@ export function readStandalonePortabilityProof(
     jsonEquals([...referenced].sort(), Object.keys(packet.originals).sort()),
     "Unexpected standalone original",
   );
+  material.assertClosed();
   return { installed, decisions };
 }

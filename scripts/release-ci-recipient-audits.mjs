@@ -390,6 +390,7 @@ export async function readCiRecipientAuditInputs({
           scope: {
             commit: source.commit,
             tarballSha256: candidate.tarballSha256,
+            job: item.standalone ?? "consumer_runtime",
             role,
             platform: { ...item.platform, npm: item.npm },
           },
