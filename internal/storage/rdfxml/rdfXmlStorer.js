@@ -1,8 +1,9 @@
 import {
   createRdfStorageOntology,
   mapStorageOntologyToRdf,
-  rdfStorageConfiguration,
+  prepareRdfStorageConfiguration,
   verifyRdfStorage,
+  verifyScopedSwrlRdfStorage,
 } from "../rdfStorage.js";
 import { OWLDocumentFormats } from "../../../formats/index.js";
 import {
@@ -29,7 +30,11 @@ import { readAnonymousIndividualRdfNodes } from "../../mapping/owlToRdfTranslato
 import { OntologyStructuralComparisonLimitError } from "../../model/ontologyStructuralIsomorphism.js";
 import { RdfXmlSyntaxAdapter } from "../../parsing/rdfxml/rdfXmlSyntaxAdapter.js";
 import { rdfXmlGraphChunks } from "./rdfXmlGraphWriter.js";
-import { defaultDocumentStoragePolicy } from "../../behavior/ontologyBehaviorContext.js";
+import { validateScopedSwrlXmlLiteral } from "./xmlLiteralValidation.js";
+import {
+  defaultBehaviorProfileDefinition,
+  defaultDocumentStoragePolicy,
+} from "../../behavior/ontologyBehaviorContext.js";
 import { readStorageFormatParameters } from "../storageFormatParameters.js";
 
 function ontologyNamespace(ontologyIRI) {
@@ -107,6 +112,8 @@ export const createRdfXmlStorer = ({
     format,
     writerContext,
     documentStoragePolicy = defaultDocumentStoragePolicy,
+    behaviorProfileDefinition = defaultBehaviorProfileDefinition,
+    swrlImportContext,
   ) {
     const parameters = readStorageFormatParameters(
       format,
@@ -128,6 +135,13 @@ export const createRdfXmlStorer = ({
       );
     }
     try {
+      const configuration = documentStoragePolicy.requiresLosslessRdfRoundTrip
+        ? prepareRdfStorageConfiguration(
+            snapshot,
+            behaviorProfileDefinition.behaviorProfileId,
+            documentStoragePolicy,
+          )
+        : undefined;
       const original = createRdfStorageOntology(snapshot);
       const complete = documentStoragePolicy.preservesGenericRdfPropertyRoles
         ? (dataset) => retainGenericPropertyRoles(original, dataset)
@@ -137,9 +151,20 @@ export const createRdfXmlStorer = ({
           ? map(original, {
               complete,
               supportsScopedSwrl: documentStoragePolicy.supportsScopedSwrl,
+              maxQuads: configuration?.maxQuads,
             })
           : map(original);
       if (map !== mapStorageOntologyToRdf) complete?.(mappedDataset);
+      const scopedRules = documentStoragePolicy.supportsScopedSwrl
+        ? [...original.getAxiomsByType(OWLObjectKind.SWRL_RULE)]
+        : [];
+      if (scopedRules.length)
+        await verifyScopedSwrlRdfStorage(
+          scopedRules,
+          mappedDataset,
+          behaviorProfileDefinition.behaviorProfileId,
+          swrlImportContext,
+        );
       const ontologyIRI = snapshot.ontologyID.ontologyIRI?.value;
       const context = {
         prefixes:
@@ -151,6 +176,25 @@ export const createRdfXmlStorer = ({
         anonymousIndividuals: readAnonymousIndividualRdfNodes(mappedDataset),
         documentStoragePolicy,
       };
+      if (
+        scopedRules.length &&
+        documentStoragePolicy.xmlLiteralRepresentation === "embedded"
+      ) {
+        const checked = new Set();
+        const defaultNamespace =
+          context.prefixes?.get(":") ?? context.defaultNamespace;
+        for (const rule of scopedRules) {
+          for (const { value } of rule.annotations) {
+            if (
+              value.datatype.iri.value !== RDF_VOCABULARY.xmlLiteral ||
+              checked.has(value.lexicalForm)
+            )
+              continue;
+            validateScopedSwrlXmlLiteral(value.lexicalForm, defaultNamespace);
+            checked.add(value.lexicalForm);
+          }
+        }
+      }
       let fragments = () =>
         rdfXmlGraphChunks(mappedDataset, writerContext, context);
       if (!documentStoragePolicy.requiresLosslessRdfRoundTrip) return fragments;
@@ -172,7 +216,6 @@ export const createRdfXmlStorer = ({
       // Work only with the complete generated document. This context contains
       // neither a manager, IRI mapper, nor document loader, so imports remain
       // authored declarations rather than triggering external retrieval.
-      const configuration = rdfStorageConfiguration(snapshot);
       const parser = new RdfXmlSyntaxAdapter();
       const byteSource = () =>
         new StreamDocumentSource(() => utf8Chunks(fragments()));

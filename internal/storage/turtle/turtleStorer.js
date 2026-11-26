@@ -4,9 +4,9 @@ import {
   ResourceLimitError,
 } from "../../../io/errors.js";
 import { StreamDocumentSource } from "../../../io/streamDocumentSource.js";
+import { OWLObjectKind } from "../../../model/kinds.js";
 import { utf8Chunks } from "../utf8ChunkWriter.js";
 import { collectStorageText } from "../storageFailureOutput.js";
-import { snapshotAxioms } from "../snapshotValues.js";
 import { utf8Length } from "../xmlTokens.js";
 import {
   canFragmentTurtleLiteral,
@@ -20,11 +20,6 @@ import { XSD_NAMESPACE, RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { rdfEntitySectionName } from "../rdfEntitySections.js";
 import { readAnonymousIndividualRdfNodes } from "../../mapping/owlToRdfTranslator.js";
 import {
-  OWL_OBJECT_KINDS,
-  OWL_OBJECT_KINDS_WITH_SWRL,
-} from "../../../model/kinds.js";
-import { checkStructuralGraphLimits } from "../../model/structuralValidation.js";
-import {
   defaultDocumentStoragePolicy,
   defaultBehaviorProfileDefinition,
 } from "../../behavior/ontologyBehaviorContext.js";
@@ -32,14 +27,10 @@ import { createTurtleSyntaxAdapter } from "../../parsing/rdf/n3SyntaxAdapter.js"
 import {
   createRdfStorageOntology,
   mapStorageOntologyToRdf,
-  rdfStorageConfiguration,
+  prepareRdfStorageConfiguration,
   verifyRdfStorage,
+  verifyScopedSwrlRdfStorage,
 } from "../rdfStorage.js";
-
-// Same admission as the existing lossless RDF writer and parser recheck.
-
-const SUPPORTED_TURTLE_KINDS = new Set(OWL_OBJECT_KINDS);
-const JAVA_TURTLE_KINDS = new Set(OWL_OBJECT_KINDS_WITH_SWRL);
 
 /** Exact Turtle through the locked native N3 writer and shared lossless gate. */
 async function prepareTurtle(
@@ -48,36 +39,15 @@ async function prepareTurtle(
   writerContext,
   documentStoragePolicy = defaultDocumentStoragePolicy,
   behaviorProfileDefinition = defaultBehaviorProfileDefinition,
+  swrlImportContext,
 ) {
   const parameters = readStorageFormatParameters(format, documentStoragePolicy);
   const forceXsdString = readForceStringDatatype(parameters);
-  const configuration = rdfStorageConfiguration(
+  const configuration = prepareRdfStorageConfiguration(
     snapshot,
     behaviorProfileDefinition.behaviorProfileId,
+    documentStoragePolicy,
   );
-  const axioms = snapshotAxioms(snapshot);
-  if (axioms.length > configuration.maxAxioms)
-    throw new ResourceLimitError("Turtle axiom limit exceeded", {
-      resource: "maxAxioms",
-      limit: configuration.maxAxioms,
-    });
-  // Bound the recursive normative RDF mapper before it allocates a graph;
-  // a later parser recheck cannot protect the earlier mapping phase.
-  for (const values of [
-    [snapshot.ontologyID],
-    snapshot.authoredImportDeclarations,
-    snapshot.directOntologyAnnotations,
-    axioms,
-  ])
-    for (const value of values)
-      checkStructuralGraphLimits(
-        value,
-        documentStoragePolicy.supportsScopedSwrl
-          ? JAVA_TURTLE_KINDS
-          : SUPPORTED_TURTLE_KINDS,
-        configuration.maxExpressionDepth,
-        configuration.maxAnnotationDepth,
-      );
   const original = createRdfStorageOntology(snapshot);
   const dataset = mapStorageOntologyToRdf(original, {
     supportsScopedSwrl: documentStoragePolicy.supportsScopedSwrl,
@@ -85,6 +55,13 @@ async function prepareTurtle(
       ? configuration.maxQuads
       : undefined,
   });
+  if (documentStoragePolicy.supportsScopedSwrl)
+    await verifyScopedSwrlRdfStorage(
+      [...original.getAxiomsByType(OWLObjectKind.SWRL_RULE)],
+      dataset,
+      behaviorProfileDefinition.behaviorProfileId,
+      swrlImportContext,
+    );
   const { Writer } = await import("n3");
   const subjectSections = new Map();
   const anonymousIndividuals = readAnonymousIndividualRdfNodes(dataset);

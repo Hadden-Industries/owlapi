@@ -23,13 +23,24 @@ import { owlXmlStorer } from "./owlxml/owlXmlStorer.js";
 import { visitStructuralValues } from "../model/sourceEvidence.js";
 import { snapshotAxioms } from "./snapshotValues.js";
 import { OWLObjectKind } from "../../model/kinds.js";
-const swrlFormats = new Set([
-  functionalSyntaxStorer.formatKey,
+import { defaultBehaviorProfileDefinition } from "../behavior/ontologyBehaviorContext.js";
+import { readPartialStorageOutput } from "./storageFailureOutput.js";
+
+const swrlRdfFormats = new Set([
   rdfXmlStorer.formatKey,
   turtleStorer.formatKey,
 ]);
-import { defaultBehaviorProfileDefinition } from "../behavior/ontologyBehaviorContext.js";
-import { readPartialStorageOutput } from "./storageFailureOutput.js";
+const swrlFormats = new Set([
+  functionalSyntaxStorer.formatKey,
+  ...swrlRdfFormats,
+]);
+
+function hasAnnotatedSwrlRule(snapshot) {
+  for (const axiom of snapshotAxioms(snapshot))
+    if (axiom.kind === OWLObjectKind.SWRL_RULE && axiom.annotations.length)
+      return true;
+  return false;
+}
 
 const requireDocumentFormat = (format) => {
   if (!(format instanceof OWLDocumentFormat) || !Object.isFrozen(format)) {
@@ -90,6 +101,7 @@ export class StorerRegistry {
     target,
     writerContext,
     behaviorProfileDefinition = defaultBehaviorProfileDefinition,
+    captureSwrlImportContext,
   ) {
     const { documentStoragePolicy } = behaviorProfileDefinition;
     requireDocumentFormat(format);
@@ -151,6 +163,16 @@ export class StorerRegistry {
             },
           );
       }
+      // Capture the owner's existing declarations before any asynchronous
+      // writer work can observe a different import closure or revision.
+      const swrlImportContext =
+        captureSwrlImportContext &&
+        documentStoragePolicy.supportsScopedSwrl &&
+        swrlRdfFormats.has(format.key) &&
+        ontologySnapshot.authoredImportDeclarations.length &&
+        hasAnnotatedSwrlRule(ontologySnapshot)
+          ? captureSwrlImportContext()
+          : undefined;
       if (streamed && storer.renderBytes) {
         const chunks = await storer.renderBytes(
           ontologySnapshot,
@@ -158,6 +180,7 @@ export class StorerRegistry {
           writerContext,
           documentStoragePolicy,
           behaviorProfileDefinition,
+          swrlImportContext,
         );
         await writeStreamDocumentTarget(target, chunks);
         return;
@@ -168,6 +191,7 @@ export class StorerRegistry {
         writerContext,
         documentStoragePolicy,
         behaviorProfileDefinition,
+        swrlImportContext,
       );
       if (streamed)
         await writeStreamDocumentTarget(target, utf8Chunks([completeText]));

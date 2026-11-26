@@ -31,6 +31,7 @@ import { RemoveAxiom } from "./removeAxiom.js";
 import { AddAxiom } from "./addAxiom.js";
 import { ChangeApplied } from "./parameters/index.js";
 import { createImmutableDocumentMetadataSnapshot } from "../internal/model/ontologyState.js";
+import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import {
   createSourceStructure,
   publishSourceEvidence,
@@ -851,7 +852,25 @@ export class OWLOntologyManager {
       target,
       writerContext,
       this.#behaviorContext.behaviorProfileDefinition,
+      () => owner.#captureSwrlStorageImportContext(ontology),
     );
+  }
+
+  #captureSwrlStorageImportContext(ontology) {
+    const declarationEntities = new StructuralSet();
+    const sourceRoles = [];
+    for (const member of this.#readImportsClosure(ontology, "saveOntology")) {
+      if (member === ontology) continue;
+      const model = readOntologyModel(readOntologySnapshot(member));
+      for (const { entity } of model.axioms(OWLObjectKind.DECLARATION_AXIOM))
+        declarationEntities.add(entity);
+      for (const role of readSourceEvidence(member).structure?.roles ?? [])
+        sourceRoles.push(role);
+    }
+    return Object.freeze({
+      declarationEntities: Object.freeze([...declarationEntities]),
+      sourceRoles: Object.freeze(sourceRoles),
+    });
   }
 
   importsClosure(ontology) {

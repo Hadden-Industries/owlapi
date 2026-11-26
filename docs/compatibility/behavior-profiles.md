@@ -38,6 +38,16 @@ Distinct RDF lists with overlapping tails and cycles raise the list syntax error
 Two sides may reference the same complete list.
 Emitted RDF uses separate lists.
 
+For RDF/XML interchange with Java OWLAPI 5.5.1, declare custom rule annotation properties.
+The native RDF reader can return the rule without its annotation when the custom property is undeclared.
+The JavaScript RDF/XML and Turtle writers check property roles in the direct ontology and its already-loaded imports.
+If reloading would remove an annotation from the rule, saving raises `ONTOLOGY_NOT_REPRESENTABLE` before opening the target.
+This check reads the owning manager's current import closure without fetching documents.
+
+The Java-compatible RDF/XML writer embeds an XML literal on a rule when both readers can recover its exact lexical form.
+If either reader would change the text, saving raises `ONTOLOGY_NOT_REPRESENTABLE` before opening the target.
+Turtle and Functional Syntax can retain the original spelling in that case.
+
 Use the optional third argument to `dispatchAxiom` or `dispatchOwlObject` to select the corresponding extended domain.
 The two-argument form retains its original exhaustive domain and reports an unknown kind on an actual rule.
 The named Java DL checker accepts the declared supported example.

@@ -1,10 +1,24 @@
 import { DOMParser } from "@xmldom/xmldom";
+import {
+  OWLOntologyStorageError,
+  ResourceLimitError,
+} from "../../../io/errors.js";
 import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
+import { canonicalizeRdfXmlLiteral } from "../../parsing/rdfxml/rdfXmlSyntaxAdapter.js";
 import { XmlChunkTokens } from "../../parsing/xml/xmlChunkTokens.js";
 import { prepareXml } from "../../parsing/xml/xmlEntityPolicy.js";
+import { XMLNS_NAMESPACE } from "../../rdfjs/vocabulary.js";
+import { xmlAttribute, xmlTextChunks } from "../xmlTokens.js";
 
 const batchLength = 16_384;
 const xmlWhitespace = /^[\t\n\r ]*$/u;
+const prepareLiteral = (text) =>
+  prepareXml(
+    text,
+    new OWLOntologyLoaderConfiguration({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    }),
+  );
 
 function parseLiteral(text) {
   const document = new DOMParser({
@@ -89,12 +103,97 @@ function validateFlatSiblings(text) {
 
 /** Validate the prepared document, always leaving the emitted lexical value untouched. */
 export function validateEmbeddedXmlLiteral(literal) {
-  const prepared = prepareXml(
-    literal,
-    new OWLOntologyLoaderConfiguration({
-      behaviorProfileId: "java-owlapi-5.5.1",
-    }),
-  );
+  const prepared = prepareLiteral(literal);
   if (prepared.length <= batchLength || !validateFlatSiblings(prepared))
     parseLiteral(prepared);
+}
+
+// Java OWLAPI 5.5.1's RDF/XML parseType literal events are distinct from
+// exclusive XML canonicalization. Compare the observed lexical form without
+// accumulating another canonical document or recursively visiting deep XML.
+function matchesJavaEmbeddedLiteral(container, lexical) {
+  const declaredNamespaces = new Set();
+  let offset = 0;
+  const append = (part) => {
+    if (!lexical.startsWith(part, offset)) return false;
+    offset += part.length;
+    return true;
+  };
+  let node = container.firstChild;
+  while (node) {
+    if (node.nodeType === 1) {
+      if (!append(`<${node.nodeName}`)) return false;
+      if (node.prefix && !declaredNamespaces.has(node.namespaceURI)) {
+        declaredNamespaces.add(node.namespaceURI);
+        if (!append(` xmlns:${node.prefix}="${node.namespaceURI}"`))
+          return false;
+      }
+      for (const attribute of node.attributes)
+        if (
+          attribute.namespaceURI !== XMLNS_NAMESPACE &&
+          !append(` ${attribute.name}="${attribute.value}"`)
+        )
+          return false;
+      if (!append(">")) return false;
+      if (node.firstChild) {
+        node = node.firstChild;
+        continue;
+      }
+    } else if (node.nodeType === 3 || node.nodeType === 4) {
+      // The JS and Java readers render preserved carriage returns differently.
+      if (node.data.includes("\r")) return false;
+      for (const part of xmlTextChunks(node.data, "rdf"))
+        if (!append(part)) return false;
+    }
+    // The native literal handler does not write processing instructions
+    // or comments into the literal.
+    while (node !== container) {
+      if (node.nodeType === 1 && !append(`</${node.nodeName}>`)) return false;
+      if (node.nextSibling) break;
+      node = node.parentNode;
+    }
+    node = node === container ? null : node.nextSibling;
+  }
+  return offset === lexical.length;
+}
+
+/** Refuse a scoped rule XML literal when either RDF/XML reader would change it. */
+export function validateScopedSwrlXmlLiteral(literal, defaultNamespace) {
+  const details = { reason: "ONTOLOGY_NOT_REPRESENTABLE" };
+  try {
+    validateEmbeddedXmlLiteral(literal);
+  } catch (cause) {
+    if (cause instanceof ResourceLimitError) throw cause;
+    throw new OWLOntologyStorageError("XML literal is not self contained", {
+      ...details,
+      cause,
+    });
+  }
+  const namespace = defaultNamespace
+    ? " " + xmlAttribute("xmlns", defaultNamespace)
+    : "";
+  let container;
+  try {
+    // A self-contained document may still be illegal inside a property
+    // element (for example, an XML declaration in the literal).
+    container = parseLiteral(
+      prepareLiteral(
+        `<owlapi-fragment${namespace}>${literal}</owlapi-fragment>`,
+      ),
+    ).documentElement;
+  } catch (cause) {
+    if (cause instanceof ResourceLimitError) throw cause;
+    throw new OWLOntologyStorageError(
+      "An XML literal cannot be embedded in a SWRL rule annotation",
+      { ...details, cause },
+    );
+  }
+  if (
+    !matchesJavaEmbeddedLiteral(container, literal) ||
+    canonicalizeRdfXmlLiteral(container) !== literal
+  )
+    throw new OWLOntologyStorageError(
+      "RDF/XML cannot preserve the lexical form of a SWRL XML literal",
+      details,
+    );
 }

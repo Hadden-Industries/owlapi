@@ -109,6 +109,8 @@ class TranslationSession {
   #dataRangeHandlers;
   #dataset;
   #graph;
+  #hasSwrlRule = false;
+  #hasOrdinarySwrlVariableType = false;
   #individualHandlers;
   #objectPropertyExpressionHandlers;
 
@@ -539,32 +541,7 @@ class TranslationSession {
       ontologyNode,
       direct ? direct.annotations : ontology.getAnnotations(),
     );
-    let hasRule = false,
-      structuralClassAssertion;
     for (const axiom of direct ? direct.axioms : ontology.getAxioms()) {
-      if (this.#axiomKinds === AXIOM_KINDS_WITH_SWRL) {
-        if (axiom.kind === OWLObjectKind.SWRL_RULE) hasRule = true;
-        if (
-          axiom.kind === OWLObjectKind.CLASS_ASSERTION_AXIOM &&
-          axiom.classExpression.kind === OWLObjectKind.CLASS
-        ) {
-          const type = axiom.classExpression.iri.value;
-          if (
-            type === SWRL.Imp ||
-            (type === SWRL.Variable &&
-              axiom.individual.kind === OWLObjectKind.NAMED_INDIVIDUAL)
-          )
-            structuralClassAssertion = type;
-        }
-        if (
-          structuralClassAssertion === SWRL.Imp ||
-          (hasRule && structuralClassAssertion === SWRL.Variable)
-        )
-          throw new OWLOntologyStorageError(
-            "An ordinary class assertion collides with a SWRL structural type",
-            { reason: "ONTOLOGY_NOT_REPRESENTABLE" },
-          );
-      }
       dispatchAxiom(axiom, this.#axiomHandlers, this.#axiomKinds);
     }
 
@@ -1034,6 +1011,10 @@ class TranslationSession {
   }
 
   #mapSwrlRule(rule) {
+    this.#hasSwrlRule = true;
+    if (this.#hasOrdinarySwrlVariableType) {
+      this.#rejectSwrlTypeCollision(SWRL.Variable);
+    }
     for (const annotation of rule.annotations) {
       const predicate = annotation.property.iri.value;
       if (
@@ -1048,10 +1029,11 @@ class TranslationSession {
           },
         );
     }
-    const node = this.#typedBlankNode(SWRL.Imp);
+    const node = this.#dataFactory.blankNode();
+    this.#addSwrlType(node, SWRL.Imp);
     const variable = (argument) => {
       const iri = this.#namedNode(argument.iri.value);
-      this.#add(iri, RDF_VOCABULARY.type, this.#namedNode(SWRL.Variable));
+      this.#addSwrlType(iri, SWRL.Variable);
       return iri;
     };
     const atom = (value) => {
@@ -1137,18 +1119,48 @@ class TranslationSession {
     this.#addAnnotations(annotationNode, annotation.annotations);
   }
 
+  #rejectSwrlTypeCollision(type) {
+    throw new OWLOntologyStorageError(
+      "An ordinary RDF statement collides with a SWRL structural type",
+      { reason: "ONTOLOGY_NOT_REPRESENTABLE", type },
+    );
+  }
+
+  #addSwrlType(subject, type) {
+    return this.#addQuad(
+      subject,
+      this.#namedNode(RDF_VOCABULARY.type),
+      this.#namedNode(type),
+    );
+  }
+
   #add(subject, predicate, object) {
+    const predicateNode =
+      typeof predicate === "string" ? this.#namedNode(predicate) : predicate;
+    if (
+      this.#axiomKinds === AXIOM_KINDS_WITH_SWRL &&
+      predicateNode.value === RDF_VOCABULARY.type &&
+      object.termType === "NamedNode"
+    ) {
+      if (object.value === SWRL.Imp) this.#rejectSwrlTypeCollision(SWRL.Imp);
+      if (object.value === SWRL.Variable && subject.termType === "NamedNode") {
+        if (this.#hasSwrlRule) this.#rejectSwrlTypeCollision(SWRL.Variable);
+        this.#hasOrdinarySwrlVariableType = true;
+      }
+    }
+    return this.#addQuad(subject, predicateNode, object);
+  }
+
+  #addQuad(subject, predicate, object) {
     this.#emittedQuads++;
     if (this.#maxQuads !== undefined && this.#emittedQuads > this.#maxQuads)
       throw new ResourceLimitError("OWL-to-RDF quad limit exceeded", {
         resource: "maxQuads",
         limit: this.#maxQuads,
       });
-    const predicateNode =
-      typeof predicate === "string" ? this.#namedNode(predicate) : predicate;
     const quad = this.#dataFactory.quad(
       subject,
-      predicateNode,
+      predicate,
       object,
       this.#graph,
     );
