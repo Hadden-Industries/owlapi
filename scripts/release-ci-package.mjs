@@ -23,7 +23,7 @@ import {
 } from "./package-identity.mjs";
 import { CANONICAL_NODE, CI_RUNTIME } from "./runtime-policy.mjs";
 import { UBUNTU } from "./ubuntu-runner.mjs";
-import { jsonEquals } from "./canonical-json.mjs";
+import { jsonEquals, stableJson } from "./canonical-json.mjs";
 import { INSTALLED_TEST_SCRIPTS } from "./installed-consumer-fixtures.mjs";
 import {
   producerResolutionFilename,
@@ -234,6 +234,7 @@ export async function readProducerPackageProof({
   npmCli,
   npm = CI_RUNTIME.npm,
   materialOptions,
+  expectedSourceLockSha256,
   prepareMaterial,
 }) {
   assert.ok(
@@ -315,7 +316,39 @@ export async function readProducerPackageProof({
   }).npmCli;
   const resolution = await readProducerResolutions(
     jsonMember(files, producerResolutionFilename),
-    { tarball, sbom, npmCli, platform, npm, materialOptions, prepareMaterial },
+    {
+      tarball,
+      sbom,
+      npmCli,
+      platform,
+      npm,
+      materialOptions,
+      expectedSourceLockSha256,
+      prepareMaterial,
+    },
+  );
+  const producer = resolution.subjects.producer;
+  const full = record.fullGraphCheck;
+  assert.ok(
+    full &&
+      typeof full.observedAt === "string" &&
+      Number.isFinite(Date.parse(full.observedAt)) &&
+      new Date(full.observedAt).toISOString() === full.observedAt,
+    "Missing or invalid full producer graph preflight",
+  );
+  assert.ok(
+    jsonEquals(full, {
+      result: "PASS",
+      observedAt: full.observedAt,
+      subject: {
+        ...producer.decision.subject,
+        scope: "full",
+        graphSha256: sha256(
+          Buffer.from(stableJson(JSON.parse(producer.evidence.lock).packages)),
+        ),
+      },
+    }),
+    "Full producer graph preflight does not cover the original source",
   );
   return { manifest: record, evidence, ...resolution };
 }
@@ -404,6 +437,7 @@ export async function verifyReleaseCiPackage({
   npmCli,
   platform,
   materialOptions,
+  expectedSourceLockSha256,
   prepareMaterial,
 }) {
   const { run, candidate, receipt, observed } = source;
@@ -492,6 +526,7 @@ export async function verifyReleaseCiPackage({
     npmCli,
     platform,
     materialOptions,
+    expectedSourceLockSha256,
     prepareMaterial,
   });
   const { legacy, subjects, differences, evidence } = packageProof;

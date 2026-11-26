@@ -166,6 +166,10 @@ function assertLockedRelationships(sbom, { graph, tarball }) {
     );
     const included = new Set(
       component.components.map((c) => {
+        assert.ok(
+          !c.components?.length && c.type === "library",
+          "Unexpected embedded provider subtree",
+        );
         const id = requireRef(c);
         assert.equal(id, ref + ":" + c.name + "@" + c.version);
         return id;

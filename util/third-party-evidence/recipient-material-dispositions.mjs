@@ -2,6 +2,7 @@
 // observed distribution relationship of each installed occurrence.
 import assert from "node:assert/strict";
 import { sha256, stableJson } from "./digests.mjs";
+import { productionDependencyDeclarations } from "./recipient-material-inputs.mjs";
 import {
   externalRuntimeLicenceEvidence,
   isSeparatelyInstalledRuntimeLicence,
@@ -109,6 +110,9 @@ function assessArchiveMember({
   }
   return {
     manifestSha256,
+    authenticatedDeclarations: stableJson(
+      productionDependencyDeclarations(metadata),
+    ),
     sourceLicenceSha256: compactMeasurements
       ? metadata.licenseSha256
       : sha256(stableJson(metadata.license ?? null)),
@@ -146,7 +150,13 @@ export function materialDecisions({
   );
   const byMemberPath = new Map();
   return occurrences.map(
-    ({ location, installedManifestSha256, lockLicence, bundled }) => {
+    ({
+      location,
+      installedManifestSha256,
+      lockLicence,
+      lockDeclarations,
+      bundled,
+    }) => {
       const memberPath = bundled?.packageJsonPath ?? "package.json";
       if (!byMemberPath.has(memberPath))
         byMemberPath.set(
@@ -161,12 +171,23 @@ export function materialDecisions({
             compactMeasurements,
           }),
         );
-      const { manifestSha256, sourceLicenceSha256, material } =
-        byMemberPath.get(memberPath);
+      const {
+        manifestSha256,
+        sourceLicenceSha256,
+        authenticatedDeclarations,
+        material,
+      } = byMemberPath.get(memberPath);
       assert.equal(
         installedManifestSha256,
         manifestSha256,
         `Installed manifest differs from authenticated archive at ${location}`,
+      );
+      // Native replay independently determines edges from the retained lock.
+      // A changed lock declaration must not broaden that native resolution.
+      assert.equal(
+        stableJson(lockDeclarations),
+        authenticatedDeclarations,
+        `Authenticated dependency declarations differ at ${location}`,
       );
       const reasons = [...material.reasons];
       if (

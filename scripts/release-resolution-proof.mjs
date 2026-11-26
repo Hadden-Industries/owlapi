@@ -92,6 +92,7 @@ export async function readProducerResolutions(
     platform,
     npm,
     materialOptions,
+    expectedSourceLockSha256,
     prepareMaterial = prepareRecipientMaterial,
   },
 ) {
@@ -209,6 +210,22 @@ export async function readProducerResolutions(
       requireDirectNovel: materialOptions?.requireDirectNovel,
     });
     const material = materialVerification.record;
+    if (mode === "producer") {
+      // Production graph replay ignores development-only branches. The exact
+      // producer lock also has to be the independently admitted source lock.
+      const sourceLock =
+        expectedSourceLockSha256 ?? material.canonicalEvidence?.lockfileSha256;
+      assert.match(
+        sourceLock ?? "",
+        hex,
+        "Missing authenticated source lock digest",
+      );
+      assert.equal(
+        observed.lockSha256,
+        sourceLock,
+        "Producer lock differs from the authenticated source lock",
+      );
+    }
     assert.equal(material.status, "PASSED");
     assert.equal(material.decisions.length, observed.graph.nodes.length - 1);
     equal(

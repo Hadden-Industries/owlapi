@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { sha256, stableJson } from "./digests.mjs";
 import { verifyRegistrySignature } from "./registry-signatures.mjs";
 import { isSeparatelyInstalledRuntimeLicence } from "./runtime-material-policy.mjs";
+import { productionDependencyDeclarations } from "./recipient-material-inputs.mjs";
 
 const digestPattern = /^[a-f0-9]{64}$/u;
 const expression = (found) =>
@@ -22,22 +23,13 @@ function packageFacts(metadata, projected, keepBundleDeclaration) {
     licenseSha256: projected
       ? metadata.licenseSha256
       : sha256(stableJson(license ?? null)),
+    ...productionDependencyDeclarations(metadata),
   };
   if (!keepBundleDeclaration) return facts;
   return {
     ...facts,
     ...(bundleDependencies === undefined ? {} : { bundleDependencies }),
     ...(bundledDependencies === undefined ? {} : { bundledDependencies }),
-    ...(bundleDependencies === true || bundledDependencies === true
-      ? {
-          dependencies: Object.fromEntries(
-            Object.keys({
-              ...metadata.dependencies,
-              ...metadata.optionalDependencies,
-            }).map((name) => [name, true]),
-          ),
-        }
-      : {}),
   };
 }
 

@@ -44,6 +44,7 @@ const {
   buildReleaseAuditSubject,
   captureReleaseAudit,
   evaluateReleaseAudit,
+  preflightFullReleaseAudit,
   preflightReleaseAudit,
   verifyReleaseAuditReceipt,
 } = await import("./release-audit-evaluator.mjs");
@@ -461,7 +462,7 @@ test("allows file only for the authenticated first-party candidate dependency", 
   ).toThrow("Invalid local candidate audit subject");
 });
 
-async function withAuditCli(script, use) {
+async function withAuditCli(script, use, version = CI_RUNTIME.npm) {
   const temporaryRoot = realpathSync(tmpdir());
   const fixtureDirectory = mkdtempSync(
     join(temporaryRoot, "owlapi-private-audit-test-"),
@@ -472,7 +473,7 @@ async function withAuditCli(script, use) {
     mkdirSync(bin);
     writeFileSync(
       join(fixtureDirectory, "package.json"),
-      bytes({ name: "npm", version: CI_RUNTIME.npm }),
+      bytes({ name: "npm", version }),
     );
     const npmCli = join(bin, "npm-cli.js");
     writeFileSync(npmCli, script);
@@ -510,6 +511,56 @@ test("the native subprocess uses the exact inputs and isolated configuration", (
     },
   ));
 
+const unavailableReport = {
+  method: "POST",
+  uri: "https://registry.npmjs.org/-/npm/v1/security/advisories/bulk",
+  statusCode: 503,
+  body: privateMarker,
+};
+
+test("native audit retries only bounded advisory unavailability and retains the terminal bytes", () =>
+  withAuditCli(
+    `
+    const fs = require("node:fs");
+    const count = fs.existsSync("attempt-fixture") ? Number(fs.readFileSync("attempt-fixture", "utf8")) + 1 : 1;
+    fs.writeFileSync("attempt-fixture", String(count));
+    const payload = count < 3 ? "${bytes(unavailableReport).toString("base64")}" : "${report().toString("base64")}";
+    process.stdout.write(Buffer.from(payload, "base64"));
+    process.exitCode = count < 3 ? 1 : 0;
+  `,
+    (npmCli) => {
+      const observation = observeLockedReleaseAudit(input, { npmCli });
+      expect(observation).toMatchObject({
+        attempts: 3,
+        status: 0,
+        complete: true,
+      });
+      expect(observation.stdout.equals(report())).toBe(true);
+    },
+  ));
+
+test.each([
+  ["unavailable", unavailableReport, 3],
+  ["malformed npm verdict", { ...unavailableReport, auditReportVersion: 2 }, 1],
+  [
+    "unrelated endpoint",
+    { ...unavailableReport, uri: "https://registry.npmjs.org/no-audit" },
+    1,
+  ],
+  ["authorization error", { ...unavailableReport, statusCode: 403 }, 1],
+  ["blocking npm verdict", JSON.parse(report(1)), 1],
+])("native audit attempts for %s", (_label, body, attempts) =>
+  withAuditCli(
+    `process.stdout.write(Buffer.from("${bytes(body).toString("base64")}", "base64")); process.exitCode = 1;`,
+    (npmCli) => {
+      const observation = observeLockedReleaseAudit(input, { npmCli });
+      expect(observation.attempts).toBe(attempts);
+      expect(observation.status).toBe(1);
+      expect(observation.stdout.equals(bytes(body))).toBe(true);
+    },
+  ),
+);
+
 test("the filesystem store requires existing restricted custody and refuses replacements", () => {
   const temporaryRoot = realpathSync(tmpdir());
   const root = mkdtempSync(join(temporaryRoot, "owlapi-private-store-test-"));
@@ -534,6 +585,34 @@ test("the filesystem store requires existing restricted custody and refuses repl
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("issues an authoritative native npm10 observation while preserving canonical Sigstore", () =>
+  withAuditCli(clearAuditCli, (producer) =>
+    withAuditCli(
+      clearAuditCli,
+      async (consumer) => {
+        issueSignature.mockClear();
+        const native = {
+          ...input,
+          role: "recipient",
+          platform: { ...input.platform, npm: CI_RUNTIME.consumerNpm },
+        };
+        const resolved = jest.fn(() => consumer);
+        const entries = [{ source, subject: buildReleaseAuditSubject(native) }];
+        await expect(
+          evaluateReleaseAudit(entries, {
+            authenticate: async () => ({ ...native, source }),
+            trust,
+            npmCli: producer,
+            npmCliForVersion: resolved,
+          }),
+        ).resolves.toHaveProperty("signature");
+        expect(resolved).toHaveBeenCalledWith(CI_RUNTIME.consumerNpm);
+        expect(issueSignature.mock.calls[0][1].npmCli).toBe(producer);
+      },
+      CI_RUNTIME.consumerNpm,
+    ),
+  ));
 
 test("pinned npm reports transient eligibility using isolated configuration", async () => {
   const { npmCli } = selectNpmCliForVersion({
@@ -596,3 +675,59 @@ test("transient preflight rejects malformed reports, unavailable npm and full sc
     preflightReleaseAudit({ ...input, scope: "full" }),
   ).rejects.toThrow("Transient audit preflight requires production scope");
 });
+
+test("transient full producer audit includes development dependencies and permits a moderate observation", () => {
+  const moderate = JSON.parse(report(1));
+  moderate.vulnerabilities.fixture.severity = "moderate";
+  moderate.metadata.vulnerabilities.high = 0;
+  moderate.metadata.vulnerabilities.moderate = 1;
+  return withAuditCli(
+    `
+    if (!process.argv.includes("--include=dev") || !process.argv.includes("--audit-level=high") || process.argv.includes("--omit=dev")) process.exit(3);
+    process.stdout.write(Buffer.from("${bytes(moderate).toString("base64")}", "base64"));
+    process.stderr.write("${privateMarker}");
+  `,
+    async (npmCli) => {
+      const result = await preflightFullReleaseAudit(
+        { ...input, scope: "full" },
+        { npmCli, now: () => utc },
+      );
+      expect(result).toMatchObject({
+        eligible: true,
+        subject: { scope: "full", role: "producer" },
+      });
+      expect(canonicalJson(result)).not.toContain(privateMarker);
+    },
+  );
+});
+
+test("high-severity transport development findings deny the ordinary and protected full check", () =>
+  withAuditCli(
+    `
+    const output = process.argv.includes("--include=dev") ? "${report(1).toString("base64")}" : "${report().toString("base64")}";
+    process.stdout.write(Buffer.from(output, "base64"));
+  `,
+    async (npmCli) => {
+      issueSignature.mockClear();
+      const transport = { ...input, role: "transport" };
+      const full = { ...transport, scope: "full" };
+      await expect(
+        preflightFullReleaseAudit(full, { npmCli }),
+      ).resolves.toMatchObject({ eligible: false });
+      const entries = [transport, full].map((native) => ({
+        source,
+        subject: buildReleaseAuditSubject(native),
+      }));
+      await expect(
+        evaluateReleaseAudit(entries, {
+          trust,
+          npmCli,
+          authenticate: async ({ subject }) => ({
+            ...(subject.scope === "full" ? full : transport),
+            source,
+          }),
+        }),
+      ).rejects.toThrow(/^Release audit did not satisfy policy$/u);
+      expect(issueSignature).not.toHaveBeenCalled();
+    },
+  ));

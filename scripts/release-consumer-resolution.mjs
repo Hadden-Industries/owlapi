@@ -312,7 +312,14 @@ function graphOf(tree, inputs, native, platform, actual, npmVersion) {
       const target = omitted.has(edge.to) ? null : edge.to;
       if (target) {
         assert.ok(
-          requests.some((req) => req.name === target.packageName),
+          requests.some(
+            (req) =>
+              req.name === target.packageName &&
+              (req.fetchSpec === "*" ||
+                semver.satisfies(target.version, req.fetchSpec, {
+                  loose: true,
+                })),
+          ),
           "Target differs from requested npm identity or range",
         );
         if (

@@ -22,6 +22,63 @@ import { isStrictDescendantPath } from "./release-file-utils.mjs";
 
 const maxOutput = 4 * 1024 * 1024;
 const maxPrivateOriginal = 40 * 1024 * 1024;
+const auditTimeout = 45_000;
+const attemptTimeout = 15_000;
+const maxAttempts = 3;
+const endpoints = new Set([
+  new URL("-/npm/v1/security/advisories/bulk", NPM_REGISTRY).href,
+  new URL("-/npm/v1/security/audits/quick", NPM_REGISTRY).href,
+]);
+const retryableCodes = new Set([
+  "EAI_AGAIN",
+  "ECONNRESET",
+  "ECONNREFUSED",
+  "ETIMEDOUT",
+  "ECONNECTIONTIMEOUT",
+  "ERESPONSETIMEOUT",
+  "EIDLETIMEOUT",
+]);
+
+/** Native npm does not retry advisory POSTs. Retry an unavailability observation only. */
+function retryableAuditFailure(result) {
+  const output = result.stdout;
+  if (result.error?.code === "ETIMEDOUT") return !output?.length;
+  if (
+    result.error ||
+    result.signal ||
+    result.status !== 1 ||
+    !output?.length ||
+    output.length > maxOutput
+  )
+    return false;
+  let diagnostic;
+  try {
+    diagnostic = JSON.parse(output);
+  } catch {
+    return false;
+  }
+  if (
+    !diagnostic ||
+    typeof diagnostic !== "object" ||
+    Array.isArray(diagnostic) ||
+    ["auditReportVersion", "vulnerabilities", "metadata"].some((key) =>
+      Object.hasOwn(diagnostic, key),
+    )
+  )
+    return false;
+  if (diagnostic.method === "POST" && endpoints.has(diagnostic.uri)) {
+    const { statusCode } = diagnostic;
+    return (
+      [408, 429].includes(statusCode) ||
+      (Number.isInteger(statusCode) && statusCode >= 500 && statusCode <= 599)
+    );
+  }
+  return (
+    diagnostic.uri === undefined &&
+    diagnostic.statusCode === undefined &&
+    retryableCodes.has(diagnostic.error?.code)
+  );
+}
 export const isAuditEvidenceId = (value) =>
   typeof value === "string" &&
   /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/u.test(
@@ -156,52 +213,68 @@ export function observeLockedReleaseAudit(
     const args =
       scope === "production"
         ? [...RELEASE_AUDIT_ARGS, "--omit=dev"]
-        : ["audit", "--include=dev"];
-    const result = spawnSync(
-      process.execPath,
-      [
-        cli,
-        ...args,
-        "--json",
-        "--package-lock-only",
-        "--ignore-scripts",
-        "--registry=" + NPM_REGISTRY,
-        "--prefix=" + directory,
-        "--userconfig=" + userConfig,
-        "--globalconfig=" + globalConfig,
-        "--cache=" + join(directory, "cache"),
-        "--fetch-retries=0",
-        "--logs-max=0",
-        "--no-update-notifier",
-      ],
-      {
+        : [...RELEASE_AUDIT_ARGS, "--include=dev"];
+    const arguments_ = [
+      cli,
+      ...args,
+      "--json",
+      "--package-lock-only",
+      "--ignore-scripts",
+      "--registry=" + NPM_REGISTRY,
+      "--prefix=" + directory,
+      "--userconfig=" + userConfig,
+      "--globalconfig=" + globalConfig,
+      "--cache=" + join(directory, "cache"),
+      "--fetch-retries=0",
+      "--fetch-timeout=12000",
+      "--logs-max=0",
+      "--no-update-notifier",
+    ];
+    const deadline = performance.now() + auditTimeout;
+    let attempts = 0,
+      result,
+      intact;
+    do {
+      result = spawnSync(process.execPath, arguments_, {
         cwd: directory,
         env,
         maxBuffer: maxOutput,
-        timeout: 45_000,
+        timeout: Math.max(
+          1,
+          Math.min(attemptTimeout, Math.floor(deadline - performance.now())),
+        ),
+        killSignal: "SIGKILL",
         windowsHide: true,
         shell: false,
         stdio: ["ignore", "pipe", "pipe"],
-      },
+      });
+      attempts++;
+      intact = false;
+      try {
+        intact =
+          readFileSync(manifest).equals(manifestBytes) &&
+          readFileSync(lock).equals(lockBytes);
+      } catch {
+        // A missing input makes the observation ineligible.
+      }
+    } while (
+      intact &&
+      attempts < maxAttempts &&
+      performance.now() < deadline &&
+      retryableAuditFailure(result)
     );
-    const intact = () =>
-      readFileSync(manifest).equals(manifestBytes) &&
-      readFileSync(lock).equals(lockBytes);
     const stdout = result.stdout ?? Buffer.alloc(0);
     const stderr = result.stderr ?? Buffer.alloc(0);
-    let complete = false;
-    try {
-      complete =
-        !result.error &&
-        !result.signal &&
-        stdout.length <= maxOutput &&
-        stderr.length <= maxOutput &&
-        intact();
-    } catch {
-      // A missing input after npm also makes the kept observation ineligible.
-    }
+    const complete =
+      !result.error &&
+      !result.signal &&
+      stdout.length <= maxOutput &&
+      stderr.length <= maxOutput &&
+      intact &&
+      performance.now() <= deadline;
     return {
       status: result.status,
+      attempts,
       stdout: stdout.subarray(0, maxOutput),
       stderr: stderr.subarray(0, maxOutput),
       signal: result.signal,

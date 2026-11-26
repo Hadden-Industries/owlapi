@@ -124,6 +124,7 @@ const makeRegistryFixture = ({
   additionalEntries = [],
   bundled = false,
   licenceFile = true,
+  declarations = {},
   resolved = `https://registry.npmjs.org/alpha/-/alpha-${version}.tgz`,
 } = {}) => {
   const tarball = makeTarball([
@@ -133,6 +134,7 @@ const makeRegistryFixture = ({
         name,
         version,
         license: "MIT",
+        ...declarations,
         ...(bundled ? { bundleDependencies: ["@scope/child"] } : {}),
       })}\n`,
     },
@@ -202,6 +204,7 @@ const makeRegistryFixture = ({
           resolved,
           integrity: lockedIntegrity,
           license: "MIT",
+          ...declarations,
           ...(bundled ? { bundleDependencies: ["@scope/child"] } : {}),
         },
         ...(bundled
@@ -538,6 +541,85 @@ it("binds a bundled installed manifest to its owning archive", async () => {
   ).rejects.toThrow(/installed manifest differs.*@scope\/child/iu);
 });
 
+it("rejects a lock that claims a broader parent range than the authenticated installed manifest", async () => {
+  const parent = makeRegistryFixture({
+    declarations: { dependencies: { beta: "^1" } },
+  });
+  const child = makeRegistryFixture({
+    name: "beta",
+    version: "2.0.0",
+    resolved: "https://registry.npmjs.org/beta/-/beta-2.0.0.tgz",
+  });
+  const registry = await startRegistryServer(parent, {
+    handle: ({ request, response }) => {
+      const payload = new Map([
+        ["/-/npm/v1/keys", JSON.stringify({ keys: [parent.key, child.key] })],
+        ["/beta", JSON.stringify(child.packument)],
+        ["/beta/-/beta-2.0.0.tgz", child.tarball],
+      ]).get(request.url);
+      if (payload) response.end(payload);
+      return !!payload;
+    },
+  });
+  const repositoryRoot = await mkdtemp(join(tmpdir(), "owlapi-parent-range-"));
+  temporaryRoots.push(repositoryRoot);
+  const authenticated = JSON.parse(parent.lockfileBytes);
+  authenticated.packages["node_modules/beta"] = JSON.parse(
+    child.lockfileBytes,
+  ).packages["node_modules/alpha"];
+  await writeFile(
+    join(repositoryRoot, "package-lock.json"),
+    stableJson(authenticated),
+  );
+  await acquireEvidence({
+    repositoryRoot,
+    fetchImpl: mappedFetch(registry.origin),
+    downloadTarball: fixtureDownload,
+    verifyPackageMetadata: fixtureMetadataVerification,
+    scanArtifact: fixtureLicenceScan,
+    write: true,
+  });
+  const forged = structuredClone(authenticated);
+  forged.packages["node_modules/alpha"].dependencies.beta = "*";
+  const lockfileBytes = Buffer.from(stableJson(forged));
+  const { resolution } = observedFixture(parent);
+  resolution.lockSha256 = recipientDigest(lockfileBytes);
+  resolution.manifests["node_modules/alpha"] = recipientDigest(
+    '{"name":"alpha","version":"1.0.0","license":"MIT","dependencies":{"beta":"^1"}}\n',
+  );
+  resolution.manifests["node_modules/beta"] = recipientDigest(
+    '{"name":"beta","version":"2.0.0","license":"MIT"}\n',
+  );
+  resolution.graph.nodes.push({
+    location: "node_modules/beta",
+    name: "beta",
+    version: "2.0.0",
+    integrity: child.lockedIntegrity,
+    resolved: child.resolved,
+  });
+  // npm's virtual graph can validly resolve this * edge from the forged lock.
+  // The installed parent manifest still contains the exact narrower bytes.
+  resolution.graph.edges = [
+    {
+      from: "node_modules/alpha",
+      name: "beta",
+      to: "node_modules/beta",
+      type: "prod",
+      spec: "*",
+    },
+  ];
+  await expect(
+    collectRecipientMaterial({
+      repositoryRoot,
+      lockfileBytes,
+      resolution,
+      directory: join(repositoryRoot, "forged-range"),
+    }),
+  ).rejects.toThrow(
+    /authenticated dependency declarations differ at node_modules\/alpha/iu,
+  );
+});
+
 it("retains and independently reads an authenticated fresh patch once across recipient observations", async () => {
   const canonical = makeRegistryFixture();
   const { repositoryRoot } = await recipientFixture(canonical);
@@ -587,6 +669,42 @@ it("retains and independently reads an authenticated fresh patch once across rec
   expect(a.artifacts).toEqual(b.artifacts);
   expect(a.subject.resolutionSha256).not.toBe(b.subject.resolutionSha256);
   const [archive] = a.artifacts;
+  const measurementOrigin = {
+    runId: 1,
+    attempt: 1,
+    jobId: 2,
+    commit: "a".repeat(40),
+    artifactSha256: "b".repeat(64),
+    materialSha256: "c".repeat(64),
+  };
+  const receiving = await prepareRecipientMaterial({
+    repositoryRoot,
+    trustedRegistryKeySnapshot: source.trustedRegistryKeySnapshot,
+    trustedArchiveMeasurements: [
+      { record: archive, origin: measurementOrigin },
+    ],
+    downloadTarball: async () => {
+      throw new Error("Unexpected archive acquisition during admitted replay");
+    },
+  });
+  expect(receiving.missingArchiveMeasurements(first)).toEqual([]);
+  const replayed = await receiving.collect({
+    ...first,
+    directory: join(repositoryRoot, "received-measurement"),
+  });
+  expect(replayed).toMatchObject({
+    status: "PASSED",
+    artifacts: [{ artifactId: archive.artifactId, measurementOrigin }],
+  });
+  const changedArchive = makeRegistryFixture({
+    version: "1.0.1",
+    additionalEntries: [
+      { path: "package/added.txt", body: "changed immutable identity" },
+    ],
+  });
+  expect(() =>
+    receiving.missingArchiveMeasurements(observedFixture(changedArchive)),
+  ).toThrow(/contradictory measured archive/iu);
   expect(a).toMatchObject({
     status: "PASSED",
     decisions: [

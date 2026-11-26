@@ -127,6 +127,15 @@ test("replay exact alias and scoped npm installs, preserving typed edges and ind
         /candidate archive occurrence/,
       );
       delete forged.packages["node_modules/" + dependencyName].extraneous;
+      const readerLock = forged.packages["node_modules/reader"];
+      readerLock.dependencies.older = "npm:other-name@^1";
+      readerLock.acceptDependencies.older = "npm:leaf@^2";
+      writeFileSync(lockPath, JSON.stringify(forged));
+      await expect(captureConsumerResolution(root, opts)).rejects.toThrow(
+        /Target differs from requested npm identity or range/,
+      );
+      readerLock.dependencies.older = "npm:leaf@^1.0.0";
+      delete readerLock.acceptDependencies.older;
       forged.packages["node_modules/" + dependencyName].peerDependencies = {
         rogue: "*",
       };

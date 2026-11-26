@@ -288,15 +288,7 @@ async function observeAudit(
   return { subject, manifestBytes, lockBytes, observedAt, observation };
 }
 
-/** Local CI policy outcome for the supplied production graph. Release admission requires a separate signed receipt. */
-export async function preflightReleaseAudit(
-  input,
-  { npmCli, npm, now = Date.now } = {},
-) {
-  assertValid(
-    input?.scope === "production",
-    "Transient audit preflight requires production scope",
-  );
+async function transientAudit(input, { npmCli, npm, now = Date.now } = {}) {
   const { subject, observedAt, observation } = await observeAudit(input, {
     npmCli,
     npm,
@@ -310,6 +302,24 @@ export async function preflightReleaseAudit(
     observedAt,
     eligible: observation.status === 0 && isReleaseAuditClear(counts),
   };
+}
+
+/** Local CI policy outcome for the supplied production graph. Release admission requires a separate signed receipt. */
+export async function preflightReleaseAudit(input, options) {
+  assertValid(
+    input?.scope === "production",
+    "Transient audit preflight requires production scope",
+  );
+  return transientAudit(input, options);
+}
+
+/** Full producer and release-tooling diagnostics apply the high/critical threshold to development dependencies too. */
+export async function preflightFullReleaseAudit(input, options) {
+  assertValid(
+    input?.scope === "full" && ["producer", "transport"].includes(input.role),
+    "Transient full audit requires a producer or transport subject",
+  );
+  return transientAudit(input, options);
 }
 
 function assertPrivateStore(store) {
@@ -357,6 +367,7 @@ async function retainAuditOriginal(
       ignoreScripts: true,
     },
     status: observation.status,
+    attempts: observation.attempts ?? 1,
     signal: observation.signal,
     complete: observation.complete,
     manifest: manifestBytes.toString("base64"),
@@ -465,6 +476,7 @@ export async function evaluateReleaseAudit(
     authenticate,
     trust,
     npmCli,
+    npmCliForVersion,
     now = Date.now,
     retainOriginals = false,
     store,
@@ -473,7 +485,10 @@ export async function evaluateReleaseAudit(
   assertTrust(trust);
   assertAuditIssuerContext(trust.evaluator);
   assertValid(
-    typeof authenticate === "function" && typeof retainOriginals === "boolean",
+    typeof authenticate === "function" &&
+      typeof retainOriginals === "boolean" &&
+      (npmCliForVersion === undefined ||
+        typeof npmCliForVersion === "function"),
     "Audit inputs need an authenticated original",
   );
   if (retainOriginals) assertPrivateStore(store);
@@ -481,8 +496,10 @@ export async function evaluateReleaseAudit(
   for (const entry of auditEntries(entries)) {
     const { source, subject } = entry;
     const input = await authenticateOriginal(source, () => authenticate(entry));
+    const npm = npmCliForVersion ? subject.platform.npm : undefined;
     const audit = await observeAudit(input, {
-      npmCli,
+      npmCli: npmCliForVersion ? npmCliForVersion(npm) : npmCli,
+      npm,
       now,
       expectedSubject: subject,
     });
@@ -494,13 +511,8 @@ export async function evaluateReleaseAudit(
         store,
       });
     const counts = readAuditCounts(audit.observation);
-    // Full graph results record a complete observation. The production entries
-    // enforce the release threshold, including the isolated release tooling.
     assertValid(
-      counts &&
-        (subject.scope === "full"
-          ? [0, 1].includes(audit.observation.status)
-          : audit.observation.status === 0 && isReleaseAuditClear(counts)),
+      counts && audit.observation.status === 0 && isReleaseAuditClear(counts),
       "Release audit did not satisfy policy",
     );
     subjects.push({ ...entry, observedAt: audit.observedAt });

@@ -25,10 +25,14 @@ import {
 import { compareConsumerResolutions } from "./release-consumer-resolution.mjs";
 import { verifyCiConsumerEvidence } from "./ci-consumer-evidence-verification.mjs";
 import {
+  assertConsistentArchives,
   packProducerResolutions,
   producerResolutionFilename,
 } from "./release-resolution-proof.mjs";
 import { publicRegistryEnvironment } from "./public-registry-consumer.mjs";
+import { preflightFullReleaseAudit } from "./release-audit-evaluator.mjs";
+import { stableJson as canonicalOutput } from "./canonical-json.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
 import {
   DOCUMENTATION_PATHS,
   inspectReleaseDocumentation,
@@ -260,6 +264,23 @@ try {
     return evidence.resolution;
   }
   const baseline = await measure(subjectDirectory, "producer", null);
+  const { manifest, lock } = observations.producer.evidence;
+  const full = await preflightFullReleaseAudit(
+    {
+      manifestBytes: Buffer.from(manifest),
+      lockBytes: Buffer.from(lock),
+      tarballSha256: baseline.tarballSha256,
+      graphSha256: sha256Buffer(
+        Buffer.from(canonicalOutput(JSON.parse(lock).packages)),
+      ),
+      role: "producer",
+      scope: "full",
+      platform: { ...baseline.platform, npm: baseline.npm },
+    },
+    { npmCli, npm: baseline.npm },
+  );
+  if (!full.eligible)
+    throw new Error("Full release dependency audit needs disposition");
   const subjectGraph = npmJson(["ls", "--omit=dev", "--all", "--json"], {
     cwd: subjectDirectory,
   });
@@ -325,6 +346,9 @@ try {
         " changed edges; installed checks passed.\n",
     );
   }
+  assertConsistentArchives(
+    Object.values(observations).map(({ evidence }) => evidence.resolution),
+  );
   const proof = packProducerResolutions(observations, decisionDirectory);
   writeJson(producerResolutionFilename, proof);
   const tarballFileName = basename(tarballPath);
@@ -359,6 +383,11 @@ try {
       reproducible: true,
     },
     checksumFile: "SHA256SUMS",
+    fullGraphCheck: {
+      result: "PASS",
+      subject: full.subject,
+      observedAt: full.observedAt,
+    },
     resolutionProof: {
       fileName: producerResolutionFilename,
       sha256: sha256File(join(outputDirectory, producerResolutionFilename)),

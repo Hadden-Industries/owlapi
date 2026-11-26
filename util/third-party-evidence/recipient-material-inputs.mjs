@@ -59,6 +59,19 @@ export const archiveIdentity = ({
 
 export const coordinate = ({ name, version }) => `${name}@${version}`;
 
+/** Retain the declarations npm uses to create installed production edges. */
+export function productionDependencyDeclarations(metadata) {
+  return Object.fromEntries(
+    [
+      "dependencies",
+      "optionalDependencies",
+      "peerDependencies",
+      "peerDependenciesMeta",
+      "acceptDependencies",
+    ].map((field) => [field, metadata[field] ?? {}]),
+  );
+}
+
 /** Select and authenticate the source-lock facts of an admitted checkout. */
 export async function openCanonicalEvidence(
   repositoryRoot,
@@ -247,6 +260,7 @@ export function observedArchives(resolution, lockfileBytes) {
       location,
       installedManifestSha256,
       lockLicence: packages[path].license ?? null,
+      lockDeclarations: productionDependencyDeclarations(packages[path]),
     });
   }
   return { byArtifact: groupByArtifact(active), byId };

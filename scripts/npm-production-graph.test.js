@@ -3,6 +3,9 @@ import {
   flattenNpmGraph,
 } from "./npm-production-graph.mjs";
 
+import { createHash } from "node:crypto";
+import { documentationArchive } from "./fixtures/documentation-candidate.mjs";
+
 // npm ls supplies names in dependency keys, not in the nested node objects.
 const graph = {
   name: "@hadden-industries/owlapi",
@@ -64,6 +67,70 @@ test("the locked CycloneDX dependency relationships must match the physical npm 
   expect(() => assertNpmSbomInventory(sbom, identities, { graph })).toThrow(
     /relationship/,
   );
+});
+
+test("an embedded provider cannot hide extra nested components", () => {
+  const dir = "internal/parsing/jsonld/provider/";
+  const hash = (text) => createHash("sha256").update(text).digest("hex");
+  const bytes = "export default 1;",
+    digest = hash(bytes);
+  const ref = "owlapi:embedded-jsonld:sha256:" + digest,
+    member = ref + ":lib@1.0.0";
+  const manifest = JSON.stringify({
+    output: { sha256: digest },
+    bundledPackages: [{ name: "lib", version: "1.0.0" }],
+  });
+  const tarball = documentationArchive({
+    [dir + "jsonld.js"]: bytes,
+    [dir + "build-manifest.json"]: manifest,
+  });
+  const leaf = {
+    type: "library",
+    name: "lib",
+    version: "1.0.0",
+    "bom-ref": member,
+  };
+  const sbom = {
+    metadata: {
+      component: {
+        type: "library",
+        name: "app",
+        version: "1",
+        "bom-ref": "app",
+        properties: [{ name: "cdx:npm:package:path", value: "" }],
+      },
+    },
+    components: [
+      {
+        type: "file",
+        name: dir + "jsonld.js",
+        "bom-ref": ref,
+        hashes: [{ alg: "SHA-256", content: digest }],
+        properties: [
+          {
+            name: "owlapi:embedded-provider-manifest-sha256",
+            value: hash(manifest),
+          },
+        ],
+        components: [leaf],
+      },
+    ],
+    dependencies: [
+      { ref: "app", dependsOn: [ref] },
+      { ref, dependsOn: [member] },
+    ],
+  };
+  const graph = {
+    nodes: [{ location: ".", name: "app", version: "1" }],
+    edges: [],
+  };
+  expect(() =>
+    assertNpmSbomInventory(sbom, ["app@1"], { graph, tarball }),
+  ).not.toThrow();
+  leaf.components = [{ type: "library", name: "unaccounted", version: "1" }];
+  expect(() =>
+    assertNpmSbomInventory(sbom, ["app@1"], { graph, tarball }),
+  ).toThrow(/unexpected embedded/i);
 });
 
 test("reconciles every direct and transitive package identity from npm ls keys", () => {

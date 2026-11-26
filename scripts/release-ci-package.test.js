@@ -30,7 +30,10 @@ import {
   producerResolutionFilename,
   producerResolutionUploadStep,
 } from "./release-resolution-proof.mjs";
-import { captureResolutionEvidence } from "./release-consumer-evidence.mjs";
+import {
+  captureResolutionEvidence,
+  verifyResolutionEvidence,
+} from "./release-consumer-evidence.mjs";
 import { installResolutionFixture } from "./fixtures/npm-consumer-resolution.mjs";
 import {
   INSTALLED_TEST_SCRIPTS,
@@ -408,6 +411,24 @@ test("native differences are admitted through the exact v2 producer ZIP while wr
       },
       checksumFile: "SHA256SUMS",
       installedConsumerScripts: INSTALLED_TEST_SCRIPTS,
+      fullGraphCheck: {
+        result: "PASS",
+        observedAt: new Date(time).toISOString(),
+        subject: {
+          ...JSON.parse(
+            packet.originals[
+              packet.subjects.producer.eligibility.decisionSha256
+            ],
+          ).subject,
+          scope: "full",
+          graphSha256: sha(
+            stableJson(
+              JSON.parse(packet.originals[packet.subjects.producer.lock])
+                .packages,
+            ),
+          ),
+        },
+      },
       resolutionProof: {
         fileName: producerResolutionFilename,
         sha256: sha(stableJson(packet)),
@@ -420,8 +441,10 @@ test("native differences are admitted through the exact v2 producer ZIP while wr
     }
     retain(packet);
     const reopened = [];
-    const result = await f.admit(undefined, {
+    const admissionOptions = {
       expectedProofVersion: 2,
+      expectedSourceLockSha256:
+        observations.producer.evidence.resolution.lockSha256,
       npmCli,
       platform,
       // The native graph and ZIP readers stay real. The separate material owner
@@ -447,7 +470,8 @@ test("native differences are admitted through the exact v2 producer ZIP while wr
           };
         },
       }),
-    });
+    };
+    const result = await f.admit(undefined, admissionOptions);
     expect(reopened).toHaveLength(4);
     expect(result).toMatchObject({
       packageProofVersion: 2,
@@ -467,6 +491,76 @@ test("native differences are admitted through the exact v2 producer ZIP while wr
         requestedBy: { after: [{ from: loc("reader"), spec: "*" }] },
       });
     }
+    f.evidence["candidate-manifest.json"].fullGraphCheck.subject.graphSha256 =
+      "0".repeat(64);
+    await expect(f.admit(undefined, admissionOptions)).rejects.toThrow(
+      /full producer graph preflight does not cover/iu,
+    );
+    const substituted = structuredClone(packet);
+    const subject = substituted.subjects.producer;
+    function substituteOriginal(oldDigest, value) {
+      const text = stableJson(value);
+      const next = sha(text);
+      substituted.originals[next] = text;
+      delete substituted.originals[oldDigest];
+      return next;
+    }
+    const unrelatedDev = JSON.parse(substituted.originals[subject.lock]);
+    unrelatedDev.packages["node_modules/dev-audit-only"] = {
+      ...unrelatedDev.packages["node_modules/node-types"],
+      name: "node-types",
+      dev: true,
+    };
+    subject.lock = substituteOriginal(subject.lock, unrelatedDev);
+    const changedResolution = JSON.parse(
+      substituted.originals[subject.resolution],
+    );
+    changedResolution.lockSha256 = subject.lock;
+    subject.resolution = substituteOriginal(
+      subject.resolution,
+      changedResolution,
+    );
+    const changedDecision = JSON.parse(
+      substituted.originals[subject.eligibility.decisionSha256],
+    );
+    changedDecision.resolutionSha256 = subject.eligibility.resolutionSha256 =
+      subject.resolution;
+    changedDecision.subject.lockSha256 = subject.lock;
+    const changedMaterial = JSON.parse(
+      substituted.originals[changedDecision.materialSha256],
+    );
+    changedMaterial.subject.lockSha256 = subject.lock;
+    changedMaterial.subject.resolutionSha256 = subject.resolution;
+    changedDecision.materialSha256 = substituteOriginal(
+      changedDecision.materialSha256,
+      changedMaterial,
+    );
+    subject.eligibility.decisionSha256 = substituteOriginal(
+      subject.eligibility.decisionSha256,
+      changedDecision,
+    );
+    await expect(
+      verifyResolutionEvidence(
+        {
+          ...observations.producer.evidence,
+          lock: substituted.originals[subject.lock],
+          resolution: changedResolution,
+        },
+        {
+          tarball: admittedTarball,
+          npmCli,
+          dependencyName: null,
+          observedNpm: CI_RUNTIME.npm,
+          platform,
+        },
+      ),
+    ).resolves.toMatchObject({
+      graph: observations.producer.evidence.resolution.graph,
+    });
+    retain(substituted);
+    await expect(f.admit(undefined, admissionOptions)).rejects.toThrow(
+      /producer lock differs from the authenticated source lock/iu,
+    );
     const altered = structuredClone(packet);
     const previous = altered.subjects.producer.resolution;
     const forged = JSON.parse(altered.originals[previous]);
