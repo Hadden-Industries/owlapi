@@ -407,7 +407,9 @@ Raising a ceiling accepts the corresponding memory, CPU, and denial-of-service r
 - **Transform and render.**
   Merge ontologies, duplicate OWL objects, rename or remove entities, and render Manchester Syntax with short names.
 
-Reasoning, SWRL, OBO parsing, the broader N3 language, Java listener APIs, directly constructible storer classes, a public RDF/JS subpath, and official TypeScript declarations are outside this release's scope.
+With `java-owlapi-5.5.1`, compatible RDF/XML and Functional Syntax retain a structural SWRL subset. Inspect `ontology.getAxiomsByType("SWRLRule")` for each rule's body, head and direct literal annotations. Each atom uses a named class or object property with full-IRI variables. A rule outside the subset rejects its document. [SWRL behavior and visitor migration](docs/compatibility/behavior-profiles.md#structural-swrl-rules)
+
+Reasoning, rule execution, general SWRL authoring, OBO parsing, the broader N3 language, Java listener APIs, directly constructible storer classes, a public RDF/JS subpath, and official TypeScript declarations are outside this release's scope.
 The [capability matrix](./docs/compatibility/capabilities.json) and [Java compatibility reference](./docs/compatibility/java-api-surface.md) define the supported features and known gaps.
 Standards test results cover the listed suites, revisions, and deviations.
 See the [W3C reporting plan](https://github.com/Hadden-Industries/owlapi/blob/main/docs/plans/w3c-test-conformance-reporting.md) for the separate conformance-reporting work.

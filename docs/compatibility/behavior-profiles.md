@@ -16,6 +16,35 @@ The [implementation record](https://github.com/Hadden-Industries/owlapi/blob/mai
 The [current decision ledger](java-api-parity-decisions.json) records paired expectations, native probes, tests and accepted-plan traceability.
 Its `currentBehaviorContracts` section is separate from the retained phase 21/22 receipts and their historical Java revision.
 
+## Structural SWRL rules
+
+In `java-owlapi-5.5.1`, compatible RDF/XML and Functional Syntax recognize `SWRLRule`, `SWRLClassAtom`, `SWRLObjectPropertyAtom` and `SWRLVariable`.
+These are structural values corresponding to the Java model interfaces.
+Read them through `getAxiomsByType("SWRLRule")` and `getLogicalAxioms()`.
+A variable's `iri` retains its full identifier.
+A class atom exposes `predicate` and `argument`.
+A property atom exposes `predicate`, `firstArgument` and `secondArgument`.
+
+Each rule exposes frozen `body`, `head` and `annotations` arrays.
+The two sides retain first encounter order for iteration.
+Equality compares each side as a distinct set and includes the direct literal annotations.
+Annotation-insensitive axiom queries and ordinary add/remove operations accept rules. RDF/XML and Functional Syntax render the edited values.
+General factory methods for rule authoring and rule execution are deferred.
+
+The parser rejects the affected document for an unsupported rule, atom, constant or annotation value.
+The error code is `UNSUPPORTED_CONSTRUCT` even with warnings disabled.
+Direct rule annotations retain their language and datatype when annotation-axiom loading is disabled.
+Distinct RDF lists with overlapping tails and cycles raise the list syntax error.
+Two sides may reference the same complete list.
+Emitted RDF uses separate lists.
+
+Use the optional third argument to `dispatchAxiom` or `dispatchOwlObject` to select the corresponding extended domain.
+The two-argument form retains its original exhaustive domain and reports an unknown kind on an actual rule.
+The named Java DL checker accepts the declared supported example.
+EL, QL and RL reject a rule.
+The normative OWL 2 grammar excludes SWRL.
+A normative destination can own a rule passed through a merger and refuses to write it.
+
 ## Selection and authority
 
 The examples use the [npm alias from the installation guide](../../README.md#install).

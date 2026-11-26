@@ -752,6 +752,18 @@ describe("owlapi governance artifacts", () => {
         let expected = firstReleaseRetargetedBindings.has(prior.id)
           ? { ...mappedPrior, firstPublicReleaseTarget: "0.1.0-rc.1" }
           : mappedPrior;
+        // The scoped SWRL plan adds four inspectable structural kinds.
+        if (prior.id === "model.OWLObjectKind")
+          expected = {
+            ...expected,
+            supportedMembers: [
+              ...expected.supportedMembers,
+              "SWRL_RULE",
+              "SWRL_CLASS_ATOM",
+              "SWRL_OBJECT_PROPERTY_ATOM",
+              "SWRL_VARIABLE",
+            ].sort(),
+          };
         // The separate Canonical VOWL prerequisite authorization adds exactly
         // this source reader; it does not amend the historical Phase 21 set.
         if (prior.id === "io.StringDocumentSource")
@@ -859,6 +871,8 @@ describe("owlapi governance artifacts", () => {
       ).toEqual(
         [
           ...ledger.phase21.publicBindings,
+          "model.AXIOM_KINDS_WITH_SWRL",
+          "model.OWL_OBJECT_KINDS_WITH_SWRL",
           "io.RDFOntologyHeaderStatus",
           "io.RDFParserMetaData",
           "io.StreamDocumentSource",
@@ -2222,7 +2236,8 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
       "OwlAPI is an independent JavaScript implementation.",
       "no affiliation with, sponsorship from, or endorsement by the Java OWLAPI project",
       "unrelated Overwatch package with separate code, API, ownership, and provenance",
-      "Reasoning, SWRL, OBO parsing",
+      'ontology.getAxiomsByType("SWRLRule")',
+      "Reasoning, rule execution, general SWRL authoring, OBO parsing",
       "official TypeScript declarations are outside this release's scope",
       "does not collect personal data",
       "Copyright © 2026 Maksym Shostak",

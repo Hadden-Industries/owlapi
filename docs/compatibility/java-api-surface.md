@@ -1,4 +1,4 @@
-<!-- registry-sha256: e9ba51ed8f3c598809260adc3d170c929a6393bc00cf15df20f9311dce4781b6 -->
+<!-- registry-sha256: 5ce2a3f6c8be5a5418f0dea91b92cf4c59702f31361a18d2de47eeceaf275088 -->
 
 # Java OWLAPI compatibility surface
 
@@ -11,17 +11,17 @@ A mapped name does not promise every Java overload or method. The relationship, 
 ## Inventory summary
 
 - Public package namespaces: 12
-- Public JavaScript bindings: 81
+- Public JavaScript bindings: 83
 - Public Java types inspected: 1013
 - Unclassified Java types: 0
 
 | Java disposition                           | Count |
 | ------------------------------------------ | ----: |
 | PUBLIC_MAPPED                              |    47 |
-| STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT    |    76 |
+| STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT    |    80 |
 | FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT |     7 |
 | INTERNAL_IMPLEMENTATION_ONLY               |     2 |
-| DEFERRED_NOT_EXPOSED                       |   837 |
+| DEFERRED_NOT_EXPOSED                       |   833 |
 | UNSUPPORTED_BY_DESIGN                      |    44 |
 | UNCLASSIFIED                               |     0 |
 
@@ -34,6 +34,7 @@ Package specifiers below use the [documented npm alias](../../README.md#install)
 | [`OWLManager`](../../API.md#owlmanager)                                                             | owlapi/apibinding                | org.semanticweb.owlapi.apibinding.OWLManager                                              | JAVA_ANALOGUE | ADAPTED        |
 | [`ANNOTATION_VALUE_KINDS`](../../API.md#annotation_value_kinds)                                     | owlapi/model                     | org.semanticweb.owlapi.model.OWLObject                                                    | JS_EXTENSION  | NOT_APPLICABLE |
 | [`AXIOM_KINDS`](../../API.md#axiom_kinds)                                                           | owlapi/model                     | org.semanticweb.owlapi.model.OWLObject                                                    | JS_EXTENSION  | NOT_APPLICABLE |
+| [`AXIOM_KINDS_WITH_SWRL`](../../API.md#axiom_kinds_with_swrl)                                       | owlapi/model                     | org.semanticweb.owlapi.model.OWLObject                                                    | JS_EXTENSION  | NOT_APPLICABLE |
 | [`AddAxiom`](../../API.md#addaxiom)                                                                 | owlapi/model                     | org.semanticweb.owlapi.model.AddAxiom                                                     | JS_ADAPTATION | ADAPTED        |
 | [`AddImport`](../../API.md#addimport)                                                               | owlapi/model                     | org.semanticweb.owlapi.model.AddImport                                                    | JS_ADAPTATION | ADAPTED        |
 | [`AddOntologyAnnotation`](../../API.md#addontologyannotation)                                       | owlapi/model                     | org.semanticweb.owlapi.model.AddOntologyAnnotation                                        | JAVA_ANALOGUE | ADAPTED        |
@@ -53,6 +54,7 @@ Package specifiers below use the [documented npm alias](../../README.md#install)
 | [`OWLOntologyWriterConfiguration`](../../API.md#owlontologywriterconfiguration)                     | owlapi/model                     | org.semanticweb.owlapi.model.OWLOntologyWriterConfiguration                               | JS_ADAPTATION | ADAPTED        |
 | [`OWLStructuralObject`](../../API.md#owlstructuralobject)                                           | owlapi/model                     | org.semanticweb.owlapi.model.OWLObject                                                    | JAVA_ANALOGUE | ADAPTED        |
 | [`OWL_OBJECT_KINDS`](../../API.md#owl_object_kinds)                                                 | owlapi/model                     | org.semanticweb.owlapi.model.OWLObject                                                    | JS_EXTENSION  | NOT_APPLICABLE |
+| [`OWL_OBJECT_KINDS_WITH_SWRL`](../../API.md#owl_object_kinds_with_swrl)                             | owlapi/model                     | org.semanticweb.owlapi.model.OWLObject                                                    | JS_EXTENSION  | NOT_APPLICABLE |
 | [`RemoveAxiom`](../../API.md#removeaxiom)                                                           | owlapi/model                     | org.semanticweb.owlapi.model.RemoveAxiom                                                  | JS_ADAPTATION | ADAPTED        |
 | [`RemoveImport`](../../API.md#removeimport)                                                         | owlapi/model                     | org.semanticweb.owlapi.model.RemoveImport                                                 | JS_ADAPTATION | ADAPTED        |
 | [`RemoveOntologyAnnotation`](../../API.md#removeontologyannotation)                                 | owlapi/model                     | org.semanticweb.owlapi.model.RemoveOntologyAnnotation                                     | JS_ADAPTATION | ADAPTED        |
@@ -139,7 +141,7 @@ Every public Java type is classified in the machine-readable registry. This comp
 | org.semanticweb.owlapi.manchestersyntax.parser       | DEFERRED_NOT_EXPOSED: 11                                                                                                              |
 | org.semanticweb.owlapi.manchestersyntax.renderer     | DEFERRED_NOT_EXPOSED: 12; PUBLIC_MAPPED: 1                                                                                            |
 | org.semanticweb.owlapi.metrics                       | DEFERRED_NOT_EXPOSED: 23                                                                                                              |
-| org.semanticweb.owlapi.model                         | DEFERRED_NOT_EXPOSED: 250; PUBLIC_MAPPED: 20; STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT: 75                                             |
+| org.semanticweb.owlapi.model                         | DEFERRED_NOT_EXPOSED: 246; PUBLIC_MAPPED: 20; STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT: 79                                             |
 | org.semanticweb.owlapi.model.axiomproviders          | DEFERRED_NOT_EXPOSED: 11                                                                                                              |
 | org.semanticweb.owlapi.model.parameters              | DEFERRED_NOT_EXPOSED: 3; PUBLIC_MAPPED: 3                                                                                             |
 | org.semanticweb.owlapi.model.providers               | DEFERRED_NOT_EXPOSED: 30                                                                                                              |

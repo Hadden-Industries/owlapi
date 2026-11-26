@@ -36,7 +36,9 @@ OwlAPI's first stable release brings together the ontology APIs introduced in th
 Java compatibility covers the members and behavior listed in the [Java compatibility reference](docs/compatibility/java-api-surface.md).
 The [benchmark results](https://github.com/Hadden-Industries/owlapi/blob/main/docs/performance/remaining-java-performance-implementation-results.md) describe the measured workloads and remaining gaps.
 The package covers structural OWL APIs and profile checks.
-Reasoning, SWRL, and browser file or network transport through `owlapi/io/node` are outside its scope.
+With the named Java profile, compatible RDF/XML and Functional Syntax preserve SWRL class and object-property atoms with variables and direct literal rule annotations across edits and saves.
+Unsupported rules reject the entire document.
+General rule authoring, rule execution, reasoning and browser transport through `owlapi/io/node` remain outside the release scope.
 
 ### Contributor tooling
 

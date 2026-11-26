@@ -7,13 +7,13 @@
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
-      "fileCount": 224,
-      "sourceManifestSha256": "8809ff0ac0833cb5aed28f350835c200986331d6533dfe0311ea0889d286f680"
+      "fileCount": 225,
+      "sourceManifestSha256": "e3acc8f341f762b3284ce040133a6acc9975748f3fc03ec5c63c8e5f08317ff6"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "3e5e0f4ede58cef6cfb78975509a28120f403e2c984ef904bf39edf4e96fbe5b",
+    "factsSha256": "8547854212db98c5be815a1e8bdddd937d719c8e7d3ee7431200ff15caf251a5",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -152,7 +152,7 @@
   "externalDependencies": {
     "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "74213db377f2b2a1cad981077ddf54627f0c7d9aa424fce636ec8bed12e090f1",
+    "inventoryFactsSha256": "d40202ef4c06130ed3838b1dfc2e0f723d153f9ef1cd67f8746540d183d2191f",
     "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],

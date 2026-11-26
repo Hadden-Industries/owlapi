@@ -1009,7 +1009,10 @@ const DISPATCH_EXPORTS = new Set(
 );
 const KIND_COLLECTION_EXPORTS = new Set(
   Object.keys(model).filter(
-    (name) => name === "OWLObjectKind" || name.endsWith("_KINDS"),
+    (name) =>
+      name === "OWLObjectKind" ||
+      name.endsWith("_KINDS") ||
+      name.endsWith("_KINDS_WITH_SWRL"),
   ),
 );
 
@@ -1460,6 +1463,39 @@ const classifyJavaType = (type, bindingByJavaType) => {
       ],
       guidance:
         "Use the manager's native accessors; this Java interface is implemented structurally and has no JavaScript runtime constructor.",
+    };
+  }
+
+  if (
+    model.OWL_OBJECT_KINDS_WITH_SWRL.includes(type.simpleName) &&
+    !model.OWL_OBJECT_KINDS.includes(type.simpleName)
+  ) {
+    return {
+      ...type,
+      capabilityIds: [
+        "swrl.java-structural-subset",
+        "model.structural-equality",
+      ],
+      progress: "COMPLETE",
+      exposure: "INTERNAL_ONLY",
+      stability: null,
+      jsExport: null,
+      publicSpecifier: null,
+      sourceModule: "internal/model/swrl.js",
+      relationship: "JS_ADAPTATION",
+      compatibility: "ADAPTED",
+      disposition: "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT",
+      supportedMembers: [
+        "Inspection of parsed structural fields",
+        "Structural equality and opt-in kind dispatch",
+      ],
+      omittedMembers: [
+        "Standalone named constructor",
+        "General SWRL factory and rule execution",
+      ],
+      verification: ["model/scopedSwrl.test.js"],
+      guidance:
+        "Inspect immutable values returned by the named Java-profile loader. The rule has distinct body and head sets and supports direct literal annotations.",
     };
   }
 
