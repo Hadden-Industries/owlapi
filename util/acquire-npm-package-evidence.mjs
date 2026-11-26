@@ -30,6 +30,7 @@ import {
   validateBundledPackageClaims,
 } from "./third-party-evidence/archive-evidence.mjs";
 import { retainBlob } from "./third-party-evidence/blob-store.mjs";
+import { archiveEvidencePolicy } from "./third-party-evidence/archive-evidence-policy.mjs";
 import {
   compareCodeUnits,
   sha256,
@@ -54,11 +55,10 @@ import {
   verifyRegistrySignature,
 } from "./third-party-evidence/registry-signatures.mjs";
 import {
-  SCANCODE_EXECUTION_OPTIONS,
-  SCANCODE_NORMALIZATION_VERSION,
+  IncompleteScanCoverageError,
   SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
-  SCANCODE_SEMANTIC_OPTIONS,
   SCANCODE_TOOL,
+  bindScanCoverage,
   buildScancodeArguments,
   normalizeScancodeReport,
   scanExecutionObservation,
@@ -607,126 +607,6 @@ const retainEnvelope = async (corpusRoot, kind, artifactId, evidence) => ({
   kind,
 });
 
-const bindScanCoverage = (scan, inventory, artifactId) => {
-  if (!Array.isArray(scan.files)) {
-    productFailure(
-      "SCANCODE_FILE_INVENTORY_MISSING",
-      `ScanCode returned no file inventory for ${artifactId}`,
-    );
-  }
-  const files = new Map();
-  for (const file of scan.files) {
-    if (files.has(file.path)) {
-      productFailure(
-        "SCANCODE_FILE_INVENTORY_INVALID",
-        `ScanCode returned duplicate path ${file.path}`,
-      );
-    }
-    files.set(file.path, file);
-  }
-  const expectedFiles = inventory.entries.filter(({ type }) => type === "FILE");
-  const expectedByPath = new Map(
-    expectedFiles.map((entry) => [entry.path, entry]),
-  );
-  const incompleteIdentityFiles = [];
-  let digestVerifiedFileCount = 0;
-  for (const file of files.values()) {
-    const entry = expectedByPath.get(file.path);
-    if (!entry || file.type !== "file" || file.size !== entry.size) {
-      productFailure(
-        "SCANCODE_FILE_INVENTORY_INVALID",
-        `ScanCode reported an unauthenticated or changed archive path ${file.path}`,
-      );
-    }
-    if (file.sha256 === entry.sha256) {
-      digestVerifiedFileCount += 1;
-      continue;
-    }
-    if (
-      entry.size === 0 &&
-      (file.sha256 === null || file.sha256 === undefined)
-    ) {
-      // ScanCode 32.5.0 can inventory an empty file without emitting a digest.
-      // Preserve that narrower fact explicitly; the authenticated tar digest
-      // remains authoritative, but the scanner is not credited with verifying it.
-      incompleteIdentityFiles.push({
-        path: entry.path,
-        reason: "EMPTY_FILE_DIGEST_NOT_REPORTED",
-        size: entry.size,
-        sha256: entry.sha256,
-      });
-      continue;
-    }
-    productFailure(
-      "SCANCODE_FILE_INVENTORY_INVALID",
-      `ScanCode reported an unauthenticated or changed archive path ${file.path}`,
-    );
-  }
-
-  const retainedEvidencePaths = new Set(
-    inventory.evidenceFiles.map(({ path }) => path),
-  );
-  const omittedFiles = [];
-  for (const entry of expectedFiles) {
-    if (files.has(entry.path)) {
-      continue;
-    }
-    const hiddenPath = entry.path
-      .split("/")
-      .some((segment) => segment.startsWith("."));
-    let reason;
-    if (
-      entry.path.toLowerCase().endsWith(".node") &&
-      !retainedEvidencePaths.has(entry.path)
-    ) {
-      // The authenticated scan materializer deliberately omits native Node
-      // add-ons on every host. Their immutable tar bytes remain reviewable.
-      reason = "NATIVE_NODE_BINARY_NOT_SCANNED";
-    } else if (entry.size === 0) {
-      // A zero-byte file has no semantic content for ScanCode to inspect, but
-      // the authenticated archive inventory still binds its path and digest.
-      reason = "EMPTY_FILE_NOT_REPORTED";
-    } else if (hiddenPath && !retainedEvidencePaths.has(entry.path)) {
-      // ScanCode 32.5.0 can omit hidden resources from its JSON file report.
-      // Permit that observed representation gap only for files that the
-      // independent archive classifier did not select as legal evidence.
-      reason = "HIDDEN_PATH_NOT_REPORTED";
-    } else {
-      productFailure(
-        "SCANCODE_FILE_INVENTORY_INVALID",
-        `ScanCode did not cover required authenticated archive path ${entry.path}`,
-      );
-    }
-    omittedFiles.push({
-      path: entry.path,
-      reason,
-      size: entry.size,
-      sha256: entry.sha256,
-    });
-  }
-  if (Object.hasOwn(scan, "archiveCoverage")) {
-    productFailure(
-      "SCANCODE_FILE_INVENTORY_INVALID",
-      `ScanCode returned the reserved archiveCoverage field for ${artifactId}`,
-    );
-  }
-  // Keep the archive inventory authoritative for byte-for-byte closure and bind
-  // ScanCode's actual reporting coverage into the retained findings envelope.
-  // This makes scanner omissions reviewable without treating them as scanned.
-  return {
-    ...scan,
-    archiveCoverage: {
-      authenticatedFileCount: expectedFiles.length,
-      reportedFileCount: files.size,
-      digestVerifiedFileCount,
-      incompleteIdentityFiles: incompleteIdentityFiles.sort((left, right) =>
-        compareCodeUnits(left.path, right.path),
-      ),
-      omittedFiles,
-    },
-  };
-};
-
 const selectPackumentVersion = (packument, identity) => {
   const versionManifest = packument?.versions?.[identity.version];
   const publishedAt = packument?.time?.[identity.version];
@@ -932,14 +812,7 @@ const reusableScanReport = async ({
     try {
       bindScanCoverage(information, inventory, identity.artifactId);
     } catch (error) {
-      if (
-        error instanceof AcquisitionError &&
-        error.code === "SCANCODE_FILE_INVENTORY_INVALID" &&
-        error.message.startsWith(
-          "ScanCode did not cover required authenticated archive path",
-        )
-      )
-        return null;
+      if (error instanceof IncompleteScanCoverageError) return null;
       throw error;
     }
     if (failed) return null;
@@ -978,6 +851,7 @@ const acquireArtifact = async ({
   scancode,
   reuseScanReports = null,
   reuseScanReportHashes = null,
+  retainTarball = false,
 }) => {
   const packument = await fetchJsonWithRetry(packumentUrl(identity.name), {
     fetchImpl,
@@ -1258,10 +1132,58 @@ const acquireArtifact = async ({
     },
     blobs,
     keyids: signatures.map(({ keyid }) => keyid),
+    ...(retainTarball
+      ? {
+          tarballBlob: await retainBlob(corpusRoot, tarballBytes),
+          materialEvidence: { archive: archiveEvidence, scan: normalizedScan },
+        }
+      : {}),
   };
   // The enclosing acquisition owns cleanup after the complete corpus succeeds.
   // A later failure must retain every original report and native input tree.
   return acquired;
+};
+
+/** Collect unreviewed originals for a lock-derived identity in a separate recipient store. */
+export const acquireRecipientRegistryArtifact = async ({
+  identity,
+  occurrences,
+  stagingRoot,
+  corpusRoot,
+  registryKeys,
+  fetchImpl = fetch,
+  sleep = delay,
+  downloadTarball = downloadLockedRegistryTarball,
+  verifyPackageMetadata = defaultVerifyPackageMetadata,
+  scanArtifact = collectNativeScancodeReport,
+  pacoteClient = null,
+  scancode = null,
+}) => {
+  const { name, version, resolved, integrity, artifactId } = identity;
+  if (
+    artifactId !== sha256(stableJson({ name, version, resolved, integrity })) ||
+    assertPublicRegistryUrl(resolved, "Recipient tarball URL") !== resolved
+  ) {
+    throw new TypeError("Invalid lock-derived recipient archive identity");
+  }
+  const keyById = new Map(registryKeys.map((key) => [key.keyid, key]));
+  return acquireArtifact({
+    identity,
+    occurrences,
+    stagingRoot,
+    corpusRoot,
+    cache: join(stagingRoot, "cache"),
+    fetchImpl,
+    sleep,
+    registryKeys,
+    keyById,
+    downloadTarball,
+    verifyPackageMetadata,
+    scanArtifact,
+    pacoteClient,
+    scancode,
+    retainTarball: true,
+  });
 };
 
 export const publishEvidence = async ({
@@ -1393,21 +1315,6 @@ const publishEvidenceShard = async ({
   }
 };
 
-const evidencePolicy = () => ({
-  registryOrigin: PUBLIC_REGISTRY_ORIGIN,
-  provenance: "VERIFY_WHEN_PUBLISHED",
-  scanner: {
-    name: SCANCODE_TOOL.name,
-    version: SCANCODE_TOOL.version,
-    pythonVersion: SCANCODE_TOOL.pythonVersion,
-    outputFormatVersion: SCANCODE_TOOL.outputFormatVersion,
-    normalizationVersion: SCANCODE_NORMALIZATION_VERSION,
-    semanticOptions: SCANCODE_SEMANTIC_OPTIONS,
-    preScanExcludedFileSuffixes: SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
-    executionOptions: SCANCODE_EXECUTION_OPTIONS,
-  },
-});
-
 // Reuse is explicit and offline-verified against its own original lockfile.
 // Current graph identity, policy, and final closure are still checked afresh.
 const readReusableEvidence = async (repositoryRoot) => {
@@ -1436,7 +1343,7 @@ const readReusableEvidence = async (repositoryRoot) => {
   }
   const blobRoot = join(provenanceRoot, "evidence", "npm");
   await verifyEvidenceManifest({ manifest, lockfileBytes, blobRoot });
-  if (stableJson(manifest.policy) !== stableJson(evidencePolicy())) {
+  if (stableJson(manifest.policy) !== stableJson(archiveEvidencePolicy())) {
     controlFailure(
       "REUSE_POLICY_MISMATCH",
       "Reusable evidence was acquired under a different policy",
@@ -1697,7 +1604,7 @@ export const acquireEvidence = async ({
       acquired.keyids.forEach((keyid) => usedKeyids.add(keyid));
     }
     const retainedKeys = [...usedKeyids].map((keyid) => keyById.get(keyid));
-    const policy = evidencePolicy();
+    const policy = archiveEvidencePolicy();
     if (shard) {
       const shardDocument = createEvidenceShard({
         graph,

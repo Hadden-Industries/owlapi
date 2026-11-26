@@ -42,7 +42,7 @@
     {
       "historicalRequirementId": "P19-WEBVOWL-001",
       "requirementId": "P19-OWL-CONTRACT-001",
-      "obligation": "Verify native installed package identity, supported exports, dependency resolution without ancestor hoisting or source aliases, the exact retained package bytes and public OWL interface obligations. Fresh public registry integrity and complete package-tree/production-graph equivalence remain producer requirements under P19-PUBLIC-AVAILABILITY-001 and P19-PACKAGE-001.",
+      "obligation": "Verify native installed package identity, supported exports, dependency resolution without ancestor hoisting or source aliases, the exact retained package bytes and public OWL interface obligations. Verify exact first-party package bytes, the locked production graph against its SBOM, and each installed recipient against its own lock. Account for permitted transitive changes by native edges, immutable archive identity, material policy and tested behavior under P19-PUBLIC-AVAILABILITY-001 and P19-PACKAGE-001.",
       "downstreamOwner": "Consumer source copies, dependency declarations, builds, tests, transport cutover and deployment."
     },
     {

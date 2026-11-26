@@ -44,6 +44,8 @@ export async function installResolutionFixture(
         dependencies: {
           "node-types": "*",
           alternative: "^1",
+          loose: "^01.2.0",
+          prerelease: "*",
           older: "npm:leaf@^1.0.0",
           plugin: "1.0.0",
         },
@@ -59,6 +61,8 @@ export async function installResolutionFixture(
     ["host", { name: "host", version: "1.0.0" }],
     ["node-types", { name: "node-types", version }],
     ["alternative", { name: "alternative", version: "2.0.0" }],
+    ["loose", { name: "loose", version: "1.2.3" }],
+    ["prerelease", { name: "prerelease", version: "1.2.3-beta.1" }],
     ["older", { name: "leaf", version: "1.0.0" }],
     [
       "plugin",

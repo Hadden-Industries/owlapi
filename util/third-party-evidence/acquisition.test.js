@@ -39,6 +39,13 @@ import { verifyRepositoryEvidence } from "../verify-npm-package-evidence.mjs";
 import { computeCorpusRoot, retainBlob } from "./blob-store.mjs";
 import { stableJson } from "./digests.mjs";
 import { normalizeLockedRegistryGraph } from "./lock-graph.mjs";
+import {
+  RECIPIENT_MATERIAL_NAME,
+  collectRecipientMaterial,
+  prepareRecipientMaterial,
+  readRecipientMaterial,
+  verifyRetainedMaterialDecision,
+} from "./recipient-material.mjs";
 import { mergeEvidenceShardDocuments } from "./evidence-shards.mjs";
 import {
   npmRegistryKeyId,
@@ -112,22 +119,26 @@ const integrity = (bytes) =>
 
 const makeRegistryFixture = ({
   name = "alpha",
+  version = "1.0.0",
   archiveRoot = "package",
   additionalEntries = [],
   bundled = false,
-  resolved = "https://registry.npmjs.org/alpha/-/alpha-1.0.0.tgz",
+  licenceFile = true,
+  resolved = `https://registry.npmjs.org/alpha/-/alpha-${version}.tgz`,
 } = {}) => {
   const tarball = makeTarball([
     {
       path: `${archiveRoot}/package.json`,
       body: `${JSON.stringify({
         name,
-        version: "1.0.0",
+        version,
         license: "MIT",
         ...(bundled ? { bundleDependencies: ["@scope/child"] } : {}),
       })}\n`,
     },
-    { path: `${archiveRoot}/LICENSE`, body: "MIT licence fixture\n" },
+    ...(licenceFile
+      ? [{ path: `${archiveRoot}/LICENSE`, body: "MIT licence fixture\n" }]
+      : []),
     { path: `${archiveRoot}/index.js`, body: "export default 1;\n" },
     ...additionalEntries,
     ...(bundled
@@ -154,7 +165,7 @@ const makeRegistryFixture = ({
     keyid,
     sig: sign(
       "sha256",
-      Buffer.from(registrySignaturePayload(name, "1.0.0", lockedIntegrity)),
+      Buffer.from(registrySignaturePayload(name, version, lockedIntegrity)),
       privateKey,
     ).toString("base64"),
   };
@@ -167,7 +178,7 @@ const makeRegistryFixture = ({
   };
   const versionManifest = {
     name,
-    version: "1.0.0",
+    version,
     license: "MIT",
     dist: {
       tarball: resolved,
@@ -177,8 +188,8 @@ const makeRegistryFixture = ({
   };
   const packument = {
     name,
-    versions: { "1.0.0": versionManifest },
-    time: { "1.0.0": publishedAt },
+    versions: { [version]: versionManifest },
+    time: { [version]: publishedAt },
   };
   const lockfileBytes = Buffer.from(
     `${JSON.stringify({
@@ -187,7 +198,7 @@ const makeRegistryFixture = ({
         "": { name: "fixture", version: "1.0.0" },
         "node_modules/alpha": {
           name,
-          version: "1.0.0",
+          version,
           resolved,
           integrity: lockedIntegrity,
           license: "MIT",
@@ -236,7 +247,7 @@ const startRegistryServer = async (fixture, overrides = {}) => {
       response.end(JSON.stringify(fixture.packument));
       return;
     }
-    if (request.url === "/alpha/-/alpha-1.0.0.tgz") {
+    if (request.url === new URL(fixture.resolved).pathname) {
       response.setHeader("content-type", "application/octet-stream");
       response.end(overrides.tarball || fixture.tarball);
       return;
@@ -337,6 +348,383 @@ const fixtureScanWithout =
     report.files = report.files.filter(({ path }) => !omittedPaths.has(path));
     return report;
   };
+
+const recipientDigest = (bytes) =>
+  createHash("sha256").update(bytes).digest("hex");
+
+const materialRecordSha256 = async (directory) =>
+  recipientDigest(await readFile(join(directory, RECIPIENT_MATERIAL_NAME)));
+
+const recipientFixture = async (fixture) => {
+  const registry = await startRegistryServer(fixture);
+  const repositoryRoot = await mkdtemp(join(tmpdir(), "owlapi-recipient-"));
+  temporaryRoots.push(repositoryRoot);
+  await writeFile(
+    join(repositoryRoot, "package-lock.json"),
+    fixture.lockfileBytes,
+  );
+  const { manifest } = await acquireEvidence({
+    repositoryRoot,
+    fetchImpl: mappedFetch(registry.origin),
+    downloadTarball: fixtureDownload,
+    verifyPackageMetadata: fixtureMetadataVerification,
+    scanArtifact: fixtureLicenceScan,
+    write: true,
+  });
+  expect(manifest.artifacts[0].integrity).toBe(fixture.lockedIntegrity);
+  return { repositoryRoot, manifest };
+};
+
+async function fixtureLicenceScan(options) {
+  const report = await fixtureScan(options);
+  const file = report.files.find(({ path }) => path.endsWith("/LICENSE"));
+  if (file) file.detected_license_expression_spdx = "MIT";
+  return report;
+}
+
+const observedFixture = (
+  fixture,
+  { bundled = false, rootSpecifier = null } = {},
+) => {
+  const { name, version } = fixture.versionManifest;
+  const location = "node_modules/alpha";
+  // These expected manifest bytes are independent of the acquisition's archive
+  // readers and are sensitive to a byte substitution with identical JSON shape.
+  const installed = `{"name":"${name}","version":"${version}","license":"MIT"${bundled ? ',"bundleDependencies":["@scope/child"]' : ""}}\n`;
+  const child = `${location}/node_modules/@scope/child`;
+  const lockfileBytes = rootSpecifier
+    ? Buffer.from(
+        JSON.stringify({
+          lockfileVersion: 3,
+          packages: {
+            ...JSON.parse(fixture.lockfileBytes).packages,
+            "node_modules/owlapi": {
+              name: "@hadden-industries/owlapi",
+              version: "1.0.0",
+            },
+          },
+        }),
+      )
+    : fixture.lockfileBytes;
+  return {
+    lockfileBytes,
+    resolution: {
+      schemaVersion: 1,
+      dependencyName: rootSpecifier,
+      tarballSha256: recipientDigest("fixture candidate"),
+      lockSha256: recipientDigest(lockfileBytes),
+      manifests: {
+        ".": recipientDigest("fixture root manifest"),
+        [location]: recipientDigest(installed),
+        ...(bundled
+          ? {
+              [child]: recipientDigest(
+                '{"name":"@scope/child","version":"2.0.0","license":"ISC"}',
+              ),
+            }
+          : {}),
+      },
+      graph: {
+        nodes: [
+          { location: ".", name: "fixture", version: "1.0.0" },
+          {
+            location,
+            name,
+            version,
+            integrity: fixture.lockedIntegrity,
+            resolved: fixture.resolved,
+          },
+          ...(bundled
+            ? [
+                {
+                  location: child,
+                  name: "@scope/child",
+                  version: "2.0.0",
+                  bundledIn: location,
+                  integrity: fixture.lockedIntegrity,
+                  resolved: fixture.resolved,
+                },
+              ]
+            : []),
+        ],
+        edges: [],
+      },
+    },
+    location,
+    child,
+    installed,
+  };
+};
+
+it("rejects an installed manifest change under an unchanged recipient lock", async () => {
+  const fixture = makeRegistryFixture();
+  const { repositoryRoot, manifest } = await recipientFixture(fixture);
+  const { resolution, lockfileBytes, location, installed } =
+    observedFixture(fixture);
+  const options = { repositoryRoot, lockfileBytes, resolution };
+  const directory = join(repositoryRoot, "matching");
+  await expect(
+    collectRecipientMaterial({ ...options, directory }),
+  ).resolves.toMatchObject({
+    status: "PASSED",
+    artifacts: [
+      { source: "CANONICAL_CORPUS", archive: manifest.artifacts[0].archive },
+    ],
+    decisions: [
+      {
+        disposition: "STANDING_EXTERNAL_RUNTIME_RULE",
+        installedManifestSha256: recipientDigest(installed),
+      },
+    ],
+  });
+  await expect(
+    readRecipientMaterial({ ...options, directory }),
+  ).resolves.toMatchObject({ status: "PASSED" });
+  const changed = structuredClone(resolution);
+  changed.manifests[location] = recipientDigest(`${installed} `);
+  await expect(
+    collectRecipientMaterial({
+      ...options,
+      directory: join(repositoryRoot, "mutated"),
+      resolution: changed,
+    }),
+  ).rejects.toThrow(/installed manifest (differs|does not match)/iu);
+  const contradictory = makeRegistryFixture({
+    additionalEntries: [
+      { path: "package/added.txt", body: "Different fixed release bytes" },
+    ],
+  });
+  expect(contradictory.lockedIntegrity).not.toBe(fixture.lockedIntegrity);
+  await expect(
+    collectRecipientMaterial({
+      ...observedFixture(contradictory),
+      repositoryRoot,
+      directory: join(repositoryRoot, "contradictory"),
+    }),
+  ).rejects.toThrow(/contradictory canonical archive for alpha@1\.0\.0/iu);
+});
+
+it("binds a bundled installed manifest to its owning archive", async () => {
+  const fixture = makeRegistryFixture({ bundled: true });
+  const { repositoryRoot, manifest } = await recipientFixture(fixture);
+  const { child, resolution, lockfileBytes } = observedFixture(fixture, {
+    bundled: true,
+  });
+  const options = { repositoryRoot, lockfileBytes, resolution };
+  const decision = await collectRecipientMaterial({
+    ...options,
+    directory: join(repositoryRoot, "bundle"),
+  });
+  expect(decision.status).toBe("REQUIRES_HUMAN_REVIEW");
+  expect(
+    decision.decisions.find(({ location }) => location === child),
+  ).toMatchObject({
+    artifactId: manifest.artifacts[0].artifactId,
+    archiveMember: "package/node_modules/@scope/child/package.json",
+    installedManifestSha256: recipientDigest(
+      '{"name":"@scope/child","version":"2.0.0","license":"ISC"}',
+    ),
+    scope: "BUNDLED_IN_EXTERNAL_RUNTIME_ARCHIVE",
+    reasons: expect.arrayContaining([
+      "BUNDLED_MATERIAL_REQUIRES_RIGHTS_DISPOSITION",
+    ]),
+  });
+  resolution.manifests[child] = recipientDigest("changed bundled manifest");
+  await expect(
+    collectRecipientMaterial({
+      ...options,
+      directory: join(repositoryRoot, "mutated-bundle"),
+    }),
+  ).rejects.toThrow(/installed manifest differs.*@scope\/child/iu);
+});
+
+it("retains and independently reads an authenticated fresh patch once across recipient observations", async () => {
+  const canonical = makeRegistryFixture();
+  const { repositoryRoot } = await recipientFixture(canonical);
+  const novel = makeRegistryFixture({ version: "1.0.1" });
+  const registry = await startRegistryServer(novel);
+  const evidenceDirectory = join(repositoryRoot, "recipient-archives");
+  const canonicalManifestPath = join(
+    repositoryRoot,
+    "docs/provenance/npm-package-evidence.json",
+  );
+  const canonicalOriginal = await readFile(canonicalManifestPath);
+  const source = {
+    repositoryRoot,
+    evidenceDirectory,
+    trustedRegistryKeySnapshot: {
+      schemaVersion: 1,
+      registryOrigin: "https://registry.npmjs.org",
+      keys: [novel.key],
+    },
+  };
+  const first = {
+    ...observedFixture(novel),
+    directory: join(repositoryRoot, "first"),
+  };
+  const second = {
+    ...observedFixture(novel, { rootSpecifier: "owlapi" }),
+    directory: join(repositoryRoot, "second"),
+  };
+  let scans = 0;
+  const prepared = await prepareRecipientMaterial({
+    ...source,
+    fetchImpl: mappedFetch(registry.origin),
+    downloadTarball: fixtureDownload,
+    verifyPackageMetadata: fixtureMetadataVerification,
+    scanArtifact: async (options) => {
+      scans++;
+      return fixtureLicenceScan(options);
+    },
+  });
+  const a = await prepared.collect(first);
+  const b = await prepared.collect(second);
+  expect(scans).toBe(1);
+  expect(await readFile(canonicalManifestPath)).toEqual(canonicalOriginal);
+  expect(await readFile(join(repositoryRoot, "package-lock.json"))).toEqual(
+    canonical.lockfileBytes,
+  );
+  expect(a.artifacts).toEqual(b.artifacts);
+  expect(a.subject.resolutionSha256).not.toBe(b.subject.resolutionSha256);
+  const [archive] = a.artifacts;
+  expect(a).toMatchObject({
+    status: "PASSED",
+    decisions: [
+      { version: "1.0.1", disposition: "STANDING_EXTERNAL_RUNTIME_RULE" },
+    ],
+  });
+  expect(archive).toMatchObject({
+    source: "RECIPIENT_ARCHIVE",
+    integrity: novel.lockedIntegrity,
+    archiveTarball: {
+      sha256: recipientDigest(novel.tarball),
+      bytes: novel.tarball.length,
+    },
+  });
+  await expect(readRecipientMaterial({ ...source, ...first })).rejects.toThrow(
+    /requires its authenticated material record digest/iu,
+  );
+  const firstProof = {
+    ...first,
+    recordSha256: await materialRecordSha256(first.directory),
+  };
+  const secondProof = {
+    ...second,
+    recordSha256: await materialRecordSha256(second.directory),
+  };
+  await expect(
+    readRecipientMaterial({ ...source, ...firstProof }),
+  ).resolves.toEqual(a);
+  const compactInputs = {
+    ...firstProof,
+    repositoryRoot,
+    trustedRegistryKeySnapshot: source.trustedRegistryKeySnapshot,
+    recordBytes: await readFile(join(first.directory, RECIPIENT_MATERIAL_NAME)),
+  };
+  await expect(
+    verifyRetainedMaterialDecision(compactInputs),
+  ).resolves.toMatchObject({
+    record: a,
+    verification: "AUTHENTICATED_COLLECTOR_METADATA",
+    novelArtifactIds: [archive.artifactId],
+  });
+  await expect(
+    verifyRetainedMaterialDecision({
+      ...compactInputs,
+      requireDirectNovel: true,
+    }),
+  ).rejects.toThrow(/requires authorized archive originals/iu);
+  await expect(
+    verifyRetainedMaterialDecision({
+      ...compactInputs,
+      evidenceDirectory,
+      requireDirectNovel: true,
+    }),
+  ).resolves.toMatchObject({ verification: "DIRECT_ARCHIVE_READBACK" });
+  const contradicted = structuredClone(a);
+  contradicted.artifacts[0].compact.archive.entries[0].sha256 = "f".repeat(64);
+  const contradictedBytes = Buffer.from(stableJson(contradicted));
+  await expect(
+    verifyRetainedMaterialDecision({
+      ...compactInputs,
+      recordBytes: contradictedBytes,
+    }),
+  ).rejects.toThrow(/authenticated proof digest/iu);
+  await expect(
+    verifyRetainedMaterialDecision({
+      ...compactInputs,
+      recordBytes: contradictedBytes,
+      recordSha256: recipientDigest(contradictedBytes),
+    }),
+  ).rejects.toThrow(/installed manifest differs/iu);
+  await expect(
+    readRecipientMaterial({ ...source, ...secondProof }),
+  ).resolves.toEqual(b);
+  // A self-authored registry key in the observation cannot confer registry trust.
+  await expect(
+    readRecipientMaterial({ repositoryRoot, evidenceDirectory, ...firstProof }),
+  ).rejects.toThrow(/No retained registry key/u);
+  await writeFile(
+    join(evidenceDirectory, archive.archiveTarball.path),
+    Buffer.alloc(novel.tarball.length),
+  );
+  await expect(
+    readRecipientMaterial({ ...source, ...firstProof }),
+  ).rejects.toThrow(/evidence blob digest mismatch/iu);
+});
+
+it("keeps an SPDX-only recipient licence unresolved after readback", async () => {
+  const { repositoryRoot } = await recipientFixture(makeRegistryFixture());
+  const novel = makeRegistryFixture({ version: "1.0.1", licenceFile: false });
+  const registry = await startRegistryServer(novel);
+  const options = {
+    ...observedFixture(novel),
+    directory: join(repositoryRoot, "missing-licence"),
+    repositoryRoot,
+    trustedRegistryKeySnapshot: {
+      schemaVersion: 1,
+      registryOrigin: "https://registry.npmjs.org",
+      keys: [novel.key],
+    },
+  };
+  const decision = await collectRecipientMaterial({
+    ...options,
+    fetchImpl: mappedFetch(registry.origin),
+    downloadTarball: fixtureDownload,
+    verifyPackageMetadata: fixtureMetadataVerification,
+    scanArtifact: fixtureScan,
+  });
+  expect(decision.status).toBe("REQUIRES_HUMAN_REVIEW");
+  expect(decision.decisions[0]).toMatchObject({
+    licence: "MIT",
+    legalFiles: [],
+    disposition: "REQUIRES_HUMAN_REVIEW",
+    reasons: [
+      "MISSING_INSPECTABLE_LICENCE_TEXT",
+      "LICENCE_TEXT_NOT_CORROBORATED_BY_SCANCODE",
+    ],
+  });
+  const recordSha256 = await materialRecordSha256(options.directory);
+  await expect(
+    readRecipientMaterial({ ...options, recordSha256 }),
+  ).resolves.toEqual(decision);
+  decision.status = "PASSED";
+  decision.decisions[0].disposition = "STANDING_EXTERNAL_RUNTIME_RULE";
+  decision.decisions[0].reasons = [];
+  await writeFile(
+    join(options.directory, RECIPIENT_MATERIAL_NAME),
+    stableJson(decision),
+  );
+  await expect(
+    readRecipientMaterial({ ...options, recordSha256 }),
+  ).rejects.toThrow(/differs from its authenticated proof digest/iu);
+  await expect(
+    readRecipientMaterial({
+      ...options,
+      recordSha256: await materialRecordSha256(options.directory),
+    }),
+  ).rejects.toThrow(/material decision differs/iu);
+});
 
 const fixtureScanWithoutDigest =
   (...archivePaths) =>

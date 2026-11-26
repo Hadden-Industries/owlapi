@@ -1,5 +1,5 @@
 {
-  "artifactId": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd",
+  "artifactId": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7",
   "evidence": {
     "archiveCoverage": {
       "authenticatedFileCount": 92,
@@ -8,14 +8,14 @@
       "omittedFiles": [],
       "reportedFileCount": 92
     },
-    "artifactId": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd",
+    "artifactId": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7",
     "dependencies": [
       {
         "datafile_path": "node/package.json",
         "datasource_id": "npm_package_json",
         "extra_data": {},
         "extracted_requirement": "~8.9.0",
-        "for_package_purl": "pkg:npm/%40types/node@26.6.10",
+        "for_package_purl": "pkg:npm/%40types/node@26.6.11",
         "is_direct": true,
         "is_optional": false,
         "is_pinned": false,
@@ -47,7 +47,7 @@
         "extension": ".md",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -58,16 +58,16 @@
         "is_text": true,
         "license_clues": [],
         "license_detections": [],
-        "md5": "e2ec72ab4b3c6a12e7ac5a41f82e0bb3",
+        "md5": "dd653498bfc39464a1c4a0ec0c84fb7e",
         "name": "README.md",
         "package_data": [],
         "path": "node/README.md",
         "percentage_of_license_text": 0,
         "programming_language": null,
         "scan_errors": [],
-        "sha1": "0f1f99e80422e894b8f86a6afb5f44306b502747",
-        "sha1_git": "63a5bc553559dbc7aab51060bb35b21b46604268",
-        "sha256": "7f4a86b92f405371c68d39aa38861197a385e53fd57e1c0668315df64bf1df10",
+        "sha1": "e4f8d057f2ec4f85ac7e1a7fbf43a4a56093a795",
+        "sha1_git": "73f816b20af64d80d445381ffb70878d74a990eb",
+        "sha256": "4c4082e11dd988745ae4f8e3d0fece922b1f34a5843a23eca85b99727cce97c8",
         "size": 1441,
         "size_count": 0,
         "type": "file"
@@ -88,7 +88,7 @@
         "extension": "",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [
           {
@@ -112,7 +112,7 @@
             "matches": [
               {
                 "end_line": 1,
-                "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/LICENSE",
+                "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/LICENSE",
                 "license_expression": "mit",
                 "license_expression_spdx": "MIT",
                 "match_coverage": 100,
@@ -127,7 +127,7 @@
               },
               {
                 "end_line": 21,
-                "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/LICENSE",
+                "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/LICENSE",
                 "license_expression": "mit",
                 "license_expression_spdx": "MIT",
                 "match_coverage": 100,
@@ -167,7 +167,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -202,7 +202,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -213,17 +213,17 @@
         "is_text": true,
         "license_clues": [],
         "license_detections": [],
-        "md5": "0f49d2c85c89d958099436617f624a74",
+        "md5": "7fef1500e8d174950e02cf13d91648bc",
         "name": "assert.d.ts",
         "package_data": [],
         "path": "node/assert.d.ts",
         "percentage_of_license_text": 0,
         "programming_language": "TypeScript",
         "scan_errors": [],
-        "sha1": "2cc1d5e0d2a98423c276622483c71a3f2a24c721",
-        "sha1_git": "72cc91de95e987a304bfcd4221d898b653a0f2e9",
-        "sha256": "594ae90cacd813fa392ff80d2e0a8eff4e41f4a136329a940e321399dd8895b4",
-        "size": 42891,
+        "sha1": "04cf003a024d465f184bd54e9583718fd7e82238",
+        "sha1_git": "a4e047c3d6db813fc0d9d6eaa84db0410e696719",
+        "sha256": "700abd177f31287fdcbc20487b5c7ac631dc589c8b23305b2142af4625e68ac6",
+        "size": 43008,
         "size_count": 0,
         "type": "file"
       },
@@ -237,7 +237,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -272,7 +272,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -307,7 +307,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -342,7 +342,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -377,7 +377,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -412,7 +412,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -447,7 +447,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -482,7 +482,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -517,7 +517,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -552,7 +552,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -587,7 +587,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -622,7 +622,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -657,7 +657,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -692,7 +692,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -727,7 +727,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -762,7 +762,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -797,7 +797,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -832,7 +832,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -867,7 +867,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -902,7 +902,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -937,7 +937,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -972,7 +972,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1007,7 +1007,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1042,7 +1042,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1077,7 +1077,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1112,7 +1112,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1147,7 +1147,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1182,7 +1182,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1217,7 +1217,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1252,7 +1252,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1287,7 +1287,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1322,7 +1322,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1357,7 +1357,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1398,7 +1398,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [
           {
@@ -1422,7 +1422,7 @@
             "matches": [
               {
                 "end_line": 22,
-                "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/index.d.ts",
+                "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/index.d.ts",
                 "license_expression": "mit",
                 "license_expression_spdx": "MIT",
                 "match_coverage": 100,
@@ -1468,7 +1468,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [
           {
@@ -1492,7 +1492,7 @@
             "matches": [
               {
                 "end_line": 22,
-                "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/ts5.6/index.d.ts",
+                "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/ts5.6/index.d.ts",
                 "license_expression": "mit",
                 "license_expression_spdx": "MIT",
                 "match_coverage": 100,
@@ -1538,7 +1538,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [
           {
@@ -1562,7 +1562,7 @@
             "matches": [
               {
                 "end_line": 22,
-                "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/ts5.7/index.d.ts",
+                "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/ts5.7/index.d.ts",
                 "license_expression": "mit",
                 "license_expression_spdx": "MIT",
                 "match_coverage": 100,
@@ -1602,7 +1602,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1637,7 +1637,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1672,7 +1672,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1707,7 +1707,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1742,7 +1742,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1777,7 +1777,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1812,7 +1812,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1847,7 +1847,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1882,7 +1882,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1917,7 +1917,7 @@
         "extension": ".json",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -1935,7 +1935,7 @@
             "matches": [
               {
                 "end_line": 6,
-                "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/package.json",
+                "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/package.json",
                 "license_expression": "mit",
                 "license_expression_spdx": "MIT",
                 "match_coverage": 100,
@@ -1951,11 +1951,11 @@
             ]
           }
         ],
-        "md5": "11a4ed4a276e0a0d31d617f98c1f94df",
+        "md5": "bc822d0dc965bc15fee1b4d6004d4732",
         "name": "package.json",
         "package_data": [
           {
-            "api_data_url": "https://registry.npmjs.org/@types%2fnode/26.6.10",
+            "api_data_url": "https://registry.npmjs.org/@types%2fnode/26.6.11",
             "bug_tracking_url": null,
             "code_view_url": null,
             "copyright": null,
@@ -1976,7 +1976,7 @@
               }
             ],
             "description": "TypeScript definitions for node",
-            "download_url": "https://registry.npmjs.org/@types/node/-/node-26.6.10.tgz",
+            "download_url": "https://registry.npmjs.org/@types/node/-/node-26.6.11.tgz",
             "extra_data": {},
             "extracted_license_statement": "- MIT\n",
             "file_references": [],
@@ -1993,7 +1993,7 @@
                 "matches": [
                   {
                     "end_line": 1,
-                    "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/package.json",
+                    "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/package.json",
                     "license_expression": "mit",
                     "license_expression_spdx": "MIT",
                     "match_coverage": 100,
@@ -2166,10 +2166,10 @@
               }
             ],
             "primary_language": "JavaScript",
-            "purl": "pkg:npm/%40types/node@26.6.10",
+            "purl": "pkg:npm/%40types/node@26.6.11",
             "qualifiers": {},
             "release_date": null,
-            "repository_download_url": "https://registry.npmjs.org/@types/node/-/node-26.6.10.tgz",
+            "repository_download_url": "https://registry.npmjs.org/@types/node/-/node-26.6.11.tgz",
             "repository_homepage_url": "https://www.npmjs.com/package/@types/node",
             "sha1": null,
             "sha256": null,
@@ -2179,16 +2179,16 @@
             "subpath": null,
             "type": "npm",
             "vcs_url": "git+https://github.com/DefinitelyTyped/DefinitelyTyped.git",
-            "version": "26.6.10"
+            "version": "26.6.11"
           }
         ],
         "path": "node/package.json",
         "percentage_of_license_text": 0.73,
         "programming_language": null,
         "scan_errors": [],
-        "sha1": "a7f0853c8d7cb087557ff894957350946dddf85f",
-        "sha1_git": "e24d3f4690afb20de3760cc657ee6cfee77e52c4",
-        "sha256": "641e94ed1d38141e54304f5e4791b33832a419954bd86286931fc1c299df86bc",
+        "sha1": "4c3fdef86817c819363e683442a5b3ab2e3819e3",
+        "sha1_git": "d54a81df9452cc96aea2e5f398f6f643f39b0d7c",
+        "sha256": "458b00e3e0f977b45a9167d4d8868ce3a58766ffe798f4168eb819486a293005",
         "size": 4058,
         "size_count": 0,
         "type": "file"
@@ -2203,7 +2203,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2238,7 +2238,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2273,7 +2273,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2308,7 +2308,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2343,7 +2343,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2378,7 +2378,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2413,7 +2413,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2448,7 +2448,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2483,7 +2483,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2518,7 +2518,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2553,7 +2553,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2588,7 +2588,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2623,7 +2623,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2658,7 +2658,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2693,7 +2693,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2728,7 +2728,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2763,7 +2763,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2798,7 +2798,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2833,7 +2833,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2868,7 +2868,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2903,7 +2903,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2938,7 +2938,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2973,7 +2973,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -2984,17 +2984,17 @@
         "is_text": true,
         "license_clues": [],
         "license_detections": [],
-        "md5": "214cb51c5d411cdd8f72575d4d4c3946",
+        "md5": "ef117a49760471a9b40ce1565f8fb5a3",
         "name": "strict.d.ts",
         "package_data": [],
         "path": "node/assert/strict.d.ts",
         "percentage_of_license_text": 0,
         "programming_language": "TypeScript",
         "scan_errors": [],
-        "sha1": "308043b3b0c54ff0363f5c5f2a1e50abaf86ed6a",
-        "sha1_git": "d4ea39083f7259f7db129b55a543ea9115e1a397",
-        "sha256": "d1f333ade8ff35a409b4984e1f11956fe11c61855b0c7e9b59f0313e48b40c4a",
-        "size": 1652,
+        "sha1": "8f3d3ef0e0b9a722ba07624c742d5ce79805801e",
+        "sha1_git": "1110fe943298485cd9862b03e1c73604745cc5ad",
+        "sha256": "71ff2dbbab35f6783a128f74b926a97d8f30d3583566ccbb89882ee2c8b54b94",
+        "size": 1661,
         "size_count": 0,
         "type": "file"
       },
@@ -3008,7 +3008,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3043,7 +3043,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3078,7 +3078,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3113,7 +3113,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3148,7 +3148,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3183,7 +3183,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3218,7 +3218,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3253,7 +3253,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3288,7 +3288,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3323,7 +3323,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3358,7 +3358,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3393,7 +3393,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3428,7 +3428,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3463,7 +3463,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3498,7 +3498,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3533,7 +3533,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3568,7 +3568,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3603,7 +3603,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3638,7 +3638,7 @@
         "extension": ".ts",
         "files_count": 0,
         "for_packages": [
-          "pkg:npm/%40types/node@26.6.10"
+          "pkg:npm/%40types/node@26.6.11"
         ],
         "holders": [],
         "is_archive": false,
@@ -3673,7 +3673,7 @@
         "reference_matches": [
           {
             "end_line": 6,
-            "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/package.json",
+            "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/package.json",
             "license_expression": "mit",
             "license_expression_spdx": "MIT",
             "match_coverage": 100,
@@ -3696,7 +3696,7 @@
         "reference_matches": [
           {
             "end_line": 1,
-            "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/package.json",
+            "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/package.json",
             "license_expression": "mit",
             "license_expression_spdx": "MIT",
             "match_coverage": 100,
@@ -3719,7 +3719,7 @@
         "reference_matches": [
           {
             "end_line": 1,
-            "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/LICENSE",
+            "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/LICENSE",
             "license_expression": "mit",
             "license_expression_spdx": "MIT",
             "match_coverage": 100,
@@ -3734,7 +3734,7 @@
           },
           {
             "end_line": 21,
-            "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/LICENSE",
+            "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/LICENSE",
             "license_expression": "mit",
             "license_expression_spdx": "MIT",
             "match_coverage": 100,
@@ -3757,7 +3757,7 @@
         "reference_matches": [
           {
             "end_line": 22,
-            "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/index.d.ts",
+            "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/index.d.ts",
             "license_expression": "mit",
             "license_expression_spdx": "MIT",
             "match_coverage": 100,
@@ -3939,7 +3939,7 @@
     ],
     "packages": [
       {
-        "api_data_url": "https://registry.npmjs.org/@types%2fnode/26.6.10",
+        "api_data_url": "https://registry.npmjs.org/@types%2fnode/26.6.11",
         "bug_tracking_url": null,
         "code_view_url": null,
         "copyright": null,
@@ -3952,7 +3952,7 @@
         "declared_license_expression": "mit",
         "declared_license_expression_spdx": "MIT",
         "description": "TypeScript definitions for node",
-        "download_url": "https://registry.npmjs.org/@types/node/-/node-26.6.10.tgz",
+        "download_url": "https://registry.npmjs.org/@types/node/-/node-26.6.11.tgz",
         "extra_data": {},
         "extracted_license_statement": "- MIT\n",
         "holder": null,
@@ -3968,7 +3968,7 @@
             "matches": [
               {
                 "end_line": 1,
-                "from_file": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd/node/package.json",
+                "from_file": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7/node/package.json",
                 "license_expression": "mit",
                 "license_expression_spdx": "MIT",
                 "match_coverage": 100,
@@ -4141,10 +4141,10 @@
           }
         ],
         "primary_language": "JavaScript",
-        "purl": "pkg:npm/%40types/node@26.6.10",
+        "purl": "pkg:npm/%40types/node@26.6.11",
         "qualifiers": {},
         "release_date": null,
-        "repository_download_url": "https://registry.npmjs.org/@types/node/-/node-26.6.10.tgz",
+        "repository_download_url": "https://registry.npmjs.org/@types/node/-/node-26.6.11.tgz",
         "repository_homepage_url": "https://www.npmjs.com/package/@types/node",
         "sha1": null,
         "sha256": null,
@@ -4154,7 +4154,7 @@
         "subpath": null,
         "type": "npm",
         "vcs_url": "git+https://github.com/DefinitelyTyped/DefinitelyTyped.git",
-        "version": "26.6.10"
+        "version": "26.6.11"
       }
     ],
     "scanner": {

@@ -115,12 +115,18 @@ test("replay exact alias and scoped npm installs, preserving typed edges and ind
       // A root extension is excluded from the trusted measurement surface.
       writeFileSync(join(root, ".npm-extension.mjs"), "");
       await expect(captureConsumerResolution(root, opts)).rejects.toThrow(
-        /extension/,
+        "Unexpected consumer npm extension",
       );
       rmSync(join(root, ".npm-extension.mjs"));
       const lockPath = join(root, "package-lock.json");
       const originalLock = readFileSync(lockPath);
       const forged = JSON.parse(originalLock);
+      forged.packages["node_modules/" + dependencyName].extraneous = true;
+      writeFileSync(lockPath, JSON.stringify(forged));
+      await expect(captureConsumerResolution(root, opts)).rejects.toThrow(
+        /candidate archive occurrence/,
+      );
+      delete forged.packages["node_modules/" + dependencyName].extraneous;
       forged.packages["node_modules/" + dependencyName].peerDependencies = {
         rogue: "*",
       };

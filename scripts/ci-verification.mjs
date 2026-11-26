@@ -45,11 +45,9 @@ const sameRepository = (observed, context) =>
   observed?.id === context.repositoryId &&
   observed?.full_name === context.repository;
 
-// Keep prior v6 CI receipts readable. Release admission additionally requires
-// the two acknowledgement outputs from the current package producer.
+// Both artifact acknowledgements come from the actual producer job.
 function originalPackageProof(outputs) {
   const { proof_id: artifactId, proof_digest: uploadDigest } = outputs;
-  if (artifactId === undefined && uploadDigest === undefined) return {};
   const artifact = { id: Number(artifactId), digest: `sha256:${uploadDigest}` };
   requireFact(
     id(artifact.id) && digest(artifact.digest),
@@ -311,9 +309,7 @@ export const createMainQualification = ({
     jobs: CI_JOB_NAMES,
     candidate,
     ...(origin
-      ? origin.packageProof
-        ? { packageProof: origin.packageProof }
-        : {}
+      ? { packageProof: origin.packageProof }
       : originalPackageProof(needs.candidate.outputs)),
     policySha256: QUALIFICATION_POLICY_SHA256,
     checks: createQualificationChecks({

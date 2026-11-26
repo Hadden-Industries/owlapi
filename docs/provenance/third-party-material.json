@@ -16,16 +16,16 @@
     "version": "0.1.0",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "43828da339bb8fd36dab68c91c476839bb75a492317a701fb0c929e41ef4d31d",
+    "lockfileSha256": "2378e0e16ece86307ea8c0ce36d8496501b4ea5e1e6bbc20b003ea67d1c31bb9",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "ddbe67da726f39d8196bf222f3cc9a99fb07fad542d50e2218f486e053069871",
-    "evidenceCorpusRoot": "12bcc70116806af7d27200d399ecb83e1585ab721f92c23b585c469a8b8d9ae4",
+    "evidenceManifestSha256": "ec81294b14d578737ed7e5dd5903d107e20871cdd6e07672cb586ac3b41dd31d",
+    "evidenceCorpusRoot": "76f5d56f8f4d94a3579358af655d72c709c7872116be02529bb46b4f76b76ab2",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "c01d5b2eff97624872e23a5307b7cba597bb41da75be859c316c45152d312319",
+    "factsSha256": "7a0bf44ea730d6669676962de8980ed068f98cf866f46fcb9e78f482befc5e19",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -42,7 +42,7 @@
     "provenanceNotPublishedArtifactCount": 481,
     "scanVerifiedArtifactCount": 687,
     "evidenceBlobCount": 3385,
-    "evidenceRetainedBytes": 134686514,
+    "evidenceRetainedBytes": 134686518,
     "inspectedLicenceFileCount": 672,
     "inspectedNoticeFileCount": 347,
     "productionInspectedLicenceFileCount": 47,
@@ -12688,9 +12688,9 @@
     },
     {
       "dependencyPath": "node_modules/@types/node",
-      "artifactId": "5fe342daad829c6ae1a5fbb898ebc4ea2421c211f5f04b47259c47fd7dc872bd",
+      "artifactId": "d9196aaf231a977304c3401ec0099e60fd87afd15cb509eaeafc4fb8a7948bf7",
       "name": "@types/node",
-      "version": "26.6.10",
+      "version": "26.6.11",
       "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -12723,12 +12723,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "e76dce4a5b1769018843dd0fdbde12fc032b97bd631b2bb0c94d05be0ce1554e",
-        "provenanceSha256": "86a39b2cabb2d165c074af77ec50c63101c097d5ecd49bdc39309c715168770e",
-        "registrySignatureSha256": "15e63fa5d1e69f7efb45a3aeedd6d4a4fcc9c2a14024fbbb6f00c61ada56e2cf",
-        "scanSha256": "fc3eef7cecb3c5c0a3e59b8df8251d2195e17a49ade4282b45d70ed6ebabffc1"
+        "archiveSha256": "cdaf845247f1bb87fe7618a0238e3d2f7634e52b601eda68fabedba2ea3b71d5",
+        "provenanceSha256": "4ada9de6e2fa19e7a9ee0d3ab8f4083fb19834cc822b359dc09ad98ce0cb7089",
+        "registrySignatureSha256": "7273568122be95a267989bec052356ec4e4c337f129de7932f808a3e856cd972",
+        "scanSha256": "59b395f52d1db600b84a1f6eb652a095cd8022cc7b15baaf0454555951973746"
       },
-      "registryUrl": "https://registry.npmjs.org/@types/node/-/node-26.6.10.tgz",
+      "registryUrl": "https://registry.npmjs.org/@types/node/-/node-26.6.11.tgz",
       "sourceReference": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
       "sourceUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped",
       "packageAuthor": null,
@@ -44841,7 +44841,7 @@
         },
         {
           "path": "package-lock.json",
-          "sha256": "43828da339bb8fd36dab68c91c476839bb75a492317a701fb0c929e41ef4d31d"
+          "sha256": "2378e0e16ece86307ea8c0ce36d8496501b4ea5e1e6bbc20b003ea67d1c31bb9"
         }
       ],
       "treeEvidence": null,

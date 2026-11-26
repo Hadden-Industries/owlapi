@@ -1808,12 +1808,13 @@ When confidentiality, safety or law requires removing otherwise immutable public
 
 ### 2.34 Decision: separate audit visibility from a strict, reviewable release gate
 
-Every release candidate **MUST** retain both:
-
-1. a full dependency-graph `npm audit --json` result covering production and development dependencies; and
-2. a blocking production-tree result equivalent to `npm audit --omit=dev --audit-level=high` against the exact accepted lockfile.
-
-The first preserves complete visibility; the second gives the release gate a deterministic minimum threshold.
+Every release candidate **MUST** run both a full dependency-graph audit covering production and development dependencies and a blocking production-tree audit equivalent to `npm audit --omit=dev --audit-level=high` against the exact accepted lockfile.
+At release admission the protected OwlAPI workflow refreshes applicable advisory decisions against the exact retained producer and recipient graphs.
+For routine passes retain the release subject, original lock or recoverable graph identity, audit scope, policy revision, observation time, original job and disclosure-cleared project decision.
+Keep routine progress in native Actions logs or step summaries. Upload exact bytes only for an identified later verifier. Release-wide proof may index a shared original once.
+Full npm responses are transient during routine evaluation. Retain an original privately only for a documented exception, active investigation or explicit retention obligation, under its authorised access and disposal rules.
+A future auditor can verify the historical release decision and perform a new audit. Re-scoring the original provider response requires an applicable retained original.
+This prospective retention amendment was accepted on 26 November 2026 and governs references to audit retention elsewhere in this plan.
 An unavailable audit service is retried and diagnosed but is not converted into a passing or `NOT_RUN` result for a public release.
 Audit output is evidence, not an instruction to mutate the tree.
 `npm audit fix`, `npm audit fix --force` and equivalent automatic remediation **MUST NOT** run against release inputs; corrections use the exact-pin, one-foundational-runtime-per-pull-request process in §2.32.
@@ -7199,7 +7200,7 @@ Consumer verification **MUST** cover at least:
 - exact agreement among `engines`, the RC's date-pinned §2.20 browser query/ resolved-data record, the README's §2.22 environment statuses, CI matrix and recorded required/extended results;
 - regeneration of the version-pinned reference import map from the retained package with the exact §2.46 generator/provider/environment configuration, including closure/public-root agreement, complete integrity metadata, governed provider conversions/shims, the required exact-candidate provider proof, separately classified live-URL observation and mechanically equivalent local-mirror execution;
 - the §2.44 instrumented complete-closure import-purity and production tree- shaking proofs, plus no network request during package import, manager construction or representative local OWL-native, RDF/XML, Turtle and JSON-LD parsing under §2.42;
-- production-only dependency installation plus the blocking §2.34 audit, the retained full dependency-graph JSON audit and validated active exceptions;
+- production-only dependency installation plus the blocking §2.34 audit, the cleared full-graph audit decision and exact input binding and validated active exceptions;
 - the exact §2.47/§2.54 separate-workspace, reproducible, validated, unflattened/full-PURL CycloneDX 1.6 library SBOM whose dependency graph agrees with the installed production subject inventory, lockfile, packed inventory and licence/notices, plus Draft 2020-12 validation through exact `ajv@8.20.0`/`ajv-formats@3.0.1` of every release/governance record;
 - installed size plus initial and lazy browser bundle sizes against the approved budgets; and
 - absence of any undeclared file-system, Java, WebVOWL or network dependency;
@@ -10978,7 +10979,7 @@ The final architectural rules are:
 
 > **All six semantic runtime foundations are exact-pinned in the initial manifest and source lockfile: `@rdfjs/data-model@2.1.2`, `@rdfjs/dataset@2.0.3`, `@xmldom/xmldom@0.9.12`, `jsonld@9.0.0`, `n3@2.3.0` and `rdfxml-streaming-parser@3.3.0`. The three advances from the earlier staging pins were qualified together in WebVOWL on 24 August 2026 through one explicitly approved combined gate that retained dependency-specific evidence; Phase 19 carries that proven baseline forward. Dependabot supplies weekly and security proposals, not auto-merges: every later foundational runtime update is isolated and fully gated, compatible development tooling may be grouped, major tooling and full-SHA Action updates remain separately reviewable, and no parallel Renovate authority is introduced.**
 
-> **Every candidate retains a full dependency-graph audit and passes the high/critical production threshold; pull requests receive the exact §2.56 full-SHA dependency-review Action with runtime scope, high severity, read-only/no-comment policy and no Action-level licence gate. Reachable critical findings cannot be waived, false-positive/non-applicability exceptions are machine-readable and expire within 30 days, release-path development findings block, and no automatic audit fix mutates reviewed inputs.**
+> **Every candidate records its full-graph advisory decision under §2.34 and passes the high/critical production threshold; pull requests receive the exact §2.56 full-SHA dependency-review Action with runtime scope, high severity, read-only/no-comment policy and no Action-level licence gate. Reachable critical findings cannot be waived, false-positive/non-applicability exceptions are machine-readable and expire within 30 days, release-path development findings block, and no automatic audit fix mutates reviewed inputs.**
 
 > **The public repository enables CodeQL JavaScript default setup/default queries, requires complete high/critical code-scanning results on `main`, and separately retains dependency review. Secret scanning and push protection prevent supported credentials entering public history; a real exposure is rotated/revoked as an incident. Source-analysis exceptions are distinct, machine-readable and expire within 30 days, while reachable critical findings have no ordinary waiver.**
 

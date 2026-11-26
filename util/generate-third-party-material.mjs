@@ -14,6 +14,10 @@ import semver from "semver";
 import { format as formatWithPrettier } from "prettier";
 import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
 import {
+  externalRuntimeLicenceEvidence,
+  isSeparatelyInstalledRuntimeLicence,
+} from "./third-party-evidence/runtime-material-policy.mjs";
+import {
   reviewFactsDigest,
   REVIEW_DIGEST_ALGORITHM,
 } from "../scripts/review-facts.mjs";
@@ -24,26 +28,6 @@ export const GENERATOR_VERSION = "3.4.0";
 // code-unit ordering avoids host locale and ICU-version differences.
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
-
-// npm's @rubensworks/saxes tarball declares ISC in package metadata but omits
-// its repository LICENSE file. Pinning the tagged upstream bytes closes that
-// evidence gap without making ordinary generator checks network-dependent.
-const EXTERNAL_LICENSE_EVIDENCE = new Map([
-  [
-    "node_modules/@rubensworks/saxes",
-    [
-      {
-        url: "https://raw.githubusercontent.com/rubensworks/saxes/0f36739ccb43a87c50408e1e713382cda09e0b05/LICENSE",
-        filename: "LICENSE",
-        sha256:
-          "0fac2374380621b22e6b50451057721a9c52935b02d16d106a9f04897f061d0e",
-        observedOn: "2026-08-26",
-        reason:
-          "The installed npm tarball declares ISC but contains no top-level licence file; this is the exact licence at the immutable upstream commit behind v6.0.1.",
-      },
-    ],
-  ],
-]);
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const canonicalOutputPath = resolve(
@@ -144,16 +128,6 @@ const validateSpdxExpression = (expression, subject) => {
   }
   return expression;
 };
-
-// This allowlist governs one narrow distribution relationship: npm installs
-// these current runtime packages separately from owlapi. It is deliberately not
-// represented as a universal legal compatibility ruling for AGPL distributions.
-const SEPARATELY_INSTALLED_RUNTIME_LICENSES = new Set([
-  "Apache-2.0",
-  "BSD-3-Clause",
-  "ISC",
-  "MIT",
-]);
 
 const readEvidenceEnvelope = (reference, expectedKind, artifactId) => {
   const envelope = readJson(
@@ -306,7 +280,7 @@ const createComponentFacts = ({ occurrence, context, existingComponent }) => {
     ? existingComponent.distributionDisposition
     : relationship === "DEVELOPMENT_ONLY"
       ? "DEVELOPMENT_ONLY_NOT_DISTRIBUTED"
-      : SEPARATELY_INSTALLED_RUNTIME_LICENSES.has(concludedLicenseExpression)
+      : isSeparatelyInstalledRuntimeLicence(concludedLicenseExpression)
         ? "ALLOWED_SEPARATELY_INSTALLED_EXTERNAL_RUNTIME"
         : "REQUIRES_HUMAN_REVIEW";
   const licenseConclusionRationale = [
@@ -328,8 +302,9 @@ const createComponentFacts = ({ occurrence, context, existingComponent }) => {
       blobSha256: blob.sha256,
       blobPath: blob.path,
     }));
-  const externalLicenseEvidence =
-    EXTERNAL_LICENSE_EVIDENCE.get(occurrence.dependencyPath) || [];
+  const externalLicenseEvidence = bundledMember
+    ? []
+    : externalRuntimeLicenceEvidence(ownerArtifact);
   const hasLicenceFile = inspectedFiles.some(({ kind }) =>
     new Set(["LICENCE", "THIRD_PARTY_LICENCE"]).has(kind),
   );

@@ -24,6 +24,48 @@ const graph = {
   },
 };
 
+test("the locked CycloneDX dependency relationships must match the physical npm occurrences", () => {
+  const component = (name, path) => ({
+    type: "library",
+    name,
+    version: "1.0.0",
+    "bom-ref": name,
+    properties: [{ name: "cdx:npm:package:path", value: path }],
+  });
+  const sbom = {
+    metadata: { component: component("app", "") },
+    components: [
+      component("parser", "node_modules/parser"),
+      component("types", "node_modules/types"),
+    ],
+    dependencies: [
+      { ref: "app", dependsOn: ["parser"] },
+      { ref: "parser", dependsOn: ["types"] },
+      { ref: "types", dependsOn: [] },
+    ],
+  };
+  const identities = ["app@1.0.0", "parser@1.0.0", "types@1.0.0"];
+  const graph = {
+    nodes: [
+      { location: ".", name: "app", version: "1.0.0" },
+      { location: "node_modules/parser", name: "parser", version: "1.0.0" },
+      { location: "node_modules/types", name: "types", version: "1.0.0" },
+    ],
+    edges: [
+      { from: ".", to: "node_modules/parser" },
+      { from: "node_modules/parser", to: "node_modules/types" },
+    ],
+  };
+  expect(() =>
+    assertNpmSbomInventory(sbom, identities, { graph }),
+  ).not.toThrow();
+  sbom.dependencies[0].dependsOn.push("types");
+  sbom.dependencies[1].dependsOn = [];
+  expect(() => assertNpmSbomInventory(sbom, identities, { graph })).toThrow(
+    /relationship/,
+  );
+});
+
 test("reconciles every direct and transitive package identity from npm ls keys", () => {
   expect(graph.dependencies["rdf-parser"]).not.toHaveProperty("name");
   expect(flattenNpmGraph(graph)).toEqual([

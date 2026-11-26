@@ -91,7 +91,8 @@ export const CHECK_JOBS = Object.freeze({
  * this policy cannot authorize an omitted integration.
  */
 export const QUALIFICATION_POLICY = Object.freeze({
-  version: 11,
+  version: 12,
+  producerPackageProofVersion: 2,
   documentationContract: "owlapi-release-documentation-v1",
   collectorImageCompatibility: "SUPPORTED_OS_ARCH_RUNTIME_RETAINED_BUILD",
   artifactTransportSha256: evidenceFingerprint({
@@ -208,7 +209,7 @@ export const assertQualificationRecord = (record) => {
       "host",
       "jobs",
       "candidate",
-      ...(Object.hasOwn(record, "packageProof") ? ["packageProof"] : []),
+      "packageProof",
       "policySha256",
       "checks",
       "source",
@@ -248,14 +249,13 @@ export const assertQualificationRecord = (record) => {
       digest(record.candidate.digest),
     "Qualification record has unsupported state, inputs or execution identity.",
   );
-  if (Object.hasOwn(record, "packageProof"))
-    fact(
-      closed(record.packageProof, ["id", "digest"]) &&
-        id(record.packageProof.id) &&
-        record.packageProof.id !== record.candidate.id &&
-        digest(record.packageProof.digest),
-      "Invalid original package proof artifact identity.",
-    );
+  fact(
+    closed(record.packageProof, ["id", "digest"]) &&
+      id(record.packageProof.id) &&
+      record.packageProof.id !== record.candidate.id &&
+      digest(record.packageProof.digest),
+    "Invalid original package proof artifact identity.",
+  );
   assertJavaReferenceState(record.javaReference, {
     role: record.role,
     mode: record.mode,

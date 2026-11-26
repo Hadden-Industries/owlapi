@@ -88,7 +88,12 @@ const successfulNeeds = (
         result: "success",
         outputs:
           job === "candidate"
-            ? { artifact_id: "702", artifact_digest: "f".repeat(64) }
+            ? {
+                artifact_id: "702",
+                artifact_digest: "f".repeat(64),
+                proof_id: "703",
+                proof_digest: "e".repeat(64),
+              }
             : job === "source_canonical"
               ? {
                   coverage: JSON.stringify(java),

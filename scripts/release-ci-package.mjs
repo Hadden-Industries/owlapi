@@ -1,18 +1,18 @@
 /** Read the closed producer proof for the authenticated original FULL candidate. */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { isStrictDescendantPath } from "./release-file-utils.mjs";
-import { replayConsumerResolution } from "./release-consumer-resolution.mjs";
+import { verifyResolutionEvidence } from "./release-consumer-evidence.mjs";
 import { crc32 } from "node:zlib";
 import {
   artifactProducingAttempt,
   matchesLogicalArtifact,
 } from "../tooling/artifact-transport/identity.mjs";
 import { readJobInventory } from "./ci-verification.mjs";
-import { CI_JOB_NAMES } from "./ci-qualification.mjs";
+import {
+  CI_JOB_NAMES,
+  QUALIFICATION_POLICY,
+  QUALIFICATION_POLICY_SHA256,
+} from "./ci-qualification.mjs";
 import { sameJobExecution } from "./github-job-execution.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
@@ -23,6 +23,18 @@ import {
 } from "./package-identity.mjs";
 import { CANONICAL_NODE, CI_RUNTIME } from "./runtime-policy.mjs";
 import { UBUNTU } from "./ubuntu-runner.mjs";
+import { jsonEquals } from "./canonical-json.mjs";
+import { INSTALLED_TEST_SCRIPTS } from "./installed-consumer-fixtures.mjs";
+import {
+  producerResolutionFilename,
+  producerResolutionUploadStep,
+  readProducerResolutions,
+} from "./release-resolution-proof.mjs";
+import {
+  findNpmCliCandidates,
+  observeNpmVersion,
+  selectNpmCliForVersion,
+} from "./assert-workflow-runtime.mjs";
 import {
   assertHealthyNpmGraph,
   assertNpmSbomInventory,
@@ -48,6 +60,17 @@ const requiredProof = [
   "normal-consumer-npm-audit-production.json",
   "inspection-consumer-production-graph.json",
 ];
+const currentProof = [manifest, producerResolutionFilename];
+const producerPlatform = Object.freeze({
+  os: "linux",
+  cpu: "x64",
+  node: CANONICAL_NODE,
+  libc: "glibc",
+});
+const legacyProofUpload =
+  "Retain the producer's native audit and consumer inventories";
+const uploadStep = (version) =>
+  version === 2 ? producerResolutionUploadStep : legacyProofUpload;
 
 const positiveId = (value) => Number.isSafeInteger(value) && value > 0;
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -57,7 +80,7 @@ export async function readQualifiedZip(
   download,
   artifact,
   maximumBytes,
-  names,
+  names = null,
 ) {
   assert.ok(
     positiveId(artifact.id) &&
@@ -80,14 +103,15 @@ export async function readQualifiedZip(
   );
   const entries = readZipArchiveFilesWith(bytes, {
     crc32,
-    expectedNames: new Set(names),
+    ...(names ? { expectedNames: new Set(names) } : {}),
     maximumUncompressedBytes: maximumBytes,
   });
-  assert.deepEqual(
-    entries.map(({ path }) => path).sort(),
-    [...names].sort(),
-    "Original ZIP inventory differs",
-  );
+  if (names)
+    assert.deepEqual(
+      entries.map(({ path }) => path).sort(),
+      [...names].sort(),
+      "Original ZIP inventory differs",
+    );
   return new Map(entries.map(({ path, content }) => [path, content]));
 }
 
@@ -108,20 +132,26 @@ export async function readConsumerResolutionProof({
     "package-lock.json",
     "resolution.json",
   ]);
-  const directory = mkdtempSync(join(tmpdir(), "owlapi-resolution-replay-"));
-  assert.ok(isStrictDescendantPath(tmpdir(), directory));
-  try {
-    for (const name of ["package.json", "package-lock.json"])
-      writeFileSync(join(directory, name), members.get(name), { flag: "wx" });
-    const observed = jsonMember(members, "resolution.json");
-    await replayConsumerResolution(directory, options, observed);
-    return observed;
-  } finally {
-    rmSync(directory, { recursive: true, force: true });
-  }
+  const decoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
+  return verifyResolutionEvidence(
+    {
+      schemaVersion: 1,
+      manifest: decoder.decode(members.get("package.json")),
+      lock: decoder.decode(members.get("package-lock.json")),
+      resolution: jsonMember(members, "resolution.json"),
+    },
+    options,
+  );
 }
 
-export const requireSameUpload = (artifact, run, job, name, now) => {
+export const requireSameUpload = (
+  artifact,
+  run,
+  job,
+  name,
+  now,
+  { archivedBytes } = {},
+) => {
   const steps = (job.steps ?? []).filter((step) => step.name === name);
   const created = Date.parse(artifact.created_at);
   assert.equal(
@@ -135,8 +165,10 @@ export const requireSameUpload = (artifact, run, job, name, now) => {
       step.conclusion === "success" &&
       created >= Date.parse(step.started_at) &&
       created <= Date.parse(step.completed_at) &&
-      artifact.expired === false &&
-      Date.parse(artifact.expires_at) > now &&
+      ((archivedBytes &&
+        artifact.digest === `sha256:${sha256(archivedBytes)}`) ||
+        (artifact.expired === false &&
+          Date.parse(artifact.expires_at) > now)) &&
       artifact.workflow_run?.id === run.id &&
       artifact.workflow_run.repository_id === run.repository.id &&
       artifact.workflow_run.head_repository_id === run.head_repository.id &&
@@ -181,6 +213,113 @@ function verifyGraphs(evidence, sbom, integrity, version = PACKAGE_VERSION) {
   return identities;
 }
 
+const describeMembers = (files) =>
+  Object.fromEntries(
+    [...files].map(([path, bytes]) => [
+      path,
+      { bytes: bytes.length, sha256: sha256(bytes) },
+    ]),
+  );
+
+/** Read the externally selected proof contract from the authenticated ZIP. The
+ * caller independently owns candidate bytes, original job and artifact lineage. */
+export async function readProducerPackageProof({
+  download,
+  artifact,
+  tarball,
+  sbom,
+  candidate,
+  expectedProofVersion,
+  platform = producerPlatform,
+  npmCli,
+  npm = CI_RUNTIME.npm,
+  materialOptions,
+  prepareMaterial,
+}) {
+  assert.ok(
+    [1, 2].includes(expectedProofVersion),
+    "Producer proof requires independently selected version",
+  );
+  const files = await readQualifiedZip(
+    download,
+    artifact,
+    proofLimit,
+    expectedProofVersion === 2 ? currentProof : requiredProof,
+  );
+  const record = jsonMember(files, manifest);
+  assert.equal(
+    record.schemaVersion,
+    expectedProofVersion,
+    "Unknown producer manifest",
+  );
+  assert.ok(jsonEquals(record.package, candidate.package));
+  assert.equal(record.nodeVersion, `v${platform.node}`);
+  assert.equal(record.npmVersion, npm);
+  assert.equal(record.checksumFile, "SHA256SUMS");
+  assert.equal(sha256(tarball), candidate.tarball.sha256);
+  assert.equal(tarball.length, candidate.tarball.bytes);
+  if (Buffer.isBuffer(sbom)) {
+    assert.equal(
+      sha256(sbom),
+      candidate.sbom.sha256,
+      "Independent candidate SBOM bytes differ",
+    );
+    sbom = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(sbom));
+  }
+  for (const key of ["tarball", "sbom"]) {
+    for (const [field, value] of Object.entries(candidate[key])) {
+      assert.equal(
+        record[key]?.[field],
+        value,
+        "Producer manifest describes different candidate bytes",
+      );
+    }
+  }
+  const evidence = describeMembers(files);
+  if (expectedProofVersion === 1) {
+    assert.equal(record.lockedAndLocklessGraphsEquivalent, true);
+    const integrity =
+      "sha512-" + createHash("sha512").update(tarball).digest("base64");
+    const identities = verifyGraphs(
+      files,
+      sbom,
+      integrity,
+      candidate.package.version,
+    );
+    return {
+      manifest: record,
+      evidence,
+      legacy: { identities, consumerLockBytes: files.get(consumerLock) },
+    };
+  }
+  assert.equal(
+    record.lockedAndLocklessGraphsEquivalent,
+    undefined,
+    "Legacy equality cannot stand in for replayed recipient proof",
+  );
+  assert.ok(
+    jsonEquals(record.installedConsumerScripts, INSTALLED_TEST_SCRIPTS),
+    "Installed producer assertion inventory differs",
+  );
+  assert.ok(
+    jsonEquals(record.resolutionProof, {
+      fileName: producerResolutionFilename,
+      sha256: evidence[producerResolutionFilename].sha256,
+    }),
+    "Producer resolution packet differs from its bound digest",
+  );
+  npmCli ??= selectNpmCliForVersion({
+    expectedNpm: npm,
+    candidates: findNpmCliCandidates(),
+    observeVersion: observeNpmVersion,
+  }).npmCli;
+  const resolution = await readProducerResolutions(
+    jsonMember(files, producerResolutionFilename),
+    { tarball, sbom, npmCli, platform, npm, materialOptions, prepareMaterial },
+  );
+  return { manifest: record, evidence, ...resolution };
+}
+
 /** Reuse the original candidate producer's locked graph for hosted consumers. */
 export async function readRetainedCorpusConsumerLock({
   read,
@@ -194,6 +333,10 @@ export async function readRetainedCorpusConsumerLock({
   sbom,
   integrity,
   version,
+  expectedProofVersion = QUALIFICATION_POLICY.producerPackageProofVersion,
+  tarball,
+  materialOptions,
+  npmCli,
 }) {
   const proof = await read(`/actions/artifacts/${artifactId}`, {
     retryArtifact404: true,
@@ -212,13 +355,22 @@ export async function readRetainedCorpusConsumerLock({
       ),
     "Corpus consumer lock is not the original package proof",
   );
-  requireSameUpload(
-    proof,
-    run,
-    job,
-    "Retain the producer's native audit and consumer inventories",
-    now,
-  );
+  requireSameUpload(proof, run, job, uploadStep(expectedProofVersion), now);
+  if (expectedProofVersion === 2) {
+    const packageProof = await readProducerPackageProof({
+      download,
+      artifact: proof,
+      tarball,
+      sbom,
+      candidate,
+      expectedProofVersion,
+      materialOptions,
+      npmCli,
+    });
+    const bytes = Buffer.from(packageProof.subjects.normal.evidence.lock);
+    return { lock: JSON.parse(bytes), rawSha256: sha256(bytes) };
+  }
+  assert.equal(expectedProofVersion, 1);
   const files = await readQualifiedZip(
     download,
     proof,
@@ -226,12 +378,16 @@ export async function readRetainedCorpusConsumerLock({
     requiredProof,
   );
   const producerManifest = jsonMember(files, manifest);
+  assert.equal(producerManifest.schemaVersion, 1);
   assert.deepEqual(producerManifest.package, { name: PACKAGE_NAME, version });
   assert.equal(producerManifest.tarball?.fileName, candidate.fileName);
   assert.equal(producerManifest.tarball?.sha256, candidate.sha256);
   assert.equal(producerManifest.tarball?.bytes, candidate.bytes);
   verifyGraphs(files, sbom, integrity, version);
-  return jsonMember(files, consumerLock);
+  return {
+    lock: jsonMember(files, consumerLock),
+    rawSha256: sha256(files.get(consumerLock)),
+  };
 }
 
 /** Authenticate the split candidate and proof from the same native producer job.
@@ -244,8 +400,19 @@ export async function verifyReleaseCiPackage({
   download,
   audit,
   now = Date.now(),
+  expectedProofVersion = QUALIFICATION_POLICY.producerPackageProofVersion,
+  npmCli,
+  platform,
+  materialOptions,
+  prepareMaterial,
 }) {
   const { run, candidate, receipt, observed } = source;
+  if (expectedProofVersion === QUALIFICATION_POLICY.producerPackageProofVersion)
+    assert.equal(
+      receipt.policySha256,
+      QUALIFICATION_POLICY_SHA256,
+      "CI receipt does not select the current producer proof policy",
+    );
   const versionStem = PACKAGE_FILE_STEM + "-" + PACKAGE_VERSION;
   const attempt = artifactProducingAttempt(
     candidate.name,
@@ -296,13 +463,7 @@ export async function verifyReleaseCiPackage({
     "Upload the exact same-run candidate",
     now,
   );
-  requireSameUpload(
-    proof,
-    run,
-    job,
-    "Retain the producer's native audit and consumer inventories",
-    now,
-  );
+  requireSameUpload(proof, run, job, uploadStep(expectedProofVersion), now);
 
   const tarName = versionStem + ".tgz";
   const sbomName = versionStem + ".cdx.json";
@@ -311,12 +472,6 @@ export async function verifyReleaseCiPackage({
     candidate,
     candidateLimit,
     ["SHA256SUMS", sbomName, tarName],
-  );
-  const evidence = await readQualifiedZip(
-    download,
-    proof,
-    proofLimit,
-    requiredProof,
   );
   const tarball = candidateFiles.get(tarName);
   const integrity =
@@ -327,33 +482,19 @@ export async function verifyReleaseCiPackage({
     sbomText: candidateFiles.get(sbomName),
     tarball,
   });
-  const record = jsonMember(evidence, manifest);
-  assert.equal(record.schemaVersion, 1, "Unknown producer manifest");
-  assert.deepEqual(record.package, verified.package);
-  assert.equal(record.nodeVersion, `v${CANONICAL_NODE}`);
-  assert.equal(record.npmVersion, CI_RUNTIME.npm);
-  assert.equal(record.checksumFile, "SHA256SUMS");
-  assert.equal(record.lockedAndLocklessGraphsEquivalent, true);
-  for (const [key, identity] of Object.entries({
-    tarball: verified.tarball,
-    sbom: verified.sbom,
-  })) {
-    for (const [field, value] of Object.entries(identity))
-      assert.equal(
-        record[key]?.[field],
-        value,
-        "Producer manifest describes different candidate bytes",
-      );
-  }
-  const identities = verifyGraphs(
-    evidence,
-    jsonMember(candidateFiles, sbomName),
-    integrity,
-  );
-  const advisoryObservations = await audit?.(
-    evidence.get(consumerLock),
-    identities,
-  );
+  const packageProof = await readProducerPackageProof({
+    download,
+    artifact: proof,
+    tarball,
+    sbom: candidateFiles.get(sbomName),
+    candidate: verified,
+    expectedProofVersion,
+    npmCli,
+    platform,
+    materialOptions,
+    prepareMaterial,
+  });
+  const { legacy, subjects, differences, evidence } = packageProof;
   return {
     attempt,
     producerJob: job.id,
@@ -363,12 +504,24 @@ export async function verifyReleaseCiPackage({
     packedConfig: verified.packageManifest.publishConfig,
     assets: verified.assets,
     integrity,
-    advisoryObservations,
-    evidence: Object.fromEntries(
-      [...evidence].map(([path, content]) => [
-        path,
-        { bytes: content.length, sha256: sha256(content) },
-      ]),
-    ),
+    packageProofVersion: expectedProofVersion,
+    ...(legacy
+      ? {
+          advisoryObservations: await audit?.(
+            legacy.consumerLockBytes,
+            legacy.identities,
+          ),
+        }
+      : {
+          subjects,
+          differences,
+          advisorySubjects: {
+            root: subjects.producer.decision.subject,
+            recipient: subjects.normal.decision.subject,
+            inspection: subjects.inspection.decision.subject,
+            scoped: subjects.scoped.decision.subject,
+          },
+        }),
+    evidence,
   };
 }

@@ -8,16 +8,10 @@ export const RELEASE_AUDIT_ARGS = Object.freeze([
 export const isReleaseAuditClear = (counts) =>
   blockingSeverities.every((severity) => counts?.[severity] === 0);
 
-export const assertReleaseAudit = ({ status, report, stderr }, subject) => {
+/** Expose only the project gate outcome in logs. */
+export const assertReleaseAudit = ({ status, report }, subject) => {
   const counts = report?.metadata?.vulnerabilities;
-  if (status !== 0 || !isReleaseAuditClear(counts)) {
-    const summary = blockingSeverities
-      .map((severity) => `${severity}=${counts?.[severity] ?? "missing"}`)
-      .join(" ");
-    const detail = stderr?.trim();
-    throw new Error(
-      `Release audit failed for ${subject} (npm exit ${status}, ${summary}).${detail ? `\n${detail}` : ""}`,
-    );
-  }
+  if (status !== 0 || !isReleaseAuditClear(counts))
+    throw new Error("Release audit failed for " + subject);
   return counts;
 };

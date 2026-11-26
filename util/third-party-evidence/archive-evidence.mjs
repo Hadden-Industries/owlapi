@@ -4,7 +4,6 @@ import { createReadStream } from "node:fs";
 import { dirname, join, resolve, sep } from "node:path";
 import { basename } from "node:path/posix";
 import { isDeepStrictEqual, TextDecoder } from "node:util";
-import { list } from "tar";
 import { compareCodeUnits } from "./digests.mjs";
 
 export const ARCHIVE_LIMITS = Object.freeze({
@@ -246,7 +245,7 @@ export function validateBundledPackageClaims(inventory, occurrences = []) {
  * omissions cannot qualify a complete inventory or materialized evidence tree.
  * The filtered metadata identity pass below has a separate, deliberate purpose.
  */
-const readCompleteArchive = (tarballPath, options) =>
+const readCompleteArchive = (tarballPath, options, list) =>
   new Promise((resolve, reject) => {
     const parser = list(options);
     const input = createReadStream(tarballPath, { signal: options.signal });
@@ -265,11 +264,13 @@ const readCompleteArchive = (tarballPath, options) =>
     input.pipe(parser);
   });
 
+/** Inspect exact archive members with the release caller's admitted tar parser. */
 export const inspectPackageTarball = async (
   tarballPath,
   expected,
-  { limits = ARCHIVE_LIMITS, retainMembers } = {},
+  { limits = ARCHIVE_LIMITS, retainMembers, tarList } = {},
 ) => {
+  const list = tarList ?? (await import("tar")).list;
   const selected = new Set(retainMembers ?? []);
   if (
     retainMembers !== undefined &&
@@ -299,164 +300,179 @@ export const inspectPackageTarball = async (
   let archiveRoot;
 
   try {
-    await readCompleteArchive(tarballPath, {
-      strict: true,
-      noResume: true,
-      win32: false,
-      signal: abortController.signal,
-      onReadEntry: (entry) => {
-        try {
-          // node-tar normalizes backslashes on every platform before exposing
-          // ReadEntry.path. Validate the decoded header/PAX path as well so a
-          // Windows-shaped archive cannot become indistinguishable from a POSIX one.
-          const rawPath = validatePath(entry.header?.path, limits);
-          const path = validatePath(entry.path, limits);
-          if (rawPath !== path) {
-            throw new Error(`Unsafe archive path representation: ${rawPath}`);
-          }
-          // Current npm tooling writes `package/`, but npm still installs older
-          // registry artifacts after stripping whichever first component they
-          // contain. Treat one root plus exact root-level package identity as
-          // authoritative; the historical directory name is not an identity.
-          const entryRoot = path.split("/", 1)[0];
-          if (archiveRoot && entryRoot !== archiveRoot) {
-            throw new Error(
-              `Archive entries do not share a single package root: ${archiveRoot} and ${entryRoot}`,
-            );
-          }
-          archiveRoot ??= entryRoot;
-          const folded = path.toLocaleLowerCase("en-US");
-          const collision = foldedPaths.get(folded);
-          if (collision && collision !== path) {
-            throw new Error(
-              `Archive path case-folding collision: ${collision} and ${path}`,
-            );
-          }
-          exactPaths.add(path);
-          foldedPaths.set(folded, path);
+    await readCompleteArchive(
+      tarballPath,
+      {
+        strict: true,
+        noResume: true,
+        win32: false,
+        signal: abortController.signal,
+        onReadEntry: (entry) => {
+          try {
+            // node-tar normalizes backslashes on every platform before exposing
+            // ReadEntry.path. Validate the decoded header/PAX path as well so a
+            // Windows-shaped archive cannot become indistinguishable from a POSIX one.
+            const rawPath = validatePath(entry.header?.path, limits);
+            const path = validatePath(entry.path, limits);
+            if (rawPath !== path) {
+              throw new Error(`Unsafe archive path representation: ${rawPath}`);
+            }
+            // Current npm tooling writes `package/`, but npm still installs older
+            // registry artifacts after stripping whichever first component they
+            // contain. Treat one root plus exact root-level package identity as
+            // authoritative; the historical directory name is not an identity.
+            const entryRoot = path.split("/", 1)[0];
+            if (archiveRoot && entryRoot !== archiveRoot) {
+              throw new Error(
+                `Archive entries do not share a single package root: ${archiveRoot} and ${entryRoot}`,
+              );
+            }
+            archiveRoot ??= entryRoot;
+            const folded = path.toLocaleLowerCase("en-US");
+            const collision = foldedPaths.get(folded);
+            if (collision && collision !== path) {
+              throw new Error(
+                `Archive path case-folding collision: ${collision} and ${path}`,
+              );
+            }
+            exactPaths.add(path);
+            foldedPaths.set(folded, path);
 
-          // Count physical tar members, including exact-path duplicates, so a
-          // valid canonical inventory cannot hide an archive-bombing primitive.
-          physicalEntryCount += 1;
-          assertLimit(physicalEntryCount, limits.entries, "entry count limit");
-          const size = Number(entry.size || 0);
-          if (!Number.isSafeInteger(size) || size < 0) {
-            throw new Error(`Invalid archive entry size for ${path}`);
-          }
-          assertLimit(size, limits.entryBytes, "entry byte limit");
-          expandedBytes += size;
-          assertLimit(
-            expandedBytes,
-            limits.expandedBytes,
-            "expanded byte limit",
-          );
-
-          if (
-            !REGULAR_FILE_TYPES.has(entry.type) &&
-            !DIRECTORY_TYPES.has(entry.type)
-          ) {
-            throw new Error(
-              `Unsupported archive entry type ${entry.type} at ${path}`,
+            // Count physical tar members, including exact-path duplicates, so a
+            // valid canonical inventory cannot hide an archive-bombing primitive.
+            physicalEntryCount += 1;
+            assertLimit(
+              physicalEntryCount,
+              limits.entries,
+              "entry count limit",
             );
-          }
+            const size = Number(entry.size || 0);
+            if (!Number.isSafeInteger(size) || size < 0) {
+              throw new Error(`Invalid archive entry size for ${path}`);
+            }
+            assertLimit(size, limits.entryBytes, "entry byte limit");
+            expandedBytes += size;
+            assertLimit(
+              expandedBytes,
+              limits.expandedBytes,
+              "expanded byte limit",
+            );
 
-          const pending = new Promise((resolve, reject) => {
-            const hash = createHash("sha256");
-            const chunks = [];
-            let received = 0;
-            entry.on("data", (chunk) => {
-              received += chunk.length;
-              hash.update(chunk);
-              if (REGULAR_FILE_TYPES.has(entry.type)) {
-                chunks.push(Buffer.from(chunk));
-              }
-            });
-            entry.once("error", reject);
-            entry.once("end", () => {
-              try {
-                if (received !== size) {
-                  throw new Error(
-                    `Archive entry size mismatch for ${path}: expected ${size}, received ${received}`,
-                  );
-                }
-                const bytes = Buffer.concat(chunks, received);
-                const digest = hash.digest("hex");
-                physicalEntries.push({
-                  path,
-                  type: DIRECTORY_TYPES.has(entry.type) ? "DIRECTORY" : "FILE",
-                  size,
-                  sha256: digest,
-                });
+            if (
+              !REGULAR_FILE_TYPES.has(entry.type) &&
+              !DIRECTORY_TYPES.has(entry.type)
+            ) {
+              throw new Error(
+                `Unsupported archive entry type ${entry.type} at ${path}`,
+              );
+            }
+
+            const pending = new Promise((resolve, reject) => {
+              const hash = createHash("sha256");
+              const chunks = [];
+              let received = 0;
+              entry.on("data", (chunk) => {
+                received += chunk.length;
+                hash.update(chunk);
                 if (REGULAR_FILE_TYPES.has(entry.type)) {
-                  if (selected.has(path)) {
-                    retainedMemberBytes += bytes.length;
-                    assertLimit(
-                      retainedMemberBytes,
-                      limits.retainedEvidenceBytes,
-                      "retained member byte limit",
+                  chunks.push(Buffer.from(chunk));
+                }
+              });
+              entry.once("error", reject);
+              entry.once("end", () => {
+                try {
+                  if (received !== size) {
+                    throw new Error(
+                      `Archive entry size mismatch for ${path}: expected ${size}, received ${received}`,
                     );
-                    retainedMembers.set(path, {
-                      path,
-                      size,
-                      sha256: digest,
-                      bytes,
-                    });
                   }
-                  const kind = classifyEvidence(path, bytes);
-                  if (bundledManifestPath(path, archiveRoot)) {
-                    retainedEvidenceBytes += bytes.length;
-                    assertLimit(
-                      retainedEvidenceBytes,
-                      limits.retainedEvidenceBytes,
-                      "retained evidence byte limit",
-                    );
-                    let packageMetadata;
-                    try {
-                      packageMetadata = JSON.parse(UTF8_DECODER.decode(bytes));
-                    } catch (error) {
-                      throw new Error(`Invalid bundled package JSON: ${path}`, {
-                        cause: error,
+                  const bytes = Buffer.concat(chunks, received);
+                  const digest = hash.digest("hex");
+                  physicalEntries.push({
+                    path,
+                    type: DIRECTORY_TYPES.has(entry.type)
+                      ? "DIRECTORY"
+                      : "FILE",
+                    size,
+                    sha256: digest,
+                  });
+                  if (REGULAR_FILE_TYPES.has(entry.type)) {
+                    if (selected.has(path)) {
+                      retainedMemberBytes += bytes.length;
+                      assertLimit(
+                        retainedMemberBytes,
+                        limits.retainedEvidenceBytes,
+                        "retained member byte limit",
+                      );
+                      retainedMembers.set(path, {
+                        path,
+                        size,
+                        sha256: digest,
+                        bytes,
                       });
                     }
-                    bundledPackages.set(path, {
-                      path,
-                      size,
-                      sha256: digest,
-                      packageMetadata,
-                      bytes,
-                    });
+                    const kind = classifyEvidence(path, bytes);
+                    if (bundledManifestPath(path, archiveRoot)) {
+                      retainedEvidenceBytes += bytes.length;
+                      assertLimit(
+                        retainedEvidenceBytes,
+                        limits.retainedEvidenceBytes,
+                        "retained evidence byte limit",
+                      );
+                      let packageMetadata;
+                      try {
+                        packageMetadata = JSON.parse(
+                          UTF8_DECODER.decode(bytes),
+                        );
+                      } catch (error) {
+                        throw new Error(
+                          `Invalid bundled package JSON: ${path}`,
+                          {
+                            cause: error,
+                          },
+                        );
+                      }
+                      bundledPackages.set(path, {
+                        path,
+                        size,
+                        sha256: digest,
+                        packageMetadata,
+                        bytes,
+                      });
+                    }
+                    if (kind) {
+                      retainedEvidenceBytes += bytes.length;
+                      assertLimit(
+                        retainedEvidenceBytes,
+                        limits.retainedEvidenceBytes,
+                        "retained evidence byte limit",
+                      );
+                      evidenceFiles.push({
+                        path,
+                        kind,
+                        size,
+                        sha256: digest,
+                        bytes,
+                      });
+                    }
                   }
-                  if (kind) {
-                    retainedEvidenceBytes += bytes.length;
-                    assertLimit(
-                      retainedEvidenceBytes,
-                      limits.retainedEvidenceBytes,
-                      "retained evidence byte limit",
-                    );
-                    evidenceFiles.push({
-                      path,
-                      kind,
-                      size,
-                      sha256: digest,
-                      bytes,
-                    });
-                  }
+                  resolve();
+                } catch (error) {
+                  reject(error);
                 }
-                resolve();
-              } catch (error) {
-                reject(error);
-              }
+              });
+              entry.resume();
             });
+            pendingEntries.push(pending);
+          } catch (error) {
+            controlError = error;
             entry.resume();
-          });
-          pendingEntries.push(pending);
-        } catch (error) {
-          controlError = error;
-          entry.resume();
-          abortController.abort(error);
-        }
+            abortController.abort(error);
+          }
+        },
       },
-    });
+      list,
+    );
   } catch (error) {
     throw controlError || error;
   }
@@ -790,6 +806,7 @@ export const materializePackageForScan = async (
   destinationRoot,
   { limits = ARCHIVE_LIMITS, excludedFileSuffixes = [] } = {},
 ) => {
+  const { list } = await import("tar");
   const excludedSuffixes = normalizeExcludedFileSuffixes(excludedFileSuffixes);
   const { expectedByPath, expectedOccurrences } = analyzeArchiveInventory(
     inventory,
@@ -819,117 +836,123 @@ export const materializePackageForScan = async (
 
   try {
     try {
-      await readCompleteArchive(tarballPath, {
-        strict: true,
-        noResume: true,
-        win32: false,
-        signal: abortController.signal,
-        onReadEntry: (entry) => {
-          try {
-            const rawPath = validatePath(entry.header?.path, limits);
-            const path = validatePath(entry.path, limits);
-            if (rawPath !== path) {
-              throw new Error(
-                `Tarball no longer matches the validated inventory: ${path}`,
+      await readCompleteArchive(
+        tarballPath,
+        {
+          strict: true,
+          noResume: true,
+          win32: false,
+          signal: abortController.signal,
+          onReadEntry: (entry) => {
+            try {
+              const rawPath = validatePath(entry.header?.path, limits);
+              const path = validatePath(entry.path, limits);
+              if (rawPath !== path) {
+                throw new Error(
+                  `Tarball no longer matches the validated inventory: ${path}`,
+                );
+              }
+              const expected = expectedByPath.get(path);
+              const type = DIRECTORY_TYPES.has(entry.type)
+                ? "DIRECTORY"
+                : "FILE";
+              if (
+                !expected ||
+                expected.type !== type ||
+                (!REGULAR_FILE_TYPES.has(entry.type) &&
+                  !DIRECTORY_TYPES.has(entry.type))
+              ) {
+                throw new Error(
+                  `Tarball no longer matches the validated inventory: ${path}`,
+                );
+              }
+              const size = Number(entry.size || 0);
+              if (
+                !Number.isSafeInteger(size) ||
+                size < 0 ||
+                size !== expected.size
+              ) {
+                throw new Error(
+                  `Tarball no longer matches the validated inventory: ${path}`,
+                );
+              }
+              assertLimit(size, limits.entryBytes, "entry byte limit");
+              physicalEntryCount += 1;
+              assertLimit(
+                physicalEntryCount,
+                limits.entries,
+                "entry count limit",
               );
-            }
-            const expected = expectedByPath.get(path);
-            const type = DIRECTORY_TYPES.has(entry.type) ? "DIRECTORY" : "FILE";
-            if (
-              !expected ||
-              expected.type !== type ||
-              (!REGULAR_FILE_TYPES.has(entry.type) &&
-                !DIRECTORY_TYPES.has(entry.type))
-            ) {
-              throw new Error(
-                `Tarball no longer matches the validated inventory: ${path}`,
+              expandedBytes += size;
+              assertLimit(
+                expandedBytes,
+                limits.expandedBytes,
+                "expanded byte limit",
               );
-            }
-            const size = Number(entry.size || 0);
-            if (
-              !Number.isSafeInteger(size) ||
-              size < 0 ||
-              size !== expected.size
-            ) {
-              throw new Error(
-                `Tarball no longer matches the validated inventory: ${path}`,
-              );
-            }
-            assertLimit(size, limits.entryBytes, "entry byte limit");
-            physicalEntryCount += 1;
-            assertLimit(
-              physicalEntryCount,
-              limits.entries,
-              "entry count limit",
-            );
-            expandedBytes += size;
-            assertLimit(
-              expandedBytes,
-              limits.expandedBytes,
-              "expanded byte limit",
-            );
-            const occurrenceCount = (seenCounts.get(path) || 0) + 1;
-            if (occurrenceCount > expectedOccurrences.get(path)) {
-              throw new Error(
-                `Tarball no longer matches the validated inventory: ${path}`,
-              );
-            }
-            seenCounts.set(path, occurrenceCount);
+              const occurrenceCount = (seenCounts.get(path) || 0) + 1;
+              if (occurrenceCount > expectedOccurrences.get(path)) {
+                throw new Error(
+                  `Tarball no longer matches the validated inventory: ${path}`,
+                );
+              }
+              seenCounts.set(path, occurrenceCount);
 
-            // Exclusions apply only to authenticated regular files. Checking
-            // the entry type prevents a package directory such as
-            // `_optPlug.node` from hiding otherwise scannable descendants.
-            const excludedFromScan =
-              type === "FILE" &&
-              excludedSuffixes.some((suffix) =>
-                path.toLowerCase().endsWith(suffix),
-              );
+              // Exclusions apply only to authenticated regular files. Checking
+              // the entry type prevents a package directory such as
+              // `_optPlug.node` from hiding otherwise scannable descendants.
+              const excludedFromScan =
+                type === "FILE" &&
+                excludedSuffixes.some((suffix) =>
+                  path.toLowerCase().endsWith(suffix),
+                );
 
-            const pending = new Promise((resolveEntry, rejectEntry) => {
-              const hash = createHash("sha256");
-              const chunks = [];
-              let received = 0;
-              entry.on("data", (chunk) => {
-                received += chunk.length;
-                hash.update(chunk);
-                if (type === "FILE" && !excludedFromScan) {
-                  chunks.push(Buffer.from(chunk));
-                }
+              const pending = new Promise((resolveEntry, rejectEntry) => {
+                const hash = createHash("sha256");
+                const chunks = [];
+                let received = 0;
+                entry.on("data", (chunk) => {
+                  received += chunk.length;
+                  hash.update(chunk);
+                  if (type === "FILE" && !excludedFromScan) {
+                    chunks.push(Buffer.from(chunk));
+                  }
+                });
+                entry.once("error", rejectEntry);
+                entry.once("end", () => {
+                  void (async () => {
+                    const digest = hash.digest("hex");
+                    if (received !== size || digest !== expected.sha256) {
+                      throw new Error(
+                        `Tarball content no longer matches the validated inventory: ${path}`,
+                      );
+                    }
+                    const target = materializedPath(destinationRoot, path);
+                    if (occurrenceCount > 1) {
+                      return;
+                    }
+                    if (type === "DIRECTORY") {
+                      await mkdir(target, { recursive: true });
+                    } else if (!excludedFromScan) {
+                      await mkdir(dirname(target), { recursive: true });
+                      await writeFile(target, Buffer.concat(chunks, received), {
+                        flag: "wx",
+                        mode: 0o600,
+                      });
+                    }
+                  })().then(resolveEntry, rejectEntry);
+                });
+                entry.resume();
               });
-              entry.once("error", rejectEntry);
-              entry.once("end", () => {
-                void (async () => {
-                  const digest = hash.digest("hex");
-                  if (received !== size || digest !== expected.sha256) {
-                    throw new Error(
-                      `Tarball content no longer matches the validated inventory: ${path}`,
-                    );
-                  }
-                  const target = materializedPath(destinationRoot, path);
-                  if (occurrenceCount > 1) {
-                    return;
-                  }
-                  if (type === "DIRECTORY") {
-                    await mkdir(target, { recursive: true });
-                  } else if (!excludedFromScan) {
-                    await mkdir(dirname(target), { recursive: true });
-                    await writeFile(target, Buffer.concat(chunks, received), {
-                      flag: "wx",
-                      mode: 0o600,
-                    });
-                  }
-                })().then(resolveEntry, rejectEntry);
-              });
+              pendingEntries.push(pending);
+            } catch (error) {
+              controlError = error;
               entry.resume();
-            });
-            pendingEntries.push(pending);
-          } catch (error) {
-            controlError = error;
-            entry.resume();
-            abortController.abort(error);
-          }
+              abortController.abort(error);
+            }
+          },
         },
-      });
+        list,
+      );
     } catch (error) {
       throw controlError || error;
     }

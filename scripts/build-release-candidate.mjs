@@ -17,10 +17,18 @@ import {
   flattenNpmGraph,
 } from "./npm-production-graph.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
+import { assertHealthyNpmGraph } from "./npm-production-graph.mjs";
 import {
-  assertReleaseAudit,
-  RELEASE_AUDIT_ARGS,
-} from "./release-audit-policy.mjs";
+  captureResolutionEvidence,
+  prepareTarballConsumer,
+} from "./release-consumer-evidence.mjs";
+import { compareConsumerResolutions } from "./release-consumer-resolution.mjs";
+import { verifyCiConsumerEvidence } from "./ci-consumer-evidence-verification.mjs";
+import {
+  packProducerResolutions,
+  producerResolutionFilename,
+} from "./release-resolution-proof.mjs";
+import { publicRegistryEnvironment } from "./public-registry-consumer.mjs";
 import {
   DOCUMENTATION_PATHS,
   inspectReleaseDocumentation,
@@ -103,20 +111,6 @@ const runNpm = (arguments_, options = {}) =>
     label: options.label ?? `npm ${arguments_.join(" ")}`,
   });
 
-const observeNpm = (arguments_, options = {}) => {
-  const result = spawnSync(process.execPath, [npmCli, ...arguments_], {
-    cwd: options.cwd ?? REPOSITORY_ROOT,
-    encoding: "utf8",
-    env: options.env ?? process.env,
-    maxBuffer: 128 * 1024 * 1024,
-  });
-  return {
-    status: result.status,
-    stdout: result.stdout,
-    stderr: result.stderr,
-  };
-};
-
 const npmJson = (arguments_, options) =>
   JSON.parse(runNpm(arguments_, options));
 
@@ -131,34 +125,14 @@ const sortedPackEntries = (entries) =>
 const writeJson = (fileName, value) =>
   writeFileSync(join(outputDirectory, fileName), stableJson(value), "utf8");
 
-const writeConsumerManifest = (
-  directory,
-  tarballPath,
-  dependencyName = "owlapi",
-) =>
-  writeFileSync(
-    join(directory, "package.json"),
-    stableJson({
-      name: "owlapi-release-consumer",
-      version: "0.0.0",
-      private: true,
-      type: "module",
-      allowScripts: productionInstallScriptPolicy(),
-      dependencies: {
-        [dependencyName]: `file:${tarballPath.replaceAll("\\", "/")}`,
-      },
-    }),
-    "utf8",
-  );
-
-const runInstalledConsumerScripts = (directory) => {
-  writeInstalledConsumerFixtures(directory);
-  for (const scriptName of TEST_SCRIPTS) {
-    run(process.execPath, [scriptName], {
+const runInstalledConsumerScripts = (directory, dependencyName, env) => {
+  writeInstalledConsumerFixtures(directory, dependencyName);
+  for (const script of TEST_SCRIPTS)
+    run(process.execPath, [script], {
       cwd: directory,
-      label: `installed consumer ${scriptName}`,
+      env,
+      label: "installed consumer " + script,
     });
-  }
 };
 
 const temporaryRoot = mkdtempSync(join(tmpdir(), "owlapi-release-candidate-"));
@@ -226,10 +200,21 @@ try {
     );
   }
   const subjectCache = join(temporaryRoot, "sbom-npm-cache");
-  runNpm(["ci", "--omit=dev", "--cache", subjectCache], {
-    cwd: subjectDirectory,
-    label: "production-only SBOM subject install",
-  });
+  runNpm(
+    [
+      "ci",
+      "--omit=dev",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--cache",
+      subjectCache,
+    ],
+    {
+      cwd: subjectDirectory,
+      label: "production-only SBOM subject install",
+    },
+  );
   for (const file of ["package.json", "package-lock.json"]) {
     if (
       !readFileSync(join(subjectDirectory, file)).equals(
@@ -255,171 +240,93 @@ try {
     { label: "CycloneDX production-subject generation" },
   );
 
-  const lockedGraph = npmJson(["ls", "--omit=dev", "--all", "--json"], {
-    label: "locked production graph",
-  });
+  const tarball = readFileSync(tarballPath);
+  const decisionDirectory = join(temporaryRoot, "eligibility");
+  const observations = {};
+  async function measure(directory, mode, dependencyName) {
+    const evidence = await captureResolutionEvidence(directory, {
+      tarball,
+      npmCli,
+      dependencyName,
+    });
+    const eligibility = await verifyCiConsumerEvidence({
+      directory,
+      evidence,
+      role: "candidate-" + mode,
+      decisionDirectory,
+      npmCli,
+    });
+    observations[mode] = { evidence, eligibility };
+    return evidence.resolution;
+  }
+  const baseline = await measure(subjectDirectory, "producer", null);
   const subjectGraph = npmJson(["ls", "--omit=dev", "--all", "--json"], {
     cwd: subjectDirectory,
-    label: "SBOM subject production graph",
   });
-  const lockedIdentities = flattenNpmGraph(lockedGraph);
-  const subjectIdentities = flattenNpmGraph(subjectGraph);
+  assertHealthyNpmGraph(subjectGraph);
   assertNpmSbomInventory(
     JSON.parse(readFileSync(sbomPath, "utf8")),
-    subjectIdentities,
+    flattenNpmGraph(subjectGraph),
+    { graph: baseline.graph, tarball },
   );
-  if (stableJson(lockedIdentities) !== stableJson(subjectIdentities)) {
-    throw new Error(
-      "Production-only SBOM subject graph differs from the locked graph.",
-    );
-  }
-  writeJson("locked-production-graph.json", lockedGraph);
-  writeJson("sbom-subject-production-graph.json", subjectGraph);
-
-  const fullAuditObservation = observeNpm(["audit", "--json"]);
-  const fullAudit = JSON.parse(fullAuditObservation.stdout);
-  writeJson("npm-audit-full.json", {
-    commandExitStatus: fullAuditObservation.status,
-    report: fullAudit,
-  });
-  const productionAuditObservation = observeNpm([
-    ...RELEASE_AUDIT_ARGS,
-    "--omit=dev",
-    "--json",
-  ]);
-  const productionAudit = JSON.parse(productionAuditObservation.stdout);
-  assertReleaseAudit(
-    { ...productionAuditObservation, report: productionAudit },
-    "root production graph",
-  );
-  writeJson("npm-audit-production.json", {
-    commandExitStatus: productionAuditObservation.status,
-    report: productionAudit,
-  });
-
-  const consumerDirectory = join(temporaryRoot, "lockless-consumer");
-  mkdirSync(consumerDirectory);
-  writeConsumerManifest(consumerDirectory, tarballPath);
-  const consumerCache = join(temporaryRoot, "consumer-npm-cache");
-  runNpm(["install", "--ignore-scripts", "--cache", consumerCache], {
-    cwd: consumerDirectory,
-    label: "lockless inspection consumer install",
-  });
-  runInstalledConsumerScripts(consumerDirectory);
-  assertPackageIdentity(
-    JSON.parse(
-      readFileSync(
-        join(consumerDirectory, "node_modules", "owlapi", "package.json"),
-        "utf8",
-      ),
-    ),
-  );
-  const inspectionGraph = npmJson(["ls", "--omit=dev", "--all", "--json"], {
-    cwd: consumerDirectory,
-    label: "lockless inspection consumer production graph",
-  });
-
-  const normalConsumerDirectory = join(temporaryRoot, "normal-consumer");
-  mkdirSync(normalConsumerDirectory);
-  writeConsumerManifest(normalConsumerDirectory, tarballPath);
-  const normalConsumerCache = join(temporaryRoot, "normal-consumer-npm-cache");
-  runNpm(["install", "--cache", normalConsumerCache], {
-    cwd: normalConsumerDirectory,
-    label: "normal lockless consumer install",
-  });
-  runInstalledConsumerScripts(normalConsumerDirectory);
-  assertPackageIdentity(
-    JSON.parse(
-      readFileSync(
-        join(normalConsumerDirectory, "node_modules", "owlapi", "package.json"),
-        "utf8",
-      ),
-    ),
-  );
-  const scopedConsumerDirectory = join(temporaryRoot, "scoped-consumer");
-  mkdirSync(scopedConsumerDirectory);
-  writeConsumerManifest(scopedConsumerDirectory, tarballPath, PACKAGE_NAME);
-  runNpm(
-    [
-      "install",
-      "--ignore-scripts",
-      "--cache",
-      join(temporaryRoot, "scoped-npm-cache"),
-    ],
-    {
-      cwd: scopedConsumerDirectory,
-      label: "direct scoped retained-tarball install",
-    },
-  );
-  assertPackageIdentity(
-    JSON.parse(
-      readFileSync(
-        join(
-          scopedConsumerDirectory,
-          "node_modules",
-          PACKAGE_NAME,
-          "package.json",
-        ),
-        "utf8",
-      ),
-    ),
-  );
-  writeInstalledConsumerFixtures(scopedConsumerDirectory, PACKAGE_NAME);
-  for (const script of INSTALLED_TEST_SCRIPTS)
-    run(process.execPath, [script], {
-      cwd: scopedConsumerDirectory,
-      label: `direct scoped ${script}`,
+  for (const [mode, dependencyName, normal] of [
+    ["inspection", "owlapi", false],
+    ["normal", "owlapi", true],
+    ["scoped", PACKAGE_NAME, false],
+  ]) {
+    const directory = join(temporaryRoot, mode);
+    mkdirSync(directory);
+    const scripts = productionInstallScriptPolicy();
+    // A newly authorised positive lifecycle decision needs exact-archive
+    // authentication before execution. Today's only production decision is deny.
+    if (normal && Object.values(scripts).some(Boolean))
+      throw new Error(
+        "Normal install requires pre-authentication for approved lifecycle archives",
+      );
+    prepareTarballConsumer(directory, tarballPath, dependencyName, {
+      name: "owlapi-release-consumer",
+      version: "0.0.0",
+      private: true,
+      type: "module",
+      ...(normal ? { allowScripts: scripts } : {}),
     });
-  writeJson(
-    "scoped-consumer-production-graph.json",
-    npmJson(["ls", "--omit=dev", "--all", "--json"], {
-      cwd: scopedConsumerDirectory,
-    }),
-  );
-  const locklessGraph = npmJson(["ls", "--omit=dev", "--all", "--json"], {
-    cwd: normalConsumerDirectory,
-    label: "normal lockless consumer production graph",
-  });
-  const installedOwlapi = locklessGraph.dependencies?.owlapi;
-  if (!installedOwlapi) {
-    throw new Error("Lockless consumer graph does not contain owlapi.");
-  }
-  if (installedOwlapi.version !== VERSION) {
-    throw new Error(
-      `Lockless consumer installed owlapi@${installedOwlapi.version ?? "unknown"}, expected ${VERSION}.`,
+    const env = publicRegistryEnvironment(directory);
+    runNpm(
+      [
+        "install",
+        normal ? "--strict-allow-scripts" : "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        "--cache",
+        join(temporaryRoot, mode + "-cache"),
+      ],
+      {
+        cwd: directory,
+        env,
+        label: "fresh " + mode + " install",
+      },
+    );
+    const graph = npmJson(["ls", "--omit=dev", "--all", "--json"], {
+      cwd: directory,
+      env,
+    });
+    assertHealthyNpmGraph(graph);
+    const observed = await measure(directory, mode, dependencyName);
+    const delta = compareConsumerResolutions(baseline, observed);
+    runInstalledConsumerScripts(directory, dependencyName, env);
+    process.stdout.write(
+      mode +
+        ": " +
+        observed.graph.nodes.length +
+        " npm occurrences, " +
+        delta.occurrences.length +
+        " changed, " +
+        delta.edges.length +
+        " changed edges; installed checks passed.\n",
     );
   }
-  const locklessIdentities = flattenNpmGraph(installedOwlapi, packageJson.name);
-  if (stableJson(lockedIdentities) !== stableJson(locklessIdentities)) {
-    const missing = lockedIdentities.filter(
-      (identity) => !locklessIdentities.includes(identity),
-    );
-    const unexpected = locklessIdentities.filter(
-      (identity) => !lockedIdentities.includes(identity),
-    );
-    throw new Error(
-      `Lockless retained-tarball graph differs from the locked graph: missing=${JSON.stringify(missing)} unexpected=${JSON.stringify(unexpected)}`,
-    );
-  }
-  writeJson("lockless-consumer-production-graph.json", locklessGraph);
-  writeJson("inspection-consumer-production-graph.json", inspectionGraph);
-  copyFileSync(
-    join(normalConsumerDirectory, "package-lock.json"),
-    join(outputDirectory, "lockless-consumer-package-lock.json"),
-  );
-  const consumerAuditObservation = observeNpm(
-    [...RELEASE_AUDIT_ARGS, "--omit=dev", "--json"],
-    { cwd: normalConsumerDirectory },
-  );
-  const consumerAudit = JSON.parse(consumerAuditObservation.stdout);
-  assertReleaseAudit(
-    { ...consumerAuditObservation, report: consumerAudit },
-    "installed consumer graph",
-  );
-  writeJson("normal-consumer-npm-audit-production.json", {
-    commandExitStatus: consumerAuditObservation.status,
-    report: consumerAudit,
-  });
+  const proof = packProducerResolutions(observations, decisionDirectory);
+  writeJson(producerResolutionFilename, proof);
   const tarballFileName = basename(tarballPath);
   const checksumEntries = [
     { fileName: tarballFileName, sha256: sha256File(tarballPath) },
@@ -438,7 +345,7 @@ try {
     tarball: readFileSync(tarballPath),
   });
   writeJson("candidate-manifest.json", {
-    schemaVersion: 1,
+    schemaVersion: 2,
     package: { name: packageJson.name, version: VERSION },
     sourceState: "UNCOMMITTED_QUALIFICATION_SNAPSHOT",
     nodeVersion: process.version,
@@ -452,8 +359,10 @@ try {
       reproducible: true,
     },
     checksumFile: "SHA256SUMS",
-    lockedAndLocklessGraphsEquivalent: true,
-    productionAuditHighOrCriticalCount: 0,
+    resolutionProof: {
+      fileName: producerResolutionFilename,
+      sha256: sha256File(join(outputDirectory, producerResolutionFilename)),
+    },
     installedConsumerScripts: [...TEST_SCRIPTS],
   });
 

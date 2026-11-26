@@ -23,10 +23,14 @@ const audit = spawnSync(
   ],
   { encoding: "utf8", maxBuffer: 2 * 1024 * 1024, windowsHide: true },
 );
-if (audit.error) throw audit.error;
-if (audit.stderr) process.stderr.write(audit.stderr);
+let report;
+try {
+  report = JSON.parse(audit.stdout);
+} catch {
+  throw new Error("Transport audit result unavailable");
+}
 assertReleaseAudit(
-  { status: audit.status, report: JSON.parse(audit.stdout) },
+  { status: audit.status, report },
   "isolated artifact transport",
 );
-process.stdout.write(audit.stdout);
+process.stdout.write("Isolated artifact transport advisory check passed.\n");

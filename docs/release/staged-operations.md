@@ -154,11 +154,14 @@ Inspect the original native attempt and its journal before choosing a recovery p
 Dispatch `release-registry.yml` with a signed `registry` operation and the original private proof, draft and approval.
 The read-only registry job verifies signed draft and approval receipts.
 The seal writer reopens the live draft.
-Include the exact qualified SBOM for the registry job to check against both installed graphs.
+Include the exact qualified SBOM and locked baseline.
+The registry job checks the root package bytes and reconciles each public graph against its own observed lock and the approved policy.
 The approved stage's publisher identity is the origin of provenance.
 Anonymous registry reads qualify bytes, both install spellings and documentation.
 Each frozen Linux, Windows and macOS lane exercises the exact version and integrity using its consumer Node/npm pair.
-Both install spellings record their production graph and lock digest for comparison with the qualified SBOM.
+Both install spellings bind their actual production graph and original lock to the candidate, tests and advisory decision.
+Keep ordinary diagnostics in Actions logs.
+Store only proof required for later verification, once per distinct original, and omit routine npm audit reports from uploads and release assets.
 Public recipient jobs occupy a run-specific concurrency group and release writers recheck the live preimages under their shared queue.
 Preserve original run IDs, attempts, native files and failed observations.
 A pending public coordinate allows read-only investigation.

@@ -1,5 +1,15 @@
 import { expect, test } from "@jest/globals";
 import { execFileSync } from "node:child_process";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { zipArchive } from "./fixtures/zip-archive.mjs";
@@ -14,6 +24,20 @@ import {
 } from "./package-identity.mjs";
 import { CANONICAL_NODE, CI_RUNTIME } from "./runtime-policy.mjs";
 import { UBUNTU } from "./ubuntu-runner.mjs";
+import { QUALIFICATION_POLICY_SHA256 } from "./ci-qualification.mjs";
+import {
+  packProducerResolutions,
+  producerResolutionFilename,
+  producerResolutionUploadStep,
+} from "./release-resolution-proof.mjs";
+import { captureResolutionEvidence } from "./release-consumer-evidence.mjs";
+import { installResolutionFixture } from "./fixtures/npm-consumer-resolution.mjs";
+import {
+  INSTALLED_TEST_SCRIPTS,
+  productionInstallScriptPolicy,
+} from "./installed-consumer-fixtures.mjs";
+import { stableJson } from "./canonical-json.mjs";
+import { isStrictDescendantPath } from "./release-file-utils.mjs";
 
 const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stem = "hadden-industries-owlapi-" + PACKAGE_VERSION;
@@ -160,7 +184,7 @@ function fixture() {
             : JSON.stringify(content),
       })),
     );
-  const admit = async (mutateProof = () => {}) => {
+  const admit = async (mutateProof = () => {}, options = {}) => {
     const candidateBytes = pack(files);
     const proofBytes = pack(evidence);
     const candidate = ref(90, stem + "-candidate-84-1", candidateBytes);
@@ -172,6 +196,7 @@ function fixture() {
         candidate,
         receipt: {
           packageProof: { id: 91, digest: "sha256:" + sha(proofBytes) },
+          policySha256: QUALIFICATION_POLICY_SHA256,
         },
         observed: { jobs: [job] },
       },
@@ -181,10 +206,285 @@ function fixture() {
       },
       download: async ({ id }) => (id === 90 ? candidateBytes : proofBytes),
       now: Date.parse(time),
+      expectedProofVersion: 1,
+      ...options,
     });
   };
   return { admit, evidence, files, integrity, job };
 }
+
+test("current CI admission refuses a correctly authenticated legacy proof", async () => {
+  const f = fixture();
+  f.job.steps[1].name = producerResolutionUploadStep;
+  await expect(f.admit(undefined, { expectedProofVersion: 2 })).rejects.toThrow(
+    /ZIP member count differs from its expected inventory/iu,
+  );
+});
+
+test("native differences are admitted through the exact v2 producer ZIP while wrong edges are refused", async () => {
+  const root = mkdtempSync(join(tmpdir(), "owlapi-v2-package-admit-"));
+  expect(isStrictDescendantPath(tmpdir(), root)).toBe(true);
+  try {
+    const npmCli = process.env.npm_execpath;
+    const decisionDirectory = join(root, "eligibility");
+    mkdirSync(join(decisionDirectory, "decisions"), { recursive: true });
+    const observations = {};
+    let admittedTarball, platform;
+    // The reader's test fixture has independently installed parents, a peer,
+    // a hoisted transitive, and native omitted branches. All use the same archive.
+    for (const [mode, name, version] of [
+      ["producer", null, "26.6.10"],
+      ["inspection", "owlapi", "26.6.10"],
+      ["normal", "owlapi", "26.6.11"],
+      ["scoped", PACKAGE_NAME, "26.6.12"],
+    ]) {
+      const directory = join(root, mode);
+      mkdirSync(directory);
+      const { tarball, first } = await installResolutionFixture(
+        directory,
+        npmCli,
+        name ?? "owlapi",
+        version,
+      );
+      admittedTarball ??= tarball;
+      expect(tarball).toEqual(admittedTarball);
+      const manifestPath = join(directory, "package.json");
+      if (!name) {
+        renameSync(
+          join(directory, "node_modules", "owlapi"),
+          join(directory, "unused-first-party"),
+        );
+        writeFileSync(manifestPath, JSON.stringify(first));
+        const lockPath = join(directory, "package-lock.json");
+        const lock = JSON.parse(readFileSync(lockPath));
+        delete lock.packages["node_modules/owlapi"];
+        lock.packages[""] = first;
+        lock.name = first.name;
+        lock.version = first.version;
+        writeFileSync(lockPath, JSON.stringify(lock));
+      } else if (mode === "normal") {
+        const manifest = JSON.parse(readFileSync(manifestPath));
+        manifest.allowScripts = productionInstallScriptPolicy();
+        writeFileSync(manifestPath, stableJson(manifest));
+      }
+      const evidence = await captureResolutionEvidence(directory, {
+        tarball,
+        npmCli,
+        dependencyName: name,
+      });
+      const resolution = evidence.resolution;
+      platform ??= resolution.platform;
+      const resolutionSha256 = sha(stableJson(resolution));
+      const material = stableJson({
+        status: "PASSED",
+        subject: {
+          resolutionSha256,
+          lockSha256: resolution.lockSha256,
+          tarballSha256: sha(tarball),
+        },
+        decisions: resolution.graph.nodes
+          .filter((n) => n.location !== ".")
+          .map((n) => ({ location: n.location, reasons: [] })),
+      });
+      const materialDirectory = join(
+        decisionDirectory,
+        "material",
+        resolutionSha256,
+      );
+      mkdirSync(materialDirectory, { recursive: true });
+      writeFileSync(
+        join(materialDirectory, "recipient-material.json"),
+        material,
+      );
+      const role = `candidate-${mode}`;
+      const decision = stableJson({
+        schemaVersion: 1,
+        role,
+        resolutionSha256,
+        materialSha256: sha(material),
+        result: "PASS",
+        observedAt: time,
+        subject: {
+          manifestSha256: resolution.manifestSha256,
+          lockSha256: resolution.lockSha256,
+          tarballSha256: sha(tarball),
+          graphSha256: sha(stableJson(resolution.graph)),
+          role: name ? "candidate" : "producer",
+          scope: "production",
+          platform: { ...platform, npm: CI_RUNTIME.npm },
+        },
+      });
+      writeFileSync(
+        join(decisionDirectory, "decisions", `${sha(decision)}.json`),
+        decision,
+      );
+      observations[mode] = {
+        evidence,
+        eligibility: {
+          schemaVersion: 1,
+          role,
+          resolutionSha256,
+          tarballSha256: sha(tarball),
+          decisionSha256: sha(decision),
+          result: "PASS",
+        },
+      };
+    }
+    const f = fixture();
+    const component = (location, name, version) => ({
+      "bom-ref": location,
+      name,
+      version,
+      properties: [
+        {
+          name: "cdx:npm:package:path",
+          value: location === "." ? "" : location,
+        },
+      ],
+    });
+    const declaredComponents = [
+      ["host", "host", "1.0.0"],
+      ["reader", "reader", "1.0.0"],
+      ["alternative", "alternative", "2.0.0"],
+      ["leaf", "leaf", "2.0.0"],
+      ["node-types", "node-types", "26.6.10"],
+      ["loose", "loose", "1.2.3"],
+      ["older", "leaf", "1.0.0"],
+      ["plugin", "plugin", "1.0.0"],
+      ["prerelease", "prerelease", "1.2.3-beta.1"],
+    ];
+    const loc = (name) => `node_modules/${name}`;
+    const sbom = stableJson({
+      bomFormat: "CycloneDX",
+      specVersion: "1.6",
+      metadata: {
+        component: {
+          ...component(".", PACKAGE_NAME, PACKAGE_VERSION),
+          type: "library",
+          purl: PACKAGE_SBOM_PURL,
+        },
+      },
+      components: declaredComponents.map(([slot, name, version]) =>
+        component(loc(slot), name, version),
+      ),
+      dependencies: [
+        { ref: ".", dependsOn: [loc("host"), loc("reader")] },
+        {
+          ref: loc("reader"),
+          dependsOn: [
+            "host",
+            "alternative",
+            "node-types",
+            "loose",
+            "older",
+            "plugin",
+            "prerelease",
+          ].map(loc),
+        },
+        { ref: loc("plugin"), dependsOn: [loc("leaf")] },
+      ],
+    });
+    f.files[stem + ".tgz"] = admittedTarball;
+    f.files[stem + ".cdx.json"] = sbom;
+    f.files.SHA256SUMS = `${sha(sbom)}  ${stem}.cdx.json\n${sha(admittedTarball)}  ${stem}.tgz\n`;
+    for (const key of Object.keys(f.evidence)) delete f.evidence[key];
+    f.job.steps[1].name = producerResolutionUploadStep;
+    const manifestFor = (packet) => ({
+      schemaVersion: 2,
+      package: packageFacts,
+      nodeVersion: `v${platform.node}`,
+      npmVersion: CI_RUNTIME.npm,
+      tarball: {
+        fileName: stem + ".tgz",
+        sha256: sha(admittedTarball),
+        bytes: admittedTarball.length,
+      },
+      sbom: {
+        fileName: stem + ".cdx.json",
+        sha256: sha(sbom),
+        bytes: Buffer.byteLength(sbom),
+        specVersion: "1.6",
+        componentType: "library",
+      },
+      checksumFile: "SHA256SUMS",
+      installedConsumerScripts: INSTALLED_TEST_SCRIPTS,
+      resolutionProof: {
+        fileName: producerResolutionFilename,
+        sha256: sha(stableJson(packet)),
+      },
+    });
+    const packet = packProducerResolutions(observations, decisionDirectory);
+    function retain(proof) {
+      f.evidence[producerResolutionFilename] = stableJson(proof);
+      f.evidence["candidate-manifest.json"] = manifestFor(proof);
+    }
+    retain(packet);
+    const reopened = [];
+    const result = await f.admit(undefined, {
+      expectedProofVersion: 2,
+      npmCli,
+      platform,
+      // The native graph and ZIP readers stay real. The separate material owner
+      // protocol has its own exact archive, signature and ScanCode fixtures.
+      prepareMaterial: async () => ({
+        verifyRetained: async ({
+          recordBytes,
+          recordSha256,
+          resolution,
+          lockfileBytes,
+        }) => {
+          const record = JSON.parse(recordBytes);
+          expect(sha(lockfileBytes)).toBe(resolution.lockSha256);
+          expect(record.subject.resolutionSha256).toBe(
+            sha(stableJson(resolution)),
+          );
+          expect(sha(recordBytes)).toBe(recordSha256);
+          reopened.push(resolution.lockSha256);
+          return {
+            record,
+            verification: "AUTHENTICATED_COLLECTOR_METADATA",
+            novelArtifactIds: [],
+          };
+        },
+      }),
+    });
+    expect(reopened).toHaveLength(4);
+    expect(result).toMatchObject({
+      packageProofVersion: 2,
+      advisorySubjects: {
+        root: { role: "producer" },
+        recipient: { role: "candidate" },
+      },
+    });
+    for (const [role, version] of [
+      ["normal", "26.6.11"],
+      ["scoped", "26.6.12"],
+    ]) {
+      const [change] = result.differences[role].occurrences;
+      expect(change).toMatchObject({
+        before: { name: "node-types", version: "26.6.10" },
+        after: { name: "node-types", version },
+        requestedBy: { after: [{ from: loc("reader"), spec: "*" }] },
+      });
+    }
+    const altered = structuredClone(packet);
+    const previous = altered.subjects.producer.resolution;
+    const forged = JSON.parse(altered.originals[previous]);
+    forged.graph.edges.find(
+      ({ from, name }) => from === "." && name === "reader",
+    ).to = loc("host");
+    const bytes = stableJson(forged);
+    altered.subjects.producer.resolution = sha(bytes);
+    altered.originals[sha(bytes)] = bytes;
+    delete altered.originals[previous];
+    retain(altered);
+    await expect(
+      f.admit(undefined, { expectedProofVersion: 2, npmCli, platform }),
+    ).rejects.toThrow(/recorded graph differs from replayed native edges/iu);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
 
 test("a qualifying ZIP must match the native ZIP digest before extraction", async () => {
   const bytes = zipArchive([{ path: "verification.json", content: "{}" }]);

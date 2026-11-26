@@ -81,6 +81,24 @@ test("native npm resolves the exact retained lock, including a hoisted productio
   }
 });
 
+test("public audit diagnostics omit npm report bodies, counts and stderr", () => {
+  const marker = "PRIVATE_AUDIT_FIXTURE";
+  let message;
+  try {
+    assertReleaseAudit(
+      {
+        status: 1,
+        report: { metadata: { vulnerabilities: { high: 1, critical: 0 } } },
+        stderr: marker,
+      },
+      "consumer",
+    );
+  } catch (error) {
+    message = error.message;
+  }
+  expect(message).toBe("Release audit failed for consumer");
+});
+
 test.each([
   [0, { high: 1, critical: 0 }],
   [0, { high: 0, critical: 1 }],

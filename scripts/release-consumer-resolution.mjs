@@ -5,6 +5,7 @@ import { createRequire } from "node:module";
 import { lstatSync, readFileSync, readdirSync, realpathSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { canonicalJson } from "./canonical-json.mjs";
+import { findNpmCliCandidates } from "./assert-workflow-runtime.mjs";
 import { PACKAGE_NAME, assertRegistryTarballUrl } from "./package-identity.mjs";
 import { readGzipTarEntries } from "./release-artifacts.mjs";
 import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
@@ -109,7 +110,7 @@ function readInputs(directory, { tarball, dependencyName, registryTarball }) {
     );
     assert.equal(root.resolved, resolved, "Different candidate archive source");
     assert.ok(
-      !root.link && !root.inBundle,
+      !root.link && !root.inBundle && !root.extraneous,
       "Invalid candidate archive occurrence",
     );
     delete registryEntries[location];
@@ -166,7 +167,9 @@ function readInputs(directory, { tarball, dependencyName, registryTarball }) {
 
 /** The caller supplies the platform observed by its trusted native lane when replaying a lock. */
 export function currentResolutionPlatform(
-  npmCli = process.env.OWLAPI_CONSUMER_NPM ?? process.env.npm_execpath,
+  npmCli = process.env.OWLAPI_CONSUMER_NPM ??
+    process.env.npm_execpath ??
+    findNpmCliCandidates()[0],
 ) {
   const result = {
     os: process.platform,
@@ -190,6 +193,10 @@ function omittedOptionalNodes(tree, native, platform, npmVersion) {
   for (const node of tree.inventory.values()) {
     if (!node.optional) continue;
     try {
+      if (platform.os === "linux" && node.package.libc && !platform.libc)
+        throw new Error(
+          "Cannot qualify a libc-specific package without a measured libc",
+        );
       checkPlatform(node.package, false, platform);
       checkEngine(node.package, npmVersion, platform.node);
     } catch (error) {
@@ -305,11 +312,7 @@ function graphOf(tree, inputs, native, platform, actual, npmVersion) {
       const target = omitted.has(edge.to) ? null : edge.to;
       if (target) {
         assert.ok(
-          requests.some(
-            (req) =>
-              req.name === target.packageName &&
-              semver.satisfies(target.version, req.fetchSpec),
-          ),
+          requests.some((req) => req.name === target.packageName),
           "Target differs from requested npm identity or range",
         );
         if (

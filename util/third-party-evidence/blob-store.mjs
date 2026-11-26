@@ -1,6 +1,15 @@
 import { randomUUID } from "node:crypto";
-import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import {
+  lstat,
+  mkdir,
+  readFile,
+  realpath,
+  rename,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { join } from "node:path";
+import { isStrictDescendantPath } from "../../scripts/release-file-utils.mjs";
 import { compareCodeUnits, sha256, stableJson } from "./digests.mjs";
 
 const SHA256_PATTERN = /^[0-9a-f]{64}$/u;
@@ -29,9 +38,26 @@ const absoluteBlobPath = (root, reference) =>
   join(root, "blobs", "sha256", reference.sha256.slice(0, 2), reference.sha256);
 
 /** Return the exact bytes admitted against the independently owned reference. */
-export const readVerifiedBlob = async (root, reference) => {
+export const readVerifiedBlob = async (
+  root,
+  reference,
+  { confined = false } = {},
+) => {
   const expected = validateReference(reference);
-  const bytes = await readFile(absoluteBlobPath(root, expected));
+  let path = absoluteBlobPath(root, expected);
+  if (confined) {
+    const stat = await lstat(path);
+    if (!stat.isFile() || stat.size !== expected.bytes)
+      throw new Error(
+        `Unsafe or inconsistent evidence blob file for ${expected.sha256}`,
+      );
+    path = await realpath(path);
+    if (!isStrictDescendantPath(await realpath(root), path))
+      throw new Error(
+        `Evidence blob path escapes its store for ${expected.sha256}`,
+      );
+  }
+  const bytes = await readFile(path);
   if (bytes.length !== expected.bytes) {
     throw new Error(
       `Evidence blob byte length mismatch for ${expected.sha256}`,

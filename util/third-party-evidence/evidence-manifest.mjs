@@ -194,11 +194,16 @@ const evidenceReferencesFor = (artifact) => [
   artifact.scan.evidence,
 ];
 
-const readEvidenceEnvelope = async (blobRoot, reference, artifactId) => {
+const readEvidenceEnvelope = async (
+  blobRoot,
+  reference,
+  artifactId,
+  confined,
+) => {
   let envelope;
   try {
     envelope = JSON.parse(
-      await readFile(join(blobRoot, reference.path), "utf8"),
+      await readVerifiedBlob(blobRoot, reference, { confined }),
     );
   } catch (error) {
     controlFailure(
@@ -257,6 +262,7 @@ const verifyArtifactEvidence = async ({
   referencedBlobs,
   allowLegacyArchiveInventory,
   allowLegacyScancodeNormalization,
+  confined,
 }) => {
   verifyCompletionStates(artifact);
   try {
@@ -298,6 +304,7 @@ const verifyArtifactEvidence = async ({
     blobRoot,
     artifact.archive.evidence,
     artifact.artifactId,
+    confined,
   );
   if (
     archive?.packageIdentity?.name !== artifact.name ||
@@ -410,7 +417,7 @@ const verifyArtifactEvidence = async ({
     try {
       metadata = JSON.parse(
         new TextDecoder("utf-8", { fatal: true }).decode(
-          await readVerifiedBlob(blobRoot, reference),
+          await readVerifiedBlob(blobRoot, reference, { confined }),
         ),
       );
     } catch (error) {
@@ -442,6 +449,7 @@ const verifyArtifactEvidence = async ({
     blobRoot,
     artifact.registrySignature.evidence,
     artifact.artifactId,
+    confined,
   );
   if (
     signatureEvidence?.publishedAt !== artifact.registrySignature.publishedAt ||
@@ -498,6 +506,7 @@ const verifyArtifactEvidence = async ({
     blobRoot,
     artifact.provenance.evidence,
     artifact.artifactId,
+    confined,
   );
   if (provenance?.state !== artifact.provenance.state) {
     productFailure(
@@ -521,6 +530,7 @@ const verifyArtifactEvidence = async ({
     blobRoot,
     artifact.scan.evidence,
     artifact.artifactId,
+    confined,
   );
   const normalizationVersion = scan?.scanner?.normalizationVersion;
   if (
@@ -537,6 +547,43 @@ const verifyArtifactEvidence = async ({
       `ScanCode evidence is invalid for ${artifact.artifactId}`,
     );
   }
+  return { archive, scan };
+};
+
+/** Verify exact retained originals for selected archives without reopening a whole corpus. */
+export const createRetainedArtifactVerifier = ({
+  blobRoot,
+  blobs,
+  registryKeys,
+  requireCompleteBlobSet = false,
+}) => {
+  const keyById = indexUnique(
+    registryKeys,
+    ({ keyid }) => keyid,
+    "registry key",
+  );
+  const blobByReference = indexUnique(blobs, referenceKey, "archive blob");
+  return async (artifact, occurrences) => {
+    const referencedBlobs = new Set();
+    const evidence = await verifyArtifactEvidence({
+      artifact,
+      occurrences,
+      keyById,
+      blobRoot,
+      blobByReference,
+      referencedBlobs,
+      confined: true,
+    });
+    if (requireCompleteBlobSet && referencedBlobs.size !== blobByReference.size)
+      throw new Error("Archive evidence contains unreferenced blobs");
+    for (const key of referencedBlobs) {
+      if (key.startsWith("PACKAGE_EVIDENCE_FILE:"))
+        await readVerifiedBlob(blobRoot, blobByReference.get(key), {
+          confined: true,
+        });
+    }
+    return evidence;
+  };
 };
 
 const verifyEvidenceDocument = async ({

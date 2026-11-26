@@ -285,8 +285,12 @@ Use the existing disclosure inventory, signed checkpoints and exact artifact-mem
 [Disclosure and recovery](../release/staged-operations.md#verify-public-recipients-and-seal) · [CI package proof](../../scripts/release-ci-package.mjs) · [Artifact transport](../release/artifact-transport.md)
 
 **Audit disclosure and retention (Q2).**
-Section 2.34 requires retaining full and production audit originals.
-npm's Open-Source Terms, Conditions item 4, restrict access and redistribution of npm package-security data, expressly including audit-status reports.
+Section 2.34 requires full and production audits.
+Routine passes retain a compact project decision and bindings to the original inputs.
+Detailed originals are retained privately for a documented exception, investigation or explicit obligation.
+Reuse the existing protected OwlAPI release workflow and its frozen-lock audit mechanism, as in JSON Quality and Markdown Quality.
+Routine progress belongs in job logs or a step summary.
+The release proof binds the exact graph, policy, observation time and native job/attempt. Retain only the compact signed decision and original graph bytes needed by the next verifier. A later audit observes current advisories. [JSON Quality assurance](https://github.com/Hadden-Industries/json-quality/blob/78e901148f829cd1dd44953de22791fea6aa7f2d/scripts/release-assurance.js) · [Markdown Quality assurance](https://github.com/Hadden-Industries/markdown-quality/blob/9baee828cd36d31666e612e861da545ad7852e46/scripts/qualify-release-security.js) npm's Open-Source Terms, Conditions item 4, restrict access and redistribution of npm package-security data, expressly including audit-status reports.
 The `zero-one-zero` workflow lists four unredacted audit-report members in `package-proof` on a public repository.
 Three are parsed report wrappers and one contains native transport audit output.
 Repository readers can download Actions artifacts.
@@ -301,19 +305,20 @@ See the [Q2 decision brief](2026-11-26-npm-audit-evidence-key-design-decision.md
 Use option B for the first rollout.
 An operator may start the protected policy evaluator with an immutable release reference.
 Only the evaluator may issue the advisory decision.
-It authenticates the inputs, applies the approved policy, verifies private retention of the audit original and signs its own result.
+It authenticates the inputs, applies the approved policy and signs its own disclosure-cleared result.
+Routine raw audit output is transient.
 The seal checks the disclosure-cleared statement against the approved tarball and the graph evidenced by that particular install.
 The release owner's signature retains its publication-approval role.
 [Accepted decision and alternatives](2026-11-26-npm-audit-evidence-key-design-decision.md#options-and-trade-offs)
 
-Demonstrate the selected custody, signer and retrieval path before enabling new-policy evidence.
+Qualify protected issuance, public verification and any case-specific private retention before enabling the corresponding path.
 Keep untrusted PR jobs credential-free.
 Bind the authoritative audit to the source of its actual private execution and the exact original bytes, native exit status, scope, policy and time.
 An existing eligible receipt can satisfy the advisory gate during an evaluator outage.
 A different graph, expired observation or absent qualifying result holds the seal pending a successful evaluation for that subject.
 Measure freshness from the audit observation.
 Re-signing that observation cannot extend its lifetime.
-Private capture and authorised retrievability of the original are prerequisites to issuance.
+For a documented exceptional case, require authorised retention and readback before treating its evidence obligation as satisfied.
 A later audit is recorded as a new observation.
 Public fields require a disclosure disposition under the applicable terms.
 The existing signed checkpoint and private-storage guidance provide precedents.
@@ -322,7 +327,7 @@ An audit-specific protected signer and confidential deployment still require qua
 The cold admission reader runs before a repository dependency install.
 The seal writer has protected authority and must read already authenticated evidence without installing the application or executing packages from a recipient.
 The public reader directly checks admitted public facts and applies the selected Q2 trust rule to advisory evidence.
-Authorised private reviewers can reapply the audit policy to the restricted originals.
+Authorised reviewers can reapply the audit policy when an exception or explicit obligation retained the original.
 Factor a shared, versioned policy evaluator with these deployment constraints.
 Platform adapters may collect native facts differently.
 Each reader must state which decisions it recomputes and which judgments it accepts from an authorised issuer.
@@ -398,7 +403,8 @@ Inspect one real proof ZIP round-trip, including disclosure and uncompressed siz
 This settles the collector and storage design before other slices depend on it.
 Historical evidence, negative corpus cases and the policy wording can be prepared independently.
 Plant a benign restricted-report marker in a failure fixture.
-Verify authorised private retrieval and absence of that marker from public logs, artifacts, history and release assets.
+For an exceptional retention case, verify authorised private retrieval.
+Confirm the marker is absent from public logs, artifacts, history and release assets on both success and failure.
 An unchecked digest cannot stand in for its original.
 
 ### SLICE-002 · Produce a qualified tarball with a separately evidenced fresh graph
@@ -420,9 +426,10 @@ Pass the validated new archive through the same origin, SRI, signature, availabl
 Keep the canonical release corpus generator rooted at its reviewed lock.
 If rights are unresolved, emit that disposition under DEC-004 and withhold eligibility.
 Retain failure evidence without overwriting prior attempts.
-Version the closed member roster so the public graph originals and cleared attestations are distinct from privately retained full/production audits.
+Version the closed member roster.
+Store public-safe original graphs and cleared decisions once for downstream readers, and omit routine raw audit output.
 Change initial upload and diagnostic paths as well as the later fresh/CI reuse readers.
-Prove authorised retrieval before issuing an eligible new proof.
+Prove retrieval of each required original. Exercise restricted retrieval for a case with an applicable private retention obligation.
 [Source evidence rules](../implementation-plan.md#2501-decision-derive-platform-independent-legal-evidence-from-authenticated-locked-tarballs) · [Proof transport](../../.github/workflows/qualify-package.yml)
 
 **Exit proof.**
@@ -445,7 +452,8 @@ Keep diagnostic-only installs identified as diagnostics.
 Replace the producer-identity input to recipient re-auditing with the identities and native lock authenticated for that recipient.
 Check the immutable source and transport locks against their own subjects.
 For every distinct accepted recipient lock in scope, load/replay the correct original with the applicable npm/platform semantics and use the protected evaluator to refresh the advisory decision.
-Keep each report privately retrievable.
+Keep one compact decision per distinct subject and policy observation.
+Retain detailed reports only when a case requires them.
 Verify the evaluator’s signed result for the exact lock/manifest hash, policy and original audit observation time at admission.
 Preserve the current 24-hour promoted audit check, live stage preflight and separate managed CodeQL freshness/identity checks.
 Archive readers evaluate historical observations at their recorded decision point.
@@ -487,7 +495,8 @@ Public proof selection must bind the qualified baseline and policy digest to the
 Use the approved producer runtime for checks that require it and keep installed product tests at the consumer floor (including Node 22.0.0 with npm 10.9.11).
 The approved producer is Node 26.13.1 with npm 12.2.3.
 Use isolated npm configuration and cache for the anonymous public install.
-Keep vulnerability-audit access, raw output and advisory signing authority inside the protected boundary, with original reports available to authorised private reviewers.
+Keep the vulnerability evaluation and signing authority in the protected job.
+Restrict any exceptional retained originals to authorised private reviewers.
 Run the advisory evaluation in the protected boundary against the captured, byte-identical recipient lock.
 Use the admitted audit tool on a compatible runtime and verify that the result covers the platform-specific active occurrences.
 The public job consumes the cleared signed result.
@@ -577,7 +586,7 @@ It precedes acceptance of changed graph semantics.
 SLICE-002 establishes the producer/consumer contract.
 CI/reuse work in SLICE-003 and the public observation work in SLICE-004 can proceed independently once their shared subject, policy and receipt contract are agreed.
 The release maintainer integrates both before SLICE-005 enables the final verdict.
-Historical fixtures, the accepted external-archive rule and read-only graph verification can proceed while the protected signing path and private retrieval are qualified.
+Historical fixtures, the accepted external-archive rule and read-only graph verification can proceed while the protected signing and exceptional-evidence paths are qualified.
 Do not parallelise changes to the same schema or cutoff policy without a designated integrator.
 
 Inspect each graph once per actual observation and retain its full output within the owning bounds.
@@ -648,4 +657,4 @@ A new dependency, verifier service, weaker proof, broader support promise or add
   [Key Design Decision](2026-11-26-npm-audit-evidence-key-design-decision.md)
 - **Owner review complete.**
   Both planning decisions are settled.
-  Implementation and rollout evidence must demonstrate the protected evaluation and signing path, authorised retrieval of private originals, and the seal's handling of valid, stale, missing and mismatched receipts.
+  Implementation and rollout evidence must demonstrate the protected evaluation and signing path, authorised readback for a documented exceptional case, and the seal's handling of valid, stale, missing and mismatched receipts.
