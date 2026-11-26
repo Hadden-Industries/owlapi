@@ -15,13 +15,15 @@ import {
 import { GitHubReleaseClient } from "./github-release.mjs";
 import {
   readCheckpoint,
+  readRetentionGitCommits,
   readRetentionHistoryFiles,
+  readRetentionVersionTags,
   unresolvedReservations,
 } from "./release-history-checkpoint.mjs";
 import {
   createClaimedPullHeadReader,
   createReleaseClaimReader,
-  hasUnattributedStage,
+  latestUnattributedStage,
 } from "./retirement-release-claims.mjs";
 import { readRetentionCiEvidence } from "./release-ci-qualification.mjs";
 import {
@@ -212,8 +214,31 @@ export function selectRedundantArtifacts({
   };
 }
 
+/** Reserve the live-read budget for mutable claims and originals. Missing stage reservations use native attempt pages under the same overall deadline. */
+export function createRetentionReader(options) {
+  const now = options.now ?? Date.now;
+  const budgetMs = options.budgetMs ?? 60_000;
+  const bounded = {
+    ...options,
+    now,
+    budgetMs,
+    deadline: Math.min(options.deadline ?? Infinity, now() + budgetMs),
+  };
+  const live = createRepositoryReader(bounded);
+  return (path, readOptions) => {
+    const historyPage =
+      /^\/actions\/runs\/[1-9]\d*\/attempts\/[1-9]\d*\/jobs\?per_page=100&page=[1-9]\d*$/u.test(
+        path,
+      );
+    const read = historyPage
+      ? createRepositoryReader({ ...bounded, requestLimit: 3 })
+      : live;
+    return read(path, readOptions);
+  };
+}
+
 function retentionClient(env, apply = false) {
-  const read = createRepositoryReader({
+  const read = createRetentionReader({
     repository,
     token: env.GH_TOKEN,
     requestLimit: apply ? 256 : 128,
@@ -310,13 +335,7 @@ async function readRetirementSnapshot({
   const writerRuns = runs.filter((run) => writers.includes(workflowFile(run)));
   const openWriter = decisions
     ? reserved || outstandingWriterRuns(writerRuns, decisions.settledRuns)
-    : writerRuns.some((run) => run.status !== "completed") ||
-      (await hasUnattributedStage(
-        client,
-        writerRuns.filter((run) => workflowFile(run) === "stage-release.yml"),
-        releaseClaims.stageReservations,
-        skippedStageAttempts,
-      ));
+    : writerRuns.some((run) => run.status !== "completed");
   if (releaseClaims) {
     // A release can promote only a direct FULL main producer or the PR which landed on its exact checkout.
     releaseClaims.commits.add(head);
@@ -410,7 +429,7 @@ async function readRetirementSnapshot({
     ...(releaseClaims?.commits ?? []),
   ]);
   let claimedPullHeads;
-  const eligibleIds = [];
+  const eligible = [];
   for (const artifact of inventory) {
     if (
       !approved.has(artifact.id) ||
@@ -430,13 +449,31 @@ async function readRetirementSnapshot({
       )
         continue;
     }
-    eligibleIds.push(artifact.id);
+    eligible.push(artifact);
   }
-  eligibleIds.sort((a, b) => a - b);
+  const lastStage =
+    decisions || !eligible.length
+      ? -Infinity
+      : await latestUnattributedStage(
+          client,
+          writerRuns.filter((run) => workflowFile(run) === "stage-release.yml"),
+          releaseClaims.stageReservations,
+          skippedStageAttempts,
+          eligible.reduce(
+            (first, file) => Math.min(first, Date.parse(file.created_at)),
+            Infinity,
+          ),
+        );
+  const eligibleIds = eligible
+    .filter((file) => Date.parse(file.created_at) > lastStage)
+    .map((file) => file.id)
+    .sort((a, b) => a - b);
   const reason =
-    approved.size && !eligibleIds.length
-      ? "The remaining originals are in use or lack an eligible earlier CI origin."
-      : selected.reason;
+    lastStage > -Infinity
+      ? "An unattributed stage retains originals that existed while it could have submitted."
+      : approved.size && !eligibleIds.length
+        ? "The remaining originals are in use or lack an eligible earlier CI origin."
+        : selected.reason;
   return { inventory, eligibleIds, reason };
 }
 
@@ -448,16 +485,19 @@ const writeSummary = (env, message) =>
 async function retentionAuthority(
   env,
   client,
-  openCheckpoint,
-  readHistoryFiles,
+  { openCheckpoint, readHistoryFiles, readCommits, readVersionTags },
   preview,
 ) {
   const read = (path) => client.read(path);
-  const readClaimedPullHeads = createClaimedPullHeadReader(read);
+  const readClaimedPullHeads = createClaimedPullHeadReader(readCommits);
   const objectId = env.RETENTION_HISTORY_OBJECT;
   if (!objectId)
     return {
-      readClaims: createReleaseClaimReader(read, readHistoryFiles),
+      readClaims: createReleaseClaimReader(
+        read,
+        readHistoryFiles,
+        readVersionTags,
+      ),
       readClaimedPullHeads,
       skippedStageAttempts: new Set(),
     };
@@ -476,6 +516,8 @@ export async function reportReleaseRetention(
     client = retentionClient(env),
     openCheckpoint = readCheckpoint,
     readHistoryFiles = readRetentionHistoryFiles,
+    readCommits = readRetentionGitCommits,
+    readVersionTags = readRetentionVersionTags,
     qualifySuccessor = readRetentionCiEvidence,
     now = Date.now,
     summary = (text) => writeSummary(env, text),
@@ -518,8 +560,7 @@ export async function reportReleaseRetention(
   const authority = await retentionAuthority(
     env,
     client,
-    openCheckpoint,
-    readHistoryFiles,
+    { openCheckpoint, readHistoryFiles, readCommits, readVersionTags },
     true,
   );
   const proof = await qualifySuccessor(env);
@@ -548,6 +589,8 @@ export async function retireSupersededCandidates({
   client = retentionClient(env, true),
   openCheckpoint = readCheckpoint,
   readHistoryFiles = readRetentionHistoryFiles,
+  readCommits = readRetentionGitCommits,
+  readVersionTags = readRetentionVersionTags,
   qualifySuccessor = readRetentionCiEvidence,
   now = Date.now,
   log = (message) => {
@@ -567,8 +610,7 @@ export async function retireSupersededCandidates({
   const authority = await retentionAuthority(
     env,
     client,
-    openCheckpoint,
-    readHistoryFiles,
+    { openCheckpoint, readHistoryFiles, readCommits, readVersionTags },
     false,
   );
   const proof = await qualifySuccessor(env);

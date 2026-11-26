@@ -354,6 +354,7 @@ It protects open pull requests, live recipient-material cases, and the successor
 Active consumers and release operations pause cleanup.
 For a direct main build it checks the source commit.
 For a PR build it checks the exact revision that landed as the second parent of the merge, following the same rule as release admission.
+The runner reads tag targets and commit parents in batches from Git, fetching missing objects from the OwlAPI repository when its checkout is shallow.
 A release qualification run, version tag, or stage or release operation in protected history keeps the corresponding CI originals.
 For example, if a PR built revisions A and B and only B landed and entered qualification, B's bundle and proof stay protected.
 A can retire when its other references are clear.
@@ -364,7 +365,7 @@ Register the ID of an offline original in protected history when an owner still 
 Before each deletion the writer reopens the complete successor, checks the live references again and verifies the original artifact ID, name, digest, byte length and producing run.
 An incomplete observation prevents deletion.
 A previously observed release ref moving or disappearing stops the run.
-A native stage run missing its reservation also holds cleanup unless its original jobs show that every submission was skipped.
+A native stage run missing its reservation holds originals that existed before it finished unless its original attempts show that every submission was skipped.
 If the read budget runs out after confirmed deletions, the next run resumes from the remaining inventory.
 Candidate retirement and exceptional material replay share the release writer queue.
 Each attempt and GitHub acknowledgement goes in the existing logs and job summary.

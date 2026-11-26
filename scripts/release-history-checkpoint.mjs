@@ -17,15 +17,17 @@ const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const hostedCheckout = () =>
   process.env.GITHUB_ACTIONS === "true" &&
   process.env.GITHUB_REPOSITORY === REPOSITORY;
-const gitAt = (cwd, ...args) =>
+const runGit = (cwd, args, input) =>
   execFileSync("git", args, {
     cwd,
+    input,
     maxBuffer: 64 * 1024 * 1024,
     timeout: 30000,
     windowsHide: true,
-    stdio: ["ignore", "pipe", "pipe"],
+    stdio: [input === undefined ? "ignore" : "pipe", "pipe", "pipe"],
     env: { ...process.env, GIT_NO_LAZY_FETCH: "1" },
   });
+const gitAt = (cwd, ...args) => runGit(cwd, args);
 const git = (...args) => gitAt(repositoryRoot, ...args);
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const rulesPath = "/rulesets?includes_parents=true&per_page=100";
@@ -339,6 +341,158 @@ export function readRetentionHistoryFiles(tag, objectId) {
     .trim();
   assert.match(commit, oidPattern);
   return openCheckpointTree(commit, git, historyBlob).files;
+}
+
+function readRetentionObjects(shas, directory, readBatch) {
+  for (const sha of shas) assert.match(sha, oidPattern);
+  for (let start = 0; start < shas.length; start += 64) {
+    const missing = readBatch(shas.slice(start, start + 64));
+    if (!missing.length) continue;
+    assert.ok(
+      directory === repositoryRoot && hostedCheckout(),
+      "Claimed Git object is unavailable",
+    );
+    gitAt(
+      directory,
+      "fetch",
+      "--depth=1",
+      "--filter=tree:0",
+      "--no-tags",
+      "--no-recurse-submodules",
+      "--no-write-fetch-head",
+      REPOSITORY_GIT_URL,
+      ...missing,
+    );
+    assert.equal(
+      readBatch(missing).length,
+      0,
+      "Missing claimed Git object after fetch",
+    );
+  }
+}
+
+/** Peel the observed tag objects from Git in one batch per group, including in a shallow observer checkout. */
+export function readRetentionVersionTags(
+  tags,
+  { directory = repositoryRoot } = {},
+) {
+  const peeled = new Map();
+  readRetentionObjects(
+    [...new Set(tags.map(({ objectId }) => objectId))],
+    directory,
+    (ids) => {
+      const queries = ids.flatMap((id) => [id, id + "^{commit}"]);
+      const lines = runGit(
+        directory,
+        [
+          "--no-replace-objects",
+          "cat-file",
+          "--batch-check=%(objectname) %(objecttype)",
+        ],
+        queries.join("\n") + "\n",
+      )
+        .toString("ascii")
+        .trimEnd()
+        .split("\n");
+      assert.equal(
+        lines.length,
+        queries.length,
+        "Incomplete Git version tag batch",
+      );
+      const missing = [];
+      ids.forEach((id, i) => {
+        const type = lines[2 * i],
+          target = lines[2 * i + 1];
+        if (type === id + " missing") {
+          missing.push(id);
+          return;
+        }
+        assert.equal(
+          type,
+          id + " tag",
+          "Version ref does not identify an annotated tag",
+        );
+        if (target === id + "^{commit} missing") {
+          missing.push(id);
+          return;
+        }
+        const match = /^([a-f0-9]{40}) commit$/u.exec(target);
+        assert.ok(match, "Unidentified version tag target");
+        peeled.set(id, match[1]);
+      });
+      return missing;
+    },
+  );
+  return tags.map(({ tag, objectId }) => ({
+    tag,
+    objectId,
+    commit: peeled.get(objectId),
+  }));
+}
+
+/** Read immutable commit parents in bounded Git batches. The raw object retains its actual parents even at a shallow boundary. */
+export function readRetentionGitCommits(
+  shas,
+  { directory = repositoryRoot } = {},
+) {
+  const records = [];
+  readRetentionObjects(shas, directory, (ids) => {
+    const raw = runGit(
+      directory,
+      ["--no-replace-objects", "cat-file", "--batch"],
+      ids.join("\n") + "\n",
+    );
+    const missing = [];
+    let cursor = 0;
+    for (const sha of ids) {
+      const lf = raw.indexOf(10, cursor);
+      assert.ok(lf >= cursor, "Incomplete Git batch header");
+      const header = raw.toString("ascii", cursor, lf);
+      cursor = lf + 1;
+      if (header === sha + " missing") {
+        missing.push(sha);
+        continue;
+      }
+      const identity = /^([0-9a-f]{40}) commit (\d+)$/u.exec(header);
+      assert.equal(
+        identity?.[1],
+        sha,
+        "Unexpected Git commit in retention batch",
+      );
+      const length = Number(identity[2]);
+      const end = cursor + length;
+      assert.ok(
+        Number.isSafeInteger(end) && raw[end] === 10,
+        "Incomplete Git commit bytes",
+      );
+      const bytes = raw.subarray(cursor, end);
+      assert.equal(
+        createHash("sha1")
+          .update("commit " + length + "\0")
+          .update(bytes)
+          .digest("hex"),
+        sha,
+      );
+      const boundary = bytes.indexOf("\n\n");
+      assert.ok(boundary > 0, "Missing Git commit header");
+      const [tree, ...fields] = bytes
+        .toString("latin1", 0, boundary)
+        .split("\n");
+      assert.match(tree, /^tree [0-9a-f]{40}$/u);
+      const parents = fields
+        .filter((field) => field.startsWith("parent "))
+        .map((field) => {
+          const parent = field.slice(7);
+          assert.match(parent, oidPattern);
+          return { sha: parent };
+        });
+      records.push({ sha, parents });
+      cursor = end + 1;
+    }
+    assert.equal(cursor, raw.length, "Unexpected bytes after Git batch");
+    return missing;
+  });
+  return records;
 }
 
 /** Reverify an exact checkpoint object already admitted by the immutable seal.

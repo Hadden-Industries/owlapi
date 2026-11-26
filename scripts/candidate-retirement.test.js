@@ -2,8 +2,8 @@ import { expect, jest, test } from "@jest/globals";
 import { zipArchive } from "./fixtures/zip-archive.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
-import { createRepositoryReader } from "./github-evidence-reader.mjs";
 import {
+  createRetentionReader,
   retireSupersededCandidates,
   reportReleaseRetention,
 } from "./release-retention.mjs";
@@ -22,6 +22,7 @@ const commit = "a".repeat(40),
   objectId = "c".repeat(40),
   digest = "sha256:" + "d".repeat(64);
 const now = Date.parse("2026-11-26T12:00:00Z");
+const stageEndedAt = Date.parse("2026-11-24T12:00:00Z");
 const repo = {
   id: REPOSITORY_ID,
   full_name: REPOSITORY,
@@ -102,6 +103,7 @@ function fixture({ successorRunId = 20 } = {}) {
     pulls = [],
     refs = [],
     annotatedTags = new Map(),
+    stageJobs = new Map(),
     historyFiles = new Map();
   const pull = {
     number: 7,
@@ -251,14 +253,6 @@ function fixture({ successorRunId = 20 } = {}) {
       );
       if (ref || accept404) return structuredClone(ref ?? null);
     }
-    if (path.startsWith("/git/tags/")) {
-      const tag = annotatedTags.get(path.slice("/git/tags/".length));
-      if (tag) return structuredClone(tag);
-    }
-    if (path.startsWith("/git/commits/")) {
-      const sha = path.slice("/git/commits/".length);
-      return structuredClone(gitCommits.get(sha) ?? { sha, parents: [] });
-    }
     if (path === "/actions/runs/12/attempts/1") return rehearsal;
     if (path === "/actions/jobs/812") return job;
     const exactPull = /^\/pulls\/(\d+)$/u.exec(path);
@@ -278,6 +272,10 @@ function fixture({ successorRunId = 20 } = {}) {
         };
       if (route === "/actions/runs")
         return { total_count: runs.length, workflow_runs: slicePage(runs) };
+      if (stageJobs.has(route)) {
+        const jobs = stageJobs.get(route);
+        return { total_count: jobs.length, jobs: slicePage(jobs) };
+      }
       const artifactRun = /^\/actions\/runs\/(\d+)\/artifacts$/u.exec(route);
       if (artifactRun) {
         const owned = inventory.filter(
@@ -329,6 +327,21 @@ function fixture({ successorRunId = 20 } = {}) {
     env,
     event,
     client: { read, write },
+    readCommits: jest.fn(async (shas) =>
+      shas.map((sha) =>
+        structuredClone(gitCommits.get(sha) ?? { sha, parents: [] }),
+      ),
+    ),
+    readVersionTags: jest.fn(async (tags) =>
+      tags.map(({ objectId }) => {
+        const record = annotatedTags.get(objectId);
+        return {
+          tag: record.tag,
+          objectId: record.sha,
+          commit: record.object.sha,
+        };
+      }),
+    ),
     openCheckpoint: jest.fn(async () => checkpoint()),
     readHistoryFiles: jest.fn(async (tag, sha) => {
       const entry = historyFiles.get(sha);
@@ -365,6 +378,7 @@ function fixture({ successorRunId = 20 } = {}) {
     gitCommits,
     refs,
     annotatedTags,
+    stageJobs,
     historyFiles,
     old,
     oldProof,
@@ -405,15 +419,57 @@ function addHistoryRef(f, tag, name, content, sha) {
     files: new Map([[name, Buffer.from(JSON.stringify(content))]]),
   });
 }
-function addVersionTag(f, source, annotated) {
-  const tag = "v0.1.0-rc.1";
+function addVersionTag(
+  f,
+  source,
+  annotated,
+  { tag = "v0.1.0-rc.1", objectId = "2".repeat(40) } = {},
+) {
   const target = { type: "commit", sha: source };
-  const sha = "2".repeat(40);
   f.refs.push({
     ref: "refs/tags/" + tag,
-    object: annotated ? { type: "tag", sha } : target,
+    object: annotated ? { type: "tag", sha: objectId } : target,
   });
-  if (annotated) f.annotatedTags.set(sha, { tag, sha, object: target });
+  if (annotated)
+    f.annotatedTags.set(objectId, { tag, sha: objectId, object: target });
+}
+function addUnreservedStage(f, id, conclusion) {
+  const stage = run(
+    id,
+    "workflow_dispatch",
+    id.toString(16).padStart(40, "0"),
+    {
+      path: stagePath,
+      conclusion,
+      created_at: new Date(stageEndedAt - 60_000).toISOString(),
+      updated_at: new Date(stageEndedAt).toISOString(),
+    },
+  );
+  f.runs.push(stage);
+  return stage;
+}
+function recordFirstStageAttempt(f, stage, outcome) {
+  const endpoint = `/actions/runs/${stage.id}/attempts/1/jobs`;
+  f.stageJobs.set(
+    endpoint,
+    outcome
+      ? [
+          {
+            id: 10_000 + stage.id,
+            name: "stage",
+            run_id: stage.id,
+            run_attempt: 1,
+            head_sha: stage.head_sha,
+            status: "completed",
+            conclusion: outcome,
+            steps: [
+              { name: "Stage the admitted tarball", conclusion: outcome },
+            ],
+          },
+        ]
+      : [],
+  );
+  return endpoint + "?per_page=100&page=1";
 }
 function manualFixture() {
   const f = fixture();
@@ -426,7 +482,9 @@ function preview(f, env = f.args.env) {
   const {
     client,
     openCheckpoint,
+    readCommits,
     readHistoryFiles,
+    readVersionTags,
     qualifySuccessor,
     now,
     log,
@@ -434,7 +492,9 @@ function preview(f, env = f.args.env) {
   return reportReleaseRetention(env, {
     client,
     openCheckpoint,
+    readCommits,
     readHistoryFiles,
+    readVersionTags,
     qualifySuccessor,
     now,
     summary: log,
@@ -547,41 +607,53 @@ test.each([
   ["success", "skipped", [101, 102]],
   ["failure", "failure", []],
   ["failure", "skipped", [101, 102]],
+  ["failure", null, []],
 ])(
   "a stage with a missing reservation and %s/%s outcome is reconciled from native evidence",
   async (conclusion, stageOutcome, expected) => {
     const f = fixture();
-    const stage = run(41, "workflow_dispatch", "4".repeat(40), {
-      path: stagePath,
-      conclusion,
-    });
-    f.runs.push(stage);
-    const read = f.args.client.read;
-    f.args.client.read = (path, options) =>
-      path === "/actions/runs/41/attempts/1/jobs?per_page=100&page=1"
-        ? {
-            total_count: 1,
-            jobs: [
-              {
-                id: 500,
-                name: "stage",
-                run_id: 41,
-                run_attempt: 1,
-                head_sha: stage.head_sha,
-                status: "completed",
-                conclusion: stageOutcome,
-                steps: [
-                  {
-                    name: "Stage the admitted tarball",
-                    conclusion: stageOutcome,
-                  },
-                ],
-              },
-            ],
-          }
-        : read(path, options);
+    const stage = addUnreservedStage(f, 41, conclusion);
+    const page = recordFirstStageAttempt(f, stage, stageOutcome);
     await expect(retireSupersededCandidates(f.args)).resolves.toEqual(expected);
     expect(f.deletes).toHaveLength(expected.length);
+    expect(f.reads).toContain(page);
+  },
+);
+test("a first native stage attempt skipped as a whole requires no job lookup", async () => {
+  const f = fixture();
+  addUnreservedStage(f, 41, "skipped");
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+  expect(
+    f.reads.some((path) => path.startsWith("/actions/runs/41/attempts/")),
+  ).toBe(false);
+});
+test("a skipped latest stage attempt preserves an unresolved earlier submission", async () => {
+  const f = fixture();
+  const stage = addUnreservedStage(f, 41, "skipped");
+  stage.run_attempt = 2;
+  const firstPage = recordFirstStageAttempt(f, stage, "failure");
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
+  expect(
+    f.reads.filter((path) => path.startsWith("/actions/runs/41/attempts/")),
+  ).toEqual([firstPage]);
+  expect(f.write).not.toHaveBeenCalled();
+});
+test.each([
+  ["within the terminal second", 999, [102], 1],
+  ["after the terminal second", 1000, [101, 102], 0],
+])(
+  "an unresolved stage retains only originals that existed by the time it could have submitted (%s)",
+  async (_timing, offset, eligible, probes) => {
+    const f = fixture();
+    const stage = addUnreservedStage(f, 41, "failure");
+    const page = recordFirstStageAttempt(f, stage, "failure");
+    f.old.created_at = new Date(stageEndedAt + offset).toISOString();
+    f.oldProof.created_at = new Date(stageEndedAt + 1001).toISOString();
+
+    await expect(retireSupersededCandidates(f.args)).resolves.toEqual(eligible);
+    expect(f.reads.filter((path) => path === page)).toHaveLength(probes);
   },
 );
 test.each([
@@ -648,10 +720,7 @@ test("a canonical retention tag missing its retention record prevents routine re
   );
   expect(f.write).not.toHaveBeenCalled();
 });
-test("the production read transport admits exact PR rechecks and Git commit lookups", async () => {
-  const f = fixture();
-  const taggedCommit = "4".repeat(40);
-  addVersionTag(f, taggedCommit, true);
+function useGitHubReadTransport(f) {
   const http = jest.fn(async (address, options) => {
     expect(options.method ?? "GET").toBe("GET");
     const root = "https://api.github.com/repos/" + REPOSITORY;
@@ -661,7 +730,7 @@ test("the production read transport admits exact PR rechecks and Git commit look
       { status: 200 },
     );
   });
-  const reader = createRepositoryReader({
+  const reader = createRetentionReader({
     repository: REPOSITORY,
     token: "fixture",
     fetchImpl: http,
@@ -673,6 +742,70 @@ test("the production read transport admits exact PR rechecks and Git commit look
     reader,
   });
   f.args.client = { read: (...args) => client.read(...args), write: f.write };
+  return { client, http };
+}
+test("hundreds of skipped historical stage jobs leave enough of the live lookup budget to retire", async () => {
+  const f = fixture();
+  const attempts = Array.from({ length: 260 }, (_, index) => {
+    const stage = addUnreservedStage(f, 100 + index, "failure");
+    return recordFirstStageAttempt(f, stage, "skipped");
+  });
+  useGitHubReadTransport(f);
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+  expect(f.reads.filter((path) => path.includes("/attempts/1/jobs?"))).toEqual(
+    attempts,
+  );
+});
+test("historical stage pages and live evidence use the same deadline", async () => {
+  let clock = 0;
+  const fetchImpl = jest.fn(async () => new Response("{}", { status: 200 }));
+  const read = createRetentionReader({
+    repository: REPOSITORY,
+    token: "fixture",
+    fetchImpl,
+    now: () => clock,
+    budgetMs: 1000,
+    requestLimit: 2,
+  });
+  const stagePage = "/actions/runs/41/attempts/1/jobs?per_page=100&page=1";
+  clock = 999;
+  await expect(read(stagePage)).resolves.toEqual({});
+  await expect(read("/branches/main")).resolves.toEqual({});
+
+  clock = 1000;
+  for (const path of [stagePage, "/branches/main"]) {
+    await expect(read(path)).rejects.toMatchObject({
+      code: "LOOKUP_LIMIT_EXCEEDED",
+    });
+  }
+  expect(fetchImpl).toHaveBeenCalledTimes(2);
+});
+test("latest job listings still consume the shared mutable lookup quota", async () => {
+  const fetchImpl = jest.fn(async () => new Response("{}", { status: 200 }));
+  const read = createRetentionReader({
+    repository: REPOSITORY,
+    token: "fixture",
+    fetchImpl,
+    requestLimit: 1,
+  });
+
+  await expect(
+    read("/actions/runs/41/attempts/1/jobs?per_page=100&page=1"),
+  ).resolves.toEqual({});
+  await expect(
+    read("/actions/runs/41/jobs?filter=latest&per_page=100&page=1"),
+  ).resolves.toEqual({});
+  await expect(read("/branches/main")).rejects.toMatchObject({
+    code: "LOOKUP_LIMIT_EXCEEDED",
+  });
+  expect(fetchImpl).toHaveBeenCalledTimes(2);
+});
+test("the production read transport rechecks exact PRs and enumerates release refs", async () => {
+  const f = fixture();
+  const taggedCommit = "4".repeat(40);
+  addVersionTag(f, taggedCommit, true);
+  const { client, http } = useGitHubReadTransport(f);
   await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
   expect(f.reads).toEqual(
     expect.arrayContaining([
@@ -680,9 +813,13 @@ test("the production read transport admits exact PR rechecks and Git commit look
       "/pulls/7",
       "/git/matching-refs/tags/owlapi-release-history/",
       "/git/matching-refs/tags/v",
-      "/git/tags/" + "2".repeat(40),
-      "/git/commits/" + taggedCommit,
     ]),
+  );
+  expect(f.args.readVersionTags).toHaveBeenCalledWith([
+    { tag: "v0.1.0-rc.1", objectId: "2".repeat(40) },
+  ]);
+  expect(f.args.readCommits).toHaveBeenCalledWith(
+    expect.arrayContaining([taggedCommit]),
   );
   const count = http.mock.calls.length;
   for (const path of [
@@ -697,6 +834,45 @@ test("the production read transport admits exact PR rechecks and Git commit look
     );
   }
   expect(http).toHaveBeenCalledTimes(count);
+});
+test("hundreds of completed release subjects fit within the GitHub request budget", async () => {
+  const f = fixture();
+  const subjects = Array.from({ length: 260 }, (_, index) =>
+    (index + 1).toString(16).padStart(40, "0"),
+  );
+  f.runs.push(
+    ...subjects.map((sha, index) =>
+      run(100 + index, "workflow_dispatch", sha, { path: releasePath }),
+    ),
+  );
+  useGitHubReadTransport(f);
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+  expect(f.args.readCommits.mock.calls.length).toBeLessThan(4);
+  const commits = f.args.readCommits.mock.calls.flatMap(([shas]) => shas);
+  expect(new Set(commits)).toEqual(new Set([commit, ...subjects]));
+  expect(commits).toHaveLength(subjects.length + 1);
+  expect(f.reads.some((path) => path.startsWith("/git/commits/"))).toBe(false);
+});
+test("hundreds of annotated versions fit within the GitHub request budget", async () => {
+  const f = fixture();
+  const tags = Array.from({ length: 260 }, (_, index) => {
+    const tag = `v0.1.${index}`;
+    const objectId = (1001 + index).toString(16).padStart(40, "0");
+    const subject = (index + 1).toString(16).padStart(40, "0");
+    addVersionTag(f, subject, true, { tag, objectId });
+    return { tag, objectId };
+  });
+  useGitHubReadTransport(f);
+
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+  expect(f.args.readVersionTags.mock.calls.length).toBeLessThan(4);
+  const readTags = f.args.readVersionTags.mock.calls.flatMap(
+    ([batch]) => batch,
+  );
+  expect(readTags).toHaveLength(tags.length);
+  expect(readTags).toEqual(expect.arrayContaining(tags));
+  expect(f.reads.some((path) => path.startsWith("/git/tags/"))).toBe(false);
 });
 test("the first parent of a release landing is outside its pull request claim", async () => {
   const f = fixture();
