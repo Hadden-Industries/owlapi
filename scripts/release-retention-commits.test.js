@@ -67,7 +67,7 @@ function withGitObjects(inspect) {
           "",
         ].join("\n"),
       );
-    inspect({ directory, git, tree, writeCommit, writeTag });
+    inspect({ directory, git, tree, hashObject, writeCommit, writeTag });
   } finally {
     assert.equal(dirname(realpathSync(directory)), root);
     rmSync(directory, { recursive: true, force: true });
@@ -146,5 +146,68 @@ test("bare annotated version objects peel to their actual commits", () => {
         directory,
       }),
     ).toThrow(/annotated tag/i);
+  });
+});
+
+test("only the leading Git parent headers describe a merge", () => {
+  withGitObjects(({ directory, git, tree, hashObject, writeCommit }) => {
+    const base = writeCommit([], "Before landing");
+    const head = writeCommit([base], "PR producer");
+    const extra = writeCommit([], "Another commit");
+    const landing = hashObject(
+      "commit",
+      [
+        "tree " + tree,
+        "parent " + base,
+        "parent " + head,
+        "author Test Author <test@example.test> 1770000000 +0000",
+        "committer Test Author <test@example.test> 1770000000 +0000",
+        "parent " + extra,
+        "",
+        "Imported commit",
+        "",
+      ].join("\n"),
+      true,
+    );
+    expect(git(["rev-list", "--parents", "--max-count=1", landing])).toBe(
+      landing + " " + base + " " + head,
+    );
+    expect(readRetentionGitCommits([landing], { directory })).toEqual([
+      { sha: landing, parents: [{ sha: base }, { sha: head }] },
+    ]);
+  });
+});
+
+test("inherited repository and object-store selectors cannot redirect retention Git reads", () => {
+  withGitObjects(({ directory, writeCommit, writeTag }) => {
+    const commit = writeCommit([], "Selected repository");
+    const tag = {
+      tag: "v0.2.0",
+      objectId: writeTag("v0.2.0", commit, "Selected release"),
+    };
+    withGitObjects(({ directory: other }) => {
+      const overrides = {
+        GIT_DIR: other,
+        GIT_COMMON_DIR: other,
+        GIT_OBJECT_DIRECTORY: join(other, "objects"),
+      };
+      const prior = new Map(
+        Object.keys(overrides).map((key) => [key, process.env[key]]),
+      );
+      try {
+        Object.assign(process.env, overrides);
+        expect(readRetentionGitCommits([commit], { directory })).toEqual([
+          { sha: commit, parents: [] },
+        ]);
+        expect(readRetentionVersionTags([tag], { directory })).toEqual([
+          { ...tag, commit },
+        ]);
+      } finally {
+        for (const [key, value] of prior) {
+          if (value === undefined) delete process.env[key];
+          else process.env[key] = value;
+        }
+      }
+    });
   });
 });

@@ -11,9 +11,19 @@ const { verifyControllerDelta } =
 const source = "a".repeat(40);
 const controller = "b".repeat(40);
 const claimsReader = "scripts/retirement-release-claims.mjs";
+const checkoutControls = [
+  "scripts/release-git-environment.mjs",
+  "scripts/verify-release-tag.mjs",
+];
 
 test.each([
   ["the exact reviewed retention change", [claimsReader], [claimsReader], true],
+  [
+    "the reviewed checkout selection for retention and tag verification",
+    checkoutControls,
+    checkoutControls,
+    true,
+  ],
   [
     "an additional product change",
     [claimsReader, "package.json"],
@@ -24,6 +34,10 @@ test.each([
 ])("controller recovery checks %s", (_case, changed, approved, allowed) => {
   git.mockImplementation((program, args) => {
     expect(program).toBe("git");
+    if (args[0] === "rev-parse") {
+      expect(args).toEqual(["rev-parse", "--local-env-vars"]);
+      return "GIT_DIR\n";
+    }
     if (args[0] === "merge-base") {
       expect(args).toEqual(["merge-base", "--is-ancestor", source, controller]);
       return Buffer.alloc(0);

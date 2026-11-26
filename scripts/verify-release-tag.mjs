@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { checkoutGitEnvironment } from "./release-git-environment.mjs";
 import { randomUUID } from "node:crypto";
 import {
   existsSync,
@@ -120,6 +121,7 @@ const runGit = (cwd, arguments_) => {
     ["--no-replace-objects", "--no-lazy-fetch", ...arguments_],
     {
       cwd,
+      env: checkoutGitEnvironment(cwd),
       encoding: "utf8",
       timeout: 30_000,
       windowsHide: true,

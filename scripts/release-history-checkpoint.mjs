@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
+import { checkoutGitEnvironment } from "./release-git-environment.mjs";
 import { REPOSITORY, REPOSITORY_GIT_URL } from "./release-identity.mjs";
 
 const namespace = "owlapi-release-history/";
@@ -25,7 +26,7 @@ const runGit = (cwd, args, input) =>
     timeout: 30000,
     windowsHide: true,
     stdio: [input === undefined ? "ignore" : "pipe", "pipe", "pipe"],
-    env: { ...process.env, GIT_NO_LAZY_FETCH: "1" },
+    env: checkoutGitEnvironment(cwd),
   });
 const gitAt = (cwd, ...args) => runGit(cwd, args);
 const git = (...args) => gitAt(repositoryRoot, ...args);
@@ -479,13 +480,14 @@ export function readRetentionGitCommits(
         .toString("latin1", 0, boundary)
         .split("\n");
       assert.match(tree, /^tree [0-9a-f]{40}$/u);
-      const parents = fields
-        .filter((field) => field.startsWith("parent "))
-        .map((field) => {
-          const parent = field.slice(7);
-          assert.match(parent, oidPattern);
-          return { sha: parent };
-        });
+      // Git recognizes only consecutive parent headers directly after the tree.
+      const parents = [];
+      for (const field of fields) {
+        if (!field.startsWith("parent ")) break;
+        const parent = field.slice(7);
+        assert.match(parent, oidPattern);
+        parents.push({ sha: parent });
+      }
       records.push({ sha, parents });
       cursor = end + 1;
     }
@@ -788,6 +790,7 @@ export function verifyControllerDelta(
           "scripts/public-registry-consumer.mjs",
           "scripts/public-registry-consumer.test.js",
           "scripts/validate-release-evidence.mjs",
+          "scripts/verify-release-tag.mjs",
           "scripts/workflow-governance.mjs",
           "scripts/workflow-governance.test.js",
         ].includes(p) ||
