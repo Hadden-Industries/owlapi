@@ -33,6 +33,7 @@ const EXPECTED_EXPORTS = Object.freeze({
   model: [
     "ANNOTATION_VALUE_KINDS",
     "AXIOM_KINDS",
+    "AXIOM_KINDS_WITH_SWRL",
     "AddAxiom",
     "AddImport",
     "AddOntologyAnnotation",
@@ -52,6 +53,7 @@ const EXPECTED_EXPORTS = Object.freeze({
     "OWLOntologyWriterConfiguration",
     "OWLStructuralObject",
     "OWL_OBJECT_KINDS",
+    "OWL_OBJECT_KINDS_WITH_SWRL",
     "RemoveAxiom",
     "RemoveImport",
     "RemoveOntologyAnnotation",

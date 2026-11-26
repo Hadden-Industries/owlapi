@@ -113,6 +113,12 @@ const runConsumer = async (page, mode) => {
     expect(document.mergedImportCount).toBe(0);
   }
   expect(result.publicModelFields).toBe(60);
+  expect(result.scopedRule).toEqual({
+    equal: true,
+    variable: "urn:y",
+    label: "browser",
+    individuals: 0,
+  });
   expect(result.writerConfiguration).toEqual({
     modelOnly: true,
     indentSize: 2,

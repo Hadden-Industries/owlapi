@@ -22,6 +22,34 @@ const { exerciseImportClosureStorage, exerciseParserPreservation } =
   createPublicContract(root);
 import closureDocuments from "./import-closure-documents.js";
 
+async function exerciseScopedRule() {
+  const options = { behaviorProfileId: "java-owlapi-5.5.1" };
+  const m = apibinding.OWLManager.createOWLOntologyManager(options);
+  const text =
+    'Ontology(Declaration(Class(<urn:browser:C>)) DLSafeRule(Annotation(<http://www.w3.org/2000/01/rdf-schema#label> "browser") Body(ClassAtom(<urn:browser:C> Variable(<urn:x>))) Head(ClassAtom(<urn:browser:C> Variable(<urn:y>)))))';
+  const original = await m.loadOntologyFromOntologyDocument(
+    new io.StringDocumentSource(text, {
+      format: formats.OWLDocumentFormats.FUNCTIONAL,
+    }),
+  );
+  const [rule] = original.getAxiomsByType("SWRLRule");
+  const target = new io.StringDocumentTarget();
+  await m.saveOntology(original, formats.OWLDocumentFormats.RDF_XML, target);
+  const fresh = apibinding.OWLManager.createOWLOntologyManager(options);
+  const loaded = await fresh.loadOntologyFromOntologyDocument(
+    new io.StringDocumentSource(target.toString(), {
+      format: formats.OWLDocumentFormats.RDF_XML,
+    }),
+    fresh.getOntologyLoaderConfiguration().setStrict(false),
+  );
+  return {
+    equal: loaded.containsAxiom(rule),
+    variable: rule.head[0].argument.iri.value,
+    label: rule.annotations[0].value.lexicalForm,
+    individuals: loaded.getIndividualsInSignature().size,
+  };
+}
+
 const DOCUMENTS = Object.freeze([
   Object.freeze({
     key: "functional",
@@ -383,6 +411,7 @@ export const exerciseInstalledPackage = async () => {
     ),
     importClosure,
     publicModelFields: exercisePublicModelFields(root),
+    scopedRule: await exerciseScopedRule(),
     acquisitionContracts: {
       formats: exerciseFormatConfiguration(root),
       errorKinds: exercisePublicErrors(root),

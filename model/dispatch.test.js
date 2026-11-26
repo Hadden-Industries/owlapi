@@ -10,7 +10,6 @@ import {
   OBJECT_PROPERTY_EXPRESSION_KINDS,
   OWLDataFactory,
   OWLObjectKind,
-  OWL_OBJECT_KINDS,
   OWL_OBJECT_KINDS_WITH_SWRL,
   dispatchClassExpression,
 } from "./index.js";

@@ -98,10 +98,13 @@ import {
 
 export { comparisonCases };
 
+import { matchesScopedRules } from "./comparison-scoped-swrl.mjs";
+
 const repository = fileURLToPath(new URL("../../", import.meta.url));
 const comparisonInputs = [
   "./compare-java-js.mjs",
   "./comparison-cases.mjs",
+  "./comparison-scoped-swrl.mjs",
   "./comparison-ifcowl.mjs",
   "./comparison-rdfxml-expansion.mjs",
   "./ExpandRdfXmlEntities.java",
@@ -689,6 +692,11 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     matchedImportClosure &&
     matchedClosureWitness &&
     matchedOriginalRdfXml &&
+    (!definition.expectedScopedRules ||
+      matchesScopedRules(
+        definition.expectedScopedRules,
+        js.load?.witnesses?.scopedRules,
+      )) &&
     expectedLoad &&
     offline
       ? "observed"
@@ -975,6 +983,7 @@ async function observeCase(
     executionId,
     ...input,
     input: entry.input.id,
+    ...(definition.expectedScopedRules ? { observeScopedRules: true } : {}),
     compareStructure,
     ...(compareLoadedDocuments ? { compareLoadedDocuments } : {}),
     scenario: definition.scenario,

@@ -46,6 +46,63 @@ import {
 import { matchesOriginalRdfXml } from "./comparison-rdfxml-expansion.mjs";
 import { benchmarkSourceDigest } from "./comparison-benchmarks.mjs";
 
+import {
+  scopedRuleExpectation,
+  matchesScopedRules,
+  observeScopedRules,
+} from "./comparison-scoped-swrl.mjs";
+
+test("scoped rule evidence requires the reviewed digest, counts, annotation and head memberships", () => {
+  const profile = {
+    behaviorProfileId: "java-owlapi-5.5.1",
+    parsingMode: "compatible",
+  };
+  const input = {
+    id: "obo-vbo",
+    sha256: "1375af3c0aac025f38c0a8767d0896a4ed189f290041eb58443d22f990b8b157",
+  };
+  const expected = scopedRuleExpectation(
+    input,
+    "direct-load",
+    profile,
+    "recorded",
+  );
+  expect(expected).toMatchObject({ rules: 25, annotated: 13, multiHead: 2 });
+  const rules = Array.from({ length: 25 }, (_, i) => ({
+    kind: "SWRLRule",
+    annotations: i < 13 ? [{}] : [],
+    head: i < 2 ? [{}, {}] : [{}],
+  }));
+  const getAxioms = jest.fn(() => [...rules, { kind: "OWLDeclarationAxiom" }]);
+  const actual = observeScopedRules({ getAxioms }, input.sha256);
+  expect(getAxioms).toHaveBeenCalledTimes(1);
+  expect(matchesScopedRules(expected, actual)).toBe(true);
+  for (const altered of [
+    undefined,
+    { ...actual, rules: 24 },
+    { ...actual, annotated: 12 },
+    { ...actual, multiHead: 0 },
+    { ...actual, sha256: "stale" },
+  ])
+    expect(matchesScopedRules(expected, altered)).toBe(false);
+  expect(() =>
+    scopedRuleExpectation(
+      { ...input, sha256: "other" },
+      "direct-load",
+      profile,
+      "recorded",
+    ),
+  ).toThrow(/digest/);
+  expect(
+    scopedRuleExpectation(
+      input,
+      "direct-load",
+      { ...profile, parsingMode: "strict" },
+      "recorded",
+    ),
+  ).toBeUndefined();
+});
+
 async function withScratch(run) {
   const directory = await mkdtemp(join(tmpdir(), "owlapi-comparison-test-"));
   try {

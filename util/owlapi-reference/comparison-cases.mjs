@@ -6,6 +6,7 @@ import {
   julyComparisonManifest,
 } from "./comparison-fixtures.mjs";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
+import { scopedRuleExpectation } from "./comparison-scoped-swrl.mjs";
 import { pinnedSourceOracle } from "./comparison-oracle.mjs";
 import { configurationComparisonCases } from "./comparison-configuration.mjs";
 import { mutationComparisonCases } from "./comparison-mutation.mjs";
@@ -666,9 +667,16 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           : exactMappedIfcowlInputs && !strictFirst && !expectedLoadRefusals
             ? ifcowlImportClosure("mapped")
             : undefined;
+        const expectedScopedRules = scopedRuleExpectation(
+          input,
+          scenario,
+          profile,
+          policy,
+        );
         const definition = {
           schemaVersion: 1,
           scenario,
+          ...(expectedScopedRules ? { expectedScopedRules } : {}),
           scenarioVersion: scenario === "direct-load" ? 1 : 2,
           observationPoint:
             scenario === "strict-first"

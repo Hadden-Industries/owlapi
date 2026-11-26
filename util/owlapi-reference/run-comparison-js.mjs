@@ -30,6 +30,8 @@ import {
 } from "./comparison-jsonld.mjs";
 import { observeTransport } from "./comparison-transport.mjs";
 
+import { observeScopedRules } from "./comparison-scoped-swrl.mjs";
+
 const iriValue = (iri) => iri?.value ?? null;
 const ontologyIdentity = (ontology) => ({
   ontologyIRI: iriValue(ontology.getOntologyID().ontologyIRI),
@@ -844,7 +846,9 @@ async function observe(request, directory) {
       documentIRI: iriValue(context.documentIRI),
       diagnostics: JSON.parse(JSON.stringify(context.diagnostics ?? [])),
     })),
-    witnesses: cgmesWitnesses(ontology, request.input),
+    witnesses: request.observeScopedRules
+      ? { scopedRules: observeScopedRules(ontology, request.document.sha256) }
+      : cgmesWitnesses(ontology, request.input),
   };
   await publishComparisonJson(directory, "js-source-load.json", result);
   if (request.compareStructure && request.scenario === "closure-roundtrip") {
