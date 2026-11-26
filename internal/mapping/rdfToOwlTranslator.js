@@ -43,6 +43,7 @@ import {
   XSD_NAMESPACE,
   SWRL_NAMESPACE,
   SWRL_VOCABULARY as SWRL,
+  isSwrlStructuralProperty,
 } from "../rdfjs/vocabulary.js";
 
 const COOPERATIVE_YIELD_INTERVAL_MS = 50;
@@ -1743,6 +1744,13 @@ class RdfGraphInterpreter {
         continue;
       }
       const objectValue = currentQuad.object.value;
+      if (
+        this.#supportsScopedSwrl &&
+        includeAxiomAnnotations &&
+        objectValue === SWRL.Variable &&
+        currentQuad.subject.termType === "NamedNode"
+      )
+        this.#consume(currentQuad);
       if (
         this.#supportsScopedSwrl &&
         includeAxiomAnnotations &&
@@ -5276,8 +5284,15 @@ class RdfGraphInterpreter {
           predicate === SWRL.head
         )
           continue;
-        if (predicate.startsWith(SWRL_NAMESPACE))
+        if (isSwrlStructuralProperty(predicate))
           this.#unsupportedRuleMember(predicate, subject);
+        if (
+          !this.#annotationPropertyIris.has(predicate) &&
+          (predicate.startsWith(OWL_NAMESPACE) ||
+            predicate.startsWith(RDFS_NAMESPACE) ||
+            predicate.startsWith(RDF_NAMESPACE))
+        )
+          continue;
         if (
           this.#objectPropertyIris.has(predicate) ||
           this.#dataPropertyIris.has(predicate)
@@ -5347,14 +5362,28 @@ class RdfGraphInterpreter {
       this.#unsupportedRuleMember(type, atom);
     claimed.push(types[0]);
     const isClass = type === SWRL.ClassAtom;
+    const predicateField = isClass
+      ? SWRL.classPredicate
+      : SWRL.propertyPredicate;
+    for (const row of this.#outgoing(atom)) {
+      const p = row.predicate.value;
+      if (
+        isSwrlStructuralProperty(p) &&
+        p !== predicateField &&
+        p !== SWRL.argument1 &&
+        (isClass || p !== SWRL.argument2)
+      )
+        throw new OWLSyntaxError("Unexpected field on a SWRL atom", {
+          subject: atom.value,
+          predicate: p,
+        });
+    }
     const field = (predicate) => {
       const row = this.#exactlyOne(atom, predicate);
       claimed.push(row);
       return row.object;
     };
-    const predicate = field(
-      isClass ? SWRL.classPredicate : SWRL.propertyPredicate,
-    );
+    const predicate = field(predicateField);
     if (predicate.termType !== "NamedNode")
       this.#unsupportedRuleMember("SWRLComplexPredicate", atom);
     const variable = (property) => {
@@ -5367,7 +5396,6 @@ class RdfGraphInterpreter {
             row.object.value === SWRL.Variable,
         )[0];
       if (!decl) this.#unsupportedRuleMember("SWRLConstant", atom);
-      claimed.push(decl);
       return swrlVariable(this.#iri.create(arg.value));
     };
     const iri = this.#iri.create(predicate.value);

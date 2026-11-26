@@ -369,6 +369,8 @@ export class OWLStructuralObject {
     structuralPrototype = this.prototype;
     nativeStructuralMethods = Object.freeze({
       structuralKey: this.prototype.structuralKey,
+      structuralKeyWithoutAnnotations:
+        this.prototype.structuralKeyWithoutAnnotations,
       toStructuralTuple: this.prototype.toStructuralTuple,
     });
     const branded = (value) =>
@@ -765,6 +767,11 @@ const copyAxiomAnnotations = (axiom, annotations) => {
     if (item.kind !== OWLObjectKind.ANNOTATION) {
       throw new TypeError("annotations must contain OWL annotations");
     }
+    if (
+      axiom.kind === OWLObjectKind.SWRL_RULE &&
+      (item.annotations.length || item.value.kind !== OWLObjectKind.LITERAL)
+    )
+      throw new TypeError("Expected a direct literal rule annotation");
   }
   return allocateFactoryObject(axiom, normalized, undefined, undefined, COPY);
 };

@@ -25,6 +25,22 @@ export const XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
 export const XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
 export const XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
 
+const swrlStructuralProperties = new Set(
+  [
+    "body",
+    "head",
+    "classPredicate",
+    "propertyPredicate",
+    "dataRange",
+    "builtin",
+    "arguments",
+    "argument1",
+    "argument2",
+  ].map((name) => SWRL_NAMESPACE + name),
+);
+export const isSwrlStructuralProperty = (iri) =>
+  swrlStructuralProperties.has(iri);
+
 /** Parsers copy these facts into independent mutable prefix maps. */
 export const STANDARD_PARSER_PREFIXES = Object.freeze({
   "owl:": OWL_NAMESPACE,

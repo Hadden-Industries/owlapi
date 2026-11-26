@@ -1,6 +1,7 @@
 import {
   OWLManager,
   OWLDataFactory,
+  OWLStructuralObject,
   OWLDocumentFormats,
   StringDocumentSource,
   StringDocumentTarget,
@@ -439,3 +440,105 @@ test("cancellation during atom reconstruction discards the pending document", as
   }
   expect(ruleOf(await read(manager, cases.get("simple")))).toBeDefined();
 });
+
+test.each(["empty-rdf", "shared-list"])(
+  "%s consumes unused variable types without adding individuals",
+  async (id) => {
+    const o = await read(createManager(), cases.get(id));
+    expect(o.getAxiomCount()).toBe(4);
+    expect([...o.getIndividualsInSignature()]).toEqual([]);
+  },
+);
+
+test("named rule subjects retain their separate ordinary assertions", async () => {
+  const sample = cases.get("simple");
+  const text = sample.text
+    .replace("<swrl:Imp>", '<swrl:Imp rdf:about="urn:named-rule">')
+    .replace(
+      "</rdf:RDF>",
+      '<owl:NamedIndividual rdf:about="urn:named-rule"><owl:sameAs rdf:resource="urn:alias"/></owl:NamedIndividual></rdf:RDF>',
+    );
+  const o = await read(createManager(), { ...sample, text });
+  expect(ruleOf(o)).toBeDefined();
+  expect(o.getAxiomsByType("OWLSameIndividualAxiom").size).toBe(1);
+});
+
+test("an extra argument on a unary atom is a syntax error", async () => {
+  const sample = cases.get("simple");
+  const text = sample.text.replace(
+    "</swrl:ClassAtom>",
+    '<swrl:argument2 rdf:resource="urn:swrl:var#x"/></swrl:ClassAtom>',
+  );
+  await expect(
+    read(createManager(), { ...sample, text }),
+  ).rejects.toMatchObject({
+    code: "OWL_SYNTAX_ERROR",
+    predicate: "http://www.w3.org/2003/11/swrl#argument2",
+  });
+});
+
+test("explicit rule fields and both supplied identities must agree on admission", async () => {
+  const m = createManager(),
+    o = await read(m, cases.get("simple")),
+    r = ruleOf(o);
+  const parts = r.toStructuralTuple().slice(1),
+    sides = parts.slice(0, 2);
+  const build = (body, canon) =>
+    new OWLStructuralObject(
+      "SWRLRule",
+      { body, head: r.head, annotations: r.annotations },
+      parts,
+      { componentsWithoutAnnotations: canon },
+    );
+  for (const bad of [
+    build(Object.freeze([...r.body, ...r.body]), sides),
+    build(r.body, []),
+  ])
+    expect(() => m.addAxiom(o, bad)).toThrow();
+  const df = m.getOWLDataFactory(),
+    property = df.getOWLAnnotationProperty(IRI.create("urn:note"));
+  expect(() =>
+    r.getAnnotatedAxiom([
+      df.getOWLAnnotation(property, IRI.create("urn:target")),
+    ]),
+  ).toThrow(/direct literal/u);
+});
+
+test.each([OWLDocumentFormats.RDF_XML, OWLDocumentFormats.TURTLE])(
+  "RDF writes distinguish annotation IRIs and structural predicates in the same namespace (%o)",
+  async (format) => {
+    const m = createManager(),
+      src = cases.get("simple-functional");
+    const iri = "http://www.w3.org/2003/11/swrl#reviewTag";
+    const source = (p) => ({
+      ...src,
+      text: src.text.replace(
+        "DLSafeRule(",
+        "Declaration(AnnotationProperty(<" +
+          p +
+          ">)) DLSafeRule(Annotation(<" +
+          p +
+          '> "reviewed") ',
+      ),
+    });
+    const o = await read(m, source(iri)),
+      target = new StringDocumentTarget();
+    await m.saveOntology(o, format, target);
+    const fresh = createManager();
+    const reloaded = await fresh.loadOntologyFromOntologyDocument(
+      new StringDocumentSource(target.toString(), { format }),
+      fresh.getOntologyLoaderConfiguration().setStrict(false),
+    );
+    expect(ruleOf(reloaded).equals(ruleOf(o))).toBe(true);
+    const other = createManager(),
+      colliding = await read(
+        other,
+        source("http://www.w3.org/2003/11/swrl#body"),
+      );
+    const previous = target.toString();
+    await expect(
+      other.saveOntology(colliding, format, target),
+    ).rejects.toMatchObject({ reason: "ONTOLOGY_NOT_REPRESENTABLE" });
+    expect(target.toString()).toBe(previous);
+  },
+);

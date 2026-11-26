@@ -164,6 +164,15 @@ const validateExplicitStructure = (value, factory) => {
         : factory[`get${value.kind}`](...args);
     }
     if (key(rebuilt) !== key(value)) return fail();
+    if (
+      value.kind === K.SWRL_RULE &&
+      (value.body.length !== rebuilt.body.length ||
+        value.head.length !== rebuilt.head.length ||
+        value.annotations.length !== rebuilt.annotations.length ||
+        nativeStructuralMethods.structuralKeyWithoutAnnotations.call(value) !==
+          nativeStructuralMethods.structuralKeyWithoutAnnotations.call(rebuilt))
+    )
+      return fail();
     if (validatedShapes.has(value)) validatedStructureNodes.add(value);
   } catch (error) {
     if (

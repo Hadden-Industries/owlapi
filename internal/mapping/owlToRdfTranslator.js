@@ -1,5 +1,8 @@
 import { repeatSingleton } from "../model/setConstructs.js";
-import { ResourceLimitError } from "../../io/errors.js";
+import {
+  OWLOntologyStorageError,
+  ResourceLimitError,
+} from "../../io/errors.js";
 import {
   ANNOTATION_VALUE_KINDS,
   AXIOM_KINDS,
@@ -31,6 +34,7 @@ import {
   RDFS_VOCABULARY,
   XSD_VOCABULARY,
   SWRL_VOCABULARY as SWRL,
+  isSwrlStructuralProperty,
 } from "../rdfjs/vocabulary.js";
 
 import { RDF_GRAPH_TERM_TYPES } from "../rdfjs/termPolicy.js";
@@ -1005,6 +1009,20 @@ class TranslationSession {
   }
 
   #mapSwrlRule(rule) {
+    for (const annotation of rule.annotations) {
+      const predicate = annotation.property.iri.value;
+      if (
+        predicate === RDF_VOCABULARY.type ||
+        isSwrlStructuralProperty(predicate)
+      )
+        throw new OWLOntologyStorageError(
+          "A rule annotation collides with an RDF structural predicate",
+          {
+            reason: "ONTOLOGY_NOT_REPRESENTABLE",
+            predicate,
+          },
+        );
+    }
     const node = this.#typedBlankNode(SWRL.Imp);
     const variable = (argument) => {
       const iri = this.#namedNode(argument.iri.value);
