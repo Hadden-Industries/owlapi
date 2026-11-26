@@ -2,7 +2,7 @@
  * Native metadata may be recovered only from the admitted history checkpoint. */
 import assert from "node:assert/strict";
 import { readControllerBlob } from "./release-controller-blob.mjs";
-import { crc32 } from "node:zlib";
+import * as zlib from "node:zlib";
 import { canonicalJson } from "./canonical-json.mjs";
 import { readRunArtifacts } from "./github-evidence-reader.mjs";
 import { sameJobExecution } from "./github-job-execution.mjs";
@@ -17,6 +17,7 @@ import {
 import { verifyReleaseAuditReceipt } from "./release-audit-evaluator.mjs";
 import { UBUNTU, ubuntuRunner } from "./ubuntu-runner.mjs";
 import { advisoryCasePath } from "./release-audit-cases.mjs";
+import { auditSigstoreRootPath } from "./release-audit-evaluator-sigstore.mjs";
 
 const positive = (n) => Number.isSafeInteger(n) && n > 0;
 const digest = (v) => typeof v === "string" && /^[a-f0-9]{64}$/u.test(v);
@@ -41,6 +42,7 @@ export function auditPolicySha256(controller) {
     "scripts/release-audit-evaluator-sigstore.mjs",
     "scripts/release-audit-cases.mjs",
     advisoryCasePath,
+    auditSigstoreRootPath,
     ".github/workflows/release-audit-evaluator.yml",
   ];
   const originals = paths.map((path) => {
@@ -325,16 +327,26 @@ export async function verifyHostedAdvisoryReceipt({
   entries,
   now = Date.now(),
   npmCli,
+  publicRecipientTest = false,
 }) {
+  assert.equal(typeof publicRecipientTest, "boolean");
+  if (publicRecipientTest)
+    assert.equal(
+      workflow,
+      ".github/workflows/release-registry.yml",
+      "Only a public test can admit an advisory before its enclosing run completes",
+    );
   const proofKey = "audit-origin-" + runId + "-" + attempt + ".json";
-  const stored = checkpoint?.files.get(proofKey);
+  const stored = publicRecipientTest
+    ? undefined
+    : checkpoint?.files.get(proofKey);
   const saved = stored && JSON.parse(stored);
   const expected = { workflow, controller, runId, attempt };
   const run = await originalOrSaved(
     () => client.read("/actions/runs/" + runId),
     saved?.run,
   );
-  assertProtectedReleaseRun(run, expected);
+  assertProtectedReleaseRun(run, expected, publicRecipientTest);
   const latest = await originalOrSaved(
     () => releaseJobs(client, runId),
     saved && [saved.job],
@@ -397,7 +409,9 @@ export async function verifyHostedAdvisoryReceipt({
   }
   assertTimedUpload(artifact, run, job, logical, uploadStep);
   assert.ok(artifact.size_in_bytes <= maxReceiptZip);
-  const retained = checkpoint?.files.get("artifact-" + artifact.id + ".zip");
+  const retained = publicRecipientTest
+    ? undefined
+    : checkpoint?.files.get("artifact-" + artifact.id + ".zip");
   const zip = artifact.expired
     ? retained
     : await originalOrSaved(
@@ -411,7 +425,7 @@ export async function verifyHostedAdvisoryReceipt({
     "Missing or changed original advisory ZIP",
   );
   const members = readZipArchiveFilesWith(zip, {
-    crc32,
+    crc32: zlib.crc32,
     expectedNames: new Set(auditReceiptFilenames),
     maximumUncompressedBytes: maxReceiptZip,
   });

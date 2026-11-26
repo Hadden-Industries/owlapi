@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import assert from "node:assert/strict";
 import {
   appendFileSync,
   mkdirSync,
@@ -13,12 +14,21 @@ import { pathToFileURL } from "node:url";
 import { PACKAGE_NAME, assertPackageIdentity } from "./package-identity.mjs";
 import {
   INSTALLED_TEST_SCRIPTS,
+  installedConsumerEnvironment,
   writeInstalledConsumerFixtures,
 } from "./installed-consumer-fixtures.mjs";
 
 import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
-import { prepareTarballConsumer } from "./release-consumer-evidence.mjs";
+import {
+  captureResolutionEvidence,
+  prepareReplayedTarballConsumer,
+  prepareTarballConsumer,
+} from "./release-consumer-evidence.mjs";
 import { qualifyCiConsumerInstall } from "./ci-recipient-attribution.mjs";
+import { jsonEquals, stableJson } from "./canonical-json.mjs";
+import { publicRegistryEnvironment } from "./public-registry-consumer.mjs";
+import { writeStandalonePortabilityProof } from "./standalone-portability-proof.mjs";
+import { currentResolutionPlatform } from "./release-consumer-resolution.mjs";
 
 const valueAfter = (name) => {
   const index = process.argv.indexOf(name);
@@ -74,7 +84,7 @@ export async function qualifyInstalledCandidate({
     const result = spawnSync(process.execPath, arguments_, {
       cwd: options.cwd ?? temporaryRoot,
       encoding: "utf8",
-      env: options.env ?? process.env,
+      env: installedConsumerEnvironment(options.env),
       maxBuffer: 128 * 1024 * 1024,
       timeout: 10 * 60_000,
       windowsHide: true,
@@ -96,23 +106,48 @@ export async function qualifyInstalledCandidate({
       ["alias", "owlapi"],
       ["scoped", PACKAGE_NAME],
     ]) {
+      const role = `portability-${mode}`;
+      const recovery =
+        process.platform === "darwin" &&
+        process.env.RECIPIENT_MATERIAL_CHECKPOINT
+          ? await (
+              await import("./macos-material-readmission.mjs")
+            ).loadMacRecipientMeasurements({
+              tarball,
+              npmCli,
+              role,
+              platform: currentResolutionPlatform(npmCli),
+            })
+          : undefined;
       const consumerDirectory = join(temporaryRoot, mode);
       mkdirSync(consumerDirectory);
-      prepareTarballConsumer(
-        consumerDirectory,
-        admittedTarball,
-        dependencyName,
-        {
-          name: "owlapi-portability-consumer",
-          version: "0.0.0",
-          private: true,
-          type: "module",
-        },
-      );
+      if (recovery?.evidence) {
+        assert.equal(
+          recovery.evidence.resolution.dependencyName,
+          dependencyName,
+        );
+        prepareReplayedTarballConsumer(
+          consumerDirectory,
+          tarball,
+          recovery.evidence,
+        );
+      } else
+        prepareTarballConsumer(
+          consumerDirectory,
+          admittedTarball,
+          dependencyName,
+          {
+            name: "owlapi-portability-consumer",
+            version: "0.0.0",
+            private: true,
+            type: "module",
+          },
+        );
+      const environment = publicRegistryEnvironment(consumerDirectory);
       run(
         [
           npmCli,
-          "install",
+          recovery?.evidence ? "ci" : "install",
           "--engine-strict",
           "--ignore-scripts",
           "--package-lock",
@@ -123,6 +158,7 @@ export async function qualifyInstalledCandidate({
         ],
         {
           cwd: consumerDirectory,
+          env: environment,
           label: "portable retained-tarball install",
         },
       );
@@ -144,23 +180,39 @@ export async function qualifyInstalledCandidate({
         tarball,
         npmCli,
         dependencyName,
-        role: `portability-${mode}`,
+        role,
         verifyConsumerEvidence,
         candidate,
+        expectedEvidence: recovery?.evidence,
+        trustedArchiveMeasurements: recovery?.trustedArchiveMeasurements,
+        archiveMeasurementAuthorization: recovery?.archiveMeasurements,
         decisionDirectory: join(dirname(outputPath), "eligibility"),
       });
       writeInstalledConsumerFixtures(consumerDirectory, dependencyName);
       for (const testScript of INSTALLED_TEST_SCRIPTS) {
         run([testScript], {
           cwd: consumerDirectory,
+          env: environment,
           label: `portable ${testScript}`,
         });
       }
+      const after = await captureResolutionEvidence(consumerDirectory, {
+        tarball,
+        npmCli,
+        dependencyName,
+      });
+      assert.ok(
+        jsonEquals(after, attribution.evidence),
+        `Portable ${mode} exercised a different installed graph`,
+      );
       consumers[mode] = {
         mode: "LOCAL_TARBALL",
         dependencyName,
         installedTests: INSTALLED_TEST_SCRIPTS,
         attribution,
+        afterExecutionSha256: sha256Buffer(
+          Buffer.from(stableJson(after.resolution)),
+        ),
       };
     }
     const result = {
@@ -178,6 +230,7 @@ export async function qualifyInstalledCandidate({
       consumers,
     };
     writeFileSync(outputPath, `${JSON.stringify(result, null, 2)}\n`, "utf8");
+    writeStandalonePortabilityProof(result, dirname(outputPath));
     return result;
   } finally {
     // Recursive cleanup is restricted to the unique validated runner-temp child.

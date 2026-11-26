@@ -35,12 +35,13 @@ assert.match(process.env.OWLAPI_CANDIDATE_ID, /^[1-9]\d*$/u);
 assert.match(process.env.OWLAPI_CANDIDATE_DIGEST, /^sha256:[a-f0-9]{64}$/u);
 const output = ".release/runtime-report";
 mkdirSync(output, { recursive: true });
-const run = (args, timeout) => {
+const run = (args, timeout, env = process.env) => {
   const result = spawnSync(process.execPath, args, {
     stdio: "inherit",
     shell: false,
     windowsHide: true,
     timeout,
+    env,
   });
   if (result.error) throw result.error;
   assert.equal(
@@ -50,8 +51,23 @@ const run = (args, timeout) => {
   );
 };
 // Linux source tests supplement the package behavior exercised on every platform.
-if (lane.os === "linux")
-  run(["scripts/consumer-runtime-tools.mjs", "product"], 45 * 60_000);
+if (lane.os === "linux") {
+  const productEnvironment = { ...process.env };
+  for (const name of [
+    "GH_TOKEN",
+    "GITHUB_TOKEN",
+    "NODE_AUTH_TOKEN",
+    "NPM_TOKEN",
+    "ACTIONS_ID_TOKEN_REQUEST_TOKEN",
+    "ACTIONS_ID_TOKEN_REQUEST_URL",
+  ])
+    delete productEnvironment[name];
+  run(
+    ["scripts/consumer-runtime-tools.mjs", "product"],
+    45 * 60_000,
+    productEnvironment,
+  );
+}
 run(
   [
     "scripts/qualify-installed-candidate.mjs",

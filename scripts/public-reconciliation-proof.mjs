@@ -16,11 +16,17 @@ import { sha256Buffer } from "./release-file-utils.mjs";
 import { INSTALLED_TEST_SCRIPTS } from "./installed-consumer-fixtures.mjs";
 import { assertConsistentArchives } from "./release-resolution-proof.mjs";
 import { prepareRecipientMaterial } from "../util/third-party-evidence/recipient-material.mjs";
+import { verifyQualifiedRecipientMaterial } from "./recipient-material-case-readmission.mjs";
+import { unpackPublicMaterial } from "./public-material-packet.mjs";
+import { assertPublicAdvisoryDescriptor } from "./public-recipient-plan.mjs";
+import { verifyHostedAdvisoryReceipt } from "./release-audit-job.mjs";
+import { advisoryDecisionExpiry } from "./release-audit-evaluator.mjs";
 import {
   assertPublicMaterialDecision,
   PUBLIC_MATERIAL,
   PUBLIC_OBSERVATION,
   PUBLIC_TEST,
+  publicPlatform,
   readPublicObservation,
 } from "./public-recipient-observation.mjs";
 
@@ -301,22 +307,7 @@ const observationJob = (lane) =>
   `Public observation (${lane.runner}, ${lane.node})`;
 const testJob = (lane) => `Public recipient (${lane.runner}, ${lane.node})`;
 
-async function readObservationBatch(
-  client,
-  checkpoint,
-  operation,
-  matrix,
-  input,
-  { tarball, npmCli, pinnedReport, complete = false, pendingLane },
-) {
-  assert.equal(input.schemaVersion, 2);
-  const reader = await openPublicRun(
-    client,
-    checkpoint,
-    operation,
-    complete,
-    pendingLane !== undefined,
-  );
+async function readRegistryProof(reader, operation, input, pinnedReport) {
   const registry = await reader.artifact({
     job: "registry",
     runner: sampleRunner,
@@ -347,6 +338,31 @@ async function readObservationBatch(
   assert.equal(
     report.coordinate,
     `${input.package.name}@${input.package.version}`,
+  );
+  return { registry, report, reportBytes };
+}
+
+async function readObservationBatch(
+  client,
+  checkpoint,
+  operation,
+  matrix,
+  input,
+  { tarball, npmCli, pinnedReport, complete = false, pendingLane },
+) {
+  assert.equal(input.schemaVersion, 2);
+  const reader = await openPublicRun(
+    client,
+    checkpoint,
+    operation,
+    complete,
+    pendingLane !== undefined,
+  );
+  const { registry, report, reportBytes } = await readRegistryProof(
+    reader,
+    operation,
+    input,
+    pinnedReport,
   );
   const selected = {};
   const lanes =
@@ -435,7 +451,7 @@ export async function readPendingPublicObservation(
 }
 
 export function readMaterialPacket(bytes, input, runOrigin) {
-  const material = parse(bytes);
+  const material = unpackPublicMaterial(parse(bytes));
   assert.deepEqual(Object.keys(material).sort(), [
     "input",
     "lanes",
@@ -492,8 +508,17 @@ export function readMaterialLane(
 
 export function assertPublicTestRecord(
   record,
-  { lane, input, testSource, observation: selected, materialSha256, decisions },
+  {
+    lane,
+    input,
+    testSource,
+    observation: selected,
+    materialSha256,
+    decisions,
+    advisory,
+  },
 ) {
+  assertPublicAdvisoryDescriptor(advisory);
   assert.deepEqual(record, {
     schemaVersion: 2,
     lane,
@@ -501,6 +526,7 @@ export function assertPublicTestRecord(
     origin: origin(testSource),
     observation: selected.artifact,
     materialSha256,
+    advisory,
     consumers: Object.fromEntries(
       Object.entries(selected.consumers).map(([mode, observation]) => [
         mode,
@@ -551,16 +577,177 @@ export async function readPublicTestInputs(
       origin: origin(selected.source),
     },
   );
-  const { decisions } = readMaterialLane(material, lane, {
+  const { decisions, records } = readMaterialLane(material, lane, {
     ...selected,
     consumers,
   });
+  let materialReader;
+  for (const [mode, record] of Object.entries(records)) {
+    if (!record.decision.rights) continue;
+    materialReader ??= await prepareRecipientMaterial({ npmCli });
+    await verifyPublicMaterialRecord(materialReader, record, consumers[mode], {
+      client,
+      npmCli,
+      input,
+      lane,
+      mode,
+      sourceCommit: runOrigin.commit,
+    });
+  }
   return {
     consumers,
     decisions,
     observation: selected.artifact,
     materialSha256: sha256Buffer(materialBytes),
   };
+}
+
+const readOriginalMaterial = (reader, operation) =>
+  reader.artifact({
+    job: "material",
+    runner: sampleRunner,
+    prefix: `public-material-${operation.publicRun}-`,
+    step: "Retain public material decisions",
+    members: [PUBLIC_MATERIAL],
+  });
+
+function materialAuditEntries(material, input, matrix, operation) {
+  assert.deepEqual(
+    Object.keys(material.lanes).sort(),
+    matrix.include.map(publicLaneKey).sort(),
+  );
+  const entries = new Map();
+  for (const lane of matrix.include) {
+    const { source, decisions } = material.lanes[publicLaneKey(lane)];
+    assert.equal(source.commit, operation.publicController);
+    assert.equal(String(source.runId), operation.publicRun);
+    assert.equal(source.repositoryId, REPOSITORY_ID);
+    assert.ok(
+      positive(source.attempt) &&
+        source.attempt <= Number(operation.publicAttempt),
+    );
+    assert.deepEqual(Object.keys(decisions).sort(), ["alias", "scoped"]);
+    for (const [mode, key] of Object.entries(decisions)) {
+      assert.match(key, hex);
+      const bytes = material.originals[key];
+      assert.equal(typeof bytes, "string");
+      assert.equal(sha256Buffer(Buffer.from(bytes)), key);
+      const decision = JSON.parse(bytes);
+      assert.equal(decision.role, `public-${mode}`);
+      assert.equal(decision.result, "PASS");
+      const { subject } = decision;
+      assert.equal(subject.tarballSha256, input.tarballSha256);
+      assert.equal(subject.role, "recipient");
+      assert.equal(subject.scope, "production");
+      assert.deepEqual(subject.platform, {
+        ...publicPlatform(lane),
+        npm: CI_RUNTIME.consumerNpm,
+      });
+      const entry = { source, subject };
+      entries.set(canonicalJson(entry), entry);
+    }
+  }
+  return [...entries.values()];
+}
+
+/** Canonical same-job pretest readback. The floor process only consumes this exact plan. */
+export async function admitPublicRecipientReplay(
+  client,
+  checkpoint,
+  operation,
+  matrix,
+  input,
+  { tarball, npmCli, consumerNpmCli, lane },
+) {
+  const reader = await openPublicRun(client, checkpoint, operation);
+  const { report } = await readRegistryProof(reader, operation, input);
+  const retained = await readOriginalMaterial(reader, operation);
+  const materialBytes = retained.files.get(PUBLIC_MATERIAL);
+  const runOrigin = requestedOrigin(operation);
+  const material = readMaterialPacket(materialBytes, input, runOrigin);
+  assert.deepEqual(material.origin, origin(retained.source));
+  const entries = materialAuditEntries(material, input, matrix, operation);
+  const matched = await readPublicTestInputs(client, materialBytes, {
+    lane,
+    input,
+    origin: runOrigin,
+    tarball,
+    npmCli: consumerNpmCli,
+    registryTarball: report.tarballUrl,
+  });
+  const verified = await verifyHostedAdvisoryReceipt({
+    client,
+    checkpoint,
+    runId: operation.publicRun,
+    attempt: operation.publicAttempt,
+    controller: operation.publicController,
+    workflow: filename,
+    entries,
+    npmCli,
+    publicRecipientTest: true,
+  });
+  await reader.confirm();
+  const expiresAt = advisoryDecisionExpiry(verified.decision);
+  assert.ok(
+    Date.now() < expiresAt,
+    "The public advisory decision expired during replay admission",
+  );
+  return {
+    schemaVersion: 1,
+    lane,
+    input,
+    origin: runOrigin,
+    registryTarball: report.tarballUrl,
+    observation: matched.observation,
+    materialSha256: matched.materialSha256,
+    advisory: verified.descriptor,
+    expiresAt,
+    consumers: Object.fromEntries(
+      Object.entries(matched.consumers).map(([mode, value]) => [
+        mode,
+        {
+          manifest: value.evidence.manifest,
+          lock: value.evidence.lock,
+          resolutionSha256: value.resolutionSha256,
+          decisionSha256: matched.decisions[mode],
+        },
+      ]),
+    ),
+  };
+}
+
+/** Independent rights readback uses the actual observed product lane and stage. */
+export function verifyPublicMaterialRecord(
+  reader,
+  { decision, material },
+  observed,
+  { client, npmCli, input, lane, mode, sourceCommit, archived },
+) {
+  return verifyQualifiedRecipientMaterial(
+    reader,
+    {
+      recordBytes: Buffer.from(material),
+      recordSha256: decision.materialSha256,
+      resolution: observed.evidence.resolution,
+      lockfileBytes: observed.original.lockBytes,
+    },
+    {
+      client,
+      npmCli,
+      rights: decision.rights,
+      archived,
+      scope: {
+        evidence: observed.evidence,
+        role: `public-${mode}`,
+        sourceCommit,
+        caseContext: {
+          kind: "PUBLIC_OBSERVATION",
+          stage: input,
+          lane: publicLaneKey(lane),
+        },
+      },
+    },
+  );
 }
 
 /** Reconstruct the independently measured advisory subjects from successful public jobs. */
@@ -580,13 +767,7 @@ export async function readPublicAuditSubjects(
     input,
     options,
   );
-  const retained = await batch.reader.artifact({
-    job: "material",
-    runner: sampleRunner,
-    prefix: `public-material-${operation.publicRun}-`,
-    step: "Retain public material decisions",
-    members: [PUBLIC_MATERIAL],
-  });
+  const retained = await readOriginalMaterial(batch.reader, operation);
   const retainedBytes = retained.files.get(PUBLIC_MATERIAL);
   const material = readMaterialPacket(
     retainedBytes,
@@ -605,6 +786,7 @@ export async function readPublicAuditSubjects(
   const sources = new Map(),
     files = new Map(),
     native = {};
+  const testAdvisories = [];
   for (const lane of matrix.include) {
     const key = publicLaneKey(lane);
     const selected = batch.selected[key];
@@ -625,18 +807,26 @@ export async function readPublicAuditSubjects(
             Date.parse(retained.execution.completedAt),
         "Public material decision is outside its original execution",
       );
-      await materialReader.verifyRetained({
-        recordBytes: Buffer.from(bytes),
-        recordSha256: decision.materialSha256,
-        resolution: observed.evidence.resolution,
-        lockfileBytes: observed.original.lockBytes,
-      });
+      await verifyPublicMaterialRecord(
+        materialReader,
+        { decision, material: bytes },
+        observed,
+        {
+          client,
+          npmCli: options.npmCli,
+          input,
+          lane,
+          mode,
+          sourceCommit: operation.publicController,
+        },
+      );
       const entry = { source: selected.source, subject: observed.subject };
       sources.set(canonicalJson(entry), {
         entry,
         original: { ...observed.original, source: selected.source },
       });
     }
+    if (!options.complete) continue;
     const tested = await batch.reader.artifact({
       job: testJob(lane),
       runner: lane.runner,
@@ -646,6 +836,11 @@ export async function readPublicAuditSubjects(
     });
     const testedBytes = tested.files.get(PUBLIC_TEST);
     const record = parse(testedBytes);
+    assertPublicAdvisoryDescriptor(record.advisory);
+    testAdvisories.push({
+      descriptor: record.advisory,
+      startedAt: tested.execution.startedAt,
+    });
     assert.ok(
       Date.parse(tested.execution.startedAt) >=
         Date.parse(retained.execution.completedAt),
@@ -658,6 +853,7 @@ export async function readPublicAuditSubjects(
       observation: selected,
       materialSha256: sha256Buffer(retainedBytes),
       decisions,
+      advisory: record.advisory,
     });
     files.set(`public-recipient-${key}.json`, testedBytes);
     native[key] = {
@@ -673,24 +869,36 @@ export async function readPublicAuditSubjects(
     "Unrequested public material original",
   );
   await batch.reader.confirm();
-  const originals = Object.assign(
-    {},
-    ...Object.values(batch.selected).map(({ packet }) => packet.originals),
+  assert.deepEqual(
+    [...sources.keys()].sort(),
+    materialAuditEntries(material, input, matrix, operation)
+      .map(canonicalJson)
+      .sort(),
+    "Material and observed advisory subjects differ",
   );
-  files.set(
-    "public-native.json",
-    Buffer.from(
-      stableJson({
-        schemaVersion: 2,
-        registry: batch.registry,
-        material: { artifact: retained.artifact, source: retained.source },
-        lanes: native,
-        originals,
-      }),
-    ),
-  );
-  files.set("public-material.json", retainedBytes);
-  files.set("recipient-input.json", Buffer.from(JSON.stringify(input) + "\n"));
+  if (options.complete) {
+    const originals = Object.assign(
+      {},
+      ...Object.values(batch.selected).map(({ packet }) => packet.originals),
+    );
+    files.set(
+      "public-native.json",
+      Buffer.from(
+        stableJson({
+          schemaVersion: 2,
+          registry: batch.registry,
+          material: { artifact: retained.artifact, source: retained.source },
+          lanes: native,
+          originals,
+        }),
+      ),
+    );
+    files.set("public-material.json", retainedBytes);
+    files.set(
+      "recipient-input.json",
+      Buffer.from(JSON.stringify(input) + "\n"),
+    );
+  }
   return {
     entries: [...sources.values()].map(({ entry }) => entry),
     authenticate(entry) {
@@ -700,5 +908,6 @@ export async function readPublicAuditSubjects(
     },
     files,
     report: batch.report,
+    testAdvisories,
   };
 }

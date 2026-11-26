@@ -37,6 +37,11 @@ import {
 } from "./rc3-recovery-workflow.mjs";
 import { BROWSER_PROJECTS } from "./browser-consumer-evidence.mjs";
 import {
+  STANDALONE_PORTABILITY_PROOF,
+  STANDALONE_PORTABILITY_UPLOAD,
+} from "./standalone-portability-proof.mjs";
+import { standalonePortabilityRuntimes } from "./consumer-runtime-matrix.mjs";
+import {
   recipientMaterialCaseDirectory,
   recipientMaterialCaseUpload,
 } from "./recipient-material-case.mjs";
@@ -704,6 +709,20 @@ const isOptionalCiEvidenceStep = (fileName, jobId, step) =>
       step.uses === RETAIN_ARTIFACT));
 
 const readAuthority = { contents: "read", actions: "read" };
+const recipientCheckpointInput = {
+  description: "Signed recipient material checkpoint for fresh qualification",
+  type: "string",
+  required: false,
+  default: "",
+};
+const recipientCheckpointSelection = (file) =>
+  file === "release.yml"
+    ? {
+        recipient_material_checkpoint:
+          "${{ inputs.recipient_material_checkpoint }}",
+      }
+    : {};
+
 const npmAuthority = { ...readAuthority, "id-token": "write" };
 const githubAuthority = { ...readAuthority, contents: "write" };
 const protectedReleaseBranch = `github.repository == '${REPOSITORY}' && github.ref == 'refs/heads/main'`;
@@ -832,7 +851,7 @@ function validateAdvisoryWorkload(workflows, violations) {
     ],
     [
       "release-registry.yml",
-      ["registry", "public_recipient"],
+      ["registry", "material"],
       undefined,
       { purpose: "public", history_object: "${{ inputs.history_object }}" },
     ],
@@ -1015,6 +1034,7 @@ function validateRecipientMaterialReplay(workflow, installed, violations) {
     isDeepStrictEqual(scan?.outputs, {
       node: "${{ steps.case.outputs.node }}",
       matrix: "${{ steps.case.outputs.matrix }}",
+      consumer: "${{ steps.case.outputs.consumer }}",
       artifact_id: "${{ steps.measurements.outputs.artifact-id }}",
       artifact_digest: "${{ steps.measurements.outputs.artifact-digest }}",
     }) &&
@@ -1026,10 +1046,13 @@ function validateRecipientMaterialReplay(workflow, installed, violations) {
           env: observation,
           run: "node scripts/replay-ci-recipient-material.mjs prepare",
         },
-        tool(
-          "${{ steps.case.outputs.matrix }}",
-          "${{ steps.case.outputs.node }}",
-        ),
+        {
+          ...tool(
+            "${{ steps.case.outputs.matrix }}",
+            "${{ steps.case.outputs.node }}",
+          ),
+          if: "steps.case.outputs.consumer == 'true'",
+        },
         { id: "scanner", uses: SCANCODE_SETUP },
         {
           name: "Measure the exact missing archive identities",
@@ -1132,12 +1155,16 @@ function validateRecipientMaterialReplay(workflow, installed, violations) {
     violations,
     isDeepStrictEqual(steps(replay).slice(0, -1), [
       ...common,
-      tool(
-        "${{ needs.scan.outputs.matrix }}",
-        "${{ needs.scan.outputs.node }}",
-      ),
+      {
+        ...tool(
+          "${{ needs.scan.outputs.matrix }}",
+          "${{ needs.scan.outputs.node }}",
+        ),
+        if: "needs.scan.outputs.consumer == 'true'",
+      },
       {
         uses: actionReference("actions/setup-node"),
+        if: "needs.scan.outputs.consumer == 'true'",
         with: {
           "node-version": "${{ needs.scan.outputs.node }}",
           "check-latest": false,
@@ -1537,6 +1564,14 @@ function validateOperationJobs(file, workflow, violations) {
     const scanner = steps(material).find(
       ({ uses }) => uses === "./.github/actions/setup-scancode",
     );
+    const recipientSteps = steps(recipient);
+    const authorize = recipientSteps.find(
+      (step) => step.id === "authorization",
+    );
+    const selectRuntime = actionSteps(recipient, "actions/setup-node")[0];
+    const execute = recipientSteps.find(
+      (step) => step.run === "node scripts/public-recipient-lane.mjs test",
+    );
     add(
       violations,
       registry?.if === protectedReleaseBranch &&
@@ -1547,12 +1582,38 @@ function validateOperationJobs(file, workflow, violations) {
         ]) &&
         sameInventory(needs(material), ["registry", "public_observation"]) &&
         scanner?.if === "steps.inputs.outputs.novel == 'true'" &&
-        sameInventory(needs(recipient), ["registry", "material"]) &&
+        sameInventory(needs(recipient), ["registry", "material", "advisory"]) &&
         isDeepStrictEqual(commands(recipient), [
           "node scripts/consumer-runtime-tools.mjs prepare",
+          "node scripts/public-recipient-admission.mjs",
           "node scripts/public-recipient-lane.mjs test",
-        ]),
-      "release-registry.yml: public test lanes require the original observation and approved material decisions",
+        ]) &&
+        authorize &&
+        execute &&
+        selectRuntime &&
+        !authorize.if &&
+        !authorize["continue-on-error"] &&
+        !execute.if &&
+        !execute["continue-on-error"] &&
+        isDeepStrictEqual(authorize.env, {
+          GH_TOKEN: "${{ github.token }}",
+          HISTORY_OBJECT: "${{ inputs.history_object }}",
+        }) &&
+        isDeepStrictEqual(execute.env, {
+          PUBLIC_REPLAY_PLAN_SHA256:
+            "${{ steps.authorization.outputs.plan_sha256 }}",
+        }) &&
+        recipientSteps.indexOf(authorize) <
+          recipientSteps.indexOf(selectRuntime) &&
+        recipientSteps.indexOf(selectRuntime) <
+          recipientSteps.indexOf(execute) &&
+        isDeepStrictEqual(actionSteps(recipient, "actions/checkout")[0]?.with, {
+          ref: "${{ github.sha }}",
+          "fetch-depth": 0,
+          "fetch-tags": true,
+          "persist-credentials": false,
+        }),
+      "release-registry.yml: public test lanes require the native observation, material proof, and protected advisory before exercising code",
     );
     for (const [job, name, logical, path] of [
       [
@@ -1609,8 +1670,9 @@ const validateJobs = (fileName, workflow, violations) => {
       requireFields(
         job,
         {
-          permissions: { contents: "read" },
+          permissions: readAuthority,
           with: {
+            ...recipientCheckpointSelection(fileName),
             matrix: "${{ needs.runtime_matrix.outputs.matrix }}",
             artifact_id:
               "$" + "{{ needs." + candidate + ".outputs.artifact_id }}",
@@ -1644,8 +1706,9 @@ const validateJobs = (fileName, workflow, violations) => {
         ["ci.yml", "release.yml"].includes(fileName) &&
           id === "candidate" &&
           job.uses === "./.github/workflows/qualify-package.yml" &&
-          isDeepStrictEqual(job.permissions, { contents: "read" }) &&
+          isDeepStrictEqual(job.permissions, readAuthority) &&
           isDeepStrictEqual(job.with, {
+            ...recipientCheckpointSelection(fileName),
             artifact_name: "${{ needs.metadata.outputs.artifact_name }}",
             version: "${{ needs.metadata.outputs.version }}",
           }) &&
@@ -1810,6 +1873,7 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
         { required: true, type: "string" },
       ]),
     );
+    inputs.recipient_material_checkpoint = recipientCheckpointInput;
     const outputs = Object.fromEntries(
       ["artifact_id", "artifact_digest", "proof_id", "proof_digest"].map(
         (key) => [
@@ -1822,7 +1886,7 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
       violations,
       isDeepStrictEqual(workflow.on, { workflow_call: { inputs, outputs } }) &&
         isDeepStrictEqual(Object.keys(workflow.jobs ?? {}), ["produce"]) &&
-        isDeepStrictEqual(producer?.permissions, { contents: "read" }) &&
+        isDeepStrictEqual(producer?.permissions, readAuthority) &&
         steps(producer).filter(
           (step) =>
             step.run === "npm run build:release-candidate" &&
@@ -2590,6 +2654,7 @@ const validateManualRelease = (fileName, workflow, violations) => {
         ? {
             workflow_dispatch: {
               inputs: {
+                recipient_material_checkpoint: recipientCheckpointInput,
                 qualification_only: {
                   description:
                     "Run producer qualification without publication or release environments",
@@ -3606,12 +3671,18 @@ const validateQualityTooling = (workflows, violations) => {
           step.run?.startsWith("node util/prepare-scancode.mjs "),
         );
         const source = list.find((step) => step.id === "inputs");
+        const lockedTools = list.find(
+          (step) => step.run === "npm ci --ignore-scripts --no-audit --no-fund",
+        );
         add(
           violations,
           source?.run === "node scripts/public-material-job.mjs prepare" &&
+            lockedTools?.if === scanCondition &&
+            !lockedTools["continue-on-error"] &&
             setup[0]?.if === scanCondition &&
             prepare?.if === scanCondition &&
-            list.indexOf(source) < list.indexOf(setup[0]) &&
+            list.indexOf(source) < list.indexOf(lockedTools) &&
+            list.indexOf(lockedTools) < list.indexOf(setup[0]) &&
             list.indexOf(setup[0]) < list.indexOf(prepare),
           `${context} only prepares ScanCode after authenticated novel-archive discovery`,
         );
@@ -4372,6 +4443,64 @@ const validateConsumerRuntimeControls = (
   for (const file of ["ci.yml", "release.yml", "maintenance.yml"]) {
     const jobs = workflows[file]?.jobs ?? {};
     if (file !== "maintenance.yml")
+      for (const id of Object.keys(standalonePortabilityRuntimes)) {
+        const roster = steps(jobs[id]);
+        const uploads = roster.filter(
+          (step) => step.name === STANDALONE_PORTABILITY_UPLOAD,
+        );
+        const qualifier = roster.find(
+          (step) =>
+            step.uses === "./.github/actions/qualify-consumer" ||
+            step.run ===
+              "npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json",
+        );
+        const directory = id.endsWith("_26")
+          ? ".release/download"
+          : ".release/runtime-report";
+        add(
+          violations,
+          uploads.length === 1 &&
+            qualifier &&
+            !qualifier.if &&
+            !qualifier["continue-on-error"] &&
+            roster.indexOf(uploads[0]) > roster.indexOf(qualifier) &&
+            isDeepStrictEqual(uploads[0], {
+              name: STANDALONE_PORTABILITY_UPLOAD,
+              uses: RETAIN_ARTIFACT,
+              with: {
+                name: "standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}",
+                path: `${directory}/${STANDALONE_PORTABILITY_PROOF}`,
+                "retention-days": 90,
+                "compression-level": 6,
+              },
+            }),
+          `${file}:${id} requires exactly one standalone portability proof after native tests`,
+        );
+        const pending = roster.filter(
+          (step) =>
+            step.name ===
+            "Retain the exceptional recipient material observation",
+        );
+        const mac = standalonePortabilityRuntimes[id].platform.os === "darwin";
+        const pendingPath = `${directory}/pending-recipient-material.json`;
+        add(
+          violations,
+          pending.length === (mac ? 1 : 0) &&
+            (!mac ||
+              isDeepStrictEqual(pending[0], {
+                name: "Retain the exceptional recipient material observation",
+                if: `\u0024{{ failure() && hashFiles('${pendingPath}') != '' }}`,
+                uses: RETAIN_ARTIFACT,
+                with: {
+                  name: "pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}",
+                  path: pendingPath,
+                  "retention-days": 14,
+                },
+              })),
+          `${file}:${id} must retain a pending observation only after its original Mac install stops`,
+        );
+      }
+    if (file !== "maintenance.yml")
       for (const id of Object.keys(CI_JOB_NAMES).filter(
         referenceConsumerFamily,
       )) {
@@ -4381,7 +4510,7 @@ const validateConsumerRuntimeControls = (
         const context = `${file}:${id} reference consumer binding`;
         add(
           violations,
-          steps(job).length === 2 &&
+          steps(job).length === (id.startsWith("portability_macos_") ? 4 : 3) &&
             qualify?.uses === "./.github/actions/qualify-consumer" &&
             !qualify?.if &&
             !job?.if &&
@@ -4703,7 +4832,14 @@ const validateArtifactTransportControls = (
           "./approval-tools/.github/actions/retain-artifact",
         ].includes(step.uses),
     ).length ===
-      43 + 2 * BROWSER_PROJECTS.length + 7,
+      43 +
+        2 *
+          (BROWSER_PROJECTS.length +
+            Object.keys(standalonePortabilityRuntimes).length +
+            Object.values(standalonePortabilityRuntimes).filter(
+              (runtime) => runtime.platform.os === "darwin",
+            ).length) +
+        7,
     "Artifact transport must cover the complete producer recovery inventory, including CI and release browser proofs, public observations, material decisions, and the signed advisory decision",
   );
   add(

@@ -3,6 +3,11 @@ name: Qualify retained package
 on:
   workflow_call:
     inputs:
+      recipient_material_checkpoint:
+        description: Signed recipient material checkpoint for fresh qualification
+        type: string
+        required: false
+        default: ""
       version:
         required: true
         type: string
@@ -34,6 +39,7 @@ jobs:
     runs-on: ubuntu-26.04
     timeout-minutes: 60
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -62,6 +68,8 @@ jobs:
         uses: ./.github/actions/setup-scancode
       - name: Build and qualify the closed candidate bundle
         env:
+          RECIPIENT_MATERIAL_CHECKPOINT: ${{ inputs.recipient_material_checkpoint }}
+          GH_TOKEN: ${{ inputs.recipient_material_checkpoint != '' && github.token || '' }}
           SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
         run: npm run build:release-candidate
         timeout-minutes: 45

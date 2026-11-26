@@ -45,6 +45,7 @@ import {
 } from "./package-identity.mjs";
 import {
   INSTALLED_TEST_SCRIPTS,
+  installedConsumerEnvironment,
   productionInstallScriptPolicy,
   writeInstalledConsumerFixtures,
 } from "./installed-consumer-fixtures.mjs";
@@ -99,7 +100,7 @@ const run = (executable, arguments_, options = {}) => {
   const result = spawnSync(executable, arguments_, {
     cwd: options.cwd ?? REPOSITORY_ROOT,
     encoding: "utf8",
-    env: options.env ?? process.env,
+    env: installedConsumerEnvironment(options.env),
     maxBuffer: 128 * 1024 * 1024,
   });
   if (result.status !== 0) {

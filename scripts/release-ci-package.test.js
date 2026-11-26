@@ -77,6 +77,29 @@ test("admission and storage observation load before installing OwlAPI dependenci
   ).not.toThrow();
 });
 
+test("protected Mac recovery can reopen bounded ZIP bytes without native zlib CRC32", () => {
+  const zip = zipArchive([{ path: "native.json", content: "{}" }]);
+  const program = `
+    import assert from "node:assert/strict";
+    import { createRequire,syncBuiltinESMExports } from "node:module";
+    const nodeZlib=createRequire(import.meta.url)("node:zlib");
+    nodeZlib.crc32=undefined;
+    syncBuiltinESMExports();
+    await import("./scripts/macos-material-readmission.mjs");
+    const {readQualifiedZip}=await import("./scripts/release-ci-package.mjs");
+    const bytes=Buffer.from(${JSON.stringify(zip.toString("base64"))},"base64");
+    const files=await readQualifiedZip(async()=>bytes,{id:1,size_in_bytes:bytes.length,digest:${JSON.stringify(`sha256:${sha(zip)}`)}},1024,["native.json"]);
+    assert.equal(files.get("native.json").toString(),"{}");
+  `;
+  expect(() =>
+    execFileSync(process.execPath, ["--input-type=module", "--eval", program], {
+      cwd: new URL("../", import.meta.url),
+      timeout: 10000,
+      stdio: "pipe",
+    }),
+  ).not.toThrow();
+});
+
 function fixture() {
   const body = Buffer.from(JSON.stringify(packageFacts));
   const header = Buffer.alloc(512);

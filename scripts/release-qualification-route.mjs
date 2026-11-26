@@ -13,6 +13,7 @@ export function releaseQualificationMode(inputs) {
     fresh_qualification: false,
     corpus_qualification_artifact: "",
     corpus_shadow: false,
+    recipient_material_checkpoint: "",
   };
   for (const [name, value] of Object.entries(inputs)) {
     assert.ok(
@@ -26,11 +27,18 @@ export function releaseQualificationMode(inputs) {
     fresh_qualification: fresh,
     corpus_qualification_artifact: corpus,
     corpus_shadow: shadow,
+    recipient_material_checkpoint: recipientCheckpoint,
   } = { ...defaults, ...inputs };
   assert.ok(
     !(rc3 && readOnly) && !(fresh && !readOnly),
     "Incompatible fresh, qualification-only or rc.3 recovery selections",
   );
+  if (recipientCheckpoint) {
+    assert.ok(
+      fresh && readOnly && !rc3 && /^[a-f0-9]{40}$/u.test(recipientCheckpoint),
+      "Recipient material readmission requires a fresh qualification and an exact signed checkpoint object",
+    );
+  }
   if (corpus) {
     assert.ok(
       readOnly,

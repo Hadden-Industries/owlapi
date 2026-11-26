@@ -215,6 +215,7 @@ async function readNativeBundle(readZip, artifact, assets) {
 }
 
 async function freshProducer({
+  client,
   upload,
   readZip,
   manifest,
@@ -269,6 +270,7 @@ async function freshProducer({
     expectedSourceLockSha256: manifest.inputs["package-lock.json"],
     npmCli,
     materialOptions,
+    rightsReader: { client, commit: manifest.commit },
   });
   return {
     run,
@@ -322,6 +324,7 @@ async function reusedProducer({
     verifyPackage: (source) =>
       verifyReleaseCiPackage({
         source,
+        client,
         read,
         download,
         npmCli,
@@ -601,6 +604,7 @@ export async function loadQualificationAuditBatch(
   const original =
     mode === "fresh"
       ? await freshProducer({
+          client,
           upload,
           readZip,
           manifest,

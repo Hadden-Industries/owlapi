@@ -1,9 +1,15 @@
 /** Reopen the release-decisive native consumer observations before auditing. */
 import assert from "node:assert/strict";
+import { releaseJobs } from "./release-audit-job.mjs";
 import { createRequire } from "node:module";
 import { canonicalJson, jsonEquals, stableJson } from "./canonical-json.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import { validateRuntimeReports } from "./aggregate-consumer-runtimes.mjs";
+import {
+  readStandalonePortabilityProof,
+  STANDALONE_PORTABILITY_PROOF,
+  STANDALONE_PORTABILITY_UPLOAD,
+} from "./standalone-portability-proof.mjs";
 import {
   assertBrowserQualification,
   browserNpmAttribution,
@@ -16,7 +22,11 @@ import {
   readCiConsumerDecisionMembers,
   replayCiConsumerAttribution,
 } from "./ci-recipient-attribution.mjs";
-import { validateFrozenMatrix } from "./consumer-runtime-matrix.mjs";
+import {
+  standalonePortabilityRuntimes,
+  validateFrozenMatrix,
+} from "./consumer-runtime-matrix.mjs";
+import { verifyQualifiedRecipientMaterial } from "./recipient-material-case-readmission.mjs";
 import { sameJobExecution } from "./github-job-execution.mjs";
 import { readRunArtifacts } from "./github-evidence-reader.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
@@ -90,6 +100,13 @@ function observationRoster(workflow, runId, matrix) {
       },
       npm: CI_RUNTIME.consumerNpm,
     })),
+    ...Object.entries(standalonePortabilityRuntimes).map(([id, runtime]) => ({
+      ...runtime,
+      name: name(id),
+      prefix: `standalone-portability-${id}-${runId}-`,
+      step: STANDALONE_PORTABILITY_UPLOAD,
+      standalone: id,
+    })),
     ...BROWSER_PROJECTS.map((project) => ({
       name: name(`browser_${project}`),
       prefix: `browser-consumer-${project}-${runId}-`,
@@ -110,14 +127,9 @@ function observationRoster(workflow, runId, matrix) {
   ];
 }
 
-function indexNativeJobs(inventory, run) {
-  assert.ok(
-    Array.isArray(inventory?.jobs) &&
-      inventory.total_count === inventory.jobs.length,
-    "Incomplete native recipient job inventory",
-  );
+function indexNativeJobs(jobs, run) {
   const relevant = new Map();
-  for (const job of inventory.jobs) {
+  for (const job of jobs) {
     assert.ok(
       positive(job.id) &&
         positive(job.run_attempt) &&
@@ -172,11 +184,7 @@ export async function readCiRecipientAuditInputs({
   validateRun(run, source, workflow, candidate);
   validateFrozenMatrix(matrix);
   const roster = observationRoster(workflow, run.id, matrix);
-  const runPath = `/actions/runs/${run.id}`;
-  const latest = indexNativeJobs(
-    await client.read(`${runPath}/jobs?filter=latest&per_page=100`),
-    run,
-  );
+  const latest = indexNativeJobs(await releaseJobs(client, run.id), run);
   for (const item of roster) requireJob(latest.get(item.name), item);
   const inventory = await readRunArtifacts((path) => client.read(path), run.id);
   const attempts = new Map();
@@ -200,12 +208,7 @@ export async function readCiRecipientAuditInputs({
       if (!attempts.has(attempt))
         attempts.set(
           attempt,
-          indexNativeJobs(
-            await client.read(
-              `${runPath}/attempts/${attempt}/jobs?per_page=100`,
-            ),
-            run,
-          ),
+          indexNativeJobs(await releaseJobs(client, run.id, attempt), run),
         );
       const job = attempts.get(attempt).get(item.name);
       if (
@@ -253,6 +256,7 @@ export async function readCiRecipientAuditInputs({
       runAttempt: attempt,
     };
     let installed;
+    let eligibilityMembers = members;
     if (item.lane) {
       const report = parse(original("lane.json"));
       assert.ok(
@@ -269,6 +273,26 @@ export async function readCiRecipientAuditInputs({
         `portability-${mode}`,
         report.portability.consumers[mode].attribution,
       ]);
+      for (const mode of ["alias", "scoped"]) {
+        const { afterExecutionSha256, attribution } =
+          report.portability.consumers[mode];
+        assert.equal(
+          afterExecutionSha256,
+          attribution.decision.resolutionSha256,
+          "Runtime tests exercised a different installed graph",
+        );
+      }
+    } else if (item.standalone) {
+      const proof = readStandalonePortabilityProof(
+        parse(original(STANDALONE_PORTABILITY_PROOF)),
+        {
+          identity: { ...identity, job: item.standalone },
+          candidateArtifact,
+          tarballSha256: candidate.tarballSha256,
+        },
+      );
+      installed = proof.installed;
+      eligibilityMembers = proof.decisions;
     } else if (item.project) {
       const proof = parse(original(BROWSER_QUALIFICATION_NAME));
       assertBrowserQualification(proof, {
@@ -328,24 +352,58 @@ export async function readCiRecipientAuditInputs({
         platform: item.platform,
       });
       const { decision, materialBytes, paths } = readCiConsumerDecisionMembers(
-        members,
+        eligibilityMembers,
         attribution,
       );
-      for (const name of paths) readback.add(name);
+      if (eligibilityMembers === members)
+        for (const name of paths) readback.add(name);
       const manifestBytes = Buffer.from(attribution.evidence.manifest);
       const lockBytes = Buffer.from(attribution.evidence.lock);
-      const verified = await material.verifyRetained({
-        recordBytes: materialBytes,
-        recordSha256: decision.materialSha256,
-        resolution,
-        lockfileBytes: lockBytes,
-        requireDirectNovel: materialOptions?.requireDirectNovel,
-      });
-      assert.equal(
-        verified.record.status,
-        "PASSED",
-        "Recipient rights decision is incomplete",
+      const verified = await verifyQualifiedRecipientMaterial(
+        material,
+        {
+          recordBytes: materialBytes,
+          recordSha256: decision.materialSha256,
+          resolution,
+          lockfileBytes: lockBytes,
+          requireDirectNovel: materialOptions?.requireDirectNovel,
+        },
+        {
+          client,
+          npmCli,
+          rights: decision.rights,
+          scope: {
+            evidence: attribution.evidence,
+            role,
+            sourceCommit: source.commit,
+          },
+        },
       );
+      if (decision.archiveMeasurements) {
+        const { verifyRecoveredMacMeasurement } =
+          await import("./macos-material-readmission.mjs");
+        await verifyRecoveredMacMeasurement({
+          client,
+          checkpoint: decision.archiveMeasurements.checkpoint,
+          tarball: candidate.tarball,
+          npmCli,
+          scope: {
+            commit: source.commit,
+            tarballSha256: candidate.tarballSha256,
+            role,
+            platform: { ...item.platform, npm: item.npm },
+          },
+          proof: decision.archiveMeasurements,
+          evidence: attribution.evidence,
+          record: verified.record,
+        });
+      } else
+        assert.ok(
+          !verified.record.artifacts.some(
+            (artifact) => artifact.measurementOrigin,
+          ),
+          "Recipient measurements require an authorized scanner receipt",
+        );
       resolutions.push(resolution);
       results.push({
         input: {

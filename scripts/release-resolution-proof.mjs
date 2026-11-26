@@ -11,6 +11,8 @@ import { assertNpmSbomInventory } from "./npm-production-graph.mjs";
 import { PACKAGE_NAME } from "./release-identity.mjs";
 import { productionInstallScriptPolicy } from "./installed-consumer-fixtures.mjs";
 import { prepareRecipientMaterial } from "../util/third-party-evidence/recipient-material.mjs";
+import { recipientMaterialMember } from "./recipient-material-case.mjs";
+import { verifyQualifiedRecipientMaterial } from "./recipient-material-case-readmission.mjs";
 
 export const CANDIDATE_RESOLUTION_MODES = Object.freeze({
   producer: null,
@@ -59,17 +61,15 @@ export function packProducerResolutions(observations, decisionDirectory) {
       "utf8",
     );
     assert.equal(keep(decision), eligibility.decisionSha256);
-    const { materialSha256 } = JSON.parse(decision);
+    const decisionRecord = JSON.parse(decision);
     const material = readFileSync(
       join(
         decisionDirectory,
-        "material",
-        eligibility.resolutionSha256,
-        "recipient-material.json",
+        recipientMaterialMember(eligibility.resolutionSha256, decisionRecord),
       ),
       "utf8",
     );
-    assert.equal(keep(material), materialSha256);
+    assert.equal(keep(material), decisionRecord.materialSha256);
     subjects[mode] = {
       manifest: keep(evidence.manifest),
       lock: keep(evidence.lock),
@@ -93,6 +93,7 @@ export async function readProducerResolutions(
     npm,
     materialOptions,
     expectedSourceLockSha256,
+    rightsReader,
     prepareMaterial = prepareRecipientMaterial,
   },
 ) {
@@ -176,12 +177,13 @@ export async function readProducerResolutions(
       "observedAt",
       "resolutionSha256",
       "result",
+      ...(decision.rights ? ["rights"] : []),
       "role",
       "schemaVersion",
       "subject",
     ]);
     assert.ok(
-      decision.schemaVersion === 1 &&
+      decision.schemaVersion === (decision.rights ? 2 : 1) &&
         Number.isFinite(Date.parse(decision.observedAt)),
     );
     assert.equal(decision.resolutionSha256, eligibility.resolutionSha256);
@@ -202,13 +204,30 @@ export async function readProducerResolutions(
     );
     const recordBytes = Buffer.from(open(decision.materialSha256));
     materialReader ??= await prepareMaterial({ ...materialOptions, npmCli });
-    const materialVerification = await materialReader.verifyRetained({
-      recordBytes,
-      recordSha256: decision.materialSha256,
-      resolution: observed,
-      lockfileBytes: Buffer.from(evidence.lock),
-      requireDirectNovel: materialOptions?.requireDirectNovel,
-    });
+    const materialVerification = await verifyQualifiedRecipientMaterial(
+      materialReader,
+      {
+        recordBytes,
+        recordSha256: decision.materialSha256,
+        resolution: observed,
+        lockfileBytes: Buffer.from(evidence.lock),
+        requireDirectNovel: materialOptions?.requireDirectNovel,
+      },
+      {
+        rights: decision.rights,
+        client: rightsReader?.client,
+        npmCli,
+        scope: {
+          evidence,
+          role,
+          sourceCommit: rightsReader?.commit,
+          caseContext: {
+            kind: "PRODUCER_CANDIDATE",
+            sbomSha256: rightsReader?.sbomSha256,
+          },
+        },
+      },
+    );
     const material = materialVerification.record;
     if (mode === "producer") {
       // Production graph replay ignores development-only branches. The exact
@@ -226,7 +245,6 @@ export async function readProducerResolutions(
         "Producer lock differs from the authenticated source lock",
       );
     }
-    assert.equal(material.status, "PASSED");
     assert.equal(material.decisions.length, observed.graph.nodes.length - 1);
     equal(
       material.decisions.map((d) => d.location).sort(),
@@ -235,8 +253,9 @@ export async function readProducerResolutions(
         .map((n) => n.location)
         .sort(),
     );
-    for (const d of material.decisions)
-      equal(d.reasons, [], "Unresolved material disposition");
+    if (!materialVerification.rights)
+      for (const d of material.decisions)
+        equal(d.reasons, [], "Unresolved material disposition");
     subjects[mode] = {
       evidence,
       eligibility,
@@ -245,6 +264,9 @@ export async function readProducerResolutions(
       materialVerification: {
         verification: materialVerification.verification,
         novelArtifactIds: materialVerification.novelArtifactIds,
+        ...(materialVerification.rights
+          ? { rights: materialVerification.rights }
+          : {}),
       },
     };
     bytes.push(observed);

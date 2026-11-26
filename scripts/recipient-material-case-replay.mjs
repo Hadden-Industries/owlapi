@@ -205,6 +205,14 @@ async function readArtifact(client, locator) {
   });
   assert.equal(artifact.id, locator.id);
   assert.equal(artifact.digest, `sha256:${locator.sha256}`);
+  if (
+    artifact.expired === true ||
+    Date.parse(artifact.expires_at) <= Date.now()
+  ) {
+    const error = new Error("Original recipient evidence expired");
+    error.code = "RECIPIENT_ORIGINAL_EXPIRED";
+    throw error;
+  }
   assert.ok(
     artifact.expired === false && Date.parse(artifact.expires_at) > Date.now(),
     "Original recipient evidence expired",
@@ -220,7 +228,7 @@ const readZip = (client, artifact, names, limit) =>
     names,
   );
 
-async function readOriginalCase(client, env) {
+export async function reopenOriginalRecipientMaterialCase(client, env) {
   assert.match(env.RECIPIENT_CASE_SHA256 ?? "", /^[a-f0-9]{64}$/u);
   const artifact = await readArtifact(
     client,
@@ -300,7 +308,12 @@ async function readOriginalCase(client, env) {
   return { original, lane, source, artifact, run, job, jobs, members };
 }
 
-async function reopenOriginalSubject(client, input, env, npmCli) {
+export async function reopenOriginalRecipientMaterialSubject(
+  client,
+  input,
+  env,
+  npmCli,
+) {
   const {
     original: { packet },
     members,
@@ -608,7 +621,7 @@ async function main(env) {
   });
   const branch = await client.read("/branches/main");
   assert.ok(branch.protected === true && branch.commit?.sha === env.GITHUB_SHA);
-  const input = await readOriginalCase(client, env);
+  const input = await reopenOriginalRecipientMaterialCase(client, env);
   const authorization = await authorizeRecipientMaterialReplay(
     client,
     input.original,
@@ -640,7 +653,12 @@ async function main(env) {
             observeVersion: observeNpmVersion,
           }).npmCli;
     if (input.lane.npm === CI_RUNTIME.consumerNpm) assertConsumerNpm(npmCli);
-    const subject = await reopenOriginalSubject(client, input, env, npmCli);
+    const subject = await reopenOriginalRecipientMaterialSubject(
+      client,
+      input,
+      env,
+      npmCli,
+    );
     const result = await replayRecipientMaterialObservation({
       original: input.original,
       subject,

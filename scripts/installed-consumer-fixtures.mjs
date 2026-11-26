@@ -9,6 +9,26 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { PACKAGE_NAME } from "./package-identity.mjs";
 
+/** Installation checks receive runtime settings while case retrieval credentials stay in the trusted parent. */
+export function installedConsumerEnvironment(environment = process.env) {
+  const credentials = new Set([
+    "GH_TOKEN",
+    "GITHUB_TOKEN",
+    "NODE_AUTH_TOKEN",
+    "NPM_TOKEN",
+    "NPM_BOOTSTRAP_TOKEN",
+    "ACTIONS_RUNTIME_TOKEN",
+    "ACTIONS_ID_TOKEN_REQUEST_TOKEN",
+    "ACTIONS_ID_TOKEN_REQUEST_URL",
+    "SIGSTORE_ID_TOKEN",
+  ]);
+  return Object.fromEntries(
+    Object.entries(environment).filter(
+      ([key]) => !credentials.has(key.toUpperCase()),
+    ),
+  );
+}
+
 export const INSTALLED_TEST_SCRIPTS = Object.freeze([
   "installed-package-smoke.mjs",
   "installed-package-boundary.mjs",

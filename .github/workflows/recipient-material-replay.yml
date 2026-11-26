@@ -30,6 +30,7 @@ jobs:
     outputs:
       node: ${{ steps.case.outputs.node }}
       matrix: ${{ steps.case.outputs.matrix }}
+      consumer: ${{ steps.case.outputs.consumer }}
       artifact_id: ${{ steps.measurements.outputs.artifact-id }}
       artifact_digest: ${{ steps.measurements.outputs.artifact-digest }}
     defaults:
@@ -49,6 +50,7 @@ jobs:
           RECIPIENT_OBSERVATION: ${{ inputs.observation }}
         run: node scripts/replay-ci-recipient-material.mjs prepare
       - name: Prepare the original native npm tool
+        if: steps.case.outputs.consumer == 'true'
         env:
           OWLAPI_RUNTIME_MATRIX: ${{ steps.case.outputs.matrix }}
           OWLAPI_EXPECTED_NODE: ${{ steps.case.outputs.node }}
@@ -175,11 +177,13 @@ jobs:
       - uses: ./.github/actions/setup-producer
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Prepare the original native npm tool
+        if: needs.scan.outputs.consumer == 'true'
         env:
           OWLAPI_RUNTIME_MATRIX: ${{ needs.scan.outputs.matrix }}
           OWLAPI_EXPECTED_NODE: ${{ needs.scan.outputs.node }}
         run: node scripts/consumer-runtime-tools.mjs prepare
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        if: needs.scan.outputs.consumer == 'true'
         with:
           node-version: ${{ needs.scan.outputs.node }}
           check-latest: false

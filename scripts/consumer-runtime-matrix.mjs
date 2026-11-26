@@ -18,6 +18,28 @@ import {
 } from "./runtime-policy.mjs";
 import { canonicalJson } from "./canonical-json.mjs";
 
+/** Runtime policy for the separate, required portability checks outside the matrix. */
+export const standalonePortabilityRuntimes = Object.freeze(
+  Object.fromEntries(
+    CI_RUNTIME.consumerPlatforms.flatMap(({ os, arch, runner }) => {
+      const family = { linux: "ubuntu", win32: "windows", darwin: "macos" }[os];
+      return (os === "linux" ? [26] : [22, 24, 26]).map((major) => [
+        `portability_${family}_node_${major}`,
+        Object.freeze({
+          runner,
+          platform: Object.freeze({
+            os,
+            cpu: arch,
+            node: CI_RUNTIME.node[major],
+            ...(os === "linux" ? { libc: "glibc" } : {}),
+          }),
+          npm: major === 26 ? CI_RUNTIME.npm : CI_RUNTIME.consumerNpm,
+        }),
+      ]);
+    }),
+  ),
+);
+
 export const runtimeDigest = (value) =>
   createHash("sha256").update(canonicalJson(value)).digest("hex");
 export const runtimePolicyDigest = (policy = CI_RUNTIME) =>

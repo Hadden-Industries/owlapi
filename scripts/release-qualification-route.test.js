@@ -12,6 +12,59 @@ const workflow = parse(
   ),
 );
 
+test("only a fresh read-only qualification may reopen an exact recipient material checkpoint", () => {
+  const reference = "a".repeat(40);
+  const selected = {
+    recipient_material_checkpoint: reference,
+    qualification_only: true,
+    fresh_qualification: true,
+  };
+  expect(releaseQualificationMode(selected)).toBe("fresh");
+  for (const input of [
+    { ...selected, fresh_qualification: false },
+    { ...selected, rc3_recovery: true },
+    { ...selected, qualification_only: false },
+    { ...selected, recipient_material_checkpoint: "refs/heads/main" },
+  ]) {
+    expect(() => releaseQualificationMode(input)).toThrow();
+  }
+});
+
+test("fresh material recovery passes the signed locator to the jobs that own each installation", () => {
+  const expression = "${{ inputs.recipient_material_checkpoint }}";
+  const token =
+    "${{ inputs.recipient_material_checkpoint != '' && github.token || '' }}";
+  for (const id of ["candidate", "consumer_runtimes"]) {
+    expect(workflow.jobs[id].with.recipient_material_checkpoint).toBe(
+      expression,
+    );
+    expect(workflow.jobs[id].permissions).toEqual({
+      contents: "read",
+      actions: "read",
+    });
+  }
+  const measured = Object.entries(workflow.jobs).filter(([id]) =>
+    /^portability_|^browser_(chromium|firefox|webkit)$|^owl_contract$/u.test(
+      id,
+    ),
+  );
+  expect(measured).toHaveLength(11);
+  for (const [, job] of measured) {
+    const fixture = job.steps.find(
+      (step) =>
+        step.uses === "./.github/actions/qualify-consumer" ||
+        step.env?.RECIPIENT_MATERIAL_CHECKPOINT,
+    );
+    expect(
+      fixture.with?.recipient_material_checkpoint ??
+        fixture.env?.RECIPIENT_MATERIAL_CHECKPOINT,
+    ).toBe(expression);
+    if (fixture.env?.RECIPIENT_MATERIAL_CHECKPOINT)
+      expect(fixture.env.GH_TOKEN).toBe(token);
+    expect(Object.values(job.permissions)).not.toContain("write");
+  }
+});
+
 test("omitted inputs run original CI admission in a queue separate from releases", () => {
   const defaults = Object.fromEntries(
     Object.entries(workflow.on.workflow_dispatch.inputs).map(

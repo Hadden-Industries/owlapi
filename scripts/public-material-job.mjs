@@ -9,7 +9,8 @@ import {
   rmSync,
   writeFileSync,
 } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { REPOSITORY } from "./release-identity.mjs";
 import { readPublicObservationBatch } from "./release-public-proof.mjs";
@@ -19,11 +20,14 @@ import {
   observedArchives,
   openCanonicalEvidence,
 } from "../util/third-party-evidence/recipient-material-inputs.mjs";
-import { verifyCiConsumerEvidence } from "./ci-consumer-evidence-verification.mjs";
 import { stableJson } from "./canonical-json.mjs";
 import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
 import { assertConsumerNpm } from "./consumer-runtime-tools.mjs";
-import { recipientMaterialCaseDirectory } from "./recipient-material-case.mjs";
+import {
+  recipientMaterialCaseDirectory,
+  recipientMaterialMember,
+} from "./recipient-material-case.mjs";
+import { packPublicMaterial } from "./public-material-packet.mjs";
 
 const env = process.env;
 const origin = {
@@ -31,10 +35,7 @@ const origin = {
   run: env.GITHUB_RUN_ID,
   attempt: env.GITHUB_RUN_ATTEMPT,
 };
-mkdirSync(".release", { recursive: true });
-const scope = realpathSync(".release");
-
-async function prepare() {
+async function prepare(scope) {
   const client = new GitHubReleaseClient({
     repository: REPOSITORY,
     token: env.GH_TOKEN,
@@ -85,7 +86,13 @@ async function prepare() {
   }
   const directory = mkdtempSync(join(scope, "public-material-work-"));
   const bytes = Buffer.from(
-    stableJson({ input, origin, lanes, historyObject: env.HISTORY_OBJECT }),
+    stableJson({
+      input,
+      origin,
+      lanes,
+      historyObject: env.HISTORY_OBJECT,
+      rightsLookup: checkpoint.files.has("recipient-material-cases.json"),
+    }),
   );
   writeFileSync(join(directory, "originals.json"), bytes, { flag: "wx" });
   appendFileSync(
@@ -97,7 +104,7 @@ async function prepare() {
   );
 }
 
-async function collect() {
+async function collect(scope) {
   const directory = realpathSync(env.PUBLIC_MATERIAL_ROOT);
   assert.ok(isStrictDescendantPath(scope, directory));
   assert.match(
@@ -112,6 +119,8 @@ async function collect() {
     lanes = {};
   const decisionDirectory = join(directory, "decision-work");
   try {
+    const { verifyCiConsumerEvidence } =
+      await import("./ci-consumer-evidence-verification.mjs");
     for (const [key, { artifact, source, consumers }] of Object.entries(
       plan.lanes,
     )) {
@@ -130,6 +139,9 @@ async function collect() {
           role: `public-${mode}`,
           decisionDirectory,
           npmCli: env.OWLAPI_CONSUMER_NPM,
+          recipientMaterialCheckpoint: plan.rightsLookup
+            ? plan.historyObject
+            : null,
           caseDirectory: join(scope, recipientMaterialCaseDirectory),
           caseContext: {
             kind: "PUBLIC_OBSERVATION",
@@ -147,13 +159,12 @@ async function collect() {
           ),
           "utf8",
         );
-        const { materialSha256 } = JSON.parse(original);
+        const decision = JSON.parse(original);
+        const { materialSha256 } = decision;
         const material = readFileSync(
           join(
             decisionDirectory,
-            "material",
-            verdict.resolutionSha256,
-            "recipient-material.json",
+            recipientMaterialMember(verdict.resolutionSha256, decision),
           ),
           "utf8",
         );
@@ -171,13 +182,9 @@ async function collect() {
     mkdirSync(".release/public-material", { recursive: true });
     writeFileSync(
       ".release/public-material/material.json",
-      stableJson({
-        schemaVersion: 2,
-        input: plan.input,
-        origin,
-        lanes,
-        originals,
-      }),
+      stableJson(
+        packPublicMaterial({ input: plan.input, origin, lanes, originals }),
+      ),
       { flag: "wx" },
     );
   } finally {
@@ -185,12 +192,37 @@ async function collect() {
   }
 }
 
-try {
-  const command = process.argv[2];
-  if (command === "prepare") await prepare();
-  else if (command === "collect") await collect();
-  else throw new Error("Select a public material operation");
-} catch {
-  process.stderr.write("Public material verification did not complete.\n");
-  process.exitCode = 1;
+/** Publish the stage outcome without writing provider or tool exception details. */
+export function publicMaterialFailureCode(error) {
+  if (error?.code === "RECIPIENT_MATERIAL_RIGHTS_PENDING")
+    return "PUBLIC_MATERIAL_RIGHTS_PENDING";
+  if (
+    error?.code === "ERR_ASSERTION" ||
+    error instanceof SyntaxError ||
+    ["CONTROL_FAILURE", "PRODUCT_FAILURE"].includes(error?.classification)
+  )
+    return "PUBLIC_MATERIAL_REJECTED";
+  return "PUBLIC_MATERIAL_UNAVAILABLE";
 }
+
+async function main() {
+  try {
+    mkdirSync(".release", { recursive: true });
+    const scope = realpathSync(".release");
+    const command = process.argv[2];
+    if (command === "prepare") await prepare(scope);
+    else if (command === "collect") await collect(scope);
+    else throw new Error("Select a public material operation");
+  } catch (error) {
+    process.stderr.write(
+      `Public material verification stopped (${publicMaterialFailureCode(error)}).\n`,
+    );
+    process.exitCode = 1;
+  }
+}
+
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(resolve(process.argv[1])).href
+)
+  await main();

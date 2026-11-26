@@ -8,6 +8,7 @@ import {
   verifyResolutionEvidence,
 } from "./release-consumer-evidence.mjs";
 import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
+import { recipientMaterialMember } from "./recipient-material-case.mjs";
 
 const roles = Object.freeze({
   "portability-alias": "owlapi",
@@ -18,7 +19,6 @@ const roles = Object.freeze({
   "owl-contract": "owlapi",
 });
 const digestPattern = /^[a-f0-9]{64}$/u;
-const materialPath = "recipient-material.json";
 
 function readEvidenceMember(root, path, digest, maximum) {
   assert.match(digest, digestPattern);
@@ -89,13 +89,21 @@ function reopenCiConsumerDecision(attribution, read) {
     scope: "production",
   };
   assert.ok(
+    !(retained.rights && retained.archiveMeasurements),
+    "Conflicting material authorizations",
+  );
+  assert.ok(
     jsonEquals(retained, {
-      schemaVersion: 1,
+      schemaVersion: retained.rights ? 2 : retained.archiveMeasurements ? 3 : 1,
       role: decision.role,
       result: "PASS",
       subject: expectedSubject,
       resolutionSha256: decision.resolutionSha256,
       materialSha256: retained.materialSha256,
+      ...(retained.rights ? { rights: retained.rights } : {}),
+      ...(retained.archiveMeasurements
+        ? { archiveMeasurements: retained.archiveMeasurements }
+        : {}),
       observedAt: retained.observedAt,
     }) &&
       typeof retained.observedAt === "string" &&
@@ -104,12 +112,15 @@ function reopenCiConsumerDecision(attribution, read) {
   );
   assert.match(decision.resolutionSha256, digestPattern);
   const materialBytes = original(
-    `material/${decision.resolutionSha256}/${materialPath}`,
+    recipientMaterialMember(decision.resolutionSha256, retained),
     retained.materialSha256,
     16 * 1024 * 1024,
   );
   const material = JSON.parse(materialBytes);
-  assert.equal(material.status, "PASSED");
+  assert.equal(
+    material.status,
+    retained.rights ? "REQUIRES_HUMAN_REVIEW" : "PASSED",
+  );
   assert.ok(
     jsonEquals(material.subject, {
       resolutionSha256: decision.resolutionSha256,
@@ -226,6 +237,9 @@ export async function qualifyCiConsumerInstall({
   candidate,
   origin,
   decisionDirectory,
+  expectedEvidence,
+  trustedArchiveMeasurements,
+  archiveMeasurementAuthorization,
 }) {
   assert.equal(
     typeof verifyConsumerEvidence,
@@ -242,6 +256,11 @@ export async function qualifyCiConsumerInstall({
     npmCli,
     dependencyName,
   });
+  if (expectedEvidence)
+    assert.ok(
+      jsonEquals(evidence, expectedEvidence),
+      "The native replay produced a different original lock or graph",
+    );
   const decision = await verifyConsumerEvidence({
     directory,
     evidence: structuredClone(evidence),
@@ -251,6 +270,8 @@ export async function qualifyCiConsumerInstall({
     origin,
     npmCli,
     decisionDirectory,
+    trustedArchiveMeasurements,
+    archiveMeasurementAuthorization,
   });
   return assertCiConsumerAttribution(
     { schemaVersion: 1, evidence, decision },

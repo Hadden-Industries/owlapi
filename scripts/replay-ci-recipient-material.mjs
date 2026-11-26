@@ -24,7 +24,10 @@ import {
 } from "./release-audit-job.mjs";
 import { readQualifiedZip } from "./release-ci-package.mjs";
 import { downloadReleaseArtifact } from "./release-approvals.mjs";
-import { validateFrozenMatrix } from "./consumer-runtime-matrix.mjs";
+import {
+  standalonePortabilityRuntimes,
+  validateFrozenMatrix,
+} from "./consumer-runtime-matrix.mjs";
 import {
   PACKAGE_FILE_STEM,
   PACKAGE_NAME,
@@ -33,6 +36,12 @@ import {
 } from "./release-identity.mjs";
 import { PACKAGE_VERSION } from "./package-identity.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
+import { CI_JOB_NAMES } from "./ci-qualification.mjs";
+import {
+  findNpmCliCandidates,
+  observeNpmVersion,
+  selectNpmCliForVersion,
+} from "./assert-workflow-runtime.mjs";
 import {
   pendingRecipientMaterialFilename,
   pendingRecipientUploadStep,
@@ -42,6 +51,7 @@ import { UBUNTU } from "./ubuntu-runner.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import {
   captureResolutionEvidence,
+  prepareReplayedTarballConsumer,
   verifyResolutionEvidence,
 } from "./release-consumer-evidence.mjs";
 import { createCiRecipientScanner } from "./ci-recipient-scanner.mjs";
@@ -119,7 +129,7 @@ export async function readPendingMacRecipientCase(client, env) {
     "source",
     "status",
   ]);
-  assert.equal(pending.schemaVersion, 1);
+  assert.ok([1, 2].includes(pending.schemaVersion));
   assert.equal(pending.status, "NEEDS_ARCHIVE_MEASUREMENTS");
   const { source, lane, matrix, evidence, role, candidate } = pending;
   assert.equal(source.commit, env.GITHUB_SHA);
@@ -148,18 +158,43 @@ export async function readPendingMacRecipientCase(client, env) {
       source.attempt > 0 &&
       source.attempt <= run.run_attempt,
   );
-  validateFrozenMatrix(matrix);
+  const standalone =
+    pending.schemaVersion === 2
+      ? standalonePortabilityRuntimes[source.job]
+      : undefined;
+  if (pending.schemaVersion === 2)
+    assert.ok(standalone?.platform.os === "darwin");
+  else
+    assert.equal(
+      source.job,
+      undefined,
+      "Legacy pending discovery must belong to the consumer matrix",
+    );
+  if (!standalone || standalone.npm === CI_RUNTIME.consumerNpm)
+    validateFrozenMatrix(matrix);
+  else if (matrix) validateFrozenMatrix(matrix);
   assert.ok(
     lane.os === "darwin" &&
       lane.runner === "macos-15" &&
-      matrix.include.some((row) => jsonEquals(lane, row)),
+      (standalone
+        ? jsonEquals(lane, {
+            runner: standalone.runner,
+            shell: "bash",
+            os: standalone.platform.os,
+            arch: standalone.platform.cpu,
+            node: standalone.platform.node,
+          })
+        : matrix.include.some((row) => jsonEquals(lane, row))),
   );
   assert.ok(["portability-alias", "portability-scoped"].includes(role));
   assert.equal(
     evidence.resolution.dependencyName,
     role === "portability-alias" ? "owlapi" : PACKAGE_NAME,
   );
-  assert.equal(evidence.resolution.npm, CI_RUNTIME.consumerNpm);
+  assert.equal(
+    evidence.resolution.npm,
+    standalone?.npm ?? CI_RUNTIME.consumerNpm,
+  );
   assert.ok(
     jsonEquals(evidence.resolution.platform, {
       os: lane.os,
@@ -170,7 +205,9 @@ export async function readPendingMacRecipientCase(client, env) {
   assert.equal(pending.resolutionSha256, hash(evidence.resolution));
   assert.equal(candidate.tarballSha256, evidence.resolution.tarballSha256);
   const jobs = await releaseJobs(client, run.id, source.attempt);
-  const jobName = `${source.workflow} / complete consumer qualification / Consumer / ${lane.runner} / Node ${lane.node}`;
+  const jobName = standalone
+    ? CI_JOB_NAMES[source.job].replace(/^CI /u, `${source.workflow} `)
+    : `${source.workflow} / complete consumer qualification / Consumer / ${lane.runner} / Node ${lane.node}`;
   const matches = jobs.filter((job) => job.name === jobName);
   assert.equal(matches.length, 1);
   const [job] = matches;
@@ -187,7 +224,9 @@ export async function readPendingMacRecipientCase(client, env) {
     artifact,
     run,
     job,
-    `pending-recipient-material-${lane.runner}-${lane.node}-attempt-${source.attempt}`,
+    standalone
+      ? `pending-recipient-material-${source.job}-${run.id}-${source.attempt}`
+      : `pending-recipient-material-${lane.runner}-${lane.node}-attempt-${source.attempt}`,
     pendingRecipientUploadStep,
   );
   const stem = `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}`;
@@ -248,7 +287,7 @@ async function scanCase(input, env, npmCli) {
     npmCli,
     dependencyName: evidence.resolution.dependencyName,
     platform: evidence.resolution.platform,
-    observedNpm: CI_RUNTIME.consumerNpm,
+    observedNpm: evidence.resolution.npm,
   });
   const root = resolve(".release/recipient-material-scan");
   mkdirSync(root, { recursive: true });
@@ -354,48 +393,70 @@ export function readScopedScannerMaterial(
   return bytes;
 }
 
-async function replayCase(client, input, env, npmCli) {
+/** Reopen the exact scoped Linux measurement for an authenticated Mac original. */
+export async function readRetainedMacMeasurements(
+  client,
+  input,
+  locator,
+  npmCli,
+  activeRun,
+) {
   const { pending, tarball, originalSha256 } = input;
   const { evidence, role } = pending;
-  const { artifact, files } = await readOriginal(
-    client,
-    parseCorpusArtifactLocator(env.RECIPIENT_SCAN),
-    [RECIPIENT_MATERIAL_NAME],
-  );
+  const { artifact, files } = await readOriginal(client, locator, [
+    RECIPIENT_MATERIAL_NAME,
+  ]);
   const proof = parse(files.get(RECIPIENT_MATERIAL_NAME));
-  const run = await client.read(`/actions/runs/${env.GITHUB_RUN_ID}`);
-  sameRepositoryRun(run, env.GITHUB_SHA);
-  assert.equal(run.path, replayWorkflow);
-  assert.equal(run.id, Number(env.GITHUB_RUN_ID));
-  assert.equal(run.run_attempt, Number(env.GITHUB_RUN_ATTEMPT));
+  const { runId, attempt, commit } = proof.origin;
   assert.ok(
-    run.event === "workflow_dispatch" &&
-      run.status === "in_progress" &&
-      run.conclusion === null,
+    [runId, attempt].every((value) => Number.isSafeInteger(value) && value > 0),
   );
+  assert.equal(commit, pending.source.commit);
+  const run = await client.read(`/actions/runs/${runId}`);
+  sameRepositoryRun(run, commit);
+  assert.equal(run.path, replayWorkflow);
+  assert.equal(run.id, runId);
+  assert.ok(run.event === "workflow_dispatch" && attempt <= run.run_attempt);
+  if (activeRun) {
+    assert.ok(jsonEquals(proof.origin, activeRun));
+    assert.ok(
+      run.status === "in_progress" &&
+        run.conclusion === null &&
+        attempt === run.run_attempt,
+    );
+  } else
+    assert.equal(
+      run.status,
+      "completed",
+      "The protected scanner run is still active",
+    );
   const scanner = checkedNativeJob(
-    await releaseJobs(client, run.id, run.run_attempt),
+    await releaseJobs(client, run.id, attempt),
     "Recipient material / Scan",
     run,
   );
-  assert.equal(scanner.run_attempt, run.run_attempt);
+  assert.equal(scanner.run_attempt, attempt);
   assert.ok(jsonEquals(scanner.labels, [UBUNTU.label]));
   assertTimedUpload(
     artifact,
     run,
     scanner,
-    `recipient-material-scan-${run.id}-${run.run_attempt}`,
+    `recipient-material-scan-${run.id}-${attempt}`,
     "Retain the scoped recipient scanner result",
   );
   const materialBytes = readScopedScannerMaterial(proof, {
     role,
     originalSha256,
     resolutionSha256: pending.resolutionSha256,
-    origin: { runId: run.id, attempt: run.run_attempt, commit: run.head_sha },
+    origin: { runId: run.id, attempt, commit: run.head_sha },
   });
-  assert.equal(process.platform, pending.lane.os);
-  assert.equal(process.arch, pending.lane.arch);
-  assert.equal(process.versions.node, pending.lane.node);
+  await verifyResolutionEvidence(evidence, {
+    tarball,
+    npmCli,
+    dependencyName: evidence.resolution.dependencyName,
+    platform: evidence.resolution.platform,
+    observedNpm: evidence.resolution.npm,
+  });
   const records = await prepareRecipientMaterial({ npmCli });
   const { record } = await records.verifyRetained({
     recordBytes: materialBytes,
@@ -423,18 +484,36 @@ async function replayCase(client, input, env, npmCli) {
       materialSha256: proof.materialSha256,
     },
   }));
+  return {
+    trustedArchiveMeasurements,
+    scannerArtifactSha256: artifact.digest.slice(7),
+  };
+}
+
+async function replayCase(client, input, env, npmCli) {
+  const { pending, tarball, originalSha256 } = input;
+  const { evidence, role } = pending;
+  const { trustedArchiveMeasurements, scannerArtifactSha256 } =
+    await readRetainedMacMeasurements(
+      client,
+      input,
+      parseCorpusArtifactLocator(env.RECIPIENT_SCAN),
+      npmCli,
+      {
+        runId: Number(env.GITHUB_RUN_ID),
+        attempt: Number(env.GITHUB_RUN_ATTEMPT),
+        commit: env.GITHUB_SHA,
+      },
+    );
+  assert.equal(process.platform, pending.lane.os);
+  assert.equal(process.arch, pending.lane.arch);
+  assert.equal(process.versions.node, pending.lane.node);
   const directory = mkdtempSync(
     join(resolve(tmpdir()), "owlapi-mac-material-replay-"),
   );
   assert.ok(isStrictDescendantPath(tmpdir(), directory));
   try {
-    writeFileSync(join(directory, "candidate.tgz"), tarball, { flag: "wx" });
-    writeFileSync(join(directory, "package.json"), evidence.manifest, {
-      flag: "wx",
-    });
-    writeFileSync(join(directory, "package-lock.json"), evidence.lock, {
-      flag: "wx",
-    });
+    prepareReplayedTarballConsumer(directory, tarball, evidence);
     const configured = publicRegistryEnvironment(directory);
     const runNative = (args) =>
       execFileSync(process.execPath, args, {
@@ -493,7 +572,7 @@ async function replayCase(client, input, env, npmCli) {
         role,
         candidate: pending.candidate,
         observationSha256: originalSha256,
-        scannerArtifactSha256: artifact.digest.slice(7),
+        scannerArtifactSha256,
         attribution,
         installedTests: INSTALLED_TEST_SCRIPTS,
       }),
@@ -526,17 +605,26 @@ async function main(env) {
   const mode = process.argv[2];
   assert.ok(["prepare", "scan", "replay"].includes(mode));
   const input = await readPendingMacRecipientCase(client, env);
+  const npm = input.pending.evidence.resolution.npm;
+  const consumer = npm === CI_RUNTIME.consumerNpm;
   if (mode === "prepare") {
     emit(env, {
       node: input.pending.lane.node,
       matrix: JSON.stringify(input.pending.matrix),
+      consumer: String(consumer),
     });
     return;
   }
-  const npmCli = env.OWLAPI_CONSUMER_NPM;
+  const npmCli = consumer
+    ? env.OWLAPI_CONSUMER_NPM
+    : selectNpmCliForVersion({
+        expectedNpm: npm,
+        candidates: findNpmCliCandidates(),
+        observeVersion: observeNpmVersion,
+      }).npmCli;
   assert.equal(
     createRequire(npmCli)("../package.json").version,
-    CI_RUNTIME.consumerNpm,
+    npm,
     "Replay uses a different native npm version",
   );
   if (mode === "scan") await scanCase(input, env, npmCli);

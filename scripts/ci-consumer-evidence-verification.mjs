@@ -10,6 +10,7 @@ import { createCiRecipientScanner } from "./ci-recipient-scanner.mjs";
 import { retainPendingMacMaterial } from "./ci-recipient-material-pending.mjs";
 import {
   recipientMaterialCaseDirectory,
+  recipientMaterialMember,
   retainRecipientMaterialCase,
 } from "./recipient-material-case.mjs";
 import {
@@ -45,6 +46,18 @@ function materialContext(root, npmCli, trustedArchiveMeasurements) {
   return roots.get(root);
 }
 
+async function writeOriginal(path, bytes) {
+  try {
+    await writeFile(path, bytes, { flag: "wx" });
+  } catch (error) {
+    if (error.code !== "EEXIST") throw error;
+    assert.ok(
+      (await readFile(path)).equals(bytes),
+      "Conflicting retained eligibility original",
+    );
+  }
+}
+
 /** Compare original manifest and lock immediately before testing. Return a compact
  * job-scoped decision and retain its public-safe inputs at fixed, digest-bound names. */
 export async function verifyCiConsumerEvidence({
@@ -54,8 +67,10 @@ export async function verifyCiConsumerEvidence({
   decisionDirectory,
   npmCli = process.env.OWLAPI_CONSUMER_NPM ?? process.env.npm_execpath,
   trustedArchiveMeasurements,
+  archiveMeasurementAuthorization,
   caseDirectory,
   caseContext,
+  recipientMaterialCheckpoint = process.env.RECIPIENT_MATERIAL_CHECKPOINT,
 }) {
   assert.ok(
     typeof decisionDirectory === "string" && decisionDirectory,
@@ -80,7 +95,22 @@ export async function verifyCiConsumerEvidence({
     npmCli,
     trustedArchiveMeasurements,
   );
-  if (process.platform === "darwin") {
+  const admitted = recipientMaterialCheckpoint
+    ? await (
+        await import("./recipient-material-case-readmission.mjs")
+      ).admitRetainedRecipientMaterial({
+        checkpointObject: recipientMaterialCheckpoint,
+        scope: {
+          evidence,
+          role,
+          sourceCommit: process.env.GITHUB_SHA,
+          caseContext,
+        },
+        npmCli,
+        reader: context.input,
+      })
+    : undefined;
+  if (!admitted && process.platform === "darwin") {
     const missing = context.input.missingArchiveMeasurements({
       resolution,
       lockfileBytes: lockBytes,
@@ -100,7 +130,7 @@ export async function verifyCiConsumerEvidence({
       );
     }
   }
-  if (!context.collected.has(resolutionSha256))
+  if (!admitted && !context.collected.has(resolutionSha256))
     context.collected.set(
       resolutionSha256,
       context.input.collect({
@@ -109,11 +139,13 @@ export async function verifyCiConsumerEvidence({
         lockfileBytes: lockBytes,
       }),
     );
-  const material = await context.collected.get(resolutionSha256);
-  const materialBytes = await readFile(
-    join(materialDirectory, RECIPIENT_MATERIAL_NAME),
-  );
-  if (material.status === "REQUIRES_HUMAN_REVIEW") {
+  const material = admitted
+    ? undefined
+    : await context.collected.get(resolutionSha256);
+  const materialBytes =
+    admitted?.materialBytes ??
+    (await readFile(join(materialDirectory, RECIPIENT_MATERIAL_NAME)));
+  if (material?.status === "REQUIRES_HUMAN_REVIEW") {
     const candidateId = Number(
       process.env.OWLAPI_CANDIDATE_ID ?? process.env.CANDIDATE_ARTIFACT_ID,
     );
@@ -138,13 +170,14 @@ export async function verifyCiConsumerEvidence({
       materialBytes,
       context: caseContext ?? candidate,
     });
-    throw new Error(
+    const error = new Error(
       `Recipient archive evidence requires a rights disposition. Case ${caseSha256}.`,
     );
+    error.code = "RECIPIENT_MATERIAL_RIGHTS_PENDING";
+    throw error;
   }
-  assert.equal(
-    material.status,
-    "PASSED",
+  assert.ok(
+    admitted || material?.status === "PASSED",
     "Recipient archive evidence did not complete",
   );
   const materialSha256 = sha256Buffer(materialBytes);
@@ -174,27 +207,29 @@ export async function verifyCiConsumerEvidence({
     "Release advisory policy requires disposition",
   );
   const decision = {
-    schemaVersion: 1,
+    schemaVersion: admitted ? 2 : archiveMeasurementAuthorization ? 3 : 1,
     role,
     subject: audit.subject,
     observedAt: audit.observedAt,
     result: "PASS",
     resolutionSha256,
     materialSha256,
+    ...(admitted ? { rights: admitted.rights } : {}),
+    ...(!admitted && archiveMeasurementAuthorization
+      ? { archiveMeasurements: archiveMeasurementAuthorization }
+      : {}),
   };
+  if (admitted) {
+    await mkdir(materialDirectory, { recursive: true });
+    await writeOriginal(
+      join(root, recipientMaterialMember(resolutionSha256, decision)),
+      materialBytes,
+    );
+  }
   const bytes = Buffer.from(canonicalJson(decision) + "\n"),
     decisionSha256 = sha256Buffer(bytes);
   await mkdir(join(root, "decisions"), { recursive: true });
-  const path = join(root, "decisions", decisionSha256 + ".json");
-  try {
-    await writeFile(path, bytes, { flag: "wx" });
-  } catch (error) {
-    if (error.code !== "EEXIST") throw error;
-    assert.ok(
-      (await readFile(path)).equals(bytes),
-      "Conflicting retained eligibility decision",
-    );
-  }
+  await writeOriginal(join(root, "decisions", decisionSha256 + ".json"), bytes);
   return {
     schemaVersion: 1,
     result: "PASS",

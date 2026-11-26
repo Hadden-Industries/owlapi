@@ -112,6 +112,7 @@ jobs:
     name: Maintenance / complete consumer qualification
     needs: [runtime_matrix, health]
     permissions:
+      actions: read
       contents: read
     uses: ./.github/workflows/installed-qualification.yml
     with:

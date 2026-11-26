@@ -179,10 +179,21 @@ export function applicableAdvisoryCases(cases, subject, now) {
   );
 }
 
-function directAdvisories(record) {
-  if (!Array.isArray(record.via) || record.via.length === 0) return null;
+// Native npm names another vulnerability for an indirectly affected parent.
+function advisoryIds(name, records, visiting, resolved) {
+  if (resolved.has(name)) return resolved.get(name);
+  if (visiting.has(name) || !Object.hasOwn(records, name)) return null;
+  const record = records[name];
+  if (!Array.isArray(record?.via) || !record.via.length) return null;
+  visiting.add(name);
   const ids = new Set();
   for (const detail of record.via) {
+    if (typeof detail === "string") {
+      const inherited = advisoryIds(detail, records, visiting, resolved);
+      if (!inherited) return null;
+      for (const id of inherited) ids.add(id);
+      continue;
+    }
     if (!detail || typeof detail !== "object" || typeof detail.url !== "string")
       return null;
     const match =
@@ -192,16 +203,20 @@ function directAdvisories(record) {
     if (!match) return null;
     ids.add(match[1] ?? match[2]);
   }
-  return [...ids].sort();
+  visiting.delete(name);
+  const result = [...ids].sort();
+  resolved.set(name, result);
+  return result;
 }
 
 /** Exact reviewed dev-only occurrences may pass the full diagnostic. Production stays unconditional. */
 export function approvedDevelopmentCases(report, lockBytes, active) {
   const lock = JSON.parse(lockBytes);
-  const approved = new Map();
-  for (const record of Object.values(report.vulnerabilities)) {
+  const approved = new Map(),
+    resolved = new Map();
+  for (const [name, record] of Object.entries(report.vulnerabilities)) {
     if (!["high", "critical"].includes(record.severity)) continue;
-    const ids = directAdvisories(record);
+    const ids = advisoryIds(name, report.vulnerabilities, new Set(), resolved);
     if (!ids || !Array.isArray(record.nodes)) return null;
     const locations = [...record.nodes];
     if (!locations.every(qualifier) || !sortedUnique(locations.sort()))

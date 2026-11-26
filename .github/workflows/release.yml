@@ -3,6 +3,11 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
+      recipient_material_checkpoint:
+        description: Signed recipient material checkpoint for fresh qualification
+        type: string
+        required: false
+        default: ""
       qualification_only:
         description: Run producer qualification without publication or release environments
         type: boolean
@@ -649,9 +654,11 @@ jobs:
       - third_party_evidence
       - quality_windows
     permissions:
+      actions: read
       contents: read
     uses: ./.github/workflows/qualify-package.yml
     with:
+      recipient_material_checkpoint: ${{ inputs.recipient_material_checkpoint }}
       artifact_name: ${{ needs.metadata.outputs.artifact_name }}
       version: ${{ needs.metadata.outputs.version }}
     if: ${{ !inputs.rc3_recovery }}
@@ -662,6 +669,7 @@ jobs:
     runs-on: windows-2025-vs2026
     timeout-minutes: 30
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -675,10 +683,18 @@ jobs:
       - name: Qualify the reference consumer with producer-owned tools
         uses: ./.github/actions/qualify-consumer
         with:
+          recipient_material_checkpoint: ${{ inputs.recipient_material_checkpoint }}
           matrix: ${{ needs.runtime_matrix.outputs.matrix }}
           node: "22.23.5"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
     if: ${{ !inputs.rc3_recovery }}
 
   portability_windows_node_24:
@@ -687,6 +703,7 @@ jobs:
     runs-on: windows-2025-vs2026
     timeout-minutes: 30
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -700,10 +717,18 @@ jobs:
       - name: Qualify the reference consumer with producer-owned tools
         uses: ./.github/actions/qualify-consumer
         with:
+          recipient_material_checkpoint: ${{ inputs.recipient_material_checkpoint }}
           matrix: ${{ needs.runtime_matrix.outputs.matrix }}
           node: "24.22.3"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
     if: ${{ !inputs.rc3_recovery }}
 
   portability_ubuntu_node_26:
@@ -712,6 +737,7 @@ jobs:
     runs-on: ubuntu-26.04
     timeout-minutes: 30
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -748,6 +774,8 @@ jobs:
         uses: ./.github/actions/setup-scancode
       - name: Qualify the installed public package boundary
         env:
+          RECIPIENT_MATERIAL_CHECKPOINT: ${{ inputs.recipient_material_checkpoint }}
+          GH_TOKEN: ${{ inputs.recipient_material_checkpoint != '' && github.token || '' }}
           SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
@@ -760,6 +788,13 @@ jobs:
           name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/download/recipient-material-cases
           retention-days: 14
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
     if: ${{ !inputs.rc3_recovery }}
 
   portability_windows_node_26:
@@ -768,6 +803,7 @@ jobs:
     runs-on: windows-2025-vs2026
     timeout-minutes: 30
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -804,6 +840,8 @@ jobs:
         uses: ./.github/actions/setup-scancode
       - name: Qualify the installed public package boundary
         env:
+          RECIPIENT_MATERIAL_CHECKPOINT: ${{ inputs.recipient_material_checkpoint }}
+          GH_TOKEN: ${{ inputs.recipient_material_checkpoint != '' && github.token || '' }}
           SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
@@ -816,6 +854,13 @@ jobs:
           name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/download/recipient-material-cases
           retention-days: 14
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
     if: ${{ !inputs.rc3_recovery }}
 
   portability_macos_node_22:
@@ -824,6 +869,7 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 30
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -837,10 +883,25 @@ jobs:
       - name: Qualify the reference consumer with producer-owned tools
         uses: ./.github/actions/qualify-consumer
         with:
+          recipient_material_checkpoint: ${{ inputs.recipient_material_checkpoint }}
           matrix: ${{ needs.runtime_matrix.outputs.matrix }}
           node: "22.23.5"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+      - name: Retain the exceptional recipient material observation
+        if: ${{ failure() && hashFiles('.release/runtime-report/pending-recipient-material.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/pending-recipient-material.json
+          retention-days: 14
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
     if: ${{ !inputs.rc3_recovery }}
 
   portability_macos_node_24:
@@ -849,6 +910,7 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 30
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -862,10 +924,25 @@ jobs:
       - name: Qualify the reference consumer with producer-owned tools
         uses: ./.github/actions/qualify-consumer
         with:
+          recipient_material_checkpoint: ${{ inputs.recipient_material_checkpoint }}
           matrix: ${{ needs.runtime_matrix.outputs.matrix }}
           node: "24.22.3"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+      - name: Retain the exceptional recipient material observation
+        if: ${{ failure() && hashFiles('.release/runtime-report/pending-recipient-material.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/pending-recipient-material.json
+          retention-days: 14
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
     if: ${{ !inputs.rc3_recovery }}
 
   portability_macos_node_26:
@@ -874,6 +951,7 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 30
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -907,6 +985,8 @@ jobs:
         timeout-minutes: 5
       - name: Qualify the installed public package boundary
         env:
+          RECIPIENT_MATERIAL_CHECKPOINT: ${{ inputs.recipient_material_checkpoint }}
+          GH_TOKEN: ${{ inputs.recipient_material_checkpoint != '' && github.token || '' }}
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
@@ -918,6 +998,20 @@ jobs:
           name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/download/recipient-material-cases
           retention-days: 14
+      - name: Retain the exceptional recipient material observation
+        if: ${{ failure() && hashFiles('.release/download/pending-recipient-material.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/pending-recipient-material.json
+          retention-days: 14
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
     if: ${{ !inputs.rc3_recovery }}
 
   browser_chromium:
@@ -926,6 +1020,7 @@ jobs:
     runs-on: ubuntu-26.04
     timeout-minutes: 60
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -957,6 +1052,8 @@ jobs:
         uses: ./.github/actions/setup-scancode
       - name: Prepare the bundler, import-map, and worker consumers
         env:
+          RECIPIENT_MATERIAL_CHECKPOINT: ${{ inputs.recipient_material_checkpoint }}
+          GH_TOKEN: ${{ inputs.recipient_material_checkpoint != '' && github.token || '' }}
           SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
@@ -998,6 +1095,7 @@ jobs:
     runs-on: ubuntu-26.04
     timeout-minutes: 60
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -1029,6 +1127,8 @@ jobs:
         uses: ./.github/actions/setup-scancode
       - name: Prepare the bundler, import-map, and worker consumers
         env:
+          RECIPIENT_MATERIAL_CHECKPOINT: ${{ inputs.recipient_material_checkpoint }}
+          GH_TOKEN: ${{ inputs.recipient_material_checkpoint != '' && github.token || '' }}
           SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
@@ -1070,6 +1170,7 @@ jobs:
     runs-on: ubuntu-26.04
     timeout-minutes: 60
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -1101,6 +1202,8 @@ jobs:
         uses: ./.github/actions/setup-scancode
       - name: Prepare the bundler, import-map, and worker consumers
         env:
+          RECIPIENT_MATERIAL_CHECKPOINT: ${{ inputs.recipient_material_checkpoint }}
+          GH_TOKEN: ${{ inputs.recipient_material_checkpoint != '' && github.token || '' }}
           SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
@@ -1142,6 +1245,7 @@ jobs:
     runs-on: ubuntu-26.04
     timeout-minutes: 30
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -1180,6 +1284,8 @@ jobs:
         uses: ./.github/actions/setup-scancode
       - name: Qualify installed public OWL interfaces against current consumer source
         env:
+          RECIPIENT_MATERIAL_CHECKPOINT: ${{ inputs.recipient_material_checkpoint }}
+          GH_TOKEN: ${{ inputs.recipient_material_checkpoint != '' && github.token || '' }}
           SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
           GITHUB_TOKEN: ${{ github.token }}
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
@@ -1233,9 +1339,11 @@ jobs:
     needs: [runtime_matrix, candidate]
     if: ${{ !inputs.rc3_recovery }}
     permissions:
+      actions: read
       contents: read
     uses: ./.github/workflows/installed-qualification.yml
     with:
+      recipient_material_checkpoint: ${{ inputs.recipient_material_checkpoint }}
       matrix: ${{ needs.runtime_matrix.outputs.matrix }}
       artifact_id: ${{ needs.candidate.outputs.artifact_id }}
       artifact_digest: ${{ needs.candidate.outputs.artifact_digest }}

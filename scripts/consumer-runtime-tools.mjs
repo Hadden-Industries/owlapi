@@ -15,6 +15,7 @@ import { CI_RUNTIME, runtimeSemver as semver } from "./runtime-policy.mjs";
 import { validateFrozenMatrix } from "./consumer-runtime-matrix.mjs";
 import { publicRegistryEnvironment } from "./public-registry-consumer.mjs";
 import { NPM_REGISTRY } from "./release-identity.mjs";
+import { installedConsumerEnvironment } from "./installed-consumer-fixtures.mjs";
 import {
   findNpmCliCandidates,
   selectNpmCliForVersion,
@@ -172,7 +173,7 @@ if (
         {
           timeout: 45 * 60_000,
           env: {
-            ...process.env,
+            ...installedConsumerEnvironment(),
             npm_execpath: process.env.OWLAPI_CONSUMER_NPM,
           },
         },

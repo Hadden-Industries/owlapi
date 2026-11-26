@@ -1,11 +1,32 @@
 import { expect, test } from "@jest/globals";
+import { createRequire } from "node:module";
+import { readFileSync } from "node:fs";
 import {
   assertAuditIssuerContext,
   assertAuditTokenClaims,
   auditSignaturePolicy,
+  auditSigstoreRootPath,
   signAuditStatement,
   verifyAuditStatement,
 } from "./release-audit-evaluator-sigstore.mjs";
+
+test("the protected offline trust root matches the canonical npm distribution", () => {
+  const native = createRequire(process.env.npm_execpath);
+  const seed = native("@sigstore/tuf/seeds.json")[
+    "https://tuf-repo-cdn.sigstore.dev"
+  ].targets["trusted_root.json"];
+  const root = JSON.parse(
+    readFileSync(new URL("../" + auditSigstoreRootPath, import.meta.url)),
+  );
+  expect(root).toEqual(JSON.parse(Buffer.from(seed, "base64")));
+  const { TrustedRoot } = native("@sigstore/protobuf-specs");
+  const material = native("@sigstore/verify").toTrustMaterial(
+    TrustedRoot.fromJSON(root),
+  );
+  expect(material.certificateAuthorities.length).toBeGreaterThan(0);
+  expect(material.tlogs.length).toBeGreaterThan(0);
+  expect(material.ctlogs.length).toBeGreaterThan(0);
+});
 
 const repository = "Hadden-Industries/owlapi";
 const ref = "refs/heads/main";

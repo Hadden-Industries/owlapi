@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { verifyResolutionEvidence } from "./release-consumer-evidence.mjs";
-import { crc32 } from "node:zlib";
+import * as zlib from "node:zlib";
 import {
   artifactProducingAttempt,
   matchesLogicalArtifact,
@@ -101,11 +101,19 @@ export async function readQualifiedZip(
     artifact.digest,
     "Original ZIP digest differs",
   );
-  const entries = readZipArchiveFilesWith(bytes, {
-    crc32,
+  const constraints = {
     ...(names ? { expectedNames: new Set(names) } : {}),
     maximumUncompressedBytes: maximumBytes,
-  });
+  };
+  // Consumer replay can run at Node 22.0.0. Canonical, cold producer
+  // admission uses native zlib and loads no installed dependencies.
+  const entries =
+    typeof zlib.crc32 === "function"
+      ? readZipArchiveFilesWith(bytes, { ...constraints, crc32: zlib.crc32 })
+      : (await import("./release-zip.mjs")).readZipArchiveFiles(
+          bytes,
+          constraints,
+        );
   if (names)
     assert.deepEqual(
       entries.map(({ path }) => path).sort(),
@@ -236,6 +244,7 @@ export async function readProducerPackageProof({
   materialOptions,
   expectedSourceLockSha256,
   prepareMaterial,
+  rightsReader,
 }) {
   assert.ok(
     [1, 2].includes(expectedProofVersion),
@@ -325,6 +334,7 @@ export async function readProducerPackageProof({
       materialOptions,
       expectedSourceLockSha256,
       prepareMaterial,
+      rightsReader: { ...rightsReader, sbomSha256: candidate.sbom.sha256 },
     },
   );
   const producer = resolution.subjects.producer;
@@ -429,6 +439,7 @@ export async function readRetainedCorpusConsumerLock({
  */
 export async function verifyReleaseCiPackage({
   source,
+  client,
   read,
   download,
   audit,
@@ -528,6 +539,7 @@ export async function verifyReleaseCiPackage({
     materialOptions,
     expectedSourceLockSha256,
     prepareMaterial,
+    rightsReader: { client, commit: run.head_sha },
   });
   const { legacy, subjects, differences, evidence } = packageProof;
   return {

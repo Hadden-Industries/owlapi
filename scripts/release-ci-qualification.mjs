@@ -52,6 +52,7 @@ export async function readReleaseCiEvidence(env = process.env) {
     verifyPackage: (source) =>
       verifyReleaseCiPackage({
         source,
+        client,
         read,
         download,
       }),

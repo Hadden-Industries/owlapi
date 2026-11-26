@@ -95,7 +95,7 @@ describe("repository workflow governance", () => {
   test("checks permissions inherited by a callable workflow even on its skipped branches", () => {
     expect(
       mutateWorkflow("qualify-package.yml", (doc) => {
-        doc.setIn(["jobs", "produce", "permissions", "actions"], "read");
+        doc.setIn(["jobs", "produce", "permissions", "actions"], "write");
         doc.setIn(["jobs", "produce", "if"], "${{ false }}");
       }),
     ).toContain(
@@ -1186,6 +1186,63 @@ describe("repository workflow governance", () => {
     );
   });
 
+  test.each([
+    "missing dependency",
+    "unbound digest",
+    "soft failure",
+    "authorization follows floor setup",
+  ])(
+    "requires protected advisory verification before public product tests: %s",
+    (fault) => {
+      expect(
+        mutateWorkflow("release-registry.yml", (doc) => {
+          const job = doc.getIn(["jobs", "public_recipient"]);
+          const steps = job.get("steps").items;
+          const admission = steps.find(
+            (step) => step.get("id") === "authorization",
+          );
+          const testStep = steps.find(
+            (step) =>
+              step.get("run") === "node scripts/public-recipient-lane.mjs test",
+          );
+          if (fault === "missing dependency")
+            job.set("needs", doc.createNode(["registry", "material"]));
+          if (fault === "unbound digest")
+            testStep.setIn(["env", "PUBLIC_REPLAY_PLAN_SHA256"], "untrusted");
+          if (fault === "soft failure")
+            admission.set("continue-on-error", true);
+          if (fault === "authorization follows floor setup") {
+            steps.splice(steps.indexOf(admission), 1);
+            steps.splice(steps.indexOf(testStep), 0, admission);
+          }
+        }),
+      ).toContain(
+        "release-registry.yml: public test lanes require the native observation, material proof, and protected advisory before exercising code",
+      );
+    },
+  );
+
+  test("installs locked public scanner tools only when verified observations require new material", () => {
+    expect(
+      mutateWorkflow("release-registry.yml", (doc) => {
+        const install = doc
+          .getIn(["jobs", "material", "steps"])
+          .items.find(
+            (step) =>
+              step.get("run") ===
+              "npm ci --ignore-scripts --no-audit --no-fund",
+          );
+        install.delete("if");
+      }),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(
+          /only prepares ScanCode after authenticated novel-archive discovery/u,
+        ),
+      ]),
+    );
+  });
+
   test("only a successful protected audit can retain the exact receipt pair", () => {
     expect(
       mutateWorkflow("release-audit-evaluator.yml", (doc) => {
@@ -1243,6 +1300,30 @@ describe("repository workflow governance", () => {
       }),
     ).toContain(
       "release.yml: retain both raw assertions and bound qualification",
+    );
+  });
+
+  test("requires a closed standalone proof and a failure-only Mac observation", () => {
+    expect(
+      mutateWorkflow("release.yml", (doc) => {
+        const steps = doc.getIn(["jobs", "portability_macos_node_26", "steps"]);
+        const proof = steps.items.find(
+          (step) =>
+            step.get("name") === "Retain exact standalone portability proof",
+        );
+        const pending = steps.items.find(
+          (step) =>
+            step.get("name") ===
+            "Retain the exceptional recipient material observation",
+        );
+        proof.setIn(["with", "path"], ".release/download");
+        pending.set("if", "${{ always() }}");
+      }),
+    ).toEqual(
+      expect.arrayContaining([
+        "release.yml:portability_macos_node_26 requires exactly one standalone portability proof after native tests",
+        "release.yml:portability_macos_node_26 must retain a pending observation only after its original Mac install stops",
+      ]),
     );
   });
 

@@ -1,5 +1,6 @@
 /** Keyless identity for the single trusted job in the reusable OwlAPI audit evaluator. */
 import { createRequire } from "node:module";
+import { readControllerBlob } from "./release-controller-blob.mjs";
 import {
   REPOSITORY,
   REPOSITORY_ID,
@@ -9,6 +10,8 @@ import {
 import { assertAuditNpm } from "./release-audit-evaluator-private.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 
+export const auditSigstoreRootPath =
+  "docs/release/npm-audit-sigstore-root.json";
 const main = "refs/heads/main";
 const issuer = "https://token.actions.githubusercontent.com";
 const signer = ".github/workflows/release-audit-evaluator.yml";
@@ -169,10 +172,26 @@ export async function verifyAuditStatement(
     )
       throw new Error("A direct signature of the audit statement is required");
     const native = createRequire(assertAuditNpm(npmCli));
-    await native("sigstore").verify(bundle, statement, {
-      ...signatureNetwork,
-      ...auditSignaturePolicy(evaluator),
+    const root = native("@sigstore/protobuf-specs").TrustedRoot.fromJSON(
+      JSON.parse(
+        readControllerBlob(evaluator.controller, auditSigstoreRootPath),
+      ),
+    );
+    const { Verifier, toTrustMaterial, toSignedEntity } =
+      native("@sigstore/verify");
+    const { bundleFromJSON } = native("@sigstore/bundle");
+    const { createVerificationPolicy } = native("sigstore/dist/config.js");
+    const options = auditSignaturePolicy(evaluator);
+    // A trusted controller selects the public root before issuance. The native verifier checks the
+    // included transparency proofs and certificate chain without needing live TUF or the issuing job.
+    const verifier = new Verifier(toTrustMaterial(root), {
+      ctlogThreshold: options.ctLogThreshold,
+      tlogThreshold: options.tlogThreshold,
     });
+    verifier.verify(
+      toSignedEntity(bundleFromJSON(bundle), statement),
+      createVerificationPolicy(options),
+    );
   } catch {
     throw new Error("Public audit receipt signer could not be authenticated");
   }

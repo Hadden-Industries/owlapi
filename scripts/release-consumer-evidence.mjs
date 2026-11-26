@@ -38,6 +38,32 @@ export function prepareTarballConsumer(
   );
 }
 
+/** Seed an admitted local-tarball consumer with its unchanged original bytes. */
+export function prepareReplayedTarballConsumer(directory, tarball, evidence) {
+  const { manifest, lock, resolution } = evidence;
+  assert.equal(
+    sha256Buffer(tarball),
+    resolution.tarballSha256,
+    "Replayed original tarball changed",
+  );
+  assert.equal(
+    sha256Buffer(Buffer.from(manifest)),
+    resolution.manifestSha256,
+    "Replayed original manifest changed",
+  );
+  assert.equal(
+    sha256Buffer(Buffer.from(lock)),
+    resolution.lockSha256,
+    "Replayed original lock changed",
+  );
+  assert.deepEqual(JSON.parse(manifest).dependencies, {
+    [resolution.dependencyName]: "file:candidate.tgz",
+  });
+  writeFileSync(join(directory, "candidate.tgz"), tarball, { flag: "wx" });
+  writeFileSync(join(directory, "package.json"), manifest, { flag: "wx" });
+  writeFileSync(join(directory, "package-lock.json"), lock, { flag: "wx" });
+}
+
 /** Capture the native originals in the same directory as the package being exercised. */
 export async function captureResolutionEvidence(directory, options) {
   const resolution = await captureConsumerResolution(directory, options);

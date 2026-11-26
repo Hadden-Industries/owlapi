@@ -4,6 +4,9 @@ import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 import { UBUNTU } from "./ubuntu-runner.mjs";
+import { WINDOWS } from "./windows-runner.mjs";
+import { MACOS } from "./macos-runner.mjs";
+import { CI_RUNTIME } from "./runtime-policy.mjs";
 
 const { matrix } = consumerRuntimeFixture({ newerPatches: false });
 const source = { runId: 101, attempt: 2, commit: "a".repeat(40) };
@@ -55,6 +58,18 @@ test.each(["same execution", "changed execution", "expired original"])(
         UBUNTU.label,
       ]),
       ["Release / installed OWL contract", UBUNTU.label],
+      ...[22, 24, 26].map((major) => [
+        `Release / Windows / Node ${CI_RUNTIME.node[major]}`,
+        WINDOWS.label,
+      ]),
+      ...[22, 24, 26].map((major) => [
+        `Release / macOS / Node ${CI_RUNTIME.node[major]}`,
+        MACOS.label,
+      ]),
+      [
+        `Release / Ubuntu / retained package / Node ${CI_RUNTIME.node[26]}`,
+        UBUNTU.label,
+      ],
     ];
     const jobs = names.map(([name, runner], index) => ({
       name,
@@ -107,11 +122,32 @@ test.each(["same execution", "changed execution", "expired original"])(
         head_repository_id: REPOSITORY_ID,
       },
     };
+    const corpus = Array.from({ length: 102 }, (_, index) => ({
+      ...jobs[0],
+      id: 2000 + index,
+      name: `Release / universal ontology / Corpus shard ${index + 1}`,
+    }));
+    const latest = [...corpus, ...jobs];
+    const earlier = [
+      ...corpus.map((job) => ({ ...job, run_attempt: 1 })),
+      prior,
+    ];
+    const pages = [];
     const read = async (path) => {
-      if (path.includes("/jobs?filter=latest"))
-        return { total_count: jobs.length, jobs };
-      if (path.includes("/attempts/1/jobs"))
-        return { total_count: 1, jobs: [prior] };
+      if (
+        path.includes("/jobs?filter=latest") ||
+        path.includes("/attempts/1/jobs")
+      ) {
+        const roster = path.includes("/attempts/1/jobs") ? earlier : latest;
+        const page = Number(
+          new URL(`https://api.github.com${path}`).searchParams.get("page"),
+        );
+        pages.push([roster === latest ? "latest" : "earlier", page]);
+        return {
+          total_count: roster.length,
+          jobs: roster.slice((page - 1) * 100, page * 100),
+        };
+      }
       if (path.includes("/artifacts?per_page="))
         return { total_count: 1, artifacts: [artifact] };
       if (path === `/actions/artifacts/${artifact.id}`) return artifact;
@@ -139,5 +175,11 @@ test.each(["same execution", "changed execution", "expired original"])(
         : /original recipient artifact|original successful upload/iu,
     );
     expect(downloads).toBe(fault === "same execution" ? 1 : 0);
+    expect(pages).toEqual([
+      ["latest", 1],
+      ["latest", 2],
+      ["earlier", 1],
+      ["earlier", 2],
+    ]);
   },
 );

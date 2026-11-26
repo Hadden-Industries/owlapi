@@ -3,6 +3,11 @@ name: Installed package qualification
 on:
   workflow_call:
     inputs:
+      recipient_material_checkpoint:
+        description: Signed recipient material checkpoint for fresh qualification
+        type: string
+        required: false
+        default: ""
       matrix:
         required: true
         type: string
@@ -36,6 +41,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 90
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -50,6 +56,7 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/qualify-consumer
         with:
+          recipient_material_checkpoint: ${{ inputs.recipient_material_checkpoint }}
           matrix: ${{ inputs.matrix }}
           node: ${{ matrix.node }}
           candidate-id: ${{ inputs.artifact_id }}

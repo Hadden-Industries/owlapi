@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { installedConsumerEnvironment } from "./installed-consumer-fixtures.mjs";
 import { randomUUID } from "node:crypto";
 import {
   closeSync,
@@ -64,7 +65,10 @@ const runNpm = (npmCli, arguments_, cwd, cacheDirectory) => {
   const result = spawnSync(process.execPath, [npmCli, ...arguments_], {
     cwd,
     encoding: "utf8",
-    env: { ...process.env, npm_config_cache: cacheDirectory },
+    env: {
+      ...installedConsumerEnvironment(),
+      npm_config_cache: cacheDirectory,
+    },
     maxBuffer: 128 * 1024 * 1024,
   });
   if (result.status !== 0) {

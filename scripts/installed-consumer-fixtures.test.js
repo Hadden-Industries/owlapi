@@ -2,7 +2,23 @@ import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { writeInstalledConsumerFixtures } from "./installed-consumer-fixtures.mjs";
+import {
+  installedConsumerEnvironment,
+  writeInstalledConsumerFixtures,
+} from "./installed-consumer-fixtures.mjs";
+
+test("case reader credentials stay out of installed package processes", () => {
+  expect(
+    installedConsumerEnvironment({
+      Gh_Token: "fixture",
+      GITHUB_TOKEN: "fixture",
+      ACTIONS_ID_TOKEN_REQUEST_TOKEN: "fixture",
+      npm_token: "fixture",
+      PATH: "tools",
+      OWLAPI_TEST: "test",
+    }),
+  ).toEqual({ PATH: "tools", OWLAPI_TEST: "test" });
+});
 
 test("transported consumer helpers resolve from outside the checkout", async () => {
   const directory = mkdtempSync(join(tmpdir(), "owlapi-consumer-json-"));

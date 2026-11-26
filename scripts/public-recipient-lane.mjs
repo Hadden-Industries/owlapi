@@ -10,7 +10,8 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import {
   validateFrozenMatrix,
   runtimeDigest,
@@ -25,9 +26,7 @@ import {
   PACKAGE_VERSION,
   assertRegistryTarballUrl,
 } from "./package-identity.mjs";
-import { REPOSITORY } from "./release-identity.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
-import { GitHubReleaseClient } from "./github-release.mjs";
 import {
   INSTALLED_TEST_SCRIPTS,
   writeInstalledConsumerFixtures,
@@ -40,140 +39,160 @@ import {
   packPublicObservation,
   publicResolutionDigest,
 } from "./public-recipient-observation.mjs";
-import { readPublicTestInputs } from "./release-public-proof.mjs";
+import {
+  publicReplayPlanPath,
+  readPublicReplayPlan,
+} from "./public-recipient-plan.mjs";
 
-const env = process.env;
-const mode = process.argv[2];
-assert.ok(
-  ["observe", "test"].includes(mode),
-  "Select public observation or test",
-);
-const matrix = validateFrozenMatrix(JSON.parse(env.OWLAPI_RUNTIME_MATRIX));
-const input = JSON.parse(env.OWLAPI_PUBLIC_RECIPIENT);
-assert.equal(input.schemaVersion, 2);
-assert.deepEqual(input.package, {
-  name: PACKAGE_NAME,
-  version: PACKAGE_VERSION,
-});
-assert.equal(input.matrixSha256, runtimeDigest(matrix));
-const lane = matrix.include.find(
-  (item) =>
-    item.node === process.versions.node &&
-    item.os === process.platform &&
-    item.arch === process.arch,
-);
-assert.ok(lane);
-assert.equal(lane.node, env.OWLAPI_EXPECTED_NODE);
-const npmCli = env.OWLAPI_CONSUMER_NPM;
-assertConsumerNpm(npmCli);
-const origin = {
-  commit: env.GITHUB_SHA,
-  run: env.GITHUB_RUN_ID,
-  attempt: env.GITHUB_RUN_ATTEMPT,
-};
-const metadata = await fetchRegistryMetadata(input.package.version);
-const registryTarball = assertRegistryTarballUrl(metadata.dist.tarball);
-assert.equal(metadata.dist.integrity, input.integrity);
-const tarball = await readPublicRegistry(registryTarball, {
-  maxBytes: 16 * 1024 * 1024,
-});
-assert.equal(sha256Buffer(tarball), input.tarballSha256);
-assert.equal(
-  "sha512-" + createHash("sha512").update(tarball).digest("base64"),
-  input.integrity,
-);
+export async function runPublicRecipientLane(
+  mode,
+  env = process.env,
+  {
+    readMetadata = fetchRegistryMetadata,
+    readTarball = readPublicRegistry,
+    install = installRegistryConsumer,
+  } = {},
+) {
+  assert.ok(
+    ["observe", "test"].includes(mode),
+    "Select public observation or test",
+  );
+  const matrix = validateFrozenMatrix(JSON.parse(env.OWLAPI_RUNTIME_MATRIX));
+  const input = JSON.parse(env.OWLAPI_PUBLIC_RECIPIENT);
+  assert.equal(input.schemaVersion, 2);
+  assert.deepEqual(input.package, {
+    name: PACKAGE_NAME,
+    version: PACKAGE_VERSION,
+  });
+  assert.equal(input.matrixSha256, runtimeDigest(matrix));
+  const lane = matrix.include.find(
+    (item) =>
+      item.node === process.versions.node &&
+      item.os === process.platform &&
+      item.arch === process.arch,
+  );
+  assert.ok(lane);
+  assert.equal(lane.node, env.OWLAPI_EXPECTED_NODE);
+  const npmCli = env.OWLAPI_CONSUMER_NPM;
+  assertConsumerNpm(npmCli);
+  const origin = {
+    commit: env.GITHUB_SHA,
+    run: env.GITHUB_RUN_ID,
+    attempt: env.GITHUB_RUN_ATTEMPT,
+  };
+  const trusted =
+    mode === "test"
+      ? readPublicReplayPlan(
+          readFileSync(publicReplayPlanPath),
+          env.PUBLIC_REPLAY_PLAN_SHA256,
+          { lane, input, origin },
+        )
+      : undefined;
+  const metadata = await readMetadata(input.package.version);
+  const registryTarball = assertRegistryTarballUrl(metadata.dist.tarball);
+  assert.equal(metadata.dist.integrity, input.integrity);
+  if (trusted) assert.equal(registryTarball, trusted.registryTarball);
+  const tarball = await readTarball(registryTarball, {
+    maxBytes: 16 * 1024 * 1024,
+  });
+  assert.equal(sha256Buffer(tarball), input.tarballSha256);
+  assert.equal(
+    "sha512-" + createHash("sha512").update(tarball).digest("base64"),
+    input.integrity,
+  );
 
-const trusted =
-  mode === "test"
-    ? await readPublicTestInputs(
-        new GitHubReleaseClient({
-          repository: REPOSITORY,
-          token: env.GH_TOKEN,
-        }),
-        readFileSync(".release/public-material/material.json"),
-        { lane, input, origin, tarball, npmCli, registryTarball },
-      )
-    : undefined;
-const tmp = realpathSync(tmpdir());
-const root = mkdtempSync(join(tmp, "owlapi-registry-lane-"));
-assert.ok(isStrictDescendantPath(tmp, root));
-const consumers = {};
-try {
-  for (const [variant, dependencyName] of Object.entries(PUBLIC_CONSUMERS)) {
-    const directory = join(root, variant);
-    const original = trusted?.consumers[variant];
-    const { identity, environment } = installRegistryConsumer({
-      directory,
-      dependencyName,
-      metadata,
-      npmCli,
-      ...(original ? { original: original.evidence } : {}),
-    });
-    const evidence = await captureResolutionEvidence(directory, {
-      tarball,
-      dependencyName,
-      npmCli,
-      registryTarball,
-    });
-    if (mode === "observe") {
-      consumers[variant] = { identity, evidence };
-      continue;
-    }
-    assert.equal(
-      publicResolutionDigest(evidence.resolution),
-      original.resolutionSha256,
-      "The public replay selected different files or native dependency edges",
-    );
-    writeInstalledConsumerFixtures(directory, dependencyName);
-    for (const script of INSTALLED_TEST_SCRIPTS) {
-      try {
-        execFileSync(process.execPath, [script], {
-          cwd: directory,
-          env: environment,
-          timeout: 120000,
-          stdio: "pipe",
-        });
-      } catch {
-        throw new Error("A public installed-package contract check failed");
+  const tmp = realpathSync(tmpdir());
+  const root = mkdtempSync(join(tmp, "owlapi-registry-lane-"));
+  assert.ok(isStrictDescendantPath(tmp, root));
+  const consumers = {};
+  try {
+    for (const [variant, dependencyName] of Object.entries(PUBLIC_CONSUMERS)) {
+      const directory = join(root, variant);
+      const original = trusted?.consumers[variant];
+      const { identity, environment } = install({
+        directory,
+        dependencyName,
+        metadata,
+        npmCli,
+        ...(original ? { original } : {}),
+      });
+      const evidence = await captureResolutionEvidence(directory, {
+        tarball,
+        dependencyName,
+        npmCli,
+        registryTarball,
+      });
+      if (!trusted) {
+        consumers[variant] = { identity, evidence };
+        continue;
       }
+      assert.equal(
+        publicResolutionDigest(evidence.resolution),
+        original.resolutionSha256,
+        "The public replay selected different files or native dependency edges",
+      );
+      writeInstalledConsumerFixtures(directory, dependencyName);
+      for (const script of INSTALLED_TEST_SCRIPTS) {
+        assert.ok(
+          Date.now() < trusted.expiresAt,
+          "The admitted public advisory decision expired before testing",
+        );
+        try {
+          execFileSync(process.execPath, [script], {
+            cwd: directory,
+            env: environment,
+            timeout: 120000,
+            stdio: "pipe",
+          });
+        } catch {
+          throw new Error("A public installed-package contract check failed");
+        }
+      }
+      assert.equal(
+        sha256Buffer(readFileSync(join(directory, "package.json"))),
+        evidence.resolution.manifestSha256,
+      );
+      assert.equal(
+        sha256Buffer(readFileSync(join(directory, "package-lock.json"))),
+        evidence.resolution.lockSha256,
+      );
+      consumers[variant] = {
+        resolutionSha256: original.resolutionSha256,
+        decisionSha256: original.decisionSha256,
+        installedTests: INSTALLED_TEST_SCRIPTS,
+      };
     }
-    assert.equal(
-      sha256Buffer(readFileSync(join(directory, "package.json"))),
-      evidence.resolution.manifestSha256,
-    );
-    assert.equal(
-      sha256Buffer(readFileSync(join(directory, "package-lock.json"))),
-      evidence.resolution.lockSha256,
-    );
-    consumers[variant] = {
-      resolutionSha256: original.resolutionSha256,
-      decisionSha256: trusted.decisions[variant],
-      installedTests: INSTALLED_TEST_SCRIPTS,
-    };
+  } finally {
+    rmSync(root, { recursive: true, force: true });
   }
-} finally {
-  rmSync(root, { recursive: true, force: true });
+  if (!trusted) {
+    mkdirSync(".release/public-observation", { recursive: true });
+    writeFileSync(
+      ".release/public-observation/observation.json",
+      stableJson(packPublicObservation({ lane, input, origin, consumers })),
+      { flag: "wx" },
+    );
+  } else {
+    mkdirSync(".release/public-lane", { recursive: true });
+    writeFileSync(
+      ".release/public-lane/lane.json",
+      stableJson({
+        schemaVersion: 2,
+        lane,
+        input,
+        origin,
+        consumers,
+        observation: trusted.observation,
+        materialSha256: trusted.materialSha256,
+        advisory: trusted.advisory,
+      }),
+      { flag: "wx" },
+    );
+  }
 }
-if (mode === "observe") {
-  mkdirSync(".release/public-observation", { recursive: true });
-  writeFileSync(
-    ".release/public-observation/observation.json",
-    stableJson(packPublicObservation({ lane, input, origin, consumers })),
-    { flag: "wx" },
-  );
-} else {
-  mkdirSync(".release/public-lane", { recursive: true });
-  writeFileSync(
-    ".release/public-lane/lane.json",
-    stableJson({
-      schemaVersion: 2,
-      lane,
-      input,
-      origin,
-      consumers,
-      observation: trusted.observation,
-      materialSha256: trusted.materialSha256,
-    }),
-    { flag: "wx" },
-  );
-}
+
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(resolve(process.argv[1])).href
+)
+  await runPublicRecipientLane(process.argv[2]);

@@ -7,6 +7,7 @@ import {
   checkedNativeJob,
   releaseJobs,
   verifyArchivedAdvisoryReceipt,
+  verifyHostedAdvisoryReceipt,
 } from "./release-audit-job.mjs";
 import { verifyNewStageAdvisories } from "./staged-release.mjs";
 import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
@@ -141,6 +142,47 @@ test("archive readback refuses an invalid original artifact pointer before relyi
       descriptor,
     }),
   ).rejects.toThrow(/advisory artifact pointer/i);
+});
+
+test("only public pretest readback may use an in-progress enclosing run, and still needs a successful original advisory job", async () => {
+  const publicWorkflow = ".github/workflows/release-registry.yml";
+  const active = {
+    ...run,
+    path: publicWorkflow,
+    status: "in_progress",
+    conclusion: null,
+  };
+  const client = {
+    read: async (path) =>
+      path === "/actions/runs/140"
+        ? active
+        : {
+            total_count: 1,
+            jobs: [{ ...original, status: "completed", conclusion: "failure" }],
+          },
+  };
+  await expect(
+    verifyHostedAdvisoryReceipt({
+      ...expected,
+      client,
+      workflow: publicWorkflow,
+    }),
+  ).rejects.toThrow("did not complete successfully");
+  await expect(
+    verifyHostedAdvisoryReceipt({
+      ...expected,
+      client,
+      workflow: publicWorkflow,
+      publicRecipientTest: true,
+    }),
+  ).rejects.toThrow("Original job did not succeed");
+  await expect(
+    verifyHostedAdvisoryReceipt({
+      ...expected,
+      client,
+      publicRecipientTest: true,
+    }),
+  ).rejects.toThrow("Only a public test");
 });
 
 test("paginated native jobs must form one complete roster with distinct IDs", async () => {

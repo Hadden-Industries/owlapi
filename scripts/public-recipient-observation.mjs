@@ -181,11 +181,12 @@ export function assertPublicMaterialDecision(
     "observedAt",
     "resolutionSha256",
     "result",
+    ...(decision.rights ? ["rights"] : []),
     "role",
     "schemaVersion",
     "subject",
   ]);
-  assert.equal(decision.schemaVersion, 1);
+  assert.equal(decision.schemaVersion, decision.rights ? 2 : 1);
   assert.equal(decision.role, `public-${mode}`);
   assert.equal(decision.result, "PASS");
   assert.equal(decision.resolutionSha256, observation.resolutionSha256);
@@ -193,7 +194,10 @@ export function assertPublicMaterialDecision(
   assert.ok(Number.isFinite(Date.parse(decision.observedAt)));
   assert.equal(sha256Buffer(Buffer.from(material)), decision.materialSha256);
   const record = JSON.parse(material);
-  assert.equal(record.status, "PASSED");
+  assert.equal(
+    record.status,
+    decision.rights ? "REQUIRES_HUMAN_REVIEW" : "PASSED",
+  );
   assert.deepEqual(record.subject, {
     resolutionSha256: observation.resolutionSha256,
     lockSha256: observation.subject.lockSha256,

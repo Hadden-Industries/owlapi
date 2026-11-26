@@ -644,6 +644,16 @@ export function assertAdvisoryDecisionCurrent(decision, now = Date.now()) {
     assertSubjectFreshness(entry, decision.decidedAt, now);
 }
 
+/** A verified decision may be handed to an isolated test runner until this instant. */
+export function advisoryDecisionExpiry(decision) {
+  return Math.min(
+    ...decision.subjects.flatMap((entry) => [
+      Date.parse(entry.observedAt) + maxAge,
+      ...(entry.caseEvidence ? [Date.parse(entry.caseEvidence.expiresAt)] : []),
+    ]),
+  );
+}
+
 /** A past stage decision keeps its original audit clock; its case approval must remain active for a future writer. */
 export function assertAdvisoryCasesCurrent(decision, now = Date.now()) {
   for (const entry of decision.subjects) assertPrivateCaseCurrent(entry, now);

@@ -4,7 +4,7 @@ import { dirname } from "node:path";
 import { pathToFileURL } from "node:url";
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
-import { crc32 } from "node:zlib";
+import * as zlib from "node:zlib";
 import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
 
 import {
@@ -18,7 +18,7 @@ import { RECOVERY_JOBS } from "./rc3-recovery-policy.mjs";
 // Producer tooling runs on the policy-owned Node, including the dependency-free
 // publisher. The consumer ZIP adapter intentionally supports older Node versions.
 const readZipArchiveFiles = (archive) =>
-  readZipArchiveFilesWith(archive, { crc32 });
+  readZipArchiveFilesWith(archive, { crc32: zlib.crc32 });
 const gateJobs = {
   "release-manual": "Release / tag accepted",
   "npm-release": "Release / npm trusted publisher",

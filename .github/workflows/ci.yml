@@ -645,6 +645,7 @@ jobs:
       - dependency_review
       - quality_windows
     permissions:
+      actions: read
       contents: read
     uses: ./.github/workflows/qualify-package.yml
     with:
@@ -674,6 +675,13 @@ jobs:
           node: "22.23.5"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
 
   portability_windows_node_24:
     name: CI / Windows / Node 24.22.3
@@ -698,6 +706,13 @@ jobs:
           node: "24.22.3"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
 
   portability_ubuntu_node_26:
     name: CI / Ubuntu / retained package / Node 26.13.1
@@ -753,6 +768,13 @@ jobs:
           name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/download/recipient-material-cases
           retention-days: 14
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
 
   portability_windows_node_26:
     name: CI / Windows / Node 26.13.1
@@ -808,6 +830,13 @@ jobs:
           name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/download/recipient-material-cases
           retention-days: 14
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
 
   portability_macos_node_22:
     name: CI / macOS / Node 22.23.5
@@ -832,6 +861,20 @@ jobs:
           node: "22.23.5"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+      - name: Retain the exceptional recipient material observation
+        if: ${{ failure() && hashFiles('.release/runtime-report/pending-recipient-material.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/pending-recipient-material.json
+          retention-days: 14
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
 
   portability_macos_node_24:
     name: CI / macOS / Node 24.22.3
@@ -856,6 +899,20 @@ jobs:
           node: "24.22.3"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+      - name: Retain the exceptional recipient material observation
+        if: ${{ failure() && hashFiles('.release/runtime-report/pending-recipient-material.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/pending-recipient-material.json
+          retention-days: 14
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/runtime-report/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
 
   portability_macos_node_26:
     name: CI / macOS / Node 26.13.1
@@ -907,6 +964,20 @@ jobs:
           name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/download/recipient-material-cases
           retention-days: 14
+      - name: Retain the exceptional recipient material observation
+        if: ${{ failure() && hashFiles('.release/download/pending-recipient-material.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/pending-recipient-material.json
+          retention-days: 14
+      - name: Retain exact standalone portability proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: standalone-portability-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/standalone-portability.json
+          retention-days: 90
+          compression-level: 6
 
   browser_chromium:
     name: CI / browser / Chromium
@@ -1227,6 +1298,7 @@ jobs:
     name: CI / complete consumer qualification
     needs: [runtime_matrix, candidate]
     permissions:
+      actions: read
       contents: read
     uses: ./.github/workflows/installed-qualification.yml
     with:

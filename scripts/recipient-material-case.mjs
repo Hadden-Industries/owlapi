@@ -62,6 +62,21 @@ function assertOrigin(origin) {
   assert.ok(positive(origin.runId) && positive(origin.attempt));
 }
 
+/** Case-backed material has its own digest name so different eligible roles may
+ * retain their original material for one identical native resolution. */
+export function recipientMaterialMember(resolutionSha256, decision) {
+  assert.match(resolutionSha256, digest);
+  if (decision.schemaVersion === 1 || decision.schemaVersion === 3) {
+    assert.equal(decision.rights, undefined);
+    return `material/${resolutionSha256}/recipient-material.json`;
+  }
+  assert.equal(decision.schemaVersion, 2);
+  assert.match(decision.rights?.checkpoint ?? "", oid);
+  assert.match(decision.rights.caseSha256, digest);
+  assert.match(decision.materialSha256, digest);
+  return `material/${resolutionSha256}/recipient-material-${decision.materialSha256}.json`;
+}
+
 function materialInputs(packet) {
   const { evidence, material } = packet;
   const { manifest, lock, resolution } = evidence;

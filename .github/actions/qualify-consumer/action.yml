@@ -1,6 +1,10 @@
 name: Qualify the retained package on a frozen consumer lane
 description: Exercise source behavior and the exact transported archive with consumer-native tools
 inputs:
+  recipient_material_checkpoint:
+    description: Signed recipient material checkpoint for fresh qualification
+    required: false
+    default: ""
   matrix:
     description: Complete frozen matrix
     required: true
@@ -38,6 +42,8 @@ runs:
         OWLAPI_EXPECTED_NODE: ${{ inputs.node }}
         OWLAPI_CANDIDATE_ID: ${{ inputs.candidate-id }}
         OWLAPI_CANDIDATE_DIGEST: ${{ inputs.candidate-digest }}
+        RECIPIENT_MATERIAL_CHECKPOINT: ${{ inputs.recipient_material_checkpoint }}
+        GH_TOKEN: ${{ inputs.recipient_material_checkpoint != '' && github.token || '' }}
         SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
       run: node scripts/qualify-consumer-runtime.mjs
     - name: Retain the unresolved recipient material case
