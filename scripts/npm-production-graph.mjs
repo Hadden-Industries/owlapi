@@ -1,5 +1,24 @@
 import assert from "node:assert/strict";
 
+/** Check native problem diagnostics before selecting a subtree; npm can exit zero for extras. */
+export function assertHealthyNpmGraph(root) {
+  const pending = [root];
+  while (pending.length) {
+    const node = pending.pop();
+    assert.ok(node && typeof node === "object", "Invalid npm graph node");
+    assert.ok(
+      (node.problems === undefined ||
+        (Array.isArray(node.problems) && node.problems.length === 0)) &&
+        !node.extraneous &&
+        !node.invalid &&
+        !node.missing &&
+        !node.error,
+      "Native npm graph contains a dependency problem",
+    );
+    pending.push(...Object.values(node.dependencies ?? {}));
+  }
+}
+
 /** Package identities observed by npm ls, independent of installation locations. */
 export const flattenNpmGraph = (root, rootName = root?.name) => {
   const identities = new Set();

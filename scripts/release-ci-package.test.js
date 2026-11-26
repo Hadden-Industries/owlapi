@@ -233,6 +233,75 @@ test("links the original pair of uploads and validates the actual three-member c
   });
 });
 
+// Reduced from the November 26 retained observations. This is a synthetic ZIP with the
+// original two parent paths, not an authenticated historical release or new qualification.
+test("the legacy producer proof still rejects the reported Node-types drift", async () => {
+  const f = fixture();
+  const graph = (version) => ({
+    ...packageFacts,
+    dependencies: {
+      "rdfxml-streaming-parser": {
+        version: "3.3.0",
+        dependencies: {
+          "@types/readable-stream": {
+            version: "4.0.25",
+            dependencies: { "@types/node": { version } },
+          },
+          "rdf-data-factory": {
+            version: "2.1.0",
+            dependencies: {
+              "@rdfjs/types": {
+                version: "2.0.1",
+                dependencies: { "@types/node": { version } },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  const locked = graph("26.6.10");
+  f.evidence["locked-production-graph.json"] = locked;
+  f.evidence["sbom-subject-production-graph.json"] = locked;
+  f.evidence["lockless-consumer-production-graph.json"].dependencies.owlapi =
+    locked;
+  const sbomName = stem + ".cdx.json";
+  const sbom = JSON.parse(f.files[sbomName]);
+  sbom.components = [
+    { name: "rdfxml-streaming-parser", version: "3.3.0" },
+    { name: "rdf-data-factory", version: "2.1.0" },
+    { group: "@rdfjs", name: "types", version: "2.0.1" },
+    { group: "@types", name: "readable-stream", version: "4.0.25" },
+    { group: "@types", name: "node", version: "26.6.10" },
+  ];
+  f.files[sbomName] = JSON.stringify(sbom);
+  Object.assign(f.evidence["candidate-manifest.json"].sbom, {
+    sha256: sha(f.files[sbomName]),
+    bytes: Buffer.byteLength(f.files[sbomName]),
+  });
+  f.files.SHA256SUMS =
+    sha(f.files[sbomName]) +
+    "  " +
+    sbomName +
+    "\n" +
+    sha(f.files[stem + ".tgz"]) +
+    "  " +
+    stem +
+    ".tgz\n";
+  expect((await f.admit()).package).toEqual(packageFacts);
+  f.evidence["lockless-consumer-production-graph.json"].dependencies.owlapi =
+    graph("26.6.11");
+  await expect(f.admit()).rejects.toThrow(/Lockless consumer graph differs/);
+});
+
+test("a successful producer job cannot cover a consumer tree with native npm problems", async () => {
+  const f = fixture();
+  f.evidence["lockless-consumer-production-graph.json"].problems = [
+    "extraneous: undeclared dependency",
+  ];
+  await expect(f.admit()).rejects.toThrow(/npm.*problem/i);
+});
+
 test("a later artifact with the expected logical name cannot impersonate the original proof", async () => {
   await expect(
     fixture().admit((proof) => {

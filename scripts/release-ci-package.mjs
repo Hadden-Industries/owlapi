@@ -1,6 +1,11 @@
 /** Read the closed producer proof for the authenticated original FULL candidate. */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { isStrictDescendantPath } from "./release-file-utils.mjs";
+import { replayConsumerResolution } from "./release-consumer-resolution.mjs";
 import { crc32 } from "node:zlib";
 import {
   artifactProducingAttempt,
@@ -19,6 +24,7 @@ import {
 import { CANONICAL_NODE, CI_RUNTIME } from "./runtime-policy.mjs";
 import { UBUNTU } from "./ubuntu-runner.mjs";
 import {
+  assertHealthyNpmGraph,
   assertNpmSbomInventory,
   flattenNpmGraph,
 } from "./npm-production-graph.mjs";
@@ -85,6 +91,36 @@ export async function readQualifiedZip(
   return new Map(entries.map(({ path, content }) => [path, content]));
 }
 
+const jsonMember = (files, name) => {
+  const bytes = files.get(name);
+  return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+};
+
+/** Replay only a closed graph proof from its trusted upload descriptor. Eligibility also needs
+ * the separate archive, rights, advisory and behaviour checks for this same observation. */
+export async function readConsumerResolutionProof({
+  download,
+  artifact,
+  ...options
+}) {
+  const members = await readQualifiedZip(download, artifact, proofLimit, [
+    "package.json",
+    "package-lock.json",
+    "resolution.json",
+  ]);
+  const directory = mkdtempSync(join(tmpdir(), "owlapi-resolution-replay-"));
+  assert.ok(isStrictDescendantPath(tmpdir(), directory));
+  try {
+    for (const name of ["package.json", "package-lock.json"])
+      writeFileSync(join(directory, name), members.get(name), { flag: "wx" });
+    const observed = jsonMember(members, "resolution.json");
+    await replayConsumerResolution(directory, options, observed);
+    return observed;
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+}
+
 export const requireSameUpload = (artifact, run, job, name, now) => {
   const steps = (job.steps ?? []).filter((step) => step.name === name);
   const created = Date.parse(artifact.created_at);
@@ -109,15 +145,12 @@ export const requireSameUpload = (artifact, run, job, name, now) => {
   );
 };
 
-const jsonMember = (files, name) => {
-  const bytes = files.get(name);
-  return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
-};
-
 function verifyGraphs(evidence, sbom, integrity, version = PACKAGE_VERSION) {
   const locked = jsonMember(evidence, lockedGraph);
   const subject = jsonMember(evidence, sbomGraph);
-  const alias = jsonMember(evidence, consumerGraph).dependencies?.owlapi;
+  const consumer = jsonMember(evidence, consumerGraph);
+  for (const graph of [locked, subject, consumer]) assertHealthyNpmGraph(graph);
+  const alias = consumer.dependencies?.owlapi;
   assert.ok(alias, "The original consumer did not record its npm alias");
   for (const graph of [locked, subject]) {
     assert.equal(graph.name, PACKAGE_NAME);

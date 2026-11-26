@@ -106,32 +106,12 @@ const readLockfile = (lockfileBytes) => {
 
 export const verifySri = verifySha512Sri;
 
-export const normalizeLockedRegistryGraph = (lockfileBytes) => {
-  const lockfile = readLockfile(lockfileBytes);
-  if (lockfile?.lockfileVersion !== 3) {
-    throw new TypeError("Expected npm lockfile version 3");
-  }
-  if (
-    !lockfile.packages ||
-    typeof lockfile.packages !== "object" ||
-    Array.isArray(lockfile.packages)
-  ) {
-    throw new TypeError("Lockfile packages must be an object");
-  }
-  const root = lockfile.packages[""];
-  if (!root || typeof root !== "object") {
-    throw new TypeError("Lockfile is missing its root package");
-  }
-  const packageName = requireNonemptyString(root.name, "root package name");
-  const packageVersion = requireNonemptyString(
-    root.version,
-    "root package exact version",
-  );
-
+/** Index lock v3 package occurrences after the caller has authenticated its root subject. */
+export const indexRegistryOccurrences = (packages) => {
   const artifactsByCoordinate = new Map();
   const occurrences = [];
   const bundledOccurrences = [];
-  const dependencyEntries = Object.entries(lockfile.packages)
+  const dependencyEntries = Object.entries(packages)
     .filter(([dependencyPath]) => dependencyPath !== "")
     .sort(([left], [right]) => compareCodeUnits(left, right));
 
@@ -233,16 +213,16 @@ export const normalizeLockedRegistryGraph = (lockfileBytes) => {
       if (marker < 0)
         throw new TypeError(`Orphan bundled package: ${dependencyPath}`);
       ownerDependencyPath = ownerDependencyPath.slice(0, marker);
-      if (!lockfile.packages[ownerDependencyPath])
+      if (!packages[ownerDependencyPath])
         throw new TypeError(
           `Missing bundled package ancestor: ${ownerDependencyPath}`,
         );
-    } while (lockfile.packages[ownerDependencyPath].inBundle === true);
+    } while (packages[ownerDependencyPath].inBundle === true);
     const owner = occurrenceByPath.get(ownerDependencyPath);
     const declaration =
-      lockfile.packages[ownerDependencyPath].bundleDependencies ??
-      lockfile.packages[ownerDependencyPath].bundledDependencies;
-    const ownerEntry = lockfile.packages[ownerDependencyPath];
+      packages[ownerDependencyPath].bundleDependencies ??
+      packages[ownerDependencyPath].bundledDependencies;
+    const ownerEntry = packages[ownerDependencyPath];
     if (
       ownerEntry.bundleDependencies !== undefined &&
       ownerEntry.bundledDependencies !== undefined &&
@@ -302,12 +282,39 @@ export const normalizeLockedRegistryGraph = (lockfileBytes) => {
   );
 
   return {
-    lockfileSha256: sha256(Buffer.from(lockfileBytes)),
-    lockfileVersion: lockfile.lockfileVersion,
-    package: { name: packageName, version: packageVersion },
     occurrences,
     artifacts: [...artifactsByCoordinate.values()].sort((left, right) =>
       compareCodeUnits(left.artifactId, right.artifactId),
     ),
+  };
+};
+
+export const normalizeLockedRegistryGraph = (lockfileBytes) => {
+  const lockfile = readLockfile(lockfileBytes);
+  if (lockfile?.lockfileVersion !== 3) {
+    throw new TypeError("Expected npm lockfile version 3");
+  }
+  if (
+    !lockfile.packages ||
+    typeof lockfile.packages !== "object" ||
+    Array.isArray(lockfile.packages)
+  ) {
+    throw new TypeError("Lockfile packages must be an object");
+  }
+  const root = lockfile.packages[""];
+  if (!root || typeof root !== "object") {
+    throw new TypeError("Lockfile is missing its root package");
+  }
+  const packageName = requireNonemptyString(root.name, "root package name");
+  const packageVersion = requireNonemptyString(
+    root.version,
+    "root package exact version",
+  );
+
+  return {
+    lockfileSha256: sha256(Buffer.from(lockfileBytes)),
+    lockfileVersion: lockfile.lockfileVersion,
+    package: { name: packageName, version: packageVersion },
+    ...indexRegistryOccurrences(lockfile.packages),
   };
 };
