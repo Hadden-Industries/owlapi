@@ -353,15 +353,19 @@ The writer considers only older candidate bundles and package proofs from comple
 It protects open pull requests, live recipient-material cases, and the successor candidate, package proof and verification receipts from both the landed and producing CI runs.
 Active consumers and release operations pause cleanup.
 For a direct main build it checks the source commit.
-For a closed, merged PR it also checks the commit on which the PR landed.
-Any release qualification on that commit, a version tag, or a stage or release operation in protected history keeps the corresponding CI originals.
-Existing history can also protect an individual artifact ID.
-These protections survive deletion of the native qualification run.
-For example, after PR A lands, a newer qualified PR B can retire A's unused bundle and proof.
-If A entered release qualification, automatic cleanup retains them.
+For a PR build it checks the exact revision that landed as the second parent of the merge, following the same rule as release admission.
+A release qualification run, version tag, or stage or release operation in protected history keeps the corresponding CI originals.
+For example, if a PR built revisions A and B and only B landed and entered qualification, B's bundle and proof stay protected.
+A can retire when its other references are clear.
+Version tags, stage records, archived qualification origins and explicit artifact holds in protected history continue to protect their subjects if GitHub removes a qualification run and its manifest.
+A removed qualification with no surviving release or recovery reference has no remaining manifest to promote.
+Register the ID of an offline original in protected history when an owner still needs it.
 
 Before each deletion the writer reopens the complete successor, checks the live references again and verifies the original artifact ID, name, digest, byte length and producing run.
 An incomplete observation prevents deletion.
+A previously observed release ref moving or disappearing stops the run.
+A native stage run missing its reservation also holds cleanup unless its original jobs show that every submission was skipped.
+If the read budget runs out after confirmed deletions, the next run resumes from the remaining inventory.
 Candidate retirement and exceptional material replay share the release writer queue.
 Each attempt and GitHub acknowledgement goes in the existing logs and job summary.
 An ambiguous response stops the batch.

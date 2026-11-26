@@ -18,6 +18,7 @@ import { UBUNTU } from "./ubuntu-runner.mjs";
 const commit = "a".repeat(40),
   oldCommit = "b".repeat(40),
   oldLanding = "f".repeat(40),
+  oldBase = "6".repeat(40),
   objectId = "c".repeat(40),
   digest = "sha256:" + "d".repeat(64);
 const now = Date.parse("2026-11-26T12:00:00Z");
@@ -31,11 +32,11 @@ const ciPath = ".github/workflows/ci.yml",
   releasePath = ".github/workflows/release.yml",
   stagePath = ".github/workflows/stage-release.yml";
 const historyTag = "owlapi-release-history/retention-" + commit;
-const olderPullEvents = "/issues/7/events?per_page=100&page=";
 function run(id, event, head, extra = {}) {
   return {
     id,
     event,
+    run_number: id,
     run_attempt: 1,
     head_sha: head,
     head_branch: event === "pull_request" ? "feature" : "main",
@@ -89,9 +90,9 @@ function artifact(id, source, kind, daysAgo) {
     },
   };
 }
-function fixture() {
-  const main = run(30, "push", commit),
-    producer = run(20, "pull_request", "8".repeat(40)),
+function fixture({ successorRunId = 20 } = {}) {
+  const main = run(successorRunId + 10, "push", commit),
+    producer = run(successorRunId, "pull_request", "8".repeat(40)),
     older = run(10, "pull_request", oldCommit);
   producer.pull_requests[0].number = 8;
   const rehearsal = run(12, "workflow_dispatch", oldCommit, {
@@ -109,7 +110,13 @@ function fixture() {
     base: { repo: { id: REPOSITORY_ID } },
     head: { sha: oldCommit, repo: { id: REPOSITORY_ID } },
   };
-  const pullEvents = [{ id: 71, event: "merged", commit_id: oldLanding }];
+  const sourcePulls = new Map([[pull.number, pull]]);
+  const gitCommits = new Map([
+    [
+      oldLanding,
+      { sha: oldLanding, parents: [{ sha: oldBase }, { sha: oldCommit }] },
+    ],
+  ]);
   const old = artifact(101, older, "candidate", 3),
     oldProof = artifact(102, older, "proof", 3),
     candidate = artifact(301, producer, "candidate", 1),
@@ -125,8 +132,8 @@ function fixture() {
       ordinal: 0,
     }),
   });
-  const mainReceipt = receipt(303, main, "ci-main-qualification-30-1"),
-    sourceReceipt = receipt(304, producer, "ci-verification-20-1");
+  const mainReceipt = receipt(303, main, `ci-main-qualification-${main.id}-1`),
+    sourceReceipt = receipt(304, producer, `ci-verification-${producer.id}-1`);
   const inventory = [
     old,
     oldProof,
@@ -248,29 +255,37 @@ function fixture() {
       const tag = annotatedTags.get(path.slice("/git/tags/".length));
       if (tag) return structuredClone(tag);
     }
+    if (path.startsWith("/git/commits/")) {
+      const sha = path.slice("/git/commits/".length);
+      return structuredClone(gitCommits.get(sha) ?? { sha, parents: [] });
+    }
     if (path === "/actions/runs/12/attempts/1") return rehearsal;
     if (path === "/actions/jobs/812") return job;
-    if (path === "/pulls/7") return structuredClone(pull);
-    if (path.startsWith(olderPullEvents)) {
-      const start = (Number(path.slice(olderPullEvents.length)) - 1) * 100;
-      return structuredClone(pullEvents.slice(start, start + 100));
-    }
+    const exactPull = /^\/pulls\/(\d+)$/u.exec(path);
+    if (exactPull)
+      return structuredClone(sourcePulls.get(Number(exactPull[1])));
     if (path === "/actions/artifacts/911") return replayArtifact;
-    if (path === "/actions/artifacts?per_page=100&page=1")
-      return {
-        total_count: inventory.length,
-        artifacts: structuredClone(inventory),
-      };
-    const artifactRun =
-      /^\/actions\/runs\/(\d+)\/artifacts\?per_page=100&page=1$/u.exec(path);
-    if (artifactRun) {
-      const owned = inventory.filter(
-        (a) => a.workflow_run.id === Number(artifactRun[1]),
-      );
-      return { total_count: owned.length, artifacts: structuredClone(owned) };
+    const page = /\?per_page=100&page=(\d+)$/u.exec(path);
+    if (page) {
+      const start = (Number(page[1]) - 1) * 100;
+      const slicePage = (records) =>
+        structuredClone(records.slice(start, start + 100));
+      const route = path.slice(0, page.index);
+      if (route === "/actions/artifacts")
+        return {
+          total_count: inventory.length,
+          artifacts: slicePage(inventory),
+        };
+      if (route === "/actions/runs")
+        return { total_count: runs.length, workflow_runs: slicePage(runs) };
+      const artifactRun = /^\/actions\/runs\/(\d+)\/artifacts$/u.exec(route);
+      if (artifactRun) {
+        const owned = inventory.filter(
+          (a) => a.workflow_run.id === Number(artifactRun[1]),
+        );
+        return { total_count: owned.length, artifacts: slicePage(owned) };
+      }
     }
-    if (path === "/actions/runs?per_page=100&page=1")
-      return { total_count: runs.length, workflow_runs: structuredClone(runs) };
     if (path === "/pulls?state=open&per_page=100&page=1")
       return structuredClone(pulls);
     const id = Number(path.split("/").at(-1));
@@ -302,7 +317,7 @@ function fixture() {
     GITHUB_REPOSITORY: REPOSITORY,
     GITHUB_REPOSITORY_ID: String(REPOSITORY_ID),
     RUNNER_ENVIRONMENT: "github-hosted",
-    GITHUB_RUN_ID: "90",
+    GITHUB_RUN_ID: String(main.id + 60),
     GITHUB_RUN_ATTEMPT: "1",
   };
   const event = {
@@ -346,7 +361,8 @@ function fixture() {
     runs,
     pulls,
     pull,
-    pullEvents,
+    sourcePulls,
+    gitCommits,
     refs,
     annotatedTags,
     historyFiles,
@@ -472,8 +488,50 @@ test.each([
     expect(f.write).not.toHaveBeenCalled();
   },
 );
+test.each([false, true])(
+  "a released later pull request revision leaves earlier originals subject to their own hold (hold present: %s)",
+  async (holdEarlier) => {
+    const f = fixture();
+    const later = run(11, "pull_request", "7".repeat(40));
+    f.pull.head.sha = later.head_sha;
+    f.gitCommits.get(oldLanding).parents[1].sha = later.head_sha;
+    f.gitCommits.set(later.head_sha, {
+      sha: later.head_sha,
+      parents: [{ sha: oldCommit }],
+    });
+    f.runs.push(
+      later,
+      run(31, "workflow_dispatch", oldLanding, { path: releasePath }),
+    );
+    f.inventory.push(
+      artifact(111, later, "candidate", 2),
+      artifact(112, later, "proof", 2),
+    );
+    if (holdEarlier)
+      addHistoryRef(f, historyTag, "retention.json", {
+        ...f.decisions,
+        protectedIds: [101, 102],
+      });
+
+    await expect(retireSupersededCandidates(f.args)).resolves.toEqual(
+      holdEarlier ? [] : [101, 102],
+    );
+    expect(f.inventory.map(({ id }) => id)).toEqual([
+      ...(holdEarlier ? [101, 102] : []),
+      301,
+      302,
+      303,
+      304,
+      111,
+      112,
+    ]);
+  },
+);
 test("completed release writers for unrelated commits leave routine originals eligible", async () => {
   const f = fixture();
+  addHistoryRef(f, "owlapi-release-history/stage-41", "stage-intent.json", {
+    commit: "4".repeat(40),
+  });
   f.runs.push(
     run(41, "workflow_dispatch", "4".repeat(40), { path: stagePath }),
     run(42, "workflow_dispatch", "5".repeat(40), {
@@ -484,6 +542,48 @@ test("completed release writers for unrelated commits leave routine originals el
 
   await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
 });
+test.each([
+  ["success", "success", []],
+  ["success", "skipped", [101, 102]],
+  ["failure", "failure", []],
+  ["failure", "skipped", [101, 102]],
+])(
+  "a stage with a missing reservation and %s/%s outcome is reconciled from native evidence",
+  async (conclusion, stageOutcome, expected) => {
+    const f = fixture();
+    const stage = run(41, "workflow_dispatch", "4".repeat(40), {
+      path: stagePath,
+      conclusion,
+    });
+    f.runs.push(stage);
+    const read = f.args.client.read;
+    f.args.client.read = (path, options) =>
+      path === "/actions/runs/41/attempts/1/jobs?per_page=100&page=1"
+        ? {
+            total_count: 1,
+            jobs: [
+              {
+                id: 500,
+                name: "stage",
+                run_id: 41,
+                run_attempt: 1,
+                head_sha: stage.head_sha,
+                status: "completed",
+                conclusion: stageOutcome,
+                steps: [
+                  {
+                    name: "Stage the admitted tarball",
+                    conclusion: stageOutcome,
+                  },
+                ],
+              },
+            ],
+          }
+        : read(path, options);
+    await expect(retireSupersededCandidates(f.args)).resolves.toEqual(expected);
+    expect(f.deletes).toHaveLength(expected.length);
+  },
+);
 test.each([
   [
     "signed stage intent",
@@ -496,11 +596,26 @@ test.each([
     "signed seal operation",
     (f) =>
       addHistoryRef(f, "owlapi-release-history/seal-27", "operation.json", {
-        source: oldCommit,
+        source: oldLanding,
       }),
   ],
   ["annotated version tag", (f) => addVersionTag(f, oldLanding, true)],
   ["lightweight version tag", (f) => addVersionTag(f, oldLanding, false)],
+  [
+    "signed archived qualification origin",
+    (f) =>
+      addHistoryRef(
+        f,
+        "owlapi-release-history/recovery-46",
+        "origin-46-2-release-qualification-46-2.json",
+        {
+          run: run(46, "workflow_dispatch", oldLanding, {
+            path: releasePath,
+            run_attempt: 2,
+          }),
+        },
+      ),
+  ],
 ])(
   "a %s still protects its originals after native release records are gone",
   async (_name, claim) => {
@@ -522,9 +637,21 @@ test("malformed protected history stops routine retirement before any write", as
   );
   expect(f.write).not.toHaveBeenCalled();
 });
-test("the production read transport admits only the required PR lookups during retirement", async () => {
+test("a canonical retention tag missing its retention record prevents routine retirement", async () => {
   const f = fixture();
-  addVersionTag(f, "4".repeat(40), true);
+  addHistoryRef(f, historyTag, "reservation-stage-26.json", {
+    state: "SETTLED",
+  });
+
+  await expect(retireSupersededCandidates(f.args)).rejects.toThrow(
+    /retention\.json/u,
+  );
+  expect(f.write).not.toHaveBeenCalled();
+});
+test("the production read transport admits exact PR rechecks and Git commit lookups", async () => {
+  const f = fixture();
+  const taggedCommit = "4".repeat(40);
+  addVersionTag(f, taggedCommit, true);
   const http = jest.fn(async (address, options) => {
     expect(options.method ?? "GET").toBe("GET");
     const root = "https://api.github.com/repos/" + REPOSITORY;
@@ -551,10 +678,10 @@ test("the production read transport admits only the required PR lookups during r
     expect.arrayContaining([
       "/pulls?state=open&per_page=100&page=1",
       "/pulls/7",
-      olderPullEvents + "1",
       "/git/matching-refs/tags/owlapi-release-history/",
       "/git/matching-refs/tags/v",
       "/git/tags/" + "2".repeat(40),
+      "/git/commits/" + taggedCommit,
     ]),
   );
   const count = http.mock.calls.length;
@@ -563,9 +690,7 @@ test("the production read transport admits only the required PR lookups during r
     "/pulls/7/merge",
     "/pulls/0",
     "/pulls?state=open&per_page=100&page=0",
-    "/issues/7/events",
-    "/issues/7/events?per_page=100&page=0",
-    "/issues/7/events?per_page=99&page=1",
+    "/issues/7/events?per_page=100&page=1",
   ]) {
     await expect(client.read(path)).rejects.toThrow(
       "Unexpected GitHub evidence path",
@@ -573,36 +698,40 @@ test("the production read transport admits only the required PR lookups during r
   }
   expect(http).toHaveBeenCalledTimes(count);
 });
-test("the exact landing SHA in the PR detail remains valid release-claim evidence", async () => {
+test("the first parent of a release landing is outside its pull request claim", async () => {
   const f = fixture();
-  f.pull.merge_commit_sha = oldLanding;
-  f.pullEvents.length = 0;
+  f.gitCommits.set(oldLanding, {
+    sha: oldLanding,
+    parents: [{ sha: oldCommit }, { sha: "4".repeat(40) }],
+  });
   f.runs.push(run(31, "workflow_dispatch", oldLanding, { path: releasePath }));
 
-  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
-  expect(f.reads).not.toContain(olderPullEvents + "1");
-  expect(f.write).not.toHaveBeenCalled();
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
 });
-test.each(["missing", "invalid", "ambiguous"])(
-  "holds originals when native merge evidence is %s",
-  async (variant) => {
-    const f = fixture();
-    if (variant === "missing") f.pullEvents.length = 0;
-    if (variant === "invalid") f.pullEvents[0].commit_id = "not-a-commit";
-    if (variant === "ambiguous") {
-      f.pullEvents.push(
-        ...Array.from({ length: 99 }, (_, index) => ({
-          id: 100 + index,
-          event: "labeled",
-        })),
-        { id: 199, event: "merged", commit_id: "5".repeat(40) },
-      );
-    }
+test("a release on an octopus merge has no admissible two-parent PR source", async () => {
+  const f = fixture();
+  f.gitCommits.get(oldLanding).parents.push({ sha: "4".repeat(40) });
+  f.runs.push(run(31, "workflow_dispatch", oldLanding, { path: releasePath }));
 
-    await expect(retireSupersededCandidates(f.args)).rejects.toThrow(/merge/i);
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+});
+test.each([
+  ["missing parents", { sha: oldLanding }],
+  ["mismatched SHA", { sha: oldCommit, parents: [] }],
+  ["invalid parent", { sha: oldLanding, parents: [{ sha: "not-a-commit" }] }],
+])(
+  "a claimed Git commit with %s prevents routine retirement",
+  async (_name, graphCommit) => {
+    const f = fixture();
+    f.gitCommits.set(oldLanding, graphCommit);
+    f.runs.push(
+      run(31, "workflow_dispatch", oldLanding, { path: releasePath }),
+    );
+
+    await expect(retireSupersededCandidates(f.args)).rejects.toThrow(
+      /claimed Git commit/u,
+    );
     expect(f.write).not.toHaveBeenCalled();
-    if (variant === "ambiguous")
-      expect(f.reads).toContain(olderPullEvents + "2");
   },
 );
 test("reopens each earlier CI original between exact-ID deletions", async () => {
@@ -707,7 +836,6 @@ test.each([
         state: "open",
         base: { sha: commit, repo: { id: REPOSITORY_ID } },
         head: { sha: oldCommit },
-        merge_commit_sha: null,
       });
       break;
     case "PR head changed":
@@ -716,7 +844,6 @@ test.each([
         state: "open",
         base: { sha: commit, repo: { id: REPOSITORY_ID } },
         head: { sha: "7".repeat(40) },
-        merge_commit_sha: null,
       });
       break;
     case "foreign PR source":
@@ -829,6 +956,24 @@ test("a new signed per-artifact hold after the first retirement protects the rem
   expect(f.deletes).toEqual(["/actions/artifacts/101"]);
   expect(f.inventory.map(({ id }) => id)).toContain(102);
 });
+test.each(["version", "history"])(
+  "a previously observed %s ref disappearing between deletes stops retirement",
+  async (kind) => {
+    const f = fixture();
+    if (kind === "version") addVersionTag(f, "4".repeat(40), false);
+    else addHistoryRef(f, historyTag, "retention.json", f.decisions);
+    f.args.client.write = async (...args) => {
+      const result = await f.write(...args);
+      f.refs.length = 0;
+      return result;
+    };
+
+    await expect(retireSupersededCandidates(f.args)).rejects.toThrow(
+      /ref disappeared/i,
+    );
+    expect(f.deletes).toEqual(["/actions/artifacts/101"]);
+  },
+);
 test("an outstanding material observation in the candidate's original CI run protects its recovery inputs", async () => {
   const f = fixture();
   f.inventory.push({
@@ -874,18 +1019,23 @@ test("a generic completed job cannot replace the authenticated original custody 
     expect(f.write).not.toHaveBeenCalled();
   }
 });
-test("a merged producer PR remains protected when its landed commit is an open PR's base", async () => {
-  const f = fixture();
-  f.pulls.push({
-    number: 81,
-    state: "open",
-    base: { repo: { id: REPOSITORY_ID }, sha: "f".repeat(40) },
-    head: { sha: "e".repeat(40) },
-    merge_commit_sha: null,
-  });
-  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
-  expect(f.write).not.toHaveBeenCalled();
-});
+test.each([
+  ["routine", fixture],
+  ["signed custody", manualFixture],
+])(
+  "%s retirement protects the source of an open PR's base merge commit",
+  async (_mode, createFixture) => {
+    const f = createFixture();
+    f.pulls.push({
+      number: 81,
+      state: "open",
+      base: { repo: { id: REPOSITORY_ID }, sha: oldLanding },
+      head: { sha: "e".repeat(40) },
+    });
+    await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
+    expect(f.write).not.toHaveBeenCalled();
+  },
+);
 test.each(["open pull request", "native release"])(
   "a mixed batch reports and retires only originals outside the %s claim",
   async (claim) => {
@@ -896,7 +1046,6 @@ test.each(["open pull request", "native release"])(
         state: "open",
         base: { repo: { id: REPOSITORY_ID }, sha: oldLanding },
         head: { sha: "e".repeat(40) },
-        merge_commit_sha: null,
       });
     } else {
       f.runs.push(
@@ -908,18 +1057,13 @@ test.each(["open pull request", "native release"])(
     const another = artifact(105, separate, "proof", 3);
     f.runs.push(separate);
     f.inventory.push(another);
-    const native = f.read;
-    f.args.client.read = async (p, options) =>
-      p === "/pulls/17"
-        ? {
-            number: 17,
-            state: "closed",
-            merged: false,
-            merge_commit_sha: null,
-            base: { repo: { id: REPOSITORY_ID } },
-            head: { sha: separate.head_sha, repo: { id: REPOSITORY_ID } },
-          }
-        : native(p, options);
+    f.sourcePulls.set(17, {
+      number: 17,
+      state: "closed",
+      merged: false,
+      base: { repo: { id: REPOSITORY_ID } },
+      head: { sha: separate.head_sha, repo: { id: REPOSITORY_ID } },
+    });
     const result = await preview(f, {
       ...f.args.env,
       GITHUB_EVENT_NAME: "schedule",
@@ -931,13 +1075,18 @@ test.each(["open pull request", "native release"])(
   },
 );
 test("a source PR reopening after the open-list snapshot protects its original", async () => {
-  const f = fixture(),
-    native = f.read;
-  f.args.client.read = async (path, options) =>
-    path === "/pulls/7"
-      ? { number: 7, state: "open", base: { repo: { id: REPOSITORY_ID } } }
-      : native(path, options);
+  const f = fixture();
+  f.pull.state = "open";
   await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
+  expect(f.reads.filter((path) => path === "/pulls/7")).toHaveLength(1);
+  expect(f.write).not.toHaveBeenCalled();
+});
+test("a mismatched exact PR response prevents routine retirement", async () => {
+  const f = fixture();
+  f.pull.number = 107;
+  await expect(retireSupersededCandidates(f.args)).rejects.toThrow(
+    /source pull request identity/i,
+  );
   expect(f.write).not.toHaveBeenCalled();
 });
 test("a signed cleared completion receipt remains usable after the original hosted records expire", async () => {
@@ -963,23 +1112,92 @@ test("a signed cleared completion receipt remains usable after the original host
       : lookup(path, options);
   await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
 });
-test("a closed-PR decision is cached only within one inspection, never across deletion checks", async () => {
-  const f = fixture(),
-    read = f.args.client.read;
-  let details = 0;
-  f.args.client.read = async (path, opts) => {
-    if (path === "/pulls/7" && ++details > 1)
-      return {
-        number: 7,
-        state: "open",
-        base: { repo: { id: REPOSITORY_ID } },
-      };
-    return read(path, opts);
+test("each original gets a fresh exact PR recheck before deletion", async () => {
+  const f = fixture();
+  f.args.client.write = async (...args) => {
+    const result = await f.write(...args);
+    f.pull.state = "open";
+    return result;
   };
-  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
-  expect(details).toBe(2);
-  expect(f.write).not.toHaveBeenCalled();
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101]);
+  expect(f.reads.filter((path) => path === "/pulls/7")).toHaveLength(2);
+  expect(f.deletes).toEqual(["/actions/artifacts/101"]);
 });
+test("a backlog larger than the GitHub request budget is previewed and can start retiring originals", async () => {
+  const f = fixture({ successorRunId: 1000 });
+  const backlog = [];
+  for (let index = 0; index < 260; index++) {
+    const number = 100 + index;
+    const older = run(
+      number,
+      "pull_request",
+      number.toString(16).padStart(40, "0"),
+    );
+    older.pull_requests[0].number = number;
+    f.sourcePulls.set(number, {
+      number,
+      state: "closed",
+      base: { repo: { id: REPOSITORY_ID } },
+    });
+    const earlierProof = artifact(400 + index, older, "proof", 3);
+    f.runs.push(older);
+    f.inventory.push(earlierProof);
+    backlog.push(earlierProof.id);
+  }
+  const exactPullReads = () =>
+    f.reads.filter((path) => /^\/pulls\/\d+$/u.test(path));
+  const report = await preview(f, {
+    ...f.args.env,
+    GITHUB_EVENT_NAME: "schedule",
+  });
+  expect(report.eligibleIds).toEqual([101, 102, ...backlog]);
+  expect(exactPullReads()).toEqual([]);
+
+  f.args.client.write = async (...args) => {
+    const result = await f.write(...args);
+    f.runs.push(
+      run(2000, "workflow_dispatch", commit, {
+        path: stagePath,
+        status: "queued",
+        conclusion: null,
+      }),
+    );
+    return result;
+  };
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101]);
+  expect(exactPullReads()).toEqual(["/pulls/7"]);
+  expect(f.deletes).toEqual(["/actions/artifacts/101"]);
+});
+test.each([0, 1])(
+  "read budget exhaustion with %s acknowledged deletions preserves exactly that progress",
+  async (confirmedDeletes) => {
+    const f = fixture();
+    const limit = Object.assign(
+      new Error("GitHub evidence lookup budget exhausted."),
+      {
+        code: "LOOKUP_LIMIT_EXCEEDED",
+      },
+    );
+    f.args.client.read = async (path, options) => {
+      if (
+        path === "/actions/runs?per_page=100&page=1" &&
+        f.deletes.length >= confirmedDeletes
+      )
+        throw limit;
+      return f.read(path, options);
+    };
+
+    const operation = retireSupersededCandidates(f.args);
+    if (confirmedDeletes) {
+      await expect(operation).resolves.toEqual([101]);
+      expect(f.deletes).toEqual(["/actions/artifacts/101"]);
+      expect(f.logs.join("\n")).toMatch(/read budget.*artifact 102/i);
+    } else {
+      await expect(operation).rejects.toBe(limit);
+      expect(f.write).not.toHaveBeenCalled();
+    }
+  },
+);
 test("a changed direct artifact read or an incomplete run inventory prevents retirement", async () => {
   for (const failure of ["digest", "size", "run", "expiry", "incomplete"]) {
     const f = fixture(),

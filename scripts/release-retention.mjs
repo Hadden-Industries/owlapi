@@ -18,15 +18,19 @@ import {
   readRetentionHistoryFiles,
   unresolvedReservations,
 } from "./release-history-checkpoint.mjs";
-import { createReleaseClaimReader } from "./retirement-release-claims.mjs";
+import {
+  createClaimedPullHeadReader,
+  createReleaseClaimReader,
+  hasUnattributedStage,
+} from "./retirement-release-claims.mjs";
 import { readRetentionCiEvidence } from "./release-ci-qualification.mjs";
 import {
   assertRetirementWriter,
+  isClosedProducerPull,
   readOpenPullClaims,
   retireSelectedCandidates,
   sameArtifact,
   supersededCiOrigin,
-  unusedProducerPull,
   verifyRetirementRehearsal,
 } from "./candidate-retirement.mjs";
 import { parseArtifactName } from "../tooling/artifact-transport/identity.mjs";
@@ -274,6 +278,8 @@ async function readRetirementSnapshot({
   checkpoint,
   decisions,
   readClaims,
+  readClaimedPullHeads,
+  skippedStageAttempts,
   proof,
   now,
   inventory: collected,
@@ -304,7 +310,13 @@ async function readRetirementSnapshot({
   const writerRuns = runs.filter((run) => writers.includes(workflowFile(run)));
   const openWriter = decisions
     ? reserved || outstandingWriterRuns(writerRuns, decisions.settledRuns)
-    : writerRuns.some((run) => run.status !== "completed");
+    : writerRuns.some((run) => run.status !== "completed") ||
+      (await hasUnattributedStage(
+        client,
+        writerRuns.filter((run) => workflowFile(run) === "stage-release.yml"),
+        releaseClaims.stageReservations,
+        skippedStageAttempts,
+      ));
   if (releaseClaims) {
     // A release can promote only a direct FULL main producer or the PR which landed on its exact checkout.
     releaseClaims.commits.add(head);
@@ -393,7 +405,11 @@ async function readRetirementSnapshot({
     now: when,
   });
   const approved = new Set(selected.eligibleIds);
-  const prEligibility = new Map();
+  const claimedLandings = new Set([
+    ...pulls.commits,
+    ...(releaseClaims?.commits ?? []),
+  ]);
+  let claimedPullHeads;
   const eligibleIds = [];
   for (const artifact of inventory) {
     if (
@@ -406,13 +422,13 @@ async function readRetirementSnapshot({
     if (!supersededCiOrigin(artifact, origin, successor, pulls)) continue;
     if (releaseClaims?.commits.has(origin.head_sha)) continue;
     if (origin.event === "pull_request") {
-      const [{ number }] = origin.pull_requests;
-      if (!prEligibility.has(number))
-        prEligibility.set(
-          number,
-          await unusedProducerPull(read, number, pulls, releaseClaims?.commits),
-        );
-      if (!prEligibility.get(number)) continue;
+      claimedPullHeads ??= await readClaimedPullHeads(claimedLandings);
+      if (claimedPullHeads.has(origin.head_sha)) continue;
+      if (
+        target &&
+        !(await isClosedProducerPull(read, origin.pull_requests[0].number))
+      )
+        continue;
     }
     eligibleIds.push(artifact.id);
   }
@@ -436,13 +452,14 @@ async function retentionAuthority(
   readHistoryFiles,
   preview,
 ) {
+  const read = (path) => client.read(path);
+  const readClaimedPullHeads = createClaimedPullHeadReader(read);
   const objectId = env.RETENTION_HISTORY_OBJECT;
   if (!objectId)
     return {
-      readClaims: createReleaseClaimReader(
-        (path) => client.read(path),
-        readHistoryFiles,
-      ),
+      readClaims: createReleaseClaimReader(read, readHistoryFiles),
+      readClaimedPullHeads,
+      skippedStageAttempts: new Set(),
     };
   assert.match(objectId, /^[a-f0-9]{40}$/u);
   const checkpoint = await openCheckpoint(client, objectId);
@@ -450,7 +467,7 @@ async function retentionAuthority(
   const decisions = custodyDecisions(checkpoint, env.GITHUB_SHA);
   if (!preview || decisions.schemaVersion === 2)
     await verifyRetirementRehearsal(client, checkpoint, decisions);
-  return { checkpoint, decisions };
+  return { checkpoint, decisions, readClaimedPullHeads };
 }
 
 export async function reportReleaseRetention(

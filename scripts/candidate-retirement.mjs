@@ -230,63 +230,14 @@ export async function readOpenPullClaims(read) {
   throw new Error("Open PR inventory exceeds the complete lookup bound");
 }
 
-// API 2026-03-10 omits merge_commit_sha from the PR resource. Its merged
-// event identifies the landed commit even for a squash or rebase merge.
-async function landedPullCommit(read, pr) {
-  if (pr.merge_commit_sha !== undefined && pr.merge_commit_sha !== null) {
-    assert.match(pr.merge_commit_sha, oid);
-    return pr.merge_commit_sha;
-  }
-  let landed;
-  for (let page = 1; page <= 10; page++) {
-    const events = await read(
-      "/issues/" + pr.number + "/events?per_page=100&page=" + page,
-    );
-    assert.ok(
-      Array.isArray(events) && events.length <= 100,
-      "Incomplete pull request events",
-    );
-    for (const event of events) {
-      assert.ok(
-        positive(event?.id) && typeof event.event === "string",
-        "Invalid pull request event",
-      );
-      if (event.event !== "merged") continue;
-      assert.ok(
-        !landed && oid.test(event.commit_id),
-        "Ambiguous pull request merge event",
-      );
-      landed = event.commit_id;
-    }
-    if (events.length < 100) {
-      assert.ok(landed, "Missing pull request merge event");
-      return landed;
-    }
-  }
-  throw new Error("Pull request events exceed the complete lookup bound");
-}
-
-/** An earlier producer stays protected while its PR is open or its landed commit is claimed. */
-export async function unusedProducerPull(
-  read,
-  number,
-  openPulls,
-  releaseCommits,
-) {
+/** Reopen the exact producer PR immediately before its original is removed. */
+export async function isClosedProducerPull(read, number) {
   const pr = await read("/pulls/" + number);
   assert.ok(
     pr?.number === number && pr.base?.repo?.id === REPOSITORY_ID,
     "Source pull request identity changed",
   );
-  if (pr.state !== "closed") return false;
-  assert.equal(
-    typeof pr.merged,
-    "boolean",
-    "Incomplete producer PR merge identity",
-  );
-  if (!pr.merged) return true;
-  const landed = await landedPullCommit(read, pr);
-  return !openPulls.commits.has(landed) && !releaseCommits?.has(landed);
+  return pr.state === "closed";
 }
 
 export function sameArtifact(original, live, now) {
@@ -373,23 +324,35 @@ export async function retireSelectedCandidates({
   const retired = [];
   for (const id of plan.eligibleIds) {
     const expected = selected.get(id);
-    const current = await inspect(expected);
-    if (!current.eligibleIds.includes(id)) {
-      log("Retirement held before artifact " + id + ". " + current.reason);
+    try {
+      const current = await inspect(expected);
+      if (!current.eligibleIds.includes(id)) {
+        log("Retirement held before artifact " + id + ". " + current.reason);
+        break;
+      }
+      const observed = await client.read("/actions/artifacts/" + id);
+      assert.ok(
+        sameArtifact(expected, observed, now()),
+        "Original CI artifact changed before retirement",
+      );
+      const main = await client.read("/branches/main");
+      assert.ok(
+        main.name === "main" &&
+          main.protected === true &&
+          main.commit.sha === head,
+        "Protected main moved before retirement",
+      );
+    } catch (error) {
+      // All preceding deletions are acknowledged. No write for this ID has started.
+      if (!retired.length || error.code !== "LOOKUP_LIMIT_EXCEEDED")
+        throw error;
+      log(
+        "Read budget reached before artifact " +
+          id +
+          ". The next run will inspect the remaining inventory.",
+      );
       break;
     }
-    const observed = await client.read("/actions/artifacts/" + id);
-    assert.ok(
-      sameArtifact(expected, observed, now()),
-      "Original CI artifact changed before retirement",
-    );
-    const main = await client.read("/branches/main");
-    assert.ok(
-      main.name === "main" &&
-        main.protected === true &&
-        main.commit.sha === head,
-      "Protected main moved before retirement",
-    );
     log(
       "Attempting retirement of artifact " +
         id +

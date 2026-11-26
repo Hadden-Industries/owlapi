@@ -168,6 +168,7 @@ export function checkpointPayloads(index, inventory, loadBlob) {
     return retained;
   };
   return {
+    keys: () => declared.keys(),
     has: (name) => declared.has(name),
     get: (name) => {
       const entry = declared.get(name);
@@ -614,6 +615,7 @@ export function verifyControllerDelta(
           ".github/actionlint.yaml",
           "scripts/candidate-retirement.mjs",
           "scripts/candidate-retirement.test.js",
+          "scripts/retirement-release-claims.mjs",
           "scripts/ci-verification.mjs",
           "scripts/ci-verification.test.js",
           "scripts/github-release.mjs",
