@@ -15,13 +15,28 @@ Inspect the signed rights inventory and candidate-specific benchmark disposition
 The read-only CI admission command, `node scripts/release-ci-qualification.mjs`, checks the protected-main dispatch, original CI execution and two original uploads.
 It requires the native dispatch environment, its frozen runtime matrix and a GitHub token with Actions, checks, contents and pull request read permissions.
 The main receipt binds source, dependency policy, Java and OWL coverage, and the browser, source, portability and consumer job verdicts.
-The original candidate and package-proof ZIPs bind the packed documentation, tarball, SBOM, sums, original audits and recipient graph and lock.
+The original candidate and package-proof ZIPs bind the packed documentation, tarball, SBOM, sums, exact producer and recipient locks and graphs, and their pre-execution decisions.
 Retain the originating artifact IDs and earliest expiry.
 For an earlier promoted manifest that carries only the matrix digest, include the original frozen matrix as `runtime-matrix.json` in the signed checkpoint.
 The reader verifies it against the recorded digest while preserving the original manifest bytes.
 If any required original has expired or conflicts with the native job inventory, select fresh qualification explicitly.
 Release-time dependency advisory observations, managed CodeQL, ScanCode with committed reconciliation, and current rights and benchmark dispositions still need their owning release gates.
 CI reuse alone cannot stage or publish the package.
+
+### Recover a macOS-only archive observation
+
+Linux and Windows prepare the pinned ScanCode environment when an archive first needs inspection.
+Canonical archive reuse needs no scanner environment.
+A frozen macOS matrix lane that encounters an unmeasured archive retains a `pending-recipient-material` artifact and stops before product tests for that install.
+Keep its artifact ID and server SHA-256.
+
+For a CI or Release run on the current protected `main` commit, dispatch `recipient-material-replay.yml` on that commit with the exact `observation` locator in `artifactId:sha256` form.
+Its Ubuntu job authenticates the original upload and candidate, replays the original lock for analysis, and measures only the missing archive identities.
+Its macOS job uses the recorded Node and npm, installs the byte-identical lock with scripts disabled, and exercises the recorded alias or scoped dependency after the graph and material checks pass.
+The original observation, compact measurement and replay proofs expire after 14 days.
+The replay receipt covers the recorded role and original lock.
+FULL qualification still requires the complete roster under the active admission policy.
+An unresolved licence or notice disposition stays with the rights owner under the exceptional evidence procedure.
 
 ## Provider cutover
 

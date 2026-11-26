@@ -19,7 +19,9 @@ import {
   PACKAGE_FILE_STEM,
   PACKAGE_VERSION,
 } from "./package-identity.mjs";
-import { isStrictDescendantPath } from "./release-file-utils.mjs";
+import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
+import { prepareTarballConsumer } from "./release-consumer-evidence.mjs";
+import { qualifyCiConsumerInstall } from "./ci-recipient-attribution.mjs";
 import {
   captureConsumerSources,
   assertReviewedConsumerSources,
@@ -59,6 +61,7 @@ export const qualifyOwlContract = async ({
   outputDirectory,
   sources = null,
   environment = process.env,
+  verifyConsumerEvidence,
 }) => {
   const candidate = readOwlContractCandidate(resolve(candidateDirectory));
   const consumerSources = assertReviewedConsumerSources(
@@ -73,6 +76,9 @@ export const qualifyOwlContract = async ({
     );
   const npmCli = environment.npm_execpath;
   if (!npmCli) throw new Error("Run qualification through test:owl-contract.");
+  verifyConsumerEvidence ??= (
+    await import("./ci-consumer-evidence-verification.mjs")
+  ).verifyCiConsumerEvidence;
   const parent = resolve(environment.RUNNER_TEMP ?? tmpdir());
   const temporary = mkdtempSync(join(parent, "owlapi-contract-"));
   if (!isStrictDescendantPath(parent, temporary))
@@ -102,22 +108,22 @@ export const qualifyOwlContract = async ({
     return result.stdout;
   };
   try {
-    writeFileSync(
-      join(temporary, "package.json"),
-      JSON.stringify({
-        name: "owlapi-contract-fixture",
-        private: true,
-        type: "module",
-        dependencies: {
-          owlapi: `file:${candidate.tarballPath.replaceAll("\\", "/")}`,
-        },
-      }),
-    );
+    prepareTarballConsumer(temporary, candidate.tarballPath, "owlapi", {
+      name: "owlapi-contract-fixture",
+      version: "0.0.0",
+      private: true,
+      type: "module",
+    });
+    const tarball = readFileSync(join(temporary, "candidate.tgz"));
+    if (sha256Buffer(tarball) !== candidate.tarball.sha256)
+      throw new Error("Contract candidate changed after bundle verification.");
     run(
       [
         npmCli,
         "install",
+        "--engine-strict",
         "--ignore-scripts",
+        "--package-lock",
         "--no-audit",
         "--no-fund",
         "--cache",
@@ -133,6 +139,16 @@ export const qualifyOwlContract = async ({
         ),
       ),
     );
+    const attribution = await qualifyCiConsumerInstall({
+      directory: temporary,
+      tarball,
+      npmCli,
+      dependencyName: "owlapi",
+      role: "owl-contract",
+      verifyConsumerEvidence,
+      candidate,
+      decisionDirectory: join(output, "eligibility"),
+    });
     for (const path of OWL_CONTRACT_FIXTURES) {
       const target = join(temporary, path);
       mkdirSync(dirname(target), { recursive: true });
@@ -163,8 +179,7 @@ export const qualifyOwlContract = async ({
           timeout: 10000,
         }).stdout.trim(),
     };
-    const report = assertOwlContractReport({
-      schemaVersion: 1,
+    const reportFacts = {
       check: "owl_contract",
       result: "PASS",
       identity,
@@ -187,11 +202,27 @@ export const qualifyOwlContract = async ({
         .trim()
         .split("\n")
         .map((line) => JSON.parse(line)),
+    };
+    const attributedReport = assertOwlContractReport({
+      schemaVersion: 2,
+      ...reportFacts,
+      attribution,
     });
+    // The existing release archive can still bind its original report shape.
+    // Both projections describe the same one execution on the same candidate.
+    const report =
+      identity.workflow === "Release"
+        ? assertOwlContractReport({ schemaVersion: 1, ...reportFacts })
+        : attributedReport;
     writeFileSync(
       join(output, "qualification.json"),
       `${JSON.stringify(report, null, 2)}\n`,
     );
+    if (identity.workflow === "Release")
+      writeFileSync(
+        join(output, "attributed-qualification.json"),
+        `${JSON.stringify(attributedReport, null, 2)}\n`,
+      );
     return report;
   } finally {
     // Only the unique tool-created installation is removed; durable execution evidence survives.

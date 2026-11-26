@@ -13,17 +13,23 @@ import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { CI_RUNTIME, runtimeSemver as semver } from "./runtime-policy.mjs";
 import { validateFrozenMatrix } from "./consumer-runtime-matrix.mjs";
+import { publicRegistryEnvironment } from "./public-registry-consumer.mjs";
+import { NPM_REGISTRY } from "./release-identity.mjs";
 import {
   findNpmCliCandidates,
   selectNpmCliForVersion,
   observeNpmVersion,
 } from "./assert-workflow-runtime.mjs";
 
-export function assertConsumerNpm(npmCli, node = process.versions.node) {
+export function assertConsumerNpm(
+  npmCli,
+  node = process.versions.node,
+  expected = CI_RUNTIME.consumerNpm,
+) {
   const native = createRequire(npmCli);
   const manifest = native("../package.json");
   assert.equal(manifest.name, "npm");
-  assert.equal(manifest.version, CI_RUNTIME.consumerNpm);
+  assert.equal(manifest.version, expected);
   for (const entry of [
     manifest,
     ...["npm-package-arg", "cacache", "tar"].map((name) =>
@@ -53,6 +59,42 @@ const run = (args, options = {}) => {
     `Consumer tool failed: ${result.status ?? result.signal}`,
   );
 };
+
+/** Install the policy-selected npm client in an empty, caller-owned directory.
+ * Both consumer CI and release proof replay use the same credential-free bootstrap. */
+export function provisionConsumerNpm(
+  producerCli,
+  directory,
+  node = process.versions.node,
+  expected = CI_RUNTIME.consumerNpm,
+) {
+  assert.equal(
+    semver.valid(expected),
+    expected,
+    "Native npm bootstrap requires an exact policy version",
+  );
+  const env = publicRegistryEnvironment(directory);
+  run(
+    [
+      producerCli,
+      "install",
+      "--prefix",
+      directory,
+      "npm@" + expected,
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--registry",
+      NPM_REGISTRY,
+      "--cache",
+      join(directory, "cache"),
+    ],
+    { cwd: directory, env, stdio: "pipe", timeout: 120_000 },
+  );
+  const npmCli = join(directory, "node_modules/npm/bin/npm-cli.js");
+  assertConsumerNpm(npmCli, node, expected);
+  return npmCli;
+}
 
 /** Select product suites from the package's published source directories.
  * Governance, fixture producers and Java qualification remain producer-owned.
@@ -107,18 +149,7 @@ if (
     const directory = mkdtempSync(
       join(process.env.RUNNER_TEMP, "owlapi-consumer-npm-"),
     );
-    run([
-      producerCli,
-      "install",
-      "--prefix",
-      directory,
-      `npm@${CI_RUNTIME.consumerNpm}`,
-      "--ignore-scripts",
-      "--no-audit",
-      "--no-fund",
-    ]);
-    const npmCli = join(directory, "node_modules/npm/bin/npm-cli.js");
-    assertConsumerNpm(npmCli, node);
+    const npmCli = provisionConsumerNpm(producerCli, directory, node);
     appendFileSync(process.env.GITHUB_ENV, `OWLAPI_CONSUMER_NPM=${npmCli}\n`);
   } else {
     assert.equal(

@@ -466,6 +466,16 @@ test.each(
     });
     const controller = "c".repeat(40);
     input.env.GITHUB_SHA = version.endsWith("rc.4") ? controller : sha;
+    if (version === "0.1.0" && tag === "latest") {
+      const updated = {
+        ...input,
+        manifest: { ...m, consumerResolutionPolicy: 2 },
+      };
+      await expect(stageOnce(updated)).rejects.toThrow(
+        /qualification advisory/i,
+      );
+      expect(commands).toHaveLength(0);
+    }
     const receipt = await stageOnce(input);
     const expectedOrigin = {
       runId: "42",

@@ -211,6 +211,7 @@ function fixture(
   const proofBytes = zipArchive(
     Object.entries({
       "candidate-manifest.json": {
+        schemaVersion: 1,
         package: packageFacts,
         tarball: {
           fileName: `${stem}.tgz`,
@@ -411,6 +412,7 @@ function fixture(
       input,
       now,
       packageVersion,
+      expectedProofVersion: 1,
       read: async (path) => {
         const page =
           /^\/actions\/runs\/84\/artifacts\?per_page=100&page=(\d+)$/u.exec(

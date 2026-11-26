@@ -743,9 +743,23 @@ jobs:
       - name: Verify the closed candidate inventory and checksums
         run: npm run prepare:downloaded-candidate -- --candidate .release/download
         timeout-minutes: 5
+      - name: Set up pinned scanner prerequisites for novel archives
+        id: scanner
+        uses: ./.github/actions/setup-scancode
       - name: Qualify the installed public package boundary
+        env:
+          SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
         timeout-minutes: 20
+      - name: Retain the unresolved recipient material case
+        if: ${{ failure() && hashFiles('.release/download/recipient-material-cases/case-*.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/recipient-material-cases
+          retention-days: 14
     if: ${{ !inputs.rc3_recovery }}
 
   portability_windows_node_26:
@@ -785,9 +799,23 @@ jobs:
       - name: Verify the closed candidate inventory and checksums
         run: npm run prepare:downloaded-candidate -- --candidate .release/download
         timeout-minutes: 5
+      - name: Set up pinned scanner prerequisites for novel archives
+        id: scanner
+        uses: ./.github/actions/setup-scancode
       - name: Qualify the installed public package boundary
+        env:
+          SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
         timeout-minutes: 20
+      - name: Retain the unresolved recipient material case
+        if: ${{ failure() && hashFiles('.release/download/recipient-material-cases/case-*.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/recipient-material-cases
+          retention-days: 14
     if: ${{ !inputs.rc3_recovery }}
 
   portability_macos_node_22:
@@ -878,8 +906,18 @@ jobs:
         run: npm run prepare:downloaded-candidate -- --candidate .release/download
         timeout-minutes: 5
       - name: Qualify the installed public package boundary
+        env:
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
         timeout-minutes: 20
+      - name: Retain the unresolved recipient material case
+        if: ${{ failure() && hashFiles('.release/download/recipient-material-cases/case-*.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/download/recipient-material-cases
+          retention-days: 14
     if: ${{ !inputs.rc3_recovery }}
 
   browser_chromium:
@@ -914,7 +952,14 @@ jobs:
       - name: Verify the closed candidate inventory and checksums
         run: npm run prepare:downloaded-candidate -- --candidate .release/download
         timeout-minutes: 5
+      - name: Set up pinned scanner prerequisites for novel archives
+        id: scanner
+        uses: ./.github/actions/setup-scancode
       - name: Prepare the bundler, import-map, and worker consumers
+        env:
+          SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run prepare:browser-consumers -- --candidate .release/download --output .release/browser/qualified
         timeout-minutes: 20
       - name: Install only the managed Chromium revision
@@ -924,8 +969,27 @@ jobs:
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash --browser-project chromium
         timeout-minutes: 5
       - name: Exercise all browser consumer modes in Chromium
+        env:
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run test:browser -- --fixture-root .release/browser/qualified --project chromium
         timeout-minutes: 45
+      - name: Retain exact browser consumer qualification
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: browser-consumer-chromium-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .release/browser/qualified/browser-qualification.json
+            .release/browser/qualified/eligibility/decisions
+            .release/browser/qualified/eligibility/material
+          retention-days: 90
+      - name: Retain the unresolved recipient material case
+        if: ${{ failure() && hashFiles('.release/browser/qualified/recipient-material-cases/case-*.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-case-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/browser/qualified/recipient-material-cases
+          retention-days: 14
     if: ${{ !inputs.rc3_recovery }}
 
   browser_firefox:
@@ -960,7 +1024,14 @@ jobs:
       - name: Verify the closed candidate inventory and checksums
         run: npm run prepare:downloaded-candidate -- --candidate .release/download
         timeout-minutes: 5
+      - name: Set up pinned scanner prerequisites for novel archives
+        id: scanner
+        uses: ./.github/actions/setup-scancode
       - name: Prepare the bundler, import-map, and worker consumers
+        env:
+          SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run prepare:browser-consumers -- --candidate .release/download --output .release/browser/qualified
         timeout-minutes: 20
       - name: Install only the managed Firefox revision
@@ -970,8 +1041,27 @@ jobs:
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash --browser-project firefox
         timeout-minutes: 5
       - name: Exercise all browser consumer modes in Firefox
+        env:
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run test:browser -- --fixture-root .release/browser/qualified --project firefox
         timeout-minutes: 45
+      - name: Retain exact browser consumer qualification
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: browser-consumer-firefox-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .release/browser/qualified/browser-qualification.json
+            .release/browser/qualified/eligibility/decisions
+            .release/browser/qualified/eligibility/material
+          retention-days: 90
+      - name: Retain the unresolved recipient material case
+        if: ${{ failure() && hashFiles('.release/browser/qualified/recipient-material-cases/case-*.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-case-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/browser/qualified/recipient-material-cases
+          retention-days: 14
     if: ${{ !inputs.rc3_recovery }}
 
   browser_webkit:
@@ -1006,7 +1096,14 @@ jobs:
       - name: Verify the closed candidate inventory and checksums
         run: npm run prepare:downloaded-candidate -- --candidate .release/download
         timeout-minutes: 5
+      - name: Set up pinned scanner prerequisites for novel archives
+        id: scanner
+        uses: ./.github/actions/setup-scancode
       - name: Prepare the bundler, import-map, and worker consumers
+        env:
+          SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run prepare:browser-consumers -- --candidate .release/download --output .release/browser/qualified
         timeout-minutes: 20
       - name: Install only the managed WebKit revision
@@ -1016,8 +1113,27 @@ jobs:
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash --browser-project webkit
         timeout-minutes: 5
       - name: Exercise all browser consumer modes in WebKit
+        env:
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run test:browser -- --fixture-root .release/browser/qualified --project webkit
         timeout-minutes: 45
+      - name: Retain exact browser consumer qualification
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: browser-consumer-webkit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .release/browser/qualified/browser-qualification.json
+            .release/browser/qualified/eligibility/decisions
+            .release/browser/qualified/eligibility/material
+          retention-days: 90
+      - name: Retain the unresolved recipient material case
+        if: ${{ failure() && hashFiles('.release/browser/qualified/recipient-material-cases/case-*.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-case-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/browser/qualified/recipient-material-cases
+          retention-days: 14
     if: ${{ !inputs.rc3_recovery }}
 
   owl_contract:
@@ -1059,8 +1175,12 @@ jobs:
       - name: Verify the closed candidate inventory and checksums
         run: npm run prepare:downloaded-candidate -- --candidate .release/download
         timeout-minutes: 5
+      - name: Set up pinned scanner prerequisites for novel archives
+        id: scanner
+        uses: ./.github/actions/setup-scancode
       - name: Qualify installed public OWL interfaces against current consumer source
         env:
+          SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
           GITHUB_TOKEN: ${{ github.token }}
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
@@ -1094,8 +1214,18 @@ jobs:
           name: owl-contract-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             .release/owl-contract/qualification.json
+            .release/owl-contract/attributed-qualification.json
+            .release/owl-contract/eligibility/decisions
+            .release/owl-contract/eligibility/material
             .release/owl-contract/native.ndjson
           retention-days: 90
+      - name: Retain the unresolved recipient material case
+        if: ${{ failure() && hashFiles('.release/owl-contract/recipient-material-cases/case-*.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-case-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/owl-contract/recipient-material-cases
+          retention-days: 14
     if: ${{ !inputs.rc3_recovery }}
 
   consumer_runtimes:
@@ -1365,6 +1495,18 @@ jobs:
           name: release-qualification-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/qualification-manifest/manifest.json
           retention-days: 90
+
+  advisory:
+    name: Release advisory
+    needs: [release_dispatch, required]
+    if: ${{ !inputs.rc3_recovery && (!cancelled() && needs.release_dispatch.result == 'success' && needs.required.result == 'success' && (needs.release_dispatch.outputs.mode == 'fresh' || needs.release_dispatch.outputs.mode == 'reuse')) }}
+    uses: ./.github/workflows/release-audit-evaluator.yml
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    with:
+      purpose: qualification
 
   publication_preflight:
     if: ${{ !inputs.rc3_recovery && (!inputs.qualification_only) }}

@@ -12,6 +12,11 @@ import { assertPromotedCi } from "./promoted-release-proof.mjs";
 import { CI_WORKFLOW } from "./ci-verification.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import assert from "node:assert/strict";
+import { assertAdvisoryDecisionCurrent } from "./release-audit-evaluator.mjs";
+import {
+  assertQualificationAdvisory,
+  qualificationAdvisoryMarker,
+} from "./qualification-advisory-binding.mjs";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import {
@@ -250,6 +255,8 @@ export function readStageJournal(
   assert.equal(rows.length, 2);
   const [{ state: requestState, ...request }, { state, stageId, ...ack }] =
     rows;
+  if (manifest.consumerResolutionPolicy === 2)
+    assertQualificationAdvisory(request.qualificationAdvisory);
   assert.equal(requestState, "REQUESTED");
   assert.equal(state, "STAGED");
   assert.deepEqual(
@@ -629,6 +636,7 @@ export async function originalManifest(client, env, checkpoint) {
   return { manifest, candidate, manifestBytes: bytes };
 }
 export async function stageOnce({
+  qualificationAdvisory,
   manifest,
   bytes,
   path,
@@ -641,7 +649,10 @@ export async function stageOnce({
   subject(manifest);
   assert.ok(["pilot", "latest"].includes(channel), "Unapproved stage channel");
   checkStageBytes(bytes, manifest);
+  if (manifest.consumerResolutionPolicy === 2)
+    assertQualificationAdvisory(qualificationAdvisory);
   const common = {
+    ...(qualificationAdvisory ? { qualificationAdvisory } : {}),
     schemaVersion: 1,
     package: PACKAGE_NAME,
     version: manifest.package.version,
@@ -1012,6 +1023,69 @@ export async function runStagedRelease() {
     throw error;
   }
 }
+/** Complete advisory readback before admitting or submitting one new npm stage request. */
+export async function verifyNewStageAdvisories(
+  client,
+  { env, checkpoint, manifest, manifestBytes, candidate, now = Date.now() },
+) {
+  assert.equal(
+    manifest.consumerResolutionPolicy,
+    2,
+    "New stage requires the current consumer reconciliation policy",
+  );
+  assert.ok(
+    ["fresh", "reuse"].includes(manifest.qualificationMode),
+    "Historical qualification cannot authorise a new stage",
+  );
+  if (manifest.qualificationMode === "reuse")
+    assert.equal(
+      manifest.ci?.schemaVersion,
+      2,
+      "A legacy CI projection cannot authorise a new stage",
+    );
+  assert.equal(
+    hash(manifestBytes),
+    env.MANIFEST_SHA256,
+    "Different stage admission manifest",
+  );
+  const { loadQualificationAuditBatch } =
+    await import("./qualification-audit-batch.mjs");
+  const { verifyHostedAdvisoryReceipt } =
+    await import("./release-audit-job.mjs");
+  const { withAuditNpmClients } = await import("./release-audit-runtimes.mjs");
+  const { npmCli } = selectNpmCliForVersion({
+    expectedNpm: CI_RUNTIME.npm,
+    candidates: findNpmCliCandidates(),
+    observeVersion: observeNpmVersion,
+  });
+  return withAuditNpmClients(npmCli, async (npmCliForVersion) => {
+    const batch = await loadQualificationAuditBatch(
+      client,
+      { ...env, QUALIFIED_COMMIT: manifest.commit },
+      npmCli,
+      {
+        checkpoint,
+        expectedManifestSha256: env.MANIFEST_SHA256,
+        manifest,
+        candidateArtifact: candidate,
+        now,
+        npmCliForVersion,
+      },
+    );
+    return verifyHostedAdvisoryReceipt({
+      client,
+      checkpoint,
+      entries: batch.entries,
+      npmCli,
+      now,
+      runId: batch.run.id,
+      attempt: batch.run.run_attempt,
+      controller: manifest.commit,
+      workflow: ".github/workflows/release.yml",
+    });
+  });
+}
+
 async function executeStage(mode, env, beginRequest) {
   const client = new GitHubReleaseClient({
     repository: repo,
@@ -1021,7 +1095,7 @@ async function executeStage(mode, env, beginRequest) {
   const intent = json(checkpoint.files.get("stage-intent.json"));
   assert.equal(intent.controller ?? intent.commit, env.GITHUB_SHA);
   verifyControllerDelta(intent.commit, env.GITHUB_SHA, checkpoint.files);
-  const { manifest, candidate } = await originalManifest(
+  const { manifest, candidate, manifestBytes } = await originalManifest(
     client,
     { ...env, GITHUB_SHA: intent.commit },
     checkpoint,
@@ -1042,6 +1116,15 @@ async function executeStage(mode, env, beginRequest) {
   );
   if (manifest.schemaVersion === 3)
     await verifyCorpusQualification(manifest, { env });
+  // Both admission and the protected writer reopen the same native inputs.
+  // A personal stage intent cannot substitute for the protected advisory receipt.
+  const advisory = await verifyNewStageAdvisories(client, {
+    env,
+    checkpoint,
+    manifest,
+    manifestBytes,
+    candidate,
+  });
   if (mode !== "stage") {
     emit(
       {
@@ -1102,7 +1185,9 @@ async function executeStage(mode, env, beginRequest) {
     coordinate: PACKAGE_NAME + "@" + PACKAGE_VERSION,
     lastWriterAt,
   });
+  assertAdvisoryDecisionCurrent(advisory.decision);
   await stageOnce({
+    qualificationAdvisory: qualificationAdvisoryMarker(advisory),
     manifest,
     before,
     bytes: readFileSync(path),

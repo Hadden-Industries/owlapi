@@ -24,6 +24,7 @@ import {
 } from "./release-consumer-evidence.mjs";
 import { compareConsumerResolutions } from "./release-consumer-resolution.mjs";
 import { verifyCiConsumerEvidence } from "./ci-consumer-evidence-verification.mjs";
+import { recipientMaterialCaseDirectory } from "./recipient-material-case.mjs";
 import {
   assertConsistentArchives,
   packProducerResolutions,
@@ -259,6 +260,11 @@ try {
       role: "candidate-" + mode,
       decisionDirectory,
       npmCli,
+      caseDirectory: join(outputDirectory, recipientMaterialCaseDirectory),
+      caseContext: {
+        kind: "PRODUCER_CANDIDATE",
+        sbomSha256: sha256File(sbomPath),
+      },
     });
     observations[mode] = { evidence, eligibility };
     return evidence.resolution;

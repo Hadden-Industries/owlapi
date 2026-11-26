@@ -57,7 +57,12 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
+      - name: Set up pinned scanner prerequisites for novel archives
+        id: scanner
+        uses: ./.github/actions/setup-scancode
       - name: Build and qualify the closed candidate bundle
+        env:
+          SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
         run: npm run build:release-candidate
         timeout-minutes: 45
       - name: Audit the isolated artifact transport dependency graph
@@ -82,3 +87,13 @@ jobs:
             .release/candidate/${{ inputs.version }}/consumer-resolutions.json
           retention-days: 90
           compression-level: 6
+      - name: Retain the unresolved recipient material case
+        if: ${{ failure() && hashFiles(format('.release/candidate/{0}/recipient-material-cases/case-*.json', inputs.version)) != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-case-produce-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .release/candidate/${{ inputs.version }}/recipient-material-cases
+            .release/candidate/${{ inputs.version }}/hadden-industries-owlapi-${{ inputs.version }}.tgz
+            .release/candidate/${{ inputs.version }}/hadden-industries-owlapi-${{ inputs.version }}.cdx.json
+          retention-days: 14

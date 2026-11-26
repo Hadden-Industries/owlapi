@@ -21,6 +21,14 @@ import { fileURLToPath } from "node:url";
 import { build } from "vite";
 import { documentationExampleModules } from "./documentation-examples.mjs";
 import { assertPackageIdentity } from "./package-identity.mjs";
+import { prepareTarballConsumer } from "./release-consumer-evidence.mjs";
+import { qualifyCiConsumerInstall } from "./ci-recipient-attribution.mjs";
+import {
+  BROWSER_CONSUMER_MODES as MODES,
+  BROWSER_PREPARATION_NAME,
+  browserFixturePayloadDigests,
+  indexBrowserNpmAttributions,
+} from "./browser-consumer-evidence.mjs";
 import { admitReviewedReferenceMap } from "./reference-import-map-admission.mjs";
 import { assertApprovedProviderPinChanges } from "./reference-import-map-approval.mjs";
 import {
@@ -30,11 +38,7 @@ import {
   stableJson,
   writeJson,
 } from "./reference-import-map.mjs";
-import {
-  isStrictDescendantPath,
-  sha256Buffer,
-  sha256File,
-} from "./release-file-utils.mjs";
+import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const FIXTURE_SOURCE_ROOT = join(
@@ -43,7 +47,6 @@ const FIXTURE_SOURCE_ROOT = join(
   "consumers",
   "browser",
 );
-const MODES = Object.freeze(["bundler", "import-map", "worker"]);
 const SHARED_MODULES = Object.freeze([
   ["scripts/canonical-json.mjs", "json-identity.mjs"],
   ["test/consumers/browser/_shared/exercise-package.js", "exercise-package.js"],
@@ -72,13 +75,15 @@ const runNpm = (npmCli, arguments_, cwd, cacheDirectory) => {
   }
 };
 
-const installFixture = ({
+const installFixture = async ({
   mode,
   outputDirectory,
   tarballPath,
   candidateManifest,
   npmCli,
   temporaryRoot,
+  tarball,
+  verifyConsumerEvidence,
 }) => {
   const directory = join(outputDirectory, mode);
   const fixtureModules = ["main.js"];
@@ -118,19 +123,19 @@ const installFixture = ({
     "import-closure-documents.js",
     `export default ${JSON.stringify(closureDocuments)};\n`,
   );
-  writeJson(join(directory, "package.json"), {
-    name: `owlapi-browser-${mode}-consumer`,
+  prepareTarballConsumer(directory, tarballPath, "owlapi", {
+    name: "owlapi-browser-consumer",
     version: "0.0.0",
     private: true,
     type: "module",
-    dependencies: { owlapi: `file:${tarballPath.replaceAll("\\", "/")}` },
   });
   runNpm(
     npmCli,
     [
       "install",
+      "--engine-strict",
       "--ignore-scripts",
-      "--package-lock=false",
+      "--package-lock",
       "--no-audit",
       "--no-fund",
     ],
@@ -148,6 +153,17 @@ const installFixture = ({
       `The ${mode} fixture installed an unexpected package identity`,
     );
   }
+  const attribution = await qualifyCiConsumerInstall({
+    directory,
+    tarball,
+    npmCli,
+    dependencyName: "owlapi",
+    role:
+      mode === "import-map" ? "browser-import-map-input" : `browser-${mode}`,
+    verifyConsumerEvidence,
+    candidate: candidateManifest,
+    decisionDirectory: join(outputDirectory, "eligibility"),
+  });
   const examples = documentationExampleModules(
     readFileSync(join(packageRoot, "README.md"), "utf8"),
   );
@@ -159,7 +175,7 @@ const installFixture = ({
     "exercise-documentation.js",
     `${ids.map((id, index) => `import { exercise as example${index} } from "./readme-${id}.js";`).join("\n")}\nexport async function exerciseDocumentation() { ${ids.map((_, index) => `await example${index}();`).join(" ")} return { examples: ${ids.length} }; }\n`,
   );
-  return { directory, packageRoot, fixtureModules };
+  return { directory, packageRoot, fixtureModules, attribution };
 };
 
 const stageBrowserConsumerFixtures = async (options) => {
@@ -168,9 +184,17 @@ const stageBrowserConsumerFixtures = async (options) => {
       "Run browser-consumer preparation through its named npm script so the accepted local npm CLI is authoritative.",
     );
   }
-  const fixtures = Object.fromEntries(
-    MODES.map((mode) => [mode, installFixture({ ...options, mode })]),
-  );
+  const verifyConsumerEvidence =
+    options.verifyConsumerEvidence ??
+    (await import("./ci-consumer-evidence-verification.mjs"))
+      .verifyCiConsumerEvidence;
+  const fixtures = {};
+  for (const mode of MODES)
+    fixtures[mode] = await installFixture({
+      ...options,
+      mode,
+      verifyConsumerEvidence,
+    });
   for (const mode of ["bundler", "worker"]) {
     const { directory } = fixtures[mode];
     await build({
@@ -181,7 +205,12 @@ const stageBrowserConsumerFixtures = async (options) => {
       build: { emptyOutDir: true, outDir: join(directory, "dist") },
     });
   }
-  return fixtures["import-map"];
+  return {
+    ...fixtures["import-map"],
+    npmAttributions: Object.fromEntries(
+      MODES.map((mode) => [mode, fixtures[mode].attribution]),
+    ),
+  };
 };
 
 // Bind all three npm installs to one verified copy even if the external
@@ -192,6 +221,7 @@ const stageAdmittedCandidate = async ({
   outputDirectory,
   npmCli,
   stageFixtures,
+  verifyConsumerEvidence,
 }) => {
   const { fileName, sha256 } = candidateManifest.tarball;
   if (basename(fileName) !== fileName || !fileName.endsWith(".tgz")) {
@@ -208,7 +238,8 @@ const stageAdmittedCandidate = async ({
   try {
     const tarballPath = join(temporaryRoot, fileName);
     copyFileSync(join(candidateDirectory, fileName), tarballPath);
-    if (sha256File(tarballPath) !== sha256) {
+    const tarball = readFileSync(tarballPath);
+    if (sha256Buffer(tarball) !== sha256) {
       throw new Error(
         "Retained candidate tarball no longer matches its manifest",
       );
@@ -218,8 +249,10 @@ const stageAdmittedCandidate = async ({
       candidateManifest,
       outputDirectory,
       tarballPath,
+      tarball,
       npmCli,
       temporaryRoot,
+      verifyConsumerEvidence,
     });
   } finally {
     rmSync(temporaryRoot, { recursive: true, force: true });
@@ -269,6 +302,7 @@ export const prepareBrowserConsumers = async ({
   fetchImplementation,
   replaceReviewedMap = renameSync,
   stageFixtures = stageBrowserConsumerFixtures,
+  verifyConsumerEvidence,
 }) => {
   if (approvedProviderPinChangesPath !== undefined && !writeReviewedMap) {
     throw new Error(
@@ -288,13 +322,14 @@ export const prepareBrowserConsumers = async ({
     join(candidateDirectory, "candidate-manifest.json"),
   );
   assertPackageIdentity(candidateManifest.package);
-  const { directory, packageRoot, fixtureModules } =
+  const { directory, packageRoot, fixtureModules, npmAttributions } =
     await stageAdmittedCandidate({
       candidateDirectory,
       candidateManifest,
       outputDirectory,
       npmCli,
       stageFixtures,
+      verifyConsumerEvidence,
     });
   const generatedMap = await generateReferenceImportMap({
     applicationPath: join(directory, "main.js"),
@@ -325,6 +360,8 @@ export const prepareBrowserConsumers = async ({
   }
   cpSync(packageRoot, join(runtimeDirectory, "package", "owlapi"), {
     recursive: true,
+    // The import-map runtime loads its own pinned provider subjects.
+    filter: (source) => source !== join(packageRoot, "node_modules"),
   });
 
   const { inventory, localMap } = await hydrateReferenceImportMap({
@@ -364,7 +401,13 @@ export const prepareBrowserConsumers = async ({
   );
 
   const manifest = stableJson({
-    schemaVersion: 1,
+    schemaVersion: npmAttributions ? 2 : 1,
+    ...(npmAttributions
+      ? {
+          npmAttributions: indexBrowserNpmAttributions(npmAttributions),
+          fixturePayloadSha256: browserFixturePayloadDigests(outputDirectory),
+        }
+      : {}),
     package: candidateManifest.package,
     candidate: {
       directory: basename(candidateDirectory),
@@ -397,8 +440,5 @@ export const prepareBrowserConsumers = async ({
   }
   // An interruption after the reviewed-map swap is recoverable from the staged
   // generated map. Only a complete manifest can follow the swap.
-  publishAtomic(
-    join(outputDirectory, "browser-consumer-manifest.json"),
-    manifest,
-  );
+  publishAtomic(join(outputDirectory, BROWSER_PREPARATION_NAME), manifest);
 };

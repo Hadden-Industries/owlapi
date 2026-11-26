@@ -31,7 +31,7 @@ const execution = (run, receipt) => ({
 export function projectPromotedCi(result, matrixSha256) {
   const { landed, main, source, qualifiedPackage: pack } = result;
   return {
-    schemaVersion: 1,
+    schemaVersion: pack.packageProofVersion === 2 ? 2 : 1,
     repositoryId: source.run.repository.id,
     landed,
     main: {
@@ -57,7 +57,9 @@ export function projectPromotedCi(result, matrixSha256) {
     packedConfig: pack.packedConfig,
     integrity: pack.integrity,
     evidence: pack.evidence,
-    advisoryObservations: pack.advisoryObservations,
+    ...(pack.packageProofVersion === 2
+      ? { advisorySubjects: pack.advisorySubjects }
+      : { advisoryObservations: pack.advisoryObservations }),
     policySha256: source.receipt.policySha256,
     matrixSha256,
   };
@@ -68,7 +70,10 @@ export function assertPromotedCi(
   evidence,
   { commit, matrixSha256, now = Date.now(), version = PACKAGE_VERSION },
 ) {
-  assert.equal(evidence.schemaVersion, 1, "Unknown CI evidence projection");
+  assert.ok(
+    [1, 2].includes(evidence.schemaVersion),
+    "Unknown CI evidence projection",
+  );
   assert.ok(id(evidence.repositoryId));
   const { landed, main, build } = evidence;
   assert.ok(
@@ -143,6 +148,36 @@ export function assertPromotedCi(
     version,
   });
   assert.match(evidence.integrity, /^sha512-[A-Za-z0-9+/]{86}==$/u);
+  if (evidence.schemaVersion === 2) {
+    assert.equal(
+      evidence.advisoryObservations,
+      undefined,
+      "Legacy advisory summary on current qualification",
+    );
+    assert.deepEqual(Object.keys(evidence.advisorySubjects).sort(), [
+      "inspection",
+      "recipient",
+      "root",
+      "scoped",
+    ]);
+    for (const [key, subject] of Object.entries(evidence.advisorySubjects)) {
+      assert.equal(subject.tarballSha256, evidence.assets.tarball.sha256);
+      assert.equal(subject.role, key === "root" ? "producer" : "candidate");
+      assert.equal(subject.scope, "production");
+      for (const field of ["manifestSha256", "lockSha256", "graphSha256"])
+        assert.ok(
+          hex(subject[field]),
+          "Missing measured advisory subject " + field,
+        );
+    }
+    assert.ok(
+      hex(evidence.evidence["consumer-resolutions.json"]?.sha256),
+      "Missing original recipient packet",
+    );
+    // The separate protected job issues the time-bounded decision after both
+    // release-only qualification and the original CI package evidence are bound.
+    return evidence;
+  }
   const observations = evidence.advisoryObservations;
   for (const name of ["root", "transport", "recipient"]) {
     const audit = observations?.[name];

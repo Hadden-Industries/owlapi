@@ -81,18 +81,49 @@ function evidenceFields(artifact) {
 }
 
 /** This projection is also applied at readback so extra record fields are refused. */
-function recipientArchiveRecord(artifact, archiveTarball, blobs, compact) {
+function recipientArchiveRecord(
+  artifact,
+  archiveTarball,
+  blobs,
+  compact,
+  measurementOrigin,
+) {
   assert.equal(
     archiveTarball.kind,
     undefined,
     "Archive tarball references contain no evidence-envelope kind",
   );
+  if (measurementOrigin !== undefined) {
+    const fields = [
+      "artifactSha256",
+      "attempt",
+      "commit",
+      "jobId",
+      "materialSha256",
+      "runId",
+    ];
+    assert.equal(
+      stableJson(Object.keys(measurementOrigin).sort()),
+      stableJson(fields),
+    );
+    assert.ok(
+      [
+        measurementOrigin.runId,
+        measurementOrigin.attempt,
+        measurementOrigin.jobId,
+      ].every((value) => Number.isSafeInteger(value) && value > 0),
+    );
+    assert.match(measurementOrigin.commit, /^[a-f0-9]{40}$/u);
+    assert.match(measurementOrigin.artifactSha256, sha256Pattern);
+    assert.match(measurementOrigin.materialSha256, sha256Pattern);
+  }
   return {
     source: "RECIPIENT_ARCHIVE",
     ...evidenceFields(artifact),
     archiveTarball: blobLink(archiveTarball),
     blobs: canonicalizeEvidenceBlobs(blobs.map(blobLink)),
     compact,
+    ...(measurementOrigin ? { measurementOrigin } : {}),
   };
 }
 
@@ -240,6 +271,7 @@ export async function prepareRecipientMaterial({
   verifyPackageMetadata,
   scanArtifact,
   pacoteClient,
+  trustedArchiveMeasurements = [],
 } = {}) {
   repositoryRoot = await realpath(repositoryRoot);
   const canonical = await openCanonicalEvidence(
@@ -266,6 +298,44 @@ export async function prepareRecipientMaterial({
     }
   }
   const keys = [...registryKeys.values()];
+  const measuredById = new Map();
+  const measuredCoordinates = new Map();
+  for (const { record, origin } of trustedArchiveMeasurements) {
+    assert.ok(
+      !measuredById.has(record.artifactId),
+      "Ambiguous retained archive measurement",
+    );
+    assert.ok(
+      origin,
+      "Retained measurements require their authenticated scanner origin",
+    );
+    assert.ok(
+      !measuredCoordinates.has(coordinate(record)),
+      "Conflicting retained archive measurements for one registry coordinate",
+    );
+    const verified = verifyCompactArchiveMaterial(record, registryKeys);
+    measuredById.set(record.artifactId, {
+      verified,
+      archiveRecord: recipientArchiveRecord(
+        record,
+        record.archiveTarball,
+        record.blobs,
+        record.compact,
+        origin,
+      ),
+    });
+    measuredCoordinates.set(coordinate(record), record.artifactId);
+  }
+  const findMeasurement = (identity) => {
+    const previous = measuredCoordinates.get(coordinate(identity));
+    if (previous)
+      assert.equal(
+        previous,
+        identity.artifactId,
+        `Contradictory measured archive for ${coordinate(identity)}`,
+      );
+    return measuredById.get(identity.artifactId);
+  };
   const canonicallyVerified = new Map();
   const collectedByStore = new Map();
   const reopenedByStore = new Map();
@@ -319,6 +389,7 @@ export async function prepareRecipientMaterial({
     const artifacts = [];
     for (const [artifactId, occurrences] of byArtifact) {
       const identity = byId.get(artifactId);
+      const measured = findMeasurement(identity);
       const original = canonical.byCoordinate.get(coordinate(identity));
       let archiveRecord, verified;
       if (original) {
@@ -357,6 +428,7 @@ export async function prepareRecipientMaterial({
             claim.archiveTarball,
             claim.blobs,
             claim.compact,
+            claim.measurementOrigin,
           );
           assert.equal(
             stableJson(archiveRecord),
@@ -387,6 +459,13 @@ export async function prepareRecipientMaterial({
               );
             verified = await reopenedByStore.get(cacheKey);
           }
+        } else if (measured) {
+          ({ archiveRecord, verified } = measured);
+          assert.equal(
+            stableJson(archiveIdentity(archiveRecord)),
+            stableJson(archiveIdentity(identity)),
+            "Measured archive does not match the observed registry identity",
+          );
         } else {
           if (evidenceDirectory)
             sharedOutput ??= createOutputDirectory(repositoryRoot, store);
@@ -432,7 +511,10 @@ export async function prepareRecipientMaterial({
           artifact: archiveRecord,
           ...verified,
           canonicalMaterials: canonical.materials.get(artifactId) ?? [],
-          compactMeasurements: !original && compactReadback,
+          compactMeasurements:
+            !original &&
+            (compactReadback ||
+              Boolean(archiveRecord.measurementOrigin && !reading)),
         }),
       );
     }
@@ -477,6 +559,23 @@ export async function prepareRecipientMaterial({
   }
 
   return {
+    missingArchiveMeasurements({ resolution, lockfileBytes }) {
+      const { byArtifact, byId } = observedArchives(resolution, lockfileBytes);
+      const missing = [];
+      for (const artifactId of byArtifact.keys()) {
+        const identity = byId.get(artifactId);
+        const previous = canonical.byCoordinate.get(coordinate(identity));
+        if (previous)
+          assert.equal(
+            previous.artifactId,
+            artifactId,
+            `Contradictory canonical archive for ${coordinate(identity)}`,
+          );
+        else if (!findMeasurement(identity))
+          missing.push(archiveIdentity(identity));
+      }
+      return missing;
+    },
     async collect({ directory, resolution, lockfileBytes }) {
       directory = await createOutputDirectory(repositoryRoot, directory);
       try {

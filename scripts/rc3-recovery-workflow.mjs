@@ -8,6 +8,8 @@ import { RECOVERY_JOBS } from "./rc3-recovery-policy.mjs";
 import { actionReference } from "./project-action-versions.mjs";
 
 const guarded = "${{ inputs.rc3_recovery && !inputs.qualification_only }}";
+export const qualificationAdvisoryCondition =
+  "!cancelled() && needs.release_dispatch.result == 'success' && needs.required.result == 'success' && (needs.release_dispatch.outputs.mode == 'fresh' || needs.release_dispatch.outputs.mode == 'reuse')";
 const transport = "./.github/actions/retain-artifact";
 const download = actionReference("actions/download-artifact");
 const checkout = actionReference("actions/checkout");
@@ -178,14 +180,15 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
       );
       continue;
     }
-    const corpusGuards = {
+    const routeGuards = {
+      advisory: qualificationAdvisoryCondition,
       corpus_plan:
         "!cancelled() && needs.release_dispatch.outputs.corpus_shadow == 'true' && needs.release_admission.result == 'success' && (needs.release_admission.outputs.mode == 'reuse' || needs.candidate.result == 'success')",
       corpus_shard: "needs.corpus_plan.result == 'success'",
       corpus_aggregate: "!cancelled() && needs.corpus_plan.result == 'success'",
     };
     const expression =
-      corpusGuards[id] ??
+      routeGuards[id] ??
       (id === "third_party_evidence"
         ? "!cancelled() && needs.release_admission.result == 'success'"
         : id === "required"

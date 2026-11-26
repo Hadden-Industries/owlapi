@@ -38,6 +38,11 @@ const retryableCodes = new Set([
   "ERESPONSETIMEOUT",
   "EIDLETIMEOUT",
 ]);
+const nativeAuditReasons = new Set([
+  "getaddrinfo EAI_AGAIN registry.npmjs.org",
+  "read ECONNRESET",
+  "socket hang up",
+]);
 
 /** Native npm does not retry advisory POSTs. Retry an unavailability observation only. */
 function retryableAuditFailure(result) {
@@ -68,10 +73,27 @@ function retryableAuditFailure(result) {
     return false;
   if (diagnostic.method === "POST" && endpoints.has(diagnostic.uri)) {
     const { statusCode } = diagnostic;
-    return (
+    if (
       [408, 429].includes(statusCode) ||
       (Number.isInteger(statusCode) && statusCode >= 500 && statusCode <= 599)
-    );
+    )
+      return true;
+  }
+  // Pinned npm's audit error wrapper drops FetchError.code. Require the entire
+  // native request diagnostic for an approved endpoint, with no HTTP verdict.
+  if (
+    diagnostic.statusCode === undefined &&
+    (diagnostic.method === undefined || diagnostic.method === "POST") &&
+    typeof diagnostic.message === "string"
+  ) {
+    for (const uri of endpoints) {
+      if (diagnostic.uri !== undefined && diagnostic.uri !== uri) continue;
+      for (const reason of nativeAuditReasons)
+        if (
+          diagnostic.message === `request to ${uri} failed, reason: ${reason}`
+        )
+          return true;
+    }
   }
   return (
     diagnostic.uri === undefined &&

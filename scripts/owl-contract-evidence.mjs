@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { isDeepStrictEqual } from "node:util";
 import { PACKAGE_NAME, PACKAGE_VERSION } from "./package-identity.mjs";
 import { OWL_CONTRACT_ASSERTIONS } from "../test/consumers/owl-contract/public-model-cases.js";
+import { assertCiConsumerAttribution } from "./ci-recipient-attribution.mjs";
 import {
   REVIEWED_CONSUMER_SOURCES,
   assertReviewedConsumerSources,
@@ -174,8 +175,15 @@ export const assertArchivedOwlContractReport = (
 /** Account for each native assertion once; skipped, renamed and fabricated inventories fail closed. */
 export const assertOwlContractReport = (
   report,
-  { candidateSha256, identity, artifact } = {},
+  {
+    candidateSha256,
+    identity,
+    artifact,
+    schemaVersion,
+    decisionDirectory,
+  } = {},
 ) => {
+  const attributed = report?.schemaVersion === 2;
   const expectedAssertions = OWL_CONTRACT_ASSERTIONS.map((name) => ({
     name,
     status: "passed",
@@ -194,6 +202,7 @@ export const assertOwlContractReport = (
       "fixtureSha256",
       "nativeReportSha256",
       "assertions",
+      ...(attributed ? ["attribution"] : []),
     ]) ||
     !identityValid(report.identity) ||
     !closed(report.candidate, ["package", "tarballSha256", "artifact"]) ||
@@ -205,7 +214,8 @@ export const assertOwlContractReport = (
       ? report.candidate.artifact !== null
       : !artifactValid(report.candidate.artifact)) ||
     (artifact && !isDeepStrictEqual(report.candidate.artifact, artifact)) ||
-    report.schemaVersion !== 1 ||
+    ![1, 2].includes(report.schemaVersion) ||
+    (schemaVersion !== undefined && report.schemaVersion !== schemaVersion) ||
     report.check !== "owl_contract" ||
     report.result !== "PASS" ||
     !digest(report.candidate?.tarballSha256) ||
@@ -223,6 +233,12 @@ export const assertOwlContractReport = (
     report.consumerSources,
     REVIEWED_CONSUMER_SOURCES,
   );
+  if (attributed)
+    assertCiConsumerAttribution(report.attribution, {
+      role: "owl-contract",
+      tarballSha256: report.candidate.tarballSha256,
+      decisionDirectory,
+    });
   return report;
 };
 
@@ -251,8 +267,9 @@ export const summarizeOwlContractExecution = (
   workflow = "CI",
 ) => {
   assertOwlContractReport(report, { identity: { workflow, ...identity } });
+  const attributed = report.schemaVersion === 2;
   return {
-    schemaVersion: 2,
+    schemaVersion: attributed ? 3 : 2,
     check: "owl_contract",
     execution: "SUCCESS",
     ...identity,
@@ -264,13 +281,25 @@ export const summarizeOwlContractExecution = (
     assertions: report.assertions,
     nativeReportSha256: report.nativeReportSha256,
     evidenceSha256: sourceFingerprint(report),
+    ...(attributed
+      ? {
+          recipientEvidence: {
+            lockSha256: report.attribution.evidence.resolution.lockSha256,
+            manifestSha256:
+              report.attribution.evidence.resolution.manifestSha256,
+            resolutionSha256: report.attribution.decision.resolutionSha256,
+            decisionSha256: report.attribution.decision.decisionSha256,
+          },
+        }
+      : {}),
   };
 };
 
 /** Independently reconstruct required successful coverage, not merely a SUCCESS flag. */
 export const assertOwlContractCoverage = (record, identity) => {
+  const attributed = record?.schemaVersion === 3;
   const expected = {
-    schemaVersion: 2,
+    schemaVersion: attributed ? 3 : 2,
     check: "owl_contract",
     execution: "SUCCESS",
     runId: identity.runId,
@@ -289,6 +318,7 @@ export const assertOwlContractCoverage = (record, identity) => {
     })),
     nativeReportSha256: record?.nativeReportSha256,
     evidenceSha256: record?.evidenceSha256,
+    ...(attributed ? { recipientEvidence: record.recipientEvidence } : {}),
   };
   if (
     !artifactValid(record?.candidateArtifact) ||
@@ -297,6 +327,14 @@ export const assertOwlContractCoverage = (record, identity) => {
       record?.nativeReportSha256,
       record?.evidenceSha256,
     ].every(digest) ||
+    (attributed &&
+      (!closed(record.recipientEvidence, [
+        "lockSha256",
+        "manifestSha256",
+        "resolutionSha256",
+        "decisionSha256",
+      ]) ||
+        !Object.values(record.recipientEvidence).every(digest))) ||
     !isDeepStrictEqual(record, expected)
   )
     throw new Error("Invalid installed OWL contract coverage.");

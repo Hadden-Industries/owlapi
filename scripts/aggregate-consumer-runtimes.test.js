@@ -1,9 +1,26 @@
 import { describe, expect, test } from "@jest/globals";
-import { validateRuntimeReports } from "./aggregate-consumer-runtimes.mjs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  truncateSync,
+  writeFileSync,
+} from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import {
+  readRuntimeReportOriginals,
+  validateRuntimeReports,
+} from "./aggregate-consumer-runtimes.mjs";
 import { runtimeDigest } from "./consumer-runtime-matrix.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
 import { INSTALLED_TEST_SCRIPTS } from "./installed-consumer-fixtures.mjs";
 import { consumerRuntimeFixture } from "./consumer-runtime-fixture.mjs";
+import { PACKAGE_NAME, PACKAGE_VERSION } from "./package-identity.mjs";
+import { stableJson } from "./canonical-json.mjs";
+import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
+
+const sha = (text) => sha256Buffer(Buffer.from(text));
 
 const fixture = () => {
   const { matrix } = consumerRuntimeFixture({ newerPatches: false });
@@ -41,6 +58,106 @@ const fixture = () => {
   return { matrix, identity, reports };
 };
 
+// This independent protocol fixture exercises archive custody rather than npm's
+// resolver. Native graph capture and replay use real installs in the CI attribution test.
+function retainRuntimeFixture(root, reports) {
+  for (const report of reports) {
+    const { lane, runAttempt } = report;
+    const directory = join(
+      root,
+      `consumer-runtime-${lane.runner}-${lane.node}-attempt-${runAttempt}`,
+    );
+    const evidenceRoot = join(directory, "eligibility");
+    mkdirSync(join(evidenceRoot, "decisions"), { recursive: true });
+    report.schemaVersion = report.portability.schemaVersion = 2;
+    report.origin = { workflow: "CI", job: "consumer_runtime" };
+    for (const [mode, consumer] of Object.entries(
+      report.portability.consumers,
+    )) {
+      const role = `portability-${mode}`;
+      const dependencyName = mode === "alias" ? "owlapi" : PACKAGE_NAME;
+      const dependencies = { [dependencyName]: "file:candidate.tgz" };
+      const manifest = stableJson({
+        name: "fixture",
+        version: "0.0.0",
+        dependencies,
+      });
+      const lock = stableJson({
+        lockfileVersion: 3,
+        packages: { "": { dependencies } },
+      });
+      const tarballSha256 = report.portability.tarball.sha256;
+      const platform = { os: lane.os, cpu: lane.arch, node: lane.node };
+      const graph = {
+        nodes: [
+          { location: ".", name: PACKAGE_NAME, version: PACKAGE_VERSION },
+        ],
+        edges: [],
+      };
+      const resolution = {
+        schemaVersion: 1,
+        dependencyName,
+        tarballSha256,
+        npm: CI_RUNTIME.consumerNpm,
+        platform,
+        manifestSha256: sha(manifest),
+        lockSha256: sha(lock),
+        graph,
+        manifests: { ".": "d".repeat(64) },
+      };
+      const resolutionSha256 = sha(stableJson(resolution));
+      const material = stableJson({
+        status: "PASSED",
+        subject: { resolutionSha256, lockSha256: sha(lock), tarballSha256 },
+      });
+      const materialDirectory = join(
+        evidenceRoot,
+        "material",
+        resolutionSha256,
+      );
+      mkdirSync(materialDirectory, { recursive: true });
+      writeFileSync(
+        join(materialDirectory, "recipient-material.json"),
+        material,
+      );
+      const decision = stableJson({
+        schemaVersion: 1,
+        role,
+        result: "PASS",
+        resolutionSha256,
+        materialSha256: sha(material),
+        observedAt: "2026-11-26T12:00:00.000Z",
+        subject: {
+          role: "candidate",
+          scope: "production",
+          platform: { ...platform, npm: CI_RUNTIME.consumerNpm },
+          manifestSha256: sha(manifest),
+          lockSha256: sha(lock),
+          graphSha256: sha(stableJson(graph)),
+          tarballSha256,
+        },
+      });
+      writeFileSync(
+        join(evidenceRoot, "decisions", `${sha(decision)}.json`),
+        decision,
+      );
+      consumer.attribution = {
+        schemaVersion: 1,
+        evidence: { schemaVersion: 1, manifest, lock, resolution },
+        decision: {
+          schemaVersion: 1,
+          result: "PASS",
+          role,
+          resolutionSha256,
+          tarballSha256,
+          decisionSha256: sha(decision),
+        },
+      };
+    }
+    writeFileSync(join(directory, "lane.json"), `${JSON.stringify(report)}\n`);
+  }
+}
+
 describe("complete retained-package runtime proof", () => {
   test("accepts complete reports tied to one candidate and every actual runtime/platform", () => {
     const { matrix, reports, identity } = fixture();
@@ -48,6 +165,61 @@ describe("complete retained-package runtime proof", () => {
       result: "PASS",
       matrixSha256: runtimeDigest(matrix),
     });
+  });
+  test("rejects a legacy lane report when native recipient attribution is required", () => {
+    const { matrix, reports, identity } = fixture();
+    expect(() =>
+      validateRuntimeReports(matrix, reports, identity, {
+        schemaVersion: 2,
+      }),
+    ).toThrow(/required runtime report schema/iu);
+  });
+  test.each([
+    "member substituted",
+    "original expired",
+    "member oversized",
+    "job substituted",
+  ])("keeps compact pointers and rejects %s", (fault) => {
+    const { matrix, reports, identity } = fixture();
+    const root = mkdtempSync(join(tmpdir(), "owlapi-runtime-pointers-"));
+    expect(isStrictDescendantPath(tmpdir(), root)).toBe(true);
+    try {
+      retainRuntimeFixture(root, reports);
+      const summary = readRuntimeReportOriginals(matrix, root, identity, {
+        workflow: "CI",
+      });
+      expect(summary.originalReports).toHaveLength(matrix.include.length);
+      expect(JSON.stringify(summary)).not.toContain("file:candidate.tgz");
+      const named = summary.originalReports[0];
+      const path = join(root, named.artifactName, "lane.json");
+      const original = reports.find(
+        ({ lane }) =>
+          named.artifactName ===
+          `consumer-runtime-${lane.runner}-${lane.node}-attempt-${identity.runAttempt}`,
+      );
+      expect(named.sha256).toBe(sha(`${JSON.stringify(original)}\n`));
+      if (fault === "member substituted")
+        writeFileSync(path, `${JSON.stringify(original)} \n`);
+      if (fault === "original expired") rmSync(path);
+      if (fault === "member oversized")
+        truncateSync(path, 16 * 1024 * 1024 + 1);
+      if (fault === "job substituted")
+        writeFileSync(
+          path,
+          JSON.stringify({
+            ...original,
+            origin: { workflow: "CI", job: "substitute" },
+          }),
+        );
+      expect(() =>
+        readRuntimeReportOriginals(matrix, root, identity, {
+          workflow: "CI",
+          expectedReports: summary.originalReports,
+        }),
+      ).toThrow();
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
   test.each([
     "missing",

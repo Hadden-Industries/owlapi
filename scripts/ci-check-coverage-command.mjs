@@ -1,6 +1,7 @@
 import { appendFileSync, lstatSync, readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { dirname, join } from "node:path";
+import { jsonEquals } from "./canonical-json.mjs";
 import { summarizeJavaExecution } from "./ci-check-coverage.mjs";
 import {
   summarizeOwlContractExecution,
@@ -17,7 +18,7 @@ export const recordCheckCoverage = (
   const maximum = check === "java" ? 32 * 1024 * 1024 : 256 * 1024;
   if (!stat.isFile() || stat.isSymbolicLink() || stat.size > maximum)
     throw new Error("Check report has invalid type or size.");
-  const report = JSON.parse(readFileSync(reportPath, "utf8"));
+  let report = JSON.parse(readFileSync(reportPath, "utf8"));
   if (check === "owl_contract") {
     const nativePath = join(dirname(reportPath), "native.ndjson");
     const nativeStat = lstatSync(nativePath);
@@ -27,7 +28,32 @@ export const recordCheckCoverage = (
       nativeStat.size > 256 * 1024
     )
       throw new Error("Invalid native contract evidence file.");
-    assertNativeOwlContractReport(report, readFileSync(nativePath, "utf8"));
+    const native = readFileSync(nativePath, "utf8");
+    if (environment.GITHUB_WORKFLOW === "Release") {
+      // Both files describe one execution. The older release evidence archive
+      // continues to consume qualification.json while live coverage uses v2.
+      const attributedPath = join(
+        dirname(reportPath),
+        "attributed-qualification.json",
+      );
+      const attributedStat = lstatSync(attributedPath);
+      if (!attributedStat.isFile() || attributedStat.size > maximum)
+        throw new Error("Invalid attributed OWL contract report file.");
+      const attributed = JSON.parse(readFileSync(attributedPath, "utf8"));
+      const { attribution, ...sameExecution } = attributed;
+      if (
+        !attribution ||
+        !jsonEquals(report, { ...sameExecution, schemaVersion: 1 })
+      )
+        throw new Error(
+          "Archived and attributed OWL contract reports describe different executions.",
+        );
+      report = attributed;
+    }
+    assertNativeOwlContractReport(report, native, {
+      schemaVersion: 2,
+      decisionDirectory: join(dirname(reportPath), "eligibility"),
+    });
   }
   const identity = {
     runId: Number(environment.GITHUB_RUN_ID),

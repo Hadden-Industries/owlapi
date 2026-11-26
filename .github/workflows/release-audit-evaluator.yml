@@ -1,0 +1,47 @@
+name: Evaluate exact release advisory subjects
+on:
+  workflow_call:
+    inputs:
+      purpose:
+        required: true
+        type: string
+      history_object:
+        type: string
+        default: ""
+permissions: {}
+jobs:
+  evaluate:
+    name: Evaluate
+    if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main' && github.ref_protected && github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - name: Evaluate the authenticated original release inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUDIT_PURPOSE: ${{ inputs.purpose }}
+          HISTORY_OBJECT: ${{ inputs.history_object }}
+        run: node scripts/run-release-advisory.mjs
+      - name: Retain protected advisory decision
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-advisory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .release/advisory/receipt.json
+            .release/advisory/receipt.sigstore.json
+          retention-days: 90
+          compression-level: 6

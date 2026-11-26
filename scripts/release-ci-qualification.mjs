@@ -5,7 +5,7 @@ import { verifyReleaseCi } from "./ci-verification.mjs";
 import { FROZEN_RUNTIME_MATRIX } from "./ci-qualification.mjs";
 import { runtimeDigest } from "./consumer-runtime-matrix.mjs";
 import { projectPromotedCi } from "./promoted-release-proof.mjs";
-import { refreshReleaseAudits } from "./release-assurance.mjs";
+
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { createRepositoryReader } from "./github-evidence-reader.mjs";
 import { downloadReleaseArtifact } from "./release-approvals.mjs";
@@ -54,8 +54,6 @@ export async function readReleaseCiEvidence(env = process.env) {
         source,
         read,
         download,
-        audit: (lock, identities) =>
-          refreshReleaseAudits(lock, identities, { deadline }),
       }),
   });
 }

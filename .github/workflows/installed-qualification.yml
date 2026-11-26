@@ -54,12 +54,21 @@ jobs:
           node: ${{ matrix.node }}
           candidate-id: ${{ inputs.artifact_id }}
           candidate-digest: sha256:${{ inputs.artifact_digest }}
+      - name: Retain the exceptional recipient material observation
+        if: ${{ failure() && hashFiles('.release/runtime-report/pending-recipient-material.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: pending-recipient-material-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}
+          path: .release/runtime-report/pending-recipient-material.json
+          retention-days: 14
       - name: Retain the actual consumer lane evidence
-        if: ${{ !cancelled() }}
         uses: ./.github/actions/retain-artifact
         with:
           name: consumer-runtime-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}
-          path: .release/runtime-report/lane.json
+          path: |
+            .release/runtime-report/lane.json
+            .release/runtime-report/eligibility/decisions
+            .release/runtime-report/eligibility/material
           retention-days: ${{ inputs.release_evidence && 90 || 1 }}
           compression-level: 6
 

@@ -1113,6 +1113,174 @@ describe("repository workflow governance", () => {
       "verify must sign from the exact dispatch checkout",
     );
   });
+  test("never grants audit OIDC to the source checks or broadens the evaluator permissions", () => {
+    expect(
+      mutateWorkflow("ci.yml", (doc) => {
+        doc.setIn(
+          ["jobs", "source_portable", "permissions", "id-token"],
+          "write",
+        );
+      }),
+    ).toContain(
+      "ci.yml: unexpected OIDC writer outside the closed publisher and evaluator inventory",
+    );
+    expect(
+      mutateWorkflow("release-audit-evaluator.yml", (doc) => {
+        doc.setIn(["jobs", "evaluate", "permissions", "contents"], "write");
+      }),
+    ).toContain(
+      "release-audit-evaluator.yml: only the protected GitHub-hosted evaluator may receive audit OIDC",
+    );
+  });
+
+  test.each([
+    [
+      "release.yml",
+      "${{ !inputs.rc3_recovery && needs.required.result != 'cancelled' }}",
+      "release.yml: rc.3 recovery advisory is not mutually exclusive with ordinary qualification",
+    ],
+  ])(
+    "does not let %s request a protected audit when original jobs failed or were skipped",
+    (file, condition, expected) => {
+      expect(
+        mutateWorkflow(file, (doc) => {
+          doc.setIn(["jobs", "advisory", "if"], condition);
+        }),
+      ).toContain(expected);
+    },
+  );
+
+  test("requires a protected immutable checkout before entering the advisory job", () => {
+    expect(
+      mutateWorkflow("release-audit-evaluator.yml", (doc) => {
+        doc.setIn(
+          ["jobs", "evaluate", "if"],
+          "github.ref == 'refs/heads/main'",
+        );
+        doc.setIn(["jobs", "evaluate", "steps", 0, "with", "ref"], "main");
+      }),
+    ).toEqual(
+      expect.arrayContaining([
+        "release-audit-evaluator.yml: only the protected GitHub-hosted evaluator may receive audit OIDC",
+        "release-audit-evaluator.yml: advisory capture must run only from the immutable checkout with scoped inputs",
+      ]),
+    );
+  });
+
+  test("prohibits inherited secrets or untrusted history selectors on a reusable advisory caller", () => {
+    expect(
+      mutateWorkflow("release.yml", (doc) => {
+        doc.setIn(["jobs", "advisory", "secrets"], "inherit");
+        doc.setIn(
+          ["jobs", "advisory", "with", "history_object"],
+          "${{ github.event.head_commit.message }}",
+        );
+      }),
+    ).toContain(
+      "release.yml: the approved audit workload requires the exact successful prerequisites and scoped caller inputs",
+    );
+  });
+
+  test("only a successful protected audit can retain the exact receipt pair", () => {
+    expect(
+      mutateWorkflow("release-audit-evaluator.yml", (doc) => {
+        doc.setIn(
+          ["jobs", "evaluate", "steps", 3, "with", "path"],
+          ".release/advisory/\n.release/npm-audit.json",
+        );
+        doc.setIn(["jobs", "evaluate", "steps", 3, "if"], "${{ always() }}");
+      }),
+    ).toContain(
+      "release-audit-evaluator.yml: retain only the signed receipt after a successful advisory check",
+    );
+  });
+
+  test("does not expand the release browser artifact to raw reports", () => {
+    expect(
+      mutateWorkflow("release.yml", (doc) => {
+        const step = doc
+          .getIn(["jobs", "browser_chromium", "steps"])
+          .items.find(
+            (item) =>
+              item.get("name") ===
+              "Retain exact browser consumer qualification",
+          );
+        step.setIn(["with", "path"], ".release/browser/qualified");
+      }),
+    ).toContain(
+      "release.yml:browser_chromium must retain only its bound public-safe qualification",
+    );
+  });
+
+  test("retains the release OWL qualification in both bound formats without a raw audit", () => {
+    expect(
+      mutateWorkflow("release.yml", (doc) => {
+        const upload = doc
+          .getIn(["jobs", "owl_contract", "steps"])
+          .items.find((item) => item.get("id") === "upload");
+        upload.setIn(
+          ["with", "path"],
+          ".release/owl-contract/qualification.json\n.release/owl-contract/native.ndjson\n.release/npm-audit.json",
+        );
+      }),
+    ).toContain(
+      "release.yml: retain both raw assertions and bound qualification",
+    );
+  });
+
+  test("material replay requires its original successful scan and closed archive", () => {
+    expect(
+      mutateWorkflow("recipient-material-replay.yml", (doc) => {
+        doc.setIn(["jobs", "replay", "if"], "${{ always() }}");
+        doc.setIn(
+          ["jobs", "replay", "steps", 6, "with", "path"],
+          ".release/recipient-material-replay",
+        );
+      }),
+    ).toEqual(
+      expect.arrayContaining([
+        "recipient-material-replay.yml: scan from protected main and replay only after its successful read-only scanner",
+        "recipient-material-replay.yml: replay must bind the scan receipt and the exact original runtime and proof files",
+      ]),
+    );
+  });
+
+  test("does not publish private archive evidence or routine inputs in the recipient rights exception", () => {
+    expect(
+      mutateWorkflow("qualify-package.yml", (doc) => {
+        const upload = doc
+          .getIn(["jobs", "produce", "steps"])
+          .items.find(
+            (step) =>
+              step.get("name") ===
+              "Retain the unresolved recipient material case",
+          );
+        upload.delete("if");
+        upload.setIn(["with", "path"], ".release/");
+      }),
+    ).toContain(
+      "qualify-package.yml:produce: retain only the bounded unresolved material case after failure",
+    );
+  });
+
+  test("requires the verified rights checkpoint and actual original runtime in case replay", () => {
+    expect(
+      mutateWorkflow("recipient-material-replay.yml", (doc) => {
+        doc.setIn(["jobs", "rights_replay", "runs-on"], "ubuntu-26.04");
+        const replay = doc
+          .getIn(["jobs", "rights_replay", "steps"])
+          .items.find((step) =>
+            step
+              .get("run")
+              ?.endsWith("recipient-material-case-replay.mjs replay"),
+          );
+        replay.deleteIn(["env", "RECIPIENT_RIGHTS_CHECKPOINT"]);
+      }),
+    ).toContain(
+      "recipient-material-replay.yml: scoped rights replay requires the signed exact case and read-only original-runtime checks",
+    );
+  });
+
   test("the checked-in controls match the closed Phase 19 workflow policy", () => {
     const report = auditRepositoryControls();
 
@@ -1124,6 +1292,8 @@ describe("repository workflow governance", () => {
       "installed-qualification.yml",
       "maintenance.yml",
       "qualify-package.yml",
+      "recipient-material-replay.yml",
+      "release-audit-evaluator.yml",
       "release-classification.yml",
       "release-completion.yml",
       "release-labels.yml",

@@ -386,13 +386,16 @@ export async function recordQualification(env = process.env) {
     const ci = JSON.parse(needs.release_admission.outputs.evidence);
     const inputs = inputHashes();
     assert.equal(
-      ci.advisoryObservations.root.lockSha256,
-      inputs["package-lock.json"],
+      ci.schemaVersion,
+      2,
+      "New promotion requires graph-specific producer evidence",
     );
     assert.equal(
-      ci.advisoryObservations.transport.lockSha256,
-      inputs["tooling/artifact-transport/package-lock.json"],
+      ci.advisorySubjects.root.lockSha256,
+      inputs["package-lock.json"],
     );
+    // The protected evaluator loads the release tool lock from the same Git
+    // revision and checks its input digest before issuing the release decision.
     const security = await readReleaseSecurity({
       commit: env.GITHUB_SHA,
       read,
@@ -416,6 +419,8 @@ export async function recordQualification(env = process.env) {
         commit: env.GITHUB_SHA,
         runId: env.GITHUB_RUN_ID,
         attempt: env.GITHUB_RUN_ATTEMPT,
+        consumerResolutionPolicy: 2,
+        qualificationMode: "reuse",
         candidateId: String(ci.candidate.id),
         candidateDigest: ci.candidate.digest.slice("sha256:".length),
         package: ci.package,
@@ -473,6 +478,9 @@ export async function recordQualification(env = process.env) {
   );
   const manifest = {
     artifacts,
+    ...(mode === "fresh"
+      ? { consumerResolutionPolicy: 2, qualificationMode: "fresh" }
+      : {}),
     schemaVersion: 1,
     repository,
     workflow: qualificationWorkflow,

@@ -1,5 +1,7 @@
 import { createHash, generateKeyPairSync, sign } from "node:crypto";
 import { createServer } from "node:http";
+import { createRequire } from "node:module";
+import { productionDependencyDeclarations } from "./recipient-material-inputs.mjs";
 import {
   mkdir,
   cp,
@@ -539,6 +541,23 @@ it("binds a bundled installed manifest to its owning archive", async () => {
       directory: join(repositoryRoot, "mutated-bundle"),
     }),
   ).rejects.toThrow(/installed manifest differs.*@scope\/child/iu);
+});
+
+it("compares optional overrides with the native npm lock declarations", async () => {
+  const metadata = {
+    dependencies: { shared: "^1", required: "^3" },
+    optionalDependencies: { shared: "^2" },
+  };
+  const PackageJson = createRequire(process.env.npm_execpath)(
+    "@npmcli/package-json",
+  );
+  const normalized = new PackageJson().fromContent(structuredClone(metadata));
+  await normalized.normalize({ steps: ["optionalDedupe"] });
+  expect(normalized.content.dependencies).toEqual({ required: "^3" });
+  expect(productionDependencyDeclarations(metadata)).toEqual(
+    productionDependencyDeclarations(normalized.content),
+  );
+  expect(metadata.dependencies.shared).toBe("^1");
 });
 
 it("rejects a lock that claims a broader parent range than the authenticated installed manifest", async () => {

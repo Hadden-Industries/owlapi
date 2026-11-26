@@ -66,11 +66,16 @@ const portability = JSON.parse(
   readFileSync(join(output, "portability.json"), "utf8"),
 );
 assert.equal(portability.result, "PASS");
+assert.equal(portability.schemaVersion, 2);
 assert.equal(portability.runtime.node, `v${lane.node}`);
 assert.equal(portability.runtime.npm, CI_RUNTIME.consumerNpm);
 const report = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   result: "PASS",
+  origin: {
+    workflow: process.env.GITHUB_WORKFLOW,
+    job: process.env.GITHUB_JOB,
+  },
   lane,
   matrixSha256: runtimeDigest(matrix),
   candidateArtifact: {

@@ -1,0 +1,202 @@
+name: Replay exceptional recipient material
+
+on:
+  workflow_dispatch:
+    inputs:
+      observation:
+        description: Original pending observation artifact ID and SHA-256
+        type: string
+        required: true
+      case_sha256:
+        description: SHA-256 of the unresolved rights case within the artifact
+        type: string
+        required: false
+      rights_checkpoint:
+        description: Signed history checkpoint object containing the exact rights disposition
+        type: string
+        required: false
+
+permissions: {}
+
+jobs:
+  scan:
+    name: Recipient material / Scan
+    if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main' && inputs.case_sha256 == '' && inputs.rights_checkpoint == ''
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      node: ${{ steps.case.outputs.node }}
+      matrix: ${{ steps.case.outputs.matrix }}
+      artifact_id: ${{ steps.measurements.outputs.artifact-id }}
+      artifact_digest: ${{ steps.measurements.outputs.artifact-digest }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - id: case
+        name: Authenticate the original pending observation
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECIPIENT_OBSERVATION: ${{ inputs.observation }}
+        run: node scripts/replay-ci-recipient-material.mjs prepare
+      - name: Prepare the original native npm tool
+        env:
+          OWLAPI_RUNTIME_MATRIX: ${{ steps.case.outputs.matrix }}
+          OWLAPI_EXPECTED_NODE: ${{ steps.case.outputs.node }}
+        run: node scripts/consumer-runtime-tools.mjs prepare
+      - id: scanner
+        uses: ./.github/actions/setup-scancode
+      - name: Measure the exact missing archive identities
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECIPIENT_OBSERVATION: ${{ inputs.observation }}
+          SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
+        run: node scripts/replay-ci-recipient-material.mjs scan
+      - name: Retain the scoped recipient scanner result
+        id: measurements
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-scan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/recipient-material-scan/proof/recipient-material.json
+          retention-days: 14
+      - name: Retain the unresolved recipient material case
+        if: ${{ failure() && hashFiles('.release/recipient-material-scan/recipient-material-cases/case-*.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-case-scan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/recipient-material-scan/recipient-material-cases
+          retention-days: 14
+
+  rights_prepare:
+    name: Recipient material / Authenticate rights case
+    if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main' && (inputs.case_sha256 != '' || inputs.rights_checkpoint != '')
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      runner: ${{ steps.case.outputs.runner }}
+      shell: ${{ steps.case.outputs.shell }}
+      node: ${{ steps.case.outputs.node }}
+      consumer: ${{ steps.case.outputs.consumer }}
+      matrix: ${{ steps.case.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Authenticate the original case and signed disposition
+        id: case
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECIPIENT_OBSERVATION: ${{ inputs.observation }}
+          RECIPIENT_CASE_SHA256: ${{ inputs.case_sha256 }}
+          RECIPIENT_RIGHTS_CHECKPOINT: ${{ inputs.rights_checkpoint }}
+        run: node scripts/recipient-material-case-replay.mjs prepare
+
+  rights_replay:
+    name: Recipient material / Replay rights case
+    needs: rights_prepare
+    runs-on: ${{ needs.rights_prepare.outputs.runner }}
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: ${{ needs.rights_prepare.outputs.shell }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Prepare the original native npm tool
+        if: needs.rights_prepare.outputs.consumer == 'true'
+        env:
+          OWLAPI_RUNTIME_MATRIX: ${{ needs.rights_prepare.outputs.matrix }}
+          OWLAPI_EXPECTED_NODE: ${{ needs.rights_prepare.outputs.node }}
+        run: node scripts/consumer-runtime-tools.mjs prepare
+      - if: needs.rights_prepare.outputs.consumer == 'true'
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ needs.rights_prepare.outputs.node }}
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Reopen and verify the original recipient with the rights disposition
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECIPIENT_OBSERVATION: ${{ inputs.observation }}
+          RECIPIENT_CASE_SHA256: ${{ inputs.case_sha256 }}
+          RECIPIENT_RIGHTS_CHECKPOINT: ${{ inputs.rights_checkpoint }}
+        run: node scripts/recipient-material-case-replay.mjs replay
+      - name: Retain scoped rights replay proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-rights-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/recipient-rights-replay/replay.json
+          retention-days: 14
+
+  replay:
+    name: Recipient material / Replay
+    needs: scan
+    runs-on: macos-15
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Prepare the original native npm tool
+        env:
+          OWLAPI_RUNTIME_MATRIX: ${{ needs.scan.outputs.matrix }}
+          OWLAPI_EXPECTED_NODE: ${{ needs.scan.outputs.node }}
+        run: node scripts/consumer-runtime-tools.mjs prepare
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ needs.scan.outputs.node }}
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Replay the exact original lock and exercise the retained candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECIPIENT_OBSERVATION: ${{ inputs.observation }}
+          RECIPIENT_SCAN: ${{ format('{0}:{1}', needs.scan.outputs.artifact_id, needs.scan.outputs.artifact_digest) }}
+        run: node scripts/replay-ci-recipient-material.mjs replay
+      - name: Retain proof of the original recipient replay
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .release/recipient-material-replay/replay.json
+            .release/recipient-material-replay/eligibility/decisions
+            .release/recipient-material-replay/eligibility/material
+          retention-days: 14

@@ -2,10 +2,16 @@
  * authenticates the original job and performs the current advisory check on these bytes. */
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { canonicalJson, stableJson } from "./canonical-json.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { preflightReleaseAudit } from "./release-audit-evaluator.mjs";
+import { createCiRecipientScanner } from "./ci-recipient-scanner.mjs";
+import { retainPendingMacMaterial } from "./ci-recipient-material-pending.mjs";
+import {
+  recipientMaterialCaseDirectory,
+  retainRecipientMaterialCase,
+} from "./recipient-material-case.mjs";
 import {
   prepareRecipientMaterial,
   RECIPIENT_MATERIAL_NAME,
@@ -16,7 +22,7 @@ const roots = new Map();
 
 // Registry validation can share authenticated archive work across all the observations
 // written by one producer process. The output directory is unique to that job/attempt.
-function materialContext(root, npmCli) {
+function materialContext(root, npmCli, trustedArchiveMeasurements) {
   if (!roots.has(root))
     roots.set(
       root,
@@ -26,7 +32,8 @@ function materialContext(root, npmCli) {
           input: await prepareRecipientMaterial({
             evidenceDirectory: join(root, "archives"),
             npmCli,
-            scancode: process.env.SCANCODE_COMMAND,
+            scanArtifact: createCiRecipientScanner({ root }),
+            trustedArchiveMeasurements,
             canonicalLockfileBytes: process.env.OWLAPI_CANONICAL_EVIDENCE_LOCK
               ? await readFile(process.env.OWLAPI_CANONICAL_EVIDENCE_LOCK)
               : undefined,
@@ -46,6 +53,9 @@ export async function verifyCiConsumerEvidence({
   role,
   decisionDirectory,
   npmCli = process.env.OWLAPI_CONSUMER_NPM ?? process.env.npm_execpath,
+  trustedArchiveMeasurements,
+  caseDirectory,
+  caseContext,
 }) {
   assert.ok(
     typeof decisionDirectory === "string" && decisionDirectory,
@@ -65,7 +75,31 @@ export async function verifyCiConsumerEvidence({
   );
   const resolutionSha256 = digest(resolution);
   const materialDirectory = join(root, "material", resolutionSha256);
-  const context = await materialContext(root, npmCli);
+  const context = await materialContext(
+    root,
+    npmCli,
+    trustedArchiveMeasurements,
+  );
+  if (process.platform === "darwin") {
+    const missing = context.input.missingArchiveMeasurements({
+      resolution,
+      lockfileBytes: lockBytes,
+    });
+    if (missing.length) {
+      const retained = await retainPendingMacMaterial({
+        root,
+        evidence,
+        role,
+        missing,
+      });
+      const action = retained
+        ? "Original measured graph retained for scoped material replay"
+        : "Authenticate a native scanner measurement for each listed exact archive before replay";
+      throw new Error(
+        `Recipient requires ${missing.length} new archive measurements. ${action}.`,
+      );
+    }
+  }
   if (!context.collected.has(resolutionSha256))
     context.collected.set(
       resolutionSha256,
@@ -76,14 +110,44 @@ export async function verifyCiConsumerEvidence({
       }),
     );
   const material = await context.collected.get(resolutionSha256);
+  const materialBytes = await readFile(
+    join(materialDirectory, RECIPIENT_MATERIAL_NAME),
+  );
+  if (material.status === "REQUIRES_HUMAN_REVIEW") {
+    const candidateId = Number(
+      process.env.OWLAPI_CANDIDATE_ID ?? process.env.CANDIDATE_ARTIFACT_ID,
+    );
+    const candidateDigest =
+      process.env.OWLAPI_CANDIDATE_DIGEST ??
+      (process.env.CANDIDATE_ARTIFACT_DIGEST &&
+        `sha256:${process.env.CANDIDATE_ARTIFACT_DIGEST}`);
+    const candidate =
+      Number.isSafeInteger(candidateId) &&
+      candidateId > 0 &&
+      /^sha256:[a-f0-9]{64}$/u.test(candidateDigest)
+        ? {
+            kind: "QUALIFIED_CANDIDATE",
+            candidate: { id: candidateId, digest: candidateDigest },
+          }
+        : null;
+    const { caseSha256 } = await retainRecipientMaterialCase({
+      directory:
+        caseDirectory ?? join(dirname(root), recipientMaterialCaseDirectory),
+      evidence,
+      role,
+      materialBytes,
+      context: caseContext ?? candidate,
+    });
+    throw new Error(
+      `Recipient archive evidence requires a rights disposition. Case ${caseSha256}.`,
+    );
+  }
   assert.equal(
     material.status,
     "PASSED",
-    "Recipient archive evidence requires a rights disposition",
+    "Recipient archive evidence did not complete",
   );
-  const materialSha256 = sha256Buffer(
-    await readFile(join(materialDirectory, RECIPIENT_MATERIAL_NAME)),
-  );
+  const materialSha256 = sha256Buffer(materialBytes);
   const { tarballSha256 } = resolution;
   const audit = await preflightReleaseAudit(
     {

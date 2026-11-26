@@ -61,7 +61,7 @@ export const coordinate = ({ name, version }) => `${name}@${version}`;
 
 /** Retain the declarations npm uses to create installed production edges. */
 export function productionDependencyDeclarations(metadata) {
-  return Object.fromEntries(
+  const declarations = Object.fromEntries(
     [
       "dependencies",
       "optionalDependencies",
@@ -70,6 +70,13 @@ export function productionDependencyDeclarations(metadata) {
       "acceptDependencies",
     ].map((field) => [field, metadata[field] ?? {}]),
   );
+  // npm's optionalDedupe removes the shadowed required request from its lock entry.
+  declarations.dependencies = Object.fromEntries(
+    Object.entries(declarations.dependencies).filter(
+      ([name]) => !Object.hasOwn(declarations.optionalDependencies, name),
+    ),
+  );
+  return declarations;
 }
 
 /** Select and authenticate the source-lock facts of an admitted checkout. */

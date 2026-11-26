@@ -27,6 +27,10 @@ runs:
       with:
         matrix: ${{ inputs.matrix }}
         node: ${{ inputs.node }}
+    - name: Set up pinned scanner prerequisites for novel archives
+      id: scanner
+      if: runner.os != 'macOS' && runner.arch == 'X64'
+      uses: ./.github/actions/setup-scancode
     - name: Exercise the installed package and product runtime contracts
       shell: bash
       env:
@@ -34,4 +38,12 @@ runs:
         OWLAPI_EXPECTED_NODE: ${{ inputs.node }}
         OWLAPI_CANDIDATE_ID: ${{ inputs.candidate-id }}
         OWLAPI_CANDIDATE_DIGEST: ${{ inputs.candidate-digest }}
+        SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
       run: node scripts/qualify-consumer-runtime.mjs
+    - name: Retain the unresolved recipient material case
+      if: ${{ failure() && hashFiles('.release/runtime-report/recipient-material-cases/case-*.json') != '' }}
+      uses: ./.github/actions/retain-artifact
+      with:
+        name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ inputs.node }}-${{ github.run_id }}-${{ github.run_attempt }}
+        path: .release/runtime-report/recipient-material-cases
+        retention-days: 14

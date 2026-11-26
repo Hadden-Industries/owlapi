@@ -13,7 +13,8 @@ import {
   readRetainedCorpusConsumerLock,
   requireSameUpload,
 } from "./release-ci-package.mjs";
-import { CI_JOB_NAMES } from "./ci-qualification.mjs";
+import { CI_JOB_NAMES, QUALIFICATION_POLICY } from "./ci-qualification.mjs";
+import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import {
   artifactProducingAttempt,
   matchesLogicalArtifact,
@@ -98,6 +99,9 @@ export async function readCorpusCandidate({
   download,
   now = Date.now(),
   packageVersion = PACKAGE_VERSION,
+  expectedProofVersion = QUALIFICATION_POLICY.producerPackageProofVersion,
+  materialOptions,
+  npmCli,
 }) {
   assert.match(packageVersion, /^\d+\.\d+\.\d+(?:-rc\.\d+)?$/u);
   const packageStem = `${PACKAGE_FILE_STEM}-${packageVersion}`;
@@ -236,7 +240,7 @@ export async function readCorpusCandidate({
       subject.integrity,
       "Original corpus candidate has different npm integrity",
     );
-  let consumerLock;
+  let consumerLock, rawConsumerLockSha256;
   if (
     source.candidateProofId !== undefined ||
     source.candidateProofSha256 !== undefined
@@ -245,7 +249,21 @@ export async function readCorpusCandidate({
       positive(source.candidateProofId) && digest(source.candidateProofSha256),
       "Missing original package proof identity",
     );
-    consumerLock = await readRetainedCorpusConsumerLock({
+    const sbomBytes = retained.get(`${packageStem}.cdx.json`);
+    const proofCandidate =
+      expectedProofVersion === 2
+        ? verifyDownloadedCandidateBundle({
+            fileNames: [...retained.keys()],
+            checksumText: retained.get("SHA256SUMS"),
+            sbomText: sbomBytes,
+            tarball,
+          })
+        : {
+            fileName: `${packageStem}.tgz`,
+            sha256: tarballSha256,
+            bytes: tarball.length,
+          };
+    const { lock, rawSha256 } = await readRetainedCorpusConsumerLock({
       read,
       download,
       now,
@@ -253,15 +271,17 @@ export async function readCorpusCandidate({
       job: candidateJob,
       artifactId: source.candidateProofId,
       artifactSha256: source.candidateProofSha256,
-      candidate: {
-        fileName: `${packageStem}.tgz`,
-        sha256: tarballSha256,
-        bytes: tarball.length,
-      },
-      sbom: decode(retained.get(`${packageStem}.cdx.json`)),
+      candidate: proofCandidate,
+      sbom: expectedProofVersion === 2 ? sbomBytes : decode(sbomBytes),
+      tarball,
       integrity,
       version: packageVersion,
+      expectedProofVersion,
+      materialOptions,
+      npmCli,
     });
+    consumerLock = lock;
+    rawConsumerLockSha256 = rawSha256;
   }
   return {
     run,
@@ -271,6 +291,7 @@ export async function readCorpusCandidate({
     integrity,
     ...(consumerLock
       ? {
+          rawConsumerLockSha256,
           dependencyGraphSha256: retainedDependencyGraphIdentity(consumerLock, {
             tarballSha256,
             integrity,
@@ -297,6 +318,9 @@ export async function reconcileHostedCorpus({
   download,
   now = Date.now(),
   packageVersion = PACKAGE_VERSION,
+  expectedProofVersion = QUALIFICATION_POLICY.producerPackageProofVersion,
+  materialOptions,
+  npmCli,
   collectPlatformContents = false,
 }) {
   const { source, oracle, artifacts } = input;
@@ -342,6 +366,9 @@ export async function reconcileHostedCorpus({
     download,
     now,
     packageVersion,
+    expectedProofVersion,
+    materialOptions,
+    npmCli,
   });
   if (locked) {
     assert.equal(

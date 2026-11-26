@@ -31,7 +31,15 @@ import addFormats from "ajv-formats";
 import { parseDocument } from "yaml";
 import { REQUIRED_JOB_IDS } from "./require-job-success.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
-import { ordinaryReleaseWorkflow } from "./rc3-recovery-workflow.mjs";
+import {
+  ordinaryReleaseWorkflow,
+  qualificationAdvisoryCondition,
+} from "./rc3-recovery-workflow.mjs";
+import { BROWSER_PROJECTS } from "./browser-consumer-evidence.mjs";
+import {
+  recipientMaterialCaseDirectory,
+  recipientMaterialCaseUpload,
+} from "./recipient-material-case.mjs";
 
 const nonMarkdownFormatCheck =
   "npm run check:node && npm run check:version && npm run format:source:check && npm run format:json:check";
@@ -45,6 +53,7 @@ const SHARED_SETUP = "./.github/actions/setup-producer";
 const SCANCODE_SETUP = "./.github/actions/setup-scancode";
 const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
 const COLLECT_ARTIFACTS = "./.github/actions/collect-artifacts";
+const isCaseRetention = (step) => step.name === recipientMaterialCaseUpload;
 const PUBLISHER_SETUP = "./approval-tools/.github/actions/setup-producer";
 const CONSUMER_ACTIONS = [
   "freeze-runtime-matrix",
@@ -67,7 +76,9 @@ const EXPECTED_WORKFLOWS = [
   "installed-qualification.yml",
   "maintenance.yml",
   "qualify-package.yml",
+  "recipient-material-replay.yml",
   "stage-release.yml",
+  "release-audit-evaluator.yml",
   "release-classification.yml",
   "release-completion.yml",
   "release-labels.yml",
@@ -604,18 +615,25 @@ const validateActionUses = (fileName, workflow, document, violations) => {
         );
       if (step.uses.startsWith("actions/setup-node@")) {
         if (
-          fileName === "release-registry.yml" &&
-          jobId === "public_recipient"
+          (fileName === "release-registry.yml" &&
+            jobId === "public_recipient") ||
+          (fileName === "recipient-material-replay.yml" &&
+            ["replay", "rights_replay"].includes(jobId))
         ) {
           requireFields(
             step.with,
             {
-              "node-version": "${{ matrix.node }}",
+              "node-version":
+                fileName === "release-registry.yml"
+                  ? "${{ matrix.node }}"
+                  : jobId === "rights_replay"
+                    ? "${{ needs.rights_prepare.outputs.node }}"
+                    : "${{ needs.scan.outputs.node }}",
               "check-latest": false,
               cache: "",
               "package-manager-cache": false,
             },
-            fileName + " frozen public lane",
+            fileName + " original runtime",
             violations,
           );
           continue;
@@ -689,6 +707,572 @@ const readAuthority = { contents: "read", actions: "read" };
 const npmAuthority = { ...readAuthority, "id-token": "write" };
 const githubAuthority = { ...readAuthority, contents: "write" };
 const protectedReleaseBranch = `github.repository == '${REPOSITORY}' && github.ref == 'refs/heads/main'`;
+const advisoryWorkflow = "release-audit-evaluator.yml";
+const advisoryUse = `./.github/workflows/${advisoryWorkflow}`;
+const qualificationAdvisoryGuard = `\${{ ${qualificationAdvisoryCondition} }}`;
+const auditReceiptInputs = {
+  name: "release-advisory-${{ github.run_id }}-${{ github.run_attempt }}",
+  path: ".release/advisory/receipt.json\n.release/advisory/receipt.sigstore.json",
+  "retention-days": 90,
+  "compression-level": 6,
+};
+
+function validateAdvisoryWorkload(workflows, violations) {
+  const workflow = workflows[advisoryWorkflow];
+  const job = workflow?.jobs?.evaluate;
+  const [checkout, setup, evaluator, retain] = steps(job);
+  add(
+    violations,
+    workflow &&
+      sameInventory(Object.keys(workflow), [
+        "name",
+        "on",
+        "permissions",
+        "jobs",
+      ]) &&
+      workflow.name === "Evaluate exact release advisory subjects" &&
+      isDeepStrictEqual(workflow.on, {
+        workflow_call: {
+          inputs: {
+            purpose: { required: true, type: "string" },
+            history_object: { type: "string", default: "" },
+          },
+        },
+      }) &&
+      sameInventory(Object.keys(workflow.jobs ?? {}), ["evaluate"]),
+    `${advisoryWorkflow}: only the reviewed reusable advisory entry point is allowed`,
+  );
+  add(
+    violations,
+    job &&
+      sameInventory(Object.keys(job), [
+        "name",
+        "if",
+        "runs-on",
+        "timeout-minutes",
+        "permissions",
+        "defaults",
+        "steps",
+      ]) &&
+      job.name === "Evaluate" &&
+      job.if ===
+        `${protectedReleaseBranch} && github.ref_protected && github.event_name == 'workflow_dispatch'` &&
+      job["runs-on"] === UBUNTU.label &&
+      job["timeout-minutes"] === 40 &&
+      isDeepStrictEqual(job.permissions, npmAuthority) &&
+      isDeepStrictEqual(job.defaults, { run: { shell: "bash" } }),
+    `${advisoryWorkflow}: only the protected GitHub-hosted evaluator may receive audit OIDC`,
+  );
+  add(
+    violations,
+    steps(job).length === 4 &&
+      isDeepStrictEqual(checkout, {
+        uses: actionReference("actions/checkout"),
+        with: {
+          ref: "${{ github.sha }}",
+          "fetch-depth": 0,
+          "fetch-tags": true,
+          "persist-credentials": false,
+        },
+      }) &&
+      isDeepStrictEqual(setup, { uses: SHARED_SETUP }) &&
+      isDeepStrictEqual(evaluator, {
+        name: "Evaluate the authenticated original release inputs",
+        env: {
+          GH_TOKEN: "${{ github.token }}",
+          AUDIT_PURPOSE: "${{ inputs.purpose }}",
+          HISTORY_OBJECT: "${{ inputs.history_object }}",
+        },
+        run: "node scripts/run-release-advisory.mjs",
+      }),
+    `${advisoryWorkflow}: advisory capture must run only from the immutable checkout with scoped inputs`,
+  );
+  add(
+    violations,
+    retain &&
+      isDeepStrictEqual(
+        {
+          ...retain,
+          with: { ...retain.with, path: retain.with?.path?.trim() },
+        },
+        {
+          name: "Retain protected advisory decision",
+          uses: RETAIN_ARTIFACT,
+          with: auditReceiptInputs,
+        },
+      ),
+    `${advisoryWorkflow}: retain only the signed receipt after a successful advisory check`,
+  );
+
+  for (const [fileName, sources, guard, inputs] of [
+    [
+      "release.yml",
+      ["release_dispatch", "required"],
+      qualificationAdvisoryGuard,
+      { purpose: "qualification" },
+    ],
+  ]) {
+    const caller = workflows[fileName]?.jobs?.advisory;
+    add(
+      violations,
+      caller &&
+        sameInventory(Object.keys(caller), [
+          "name",
+          "needs",
+          "uses",
+          "permissions",
+          "with",
+          ...(guard ? ["if"] : []),
+        ]) &&
+        caller.name === "Release advisory" &&
+        caller.uses === advisoryUse &&
+        caller.if === guard &&
+        sameInventory(needs(caller), sources) &&
+        isDeepStrictEqual(caller.permissions, npmAuthority) &&
+        isDeepStrictEqual(caller.with, inputs),
+      `${fileName}: the approved audit workload requires the exact successful prerequisites and scoped caller inputs`,
+    );
+  }
+
+  const writers = {
+    "release.yml": ["advisory", "npm_release"],
+    "release-reconciliation.yml": ["npm_release"],
+    "stage-release.yml": ["stage"],
+    "release-labels.yml": ["npm"],
+    "release-classification.yml": ["verify"],
+    [advisoryWorkflow]: ["evaluate"],
+  };
+  for (const [fileName, value] of entries(workflows)) {
+    const signing = entries(value.jobs ?? {})
+      .filter(([, j]) => j.permissions?.["id-token"] === "write")
+      .map(([name]) => name);
+    add(
+      violations,
+      sameInventory(signing, writers[fileName] ?? []),
+      `${fileName}: unexpected OIDC writer outside the closed publisher and evaluator inventory`,
+    );
+  }
+}
+
+function validateRecipientMaterialReplay(workflow, installed, violations) {
+  const file = "recipient-material-replay.yml";
+  const {
+    scan,
+    replay,
+    rights_prepare: prepareRights,
+    rights_replay: replayRights,
+  } = workflow?.jobs ?? {};
+  const common = [
+    {
+      uses: actionReference("actions/checkout"),
+      with: { ref: "${{ github.sha }}", "persist-credentials": false },
+    },
+    { uses: SHARED_SETUP },
+    { run: "npm ci --ignore-scripts --no-audit --no-fund" },
+  ];
+  const observation = {
+    GH_TOKEN: "${{ github.token }}",
+    RECIPIENT_OBSERVATION: "${{ inputs.observation }}",
+  };
+  const rightsCase = {
+    ...observation,
+    RECIPIENT_CASE_SHA256: "${{ inputs.case_sha256 }}",
+    RECIPIENT_RIGHTS_CHECKPOINT: "${{ inputs.rights_checkpoint }}",
+  };
+  const tool = (matrix, node) => ({
+    name: "Prepare the original native npm tool",
+    env: { OWLAPI_RUNTIME_MATRIX: matrix, OWLAPI_EXPECTED_NODE: node },
+    run: "node scripts/consumer-runtime-tools.mjs prepare",
+  });
+  add(
+    violations,
+    workflow &&
+      sameInventory(Object.keys(workflow), [
+        "jobs",
+        "name",
+        "on",
+        "permissions",
+      ]) &&
+      workflow.name === "Replay exceptional recipient material" &&
+      isDeepStrictEqual(workflow.on, {
+        workflow_dispatch: {
+          inputs: {
+            observation: {
+              description:
+                "Original pending observation artifact ID and SHA-256",
+              type: "string",
+              required: true,
+            },
+            case_sha256: {
+              description:
+                "SHA-256 of the unresolved rights case within the artifact",
+              type: "string",
+              required: false,
+            },
+            rights_checkpoint: {
+              description:
+                "Signed history checkpoint object containing the exact rights disposition",
+              type: "string",
+              required: false,
+            },
+          },
+        },
+      }) &&
+      sameInventory(Object.keys(workflow.jobs ?? {}), [
+        "scan",
+        "replay",
+        "rights_prepare",
+        "rights_replay",
+      ]),
+    `${file}: closed manual observer workflow and original receipt input required`,
+  );
+  add(
+    violations,
+    scan &&
+      replay &&
+      isDeepStrictEqual(
+        [scan, replay].map((job) => [
+          job.name,
+          job.if,
+          job["runs-on"],
+          job["timeout-minutes"],
+          job.permissions,
+          job.defaults,
+          needs(job),
+        ]),
+        [
+          [
+            "Recipient material / Scan",
+            `${protectedReleaseBranch} && inputs.case_sha256 == '' && inputs.rights_checkpoint == ''`,
+            UBUNTU.label,
+            45,
+            readAuthority,
+            { run: { shell: "bash" } },
+            [],
+          ],
+          [
+            "Recipient material / Replay",
+            undefined,
+            MACOS.label,
+            45,
+            readAuthority,
+            { run: { shell: "bash" } },
+            ["scan"],
+          ],
+        ],
+      ) &&
+      sameInventory(Object.keys(scan), [
+        "name",
+        "if",
+        "runs-on",
+        "timeout-minutes",
+        "permissions",
+        "outputs",
+        "defaults",
+        "steps",
+      ]) &&
+      sameInventory(Object.keys(replay), [
+        "name",
+        "needs",
+        "runs-on",
+        "timeout-minutes",
+        "permissions",
+        "defaults",
+        "steps",
+      ]),
+    `${file}: scan from protected main and replay only after its successful read-only scanner`,
+  );
+  const [scanUpload] = actionSteps(scan, RETAIN_ARTIFACT);
+  const [replayUpload] = actionSteps(replay, RETAIN_ARTIFACT);
+  add(
+    violations,
+    isDeepStrictEqual(scan?.outputs, {
+      node: "${{ steps.case.outputs.node }}",
+      matrix: "${{ steps.case.outputs.matrix }}",
+      artifact_id: "${{ steps.measurements.outputs.artifact-id }}",
+      artifact_digest: "${{ steps.measurements.outputs.artifact-digest }}",
+    }) &&
+      isDeepStrictEqual(steps(scan).slice(0, -2), [
+        ...common,
+        {
+          id: "case",
+          name: "Authenticate the original pending observation",
+          env: observation,
+          run: "node scripts/replay-ci-recipient-material.mjs prepare",
+        },
+        tool(
+          "${{ steps.case.outputs.matrix }}",
+          "${{ steps.case.outputs.node }}",
+        ),
+        { id: "scanner", uses: SCANCODE_SETUP },
+        {
+          name: "Measure the exact missing archive identities",
+          env: {
+            ...observation,
+            SCANCODE_PYTHON: "${{ steps.scanner.outputs.python-path }}",
+          },
+          run: "node scripts/replay-ci-recipient-material.mjs scan",
+        },
+      ]) &&
+      steps(scan).at(-2) === scanUpload &&
+      isDeepStrictEqual(scanUpload, {
+        id: "measurements",
+        name: "Retain the scoped recipient scanner result",
+        uses: RETAIN_ARTIFACT,
+        with: {
+          name: "recipient-material-scan-${{ github.run_id }}-${{ github.run_attempt }}",
+          path: ".release/recipient-material-scan/proof/recipient-material.json",
+          "retention-days": 14,
+        },
+      }),
+    `${file}: scan must authenticate the observation and retain only the scoped material decision`,
+  );
+  const needsRights = "needs.rights_prepare.outputs";
+  const rightsRunner = "${{ needs.rights_prepare.outputs.runner }}";
+  const rightsShell = "${{ needs.rights_prepare.outputs.shell }}";
+  const rightsNode = "${{ needs.rights_prepare.outputs.node }}";
+  const consumerNpm = `${needsRights}.consumer == 'true'`;
+  add(
+    violations,
+    isDeepStrictEqual(prepareRights, {
+      name: "Recipient material / Authenticate rights case",
+      if: `${protectedReleaseBranch} && (inputs.case_sha256 != '' || inputs.rights_checkpoint != '')`,
+      "runs-on": UBUNTU.label,
+      "timeout-minutes": 20,
+      permissions: readAuthority,
+      defaults: { run: { shell: "bash" } },
+      outputs: Object.fromEntries(
+        ["runner", "shell", "node", "consumer", "matrix"].map((key) => [
+          key,
+          `\u0024{{ steps.case.outputs.${key} }}`,
+        ]),
+      ),
+      steps: [
+        ...common,
+        {
+          name: "Authenticate the original case and signed disposition",
+          id: "case",
+          env: rightsCase,
+          run: "node scripts/recipient-material-case-replay.mjs prepare",
+        },
+      ],
+    }) &&
+      isDeepStrictEqual(replayRights, {
+        name: "Recipient material / Replay rights case",
+        needs: "rights_prepare",
+        "runs-on": rightsRunner,
+        "timeout-minutes": 45,
+        permissions: readAuthority,
+        defaults: { run: { shell: rightsShell } },
+        steps: [
+          {
+            ...common[0],
+            with: { ...common[0].with, "fetch-depth": 0, "fetch-tags": true },
+          },
+          ...common.slice(1),
+          {
+            ...tool("${{ needs.rights_prepare.outputs.matrix }}", rightsNode),
+            if: consumerNpm,
+          },
+          {
+            if: consumerNpm,
+            uses: actionReference("actions/setup-node"),
+            with: {
+              "node-version": rightsNode,
+              "check-latest": false,
+              cache: "",
+              "package-manager-cache": false,
+            },
+          },
+          {
+            name: "Reopen and verify the original recipient with the rights disposition",
+            env: rightsCase,
+            run: "node scripts/recipient-material-case-replay.mjs replay",
+          },
+          {
+            name: "Retain scoped rights replay proof",
+            uses: RETAIN_ARTIFACT,
+            with: {
+              name: "recipient-rights-replay-${{ github.run_id }}-${{ github.run_attempt }}",
+              path: ".release/recipient-rights-replay/replay.json",
+              "retention-days": 14,
+            },
+          },
+        ],
+      }),
+    `${file}: scoped rights replay requires the signed exact case and read-only original-runtime checks`,
+  );
+  add(
+    violations,
+    isDeepStrictEqual(steps(replay).slice(0, -1), [
+      ...common,
+      tool(
+        "${{ needs.scan.outputs.matrix }}",
+        "${{ needs.scan.outputs.node }}",
+      ),
+      {
+        uses: actionReference("actions/setup-node"),
+        with: {
+          "node-version": "${{ needs.scan.outputs.node }}",
+          "check-latest": false,
+          cache: "",
+          "package-manager-cache": false,
+        },
+      },
+      {
+        name: "Replay the exact original lock and exercise the retained candidate",
+        env: {
+          ...observation,
+          RECIPIENT_SCAN:
+            "${{ format('{0}:{1}', needs.scan.outputs.artifact_id, needs.scan.outputs.artifact_digest) }}",
+        },
+        run: "node scripts/replay-ci-recipient-material.mjs replay",
+      },
+    ]) &&
+      steps(replay).at(-1) === replayUpload &&
+      replayUpload &&
+      isDeepStrictEqual(
+        {
+          ...replayUpload,
+          with: { ...replayUpload.with, path: replayUpload.with?.path?.trim() },
+        },
+        {
+          name: "Retain proof of the original recipient replay",
+          uses: RETAIN_ARTIFACT,
+          with: {
+            name: "recipient-material-replay-${{ github.run_id }}-${{ github.run_attempt }}",
+            path: ".release/recipient-material-replay/replay.json\n.release/recipient-material-replay/eligibility/decisions\n.release/recipient-material-replay/eligibility/material",
+            "retention-days": 14,
+          },
+        },
+      ),
+    `${file}: replay must bind the scan receipt and the exact original runtime and proof files`,
+  );
+  const pending = steps(installed?.jobs?.consumer_runtime).filter(
+    (step) =>
+      step.name === "Retain the exceptional recipient material observation",
+  );
+  add(
+    violations,
+    pending.length === 1 &&
+      isDeepStrictEqual(pending[0], {
+        name: "Retain the exceptional recipient material observation",
+        if: "${{ failure() && hashFiles('.release/runtime-report/pending-recipient-material.json') != '' }}",
+        uses: RETAIN_ARTIFACT,
+        with: {
+          name: "pending-recipient-material-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}",
+          path: ".release/runtime-report/pending-recipient-material.json",
+          "retention-days": 14,
+        },
+      }),
+    "installed-qualification.yml: retain only the exceptional pending recipient observation after failure",
+  );
+}
+
+const caseRetention = (
+  path,
+  identity,
+  conditionPath = `'${path}/case-*.json'`,
+  originalPaths = [],
+) => ({
+  name: recipientMaterialCaseUpload,
+  if: `\u0024{{ failure() && hashFiles(${conditionPath}) != '' }}`,
+  uses: RETAIN_ARTIFACT,
+  with: {
+    name: `recipient-material-case-${identity}-\u0024{{ github.run_id }}-\u0024{{ github.run_attempt }}`,
+    path: [path, ...originalPaths].join("\n"),
+    "retention-days": 14,
+  },
+});
+
+function assertCaseRetention(actual, expected, context, violations) {
+  add(
+    violations,
+    actual.length === (expected ? 1 : 0) &&
+      (!expected ||
+        isDeepStrictEqual(
+          {
+            ...actual[0],
+            with: { ...actual[0].with, path: actual[0].with?.path?.trim() },
+          },
+          expected,
+        )),
+    `${context}: retain only the bounded unresolved material case after failure`,
+  );
+}
+
+function validateRecipientCaseCustody(workflows, violations) {
+  const producerDirectory = ".release/candidate/${{ inputs.version }}";
+  const stem = `${producerDirectory}/hadden-industries-owlapi-\u0024{{ inputs.version }}`;
+  const scopes = new Map([
+    [
+      "qualify-package.yml:produce",
+      caseRetention(
+        `${producerDirectory}/${recipientMaterialCaseDirectory}`,
+        "produce",
+        `format('.release/candidate/{0}/${recipientMaterialCaseDirectory}/case-*.json', inputs.version)`,
+        [`${stem}.tgz`, `${stem}.cdx.json`],
+      ),
+    ],
+    [
+      "recipient-material-replay.yml:scan",
+      caseRetention(
+        `.release/recipient-material-scan/${recipientMaterialCaseDirectory}`,
+        "scan",
+      ),
+    ],
+  ]);
+  for (const file of ["ci.yml", "release.yml"]) {
+    for (const browser of BROWSER_PROJECTS)
+      scopes.set(
+        `${file}:browser_${browser}`,
+        caseRetention(
+          `.release/browser/qualified/${recipientMaterialCaseDirectory}`,
+          "${{ github.job }}",
+        ),
+      );
+    scopes.set(
+      `${file}:owl_contract`,
+      caseRetention(
+        `.release/owl-contract/${recipientMaterialCaseDirectory}`,
+        "${{ github.job }}",
+      ),
+    );
+    for (const os of ["ubuntu", "windows", "macos"]) {
+      const key = `portability_${os}_node_26`;
+      scopes.set(
+        `${file}:${key}`,
+        caseRetention(
+          `.release/download/${recipientMaterialCaseDirectory}`,
+          "${{ github.job }}-${{ runner.os }}",
+        ),
+      );
+      const original = steps(workflows[file]?.jobs?.[key]).find(
+        ({ name }) => name === "Qualify the installed public package boundary",
+      );
+      requireFields(
+        original?.env,
+        {
+          CANDIDATE_ARTIFACT_ID: "${{ needs.candidate.outputs.artifact_id }}",
+          CANDIDATE_ARTIFACT_DIGEST:
+            "${{ needs.candidate.outputs.artifact_digest }}",
+        },
+        `${file}:${key} original candidate binding`,
+        violations,
+      );
+    }
+  }
+  for (const [file, workflow] of entries(workflows))
+    for (const [id, job] of entries(workflow.jobs)) {
+      const key = `${file}:${id}`;
+      assertCaseRetention(
+        steps(job).filter(isCaseRetention),
+        scopes.get(key),
+        key,
+        violations,
+      );
+    }
+}
 const archiveOutcome = `node --input-type=module -e 'import assert from "node:assert/strict"; const operation=process.env.ARCHIVE_OPERATION; const needs=JSON.parse(process.env.NEEDS_JSON); assert.ok(["draft","seal"].includes(operation),"Unknown archival operation"); assert.equal(needs[operation]?.result,"success","Selected archival writer did not succeed"); assert.equal(needs[operation==="draft"?"seal":"draft"]?.result,"skipped","Unselected archival writer ran");'`;
 const operationJobs = {
   "stage-release.yml": {
@@ -959,6 +1543,12 @@ const validateJobs = (fileName, workflow, violations) => {
       continue;
     }
     if (job.uses) {
+      if (
+        fileName === "release.yml" &&
+        id === "advisory" &&
+        job.uses === advisoryUse
+      )
+        continue;
       add(
         violations,
         ["ci.yml", "release.yml"].includes(fileName) &&
@@ -981,6 +1571,8 @@ const validateJobs = (fileName, workflow, violations) => {
     const runner = job?.["runs-on"];
     const isEvidenceMatrix =
       fileName === "extended-tests.yml" && id === "third_party_evidence_shard";
+    const isRightsReplay =
+      fileName === "recipient-material-replay.yml" && id === "rights_replay";
     const isConsumerMatrix =
       id === "consumer_runtime" ||
       (fileName === "release-registry.yml" && id === "public_recipient") ||
@@ -989,9 +1581,11 @@ const validateJobs = (fileName, workflow, violations) => {
       violations,
       isConsumerMatrix
         ? runner === "${{ matrix.runner }}"
-        : isEvidenceMatrix
-          ? runner === "${{ matrix.os.runner }}"
-          : [UBUNTU.label, WINDOWS.label, MACOS.label].includes(runner),
+        : isRightsReplay
+          ? runner === "${{ needs.rights_prepare.outputs.runner }}"
+          : isEvidenceMatrix
+            ? runner === "${{ matrix.os.runner }}"
+            : [UBUNTU.label, WINDOWS.label, MACOS.label].includes(runner),
       `${fileName}:${id} must use an approved explicit runner or closed runner matrix`,
     );
     add(
@@ -1008,11 +1602,13 @@ const validateJobs = (fileName, workflow, violations) => {
     );
     const shell = isConsumerMatrix
       ? "${{ matrix.shell }}"
-      : isEvidenceMatrix
-        ? "${{ matrix.os.shell }}"
-        : runner === WINDOWS.label
-          ? "pwsh"
-          : "bash";
+      : isRightsReplay
+        ? "${{ needs.rights_prepare.outputs.shell }}"
+        : isEvidenceMatrix
+          ? "${{ matrix.os.shell }}"
+          : runner === WINDOWS.label
+            ? "pwsh"
+            : "bash";
     add(
       violations,
       job?.defaults?.run?.shell === shell,
@@ -2386,9 +2982,13 @@ const validateReleaseMutationBoundary = (
   );
   add(
     violations,
-    jobs(workflow).filter((job) => job?.permissions?.["id-token"] === "write")
-      .length === 1,
-    `${fileName} must contain exactly one id-token writer`,
+    sameInventory(
+      entries(workflowJobs)
+        .filter(([, job]) => job?.permissions?.["id-token"] === "write")
+        .map(([id]) => id),
+      reconciliation ? ["npm_release"] : ["npm_release", "advisory"],
+    ),
+    `${fileName} must contain exactly one id-token writer for publication and only the approved evaluator outside it`,
   );
   add(
     violations,
@@ -2869,13 +3469,43 @@ const validateQualityTooling = (workflows, violations) => {
       const scannerConsumer =
         file === "ci.yml" &&
         ["source_canonical", "quality_windows"].includes(id);
+      const onDemand =
+        (["ci.yml", "release.yml"].includes(file) &&
+          [
+            "portability_ubuntu_node_26",
+            "portability_windows_node_26",
+            "browser_chromium",
+            "browser_firefox",
+            "browser_webkit",
+            "owl_contract",
+          ].includes(id)) ||
+        (file === "qualify-package.yml" && id === "produce") ||
+        (file === "recipient-material-replay.yml" && id === "scan");
       const list = steps(job);
       const setup = list.filter((step) => step.uses === SCANCODE_SETUP);
       add(
         violations,
-        setup.length === (scannerConsumer || evidence ? 1 : 0),
+        setup.length === (scannerConsumer || evidence || onDemand ? 1 : 0),
         `${context} has an unexpected scanner setup inventory`,
       );
+      if (onDemand && file !== "recipient-material-replay.yml") {
+        const consumer = list.find(
+          (step) =>
+            step.env?.SCANCODE_PYTHON ===
+            "${{ steps.scanner.outputs.python-path }}",
+        );
+        add(
+          violations,
+          setup[0]?.id === "scanner" &&
+            !setup[0]?.if &&
+            !setup[0]?.["continue-on-error"] &&
+            consumer &&
+            list.indexOf(setup[0]) < list.indexOf(consumer) &&
+            !consumer.if &&
+            !consumer["continue-on-error"],
+          `${context} must bind the pinned interpreter to the on-demand scanner consumer`,
+        );
+      }
       if (scannerConsumer || evidence) {
         const invocation = list.findIndex((step) =>
           /^node util\/(?:qualify-scancode-runtime|prepare-scancode)\.mjs /u.test(
@@ -3333,12 +3963,100 @@ const validateOwlContractQualification = (fileName, workflow, violations) => {
     violations,
   );
   const upload = jobSteps.find((step) => step.id === "upload");
+  const prefix = ".release/owl-contract";
+  const owlProofPaths =
+    fileName === "release.yml"
+      ? [
+          `${prefix}/qualification.json`,
+          `${prefix}/attributed-qualification.json`,
+          `${prefix}/eligibility/decisions`,
+          `${prefix}/eligibility/material`,
+          `${prefix}/native.ndjson`,
+        ]
+      : [
+          `${prefix}/qualification.json`,
+          `${prefix}/native.ndjson`,
+          `${prefix}/eligibility/decisions`,
+          `${prefix}/eligibility/material`,
+        ];
   add(
     violations,
-    upload?.with?.path?.trim() ===
-      ".release/owl-contract/qualification.json\n.release/owl-contract/native.ndjson",
+    upload?.with?.path?.trim() === owlProofPaths.join("\n"),
     `${fileName}: retain both raw assertions and bound qualification`,
   );
+};
+
+const validateBrowserQualification = (fileName, workflow, violations) => {
+  const prefix = ".release/browser/qualified";
+  for (const project of BROWSER_PROJECTS) {
+    const id = `browser_${project}`;
+    const job = workflow.jobs?.[id];
+    const jobSteps = steps(job);
+    const run = jobSteps.find(
+      (step) =>
+        step.run ===
+        `npm run test:browser -- --fixture-root ${prefix} --project ${project}`,
+    );
+    const prepare = jobSteps.find(
+      ({ name }) =>
+        name === "Prepare the bundler, import-map, and worker consumers",
+    );
+    const upload = jobSteps.find((step) =>
+      fileName === "ci.yml"
+        ? step.id === "upload"
+        : step.name === "Retain exact browser consumer qualification",
+    );
+    const candidate = {
+      CANDIDATE_ARTIFACT_ID: "${{ needs.candidate.outputs.artifact_id }}",
+      CANDIDATE_ARTIFACT_DIGEST:
+        "${{ needs.candidate.outputs.artifact_digest }}",
+    };
+    requireFields(
+      run?.env,
+      candidate,
+      `${fileName}:${id} test candidate binding`,
+      violations,
+    );
+    requireFields(
+      prepare?.env,
+      candidate,
+      `${fileName}:${id} original candidate binding`,
+      violations,
+    );
+    if (fileName === "ci.yml")
+      requireFields(
+        job?.outputs,
+        {
+          artifact_id: "${{ steps.upload.outputs.artifact-id }}",
+          artifact_digest: "${{ steps.upload.outputs.artifact-digest }}",
+        },
+        `${fileName}:${id} qualification pointer`,
+        violations,
+      );
+    add(
+      violations,
+      !!run &&
+        !!upload &&
+        jobSteps.indexOf(run) < jobSteps.indexOf(upload) &&
+        actionSteps(job, RETAIN_ARTIFACT).filter(
+          (step) => !isCaseRetention(step),
+        ).length === 1 &&
+        upload.uses === RETAIN_ARTIFACT &&
+        !upload.if &&
+        !upload["continue-on-error"] &&
+        !run.if &&
+        !run["continue-on-error"] &&
+        upload.with?.name ===
+          `browser-consumer-${project}-\u0024{{ github.run_id }}-\u0024{{ github.run_attempt }}` &&
+        upload.with?.path?.trim() ===
+          [
+            `${prefix}/browser-qualification.json`,
+            `${prefix}/eligibility/decisions`,
+            `${prefix}/eligibility/material`,
+          ].join("\n"),
+      `${fileName}:${id} must retain only its bound public-safe qualification`,
+    );
+  }
 };
 
 const validateJsonRecord = (schemaName, recordName, violations) => {
@@ -3378,7 +4096,9 @@ const validateConsumerRuntimeControls = (
     "qualify-consumer": [
       "actions/download-artifact",
       "./.github/actions/setup-consumer",
+      SCANCODE_SETUP,
       "node scripts/qualify-consumer-runtime.mjs",
+      RETAIN_ARTIFACT,
     ],
     "aggregate-consumer-runtimes": [
       SHARED_SETUP,
@@ -3421,7 +4141,13 @@ const validateConsumerRuntimeControls = (
           (!step.if ||
             (name === "aggregate-consumer-runtimes" &&
               index === 3 &&
-              step.if === "inputs.retain-evidence == 'true'")) &&
+              step.if === "inputs.retain-evidence == 'true'") ||
+            (name === "qualify-consumer" &&
+              index === 2 &&
+              step.if === "runner.os != 'macOS' && runner.arch == 'X64'") ||
+            (name === "qualify-consumer" &&
+              index === 4 &&
+              isCaseRetention(step))) &&
           !step["continue-on-error"] &&
           (!step.run || step.shell === "bash"),
         `${name}: qualification operations must run without bypasses`,
@@ -3469,6 +4195,15 @@ const validateConsumerRuntimeControls = (
         );
     }
     if (name === "qualify-consumer") {
+      assertCaseRetention(
+        body.filter(isCaseRetention),
+        caseRetention(
+          `.release/runtime-report/${recipientMaterialCaseDirectory}`,
+          "${{ github.job }}-${{ runner.os }}-${{ inputs.node }}",
+        ),
+        name,
+        violations,
+      );
       requireFields(
         body[0]?.with,
         {
@@ -3480,12 +4215,19 @@ const validateConsumerRuntimeControls = (
         violations,
       );
       requireFields(
-        body[2]?.env,
+        body[2],
+        { id: "scanner", if: "runner.os != 'macOS' && runner.arch == 'X64'" },
+        `${name}: scanner prerequisites`,
+        violations,
+      );
+      requireFields(
+        body[3]?.env,
         {
           OWLAPI_RUNTIME_MATRIX: "${{ inputs.matrix }}",
           OWLAPI_EXPECTED_NODE: "${{ inputs.node }}",
           OWLAPI_CANDIDATE_ID: "${{ inputs.candidate-id }}",
           OWLAPI_CANDIDATE_DIGEST: "${{ inputs.candidate-digest }}",
+          SCANCODE_PYTHON: "${{ steps.scanner.outputs.python-path }}",
         },
         `${name}: candidate binding`,
         violations,
@@ -3596,9 +4338,13 @@ const validateConsumerRuntimeControls = (
       (step) => step.uses === "./.github/actions/qualify-consumer",
     );
     requireFields(
-      steps(consumer).find((step) => step.uses === RETAIN_ARTIFACT)?.with,
+      steps(consumer).find(
+        (step) =>
+          step.name === "Retain the actual consumer lane evidence" &&
+          step.uses === RETAIN_ARTIFACT,
+      )?.with,
       {
-        path: ".release/runtime-report/lane.json",
+        path: ".release/runtime-report/lane.json\n.release/runtime-report/eligibility/decisions\n.release/runtime-report/eligibility/material\n",
         "compression-level": 6,
         "retention-days": "${{ inputs.release_evidence && 90 || 1 }}",
       },
@@ -3839,13 +4585,16 @@ const validateArtifactTransportControls = (
   ];
   add(
     violations,
-    operations.filter((step) =>
-      [
-        RETAIN_ARTIFACT,
-        "./approval-tools/.github/actions/retain-artifact",
-      ].includes(step.uses),
-    ).length === 43,
-    "Artifact transport must cover the complete 43-producer recovery inventory",
+    operations.filter(
+      (step) =>
+        !isCaseRetention(step) &&
+        [
+          RETAIN_ARTIFACT,
+          "./approval-tools/.github/actions/retain-artifact",
+        ].includes(step.uses),
+    ).length ===
+      43 + 2 * BROWSER_PROJECTS.length + 5,
+    "Artifact transport must cover the complete producer recovery inventory, including CI and release browser proofs, and the signed qualification advisory decision",
   );
   add(
     violations,
@@ -4108,6 +4857,13 @@ export const auditRepositoryControls = ({
     violations,
   );
   validateEarlyAdmission(workflows, violations);
+  validateAdvisoryWorkload(workflows, violations);
+  validateRecipientMaterialReplay(
+    workflows["recipient-material-replay.yml"],
+    workflows["installed-qualification.yml"],
+    violations,
+  );
+  validateRecipientCaseCustody(workflows, violations);
   validateConsumerRuntimeControls(
     workflows,
     consumerActionOverrides,
@@ -4234,6 +4990,8 @@ export const auditRepositoryControls = ({
       workflows[fileName] ?? {},
       violations,
     );
+  validateBrowserQualification("ci.yml", ci, violations);
+  validateBrowserQualification("release.yml", release, violations);
 
   // Each admitted Node 26 floor must execute the same retained candidate.
   // The Ubuntu package consumer follows candidate creation, separate from source.

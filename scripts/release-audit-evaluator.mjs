@@ -2,7 +2,17 @@
 import { randomUUID } from "node:crypto";
 import { canonicalJson } from "./canonical-json.mjs";
 import { isReleaseAuditClear } from "./release-audit-policy.mjs";
-import { observeLockedReleaseAudit } from "./release-audit-evaluator-private.mjs";
+import {
+  isAuditEvidenceId,
+  observeLockedReleaseAudit,
+} from "./release-audit-evaluator-private.mjs";
+import {
+  advisoryCaseId,
+  applicableAdvisoryCases,
+  approvedDevelopmentCases,
+  readAdvisoryCases,
+  validateAdvisoryCases,
+} from "./release-audit-cases.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import {
   NPM_REGISTRY,
@@ -204,7 +214,7 @@ function timestamp(value) {
   return new Date(value).toISOString();
 }
 
-function readAuditCounts(observation) {
+function readAuditReport(observation) {
   if (
     !observation.complete ||
     observation.signal ||
@@ -237,11 +247,21 @@ function readAuditCounts(observation) {
   }
   return counts.total === vulnerabilities.length &&
     severities.every((severity) => counts[severity] === observed[severity])
-    ? counts
+    ? report
     : null;
 }
 
 const unavailable = "Trusted audit observation is unavailable";
+
+function auditDisposition(audit, report, active) {
+  const { subject, observation, lockBytes } = audit;
+  if (!report) return null;
+  const clear = isReleaseAuditClear(report.metadata.vulnerabilities);
+  if (observation.status === 0 && clear) return [];
+  if (subject.scope !== "full" || observation.status !== 1 || clear)
+    return null;
+  return approvedDevelopmentCases(report, lockBytes, active);
+}
 
 async function observeAudit(
   input,
@@ -289,18 +309,27 @@ async function observeAudit(
 }
 
 async function transientAudit(input, { npmCli, npm, now = Date.now } = {}) {
-  const { subject, observedAt, observation } = await observeAudit(input, {
+  const audit = await observeAudit(input, {
     npmCli,
     npm,
     now,
   });
-  const counts = readAuditCounts(observation);
-  assertValid(counts, unavailable);
+  const { subject, observedAt, observation } = audit;
+  const report = readAuditReport(observation);
+  assertValid(report, unavailable);
+  const active =
+    subject.scope === "full"
+      ? applicableAdvisoryCases(
+          readAdvisoryCases(),
+          subject,
+          Date.parse(observedAt),
+        )
+      : [];
   return {
     schemaVersion: 1,
     subject,
     observedAt,
-    eligible: observation.status === 0 && isReleaseAuditClear(counts),
+    eligible: auditDisposition(audit, report, active) !== null,
   };
 }
 
@@ -349,7 +378,7 @@ async function authenticateOriginal(source, authenticate) {
 
 async function retainAuditOriginal(
   { subject, manifestBytes, lockBytes, observedAt, observation },
-  { source, policySha256, now, store },
+  { source, policySha256, now, store, caseIds = [] },
 ) {
   const evidenceId = randomUUID();
   const original = encode({
@@ -357,6 +386,7 @@ async function retainAuditOriginal(
     source,
     subject,
     policySha256,
+    ...(caseIds.length ? { caseIds } : {}),
     observedAt,
     completedAt: timestamp(now()),
     runtime: { node: observation.runtime.node, npm: observation.runtime.npm },
@@ -414,7 +444,9 @@ export async function captureReleaseAudit(
     eligible:
       subject.scope === "production" &&
       observation.status === 0 &&
-      isReleaseAuditClear(readAuditCounts(observation)),
+      isReleaseAuditClear(
+        readAuditReport(observation)?.metadata.vulnerabilities,
+      ),
   };
 }
 
@@ -477,6 +509,7 @@ export async function evaluateReleaseAudit(
     trust,
     npmCli,
     npmCliForVersion,
+    advisoryCases = [],
     now = Date.now,
     retainOriginals = false,
     store,
@@ -484,6 +517,7 @@ export async function evaluateReleaseAudit(
 ) {
   assertTrust(trust);
   assertAuditIssuerContext(trust.evaluator);
+  validateAdvisoryCases(advisoryCases);
   assertValid(
     typeof authenticate === "function" &&
       typeof retainOriginals === "boolean" &&
@@ -496,30 +530,52 @@ export async function evaluateReleaseAudit(
   for (const entry of auditEntries(entries)) {
     const { source, subject } = entry;
     const input = await authenticateOriginal(source, () => authenticate(entry));
-    const npm = npmCliForVersion ? subject.platform.npm : undefined;
+    const npm = subject.platform.npm;
+    const active = applicableAdvisoryCases(advisoryCases, subject, now());
+    const retained = active.filter((item) => item.kind === "RETAIN_ORIGINAL");
+    if (retained.length) assertPrivateStore(store);
     const audit = await observeAudit(input, {
       npmCli: npmCliForVersion ? npmCliForVersion(npm) : npmCli,
       npm,
       now,
       expectedSubject: subject,
     });
-    if (retainOriginals)
-      await retainAuditOriginal(audit, {
+    const applied = auditDisposition(
+      audit,
+      readAuditReport(audit.observation),
+      active,
+    );
+    const cases = [...retained, ...(applied ?? [])];
+    const caseIds = cases.map(({ id }) => id).sort();
+    let caseEvidence;
+    if (retainOriginals || cases.length) {
+      assertPrivateStore(store);
+      const id = await retainAuditOriginal(audit, {
         source,
         policySha256: trust.policySha256,
         now,
         store,
+        caseIds,
       });
-    const counts = readAuditCounts(audit.observation);
-    assertValid(
-      counts && audit.observation.status === 0 && isReleaseAuditClear(counts),
-      "Release audit did not satisfy policy",
-    );
-    subjects.push({ ...entry, observedAt: audit.observedAt });
+      if (cases.length)
+        caseEvidence = {
+          id,
+          caseIds,
+          expiresAt: timestamp(
+            Math.min(...cases.map((item) => Date.parse(item.expiresAt))),
+          ),
+        };
+    }
+    assertValid(applied !== null, "Release audit did not satisfy policy");
+    subjects.push({
+      ...entry,
+      observedAt: audit.observedAt,
+      ...(caseEvidence ? { caseEvidence } : {}),
+    });
   }
   const decidedAt = timestamp(now());
-  for (const { observedAt } of subjects)
-    assertFresh(observedAt, decidedAt, Date.parse(decidedAt));
+  for (const entry of subjects)
+    assertSubjectFreshness(entry, decidedAt, Date.parse(decidedAt));
   const statement = encode({
     schemaVersion: 2,
     subjects,
@@ -555,6 +611,44 @@ function assertFresh(observedAt, decidedAt, now) {
   );
 }
 
+function assertSubjectFreshness(entry, decidedAt, now) {
+  assertFresh(entry.observedAt, decidedAt, now);
+  assertPrivateCaseCurrent(entry, now);
+}
+
+function assertPrivateCaseCurrent(entry, now) {
+  if (!Object.hasOwn(entry, "caseEvidence")) return;
+  const value = entry.caseEvidence;
+  assertValid(
+    closed(value, ["id", "caseIds", "expiresAt"]) &&
+      isAuditEvidenceId(value.id) &&
+      Array.isArray(value.caseIds) &&
+      value.caseIds.length > 0 &&
+      value.caseIds.length <= 256 &&
+      value.caseIds.every(
+        (id, index) =>
+          typeof id === "string" &&
+          advisoryCaseId.test(id) &&
+          (!index || id > value.caseIds[index - 1]),
+      ) &&
+      Number.isFinite(Date.parse(value.expiresAt)) &&
+      timestamp(Date.parse(value.expiresAt)) === value.expiresAt &&
+      now < Date.parse(value.expiresAt),
+    "Private advisory case evidence is invalid or expired",
+  );
+}
+
+/** Recheck both observation age and a selected private case's expiry at a writer boundary. */
+export function assertAdvisoryDecisionCurrent(decision, now = Date.now()) {
+  for (const entry of decision.subjects)
+    assertSubjectFreshness(entry, decision.decidedAt, now);
+}
+
+/** A past stage decision keeps its original audit clock; its case approval must remain active for a future writer. */
+export function assertAdvisoryCasesCurrent(decision, now = Date.now()) {
+  for (const entry of decision.subjects) assertPrivateCaseCurrent(entry, now);
+}
+
 /** This cold check needs the signed public receipt and approved identity, never private originals or a new audit. */
 export async function verifyReleaseAuditReceipt(
   { statement, signature },
@@ -588,8 +682,16 @@ export async function verifyReleaseAuditReceipt(
     policySha256: result.policySha256,
   });
   const supplied = result.subjects.map((entry) => {
-    assertValid(closed(entry, ["subject", "source", "observedAt"]), invalid);
-    assertFresh(entry.observedAt, result.decidedAt, now);
+    assertValid(
+      closed(entry, [
+        "subject",
+        "source",
+        "observedAt",
+        ...(entry?.caseEvidence ? ["caseEvidence"] : []),
+      ]),
+      invalid,
+    );
+    assertSubjectFreshness(entry, result.decidedAt, now);
     return { subject: entry.subject, source: entry.source };
   });
   assertValid(

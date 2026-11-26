@@ -42,6 +42,7 @@ jest.unstable_mockModule("./release-audit-evaluator-sigstore.mjs", () => ({
 }));
 const {
   buildReleaseAuditSubject,
+  assertAdvisoryCasesCurrent,
   captureReleaseAudit,
   evaluateReleaseAudit,
   preflightFullReleaseAudit,
@@ -541,6 +542,47 @@ test("native audit retries only bounded advisory unavailability and retains the 
 
 test.each([
   ["unavailable", unavailableReport, 3],
+  [
+    "native DNS failure",
+    {
+      message:
+        "request to https://registry.npmjs.org/-/npm/v1/security/advisories/bulk failed, reason: getaddrinfo EAI_AGAIN registry.npmjs.org",
+    },
+    3,
+  ],
+  [
+    "native socket reset",
+    {
+      method: "POST",
+      uri: unavailableReport.uri,
+      message:
+        "request to https://registry.npmjs.org/-/npm/v1/security/advisories/bulk failed, reason: read ECONNRESET",
+    },
+    3,
+  ],
+  [
+    "unrelated DNS fragment",
+    { message: "analysis failed; getaddrinfo EAI_AGAIN registry.npmjs.org" },
+    1,
+  ],
+  [
+    "different endpoint in diagnostic",
+    {
+      message:
+        "request to https://registry.npmjs.org/wrong failed, reason: read ECONNRESET",
+    },
+    1,
+  ],
+  [
+    "ordinary denial with a DNS fragment",
+    {
+      ...unavailableReport,
+      statusCode: 403,
+      message:
+        "request to https://registry.npmjs.org/-/npm/v1/security/advisories/bulk failed, reason: read ECONNRESET",
+    },
+    1,
+  ],
   ["malformed npm verdict", { ...unavailableReport, auditReportVersion: 2 }, 1],
   [
     "unrelated endpoint",
@@ -604,6 +646,14 @@ test("issues an authoritative native npm10 observation while preserving canonica
             authenticate: async () => ({ ...native, source }),
             trust,
             npmCli: producer,
+          }),
+        ).rejects.toThrow("Trusted audit observation is unavailable");
+        expect(issueSignature).not.toHaveBeenCalled();
+        await expect(
+          evaluateReleaseAudit(entries, {
+            authenticate: async () => ({ ...native, source }),
+            trust,
+            npmCli: producer,
             npmCliForVersion: resolved,
           }),
         ).resolves.toHaveProperty("signature");
@@ -612,6 +662,172 @@ test("issues an authoritative native npm10 observation while preserving canonica
       },
       CI_RUNTIME.consumerNpm,
     ),
+  ));
+
+const approvedAt = "2026-11-25T00:00:00.000Z";
+const expiresAt = "2026-11-26T13:00:00.000Z";
+const approvedReference = {
+  id: "case-dev-tool",
+  owner: "MaksymShostak",
+  review: "https://github.com/Hadden-Industries/owlapi/issues/123",
+  approvedAt,
+  expiresAt,
+};
+
+test("an exact non-release-reachable development finding can pass only after original private readback", () => {
+  const reportBody = JSON.parse(report(1));
+  const location = "node_modules/fixture";
+  const advisory = "GHSA-aaaa-bbbb-cccc";
+  const finding = reportBody.vulnerabilities.fixture;
+  finding.nodes = [location];
+  finding.via = [{ url: `https://github.com/advisories/${advisory}` }];
+  const root = { ...manifest, devDependencies: { fixture: "1.2.3" } };
+  const pkg = {
+    version: "1.2.3",
+    dev: true,
+    resolved: "https://registry.npmjs.org/fixture/-/fixture-1.2.3.tgz",
+    integrity: "sha512-" + Buffer.alloc(64).toString("base64"),
+  };
+  const lock = { lockfileVersion: 3, packages: { "": root, [location]: pkg } };
+  const original = {
+    ...input,
+    manifestBytes: bytes(root),
+    lockBytes: bytes(lock),
+  };
+  const subject = buildReleaseAuditSubject({ ...original, scope: "full" });
+  const selected = {
+    ...approvedReference,
+    kind: "NON_RELEASE_REACHABLE_DEVELOPMENT",
+    scope: "full",
+    role: "producer",
+    lockSha256: subject.lockSha256,
+    reachability: "NOT_RELEASE_REACHABLE",
+    boundary: "Review closed the release invocation boundary",
+    controls: "Only the diagnostic tool uses this path",
+    finding: {
+      sha256: digest(Buffer.from(canonicalJson(finding))),
+      severity: "high",
+      advisories: [advisory],
+      occurrences: [{ location, version: pkg.version }],
+    },
+  };
+  const records = [subject, buildReleaseAuditSubject(original)].map(
+    (entry) => ({ subject: entry, source }),
+  );
+  const { held, options: privateOptions } = fixture();
+  return withAuditCli(
+    `
+    const full = process.argv.includes("--include=dev");
+    process.stdout.write(Buffer.from(full ? "${bytes(reportBody).toString("base64")}" : "${report().toString("base64")}", "base64"));
+    process.exitCode = full ? 1 : 0;
+  `,
+    async (npmCli) => {
+      issueSignature.mockClear();
+      const options = {
+        trust,
+        npmCli,
+        now: () => utc,
+        authenticate: ({ subject }) => ({
+          ...original,
+          scope: subject.scope,
+          source,
+        }),
+      };
+      await expect(
+        evaluateReleaseAudit(records, {
+          ...options,
+          advisoryCases: [selected],
+        }),
+      ).rejects.toThrow("Private audit evidence storage is unavailable");
+      await expect(
+        evaluateReleaseAudit(records, {
+          ...options,
+          advisoryCases: [
+            {
+              ...selected,
+              finding: {
+                ...selected.finding,
+                occurrences: [{ location, version: "1.2.4" }],
+              },
+            },
+          ],
+          store: privateOptions.store,
+        }),
+      ).rejects.toThrow("Release audit did not satisfy policy");
+      await expect(
+        evaluateReleaseAudit(records, {
+          ...options,
+          advisoryCases: [{ ...selected, reachability: "REACHABLE" }],
+          store: privateOptions.store,
+        }),
+      ).rejects.toThrow("Invalid reviewed advisory case registry");
+      expect(issueSignature).not.toHaveBeenCalled();
+      const receipt = await evaluateReleaseAudit(records, {
+        ...options,
+        advisoryCases: [selected],
+        store: privateOptions.store,
+      });
+      const decision = JSON.parse(receipt.statement);
+      const retained = decision.subjects.find(
+        (entry) => entry.subject.scope === "full",
+      ).caseEvidence;
+      expect(retained).toMatchObject({ caseIds: [selected.id], expiresAt });
+      const saved = JSON.parse(held.get(retained.id));
+      expect(saved.caseIds).toEqual([selected.id]);
+      expect(
+        Buffer.from(saved.stdout, "base64").equals(bytes(reportBody)),
+      ).toBe(true);
+      expect(receipt.statement.toString()).not.toContain(privateMarker);
+      expect(receipt.statement.toString()).not.toContain(advisory);
+      expect(() =>
+        assertAdvisoryCasesCurrent(decision, Date.parse(expiresAt)),
+      ).toThrow("invalid or expired");
+      await expect(
+        verifyReleaseAuditReceipt(receipt, {
+          trust,
+          entries: records,
+          npmCli,
+          now: Date.parse(expiresAt),
+        }),
+      ).rejects.toThrow("invalid or expired");
+    },
+  );
+});
+
+test("an explicit production retention obligation still fails without a private store and no approval can waive production findings", () =>
+  withAuditCli(
+    `process.stdout.write(Buffer.from("${report(1).toString("base64")}", "base64")); process.exitCode=1;`,
+    async (npmCli) => {
+      issueSignature.mockClear();
+      const subject = buildReleaseAuditSubject(input);
+      const entry = { source, subject };
+      const selected = {
+        ...approvedReference,
+        role: "producer",
+        scope: "production",
+        kind: "RETAIN_ORIGINAL",
+        lockSha256: subject.lockSha256,
+      };
+      const options = {
+        trust,
+        npmCli,
+        now: () => utc,
+        authenticate: async () => ({ ...input, source }),
+        advisoryCases: [selected],
+      };
+      await expect(evaluateReleaseAudit([entry], options)).rejects.toThrow(
+        "Private audit evidence storage is unavailable",
+      );
+      const { held, options: privateOptions } = fixture();
+      await expect(
+        evaluateReleaseAudit([entry], {
+          ...options,
+          store: privateOptions.store,
+        }),
+      ).rejects.toThrow("Release audit did not satisfy policy");
+      expect(held.size).toBe(1);
+      expect(issueSignature).not.toHaveBeenCalled();
+    },
   ));
 
 test("pinned npm reports transient eligibility using isolated configuration", async () => {
