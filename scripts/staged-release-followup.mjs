@@ -583,7 +583,7 @@ async function registryProof(client, ctx) {
     await import("./qualify-public-registry.mjs");
   const { manifest, receipt } = ctx;
   const matrix = qualificationRuntimeMatrix(manifest);
-  const input = publicRecipientInput(ctx, matrix);
+  const input = publicRecipientInput(ctx, matrix, { reconciled: true });
   const sbom = qualifiedSbom(ctx);
   const proof = await qualifyPublicRegistry({
     candidate: {

@@ -453,6 +453,7 @@
       "/jobs/complete/runs-on": "{{runtime:ubuntuRunner}}"
     },
     "release-registry.yml": {
+      "/jobs/material/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/registry/runs-on": "{{runtime:ubuntuRunner}}"
     },
     "github-release.yml": {

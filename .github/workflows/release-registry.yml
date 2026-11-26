@@ -31,7 +31,7 @@ jobs:
           fetch-tags: true
           persist-credentials: false
       - uses: ./.github/actions/setup-producer
-      - run: npm ci --ignore-scripts
+      - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Verify staged public recipients (registry)
         id: public
         env:
@@ -45,8 +45,8 @@ jobs:
           name: release-registry-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/followup
           retention-days: 90
-  public_recipient:
-    name: Public recipient (${{ matrix.runner }}, ${{ matrix.node }})
+  public_observation:
+    name: Public observation (${{ matrix.runner }}, ${{ matrix.node }})
     needs: registry
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 50
@@ -75,7 +75,110 @@ jobs:
           check-latest: false
           cache: ""
           package-manager-cache: false
-      - run: node scripts/public-recipient-lane.mjs
+      - run: node scripts/public-recipient-lane.mjs observe
+      - name: Retain original public observation
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: public-observation-${{ matrix.runner }}-${{ matrix.node }}-${{ github.run_attempt }}
+          path: .release/public-observation/observation.json
+          retention-days: 90
+          compression-level: 6
+  material:
+    needs: [registry, public_observation]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 100
+    permissions:
+      actions: read
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    env:
+      OWLAPI_RUNTIME_MATRIX: ${{ needs.registry.outputs.matrix }}
+      OWLAPI_EXPECTED_NODE: ${{ fromJSON(needs.registry.outputs.matrix).include[0].node }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - run: node scripts/consumer-runtime-tools.mjs prepare
+      - id: inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HISTORY_OBJECT: ${{ inputs.history_object }}
+        run: node scripts/public-material-job.mjs prepare
+      - id: scanner
+        if: steps.inputs.outputs.novel == 'true'
+        uses: ./.github/actions/setup-scancode
+      - if: steps.inputs.outputs.novel == 'true'
+        env:
+          SCANCODE_PLATFORM: linux
+          SCANCODE_PYTHON: ${{ steps.scanner.outputs.python-path }}
+        run: node util/prepare-scancode.mjs --platform-env=SCANCODE_PLATFORM --output=.release/tools/scancode --python-env=SCANCODE_PYTHON
+      - env:
+          PUBLIC_MATERIAL_ROOT: ${{ steps.inputs.outputs.root }}
+          PUBLIC_MATERIAL_ORIGINAL_SHA256: ${{ steps.inputs.outputs.sha256 }}
+          SCANCODE_COMMAND: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/bin/scancode
+        run: node scripts/public-material-job.mjs collect
+      - name: Retain public material decisions
+        id: upload
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: public-material-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/public-material/material.json
+          retention-days: 90
+          compression-level: 6
+      - name: Retain the unresolved recipient material case
+        if: ${{ failure() && hashFiles('.release/recipient-material-cases/case-*.json') != '' }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: recipient-material-case-material-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/recipient-material-cases
+          retention-days: 14
+  public_recipient:
+    name: Public recipient (${{ matrix.runner }}, ${{ matrix.node }})
+    needs: [registry, material]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 50
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.registry.outputs.matrix).include }}
+    env:
+      OWLAPI_RUNTIME_MATRIX: ${{ needs.registry.outputs.matrix }}
+      OWLAPI_EXPECTED_NODE: ${{ matrix.node }}
+      OWLAPI_PUBLIC_RECIPIENT: ${{ needs.registry.outputs.recipient_input }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - run: node scripts/consumer-runtime-tools.mjs prepare
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.material.outputs.artifact_id }}
+          path: .release/public-material
+          merge-multiple: false
+          digest-mismatch: error
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/public-recipient-lane.mjs test
       - name: Retain public recipient proof
         uses: ./.github/actions/retain-artifact
         with:
@@ -83,3 +186,14 @@ jobs:
           path: .release/public-lane/lane.json
           retention-days: 90
           compression-level: 6
+  advisory:
+    name: Release advisory
+    needs: [registry, public_recipient]
+    uses: ./.github/workflows/release-audit-evaluator.yml
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    with:
+      purpose: public
+      history_object: ${{ inputs.history_object }}

@@ -1139,6 +1139,11 @@ describe("repository workflow governance", () => {
       "${{ !inputs.rc3_recovery && needs.required.result != 'cancelled' }}",
       "release.yml: rc.3 recovery advisory is not mutually exclusive with ordinary qualification",
     ],
+    [
+      "release-registry.yml",
+      "${{ !cancelled() }}",
+      "release-registry.yml: the approved audit workload requires the exact successful prerequisites and scoped caller inputs",
+    ],
   ])(
     "does not let %s request a protected audit when original jobs failed or were skipped",
     (file, condition, expected) => {
@@ -1169,7 +1174,7 @@ describe("repository workflow governance", () => {
 
   test("prohibits inherited secrets or untrusted history selectors on a reusable advisory caller", () => {
     expect(
-      mutateWorkflow("release.yml", (doc) => {
+      mutateWorkflow("release-registry.yml", (doc) => {
         doc.setIn(["jobs", "advisory", "secrets"], "inherit");
         doc.setIn(
           ["jobs", "advisory", "with", "history_object"],
@@ -1177,7 +1182,7 @@ describe("repository workflow governance", () => {
         );
       }),
     ).toContain(
-      "release.yml: the approved audit workload requires the exact successful prerequisites and scoped caller inputs",
+      "release-registry.yml: the approved audit workload requires the exact successful prerequisites and scoped caller inputs",
     );
   });
 
@@ -1195,7 +1200,7 @@ describe("repository workflow governance", () => {
     );
   });
 
-  test("does not expand the release browser artifact to raw reports", () => {
+  test("does not expand the release browser or public material artifact to raw reports", () => {
     expect(
       mutateWorkflow("release.yml", (doc) => {
         const step = doc
@@ -1209,6 +1214,19 @@ describe("repository workflow governance", () => {
       }),
     ).toContain(
       "release.yml:browser_chromium must retain only its bound public-safe qualification",
+    );
+    expect(
+      mutateWorkflow("release-registry.yml", (doc) => {
+        const upload = doc
+          .getIn(["jobs", "material", "steps"])
+          .items.find((item) => item.get("id") === "upload");
+        upload.setIn(
+          ["with", "path"],
+          ".release/public-material\n.release/native-audit.json",
+        );
+      }),
+    ).toContain(
+      "release-registry.yml: Retain public material decisions must retain only the exact public proof after success",
     );
   });
 

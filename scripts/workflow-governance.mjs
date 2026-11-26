@@ -616,7 +616,7 @@ const validateActionUses = (fileName, workflow, document, violations) => {
       if (step.uses.startsWith("actions/setup-node@")) {
         if (
           (fileName === "release-registry.yml" &&
-            jobId === "public_recipient") ||
+            ["public_observation", "public_recipient"].includes(jobId)) ||
           (fileName === "recipient-material-replay.yml" &&
             ["replay", "rights_replay"].includes(jobId))
         ) {
@@ -717,6 +717,25 @@ const auditReceiptInputs = {
   "compression-level": 6,
 };
 
+const requiredPublicUpload = (job, name, inputs, violations) => {
+  const uploads = actionSteps(job, RETAIN_ARTIFACT).filter(
+    (step) => !isCaseRetention(step),
+  );
+  const upload = uploads[0];
+  add(
+    violations,
+    uploads.length === 1 &&
+      upload.name === name &&
+      upload.if === undefined &&
+      upload["continue-on-error"] === undefined &&
+      isDeepStrictEqual(
+        { ...upload.with, path: upload.with?.path?.trim() },
+        inputs,
+      ),
+    `release-registry.yml: ${name} must retain only the exact public proof after success`,
+  );
+};
+
 function validateAdvisoryWorkload(workflows, violations) {
   const workflow = workflows[advisoryWorkflow];
   const job = workflow?.jobs?.evaluate;
@@ -811,6 +830,12 @@ function validateAdvisoryWorkload(workflows, violations) {
       qualificationAdvisoryGuard,
       { purpose: "qualification" },
     ],
+    [
+      "release-registry.yml",
+      ["registry", "public_recipient"],
+      undefined,
+      { purpose: "public", history_object: "${{ inputs.history_object }}" },
+    ],
   ]) {
     const caller = workflows[fileName]?.jobs?.advisory;
     add(
@@ -840,6 +865,7 @@ function validateAdvisoryWorkload(workflows, violations) {
     "stage-release.yml": ["stage"],
     "release-labels.yml": ["npm"],
     "release-classification.yml": ["verify"],
+    "release-registry.yml": ["advisory"],
     [advisoryWorkflow]: ["evaluate"],
   };
   for (const [fileName, value] of entries(workflows)) {
@@ -1221,6 +1247,10 @@ function validateRecipientCaseCustody(workflows, violations) {
         "scan",
       ),
     ],
+    [
+      "release-registry.yml:material",
+      caseRetention(`.release/${recipientMaterialCaseDirectory}`, "material"),
+    ],
   ]);
   for (const file of ["ci.yml", "release.yml"]) {
     for (const browser of BROWSER_PROJECTS)
@@ -1293,7 +1323,10 @@ const operationJobs = {
   },
   "release-registry.yml": {
     registry: [readAuthority],
-    public_recipient: [{ contents: "read" }],
+    public_observation: [{ contents: "read" }],
+    material: [readAuthority],
+    public_recipient: [readAuthority],
+    advisory: [npmAuthority],
   },
   "release-completion.yml": {
     complete: [{ ...readAuthority, attestations: "read" }],
@@ -1318,6 +1351,7 @@ function validateOperationJobs(file, workflow, violations) {
       file + ":" + name + " operation authority or environment changed",
     );
     if (!job || !Object.values(permissions).includes("write")) continue;
+    if (file === "release-registry.yml" && name === "advisory") continue;
     if (file === "release-classification.yml" && name === "verify") {
       const [checkout, , verify] = job.steps;
       add(
@@ -1481,7 +1515,7 @@ function validateOperationJobs(file, workflow, violations) {
       "github-release.yml: require the selected archival writer to succeed",
     );
   }
-  if (file === "release-registry.yml")
+  if (file === "release-registry.yml") {
     add(
       violations,
       isDeepStrictEqual(workflow.concurrency, {
@@ -1490,7 +1524,63 @@ function validateOperationJobs(file, workflow, violations) {
       }),
       file + ": read-only public recipients must have a run-specific group",
     );
-  else if (file !== "release-completion.yml")
+    const {
+      registry,
+      public_observation: observe,
+      material,
+      public_recipient: recipient,
+    } = workflow.jobs;
+    const commands = (job) =>
+      steps(job)
+        .map(({ run }) => run)
+        .filter(Boolean);
+    const scanner = steps(material).find(
+      ({ uses }) => uses === "./.github/actions/setup-scancode",
+    );
+    add(
+      violations,
+      registry?.if === protectedReleaseBranch &&
+        sameInventory(needs(observe), ["registry"]) &&
+        isDeepStrictEqual(commands(observe), [
+          "node scripts/consumer-runtime-tools.mjs prepare",
+          "node scripts/public-recipient-lane.mjs observe",
+        ]) &&
+        sameInventory(needs(material), ["registry", "public_observation"]) &&
+        scanner?.if === "steps.inputs.outputs.novel == 'true'" &&
+        sameInventory(needs(recipient), ["registry", "material"]) &&
+        isDeepStrictEqual(commands(recipient), [
+          "node scripts/consumer-runtime-tools.mjs prepare",
+          "node scripts/public-recipient-lane.mjs test",
+        ]),
+      "release-registry.yml: public test lanes require the original observation and approved material decisions",
+    );
+    for (const [job, name, logical, path] of [
+      [
+        observe,
+        "Retain original public observation",
+        "public-observation-${{ matrix.runner }}-${{ matrix.node }}-${{ github.run_attempt }}",
+        ".release/public-observation/observation.json",
+      ],
+      [
+        material,
+        "Retain public material decisions",
+        "public-material-${{ github.run_id }}-${{ github.run_attempt }}",
+        ".release/public-material/material.json",
+      ],
+      [
+        recipient,
+        "Retain public recipient proof",
+        "public-recipient-${{ matrix.runner }}-${{ matrix.node }}-${{ github.run_attempt }}",
+        ".release/public-lane/lane.json",
+      ],
+    ])
+      requiredPublicUpload(
+        job,
+        name,
+        { name: logical, path, "retention-days": 90, "compression-level": 6 },
+        violations,
+      );
+  } else if (file !== "release-completion.yml")
     add(
       violations,
       isDeepStrictEqual(workflow.concurrency, {
@@ -1544,7 +1634,7 @@ const validateJobs = (fileName, workflow, violations) => {
     }
     if (job.uses) {
       if (
-        fileName === "release.yml" &&
+        ["release.yml", "release-registry.yml"].includes(fileName) &&
         id === "advisory" &&
         job.uses === advisoryUse
       )
@@ -1575,7 +1665,8 @@ const validateJobs = (fileName, workflow, violations) => {
       fileName === "recipient-material-replay.yml" && id === "rights_replay";
     const isConsumerMatrix =
       id === "consumer_runtime" ||
-      (fileName === "release-registry.yml" && id === "public_recipient") ||
+      (fileName === "release-registry.yml" &&
+        ["public_observation", "public_recipient"].includes(id)) ||
       (fileName === "release.yml" && id === "corpus_shard");
     add(
       violations,
@@ -3469,6 +3560,8 @@ const validateQualityTooling = (workflows, violations) => {
       const scannerConsumer =
         file === "ci.yml" &&
         ["source_canonical", "quality_windows"].includes(id);
+      const publicMaterial =
+        file === "release-registry.yml" && id === "material";
       const onDemand =
         (["ci.yml", "release.yml"].includes(file) &&
           [
@@ -3485,7 +3578,8 @@ const validateQualityTooling = (workflows, violations) => {
       const setup = list.filter((step) => step.uses === SCANCODE_SETUP);
       add(
         violations,
-        setup.length === (scannerConsumer || evidence || onDemand ? 1 : 0),
+        setup.length ===
+          (scannerConsumer || evidence || publicMaterial || onDemand ? 1 : 0),
         `${context} has an unexpected scanner setup inventory`,
       );
       if (onDemand && file !== "recipient-material-replay.yml") {
@@ -3504,6 +3598,22 @@ const validateQualityTooling = (workflows, violations) => {
             !consumer.if &&
             !consumer["continue-on-error"],
           `${context} must bind the pinned interpreter to the on-demand scanner consumer`,
+        );
+      }
+      if (publicMaterial) {
+        const scanCondition = "steps.inputs.outputs.novel == 'true'";
+        const prepare = list.find((step) =>
+          step.run?.startsWith("node util/prepare-scancode.mjs "),
+        );
+        const source = list.find((step) => step.id === "inputs");
+        add(
+          violations,
+          source?.run === "node scripts/public-material-job.mjs prepare" &&
+            setup[0]?.if === scanCondition &&
+            prepare?.if === scanCondition &&
+            list.indexOf(source) < list.indexOf(setup[0]) &&
+            list.indexOf(setup[0]) < list.indexOf(prepare),
+          `${context} only prepares ScanCode after authenticated novel-archive discovery`,
         );
       }
       if (scannerConsumer || evidence) {
@@ -4593,8 +4703,8 @@ const validateArtifactTransportControls = (
           "./approval-tools/.github/actions/retain-artifact",
         ].includes(step.uses),
     ).length ===
-      43 + 2 * BROWSER_PROJECTS.length + 5,
-    "Artifact transport must cover the complete producer recovery inventory, including CI and release browser proofs, and the signed qualification advisory decision",
+      43 + 2 * BROWSER_PROJECTS.length + 7,
+    "Artifact transport must cover the complete producer recovery inventory, including CI and release browser proofs, public observations, material decisions, and the signed advisory decision",
   );
   add(
     violations,

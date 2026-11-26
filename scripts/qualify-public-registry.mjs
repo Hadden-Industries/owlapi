@@ -24,11 +24,7 @@ import {
   releaseChannel,
   assertRegistryTarballUrl,
 } from "./package-identity.mjs";
-import {
-  installRegistryConsumer,
-  observeRegistryGraph,
-  publicConsumerOverrides,
-} from "./public-registry-consumer.mjs";
+import { installRegistryConsumer } from "./public-registry-consumer.mjs";
 import { verifyRegistryProvenance } from "./registry-provenance.mjs";
 import {
   verifyRegistryTarball,
@@ -148,9 +144,20 @@ const requireSuccess = (result, label) => {
   return result;
 };
 
-const exerciseFreshConsumers = async (metadata, tarball, origin, sbom) => {
+const exerciseFreshConsumers = async (metadata, tarball, origin) => {
   const root = mkdtempSync(join(tmpdir(), "owlapi-public-registry-"));
   try {
+    const provenance = await verifyRegistryProvenance({
+      metadata,
+      tarball,
+      cache: join(root, "provenance-cache"),
+      commit: origin?.controller ?? origin?.commit ?? process.env.GITHUB_SHA,
+      runId: origin?.runId ?? process.env.GITHUB_RUN_ID,
+      runAttempt: Number(origin?.attempt ?? process.env.GITHUB_RUN_ATTEMPT),
+      staged: Boolean(origin),
+    });
+    // The public matrix measures and tests its own independently resolved variants.
+    if (origin) return { provenance };
     const results = {};
     for (const [mode, dependencyName] of [
       ["scoped", PACKAGE_NAME],
@@ -161,7 +168,6 @@ const exerciseFreshConsumers = async (metadata, tarball, origin, sbom) => {
         directory,
         dependencyName,
         metadata,
-        overrides: origin ? publicConsumerOverrides(tarball) : undefined,
       });
       writeInstalledConsumerFixtures(directory, dependencyName);
       for (const script of INSTALLED_TEST_SCRIPTS) {
@@ -201,25 +207,8 @@ const exerciseFreshConsumers = async (metadata, tarball, origin, sbom) => {
         installedTests: INSTALLED_TEST_SCRIPTS,
         dependencyGraph: graph,
         signatureAudit: signatures,
-        ...(origin
-          ? observeRegistryGraph({
-              directory,
-              environment,
-              dependencyName,
-              sbom,
-            })
-          : {}),
       };
     }
-    const provenance = await verifyRegistryProvenance({
-      metadata,
-      tarball,
-      cache: join(root, "provenance-cache"),
-      commit: origin?.controller ?? origin?.commit ?? process.env.GITHUB_SHA,
-      runId: origin?.runId ?? process.env.GITHUB_RUN_ID,
-      runAttempt: Number(origin?.attempt ?? process.env.GITHUB_RUN_ATTEMPT),
-      staged: Boolean(origin),
-    });
     return { consumer: results, provenance };
   } finally {
     // The directory is a fresh mkdtemp child of the system temporary directory.
@@ -351,7 +340,7 @@ export const qualifyPublicRegistry = async ({
       verifiedAt: now(),
     });
     const report = {
-      schemaVersion: 1,
+      schemaVersion: stageOrigin ? 2 : 1,
       result: "PASS",
       verifiedAt: now(),
       registry,
@@ -364,7 +353,7 @@ export const qualifyPublicRegistry = async ({
       }),
       tarballUrl: metadata.dist.tarball,
       npmPublishedAt: metadata.time ?? null,
-      consumer,
+      ...(!stageOrigin ? { consumer } : {}),
       provenance,
       publication: pendingReport.publication,
       availability: {
@@ -385,9 +374,13 @@ export const qualifyPublicRegistry = async ({
       error.code === "AVAILABILITY_INCOMPLETE"
         ? "AVAILABILITY_INCOMPLETE"
         : "FAIL";
-    pendingReport.error = error.message;
+    pendingReport.error = stageOrigin ? pendingReport.result : error.message;
     pendingReport.finishedAt = now();
     retain();
+    if (stageOrigin)
+      // Tool errors can carry private configuration or native output into public logs.
+      // eslint-disable-next-line preserve-caught-error
+      throw new Error("Staged registry verification did not complete");
     throw error;
   }
 };

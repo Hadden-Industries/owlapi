@@ -18,25 +18,35 @@ import {
 import { artifactProducingAttempt } from "../tooling/artifact-transport/identity.mjs";
 import { originalBytes, originArtifact } from "./staged-release.mjs";
 import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
+export {
+  readPublicAuditSubjects,
+  readPublicObservationBatch,
+  readPublicTestInputs,
+} from "./public-reconciliation-proof.mjs";
 
 const filename = ".github/workflows/release-registry.yml";
 const parse = (bytes) =>
   JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
 const isId = (n) => Number.isSafeInteger(n) && n > 0;
 
-export function qualificationRuntimeMatrix(manifest) {
+export function qualificationRuntimeMatrix(manifest, policy = CI_RUNTIME) {
   const matrix = validateFrozenMatrix(
     manifest.runtimeMatrix ??
       JSON.parse(manifest.qualification.runtime_matrix.outputs.matrix),
+    policy,
   );
   if (qualificationBaseSchema(manifest) === 2)
     assert.equal(runtimeDigest(matrix), manifest.ci.matrixSha256);
   return matrix;
 }
 
-export function publicRecipientInput({ operation, manifest, receipt }, matrix) {
+export function publicRecipientInput(
+  { operation, manifest, receipt },
+  matrix,
+  { reconciled = false } = {},
+) {
   return {
-    schemaVersion: 1,
+    schemaVersion: reconciled ? 2 : 1,
     package: manifest.package,
     integrity: manifest.integrity,
     tarballSha256: manifest.assets.tarball.sha256,
@@ -45,6 +55,17 @@ export function publicRecipientInput({ operation, manifest, receipt }, matrix) {
     stageRun: receipt.runId,
     stageAttempt: receipt.attempt,
     matrixSha256: runtimeDigest(matrix),
+    ...(reconciled
+      ? {
+          stageController: receipt.controller ?? manifest.commit,
+          qualification: {
+            commit: manifest.commit,
+            run: manifest.runId,
+            attempt: manifest.attempt,
+            lockedSbomSha256: manifest.assets.sbom.sha256,
+          },
+        }
+      : {}),
   };
 }
 

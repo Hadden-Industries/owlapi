@@ -172,6 +172,18 @@ test("rejects a floating alias even if the current installation happens to match
   expect(() => verifyRegistryInstallation(input)).toThrow(/exact registry/u);
 });
 
+test.each(["package.json", "package-lock.json"])(
+  "rejects injected consumer overrides in %s",
+  (member) => {
+    const input = fixture();
+    mutateJson(join(input.directory, member), (value) => {
+      const root = member === "package.json" ? value : value.packages[""];
+      root.overrides = { "unrelated-dependency": "1.0.0" };
+    });
+    expect(() => verifyRegistryInstallation(input)).toThrow(/exact registry/u);
+  },
+);
+
 test.each([
   "https://registry.npmjs.org/owlapi/-/owlapi-0.1.0-rc.2.tgz",
   "https://registry.npmjs.org/@someone/owlapi/-/owlapi-0.1.0-rc.2.tgz",

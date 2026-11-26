@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { createHash } from "node:crypto";
 import {
   mkdirSync,
   readFileSync,
@@ -9,14 +8,10 @@ import {
   lstatSync,
 } from "node:fs";
 import { createRequire } from "node:module";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { isStrictDescendantPath } from "./release-file-utils.mjs";
+import { indexRegistryOccurrences } from "../util/third-party-evidence/lock-graph.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
-import {
-  assertNpmSbomInventory,
-  flattenNpmGraph,
-} from "./npm-production-graph.mjs";
-import { readGzipTarFile } from "./release-artifacts.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
@@ -27,6 +22,28 @@ import {
 } from "./package-identity.mjs";
 
 const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
+
+const publicSpec = (dependencyName, version = PACKAGE_VERSION) =>
+  dependencyName === "owlapi" ? `npm:${PACKAGE_NAME}@${version}` : version;
+
+const expectedRoot = (value, dependencyName) => {
+  const invalid = [
+    "overrides",
+    "workspaces",
+    "devDependencies",
+    "optionalDependencies",
+    "peerDependencies",
+    "bundledDependencies",
+    "bundleDependencies",
+    "packageExtensions",
+  ];
+  return (
+    value &&
+    value.dependencies?.[dependencyName] === publicSpec(dependencyName) &&
+    Object.keys(value.dependencies).length === 1 &&
+    invalid.every((key) => !Object.hasOwn(value, key))
+  );
+};
 
 /** Validate actual installed files and the native lockfile before executing consumer code. */
 export const verifyRegistryInstallation = ({
@@ -40,17 +57,14 @@ export const verifyRegistryInstallation = ({
   assertRegistryTarballUrl(metadata.dist?.tarball);
   const consumer = readJson(join(directory, "package.json"));
   const lock = readJson(join(directory, "package-lock.json"));
-  const specifier =
-    dependencyName === "owlapi"
-      ? `npm:${PACKAGE_NAME}@${PACKAGE_VERSION}`
-      : PACKAGE_VERSION;
+  const specifier = publicSpec(dependencyName);
   const packageRoot = join(directory, "node_modules", dependencyName);
-  const installed = readJson(join(packageRoot, "package.json"));
+  const installedManifest = join(packageRoot, "package.json");
   const entry = lock.packages?.[`node_modules/${dependencyName}`];
-  assertPackageIdentity(installed);
   if (
-    consumer.dependencies?.[dependencyName] !== specifier ||
-    lock.packages?.[""].dependencies?.[dependencyName] !== specifier ||
+    !expectedRoot(consumer, dependencyName) ||
+    !expectedRoot(lock.packages?.[""], dependencyName) ||
+    lock.lockfileVersion !== 3 ||
     !entry ||
     entry.link ||
     entry.version !== PACKAGE_VERSION ||
@@ -59,12 +73,22 @@ export const verifyRegistryInstallation = ({
     entry.resolved !== metadata.dist.tarball ||
     entry.integrity !== metadata.dist.integrity ||
     !/^sha512-[A-Za-z0-9+/]+={0,2}$/u.test(entry.integrity ?? "") ||
-    lstatSync(packageRoot).isSymbolicLink() ||
-    !isStrictDescendantPath(realpathSync(directory), realpathSync(packageRoot))
+    !lstatSync(packageRoot).isDirectory() ||
+    !isStrictDescendantPath(
+      realpathSync(directory),
+      realpathSync(packageRoot),
+    ) ||
+    !lstatSync(installedManifest).isFile() ||
+    !isStrictDescendantPath(
+      realpathSync(packageRoot),
+      realpathSync(installedManifest),
+    )
   )
     throw new Error(
       "Installed package is not the exact registry dependency and integrity.",
     );
+  const installed = readJson(installedManifest);
+  assertPackageIdentity(installed);
   const exports = Object.fromEntries(
     PUBLIC_SUBPATHS.map((subpath) => [
       subpath ? `.${subpath}` : ".",
@@ -107,20 +131,23 @@ export const verifyRegistryInstallation = ({
 
 /** Ignore user registry overrides and credentials during public, isolated verification. */
 export const publicRegistryEnvironment = (root) => {
-  const environment = Object.fromEntries(
-    Object.entries(process.env).filter(
-      ([key]) =>
-        !/^(?:gh_token$|github_token$|actions_id_token_request_|npm_config_|node_auth_token$|npm_token$|node_options$|node_path$)/iu.test(
-          key,
-        ),
-    ),
-  );
   const userConfig = join(root, "user.npmrc");
   const globalConfig = join(root, "global.npmrc");
   writeFileSync(userConfig, "", { flag: "wx" });
   writeFileSync(globalConfig, "", { flag: "wx" });
   return {
-    ...environment,
+    ...(process.platform === "win32" && process.env.SystemRoot
+      ? { SystemRoot: process.env.SystemRoot }
+      : {}),
+    CI: "true",
+    PATH: dirname(process.execPath),
+    HOME: root,
+    USERPROFILE: root,
+    APPDATA: root,
+    LOCALAPPDATA: root,
+    TMPDIR: root,
+    TEMP: root,
+    TMP: root,
     npm_config_userconfig: userConfig,
     npm_config_globalconfig: globalConfig,
   };
@@ -132,7 +159,7 @@ export const installRegistryConsumer = ({
   dependencyName = "owlapi",
   metadata,
   npmCli = process.env.npm_execpath,
-  overrides,
+  original,
 }) => {
   assertPackageIdentity(metadata);
   assertRegistryTarballUrl(metadata.dist?.tarball);
@@ -141,24 +168,46 @@ export const installRegistryConsumer = ({
       "Run registry qualification through npm with an approved dependency name.",
     );
   mkdirSync(directory);
-  const specifier =
-    dependencyName === "owlapi"
-      ? `npm:${PACKAGE_NAME}@${PACKAGE_VERSION}`
-      : PACKAGE_VERSION;
-  writeFileSync(
-    join(directory, "package.json"),
-    JSON.stringify(
-      {
-        name: "owlapi-registry-consumer",
-        private: true,
-        type: "module",
-        dependencies: { [dependencyName]: specifier },
-        ...(overrides ? { overrides } : {}),
-      },
-      null,
-      2,
-    ),
-  );
+  const manifest = join(directory, "package.json");
+  const lock = join(directory, "package-lock.json");
+  if (original) {
+    assert.ok(
+      expectedRoot(JSON.parse(original.manifest), dependencyName),
+      "The original recipient has a different root dependency",
+    );
+    const originalLock = JSON.parse(original.lock);
+    const firstParty =
+      originalLock.packages?.[`node_modules/${dependencyName}`];
+    assert.ok(
+      originalLock.lockfileVersion === 3 &&
+        expectedRoot(originalLock.packages?.[""], dependencyName) &&
+        firstParty?.resolved === metadata.dist.tarball &&
+        firstParty.integrity === metadata.dist.integrity,
+      "Public replay requires the exact registry-resolved root and integrity",
+    );
+    try {
+      indexRegistryOccurrences(originalLock.packages);
+    } catch {
+      throw new Error("Public replay requires an admitted registry lock");
+    }
+    writeFileSync(manifest, original.manifest, { flag: "wx" });
+    writeFileSync(lock, original.lock, { flag: "wx" });
+  } else {
+    writeFileSync(
+      manifest,
+      JSON.stringify(
+        {
+          name: "owlapi-registry-consumer",
+          private: true,
+          type: "module",
+          dependencies: { [dependencyName]: publicSpec(dependencyName) },
+        },
+        null,
+        2,
+      ),
+      { flag: "wx" },
+    );
+  }
   writeFileSync(
     join(directory, ".npmrc"),
     `registry=${NPM_REGISTRY}\n@hadden-industries:registry=${NPM_REGISTRY}\n`,
@@ -172,14 +221,33 @@ export const installRegistryConsumer = ({
     "--cache",
     join(directory, "npm-cache"),
   ];
-  execFileSync(process.execPath, [npmCli, "install", ...arguments_], {
-    cwd: directory,
-    env: environment,
-    encoding: "utf8",
-    windowsHide: true,
-    maxBuffer: 32 * 1024 * 1024,
-    timeout: 10 * 60_000,
-  });
+  try {
+    execFileSync(
+      process.execPath,
+      [npmCli, original ? "ci" : "install", ...arguments_],
+      {
+        cwd: directory,
+        env: environment,
+        encoding: "utf8",
+        windowsHide: true,
+        stdio: "pipe",
+        maxBuffer: 32 * 1024 * 1024,
+        timeout: 10 * 60_000,
+      },
+    );
+  } catch {
+    throw new Error("Public npm install did not complete");
+  }
+  if (original) {
+    assert.ok(
+      readFileSync(manifest).equals(Buffer.from(original.manifest)),
+      "The replay changed the original recipient manifest",
+    );
+    assert.ok(
+      readFileSync(lock).equals(Buffer.from(original.lock)),
+      "The replay changed the original recipient lock",
+    );
+  }
   const identity = verifyRegistryInstallation({
     directory,
     dependencyName,
@@ -187,54 +255,6 @@ export const installRegistryConsumer = ({
   });
   return { identity, environment, npmArguments: arguments_ };
 };
-
-export function publicConsumerOverrides(tarball) {
-  return JSON.parse(readGzipTarFile(tarball, "package.json")).overrides;
-}
-
-export function observeRegistryGraph({
-  directory,
-  environment,
-  dependencyName,
-  npmCli = process.env.npm_execpath,
-  sbom,
-}) {
-  const readGraph = (extra) =>
-    JSON.parse(
-      execFileSync(
-        process.execPath,
-        [npmCli, "ls", "--all", "--omit=dev", "--json", ...extra],
-        {
-          cwd: directory,
-          env: environment,
-          encoding: "utf8",
-          maxBuffer: 8 * 1024 * 1024,
-          timeout: 120000,
-          windowsHide: true,
-        },
-      ),
-    );
-  const graph = readGraph([]);
-  const node = (tree) => tree.dependencies?.[dependencyName];
-  const identities = flattenNpmGraph(node(graph), PACKAGE_NAME);
-  assert.deepEqual(
-    flattenNpmGraph(node(readGraph(["--package-lock-only"])), PACKAGE_NAME),
-    identities,
-    "Public installed and locked production graphs differ",
-  );
-  if (sbom) assertNpmSbomInventory(sbom, identities);
-  const digest = (file) =>
-    createHash("sha256")
-      .update(readFileSync(join(directory, file)))
-      .digest("hex");
-  return {
-    graph,
-    identities,
-    lockSha256: digest("package-lock.json"),
-    manifest: readJson(join(directory, "package.json")),
-    manifestSha256: digest("package.json"),
-  };
-}
 
 /** Refresh metadata without authentication, redirect or cache ambiguity. */
 export const fetchRegistryMetadata = async (version = PACKAGE_VERSION) => {
