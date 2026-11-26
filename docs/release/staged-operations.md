@@ -11,6 +11,9 @@ Record the release run, attempt, manifest file SHA-256, original candidate artif
 Inspect the earliest expiry of all referenced artifacts.
 Download the qualification manifest and the original three candidate assets.
 Inspect the signed rights inventory and candidate-specific benchmark disposition before staging.
+For a fresh qualification with a previously reviewed material case, supply the immutable signed tag object in `recipient_material_checkpoint`.
+The reader checks the original candidate, role, installation and authorised disposition before it reruns that role's normal checks.
+Leave the input empty for ordinary qualification.
 
 The read-only CI admission command, `node scripts/release-ci-qualification.mjs`, checks the protected-main dispatch, original CI execution and two original uploads.
 It requires the native dispatch environment, its frozen runtime matrix and a GitHub token with Actions, checks, contents and pull request read permissions.
@@ -27,7 +30,7 @@ CI reuse alone cannot stage or publish the package.
 
 Linux and Windows prepare the pinned ScanCode environment when an archive first needs inspection.
 Canonical archive reuse needs no scanner environment.
-A frozen macOS matrix lane that encounters an unmeasured archive retains a `pending-recipient-material` artifact and stops before product tests for that install.
+A macOS matrix or standalone portability job that encounters an unmeasured archive retains a `pending-recipient-material` artifact and stops before product tests for that install.
 Keep its artifact ID and server SHA-256.
 
 For a CI or Release run on the current protected `main` commit, dispatch `recipient-material-replay.yml` on that commit with the exact `observation` locator in `artifactId:sha256` form.
@@ -37,6 +40,15 @@ The original observation, compact measurement and replay proofs expire after 14 
 The replay receipt covers the recorded role and original lock.
 FULL qualification still requires the complete roster under the active admission policy.
 An unresolved licence or notice disposition stays with the rights owner under the exceptional evidence procedure.
+For a fresh full qualification, the signed checkpoint can index previously authenticated scanner results in `recipient-material-measurements.json` and case-specific decisions in `recipient-material-cases.json`.
+Each scanner index entry identifies its original role, commit, tarball and resolution SHA-256, native OS, CPU, Node and npm, and both the pending observation and scanner artifact IDs and SHA-256 digests.
+The fresh macOS job uses the exact retained lock for a matching role and runtime.
+Other matching archives can reuse those measurements by exact SRI while retaining their own resolution and test evidence.
+Each standalone portability job retains one indexed proof of its alias and scoped tests and the graphs measured before and after execution.
+The case index refers to the original job artifact and its digest.
+The matching `recipient-material-<caseSha256>.json` binds the rights owner's decision to the original material and scope.
+The fresh job checks the original bytes and reruns its own tests.
+A case-level replay alone leaves FULL qualification pending.
 
 ## Provider cutover
 
@@ -76,6 +88,13 @@ The hosted reader checks the same live rule revision when GitHub omits bypass ac
 The reader checks signer, protected live ref, exact tree inventory and every byte.
 Retain the Git objects and immutable assets in the existing off-platform backup.
 Credentials, private scanner details and OTPs do not belong in evidence.
+
+The protected evaluator reads reviewed advisory cases from `docs/release/dependency-advisory-cases.json` at its immutable controller commit.
+The register starts empty.
+A case that requires the native npm report stays pending until its custodian provides authorised durable storage and verifies retrieval.
+The standard hosted job has no private evidence store.
+Successful routine evaluations write the signed project decision.
+The original npm responses remain transient.
 
 The entire Git tree behind each history tag is public.
 Before creating or pushing it, review every blob and set `disclosure: "APPROVED_FOR_PUBLIC_GIT"` on the index and `disclosure: "PUBLIC"` on each entry.
@@ -176,10 +195,23 @@ Anonymous registry reads qualify bytes, both install spellings and documentation
 Each frozen Linux, Windows and macOS lane exercises the exact version and integrity using its consumer Node/npm pair.
 Both install spellings bind their actual production graph and original lock to the candidate, tests and advisory decision.
 Keep ordinary diagnostics in Actions logs.
+The public observation, material, lane-test and advisory artifacts have a 14-day recovery window.
+Sealing copies their required proof into the immutable release evidence.
+Preserve any outstanding original in the signed checkpoint before its Actions copy expires.
 Store only proof required for later verification, once per distinct original, and omit routine npm audit reports from uploads and release assets.
 Public recipient jobs occupy a run-specific concurrency group and release writers recheck the live preimages under their shared queue.
 Preserve original run IDs, attempts, native files and failed observations.
 A pending public coordinate allows read-only investigation.
+
+The stage journal records the qualification decision, its original upload and the time the stage accepted it.
+The registry run supplies a separate signed decision for the newly observed public installations.
+Current standalone evidence uses schema version 8.
+Its archive uses version 3 and carries the signed decisions, their original job identities, the frozen runtime policy and the distinct public inputs needed to replay them after Actions expires.
+The release owner can verify the earlier decision at its recorded admission time and the public decision at sealing.
+Signature readback uses the public Sigstore trust root retained in the protected controller revision and the transparency proofs in the signature bundle.
+The root matches the selected npm distribution's public Sigstore seed.
+The runtime update check verifies that binding before a new controller can issue evidence.
+Previously released versions use the evidence contract under which they were published.
 
 Use a signed `seal` operation with the original draft ID, verified `public.json`, `publicRun`, `publicAttempt`, its `publicController` SHA and recoverable source and qualification material.
 Preserve native run and artifact metadata in `origin-RUN-ATTEMPT-LOGICAL.json` with `run` and `artifact` as the original REST responses.

@@ -57,6 +57,8 @@ const ACTION_DIRECTORY = join(REPOSITORY_ROOT, ".github", "actions");
 const SHARED_SETUP = "./.github/actions/setup-producer";
 const SCANCODE_SETUP = "./.github/actions/setup-scancode";
 const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
+const advisoryWorkflow = "release-audit-evaluator.yml";
+const advisoryRetention = "${{ inputs.purpose == 'public' && 14 || 90 }}";
 const COLLECT_ARTIFACTS = "./.github/actions/collect-artifacts";
 const isCaseRetention = (step) => step.name === recipientMaterialCaseUpload;
 const PUBLISHER_SETUP = "./approval-tools/.github/actions/setup-producer";
@@ -208,6 +210,9 @@ const validateArtifactTransportStep = (
           ((Number.isInteger(inputs["retention-days"]) &&
             inputs["retention-days"] > 0 &&
             inputs["retention-days"] <= 90) ||
+            (file === advisoryWorkflow &&
+              jobId === "evaluate" &&
+              inputs["retention-days"] === advisoryRetention) ||
             (file === "installed-qualification.yml" &&
               jobId === "consumer_runtime" &&
               inputs["retention-days"] ===
@@ -726,13 +731,13 @@ const recipientCheckpointSelection = (file) =>
 const npmAuthority = { ...readAuthority, "id-token": "write" };
 const githubAuthority = { ...readAuthority, contents: "write" };
 const protectedReleaseBranch = `github.repository == '${REPOSITORY}' && github.ref == 'refs/heads/main'`;
-const advisoryWorkflow = "release-audit-evaluator.yml";
+
 const advisoryUse = `./.github/workflows/${advisoryWorkflow}`;
 const qualificationAdvisoryGuard = `\${{ ${qualificationAdvisoryCondition} }}`;
 const auditReceiptInputs = {
   name: "release-advisory-${{ github.run_id }}-${{ github.run_attempt }}",
   path: ".release/advisory/receipt.json\n.release/advisory/receipt.sigstore.json",
-  "retention-days": 90,
+  "retention-days": advisoryRetention,
   "compression-level": 6,
 };
 
@@ -1638,7 +1643,7 @@ function validateOperationJobs(file, workflow, violations) {
       requiredPublicUpload(
         job,
         name,
-        { name: logical, path, "retention-days": 90, "compression-level": 6 },
+        { name: logical, path, "retention-days": 14, "compression-level": 6 },
         violations,
       );
   } else if (file !== "release-completion.yml")

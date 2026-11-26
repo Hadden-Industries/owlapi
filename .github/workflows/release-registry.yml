@@ -81,7 +81,7 @@ jobs:
         with:
           name: public-observation-${{ matrix.runner }}-${{ matrix.node }}-${{ github.run_attempt }}
           path: .release/public-observation/observation.json
-          retention-days: 90
+          retention-days: 14
           compression-level: 6
   material:
     needs: [registry, public_observation]
@@ -132,7 +132,7 @@ jobs:
         with:
           name: public-material-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/public-material/material.json
-          retention-days: 90
+          retention-days: 14
           compression-level: 6
       - name: Retain the unresolved recipient material case
         if: ${{ failure() && hashFiles('.release/recipient-material-cases/case-*.json') != '' }}
@@ -189,7 +189,7 @@ jobs:
         with:
           name: public-recipient-${{ matrix.runner }}-${{ matrix.node }}-${{ github.run_attempt }}
           path: .release/public-lane/lane.json
-          retention-days: 90
+          retention-days: 14
           compression-level: 6
   advisory:
     name: Release advisory

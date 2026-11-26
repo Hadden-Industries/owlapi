@@ -2,7 +2,11 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 
 /** Read bounded policy or qualification bytes from an independently selected local Git object. */
-export function readControllerBlob(commit, path) {
+export function readControllerBlob(
+  commit,
+  path,
+  localRepository = new URL("../", import.meta.url),
+) {
   assert.match(commit, /^[a-f0-9]{40}$/u);
   assert.ok(
     typeof path === "string" &&
@@ -11,9 +15,15 @@ export function readControllerBlob(commit, path) {
   );
   return execFileSync(
     "git",
-    ["--no-lazy-fetch", "cat-file", "blob", commit + ":" + path],
+    [
+      "--no-replace-objects",
+      "--no-lazy-fetch",
+      "cat-file",
+      "blob",
+      commit + ":" + path,
+    ],
     {
-      cwd: new URL("../", import.meta.url),
+      cwd: localRepository,
       windowsHide: true,
       timeout: 10000,
       maxBuffer: 16 * 1024 * 1024,

@@ -115,10 +115,16 @@ export const verifyReleaseTagFacts = ({
 };
 
 const runGit = (cwd, arguments_) => {
-  const result = spawnSync("git", arguments_, {
-    cwd,
-    encoding: "utf8",
-  });
+  const result = spawnSync(
+    "git",
+    ["--no-replace-objects", "--no-lazy-fetch", ...arguments_],
+    {
+      cwd,
+      encoding: "utf8",
+      timeout: 30_000,
+      windowsHide: true,
+    },
+  );
   if (result.status !== 0) {
     throw new Error(
       `git ${arguments_.join(" ")} failed: ${result.stdout}${result.stderr}`,
@@ -132,9 +138,12 @@ const inspectLocalReleaseTag = ({
   expectedTag,
   expectedCommit,
   registry,
+  tagObject,
   temporaryDirectory = tmpdir(),
 }) => {
-  const reference = `refs/tags/${expectedTag}`;
+  if (tagObject !== undefined && !/^[a-f0-9]{40}$/u.test(tagObject))
+    throw new Error("An exact signed tag object ID is required.");
+  const reference = tagObject ?? `refs/tags/${expectedTag}`;
   const objectType = runGit(localRepositoryRoot, [
     "cat-file",
     "-t",
@@ -159,6 +168,7 @@ const inspectLocalReleaseTag = ({
     temporaryDirectory,
     `owlapi-release-signers-${randomUUID()}`,
   );
+  const archivedRevocations = `${allowedSignersPath}.revocations`;
   let localVerification;
   try {
     // Trust is derived exclusively from the reviewed registry; private keys
@@ -168,7 +178,20 @@ const inspectLocalReleaseTag = ({
       mode: 0o600,
       flag: "wx",
     });
+    // Archived verification uses the original registry's status and validity.
+    // A current ambient revocation list or signing command cannot replace it.
+    const archivedConfig = [];
+    if (tagObject !== undefined) {
+      writeFileSync(archivedRevocations, "", { mode: 0o600, flag: "wx" });
+      archivedConfig.push(
+        "-c",
+        "gpg.ssh.program=ssh-keygen",
+        "-c",
+        `gpg.ssh.revocationFile=${archivedRevocations}`,
+      );
+    }
     const verification = runGit(localRepositoryRoot, [
+      ...archivedConfig,
       "-c",
       "gpg.format=ssh",
       "-c",
@@ -182,6 +205,7 @@ const inspectLocalReleaseTag = ({
     if (existsSync(allowedSignersPath)) {
       unlinkSync(allowedSignersPath);
     }
+    if (existsSync(archivedRevocations)) unlinkSync(archivedRevocations);
   }
   return { localVerification, objectType, targetCommit };
 };
@@ -193,12 +217,14 @@ export const verifyLocalReleaseTag = ({
   registry,
   releaseDate,
   temporaryDirectory,
+  tagObject,
 }) => {
   const inspection = inspectLocalReleaseTag({
     repositoryRoot: localRepositoryRoot,
     expectedTag,
     expectedCommit,
     registry,
+    tagObject,
     temporaryDirectory,
   });
   return verifyLocalReleaseTagFacts({

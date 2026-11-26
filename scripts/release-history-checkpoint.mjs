@@ -17,17 +17,20 @@ const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const hostedCheckout = () =>
   process.env.GITHUB_ACTIONS === "true" &&
   process.env.GITHUB_REPOSITORY === REPOSITORY;
-const git = (...args) =>
+const gitAt = (cwd, ...args) =>
   execFileSync("git", args, {
-    cwd: repositoryRoot,
+    cwd,
     maxBuffer: 64 * 1024 * 1024,
     timeout: 30000,
     windowsHide: true,
+    stdio: ["ignore", "pipe", "pipe"],
     env: { ...process.env, GIT_NO_LAZY_FETCH: "1" },
   });
+const git = (...args) => gitAt(repositoryRoot, ...args);
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const rulesPath = "/rulesets?includes_parents=true&per_page=100";
 const oidPattern = /^[a-f0-9]{40}$/u;
+const historyTag = /^owlapi-release-history\/[a-z0-9][a-z0-9.-]{0,100}$/u;
 const validMember = /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,160}$/u;
 const maxBlobBytes = 64 * 1024 * 1024;
 
@@ -54,10 +57,7 @@ function localHistoryRef(ref, objectId) {
 }
 
 function historyBlob(oid, maximum = maxBlobBytes) {
-  let size;
-  try {
-    size = Number(git("cat-file", "-s", oid).toString().trim());
-  } catch (error) {
+  return readHistoryObject("blob", oid, maximum, git, (error) => {
     if (error.status !== 128 || !hostedCheckout()) throw error;
     // The server only serves the exact object referenced by the verified tag tree.
     git(
@@ -68,13 +68,27 @@ function historyBlob(oid, maximum = maxBlobBytes) {
       REPOSITORY_GIT_URL,
       oid,
     );
-    size = Number(git("cat-file", "-s", oid).toString().trim());
+  });
+}
+
+function readHistoryObject(type, oid, maximum, readGit, restore) {
+  let size;
+  try {
+    size = Number(readGit("cat-file", "-s", oid).toString().trim());
+  } catch (error) {
+    if (!restore)
+      throw new Error(
+        `Restore the original signed history Git object ${oid} before offline verification`,
+        { cause: error },
+      );
+    restore(error);
+    size = Number(readGit("cat-file", "-s", oid).toString().trim());
   }
   assert.ok(
     Number.isSafeInteger(size) && size >= 0 && size <= maximum,
     "Selected signed blob exceeds its byte limit",
   );
-  return git("cat-file", "blob", oid);
+  return readGit("cat-file", type, oid);
 }
 
 /** Validate all signed paths and sizes before reading only the selected blobs. */
@@ -223,7 +237,7 @@ export async function readCheckpoint(client, objectId) {
   assert.match(objectId, oidPattern);
   const tag = await client.read("/git/tags/" + objectId);
   assert.equal(tag.sha, objectId);
-  assert.match(tag.tag, /^owlapi-release-history\/[a-z0-9][a-z0-9.-]{0,100}$/u);
+  assert.match(tag.tag, historyTag);
   assert.equal(tag.object.type, "commit");
   assert.match(tag.object.sha, /^[a-f0-9]{40}$/u);
   assert.equal(tag.verification.verified, true);
@@ -244,33 +258,7 @@ export async function readCheckpoint(client, objectId) {
     registry: signers,
     releaseDate: new Date().toISOString().slice(0, 10),
   });
-  const inventory = new Map();
-  for (const line of git(
-    "ls-tree",
-    "-rz",
-    "--format=%(objectmode) %(objectname) %(path)",
-    tag.object.sha,
-    "--",
-    "evidence/",
-  )
-    .toString()
-    .split("\0")
-    .filter(Boolean)) {
-    const match = /^(\d+) ([a-f0-9]{40}) evidence\/([a-zA-Z0-9._-]+)$/u.exec(
-      line,
-    );
-    assert.ok(match, "Invalid physical checkpoint path");
-    const [, mode, oid, name] = match;
-    assert.ok(!inventory.has(name));
-    inventory.set(name, { mode, oid });
-  }
-  const header = inventory.get("checkpoint.json");
-  assert.equal(header?.mode, "100644");
-  const index = JSON.parse(
-    new TextDecoder("utf-8", { fatal: true }).decode(
-      historyBlob(header.oid, 2 * 1024 * 1024),
-    ),
-  );
+  const { index, files } = openCheckpointTree(tag.object.sha, git, historyBlob);
   const rulesets = await client.read(rulesPath);
   assert.ok(Array.isArray(rulesets) && rulesets.length < 100);
   const protections = new Set();
@@ -297,17 +285,102 @@ export async function readCheckpoint(client, objectId) {
     "History namespace needs protected creation and immutable refs",
   );
   assert.equal(
+    (await client.read("/git/ref/tags/" + tag.tag)).object.sha,
+    objectId,
+  );
+  return { objectId, tag: tag.tag, index, files, signer };
+}
+
+function openCheckpointTree(commit, readGit, loadBlob) {
+  const inventory = new Map();
+  for (const line of readGit(
+    "ls-tree",
+    "-rz",
+    "--format=%(objectmode) %(objectname) %(path)",
+    commit,
+    "--",
+    "evidence/",
+  )
+    .toString()
+    .split("\0")
+    .filter(Boolean)) {
+    const match = /^(\d+) ([a-f0-9]{40}) evidence\/([a-zA-Z0-9._-]+)$/u.exec(
+      line,
+    );
+    assert.ok(match, "Invalid physical checkpoint path");
+    const [, mode, oid, name] = match;
+    assert.ok(!inventory.has(name));
+    inventory.set(name, { mode, oid });
+  }
+  const header = inventory.get("checkpoint.json");
+  assert.equal(header?.mode, "100644");
+  const index = JSON.parse(
+    new TextDecoder("utf-8", { fatal: true }).decode(
+      loadBlob(header.oid, 2 * 1024 * 1024),
+    ),
+  );
+  assert.equal(
     index.disclosure,
     "APPROVED_FOR_PUBLIC_GIT",
     "Only disclosure-reviewed public evidence belongs in this ref",
   );
   assert.equal(index.repository, REPOSITORY);
-  const files = checkpointPayloads(index, inventory, historyBlob);
-  assert.equal(
-    (await client.read("/git/ref/tags/" + tag.tag)).object.sha,
-    objectId,
+  return { index, files: checkpointPayloads(index, inventory, loadBlob) };
+}
+
+/** Reverify an exact checkpoint object already admitted by the immutable seal.
+ * The caller owns the historical timestamp and signer registry. This route has
+ * no authority to admit a new live checkpoint or fetch missing Git objects. */
+export function readArchivedCheckpoint(
+  objectId,
+  { registry, verifiedAt, localRepository = repositoryRoot },
+) {
+  assert.match(objectId, oidPattern);
+  const time = Date.parse(verifiedAt);
+  assert.ok(
+    Number.isFinite(time),
+    "Missing original checkpoint verification time",
   );
-  return { objectId, tag: tag.tag, index, files, signer };
+  const readGit = (...args) =>
+    gitAt(localRepository, "--no-replace-objects", "--no-lazy-fetch", ...args);
+  const raw = readHistoryObject("tag", objectId, 64 * 1024, readGit);
+  assert.equal(
+    createHash("sha1").update(`tag ${raw.length}\0`).update(raw).digest("hex"),
+    objectId,
+    "Archived checkpoint tag object changed",
+  );
+  const [target, type, name, tagger, ...rest] = new TextDecoder("utf-8", {
+    fatal: true,
+  })
+    .decode(raw)
+    .split("\n\n", 1)[0]
+    .split("\n");
+  assert.equal(rest.length, 0);
+  assert.equal(type, "type commit");
+  const commit = /^object ([a-f0-9]{40})$/u.exec(target)?.[1];
+  assert.ok(commit, "Invalid original checkpoint commit");
+  const tag = name?.slice(4);
+  assert.ok(name?.startsWith("tag "));
+  assert.match(tag, historyTag);
+  const seconds = Number(
+    /^tagger [^\n]+ <[^<>\n]*> ([0-9]{1,12}) [+-][0-9]{4}$/u.exec(tagger)?.[1],
+  );
+  assert.ok(
+    Number.isSafeInteger(seconds) && seconds >= 0 && seconds * 1000 <= time,
+    "Archived checkpoint postdates its original verification",
+  );
+  const signer = verifyLocalReleaseTag({
+    repositoryRoot: localRepository,
+    expectedTag: tag,
+    expectedCommit: commit,
+    tagObject: objectId,
+    registry,
+    releaseDate: new Date(time).toISOString().slice(0, 10),
+  });
+  const { index, files } = openCheckpointTree(commit, readGit, (oid, max) =>
+    readHistoryObject("blob", oid, max, readGit),
+  );
+  return { objectId, tag, index, files, signer };
 }
 
 /** A protected reservation survives run deletion and can authorize only one native run number. */
@@ -456,7 +529,15 @@ export function verifyControllerDelta(source, controller, files) {
         [
           "scripts/github-release.mjs",
           "scripts/github-evidence-reader.mjs",
+          "scripts/public-archive-verification.mjs",
+          "scripts/public-audit-batch.mjs",
+          "scripts/public-material-job.mjs",
+          "scripts/public-recipient-observation.mjs",
+          "scripts/public-reconciliation-proof.mjs",
+          "scripts/public-reconciliation-proof.test.js",
           "scripts/public-registry-consumer.mjs",
+          "scripts/public-registry-consumer.test.js",
+          "scripts/validate-release-evidence.mjs",
           "scripts/workflow-governance.mjs",
           "scripts/workflow-governance.test.js",
         ].includes(p) ||

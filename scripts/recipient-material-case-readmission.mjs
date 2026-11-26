@@ -4,7 +4,11 @@ import { jsonEquals, stableJson } from "./canonical-json.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { REPOSITORY } from "./release-identity.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
-import { readCheckpoint } from "./release-history-checkpoint.mjs";
+import {
+  readArchivedCheckpoint,
+  readCheckpoint,
+} from "./release-history-checkpoint.mjs";
+import { readControllerBlob } from "./release-controller-blob.mjs";
 import { verifyResolutionEvidence } from "./release-consumer-evidence.mjs";
 import { assertRecipientMaterialDisposition } from "./recipient-material-case-authority.mjs";
 import { openRecipientMaterialCase } from "./recipient-material-case.mjs";
@@ -224,7 +228,7 @@ export async function verifyQualifiedRecipientMaterial(
     return material;
   }
   assert.ok(
-    client && scope,
+    scope && (archived || client),
     "Independent authenticated recipient rights readback is required",
   );
   assert.equal(
@@ -232,7 +236,31 @@ export async function verifyQualifiedRecipientMaterial(
     recordSha256,
     "Qualified material changed",
   );
-  const checkpoint = await caseCheckpoint(client, rights.checkpoint);
+  let checkpoint, originalPolicy;
+  if (archived) {
+    const { verifiedAt, localRepository } = archived;
+    const observedTime = Date.parse(verifiedAt);
+    assert.ok(
+      Number.isFinite(observedTime),
+      "Missing original material verification time",
+    );
+    const date = new Date(observedTime).toISOString().slice(0, 10);
+    const readPolicy = (path) =>
+      JSON.parse(
+        readControllerBlob(
+          scope.sourceCommit,
+          `docs/provenance/${path}.json`,
+          localRepository,
+        ),
+      );
+    const signers = readPolicy("release-signers");
+    originalPolicy = { signers, rights: readPolicy("rights-inventory"), date };
+    checkpoint = readArchivedCheckpoint(rights.checkpoint, {
+      registry: signers,
+      verifiedAt,
+      localRepository,
+    });
+  } else checkpoint = await caseCheckpoint(client, rights.checkpoint);
   const entry = caseSelection(
     checkpoint,
     scope.role,
@@ -273,7 +301,11 @@ export async function verifyQualifiedRecipientMaterial(
   const { original, authorization } = reopened
     ? {
         original: reopened,
-        authorization: assertRecipientMaterialDisposition(reopened, checkpoint),
+        authorization: assertRecipientMaterialDisposition(
+          reopened,
+          checkpoint,
+          originalPolicy,
+        ),
       }
     : await authenticateCase(client, checkpoint, entry, scope, npmCli);
   assert.ok(

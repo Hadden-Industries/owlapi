@@ -83,18 +83,24 @@ export function productionDependencyDeclarations(metadata) {
 export async function openCanonicalEvidence(
   repositoryRoot,
   canonicalLockfileBytes,
+  readCanonicalBytes,
 ) {
   const provenanceRoot = join(repositoryRoot, "docs", "provenance");
+  const materialPath = "docs/provenance/third-party-material.json";
+  assert.ok(
+    !(canonicalLockfileBytes && readCanonicalBytes),
+    "Canonical corpus requires one trusted byte source",
+  );
+  const read = readCanonicalBytes
+    ? async (path) => readCanonicalBytes(path, MAX_JSON_BYTES)
+    : (path) => readJsonBytes(join(repositoryRoot, path));
   const [bytes, lockBytes, materialBytes] = await Promise.all([
-    readJsonBytes(join(provenanceRoot, EVIDENCE_MANIFEST_NAME)),
-    canonicalLockfileBytes ??
-      readJsonBytes(join(repositoryRoot, "package-lock.json")),
-    readJsonBytes(join(provenanceRoot, "third-party-material.json")).catch(
-      (error) => {
-        if (error.code !== "ENOENT") throw error;
-        return null;
-      },
-    ),
+    read(`docs/provenance/${EVIDENCE_MANIFEST_NAME}`),
+    canonicalLockfileBytes ?? read("package-lock.json"),
+    read(materialPath).catch((error) => {
+      if (readCanonicalBytes || error.code !== "ENOENT") throw error;
+      return null;
+    }),
   ]);
   const manifest = JSON.parse(bytes);
   const graph = normalizeLockedRegistryGraph(lockBytes);
@@ -149,6 +155,10 @@ export async function openCanonicalEvidence(
   }
   const verify = createRetainedArtifactVerifier({
     blobRoot: join(provenanceRoot, "evidence", "npm"),
+    readBlobBytes:
+      readCanonicalBytes &&
+      ((path, maximum) =>
+        readCanonicalBytes(`docs/provenance/evidence/npm/${path}`, maximum)),
     blobs: manifest.blobs,
     registryKeys: manifest.registryKeys,
   });
@@ -162,7 +172,7 @@ export async function openCanonicalEvidence(
       lockfileSha256: graph.lockfileSha256,
       corpusRoot: manifest.corpusRoot,
       material: material && {
-        path: "docs/provenance/third-party-material.json",
+        path: materialPath,
         bytes: materialBytes.length,
         sha256: sha256(materialBytes),
         reviewStatus: material.review.status,

@@ -5,6 +5,60 @@
   "oneOf": [
     {
       "title": "Staged immutable release evidence",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "schemaVersion": {
+                "const": 8
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "publicAdvisory": {},
+              "stage": {
+                "type": "object",
+                "required": [
+                  "qualificationAdvisory"
+                ],
+                "properties": {
+                  "qualificationAdvisory": {
+                    "$ref": "#/$defs/qualificationAdvisory"
+                  }
+                }
+              },
+              "publicVerification": {
+                "type": "object",
+                "required": [
+                  "schemaVersion"
+                ],
+                "properties": {
+                  "schemaVersion": {
+                    "const": 2
+                  }
+                }
+              }
+            },
+            "required": [
+              "publicAdvisory"
+            ]
+          },
+          "else": {
+            "properties": {
+              "publicAdvisory": false,
+              "publicVerification": {
+                "type": "object",
+                "properties": {
+                  "schemaVersion": {
+                    "const": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -19,7 +73,13 @@
       ],
       "properties": {
         "schemaVersion": {
-          "const": 7
+          "enum": [
+            7,
+            8
+          ]
+        },
+        "publicAdvisory": {
+          "$ref": "#/$defs/publicAdvisory"
         },
         "releaseId": {
           "type": "integer",
@@ -2116,6 +2176,92 @@
     }
   ],
   "$defs": {
+    "advisoryArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "artifactDigest",
+        "jobId",
+        "signatureSha256",
+        "statementSha256"
+      ],
+      "properties": {
+        "artifactId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "artifactDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "jobId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "signatureSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "statementSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "qualificationAdvisory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "descriptor",
+        "verifiedAt",
+        "policySha256",
+        "subjectsSha256"
+      ],
+      "properties": {
+        "descriptor": {
+          "$ref": "#/$defs/advisoryArtifact"
+        },
+        "verifiedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "policySha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "subjectsSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "publicAdvisory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "descriptor",
+        "runId",
+        "attempt",
+        "controller",
+        "policySha256"
+      ],
+      "properties": {
+        "descriptor": {
+          "$ref": "#/$defs/advisoryArtifact"
+        },
+        "runId": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,15}$"
+        },
+        "attempt": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,2}$"
+        },
+        "controller": {
+          "$ref": "#/$defs/commit"
+        },
+        "policySha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
     "sha256": {
       "type": "string",
       "pattern": "^[0-9a-f]{64}$"

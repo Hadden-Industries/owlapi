@@ -27,6 +27,7 @@ export const validateReleaseEvidence = (record) => {
       `Release evidence violates its strict schema: ${ajv.errorsText(validate.errors)}`,
     );
   }
+  if (record.schemaVersion === 8) return validateStagedReleaseEvidence(record);
   if (record.schemaVersion === 6) assertRc3RecoveryEvidence(record);
   if ([4, 5, 6].includes(record.schemaVersion)) {
     assertArchivedOwlContractReport(record.producerContract, {

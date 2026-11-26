@@ -261,6 +261,7 @@ async function reopenRecipientArchive({
 export async function prepareRecipientMaterial({
   repositoryRoot = repositoryDefault,
   canonicalLockfileBytes,
+  readCanonicalBytes,
   evidenceDirectory,
   trustedRegistryKeySnapshot,
   npmCli,
@@ -277,6 +278,7 @@ export async function prepareRecipientMaterial({
   const canonical = await openCanonicalEvidence(
     repositoryRoot,
     canonicalLockfileBytes,
+    readCanonicalBytes,
   );
   const registryKeys = new Map(
     canonical.registryKeys.map((key) => [key.keyid, key]),

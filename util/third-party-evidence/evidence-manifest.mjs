@@ -194,17 +194,10 @@ const evidenceReferencesFor = (artifact) => [
   artifact.scan.evidence,
 ];
 
-const readEvidenceEnvelope = async (
-  blobRoot,
-  reference,
-  artifactId,
-  confined,
-) => {
+const readEvidenceEnvelope = async (readBlob, reference, artifactId) => {
   let envelope;
   try {
-    envelope = JSON.parse(
-      await readVerifiedBlob(blobRoot, reference, { confined }),
-    );
+    envelope = JSON.parse(await readBlob(reference));
   } catch (error) {
     controlFailure(
       "EVIDENCE_BLOB_INVALID_JSON",
@@ -257,12 +250,11 @@ const verifyArtifactEvidence = async ({
   artifact,
   occurrences,
   keyById,
-  blobRoot,
+  readBlob,
   blobByReference,
   referencedBlobs,
   allowLegacyArchiveInventory,
   allowLegacyScancodeNormalization,
-  confined,
 }) => {
   verifyCompletionStates(artifact);
   try {
@@ -301,10 +293,9 @@ const verifyArtifactEvidence = async ({
   }
 
   const archive = await readEvidenceEnvelope(
-    blobRoot,
+    readBlob,
     artifact.archive.evidence,
     artifact.artifactId,
-    confined,
   );
   if (
     archive?.packageIdentity?.name !== artifact.name ||
@@ -417,7 +408,7 @@ const verifyArtifactEvidence = async ({
     try {
       metadata = JSON.parse(
         new TextDecoder("utf-8", { fatal: true }).decode(
-          await readVerifiedBlob(blobRoot, reference, { confined }),
+          await readBlob(reference),
         ),
       );
     } catch (error) {
@@ -446,10 +437,9 @@ const verifyArtifactEvidence = async ({
   }
 
   const signatureEvidence = await readEvidenceEnvelope(
-    blobRoot,
+    readBlob,
     artifact.registrySignature.evidence,
     artifact.artifactId,
-    confined,
   );
   if (
     signatureEvidence?.publishedAt !== artifact.registrySignature.publishedAt ||
@@ -503,10 +493,9 @@ const verifyArtifactEvidence = async ({
   }
 
   const provenance = await readEvidenceEnvelope(
-    blobRoot,
+    readBlob,
     artifact.provenance.evidence,
     artifact.artifactId,
-    confined,
   );
   if (provenance?.state !== artifact.provenance.state) {
     productFailure(
@@ -527,10 +516,9 @@ const verifyArtifactEvidence = async ({
   }
 
   const scan = await readEvidenceEnvelope(
-    blobRoot,
+    readBlob,
     artifact.scan.evidence,
     artifact.artifactId,
-    confined,
   );
   const normalizationVersion = scan?.scanner?.normalizationVersion;
   if (
@@ -553,6 +541,7 @@ const verifyArtifactEvidence = async ({
 /** Verify exact retained originals for selected archives without reopening a whole corpus. */
 export const createRetainedArtifactVerifier = ({
   blobRoot,
+  readBlobBytes,
   blobs,
   registryKeys,
   requireCompleteBlobSet = false,
@@ -563,24 +552,26 @@ export const createRetainedArtifactVerifier = ({
     "registry key",
   );
   const blobByReference = indexUnique(blobs, referenceKey, "archive blob");
+  const readBlob = (reference) =>
+    readVerifiedBlob(blobRoot, reference, {
+      confined: true,
+      readBytes: readBlobBytes,
+    });
   return async (artifact, occurrences) => {
     const referencedBlobs = new Set();
     const evidence = await verifyArtifactEvidence({
       artifact,
       occurrences,
       keyById,
-      blobRoot,
+      readBlob,
       blobByReference,
       referencedBlobs,
-      confined: true,
     });
     if (requireCompleteBlobSet && referencedBlobs.size !== blobByReference.size)
       throw new Error("Archive evidence contains unreferenced blobs");
     for (const key of referencedBlobs) {
       if (key.startsWith("PACKAGE_EVIDENCE_FILE:"))
-        await readVerifiedBlob(blobRoot, blobByReference.get(key), {
-          confined: true,
-        });
+        await readBlob(blobByReference.get(key));
     }
     return evidence;
   };
@@ -660,6 +651,7 @@ const verifyEvidenceDocument = async ({
       "registry key",
     );
     const referencedBlobs = new Set();
+    const readBlob = (reference) => readVerifiedBlob(blobRoot, reference);
     for (const identity of graph.artifacts) {
       const artifact = artifactById.get(identity.artifactId);
       if (!artifact) {
@@ -691,7 +683,7 @@ const verifyEvidenceDocument = async ({
           ({ artifactId }) => artifactId === identity.artifactId,
         ),
         keyById,
-        blobRoot,
+        readBlob,
         blobByReference,
         referencedBlobs,
         allowLegacyArchiveInventory,

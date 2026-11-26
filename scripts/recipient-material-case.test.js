@@ -22,7 +22,10 @@ import {
   assertAuthorizedRecipientMaterialReplay,
   assertRecipientMaterialDisposition,
 } from "./recipient-material-case-authority.mjs";
-import { priorDisposition } from "./release-history-checkpoint.mjs";
+import {
+  priorDisposition,
+  readArchivedCheckpoint,
+} from "./release-history-checkpoint.mjs";
 
 const hash = (text) => sha256Buffer(Buffer.from(text));
 const manifest =
@@ -309,6 +312,7 @@ jest.unstable_mockModule("./release-audit-evaluator.mjs", () => ({
 const checkpointRead = jest.fn();
 jest.unstable_mockModule("./release-history-checkpoint.mjs", () => ({
   priorDisposition,
+  readArchivedCheckpoint,
   readCheckpoint: checkpointRead,
 }));
 const originalRead = jest.fn(async (_client, env) => {
@@ -538,17 +542,6 @@ test("normal qualification continues after reopening an exact approved rights ca
         },
       }),
     ).rejects.toThrow(/unsigned case selection/u);
-    const openedBeforeArchive = originalRead.mock.calls.length;
-    await expect(
-      verifyQualifiedRecipientMaterial(reader, retained, {
-        client: {},
-        scope,
-        rights: recorded.rights,
-        archived: true,
-      }),
-    ).resolves.toMatchObject({ rights: { checkpoint: objectId } });
-    expect(originalRead).toHaveBeenCalledTimes(openedBeforeArchive);
-
     originalRead.mockRejectedValueOnce(
       Object.assign(new Error("expired fixture custody"), {
         code: "RECIPIENT_ORIGINAL_EXPIRED",

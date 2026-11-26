@@ -41,24 +41,29 @@ const absoluteBlobPath = (root, reference) =>
 export const readVerifiedBlob = async (
   root,
   reference,
-  { confined = false } = {},
+  { confined = false, readBytes } = {},
 ) => {
   const expected = validateReference(reference);
-  let path = absoluteBlobPath(root, expected);
-  if (confined) {
-    const stat = await lstat(path);
-    if (!stat.isFile() || stat.size !== expected.bytes)
-      throw new Error(
-        `Unsafe or inconsistent evidence blob file for ${expected.sha256}`,
-      );
-    path = await realpath(path);
-    if (!isStrictDescendantPath(await realpath(root), path))
-      throw new Error(
-        `Evidence blob path escapes its store for ${expected.sha256}`,
-      );
+  let bytes;
+  if (readBytes) {
+    bytes = await readBytes(expected.path, expected.bytes);
+  } else {
+    let path = absoluteBlobPath(root, expected);
+    if (confined) {
+      const stat = await lstat(path);
+      if (!stat.isFile() || stat.size !== expected.bytes)
+        throw new Error(
+          `Unsafe or inconsistent evidence blob file for ${expected.sha256}`,
+        );
+      path = await realpath(path);
+      if (!isStrictDescendantPath(await realpath(root), path))
+        throw new Error(
+          `Evidence blob path escapes its store for ${expected.sha256}`,
+        );
+    }
+    bytes = await readFile(path);
   }
-  const bytes = await readFile(path);
-  if (bytes.length !== expected.bytes) {
+  if (!Buffer.isBuffer(bytes) || bytes.length !== expected.bytes) {
     throw new Error(
       `Evidence blob byte length mismatch for ${expected.sha256}`,
     );

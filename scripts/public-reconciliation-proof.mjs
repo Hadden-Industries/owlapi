@@ -735,7 +735,7 @@ export function verifyPublicMaterialRecord(
       client,
       npmCli,
       rights: decision.rights,
-      archived,
+      archived: archived && { verifiedAt: decision.observedAt },
       scope: {
         evidence: observed.evidence,
         role: `public-${mode}`,

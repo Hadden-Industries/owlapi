@@ -7,13 +7,19 @@ import {
   selectArtifactGroups,
 } from "../tooling/artifact-transport/identity.mjs";
 import assert from "node:assert/strict";
+import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
+import { isStrictDescendantPath } from "./release-file-utils.mjs";
+import { tmpdir } from "node:os";
 import { isDeepStrictEqual } from "node:util";
 import { setTimeout as delay } from "node:timers/promises";
 import { spawnSync } from "node:child_process";
 import {
   appendFileSync,
   mkdirSync,
+  mkdtempSync,
   readFileSync,
+  realpathSync,
+  rmSync,
   writeFileSync,
 } from "node:fs";
 import { createRequire } from "node:module";
@@ -238,6 +244,69 @@ export async function applyLabels(
   return after;
 }
 
+export function assertChannelCompletionEvidence(completion, evidence) {
+  validateStagedReleaseEvidence(evidence);
+  assert.deepEqual(
+    [
+      completion.releaseId,
+      completion.source,
+      completion.tagObject,
+      completion.version,
+    ],
+    [
+      evidence.releaseId,
+      evidence.source,
+      evidence.tagObject,
+      evidence.stage.version,
+    ],
+  );
+  assert.equal(
+    completion.releaseEvidenceSchema ?? 7,
+    evidence.schemaVersion,
+    "Channel completion names a different immutable evidence format",
+  );
+  const archive = completion.assets.find(
+    ({ name }) => name === evidence.archive.name,
+  );
+  assert.deepEqual(
+    [archive?.bytes, archive?.sha256],
+    [evidence.archive.bytes, evidence.archive.sha256],
+  );
+  assert.deepEqual(
+    completion.publicAdvisory,
+    evidence.publicAdvisory,
+    "Channel completion does not bind the admitted public advisory evidence",
+  );
+}
+
+async function releasedEvidence(client, release, proof) {
+  const name = historicalEvidenceName(proof.version);
+  const selected = release.assets.find((item) => item.name === name);
+  const expected = proof.assets.find((item) => item.name === name);
+  assert.ok(
+    selected && expected && expected.bytes <= 4 * 1024 * 1024,
+    "Missing bounded immutable release evidence",
+  );
+  const { downloadAsset } = await import("./verify-immutable-release.mjs");
+  const root = realpathSync(tmpdir());
+  const directory = mkdtempSync(join(root, "owlapi-channel-evidence-"));
+  assert.ok(isStrictDescendantPath(root, directory));
+  try {
+    const path = await downloadAsset({
+      repository,
+      token: client.token,
+      asset: selected,
+      directory,
+    });
+    const bytes = readFileSync(path);
+    assert.equal(bytes.length, expected.bytes);
+    assert.equal(hash(bytes), expected.sha256);
+    return JSON.parse(bytes);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+}
+
 export async function verifiedChannelRelease(client, checkpoint, version) {
   const historical = isHistoricalRelease(version);
   const proof = historical
@@ -264,6 +333,11 @@ export async function verifiedChannelRelease(client, checkpoint, version) {
   assert.equal(ref.object.type, "tag");
   assert.equal(ref.object.sha, proof.tagObject);
   assertReleaseAssets({ assets: release.assets, expected: proof.assets });
+  if (!historical)
+    assertChannelCompletionEvidence(
+      proof,
+      await releasedEvidence(client, release, proof),
+    );
   return release;
 }
 

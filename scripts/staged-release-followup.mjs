@@ -35,6 +35,7 @@ import {
   originalBytes,
   originalManifest,
   readStageJournal,
+  verifyNewStageAdvisories,
 } from "./staged-release.mjs";
 import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
 import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
@@ -43,13 +44,41 @@ import { PACKAGE_NAME, NPM_REGISTRY } from "./package-identity.mjs";
 import {
   publicRecipientInput,
   qualificationRuntimeMatrix,
-  readPublicEvidence,
+  readPublicAuditSubjects,
 } from "./release-public-proof.mjs";
+import {
+  archiveAdvisory,
+  verifyHostedAdvisoryReceipt,
+} from "./release-audit-job.mjs";
+import { qualificationAdvisoryMarker } from "./qualification-advisory-binding.mjs";
+import { readControllerBlob } from "./release-controller-blob.mjs";
+import { verifyArchivedPublicRelease } from "./public-archive-verification.mjs";
+import { withAuditNpmClients } from "./release-audit-runtimes.mjs";
+import {
+  assertAdvisoryCasesCurrent,
+  assertAdvisoryDecisionCurrent,
+} from "./release-audit-evaluator.mjs";
+import {
+  findNpmCliCandidates,
+  observeNpmVersion,
+  selectNpmCliForVersion,
+} from "./assert-workflow-runtime.mjs";
+import { CI_RUNTIME } from "./runtime-policy.mjs";
 import { CI_WORKFLOW } from "./ci-verification.mjs";
 import { canonicalJson } from "./canonical-json.mjs";
 
 const parse = (bytes) => JSON.parse(bytes.toString("utf8"));
 const positive = (n) => Number.isSafeInteger(n) && n > 0;
+const producerNpm = () =>
+  selectNpmCliForVersion({
+    expectedNpm: CI_RUNTIME.npm,
+    candidates: findNpmCliCandidates(),
+    observeVersion: observeNpmVersion,
+  }).npmCli;
+const rawAuditMember = (name) =>
+  /(?:^|\/)(?:npm-audit-[^/]+|normal-consumer-npm-audit-production|transport-audit)\.json$/iu.test(
+    name,
+  );
 const asset = (name, bytes) => ({
   name,
   bytes: bytes.length,
@@ -685,6 +714,23 @@ async function verifyQualificationDisclosure(
     const original = read(name);
     assert.equal("sha256:" + hash(original), artifact.digest);
     assert.equal(original.length, artifact.bytes);
+    if (artifact.id === manifest.ci?.packageProof?.id) {
+      const allowed = ["candidate-manifest.json", "consumer-resolutions.json"];
+      const members = readZipArchiveFilesWith(original, {
+        crc32,
+        expectedNames: new Set(allowed),
+        maximumUncompressedBytes: 16 * 1024 * 1024,
+      });
+      assert.deepEqual(members.map(({ path }) => path).sort(), allowed);
+    } else if (qualificationBaseSchema(manifest) === 1) {
+      assert.ok(
+        readZipArchiveFilesWith(original, {
+          crc32,
+          maximumUncompressedBytes: 48 * 1024 * 1024,
+        }).every(({ path }) => !rawAuditMember(path)),
+        "Qualification disclosure includes obsolete native audit material",
+      );
+    }
   };
   if (qualificationBaseSchema(manifest) === 1) {
     for (const artifact of manifest.artifacts) verify(artifact);
@@ -807,7 +853,7 @@ async function assertSealPreimages(client, ctx, report, expected) {
 }
 
 async function seal(client, ctx, checkpoint, renewal, execution) {
-  const { operation, manifest, read } = ctx;
+  const { operation, manifest, receipt, read } = ctx;
   const operationBytes = read("operation.json");
   checkSealSettings(operationBytes, renewal);
   const tag = "v" + operation.version;
@@ -844,19 +890,93 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   await verifyQualificationDisclosure(client, ctx, checkpoint, publicIndex);
   for (const name of publicIndex.files) {
     assert.ok(!archiveEntries.has(name), "Duplicate public archive entry");
+    assert.ok(
+      !rawAuditMember(name),
+      "Raw npm audit output is outside the public evidence inventory",
+    );
     archiveEntries.set(name, read(name));
   }
   archiveEntries.set("public-inventory.json", read("public-inventory.json"));
-  const matrix = qualificationRuntimeMatrix(manifest);
-  for (const [name, bytes] of await readPublicEvidence(
+  // Reopen the exact qualification that the protected stage actually admitted. A public
+  // registry decision is a later observation and cannot substitute for that admission.
+  const qualification = await verifyNewStageAdvisories(client, {
+    env: {
+      QUALIFICATION_RUN: operation.qualificationRun,
+      QUALIFICATION_ATTEMPT: operation.qualificationAttempt,
+      MANIFEST_SHA256: operation.manifestSha256,
+    },
+    checkpoint,
+    manifest,
+    manifestBytes: ctx.manifestBytes,
+    candidate: ctx.candidate,
+    now: Date.parse(receipt.qualificationAdvisory.verifiedAt),
+  });
+  assert.deepEqual(
+    qualificationAdvisoryMarker(qualification),
+    receipt.qualificationAdvisory,
+    "Qualification changed after staging",
+  );
+  assertAdvisoryCasesCurrent(qualification.decision);
+  archiveAdvisory(archiveEntries, "qualification", qualification);
+  const runtimeBytes = readControllerBlob(
+    manifest.commit,
+    "docs/release/runtime-policy.json",
+  );
+  const originalPolicy = parse(runtimeBytes);
+  const matrix = qualificationRuntimeMatrix(manifest, originalPolicy);
+  assert.ok(
+    !archiveEntries.has("qualified-runtime-policy.json"),
+    "Duplicate qualified runtime policy",
+  );
+  archiveEntries.set("qualified-runtime-policy.json", runtimeBytes);
+  const npmCli = producerNpm();
+  const tarball = read(manifest.assets.tarball.name);
+  const measured = await withAuditNpmClients(npmCli, (npmCliForVersion) =>
+    readPublicAuditSubjects(
+      client,
+      checkpoint,
+      operation,
+      matrix,
+      publicRecipientInput(ctx, matrix, { reconciled: true }),
+      {
+        tarball,
+        npmCli: npmCliForVersion(CI_RUNTIME.consumerNpm),
+        pinnedReport: read("public.json"),
+        complete: true,
+      },
+    ),
+  );
+  const verified = await verifyHostedAdvisoryReceipt({
     client,
     checkpoint,
-    operation,
-    matrix,
-    publicRecipientInput(ctx, matrix),
-    read("public.json"),
-    qualifiedSbom(ctx),
-  )) {
+    entries: measured.entries,
+    npmCli,
+    runId: operation.publicRun,
+    attempt: operation.publicAttempt,
+    controller: operation.publicController,
+    workflow: ".github/workflows/release-registry.yml",
+  });
+  const publicAdvisory = {
+    runId: operation.publicRun,
+    attempt: operation.publicAttempt,
+    controller: operation.publicController,
+    policySha256: verified.decision.policySha256,
+    descriptor: verified.descriptor,
+  };
+  assert.equal(measured.testAdvisories.length, matrix.include.length);
+  for (const tested of measured.testAdvisories) {
+    assert.deepEqual(
+      tested.descriptor,
+      verified.descriptor,
+      "A public test used a different protected advisory decision",
+    );
+    assert.ok(
+      Date.parse(tested.startedAt) >= Date.parse(verified.job.completed_at),
+      "A public test started before the original protected advisory job completed",
+    );
+  }
+  archiveAdvisory(measured.files, "public", verified);
+  for (const [name, bytes] of measured.files) {
     assert.ok(!archiveEntries.has(name));
     archiveEntries.set(name, bytes);
   }
@@ -872,7 +992,7 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   const archive = gzipSync(
     Buffer.from(
       canonicalJson({
-        schemaVersion: 2,
+        schemaVersion: 3,
         checkpoint: checkpoint.objectId,
         files: [...archiveEntries].map(([name, bytes]) => ({
           ...asset(name, bytes),
@@ -889,12 +1009,13 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   const evidence = Buffer.from(
     JSON.stringify(
       {
-        schemaVersion: 7,
+        schemaVersion: 8,
         releaseId: operation.releaseId,
         source: manifest.commit,
         tagObject: operation.tagObject,
         stage: ctx.receipt,
         publicVerification: report,
+        publicAdvisory,
         archive: archiveInfo,
         assets: manifest.assets,
       },
@@ -941,6 +1062,8 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   const draft = await assertSealPreimages(client, ctx, report, expected);
   assertReleaseAssets({ assets: draft.assets, expected });
   checkSealSettings(operationBytes, renewal);
+  assertAdvisoryDecisionCurrent(verified.decision);
+  assertAdvisoryCasesCurrent(qualification.decision);
   const record = {
     state: "SEAL_REQUESTED",
     ...(renewal ? { settingsCheckpoint: renewal.checkpoint } : {}),
@@ -952,6 +1075,8 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
     releaseId: operation.releaseId,
     tagObject: operation.tagObject,
     source: manifest.commit,
+    releaseEvidenceSchema: 8,
+    publicAdvisory,
     runId: execution.runId,
     attempt: execution.attempt,
     assets: expected.map((item) => {
@@ -1019,14 +1144,14 @@ export function readStagedArchive(archive) {
     gunzipSync(archive, { maxOutputLength: 96 * 1024 * 1024 }),
   );
   const record = JSON.parse(raw);
-  if (record.schemaVersion === 2)
+  if (record.schemaVersion >= 2)
     assert.equal(raw, canonicalJson(record), "Noncanonical archive index");
   assert.deepEqual(Object.keys(record).sort(), [
     "checkpoint",
     "files",
     "schemaVersion",
   ]);
-  assert.ok([1, 2].includes(record.schemaVersion));
+  assert.ok([1, 2, 3].includes(record.schemaVersion));
   assert.match(record.checkpoint, /^[a-f0-9]{40}$/u);
   assert.ok(
     Array.isArray(record.files) &&
@@ -1057,7 +1182,33 @@ export function readStagedArchive(archive) {
     assert.equal(hash(bytes), item.sha256);
     files.set(item.name, bytes);
   }
-  return { checkpoint: record.checkpoint, files };
+  if (record.schemaVersion === 3) {
+    const required = [
+      "qualified-runtime-policy.json",
+      "qualification-advisory.json",
+      "qualification-advisory.sigstore.json",
+      "qualification-advisory-job.json",
+      "public-native.json",
+      "public-material.json",
+      "public-advisory.json",
+      "public-advisory.sigstore.json",
+      "public-advisory-job.json",
+      "recipient-input.json",
+    ];
+    assert.ok(
+      required.every((name) => files.has(name)),
+      "Missing reconciled public archive evidence",
+    );
+    assert.ok(
+      [...files.keys()].every((name) => !rawAuditMember(name)),
+      "Raw npm audit output is outside the public evidence inventory",
+    );
+  }
+  return {
+    schemaVersion: record.schemaVersion,
+    checkpoint: record.checkpoint,
+    files,
+  };
 }
 async function recoverSeal(client, checkpoint) {
   const origin = parse(checkpoint.files.get("seal-origin.json"));
@@ -1121,6 +1272,19 @@ async function recoverSeal(client, checkpoint) {
     request.notesSha256,
     hash(original.files.get("release-notes.md")),
   );
+  if (request.releaseEvidenceSchema === 8)
+    assert.deepEqual(
+      [
+        request.publicAdvisory.runId,
+        request.publicAdvisory.attempt,
+        request.publicAdvisory.controller,
+      ],
+      [
+        operation.publicRun,
+        operation.publicAttempt,
+        operation.publicController,
+      ],
+    );
   return reconcilePublishedSeal(client, request);
 }
 export async function completeRelease(client, env, checkpoint) {
@@ -1158,6 +1322,8 @@ export async function completeRelease(client, env, checkpoint) {
     env.GH_TOKEN,
   );
   const scratch = mkdtempSync(join(tmpdir(), "owlapi-completion-"));
+  const originals = new Map();
+  let evidenceSchema;
   try {
     for (const a of release.assets) {
       const file = await downloadAsset({
@@ -1171,17 +1337,7 @@ export async function completeRelease(client, env, checkpoint) {
         hash(bytes),
         record.assets.find((item) => item.name === basename(file)).sha256,
       );
-      if (a.name.endsWith(".evidence.json.gz")) {
-        const archive = readStagedArchive(bytes);
-        assert.equal(archive.checkpoint, record.checkpoint);
-        const manifest = parse(archive.files.get("manifest.json"));
-        assert.equal(manifest.commit, record.source);
-        assert.equal(manifest.package.version, record.version);
-        assert.equal(
-          hash(archive.files.get("release-notes.md")),
-          record.notesSha256,
-        );
-      }
+      originals.set(a.name, bytes);
       await runGh(
         "gh",
         [
@@ -1197,10 +1353,52 @@ export async function completeRelease(client, env, checkpoint) {
         env.GH_TOKEN,
       );
     }
+    const stem = `${PACKAGE_FILE_STEM}-${record.version}`;
+    const evidence = validateStagedReleaseEvidence(
+      parse(originals.get(stem + ".release-evidence.json")),
+    );
+    evidenceSchema = evidence.schemaVersion;
+    assert.equal(
+      evidenceSchema,
+      record.releaseEvidenceSchema ?? 7,
+      "Immutable release evidence differs from the admitted seal protocol",
+    );
+    assert.deepEqual(
+      [evidence.releaseId, evidence.source, evidence.tagObject],
+      [record.releaseId, record.source, record.tagObject],
+    );
+    const archivedBytes = originals.get(stem + ".evidence.json.gz");
+    assert.deepEqual(
+      asset(evidence.archive.name, archivedBytes),
+      evidence.archive,
+    );
+    const archive = readStagedArchive(archivedBytes);
+    assert.equal(archive.checkpoint, record.checkpoint);
+    const manifest = parse(archive.files.get("manifest.json"));
+    assert.equal(manifest.commit, record.source);
+    assert.equal(manifest.package.version, record.version);
+    assert.equal(
+      hash(archive.files.get("release-notes.md")),
+      record.notesSha256,
+    );
+    if (evidenceSchema === 8) {
+      assert.equal(archive.schemaVersion, 3);
+      assert.deepEqual(evidence.publicAdvisory, record.publicAdvisory);
+      await verifyArchivedPublicRelease(archive.files, evidence, {
+        client,
+        tarball: originals.get(stem + ".tgz"),
+        npmCli: producerNpm(),
+        publishedAt: release.published_at,
+      });
+    } else assert.ok([1, 2].includes(archive.schemaVersion));
   } finally {
     rmSync(scratch, { recursive: true, force: true });
   }
-  return { ...record, state: "IMMUTABLE_VERIFIED" };
+  return {
+    ...record,
+    state: "IMMUTABLE_VERIFIED",
+    releaseEvidenceSchema: evidenceSchema,
+  };
 }
 function requestJournal(kind) {
   return kind === "draft" ? "draft-journal.jsonl" : "seal-request.json";

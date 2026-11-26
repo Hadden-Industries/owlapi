@@ -43,5 +43,5 @@ jobs:
           path: |
             .release/advisory/receipt.json
             .release/advisory/receipt.sigstore.json
-          retention-days: 90
+          retention-days: ${{ inputs.purpose == 'public' && 14 || 90 }}
           compression-level: 6

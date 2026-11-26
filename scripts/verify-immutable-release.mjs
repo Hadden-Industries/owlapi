@@ -17,7 +17,6 @@ import {
 import { GITHUB_CLI_IDENTITY } from "./github-cli.mjs";
 import { sha256File } from "./release-file-utils.mjs";
 import { assertReleaseExecutionIdentity } from "./release-evidence.mjs";
-import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 import { createRepositoryReader } from "./ci-verification-command.mjs";
 
 import { PACKAGE_VERSION, PACKAGE_FILE_STEM } from "./package-identity.mjs";
@@ -373,6 +372,8 @@ const main = async () => {
   const evidencePath = paths.find((path) =>
     path.endsWith(".release-evidence.json"),
   );
+  const { validateReleaseEvidence } =
+    await import("./validate-release-evidence.mjs");
   const evidence = validateReleaseEvidence(
     JSON.parse(readFileSync(evidencePath, "utf8")),
   );
