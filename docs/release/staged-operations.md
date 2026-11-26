@@ -347,7 +347,7 @@ A signed version 1 `retention.json` supports the read-only observer.
 
 `candidate-retention.yml` runs after a successful protected-main CI push.
 The release owner can also dispatch it on protected `main` with an exact signed `retention_history_object`.
-Automatic runs look for the protected annotated tag `owlapi-release-history/retention-<successor SHA>`.
+Automatic runs require the protected annotated tag `owlapi-release-history/retention-<successor SHA>` and verify that the signer used that exact tag name.
 When that tag is absent, the job reports a hold.
 Candidate retirement and exceptional material replay share the release writer queue.
 
@@ -363,11 +363,13 @@ Supply these records.
   Its `result` is `STAGE_SEAL_AND_RECOVERY_VERIFIED`.
   The custodian attests `actionsCopiesUnavailable: true` and `verifiedBackup: true` for that original.
 - `hostedReplay` binds the successful read-only `release-completion.yml` rehearsal by numeric `runId`, `attempt`, `jobId`, `artifactId`, the original 40-character `controller` SHA and the completion ZIP's `artifactDigest` including its `sha256:` prefix.
-  The writer authenticates the original GitHub-hosted completion step, upload interval and `IMMUTABLE_VERIFIED` receipt.
+  Bind its representative release with the numeric `releaseId` and the 40-character seal history object `sealCheckpoint` from that release's `IMMUTABLE_VERIFIED` receipt.
+  The writer authenticates the original GitHub-hosted job, upload interval and those two receipt fields.
+  The per-candidate `replayed` entries separately attest the original backups.
   When native records have expired, the signed history can supply the existing disclosure-cleared ZIP as `artifact-ID.zip` and the original `run`, `producer` job and `artifact` records as `origin-RUN-ATTEMPT-release-completion-RUN-ATTEMPT.json`.
   Restricted originals stay in their authorized private custody.
 
-The writer reopens the verified successor candidate and package proof.
+The writer reopens the verified successor candidate, package proof, and both the main and producing CI verification receipts before every deletion.
 It considers only signed, earlier candidate or package-proof IDs from completed same-repository CI.
 It holds originals needed by open pull requests, live pending recipient-material observations, active readers, and outstanding writer attempts or reservations.
 Before each deletion it rechecks mutable provider state and the original ID, name, digest, byte length and source.

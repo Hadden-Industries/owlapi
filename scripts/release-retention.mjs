@@ -149,7 +149,11 @@ export function selectRedundantArtifacts({
       .filter((a) => !a.expired && Date.parse(a.expires_at) > now)
       .map((a) => [a.id, a]),
   );
-  const current = [successor.candidate, successor.packageProof];
+  const current = [
+    successor.candidate,
+    successor.packageProof,
+    ...(successor.verificationReceipts ?? []),
+  ];
   if (
     !current.every(
       (expected) => live.get(expected.id)?.digest === expected.digest,
@@ -227,6 +231,7 @@ const sameExecution = (original, live) =>
   [
     "id",
     "run_attempt",
+    "check_suite_id",
     "event",
     "path",
     "head_sha",
@@ -261,7 +266,9 @@ async function readRetirementSnapshot({
     read("/git/ref/tags/" + checkpoint.tag),
   ]);
   assert.ok(
-    ref.object?.type === "tag" && ref.object.sha === checkpoint.objectId,
+    ref.ref === "refs/tags/" + checkpoint.tag &&
+      ref.object?.type === "tag" &&
+      ref.object.sha === checkpoint.objectId,
     "Signed retention ref moved",
   );
   assert.ok(
@@ -288,20 +295,30 @@ async function readRetirementSnapshot({
     repositoryId: REPOSITORY_ID,
     candidate,
     packageProof,
+    verificationReceipts: [proof.main.artifact, proof.source.artifact],
   };
-  const originals = await Promise.all(
-    [candidate, packageProof].map((item) =>
-      read("/actions/artifacts/" + item.id),
+  // A PR-derived successor has a distinct landed receipt and producer receipt.
+  // A direct FULL main run shares one. Both paths must remain promotable at the write.
+  const requiredOriginals = [
+    candidate,
+    packageProof,
+    ...successor.verificationReceipts,
+  ];
+  const liveById = new Map(
+    await Promise.all(
+      [...new Set(requiredOriginals.map((item) => item.id))].map(async (id) => [
+        id,
+        await read("/actions/artifacts/" + id),
+      ]),
     ),
   );
+  const listedById = new Map(listed.map((item) => [item.id, item]));
   const main = await read("/branches/main");
   const when = now();
   const inventory = target
     ? [
         ...listed,
-        ...originals.filter(
-          (item) => !listed.some((row) => row.id === item.id),
-        ),
+        ...[...liveById.values()].filter((item) => !listedById.has(item.id)),
       ]
     : listed;
   const pendingSources = new Set(
@@ -327,8 +344,11 @@ async function readRetirementSnapshot({
     [proof.main.run, proof.source.run].every((original) =>
       sameExecution(original, byId.get(original.id)),
     ) &&
-    originals.every((observed, i) =>
-      sameArtifact([candidate, packageProof][i], observed, when),
+    requiredOriginals.every(
+      (item) =>
+        sameArtifact(item, liveById.get(item.id), when) &&
+        (target !== undefined ||
+          sameArtifact(item, listedById.get(item.id), when)),
     );
   const selected = selectRedundantArtifacts({
     inventory,
@@ -361,6 +381,18 @@ async function readRetirementSnapshot({
       );
       if (pr.state !== "closed")
         return { ...hold("The source pull request remains open."), inventory };
+      assert.ok(
+        typeof pr.merged === "boolean" &&
+          (!pr.merged || /^[a-f0-9]{40}$/u.test(pr.merge_commit_sha)),
+        "Incomplete producer PR merge identity",
+      );
+      if (pr.merged && pulls.commits.has(pr.merge_commit_sha))
+        return {
+          ...hold(
+            "An open pull request still claims the merged producer commit.",
+          ),
+          inventory,
+        };
     }
   }
   const reason =
@@ -491,6 +523,12 @@ export async function retireSupersededCandidates({
   assert.match(objectId, /^[a-f0-9]{40}$/u);
   const checkpoint = await openCheckpoint(client, objectId);
   assert.equal(checkpoint.objectId, objectId);
+  if (!env.RETENTION_HISTORY_OBJECT)
+    assert.equal(
+      checkpoint.tag,
+      retirementTag(head),
+      "Automatic retirement requires the signed successor-specific tag name",
+    );
   const decisions = custodyDecisions(checkpoint, head);
   await verifyRetirementRehearsal(client, checkpoint, decisions);
   const proof = await qualifySuccessor(env);

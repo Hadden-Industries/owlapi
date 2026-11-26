@@ -2,6 +2,7 @@ import { expect, jest, test } from "@jest/globals";
 import { zipArchive } from "./fixtures/zip-archive.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
+import { createRepositoryReader } from "./github-evidence-reader.mjs";
 import {
   retireSupersededCandidates,
   reportReleaseRetention,
@@ -86,21 +87,43 @@ function artifact(id, source, kind, daysAgo) {
 }
 function fixture() {
   const main = run(30, "push", commit),
+    producer = run(20, "pull_request", "8".repeat(40)),
     older = run(10, "pull_request", oldCommit);
   const rehearsal = run(12, "workflow_dispatch", oldCommit, {
     path: completePath,
   });
-  const runs = [main, older, rehearsal],
+  const runs = [main, producer, older, rehearsal],
     pulls = [],
     refs = [];
   const old = artifact(101, older, "candidate", 3),
     oldProof = artifact(102, older, "proof", 3),
-    candidate = artifact(301, main, "candidate", 1),
-    proof = artifact(302, main, "proof", 1);
-  const inventory = [old, oldProof, candidate, proof];
+    candidate = artifact(301, producer, "candidate", 1),
+    proof = artifact(302, producer, "proof", 1);
+  const receipt = (id, source, logical) => ({
+    ...artifact(id, source, "proof", 1),
+    name: physicalName({
+      logical,
+      run: source.id,
+      attempt: 1,
+      producer: "e".repeat(16),
+      invocation: "f".repeat(32),
+      ordinal: 0,
+    }),
+  });
+  const mainReceipt = receipt(303, main, "ci-main-qualification-30-1"),
+    sourceReceipt = receipt(304, producer, "ci-verification-20-1");
+  const inventory = [
+    old,
+    oldProof,
+    candidate,
+    proof,
+    mainReceipt,
+    sourceReceipt,
+  ];
   const completed = Buffer.from(
     JSON.stringify({
       state: "IMMUTABLE_VERIFIED",
+      checkpoint: "6".repeat(40),
       releaseEvidenceSchema: 8,
       source: oldCommit,
       tagObject: commit,
@@ -137,6 +160,8 @@ function fixture() {
       controller: oldCommit,
       artifactId: 911,
       artifactDigest: replayArtifact.digest,
+      releaseId: 11,
+      sealCheckpoint: "6".repeat(40),
     },
     replayed: [old, oldProof].map((a) => ({
       id: a.id,
@@ -202,6 +227,8 @@ function fixture() {
       return {
         number: 7,
         state: "closed",
+        merged: true,
+        merge_commit_sha: "f".repeat(40),
         base: { repo: { id: REPOSITORY_ID } },
       };
     if (path === "/actions/artifacts/911") return replayArtifact;
@@ -262,8 +289,14 @@ function fixture() {
     openCheckpoint: async () => checkpoint(),
     qualifySuccessor: async () => ({
       landed: { commit },
-      main: { run: structuredClone(main) },
-      source: { run: structuredClone(main) },
+      main: {
+        run: structuredClone(main),
+        artifact: structuredClone(mainReceipt),
+      },
+      source: {
+        run: structuredClone(producer),
+        artifact: structuredClone(sourceReceipt),
+      },
       qualifiedPackage: {
         candidate: structuredClone(candidate),
         proof: structuredClone(proof),
@@ -284,6 +317,8 @@ function fixture() {
     oldProof,
     candidate,
     proof,
+    mainReceipt,
+    sourceReceipt,
     inventory,
     decisions,
     job,
@@ -297,6 +332,43 @@ function fixture() {
     replayArtifact,
   };
 }
+test("the production read transport admits only the required PR lookups during retirement", async () => {
+  const f = fixture();
+  const http = jest.fn(async (address, options) => {
+    expect(options.method ?? "GET").toBe("GET");
+    const root = "https://api.github.com/repos/" + REPOSITORY;
+    expect(address.startsWith(root + "/")).toBe(true);
+    return new Response(
+      JSON.stringify(await f.read(address.slice(root.length))),
+      { status: 200 },
+    );
+  });
+  const reader = createRepositoryReader({
+    repository: REPOSITORY,
+    token: "fixture",
+    fetchImpl: http,
+    requestLimit: 256,
+  });
+  const client = new GitHubReleaseClient({
+    repository: REPOSITORY,
+    token: "fixture",
+    reader,
+  });
+  f.args.client = { read: (...args) => client.read(...args), write: f.write };
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+  const count = http.mock.calls.length;
+  for (const path of [
+    "/pulls?state=all&per_page=100&page=1",
+    "/pulls/7/merge",
+    "/pulls/0",
+    "/pulls?state=open&per_page=100&page=0",
+  ]) {
+    await expect(client.read(path)).rejects.toThrow(
+      "Unexpected GitHub evidence path",
+    );
+  }
+  expect(http).toHaveBeenCalledTimes(count);
+});
 test("retires only authorized earlier CI originals and reopens the ID immediately before one delete", async () => {
   const f = fixture();
   await retireSupersededCandidates(f.args);
@@ -363,7 +435,7 @@ test.each([
       f.pulls.push({
         number: 7,
         state: "open",
-        base: { repo: { id: REPOSITORY_ID } },
+        base: { sha: commit, repo: { id: REPOSITORY_ID } },
         head: { sha: oldCommit },
         merge_commit_sha: null,
       });
@@ -372,7 +444,7 @@ test.each([
       f.pulls.push({
         number: 7,
         state: "open",
-        base: { repo: { id: REPOSITORY_ID } },
+        base: { sha: commit, repo: { id: REPOSITORY_ID } },
         head: { sha: "7".repeat(40) },
         merge_commit_sha: null,
       });
@@ -420,6 +492,60 @@ test.each([
   else await expect(action).resolves.toEqual([]);
   expect(f.write).not.toHaveBeenCalled();
 });
+test.each(["mainReceipt", "sourceReceipt"])(
+  "loss of the successor's %s between two effects stops further retirement",
+  async (key) => {
+    const f = fixture(),
+      write = f.write;
+    f.args.client.write = async (...args) => {
+      const result = await write(...args);
+      f[key].expired = true;
+      return result;
+    };
+    await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101]);
+    expect(f.deletes).toEqual(["/actions/artifacts/101"]);
+  },
+);
+test("automatic authorization also requires the signed tag's own successor-specific name", async () => {
+  const f = fixture(),
+    open = f.args.openCheckpoint,
+    read = f.read,
+    other = "owlapi-release-history/manual-retirement";
+  f.args.openCheckpoint = async (...args) => ({
+    ...(await open(...args)),
+    tag: other,
+  });
+  f.args.client.read = async (path, options) =>
+    path === "/git/ref/tags/" + other
+      ? { ref: "refs/tags/" + other, object: { type: "tag", sha: objectId } }
+      : read(path, options);
+  await expect(retireSupersededCandidates(f.args)).rejects.toThrow(/tag name/);
+  expect(f.write).not.toHaveBeenCalled();
+  f.args.env = {
+    ...f.args.env,
+    GITHUB_EVENT_NAME: "workflow_dispatch",
+    GITHUB_ACTOR: "maksymshostak",
+    GITHUB_TRIGGERING_ACTOR: "maksymshostak",
+    RETENTION_HISTORY_OBJECT: objectId,
+  };
+  f.args.event = {
+    repository: repo,
+    inputs: { retention_history_object: objectId },
+  };
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([101, 102]);
+});
+test.each(["releaseId", "sealCheckpoint"])(
+  "binds the representative hosted rehearsal's %s independently of the individual backup attestations",
+  async (field) => {
+    const f = fixture();
+    f.decisions.hostedReplay[field] =
+      field === "releaseId" ? 12 : "7".repeat(40);
+    await expect(retireSupersededCandidates(f.args)).rejects.toThrow(
+      /immutable staged release/,
+    );
+    expect(f.write).not.toHaveBeenCalled();
+  },
+);
 test("a new replay claim after the first retirement keeps the remaining original", async () => {
   const f = fixture(),
     remove = f.write;
@@ -481,6 +607,18 @@ test("a generic completed job cannot replace the authenticated original custody 
     await expect(retireSupersededCandidates(f.args)).rejects.toThrow();
     expect(f.write).not.toHaveBeenCalled();
   }
+});
+test("a merged producer PR remains protected when its landed commit is an open PR's base", async () => {
+  const f = fixture();
+  f.pulls.push({
+    number: 81,
+    state: "open",
+    base: { repo: { id: REPOSITORY_ID }, sha: "f".repeat(40) },
+    head: { sha: "e".repeat(40) },
+    merge_commit_sha: null,
+  });
+  await expect(retireSupersededCandidates(f.args)).resolves.toEqual([]);
+  expect(f.write).not.toHaveBeenCalled();
 });
 test("a source PR reopening after the open-list snapshot protects its original", async () => {
   const f = fixture(),

@@ -77,6 +77,8 @@ export async function verifyRetirementRehearsal(client, checkpoint, decisions) {
         positive,
       ) &&
       oid.test(replay.controller) &&
+      positive(replay.releaseId) &&
+      oid.test(replay.sealCheckpoint) &&
       digest.test(replay.artifactDigest),
     "A native hosted replay reference is required",
   );
@@ -186,7 +188,8 @@ export async function verifyRetirementRehearsal(client, checkpoint, decisions) {
   assert.ok(
     completion.state === "IMMUTABLE_VERIFIED" &&
       [7, 8].includes(completion.releaseEvidenceSchema) &&
-      positive(completion.releaseId) &&
+      completion.releaseId === replay.releaseId &&
+      completion.checkpoint === replay.sealCheckpoint &&
       oid.test(completion.source) &&
       oid.test(completion.tagObject),
     "Hosted replay did not verify an immutable staged release",
@@ -209,11 +212,13 @@ export async function readOpenPullClaims(read) {
           !numbers.has(pr.number) &&
           pr.state === "open" &&
           pr.base?.repo?.id === REPOSITORY_ID &&
+          oid.test(pr.base?.sha) &&
           oid.test(pr.head?.sha),
         "Open PR inventory changed or lacks an identity",
       );
       numbers.add(pr.number);
       commits.add(pr.head.sha);
+      commits.add(pr.base.sha);
       if (
         Object.hasOwn(pr, "merge_commit_sha") &&
         pr.merge_commit_sha !== null
@@ -237,6 +242,7 @@ export function sameArtifact(original, live, now) {
     live.size_in_bytes === original.size_in_bytes &&
     live.digest === original.digest &&
     live.created_at === original.created_at &&
+    live.expires_at === original.expires_at &&
     live.expired === false &&
     Date.parse(live.expires_at) > now &&
     ["id", "repository_id", "head_repository_id", "head_sha"].every(

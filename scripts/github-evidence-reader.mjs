@@ -1,5 +1,9 @@
 import { setTimeout as delay } from "node:timers/promises";
 
+// Retirement reads the complete list of open PRs and rechecks one original PR by number.
+const retirementPullPath =
+  /^\/pulls(?:\/[1-9]\d*|\?state=open&per_page=100&page=[1-9]\d*)$/u;
+
 const transientReadCodes = new Set([
   "ECONNRESET",
   "ECONNREFUSED",
@@ -101,9 +105,10 @@ export const createRepositoryReader = ({
       now() + (operationBudget ?? Infinity),
     );
     if (
-      !/^(?:\/immutable-releases|\/(?:commits|actions|git|attestations|releases|deployments|code-scanning|rulesets|branches|check-runs)(?:\/|\?)[A-Za-z0-9_./?=&%-]+)$/u.test(
-        path,
-      ) ||
+      (!retirementPullPath.test(path) &&
+        !/^(?:\/immutable-releases|\/(?:commits|actions|git|attestations|releases|deployments|code-scanning|rulesets|branches|check-runs)(?:\/|\?)[A-Za-z0-9_./?=&%-]+)$/u.test(
+          path,
+        )) ||
       path.includes("..")
     ) {
       throw new Error("Unexpected GitHub evidence path.");
