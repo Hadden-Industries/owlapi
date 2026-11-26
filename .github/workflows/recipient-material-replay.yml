@@ -69,14 +69,14 @@ jobs:
         with:
           name: recipient-material-scan-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/recipient-material-scan/proof/recipient-material.json
-          retention-days: 14
+          retention-days: 30
       - name: Retain the unresolved recipient material case
         if: ${{ failure() && hashFiles('.release/recipient-material-scan/recipient-material-cases/case-*.json') != '' }}
         uses: ./.github/actions/retain-artifact
         with:
           name: recipient-material-case-scan-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/recipient-material-scan/recipient-material-cases
-          retention-days: 14
+          retention-days: 30
 
   rights_prepare:
     name: Recipient material / Authenticate rights case
@@ -156,7 +156,7 @@ jobs:
         with:
           name: recipient-rights-replay-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/recipient-rights-replay/replay.json
-          retention-days: 14
+          retention-days: 30
 
   replay:
     name: Recipient material / Replay
@@ -203,4 +203,4 @@ jobs:
             .release/recipient-material-replay/replay.json
             .release/recipient-material-replay/eligibility/decisions
             .release/recipient-material-replay/eligibility/material
-          retention-days: 14
+          retention-days: 30

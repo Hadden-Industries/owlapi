@@ -1,6 +1,26 @@
-import { approvedDevelopmentCases } from "./release-audit-cases.mjs";
+import {
+  approvedDevelopmentCases,
+  parseAdvisoryCaseRegistry,
+} from "./release-audit-cases.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { canonicalJson } from "./canonical-json.mjs";
+
+test("the controller's complete advisory registry selects the applicable signed receipt version", () => {
+  const parse = (registry) =>
+    parseAdvisoryCaseRegistry(Buffer.from(JSON.stringify(registry)));
+  expect(parse({ schemaVersion: 1, cases: [] }).receiptSchemaVersion).toBe(2);
+  const current = { schemaVersion: 2, receiptSchemaVersion: 3, cases: [] };
+  expect(parse(current).receiptSchemaVersion).toBe(3);
+  for (const malformed of [
+    { ...current, receiptSchemaVersion: 2 },
+    { ...current, receiptSchemaVersion: undefined },
+    { ...current, schemaVersion: 1 },
+  ]) {
+    expect(() => parse(malformed)).toThrow(
+      "Unavailable reviewed advisory case registry",
+    );
+  }
+});
 
 test("resolves native indirect development advisories to exact reviewed occurrences", () => {
   const id = "GHSA-2222-3333-4444";

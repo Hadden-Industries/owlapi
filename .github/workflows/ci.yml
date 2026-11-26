@@ -767,7 +767,7 @@ jobs:
         with:
           name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/download/recipient-material-cases
-          retention-days: 14
+          retention-days: 30
       - name: Retain exact standalone portability proof
         uses: ./.github/actions/retain-artifact
         with:
@@ -829,7 +829,7 @@ jobs:
         with:
           name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/download/recipient-material-cases
-          retention-days: 14
+          retention-days: 30
       - name: Retain exact standalone portability proof
         uses: ./.github/actions/retain-artifact
         with:
@@ -867,7 +867,7 @@ jobs:
         with:
           name: pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/runtime-report/pending-recipient-material.json
-          retention-days: 14
+          retention-days: 30
       - name: Retain exact standalone portability proof
         uses: ./.github/actions/retain-artifact
         with:
@@ -905,7 +905,7 @@ jobs:
         with:
           name: pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/runtime-report/pending-recipient-material.json
-          retention-days: 14
+          retention-days: 30
       - name: Retain exact standalone portability proof
         uses: ./.github/actions/retain-artifact
         with:
@@ -963,14 +963,14 @@ jobs:
         with:
           name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/download/recipient-material-cases
-          retention-days: 14
+          retention-days: 30
       - name: Retain the exceptional recipient material observation
         if: ${{ failure() && hashFiles('.release/download/pending-recipient-material.json') != '' }}
         uses: ./.github/actions/retain-artifact
         with:
           name: pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/download/pending-recipient-material.json
-          retention-days: 14
+          retention-days: 30
       - name: Retain exact standalone portability proof
         uses: ./.github/actions/retain-artifact
         with:
@@ -1052,7 +1052,7 @@ jobs:
         with:
           name: recipient-material-case-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/browser/qualified/recipient-material-cases
-          retention-days: 14
+          retention-days: 30
 
   browser_firefox:
     name: CI / browser / Firefox
@@ -1127,7 +1127,7 @@ jobs:
         with:
           name: recipient-material-case-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/browser/qualified/recipient-material-cases
-          retention-days: 14
+          retention-days: 30
 
   browser_webkit:
     name: CI / browser / WebKit
@@ -1202,7 +1202,7 @@ jobs:
         with:
           name: recipient-material-case-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/browser/qualified/recipient-material-cases
-          retention-days: 14
+          retention-days: 30
 
   owl_contract:
     name: CI / installed OWL contract
@@ -1292,7 +1292,7 @@ jobs:
         with:
           name: recipient-material-case-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/owl-contract/recipient-material-cases
-          retention-days: 14
+          retention-days: 30
 
   consumer_runtimes:
     name: CI / complete consumer qualification

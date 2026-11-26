@@ -4,6 +4,10 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { canonicalJson } from "./canonical-json.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
+import {
+  HISTORICAL_AUDIT_RECEIPT_SCHEMA_VERSION,
+  OPERATION_AUDIT_RECEIPT_SCHEMA_VERSION,
+} from "./release-audit-policy.mjs";
 
 export const advisoryCasePath = "docs/release/dependency-advisory-cases.json";
 const root = new URL("../", import.meta.url);
@@ -126,28 +130,42 @@ export function validateAdvisoryCases(cases) {
   return cases;
 }
 
-function unmarshal(bytes) {
+/** The case registry is hashed into the controller's advisory policy and selects its signed receipt contract. */
+export function parseAdvisoryCaseRegistry(bytes) {
   const invalid = "Unavailable reviewed advisory case registry";
   assert.ok(bytes.length <= maximum, invalid);
   const table = JSON.parse(
     new TextDecoder("utf-8", { fatal: true }).decode(bytes),
   );
+  const historical =
+    closed(table, ["schemaVersion", "cases"]) && table.schemaVersion === 1;
   assert.ok(
-    closed(table, ["schemaVersion", "cases"]) && table.schemaVersion === 1,
+    historical ||
+      (closed(table, ["schemaVersion", "receiptSchemaVersion", "cases"]) &&
+        table.schemaVersion === 2 &&
+        table.receiptSchemaVersion === OPERATION_AUDIT_RECEIPT_SCHEMA_VERSION),
     invalid,
   );
-  return validateAdvisoryCases(table.cases);
+  return {
+    receiptSchemaVersion: historical
+      ? HISTORICAL_AUDIT_RECEIPT_SCHEMA_VERSION
+      : table.receiptSchemaVersion,
+    cases: validateAdvisoryCases(table.cases),
+  };
 }
 
 /** A diagnostic may read the checkout; an issuer reads only the protected immutable source. */
 export function readAdvisoryCases(controller) {
-  const local = unmarshal(readFileSync(new URL(advisoryCasePath, root)));
-  if (controller === undefined) return local;
+  const local = parseAdvisoryCaseRegistry(
+    readFileSync(new URL(advisoryCasePath, root)),
+  );
+  if (controller === undefined) return local.cases;
   assert.match(controller, /^[a-f0-9]{40}$/u);
-  const immutable = unmarshal(
+  const immutable = parseAdvisoryCaseRegistry(
     execFileSync(
       "git",
       [
+        "--no-replace-objects",
         "--no-lazy-fetch",
         "cat-file",
         "blob",
@@ -165,7 +183,7 @@ export function readAdvisoryCases(controller) {
     canonicalJson(immutable) === canonicalJson(local),
     "Advisory case decisions changed outside the protected revision",
   );
-  return immutable;
+  return immutable.cases;
 }
 
 export function applicableAdvisoryCases(cases, subject, now) {

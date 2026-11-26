@@ -20,8 +20,13 @@ import {
 } from "../tooling/artifact-transport/identity.mjs";
 import { verifyReleaseAuditReceipt } from "./release-audit-evaluator.mjs";
 import { UBUNTU, ubuntuRunner } from "./ubuntu-runner.mjs";
-import { advisoryCasePath } from "./release-audit-cases.mjs";
+import {
+  advisoryCasePath,
+  parseAdvisoryCaseRegistry,
+} from "./release-audit-cases.mjs";
+import { OPERATION_AUDIT_RECEIPT_SCHEMA_VERSION } from "./release-audit-policy.mjs";
 import { auditSigstoreRootPath } from "./release-audit-evaluator-sigstore.mjs";
+import { latestRecordedTime, releaseTime } from "./release-native-time.mjs";
 
 const positive = (n) => Number.isSafeInteger(n) && n > 0;
 const digest = (v) => typeof v === "string" && /^[a-f0-9]{64}$/u.test(v);
@@ -35,9 +40,8 @@ const maxReceiptZip = 512 * 1024;
 export const auditReceiptFilenames = ["receipt.json", "receipt.sigstore.json"];
 const hash = sha256Buffer;
 
-/** The controller commit is independently selected by the workflow/operation.
- * Read actual policy sources from that immutable Git object, including for historical replay. */
-export function auditPolicySha256(controller) {
+/** Resolve the digest and receipt contract from the same independently selected controller bytes. */
+function readAuditPolicy(controller) {
   assert.match(controller, /^[a-f0-9]{40}$/u);
   const paths = [
     "scripts/release-audit-policy.mjs",
@@ -49,11 +53,22 @@ export function auditPolicySha256(controller) {
     auditSigstoreRootPath,
     ".github/workflows/release-audit-evaluator.yml",
   ];
-  const originals = paths.map((path) => {
-    const bytes = readControllerBlob(controller, path);
-    return [path, hash(bytes)];
-  });
-  return hash(Buffer.from(canonicalJson(Object.fromEntries(originals))));
+  const originals = new Map(
+    paths.map((path) => [path, readControllerBlob(controller, path)]),
+  );
+  const { receiptSchemaVersion } = parseAdvisoryCaseRegistry(
+    originals.get(advisoryCasePath),
+  );
+  const hashes = Object.fromEntries(
+    [...originals].map(([path, bytes]) => [path, hash(bytes)]),
+  );
+  const policySha256 = hash(Buffer.from(canonicalJson(hashes)));
+  return { policySha256, receiptSchemaVersion };
+}
+
+/** Preserve the digest computed from the original controller for historical replay. */
+export function auditPolicySha256(controller) {
+  return readAuditPolicy(controller).policySha256;
 }
 
 /** Paginate the native jobs API once per origin, including large release-only shard rosters. */
@@ -159,8 +174,7 @@ export function assertProtectedReleaseRun(
 export function auditTrust(
   { workflow, controller, runId },
   job,
-  policySha256 = auditPolicySha256(controller),
-  runner = UBUNTU.label,
+  { policy = readAuditPolicy(controller), runner = UBUNTU.label } = {},
 ) {
   assert.equal(job.name, jobName);
   assert.deepEqual(job.labels, [runner]);
@@ -177,9 +191,9 @@ export function auditTrust(
   );
   const id = Number(job.check_run_url.slice(prefix.length));
   assert.ok(positive(id) && job.check_run_url === prefix + id);
-  assert.ok(digest(policySha256));
+  assert.ok(digest(policy.policySha256));
   return {
-    policySha256,
+    ...policy,
     evaluator: {
       workflow,
       controller,
@@ -357,6 +371,9 @@ function evidence(entries, name) {
 /** Preserve only the public fields used to verify the original workload and its two signed members. */
 export function archiveAdvisory(files, prefix, verified) {
   assert.ok(["public", "qualification"].includes(prefix));
+  const keepTiming =
+    prefix === "public" ||
+    verified.decision.schemaVersion === OPERATION_AUDIT_RECEIPT_SCHEMA_VERSION;
   const fields = [
     "id",
     "name",
@@ -368,7 +385,7 @@ export function archiveAdvisory(files, prefix, verified) {
     "check_run_url",
     "status",
     "conclusion",
-    ...(prefix === "public" ? ["started_at", "completed_at"] : []),
+    ...(keepTiming ? ["started_at", "completed_at"] : []),
   ];
   const job = Object.fromEntries(fields.map((key) => [key, verified.job[key]]));
   for (const [suffix, bytes] of [
@@ -430,16 +447,22 @@ export async function verifyArchivedAdvisoryReceipt({
       readControllerBlob(controller, "docs/release/runtime-policy.json"),
     ),
   ).label;
-  const trust = auditTrust(
-    { workflow, controller, runId },
-    job,
-    auditPolicySha256(controller),
-    runner,
-  );
-  return verifyReleaseAuditReceipt(
+  const trust = auditTrust({ workflow, controller, runId }, job, { runner });
+  const decision = await verifyReleaseAuditReceipt(
     { statement, signature },
     { trust, entries, npmCli, now },
   );
+  if (trust.receiptSchemaVersion === OPERATION_AUDIT_RECEIPT_SCHEMA_VERSION) {
+    const started = releaseTime(job.started_at);
+    assert.ok(
+      releaseTime(decision.decidedAt) <= latestRecordedTime(job.completed_at) &&
+        decision.subjects.every(
+          ({ observedAt }) => releaseTime(observedAt) >= started,
+        ),
+      "The audit observation or decision is outside its original evaluator job",
+    );
+  }
+  return decision;
 }
 
 /** Read the original protected evaluator ZIP. The signed checkpoint is the only

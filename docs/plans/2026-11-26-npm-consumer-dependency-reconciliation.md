@@ -291,11 +291,11 @@ Detailed originals are retained privately for a documented exception, investigat
 Reuse the existing protected OwlAPI release workflow and its frozen-lock audit mechanism, as in JSON Quality and Markdown Quality.
 Routine progress belongs in job logs or a step summary.
 The release proof binds the exact graph, policy, observation time and native job/attempt. Retain only the compact signed decision and original graph bytes needed by the next verifier. A later audit observes current advisories. [JSON Quality assurance](https://github.com/Hadden-Industries/json-quality/blob/78e901148f829cd1dd44953de22791fea6aa7f2d/scripts/release-assurance.js) · [Markdown Quality assurance](https://github.com/Hadden-Industries/markdown-quality/blob/9baee828cd36d31666e612e861da545ad7852e46/scripts/qualify-release-security.js) npm's Open-Source Terms, Conditions item 4, restrict access and redistribution of npm package-security data, expressly including audit-status reports.
-The `zero-one-zero` workflow lists four unredacted audit-report members in `package-proof` on a public repository.
-Three are parsed report wrappers and one contains native transport audit output.
+At the start of this work, the public `zero-one-zero` workflow listed four unredacted audit-report members in `package-proof`.
+Three were parsed report wrappers and one contained native transport audit output.
 Repository readers can download Actions artifacts.
-The CI reader requires and hashes those ZIP members, and Release admission obtains a fresh decision by auditing the retained lock.
-At seal, `verifyQualificationDisclosure` requires the original ZIP in the public inventory and includes it in the public archive.
+The CI reader required and hashed those ZIP members, and Release admission obtained a fresh decision by auditing the retained lock.
+At seal, `verifyQualificationDisclosure` required the original ZIP in the public inventory and included it in the public archive.
 Filtering the archive at seal cannot protect an earlier public upload.
 The design must protect both successful captures and failure logging at the first public boundary.
 See the [Q2 decision brief](2026-11-26-npm-audit-evidence-key-design-decision.md) for options and the limit of each assurance claim.
@@ -314,10 +314,11 @@ The release owner's signature retains its publication-approval role.
 Qualify protected issuance, public verification and any case-specific private retention before enabling the corresponding path.
 Keep untrusted PR jobs credential-free.
 Bind the authoritative audit to the source of its actual private execution and the exact original bytes, native exit status, scope, policy and time.
-An existing eligible receipt can satisfy the advisory gate during an evaluator outage.
-A different graph, expired observation or absent qualifying result holds the seal pending a successful evaluation for that subject.
-Measure freshness from the audit observation.
-Re-signing that observation cannot extend its lifetime.
+Each protected release qualification and public registry verification obtains its own decision for its exact original inputs.
+A version 3 receipt may satisfy that same operation through an approval delay or an evaluator outage when the exact tarball, manifest, lock, graph, policy, scope, evaluator job, run and attempt still match.
+The observation, decision and verification timestamps must be ordered, and each applied case has its own expiry at the boundary that uses it.
+A different operation, a changed input, an expired case or an absent qualifying result holds the gate pending eligible protected evidence.
+Version 2 receipts use their original 24-hour observation rule at the applicable checks.
 For a documented exceptional case, require authorised retention and readback before treating its evidence obligation as satisfied.
 A later audit is recorded as a new observation.
 Public fields require a disclosure disposition under the applicable terms.
@@ -429,7 +430,8 @@ Retain failure evidence without overwriting prior attempts.
 Version the closed member roster.
 Store public-safe original graphs and cleared decisions once for downstream readers, and omit routine raw audit output.
 Change initial upload and diagnostic paths as well as the later fresh/CI reuse readers.
-Prove retrieval of each required original. Exercise restricted retrieval for a case with an applicable private retention obligation.
+Prove retrieval of each required original.
+Exercise restricted retrieval for a case with an applicable private retention obligation.
 [Source evidence rules](../implementation-plan.md#2501-decision-derive-platform-independent-legal-evidence-from-authenticated-locked-tarballs) · [Proof transport](../../.github/workflows/qualify-package.yml)
 
 **Exit proof.**
@@ -455,7 +457,10 @@ For every distinct accepted recipient lock in scope, load/replay the correct ori
 Keep one compact decision per distinct subject and policy observation.
 Retain detailed reports only when a case requires them.
 Verify the evaluator’s signed result for the exact lock/manifest hash, policy and original audit observation time at admission.
-Preserve the current 24-hour promoted audit check, live stage preflight and separate managed CodeQL freshness/identity checks.
+At Release admission, evaluate the exact retained subjects for this operation.
+At stage entry, verify the receipt for that qualification and apply its ordered timestamps and case expiry.
+The legacy promoted proof uses its original age check at the recorded verification time.
+The live stage preflight and managed CodeQL checks keep their own timing and identity rules.
 Archive readers evaluate historical observations at their recorded decision point.
 Another version appearing in the registry causes no resolution during reuse.
 A current blocking advisory still refuses admission.
@@ -466,8 +471,7 @@ Explicit fresh qualification carries its original package proof, and reuse carri
 On both routes, the read-only stage admission and the protected stage writer must require the new evidence before any npm stage request.
 Reopen the original candidate/proof pair or verify a native authenticated admission bound to that exact immutable pair, then recheck subject, preimages, freshness and policy at writer entry.
 An unbound job-success flag is insufficient.
-The existing live stage preflight checks promoted evidence age.
-The live npm re-audit occurs at Release admission.
+The live npm re-audit occurs at Release admission, and the stage reopens that protected decision for the exact qualification operation.
 Keep package execution out of the stage writer.
 For corpus runs keep the existing normalization of the local first-party tarball locator and hash of the actual retained consumer lock.
 Keep worker `npm ci`, shard dependency digests and candidate linkage exact.
@@ -528,7 +532,8 @@ Extend the versioned public proof reader for the controller and every expected m
 Verify original attempt/runner/upload lineage, schema, member roster, byte limits, hashes, installation role, stage, candidate and matrix.
 Recompute the disclosed package and graph decisions from authenticated originals.
 For advisory results, verify the protected evaluator’s signature and approved identity.
-Match the tarball to the admitted release, the recipient graph to its authenticated install receipt, and the policy, scope and audit observation time to the sealing rule.
+Match the tarball to the admitted release, the recipient graph to its authenticated install receipt, and the policy, scope, original run, attempt, job and timestamps to the sealing rule.
+Check the public advisory decision at the original successful test and at seal, and check any qualification case's expiry at seal.
 Verify the qualification side for both fresh and promoted routes.
 Permit correctly attributed successful lanes from earlier attempts under the current rerun rules.
 
@@ -622,8 +627,10 @@ Report which exact candidate and recipient graph passed, what changed and why, w
 Show a compact diff in native job summaries with links to authenticated originals.
 Separate acquisition/availability failure, policy rejection and failed behavioral qualification.
 Release operators can then answer whether the npm coordinate is public and whether sealing is still pending without retrying a writer.
-Reuse existing artifact retention, eligibility and cleanup rules.
+Give public recipient evidence and exceptional material recovery 30 days in Actions.
+Give release-capable proof, the qualification advisory decision and the public registry controller receipt 90 days.
 Later registry changes are new observations about a supported release.
+[Release evidence retention](../release/artifact-transport.md#release-evidence-retention)
 
 The weekly maintenance workflow already calls the candidate builder.
 Its supported-public-coordinate step on this branch checks designation, tags and release metadata.

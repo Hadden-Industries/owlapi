@@ -44,6 +44,7 @@ import {
   publicResolutionDigest,
 } from "./public-recipient-observation.mjs";
 import {
+  assertPublicReplayAdvisoryCurrent,
   publicReplayPlanPath,
   readPublicReplayPlan,
 } from "./public-recipient-plan.mjs";
@@ -164,10 +165,7 @@ export async function runPublicRecipientLane(
       );
       writeInstalledConsumerFixtures(directory, dependencyName);
       for (const script of INSTALLED_TEST_SCRIPTS) {
-        assert.ok(
-          Date.now() < trusted.expiresAt,
-          "The admitted public advisory decision expired before testing",
-        );
+        assertPublicReplayAdvisoryCurrent(trusted);
         try {
           execFileSync(process.execPath, [script], {
             cwd: directory,
@@ -208,6 +206,7 @@ export async function runPublicRecipientLane(
       { flag: "wx" },
     );
   } else {
+    assertPublicReplayAdvisoryCurrent(trusted);
     mkdirSync(".release/public-lane", { recursive: true });
     writeFileSync(
       ".release/public-lane/lane.json",

@@ -36,7 +36,7 @@ Keep its artifact ID and server SHA-256.
 For a CI or Release run on the current protected `main` commit, dispatch `recipient-material-replay.yml` on that commit with the exact `observation` locator in `artifactId:sha256` form.
 Its Ubuntu job authenticates the original upload and candidate, replays the original lock for analysis, and measures only the missing archive identities.
 Its macOS job uses the recorded Node and npm, installs the byte-identical lock with scripts disabled, and exercises the recorded alias or scoped dependency after the graph and material checks pass.
-The original observation, compact measurement and replay proofs expire after 14 days.
+These original observations, unresolved material cases, compact measurements and replay proofs have a 30-day Actions retention window.
 The replay receipt covers the recorded role and original lock.
 FULL qualification still requires the complete roster under the active admission policy.
 An unresolved licence or notice disposition stays with the rights owner under the exceptional evidence procedure.
@@ -92,6 +92,8 @@ Credentials, private scanner details and OTPs do not belong in evidence.
 
 The protected evaluator reads reviewed advisory cases from `docs/release/dependency-advisory-cases.json` at its immutable controller commit.
 The register starts empty.
+The original controller's register selects the receipt version.
+Register version 2 declares receipt version 3, and historical register version 1 selects receipt version 2.
 A case that requires the native npm report stays pending until its custodian provides authorised durable storage and verifies retrieval.
 The standard hosted job has no private evidence store.
 Successful routine evaluations write the signed project decision.
@@ -196,19 +198,28 @@ Anonymous registry reads qualify bytes, both install spellings and documentation
 Each frozen Linux, Windows and macOS lane exercises the exact version and integrity using its consumer Node/npm pair.
 Both install spellings bind their actual production graph and original lock to the candidate, tests and advisory decision.
 Keep ordinary diagnostics in Actions logs.
-The public observation, material, lane-test and advisory artifacts have a 14-day recovery window.
+Public observation, material, lane-test and advisory artifacts have a 30-day Actions recovery window.
+The public registry controller receipt and the pre-publication qualification and advisory evidence have a 90-day window.
 Sealing copies their required proof into the immutable release evidence.
 Preserve any outstanding original in the signed checkpoint before its Actions copy expires.
 Store only proof required for later verification, once per distinct original, and omit routine npm audit reports from uploads and release assets.
+[Release evidence retention](artifact-transport.md#release-evidence-retention)
+
 Public recipient jobs occupy a run-specific concurrency group and release writers recheck the live preimages under their shared queue.
 Preserve original run IDs, attempts, native files and failed observations.
 A pending public coordinate allows read-only investigation.
 
 The stage journal records the qualification decision, its original upload and the time the stage accepted it.
-The registry run supplies a separate signed decision for the newly observed public installations.
+Release qualification and public registry verification each obtain their own signed decision for the exact inputs of that operation.
+Version 3 advisory receipts bind the original evaluator job, run and attempt, policy, audit scope and exact tarball, manifest, lock and graph.
+The same verified operation receipt can cover delays beyond 24 hours while the bindings match and any applied private case remains within its expiry.
+The observation must be no later than the decision, and the decision no later than verification.
+Version 3 verifies that the observation and decision both fall within the original evaluator job's native start and completion times.
+Different inputs or a different operation require their own protected evaluation.
+Version 2 advisory receipts use their original 24-hour observation limit at the applicable verification boundaries.
 Current standalone evidence uses schema version 8.
 Its archive uses version 3 and carries the signed decisions, their original job identities, the frozen runtime policy and the distinct public inputs needed to replay them after Actions expires.
-Completion verifies qualification freshness at the original stage check, then checks that any qualification case was still current at seal authorization.
+Completion replays the qualification decision at the original stage check and checks any qualification case against the original seal authorization time.
 It verifies the public decision at seal authorization and checks the original material and evaluator job times against each successful recipient test, including jobs copied from an earlier attempt.
 Signature readback uses the public Sigstore trust root retained in the protected controller revision and the transparency proofs in the signature bundle.
 The root matches the selected npm distribution's public Sigstore seed.

@@ -20,6 +20,23 @@ export function assertPublicAdvisoryDescriptor(record) {
   assert.match(record.statementSha256, hex);
 }
 
+/** A plan bound to this job has a deadline only when its verified advisory requires one. */
+export function assertPublicReplayAdvisoryCurrent(
+  { decidedAt, expiresAt },
+  now = Date.now(),
+) {
+  assert.ok(
+    Number.isSafeInteger(now) &&
+      Number.isSafeInteger(decidedAt) &&
+      decidedAt <= now,
+    "The admitted public advisory decision time is invalid or dated in the future",
+  );
+  assert.ok(
+    expiresAt === null || (Number.isSafeInteger(expiresAt) && now < expiresAt),
+    "The admitted public advisory decision is expired or has an invalid deadline",
+  );
+}
+
 export function readPublicReplayPlan(
   bytes,
   digest,
@@ -45,6 +62,7 @@ export function readPublicReplayPlan(
   assert.deepEqual(Object.keys(plan).sort(), [
     "advisory",
     "consumers",
+    "decidedAt",
     "expiresAt",
     "input",
     "lane",
@@ -54,15 +72,12 @@ export function readPublicReplayPlan(
     "registryTarball",
     "schemaVersion",
   ]);
-  assert.equal(plan.schemaVersion, 1);
+  assert.equal(plan.schemaVersion, 2);
   assert.deepEqual(plan.lane, lane);
   assert.deepEqual(plan.input, input);
   assert.deepEqual(plan.origin, origin);
   assertPublicAdvisoryDescriptor(plan.advisory);
-  assert.ok(
-    Number.isSafeInteger(plan.expiresAt) && now < plan.expiresAt,
-    "The admitted public advisory decision is expired",
-  );
+  assertPublicReplayAdvisoryCurrent(plan, now);
   assert.match(plan.materialSha256, hex);
   assert.deepEqual(Object.keys(plan.consumers).sort(), ["alias", "scoped"]);
   for (const consumer of Object.values(plan.consumers)) {

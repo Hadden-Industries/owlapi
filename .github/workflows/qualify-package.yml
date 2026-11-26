@@ -104,4 +104,4 @@ jobs:
             .release/candidate/${{ inputs.version }}/recipient-material-cases
             .release/candidate/${{ inputs.version }}/hadden-industries-owlapi-${{ inputs.version }}.tgz
             .release/candidate/${{ inputs.version }}/hadden-industries-owlapi-${{ inputs.version }}.cdx.json
-          retention-days: 14
+          retention-days: 30

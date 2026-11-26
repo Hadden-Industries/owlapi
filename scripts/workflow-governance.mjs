@@ -57,8 +57,9 @@ const ACTION_DIRECTORY = join(REPOSITORY_ROOT, ".github", "actions");
 const SHARED_SETUP = "./.github/actions/setup-producer";
 const SCANCODE_SETUP = "./.github/actions/setup-scancode";
 const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
+const recipientEvidenceRetentionDays = 30;
 const advisoryWorkflow = "release-audit-evaluator.yml";
-const advisoryRetention = "${{ inputs.purpose == 'public' && 14 || 90 }}";
+const advisoryRetention = `\${{ inputs.purpose == 'public' && ${recipientEvidenceRetentionDays} || 90 }}`;
 const COLLECT_ARTIFACTS = "./.github/actions/collect-artifacts";
 const isCaseRetention = (step) => step.name === recipientMaterialCaseUpload;
 const PUBLISHER_SETUP = "./approval-tools/.github/actions/setup-producer";
@@ -1076,7 +1077,7 @@ function validateRecipientMaterialReplay(workflow, installed, violations) {
         with: {
           name: "recipient-material-scan-${{ github.run_id }}-${{ github.run_attempt }}",
           path: ".release/recipient-material-scan/proof/recipient-material.json",
-          "retention-days": 14,
+          "retention-days": recipientEvidenceRetentionDays,
         },
       }),
     `${file}: scan must authenticate the observation and retain only the scoped material decision`,
@@ -1149,7 +1150,7 @@ function validateRecipientMaterialReplay(workflow, installed, violations) {
             with: {
               name: "recipient-rights-replay-${{ github.run_id }}-${{ github.run_attempt }}",
               path: ".release/recipient-rights-replay/replay.json",
-              "retention-days": 14,
+              "retention-days": recipientEvidenceRetentionDays,
             },
           },
         ],
@@ -1200,7 +1201,7 @@ function validateRecipientMaterialReplay(workflow, installed, violations) {
           with: {
             name: "recipient-material-replay-${{ github.run_id }}-${{ github.run_attempt }}",
             path: ".release/recipient-material-replay/replay.json\n.release/recipient-material-replay/eligibility/decisions\n.release/recipient-material-replay/eligibility/material",
-            "retention-days": 14,
+            "retention-days": recipientEvidenceRetentionDays,
           },
         },
       ),
@@ -1220,7 +1221,7 @@ function validateRecipientMaterialReplay(workflow, installed, violations) {
         with: {
           name: "pending-recipient-material-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}",
           path: ".release/runtime-report/pending-recipient-material.json",
-          "retention-days": 14,
+          "retention-days": recipientEvidenceRetentionDays,
         },
       }),
     "installed-qualification.yml: retain only the exceptional pending recipient observation after failure",
@@ -1239,7 +1240,7 @@ const caseRetention = (
   with: {
     name: `recipient-material-case-${identity}-\u0024{{ github.run_id }}-\u0024{{ github.run_attempt }}`,
     path: [path, ...originalPaths].join("\n"),
-    "retention-days": 14,
+    "retention-days": recipientEvidenceRetentionDays,
   },
 });
 
@@ -1636,6 +1637,16 @@ function validateOperationJobs(file, workflow, violations) {
         }),
       "release-registry.yml: public test lanes require the native observation, material proof, and protected advisory before exercising code",
     );
+    requireFields(
+      actionSteps(registry, RETAIN_ARTIFACT).find(
+        (step) =>
+          step.with?.name ===
+          "release-registry-${{ github.run_id }}-${{ github.run_attempt }}",
+      )?.with,
+      { "retention-days": 90 },
+      "release-registry.yml: public registry controller receipt",
+      violations,
+    );
     for (const [job, name, logical, path] of [
       [
         observe,
@@ -1659,7 +1670,12 @@ function validateOperationJobs(file, workflow, violations) {
       requiredPublicUpload(
         job,
         name,
-        { name: logical, path, "retention-days": 14, "compression-level": 6 },
+        {
+          name: logical,
+          path,
+          "retention-days": recipientEvidenceRetentionDays,
+          "compression-level": 6,
+        },
         violations,
       );
   } else if (file !== "release-completion.yml")
@@ -1886,6 +1902,13 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
       fileName,
       producer,
       ".release/candidate",
+      violations,
+    );
+    requireFields(
+      actionSteps(producer, RETAIN_ARTIFACT).find((step) => step.id === "proof")
+        ?.with,
+      { "retention-days": 90 },
+      "qualify-package.yml: package proof retention",
       violations,
     );
     const inputs = Object.fromEntries(
@@ -4515,7 +4538,7 @@ const validateConsumerRuntimeControls = (
                 with: {
                   name: "pending-recipient-material-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}",
                   path: pendingPath,
-                  "retention-days": 14,
+                  "retention-days": recipientEvidenceRetentionDays,
                 },
               })),
           `${file}:${id} must retain a pending observation only after its original Mac install stops`,

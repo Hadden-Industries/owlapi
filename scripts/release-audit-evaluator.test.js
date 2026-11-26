@@ -41,6 +41,8 @@ jest.unstable_mockModule("./release-audit-evaluator-sigstore.mjs", () => ({
   },
 }));
 const {
+  advisoryDecisionExpiry,
+  assertAdvisoryDecisionCurrent,
   buildReleaseAuditSubject,
   assertAdvisoryCasesCurrent,
   captureReleaseAudit,
@@ -75,7 +77,11 @@ const evaluator = {
   attempt: 1,
   checkRunId: 5412,
 };
-const trust = { policySha256: "f".repeat(64), evaluator };
+const trust = {
+  policySha256: "f".repeat(64),
+  receiptSchemaVersion: 3,
+  evaluator,
+};
 const privateMarker = "PRIVATE_AUDIT_FIXTURE_MARKER";
 
 function report(high = 0) {
@@ -181,6 +187,75 @@ const clearAuditCli =
   privateMarker +
   '");';
 
+test("an exact protected advisory decision remains valid for its operation after one day", () =>
+  withAuditCli(clearAuditCli, async (npmCli) => {
+    const entries = [{ source, subject: buildReleaseAuditSubject(input) }];
+    const receipt = await evaluateReleaseAudit(entries, {
+      authenticate: async () => ({ ...input, source }),
+      trust,
+      npmCli,
+      now: () => utc,
+    });
+    const options = { trust, entries, npmCli, now: utc + 48 * hour };
+    const verified = await verifyReleaseAuditReceipt(receipt, options);
+    expect(verified).toMatchObject({ decision: "ACCEPTED", schemaVersion: 3 });
+    expect(advisoryDecisionExpiry(verified)).toBeNull();
+    expect(() =>
+      assertAdvisoryDecisionCurrent(verified, options.now),
+    ).not.toThrow();
+    await expect(
+      verifyReleaseAuditReceipt(receipt, {
+        ...options,
+        entries: [
+          { source, subject: { ...entries[0].subject, role: "candidate" } },
+        ],
+      }),
+    ).rejects.toThrow("does not bind the approved subject and authority");
+  }));
+
+test("a historical signed v2 receipt keeps its original one-day limit", async () => {
+  const entries = [{ source, subject: buildReleaseAuditSubject(input) }];
+  const observedAt = new Date(utc).toISOString();
+  const decision = {
+    schemaVersion: 2,
+    subjects: entries.map((entry) => ({ ...entry, observedAt })),
+    evaluator,
+    policySha256: trust.policySha256,
+    decidedAt: observedAt,
+    decision: "ACCEPTED",
+  };
+  const statement = bytes(decision);
+  const receipt = { statement, signature: Buffer.from(digest(statement)) };
+  const options = {
+    trust: { ...trust, receiptSchemaVersion: 2 },
+    entries,
+    now: utc + 24 * hour,
+  };
+  await expect(verifyReleaseAuditReceipt(receipt, options)).resolves.toEqual(
+    decision,
+  );
+  expect(advisoryDecisionExpiry(decision)).toBe(options.now);
+  await expect(
+    verifyReleaseAuditReceipt(receipt, { ...options, now: options.now + 1 }),
+  ).rejects.toThrow("stale or inconsistent");
+  await expect(
+    verifyReleaseAuditReceipt(receipt, { ...options, trust }),
+  ).rejects.toThrow("Invalid public audit receipt");
+  const relabelled = bytes({ ...decision, schemaVersion: 3 });
+  await expect(
+    verifyReleaseAuditReceipt(
+      { statement: relabelled, signature: Buffer.from(digest(relabelled)) },
+      options,
+    ),
+  ).rejects.toThrow("Invalid public audit receipt");
+  await expect(
+    verifyReleaseAuditReceipt(
+      { ...receipt, statement: relabelled },
+      { ...options, trust },
+    ),
+  ).rejects.toThrow("Untrusted signature");
+});
+
 test("one routine signature covers the independently admitted receipt members without retained originals", () =>
   withAuditCli(clearAuditCli, async (npmCli) => {
     issueSignature.mockClear();
@@ -202,7 +277,7 @@ test("one routine signature covers the independently admitted receipt members wi
     expect(issueSignature).toHaveBeenCalledTimes(1);
     const statement = JSON.parse(receipt.statement);
     expect(statement).toMatchObject({
-      schemaVersion: 2,
+      schemaVersion: 3,
       evaluator,
       policySha256: trust.policySha256,
       decidedAt: new Date(utc).toISOString(),
@@ -224,11 +299,22 @@ test("one routine signature covers the independently admitted receipt members wi
       statement,
     );
 
-    const late = utc + 25 * hour;
-    const stale = bytes({
-      ...statement,
-      decidedAt: new Date(late).toISOString(),
-    });
+    const inconsistentTimes = [
+      { ...statement, decidedAt: new Date(options.now + 1).toISOString() },
+      { ...statement, decidedAt: new Date(utc - 1).toISOString() },
+      { ...statement, decidedAt: "2026-11-26T12:00:00Z" },
+    ];
+    for (const decision of inconsistentTimes) {
+      const badTime = bytes(decision);
+      await expect(
+        verifyReleaseAuditReceipt(
+          { statement: badTime, signature: Buffer.from(digest(badTime)) },
+          options,
+        ),
+      ).rejects.toThrow(
+        /invalid audit observation time|stale or inconsistent/iu,
+      );
+    }
     for (const [checked, changed] of [
       [receipt, { entries: [entries[0]] }],
       [
@@ -246,10 +332,6 @@ test("one routine signature covers the independently admitted receipt members wi
         { trust: { ...trust, evaluator: { ...evaluator, checkRunId: 5413 } } },
       ],
       [{ ...receipt, signature: Buffer.from("other signature") }, {}],
-      [
-        { statement: stale, signature: Buffer.from(digest(stale)) },
-        { now: late },
-      ],
       [
         {
           ...receipt,
@@ -665,7 +747,7 @@ test("issues an authoritative native npm10 observation while preserving canonica
   ));
 
 const approvedAt = "2026-11-25T00:00:00.000Z";
-const expiresAt = "2026-11-26T13:00:00.000Z";
+const expiresAt = "2026-11-28T13:00:00.000Z";
 const approvedReference = {
   id: "case-dev-tool",
   owner: "MaksymShostak",
@@ -779,6 +861,18 @@ test("an exact non-release-reachable development finding can pass only after ori
       ).toBe(true);
       expect(receipt.statement.toString()).not.toContain(privateMarker);
       expect(receipt.statement.toString()).not.toContain(advisory);
+      expect(advisoryDecisionExpiry(decision)).toBe(Date.parse(expiresAt));
+      await expect(
+        verifyReleaseAuditReceipt(receipt, {
+          trust,
+          entries: records,
+          npmCli,
+          now: Date.parse(expiresAt) - 1,
+        }),
+      ).resolves.toEqual(decision);
+      expect(() =>
+        assertAdvisoryDecisionCurrent(decision, Date.parse(expiresAt)),
+      ).toThrow("invalid or expired");
       expect(() =>
         assertAdvisoryCasesCurrent(decision, Date.parse(expiresAt)),
       ).toThrow("invalid or expired");

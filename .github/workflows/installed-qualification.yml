@@ -67,7 +67,7 @@ jobs:
         with:
           name: pending-recipient-material-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}
           path: .release/runtime-report/pending-recipient-material.json
-          retention-days: 14
+          retention-days: 30
       - name: Retain the actual consumer lane evidence
         uses: ./.github/actions/retain-artifact
         with:

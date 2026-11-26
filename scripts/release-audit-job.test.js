@@ -93,8 +93,8 @@ test("protected qualification and original upload require the same repository, r
   expect(() =>
     checkedNativeJob([original, original], original.name, run),
   ).toThrow();
-  const policy = "f".repeat(64);
-  expect(auditTrust(expected, original, policy).evaluator).toEqual({
+  const policy = { policySha256: "f".repeat(64), receiptSchemaVersion: 3 };
+  expect(auditTrust(expected, original, { policy }).evaluator).toEqual({
     controller,
     workflow,
     runId: 140,
@@ -102,13 +102,13 @@ test("protected qualification and original upload require the same repository, r
     checkRunId: 444,
   });
   expect(() =>
-    auditTrust(expected, { ...original, labels: ["self-hosted"] }, policy),
+    auditTrust(expected, { ...original, labels: ["self-hosted"] }, { policy }),
   ).toThrow();
   expect(() =>
     auditTrust(
       expected,
       { ...original, check_run_url: original.check_run_url + "/x" },
-      policy,
+      { policy },
     ),
   ).toThrow();
   assertTimedUpload(artifact, run, original, logical, uploadStep);

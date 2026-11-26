@@ -18,7 +18,10 @@ import { assertConsistentArchives } from "./release-resolution-proof.mjs";
 import { prepareRecipientMaterial } from "../util/third-party-evidence/recipient-material.mjs";
 import { verifyQualifiedRecipientMaterial } from "./recipient-material-case-readmission.mjs";
 import { unpackPublicMaterial } from "./public-material-packet.mjs";
-import { assertPublicAdvisoryDescriptor } from "./public-recipient-plan.mjs";
+import {
+  assertPublicAdvisoryDescriptor,
+  assertPublicReplayAdvisoryCurrent,
+} from "./public-recipient-plan.mjs";
 import { verifyHostedAdvisoryReceipt } from "./release-audit-job.mjs";
 import { advisoryDecisionExpiry } from "./release-audit-evaluator.mjs";
 import { latestRecordedTime, releaseTime } from "./release-native-time.mjs";
@@ -721,13 +724,13 @@ export async function admitPublicRecipientReplay(
     publicRecipientTest: true,
   });
   await reader.confirm();
-  const expiresAt = advisoryDecisionExpiry(verified.decision);
-  assert.ok(
-    Date.now() < expiresAt,
-    "The public advisory decision expired during replay admission",
-  );
+  const advisoryWindow = {
+    decidedAt: releaseTime(verified.decision.decidedAt),
+    expiresAt: advisoryDecisionExpiry(verified.decision),
+  };
+  assertPublicReplayAdvisoryCurrent(advisoryWindow);
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     lane,
     input,
     origin: runOrigin,
@@ -735,7 +738,7 @@ export async function admitPublicRecipientReplay(
     observation: matched.observation,
     materialSha256: matched.materialSha256,
     advisory: verified.descriptor,
-    expiresAt,
+    ...advisoryWindow,
     consumers: Object.fromEntries(
       Object.entries(matched.consumers).map(([mode, value]) => [
         mode,

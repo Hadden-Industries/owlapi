@@ -41,6 +41,15 @@ import { prepareRecipientMaterial } from "../util/third-party-evidence/recipient
 import { readCanonicalMaterialFromGit } from "./recipient-material-git-source.mjs";
 import { qualificationAdvisoryMarker } from "./qualification-advisory-binding.mjs";
 
+// Keep this archived fixture on its v2 policy after the checkout starts issuing v3.
+const { readControllerBlob } = await import("./release-controller-blob.mjs");
+jest.unstable_mockModule("./release-controller-blob.mjs", () => ({
+  readControllerBlob: (controller, path) =>
+    path === "docs/release/dependency-advisory-cases.json"
+      ? Buffer.from(stableJson({ schemaVersion: 1, cases: [] }))
+      : readControllerBlob(controller, path),
+}));
+
 // This test has no GitHub OIDC identity. Keep content binding and archived
 // authority selection real, with a local key at the Sigstore boundary.
 const sigstore = await import("./release-audit-evaluator-sigstore.mjs");

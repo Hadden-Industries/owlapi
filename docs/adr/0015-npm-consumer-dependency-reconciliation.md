@@ -10,8 +10,11 @@ The same checks apply on release reuse and on fresh public readback.
 A new external archive can use the existing external-runtime licence criteria when authenticated bytes, legal files, scan results and distribution scope establish the standing disposition.
 An unresolved exception goes to its existing rights owner.
 Inside OwlAPI's protected release workflow, re-audit the original producer and recipient locks without reinstalling.
-Bind the project decision to the source job, tarball, observed graph and lock, policy and audit observation time.
-The release seal verifies the protected evaluator's current signed result for its exact subject.
+Bind the project decision to the exact tarball, manifest, lock, observed graph, policy, audit scope, and original job, run and attempt.
+Obtain a protected evaluation for each release qualification and public registry verification operation.
+A version 3 decision stays eligible for that operation through approval delays as long as the reader verifies its identity, ordered timestamps and applicable case expiry.
+The original controller's advisory case register selects the receipt version, and version 3 verifies the native evaluator job's time bounds.
+The stage, public tests and seal verify the signed result for that operation, and historical replay uses its original verification times.
 [Public audit evidence decision](../plans/2026-11-26-npm-audit-evidence-key-design-decision.md)
 
 Use native job logs and summaries for routine progress and safe diagnostics.

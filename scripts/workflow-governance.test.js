@@ -1257,6 +1257,130 @@ describe("repository workflow governance", () => {
     );
   });
 
+  test.each([
+    ["public_observation", "Retain original public observation", 14],
+    ["material", "Retain public material decisions", 14],
+    ["public_recipient", "Retain public recipient proof", 14],
+  ])(
+    "rejects the wrong retention window for public registry %s",
+    (job, name, days) => {
+      expect(
+        mutateWorkflow("release-registry.yml", (doc) => {
+          const upload = doc
+            .getIn(["jobs", job, "steps"])
+            .items.find((step) => step.get("name") === name);
+          upload.setIn(["with", "retention-days"], days);
+        }).join("\n"),
+      ).toContain(`release-registry.yml: ${name} must retain`);
+    },
+  );
+
+  test("requires the public registry controller receipt for 90 days", () => {
+    expect(
+      mutateWorkflow("release-registry.yml", (doc) => {
+        const upload = doc
+          .getIn(["jobs", "registry", "steps"])
+          .items.find(
+            (step) => step.get("name") === "Retain original operation evidence",
+          );
+        upload.setIn(["with", "retention-days"], 30);
+      }),
+    ).toContain(
+      "release-registry.yml: public registry controller receipt is missing retention-days: 90",
+    );
+  });
+
+  test.each([
+    "${{ inputs.purpose == 'public' && 14 || 90 }}",
+    "${{ inputs.purpose == 'public' && 30 || 30 }}",
+  ])(
+    "rejects advisory retention outside the 30/90-day policy: %s",
+    (retention) => {
+      expect(
+        mutateWorkflow("release-audit-evaluator.yml", (doc) => {
+          doc.setIn(
+            ["jobs", "evaluate", "steps", 3, "with", "retention-days"],
+            retention,
+          );
+        }),
+      ).toContain(
+        "release-audit-evaluator.yml: retain only the signed receipt after a successful advisory check",
+      );
+    },
+  );
+
+  test("requires the release-capable producer proof for 90 days", () => {
+    expect(
+      mutateWorkflow("qualify-package.yml", (doc) => {
+        const proof = doc
+          .getIn(["jobs", "produce", "steps"])
+          .items.find((step) => step.get("id") === "proof");
+        proof.setIn(["with", "retention-days"], 30);
+      }),
+    ).toContain(
+      "qualify-package.yml: package proof retention is missing retention-days: 90",
+    );
+  });
+
+  test.each([
+    [
+      "ci.yml",
+      "portability_macos_node_26",
+      "Retain the exceptional recipient material observation",
+      "pending observation",
+    ],
+    [
+      "qualify-package.yml",
+      "produce",
+      "Retain the unresolved recipient material case",
+      "retain only the bounded unresolved material case",
+    ],
+    [
+      "recipient-material-replay.yml",
+      "scan",
+      "Retain the scoped recipient scanner result",
+      "retain only the scoped material decision",
+    ],
+    [
+      "recipient-material-replay.yml",
+      "replay",
+      "Retain proof of the original recipient replay",
+      "replay must bind the scan receipt",
+    ],
+  ])(
+    "rejects a 14-day recipient recovery upload in %s:%s",
+    (file, job, name, violation) => {
+      expect(
+        mutateWorkflow(file, (doc) => {
+          const upload = doc
+            .getIn(["jobs", job, "steps"])
+            .items.find((step) => step.get("name") === name);
+          upload.setIn(["with", "retention-days"], 14);
+        }).join("\n"),
+      ).toContain(violation);
+    },
+  );
+
+  test("requires 30 days to recover an unresolved installed recipient case", () => {
+    const action = parseDocument(
+      readFileSync(".github/actions/qualify-consumer/action.yml", "utf8"),
+    );
+    const upload = action
+      .getIn(["runs", "steps"])
+      .items.find(
+        (step) =>
+          step.get("name") === "Retain the unresolved recipient material case",
+      );
+    upload.setIn(["with", "retention-days"], 14);
+    expect(
+      auditRepositoryControls({
+        consumerActionOverrides: { "qualify-consumer": action.toString() },
+      }).violations,
+    ).toContain(
+      "qualify-consumer: retain only the bounded unresolved material case after failure",
+    );
+  });
+
   test("does not expand the release browser or public material artifact to raw reports", () => {
     expect(
       mutateWorkflow("release.yml", (doc) => {

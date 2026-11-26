@@ -11,6 +11,25 @@ import { qualificationAdvisoryMarker } from "./qualification-advisory-binding.mj
 import { formatSha256Sums } from "./release-artifacts.mjs";
 import { assertImmutableQualificationAssets } from "./staged-evidence.mjs";
 
+const encode = (v) => Buffer.from(canonicalJson(v) + "\n");
+const checkout = execFileSync("git", ["rev-parse", "HEAD"], {
+  encoding: "utf8",
+}).trim();
+const historicalController = "b".repeat(40);
+const operationController = "a".repeat(40);
+const { readControllerBlob } = await import("./release-controller-blob.mjs");
+// Supply both immutable registry contracts without depending on the checkout's policy version.
+jest.unstable_mockModule("./release-controller-blob.mjs", () => ({
+  readControllerBlob: (controller, path) => {
+    if (path === "docs/release/dependency-advisory-cases.json") {
+      return controller === operationController
+        ? encode({ schemaVersion: 2, receiptSchemaVersion: 3, cases: [] })
+        : encode({ schemaVersion: 1, cases: [] });
+    }
+    return readControllerBlob(checkout, path);
+  },
+}));
+
 const originalSigstore = await import("./release-audit-evaluator-sigstore.mjs");
 const keys = generateKeyPairSync("ed25519");
 jest.unstable_mockModule("./release-audit-evaluator-sigstore.mjs", () => ({
@@ -20,18 +39,19 @@ jest.unstable_mockModule("./release-audit-evaluator-sigstore.mjs", () => ({
       throw Error("Invalid test signature");
   },
 }));
-const { auditPolicySha256, reopenStageQualificationAdvisory } =
-  await import("./release-audit-job.mjs");
+const {
+  archiveAdvisory,
+  auditPolicySha256,
+  reopenStageQualificationAdvisory,
+  verifyArchivedAdvisoryReceipt,
+} = await import("./release-audit-job.mjs");
 const { buildReleaseAuditSubject } =
   await import("./release-audit-evaluator.mjs");
-const encode = (v) => Buffer.from(canonicalJson(v) + "\n");
-const controller = execFileSync("git", ["rev-parse", "HEAD"], {
-  encoding: "utf8",
-}).trim();
 const originDate = "2026-11-26T12:30:00.000Z";
-const approvedTime = Date.parse(originDate) + 1500;
 
-test("seal reopens the exact originally approved decision after the native run and artifact listings disappear", async () => {
+async function checkRecoveredStage({ schemaVersion, controller, stageDelay }) {
+  const approvedTime = Date.parse(originDate) + stageDelay;
+  const completedAt = "2026-11-26T12:30:01.500Z";
   const workflow = ".github/workflows/release.yml",
     repository = { id: REPOSITORY_ID, full_name: REPOSITORY };
   const run = {
@@ -58,17 +78,23 @@ test("seal reopens the exact originally approved decision after the native run a
     labels: [UBUNTU.label],
     check_run_url:
       "https://api.github.com/repos/" + REPOSITORY + "/check-runs/777",
+    ...(schemaVersion === 3
+      ? { started_at: originDate, completed_at: completedAt }
+      : {}),
     steps: [
       {
         name: "Retain protected advisory decision",
         status: "completed",
         conclusion: "success",
         started_at: originDate,
-        completed_at: new Date(approvedTime).toISOString(),
+        completed_at: completedAt,
       },
     ],
   };
-  const sourcePackage = { name: "@hadden-industries/owlapi", version: "0.1.0" };
+  const sourcePackage = {
+    name: "@hadden-industries/owlapi",
+    version: "0.1.0",
+  };
   const subject = buildReleaseAuditSubject({
     role: "producer",
     scope: "production",
@@ -76,7 +102,10 @@ test("seal reopens the exact originally approved decision after the native run a
     tarballSha256: "a".repeat(64),
     graphSha256: "b".repeat(64),
     manifestBytes: encode(sourcePackage),
-    lockBytes: encode({ lockfileVersion: 3, packages: { "": sourcePackage } }),
+    lockBytes: encode({
+      lockfileVersion: 3,
+      packages: { "": sourcePackage },
+    }),
   });
   const source = {
     repositoryId: REPOSITORY_ID,
@@ -86,8 +115,9 @@ test("seal reopens the exact originally approved decision after the native run a
     jobId: 47,
     artifactSha256: "f".repeat(64),
   };
+  const entries = [{ subject, source }];
   const decision = {
-    schemaVersion: 2,
+    schemaVersion,
     evaluator: {
       workflow,
       controller,
@@ -95,7 +125,7 @@ test("seal reopens the exact originally approved decision after the native run a
       attempt: 1,
       checkRunId: 777,
     },
-    subjects: [{ subject, source, observedAt: originDate }],
+    subjects: entries.map((entry) => ({ ...entry, observedAt: originDate })),
     policySha256: auditPolicySha256(controller),
     decidedAt: originDate,
     decision: "ACCEPTED",
@@ -164,9 +194,46 @@ test("seal reopens the exact originally approved decision after the native run a
       throw Object.assign(new Error("Expired"), { httpStatus: 404 });
     },
   };
-  await expect(
-    reopenStageQualificationAdvisory(client, { stage, manifest, checkpoint }),
-  ).resolves.toMatchObject({ descriptor, decision });
+  const verified = await reopenStageQualificationAdvisory(client, {
+    stage,
+    manifest,
+    checkpoint,
+  });
+  expect(verified).toMatchObject({ descriptor, decision });
+  const archive = new Map();
+  archiveAdvisory(archive, "qualification", verified);
+  const archivedJob = JSON.parse(
+    archive.get("qualification-advisory-job.json"),
+  );
+  const options = {
+    statement: archive.get("qualification-advisory.json"),
+    signature: archive.get("qualification-advisory.sigstore.json"),
+    descriptor,
+    workflow,
+    runId: run.id,
+    attempt: run.run_attempt,
+    controller,
+    job: archivedJob,
+    entries,
+    now: approvedTime,
+  };
+  await expect(verifyArchivedAdvisoryReceipt(options)).resolves.toEqual(
+    decision,
+  );
+  if (schemaVersion === 3) {
+    expect(archivedJob).toMatchObject({
+      started_at: originDate,
+      completed_at: completedAt,
+    });
+    await expect(
+      verifyArchivedAdvisoryReceipt({
+        ...options,
+        job: { ...archivedJob, started_at: "2026-11-26T12:30:00.001Z" },
+      }),
+    ).rejects.toThrow("outside its original evaluator job");
+  } else {
+    expect(archivedJob).not.toHaveProperty("started_at");
+  }
   expect(reads).toEqual([
     "/actions/runs/141/attempts/2",
     "/actions/jobs/100",
@@ -191,7 +258,19 @@ test("seal reopens the exact originally approved decision after the native run a
   await expect(
     reopenStageQualificationAdvisory(client, { stage, manifest, checkpoint }),
   ).rejects.toThrow(/changed original advisory ZIP/);
-});
+}
+
+test.each([
+  { schemaVersion: 2, controller: historicalController, stageDelay: 1500 },
+  {
+    schemaVersion: 3,
+    controller: operationController,
+    stageDelay: 48 * 60 * 60_000,
+  },
+])(
+  "seal reopens the original v$schemaVersion decision after the native run and artifact listings disappear",
+  checkRecoveredStage,
+);
 
 test("the qualified SBOM, tarball and summed inventory must be the downloaded immutable assets", () => {
   const tgz = Buffer.from("original package"),

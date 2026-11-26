@@ -3,7 +3,7 @@ import { stableJson } from "./canonical-json.mjs";
 import { readPublicReplayPlan } from "./public-recipient-plan.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 
-test("the isolated public test requires the exact same-job plan, workflow scope and current decision", () => {
+function replayPlan() {
   const lane = { os: "win32", node: "22.0.0", arch: "x64" };
   const input = { tarballSha256: "a".repeat(64) };
   const origin = { commit: "b".repeat(40), run: "45", attempt: "2" };
@@ -14,10 +14,11 @@ test("the isolated public test requires the exact same-job plan, workflow scope 
     decisionSha256: "d".repeat(64),
   };
   const plan = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     lane,
     input,
     origin,
+    decidedAt: 200,
     expiresAt: 500,
     registryTarball:
       "https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0.tgz",
@@ -32,6 +33,12 @@ test("the isolated public test requires the exact same-job plan, workflow scope 
     },
     consumers: { alias: consumer, scoped: consumer },
   };
+  return plan;
+}
+
+test("the isolated public test requires the exact same-job plan, workflow scope and current decision", () => {
+  const plan = replayPlan();
+  const { lane, input, origin } = plan;
   const bytes = Buffer.from(stableJson(plan));
   const digest = sha256Buffer(bytes);
   const expected = { lane, input, origin, now: 499 };
@@ -51,4 +58,27 @@ test("the isolated public test requires the exact same-job plan, workflow scope 
   expect(() =>
     readPublicReplayPlan(bytes, digest, { ...expected, now: 500 }),
   ).toThrow("decision is expired");
+});
+
+test("an operation-bound public replay plan needs no finite cutoff unless a case expires", () => {
+  const original = replayPlan();
+  const { lane, input, origin } = original;
+  const late = 48 * 60 * 60_000;
+  const plan = { ...original, expiresAt: null };
+  const read = (record, now) => {
+    const bytes = Buffer.from(stableJson(record));
+    return readPublicReplayPlan(bytes, sha256Buffer(bytes), {
+      lane,
+      input,
+      origin,
+      now,
+    });
+  };
+  expect(read(plan, late)).toEqual(plan);
+  expect(() => read(plan, plan.decidedAt - 1)).toThrow("dated in the future");
+  expect(() => read({ ...plan, expiresAt: undefined }, late)).toThrow();
+  expect(() => read({ ...plan, expiresAt: String(late) }, late - 1)).toThrow();
+  const withCase = { ...plan, expiresAt: late };
+  expect(read(withCase, late - 1)).toEqual(withCase);
+  expect(() => read(withCase, late)).toThrow("decision is expired");
 });

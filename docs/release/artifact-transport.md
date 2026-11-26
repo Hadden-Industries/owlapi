@@ -15,6 +15,23 @@ Local checks, independent review, exact-head hosted CI and release acceptance ar
 The release workflow has not been dispatched to qualify this change.
 Human review of rights and licensing for the new isolated development material remains pending.
 
+## Release evidence retention
+
+The workflow upload windows follow the equivalent evidence roles on JSON Quality's protected `main` at `78e901148f829cd1dd44953de22791fea6aa7f2d`.
+[Qualification, including short transfers](https://github.com/Hadden-Industries/json-quality/blob/78e901148f829cd1dd44953de22791fea6aa7f2d/.github/workflows/qualification.yml) · [Release qualification and pre-publication security](https://github.com/Hadden-Industries/json-quality/blob/78e901148f829cd1dd44953de22791fea6aa7f2d/.github/workflows/release-qualification.yml) · [Public registry evidence](https://github.com/Hadden-Industries/json-quality/blob/78e901148f829cd1dd44953de22791fea6aa7f2d/.github/workflows/release-registry.yml)
+
+| Window  | OwlAPI evidence                                                                                                                                                                        |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 day   | Same-run maintenance candidates, reporters and lane handoffs, npm registry signing-key snapshots and evidence shards sent to aggregation                                               |
+| 30 days | Public recipient observations, material decisions, lane proofs and the protected public advisory result                                                                                |
+| 90 days | Release-capable candidates and producer, CI and qualification proofs, the pre-publication advisory result, the public registry controller receipt and final release-operation receipts |
+
+OwlAPI's exceptional recipient material cases, pending observations, scoped scanner outputs and replay proofs use the 30-day recipient evidence window.
+Their original bytes can support a later rights disposition, a replay dispatch or a fresh qualification through a signed checkpoint.
+The standalone installed-only diagnostic reuses the original main CI candidate and reports its verdict in the run summary.
+Check each required original's actual expiry before planning a later operation.
+[Staged operations and recovery](staged-operations.md#verify-public-recipients-and-seal)
+
 ## Failure and recovery
 
 Run 39591230606 passed its installed OWL assertions, then lost the connection while finalizing the two-file proof upload.

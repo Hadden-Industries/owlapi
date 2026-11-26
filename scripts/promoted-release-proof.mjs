@@ -174,7 +174,7 @@ export function assertPromotedCi(
       hex(evidence.evidence["consumer-resolutions.json"]?.sha256),
       "Missing original recipient packet",
     );
-    // The separate protected job issues the time-bounded decision after both
+    // The separate protected job issues its operation-bound decision after both
     // release-only qualification and the original CI package evidence are bound.
     return evidence;
   }

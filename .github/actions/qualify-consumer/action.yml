@@ -52,4 +52,4 @@ runs:
       with:
         name: recipient-material-case-${{ github.job }}-${{ runner.os }}-${{ inputs.node }}-${{ github.run_id }}-${{ github.run_attempt }}
         path: .release/runtime-report/recipient-material-cases
-        retention-days: 14
+        retention-days: 30

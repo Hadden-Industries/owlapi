@@ -1,5 +1,8 @@
 const blockingSeverities = ["high", "critical"];
 
+export const HISTORICAL_AUDIT_RECEIPT_SCHEMA_VERSION = 2;
+export const OPERATION_AUDIT_RECEIPT_SCHEMA_VERSION = 3;
+
 export const RELEASE_AUDIT_ARGS = Object.freeze([
   "audit",
   `--audit-level=${blockingSeverities[0]}`,

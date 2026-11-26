@@ -1,7 +1,11 @@
 /** Authenticate native audit inputs, preserve the original privately, and verify signed public decisions. */
 import { randomUUID } from "node:crypto";
 import { canonicalJson } from "./canonical-json.mjs";
-import { isReleaseAuditClear } from "./release-audit-policy.mjs";
+import {
+  HISTORICAL_AUDIT_RECEIPT_SCHEMA_VERSION,
+  OPERATION_AUDIT_RECEIPT_SCHEMA_VERSION,
+  isReleaseAuditClear,
+} from "./release-audit-policy.mjs";
 import {
   isAuditEvidenceId,
   observeLockedReleaseAudit,
@@ -27,7 +31,11 @@ import {
   verifyAuditStatement,
 } from "./release-audit-evaluator-sigstore.mjs";
 
-const maxAge = 24 * 60 * 60 * 1000;
+const historicalMaxAge = 24 * 60 * 60 * 1000;
+const receiptSchemaVersions = [
+  HISTORICAL_AUDIT_RECEIPT_SCHEMA_VERSION,
+  OPERATION_AUDIT_RECEIPT_SCHEMA_VERSION,
+];
 const maxSubjects = 256;
 const maxStatement = 256 * 1024;
 const maxSignature = 128 * 1024;
@@ -122,7 +130,9 @@ function assertSource(source) {
 
 function assertTrust(trust) {
   assertValid(
-    closed(trust, ["policySha256", "evaluator"]) && hex(trust.policySha256, 64),
+    closed(trust, ["policySha256", "receiptSchemaVersion", "evaluator"]) &&
+      hex(trust.policySha256, 64) &&
+      receiptSchemaVersions.includes(trust.receiptSchemaVersion),
     "Approved audit policy is required",
   );
   assertAuditEvaluatorIdentity(trust.evaluator);
@@ -516,6 +526,10 @@ export async function evaluateReleaseAudit(
   },
 ) {
   assertTrust(trust);
+  assertValid(
+    trust.receiptSchemaVersion === OPERATION_AUDIT_RECEIPT_SCHEMA_VERSION,
+    "The protected evaluator requires the current receipt policy",
+  );
   assertAuditIssuerContext(trust.evaluator);
   validateAdvisoryCases(advisoryCases);
   assertValid(
@@ -574,16 +588,16 @@ export async function evaluateReleaseAudit(
     });
   }
   const decidedAt = timestamp(now());
-  for (const entry of subjects)
-    assertSubjectFreshness(entry, decidedAt, Date.parse(decidedAt));
-  const statement = encode({
-    schemaVersion: 2,
+  const decision = {
+    schemaVersion: trust.receiptSchemaVersion,
     subjects,
     evaluator: trust.evaluator,
     policySha256: trust.policySha256,
     decidedAt,
     decision: "ACCEPTED",
-  });
+  };
+  assertAdvisoryDecisionCurrent(decision, Date.parse(decidedAt));
+  const statement = encode(decision);
   const signing = { npmCli, evaluator: trust.evaluator };
   const signature = await signAuditStatement(statement, signing);
   assertValid(bounded(signature, maxSignature), "Invalid audit signature");
@@ -591,7 +605,7 @@ export async function evaluateReleaseAudit(
   return { statement, signature };
 }
 
-function assertFresh(observedAt, decidedAt, now) {
+function assertObservationCurrent(observedAt, decidedAt, now, schemaVersion) {
   const canonicalTime = (value) =>
     typeof value === "string" &&
     /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/u.test(value) &&
@@ -606,14 +620,12 @@ function assertFresh(observedAt, decidedAt, now) {
   const observed = Date.parse(observedAt),
     decided = Date.parse(decidedAt);
   assertValid(
-    observed <= decided && decided <= now && now - observed <= maxAge,
+    observed <= decided &&
+      decided <= now &&
+      (schemaVersion !== HISTORICAL_AUDIT_RECEIPT_SCHEMA_VERSION ||
+        now - observed <= historicalMaxAge),
     "Release audit observation is stale or inconsistent",
   );
-}
-
-function assertSubjectFreshness(entry, decidedAt, now) {
-  assertFresh(entry.observedAt, decidedAt, now);
-  assertPrivateCaseCurrent(entry, now);
 }
 
 function assertPrivateCaseCurrent(entry, now) {
@@ -638,20 +650,32 @@ function assertPrivateCaseCurrent(entry, now) {
   );
 }
 
-/** Recheck both observation age and a selected private case's expiry at a writer boundary. */
+/** Recheck the verified decision clock and applied case deadlines at a writer boundary. */
 export function assertAdvisoryDecisionCurrent(decision, now = Date.now()) {
-  for (const entry of decision.subjects)
-    assertSubjectFreshness(entry, decision.decidedAt, now);
+  assertValid(
+    receiptSchemaVersions.includes(decision.schemaVersion),
+    "Invalid public audit receipt",
+  );
+  for (const entry of decision.subjects) {
+    assertObservationCurrent(
+      entry.observedAt,
+      decision.decidedAt,
+      now,
+      decision.schemaVersion,
+    );
+    assertPrivateCaseCurrent(entry, now);
+  }
 }
 
-/** A verified decision may be handed to an isolated test runner until this instant. */
+/** Return the earliest verified deadline, or null when the exact operation has no deadline. */
 export function advisoryDecisionExpiry(decision) {
-  return Math.min(
-    ...decision.subjects.flatMap((entry) => [
-      Date.parse(entry.observedAt) + maxAge,
-      ...(entry.caseEvidence ? [Date.parse(entry.caseEvidence.expiresAt)] : []),
-    ]),
-  );
+  const historical =
+    decision.schemaVersion === HISTORICAL_AUDIT_RECEIPT_SCHEMA_VERSION;
+  const deadlines = decision.subjects.flatMap((entry) => [
+    ...(historical ? [Date.parse(entry.observedAt) + historicalMaxAge] : []),
+    ...(entry.caseEvidence ? [Date.parse(entry.caseEvidence.expiresAt)] : []),
+  ]);
+  return deadlines.length ? Math.min(...deadlines) : null;
 }
 
 /** A past stage decision keeps its original audit clock; its case approval must remain active for a future writer. */
@@ -681,7 +705,7 @@ export async function verifyReleaseAuditReceipt(
       "decidedAt",
       "decision",
     ]) &&
-      result.schemaVersion === 2 &&
+      result.schemaVersion === trust.receiptSchemaVersion &&
       result.decision === "ACCEPTED" &&
       Array.isArray(result.subjects) &&
       result.subjects.length === expected.length,
@@ -690,6 +714,7 @@ export async function verifyReleaseAuditReceipt(
   assertTrust({
     evaluator: result.evaluator,
     policySha256: result.policySha256,
+    receiptSchemaVersion: result.schemaVersion,
   });
   const supplied = result.subjects.map((entry) => {
     assertValid(
@@ -701,7 +726,6 @@ export async function verifyReleaseAuditReceipt(
       ]),
       invalid,
     );
-    assertSubjectFreshness(entry, result.decidedAt, now);
     return { subject: entry.subject, source: entry.source };
   });
   assertValid(
@@ -711,6 +735,7 @@ export async function verifyReleaseAuditReceipt(
       encode(result).equals(statement),
     "Public audit receipt does not bind the approved subject and authority",
   );
+  assertAdvisoryDecisionCurrent(result, now);
   await verifyAuditStatement(signature, statement, {
     npmCli,
     evaluator: trust.evaluator,
