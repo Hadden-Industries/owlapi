@@ -22,14 +22,14 @@ export function checkoutGitEnvironment(cwd) {
       "GIT_NAMESPACE",
       "GIT_QUARANTINE_PATH",
     ]);
+    // Git's sanitize_repo_env also preserves both transports for caller-supplied
+    // -c settings, including path-specific safe.directory and signature policy.
+    localGitVariables.delete("GIT_CONFIG_PARAMETERS");
+    localGitVariables.delete("GIT_CONFIG_COUNT");
   }
   return {
     ...Object.fromEntries(
-      inherited.filter(
-        ([key]) =>
-          !localGitVariables.has(key.toUpperCase()) &&
-          !/^GIT_CONFIG_(?:KEY|VALUE)_\d+$/iu.test(key),
-      ),
+      inherited.filter(([key]) => !localGitVariables.has(key.toUpperCase())),
     ),
     GIT_NO_LAZY_FETCH: "1",
     GIT_NO_REPLACE_OBJECTS: "1",

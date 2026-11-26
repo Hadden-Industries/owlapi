@@ -4,6 +4,7 @@ import { execFileSync } from "node:child_process";
 import { mkdtempSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
+import { checkoutGitEnvironment } from "./release-git-environment.mjs";
 import {
   readRetentionGitCommits,
   readRetentionVersionTags,
@@ -190,12 +191,36 @@ test("inherited repository and object-store selectors cannot redirect retention 
         GIT_DIR: other,
         GIT_COMMON_DIR: other,
         GIT_OBJECT_DIRECTORY: join(other, "objects"),
+        GIT_CONFIG_NOSYSTEM: "1",
+        GIT_CONFIG_GLOBAL: join(directory, "empty-global-config"),
+        GIT_TEST_ASSUME_DIFFERENT_OWNER: "1",
+        GIT_CONFIG_COUNT: "1",
+        GIT_CONFIG_KEY_0: "safe.directory",
+        GIT_CONFIG_VALUE_0: directory.replaceAll("\\", "/"),
+        GIT_CONFIG_PARAMETERS: "'core.abbrev'='12'",
       };
       const prior = new Map(
         Object.keys(overrides).map((key) => [key, process.env[key]]),
       );
       try {
         Object.assign(process.env, overrides);
+        const child = {
+          env: checkoutGitEnvironment(directory),
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "pipe"],
+          windowsHide: true,
+        };
+        const config = (key) =>
+          execFileSync(
+            "git",
+            ["-C", directory, "config", "--get-all", key],
+            child,
+          ).trim();
+        expect(config("safe.directory")).toBe(overrides.GIT_CONFIG_VALUE_0);
+        expect(config("core.abbrev")).toBe("12");
+        expect(() =>
+          execFileSync("git", ["-C", other, "rev-parse", "--git-dir"], child),
+        ).toThrow();
         expect(readRetentionGitCommits([commit], { directory })).toEqual([
           { sha: commit, parents: [] },
         ]);
