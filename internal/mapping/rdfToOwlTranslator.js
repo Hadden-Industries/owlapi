@@ -1727,6 +1727,7 @@ class RdfGraphInterpreter {
 
   async #readDeclarations(includeAxiomAnnotations = true) {
     const ruleTypes = [];
+    const variableTypes = [];
     const inferredObjectPropertyIris = new Set();
     const declarations = [];
     const explicitObjectPropertyIris = new Set();
@@ -1750,7 +1751,7 @@ class RdfGraphInterpreter {
         objectValue === SWRL.Variable &&
         currentQuad.subject.termType === "NamedNode"
       )
-        this.#consume(currentQuad);
+        variableTypes.push(currentQuad);
       if (
         this.#supportsScopedSwrl &&
         includeAxiomAnnotations &&
@@ -1849,7 +1850,10 @@ class RdfGraphInterpreter {
     if (this.#configuration.parsingMode !== "preserve")
       this.#inferImplicitPropertyCategories();
     if (includeAxiomAnnotations) this.#indexReifications();
-    if (ruleTypes.length) await this.#readSwrlRules(ruleTypes);
+    if (ruleTypes.length) {
+      await this.#readSwrlRules(ruleTypes);
+      for (const row of variableTypes) this.#consume(row);
+    }
     for (const { constructorName, currentQuad, subject } of declarations) {
       this.#recordDiscoveredRole(
         subject,
@@ -5287,6 +5291,7 @@ class RdfGraphInterpreter {
         if (isSwrlStructuralProperty(predicate))
           this.#unsupportedRuleMember(predicate, subject);
         if (
+          row.object.termType !== "Literal" &&
           !this.#annotationPropertyIris.has(predicate) &&
           (predicate.startsWith(OWL_NAMESPACE) ||
             predicate.startsWith(RDFS_NAMESPACE) ||

@@ -539,7 +539,32 @@ class TranslationSession {
       ontologyNode,
       direct ? direct.annotations : ontology.getAnnotations(),
     );
+    let hasRule = false,
+      structuralClassAssertion;
     for (const axiom of direct ? direct.axioms : ontology.getAxioms()) {
+      if (this.#axiomKinds === AXIOM_KINDS_WITH_SWRL) {
+        if (axiom.kind === OWLObjectKind.SWRL_RULE) hasRule = true;
+        if (
+          axiom.kind === OWLObjectKind.CLASS_ASSERTION_AXIOM &&
+          axiom.classExpression.kind === OWLObjectKind.CLASS
+        ) {
+          const type = axiom.classExpression.iri.value;
+          if (
+            type === SWRL.Imp ||
+            (type === SWRL.Variable &&
+              axiom.individual.kind === OWLObjectKind.NAMED_INDIVIDUAL)
+          )
+            structuralClassAssertion = type;
+        }
+        if (
+          structuralClassAssertion === SWRL.Imp ||
+          (hasRule && structuralClassAssertion === SWRL.Variable)
+        )
+          throw new OWLOntologyStorageError(
+            "An ordinary class assertion collides with a SWRL structural type",
+            { reason: "ONTOLOGY_NOT_REPRESENTABLE" },
+          );
+      }
       dispatchAxiom(axiom, this.#axiomHandlers, this.#axiomKinds);
     }
 

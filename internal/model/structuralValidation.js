@@ -166,7 +166,10 @@ const validateExplicitStructure = (value, factory) => {
     if (key(rebuilt) !== key(value)) return fail();
     if (
       value.kind === K.SWRL_RULE &&
-      (value.body.length !== rebuilt.body.length ||
+      (!Array.isArray(value.body) ||
+        !Array.isArray(value.head) ||
+        !Array.isArray(value.annotations) ||
+        value.body.length !== rebuilt.body.length ||
         value.head.length !== rebuilt.head.length ||
         value.annotations.length !== rebuilt.annotations.length ||
         nativeStructuralMethods.structuralKeyWithoutAnnotations.call(value) !==

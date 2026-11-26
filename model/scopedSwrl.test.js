@@ -463,6 +463,73 @@ test("named rule subjects retain their separate ordinary assertions", async () =
   expect(o.getAxiomsByType("OWLSameIndividualAxiom").size).toBe(1);
 });
 
+test.each([OWLDocumentFormats.RDF_XML, OWLDocumentFormats.TURTLE])(
+  "rule-free class assertions and literal predicate annotations survive RDF storage (%o)",
+  async (format) => {
+    async function roundTrip(text) {
+      const m = createManager(),
+        o = await read(m, { format: "functional", id: "roles", text });
+      const t = new StringDocumentTarget();
+      await m.saveOntology(o, format, t);
+      const fresh = createManager();
+      return [
+        o,
+        await fresh.loadOntologyFromOntologyDocument(
+          new StringDocumentSource(t.toString(), { format }),
+          fresh.getOntologyLoaderConfiguration().setStrict(false),
+        ),
+      ];
+    }
+    const variable = "<http://www.w3.org/2003/11/swrl#Variable>";
+    const [source, ordinary] = await roundTrip(
+      "Ontology(Declaration(Class(" +
+        variable +
+        ")) Declaration(NamedIndividual(<urn:x>)) ClassAssertion(" +
+        variable +
+        " <urn:x>))",
+    );
+    expect(ordinary.getAxiomCount()).toBe(source.getAxiomCount());
+    await expect(
+      roundTrip(
+        "Ontology(ClassAssertion(" +
+          variable +
+          " <urn:x>) DLSafeRule(Body() Head()))",
+      ),
+    ).rejects.toMatchObject({ reason: "ONTOLOGY_NOT_REPRESENTABLE" });
+    await expect(
+      roundTrip(
+        "Ontology(ClassAssertion(<http://www.w3.org/2003/11/swrl#Imp> <urn:x>))",
+      ),
+    ).rejects.toMatchObject({ reason: "ONTOLOGY_NOT_REPRESENTABLE" });
+    for (const p of [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#value",
+      "http://www.w3.org/2002/07/owl#sameAs",
+      "http://www.w3.org/2002/07/owl#reviewTag",
+    ]) {
+      const [before, after] = await roundTrip(
+        "Ontology(DLSafeRule(Annotation(<" + p + '> "value") Body() Head()))',
+      );
+      expect(ruleOf(before).equals(ruleOf(after))).toBe(true);
+    }
+  },
+);
+
+test("manager changes require array-valued body and head even on an empty rule", async () => {
+  const m = createManager(),
+    o = await read(m, cases.get("empty-functional")),
+    r = ruleOf(o),
+    part = r.toStructuralTuple().slice(1);
+  for (const side of ["body", "head", "annotations"]) {
+    const bad = new OWLStructuralObject(
+      "SWRLRule",
+      { body: r.body, head: r.head, annotations: r.annotations, [side]: "" },
+      part,
+      { componentsWithoutAnnotations: part.slice(0, 2) },
+    );
+    expect(() => m.addAxiom(o, bad)).toThrow();
+  }
+});
+
 test("an extra argument on a unary atom is a syntax error", async () => {
   const sample = cases.get("simple");
   const text = sample.text.replace(
