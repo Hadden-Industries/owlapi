@@ -1,6 +1,6 @@
 # Preserve SWRL rules from CLO, FOVT and VBO in OwlAPI 0.1.0
 
-**Prepared 25 November 2026 · Maintainer decision recorded 26 November 2026 · HISEW R2 proposed.**
+**Prepared 25 November 2026 · Implemented and qualified locally on 26 November 2026 using HISEW R2 methodology.**
 Add a structural SWRL subset to the explicit `java-owlapi-5.5.1` behavior profile.
 Applications must be able to load, inspect, compare and save the rules covered here.
 Accept the change when the installed JavaScript candidate exposes all 77 rule occurrences and the complete ontologies match Java on the three original files.
@@ -473,7 +473,22 @@ Native project applicability and execution admission are unverified.
 The three corpus cases establish the supported forms, the named profile and the existing comparison route.
 The published contract calls for backward-compatible dispatch on existing values.
 The maintainer's 26 November decision settles the last product question in the plan.
-When implementation is authorized, retain the exact requirements and the dated DEC-005 reference for the R2 baseline.
-Recheck installed HISEW applicability before opening an execution.
-Protect pre-existing worktree changes and use authenticated receipts from the actual candidate.
-The current request authorizes drafting and review of this plan.
+The maintainer authorized implementation and local qualification against these requirements and the dated DEC-005 decision. The implementation started at `c0f8017c0531f0c12408f70dd07b3919dbaa1b59` on `zero-one-zero`.
+
+## Implementation and Windows qualification, 26 November 2026
+
+The four slices implemented the bounded model, parser, storage and installed-package proof. The comparison used Node 26.13.1, Eclipse Temurin 25.0.5.1+2-LTS and the 64 locked JARs for released Java OWLAPI 5.5.1. The tarball SHA-256 is `ad6fc70362c725660b63d5c9c904f0ef2d0cdd357db94a7d41e282b641af4efc`. The workbench used the named Java profile, compatible RDF/XML, recorded imports and the original publisher digests for the three complete documents.
+
+| Ontology | Axioms | Rules | Annotated rules | Multi-head rules | Java structural comparison |
+| --- | ---: | ---: | ---: | ---: | --- |
+| CLO | 306,182 | 4 | 0 | 0 | Match |
+| FOVT | 181,310 | 48 | 28 | 4 | Match |
+| VBO | 267,744 | 25 | 13 | 2 | Match |
+
+The JS worker counted rule objects through the installed public API before serialization. Each native comparison independently loaded the original ontology. All three receipts passed a separate `verify` invocation with zero Java and JS network requests. The [qualification record](../compatibility/2026-11-26-scoped-swrl-qualification.json) retains the case receipts, source and evidence digests, installed package identity, independent verdicts and native fixture controls. Full raw run artifacts are retained under the operator-selected qualification directory. The historical 70-document cohort and the protected-branch matrix retain their separate release obligations.
+
+The simple rule matched at four axioms. Changing its head predicate from `q` to `p` preserved all four axioms and the number of rules. Java reported an `AXIOMS` mismatch. The edited, annotated multi-head fixture matched at five axioms after adding a separate declaration. Java also recovered the same model from each fixture's stored RDF/XML. Counts, inputs and both serialized formats are bound to the retained native result.
+
+The installed Node contract passed 70 assertions. Its verifier consumed the transport bundle containing the tarball, SBOM and `SHA256SUMS` copied from the candidate build. Chromium, Firefox and WebKit passed all nine bundler, native import-map and DedicatedWorker cases on the same tarball. The public package boundary passed four checks. The whole-repository Jest run passed all 326 suites and 17,481 tests, with two existing skips. The architecture check covered 198 runtime modules and reported zero violations. The packed package also passed publint.
+
+The maintainer authorized HISEW methodology without native execution receipts. The implementation slice commits and corrective commits received ordinary local reviews. The release owner holds protected-branch qualification and promotion.

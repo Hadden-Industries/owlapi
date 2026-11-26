@@ -1,0 +1,369 @@
+{
+  "schemaVersion": 1,
+  "observedDate": "2026-11-26",
+  "platform": "win32-x64",
+  "profile": "java-owlapi-5.5.1",
+  "parsingMode": "compatible",
+  "scenario": "direct-load",
+  "imports": "recorded",
+  "node": "v26.13.1",
+  "package": {
+    "name": "@hadden-industries/owlapi",
+    "version": "0.1.0"
+  },
+  "tarball": {
+    "fileName": "hadden-industries-owlapi-0.1.0.tgz",
+    "sha256": "ad6fc70362c725660b63d5c9c904f0ef2d0cdd357db94a7d41e282b641af4efc",
+    "bytes": 561939,
+    "fileCount": 225
+  },
+  "packageSourceCommit": "77b372997782abff51f464afe378e0a126509b12",
+  "qualifiedThroughCommit": "f5427d224117d1ebe7759b5a05b676b804ac54fb",
+  "java": {
+    "release": "5.5.1.2024-09-07T21:41:32Z",
+    "sourceCommit": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+    "lockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+    "jars": 64,
+    "jdk": {
+      "compilerSha256": "eb4868afeea938e2db2d8bb8c535d6a02268d5d1ae6d758be676d24ce007a9d1",
+      "executableSha256": "d412ea875f8d8441db42c15dfacb52d95e76ceaee72d58f4ef81c7a9e5836707",
+      "releaseSha256": "a993648ddcc822491fc88f2253e6ebc29f37b3047fa0bfd7ee480afed8793c94",
+      "runtime": "25.0.5.1+2-LTS",
+      "setupJavaVersion": "25.0.5+1.2",
+      "vendor": "Eclipse Adoptium",
+      "version": "25.0.5.1"
+    }
+  },
+  "comparison": {
+    "attemptId": "397311a0-5e70-474b-901c-b6dcdd3efe30",
+    "executionId": "01e6c14953a43896cfc13c196bba8790be6dd47622d076c762c696d66b6befec",
+    "installedContentSha256": "091b3fab63e6f21a76c398550f3d832bc25dc90ca06741365f3fbab21cb3449d",
+    "dependencyGraphSha256": "e808f5d9ec29dc947f3dce63ad7205bf378a3f2d3fce692f3d963a568f88101b",
+    "harnessSha256": "e4408134e88226a57bac02168a9da7896b65bfbd5cec340afdb03eb7140538c9",
+    "protocols": {
+      "case": 1,
+      "comparison": 1,
+      "javaHeapMiB": 660,
+      "nodeHeapMiB": 810,
+      "windowsJobMemoryMiB": 1180,
+      "worker": 3
+    },
+    "preparationSha256": "65ada02ea69af09ae2cfba087659d6e4c4b3d9b81d472c317a8b99aba57eeb6c",
+    "reportSha256": "4bf5593d803ae83d4a2e555288f9cd0373ec2eff8ad81caef118dac1251008b9",
+    "verificationSha256": "3ad4ba69ba27c356b2efc5dbe6ba4fba54828babf67e3975cabd733fe832703a",
+    "cases": [
+      {
+        "inputId": "obo-clo",
+        "caseId": "e6b61dea85f92db0f8c4fab7d94cf0c9b55129f328f49af8e949422e89159ecf",
+        "axioms": 306182,
+        "publicRules": {
+          "annotated": 0,
+          "multiHead": 0,
+          "rules": 4,
+          "sha256": "64b8167d3bdf789d902906053fcec29c0644d34e22378032fa0d2e03915d8920"
+        },
+        "jsNetworkRequests": 0,
+        "javaNetworkAttempts": 0,
+        "receiptSha256": "694098381ff88d09491969b4834f0cb3a4071c3b7c0964a736b7c50d1363cae6",
+        "receipt": {
+          "caseId": "e6b61dea85f92db0f8c4fab7d94cf0c9b55129f328f49af8e949422e89159ecf",
+          "executionId": "01e6c14953a43896cfc13c196bba8790be6dd47622d076c762c696d66b6befec",
+          "java": {
+            "evidence": {
+              "byteLength": 1751,
+              "name": "native-result.json",
+              "sha256": "154adadd14a300c5cfa4ce3ab47e171377387a875e4d010975dda6c34c011d95"
+            },
+            "load": "completed"
+          },
+          "js": {
+            "evidence": {
+              "byteLength": 1446,
+              "name": "js-load.json",
+              "sha256": "5d324552cf8990bbab9b0f361447db366cba19aa5060715edd72104cb7b18e1a"
+            },
+            "load": "completed"
+          },
+          "measures": {
+            "behavior": "observed",
+            "structure": "match"
+          },
+          "offline": true,
+          "schemaVersion": 1,
+          "status": "passed"
+        }
+      },
+      {
+        "inputId": "obo-fovt",
+        "caseId": "759763f90f9b4c4b460cfe81bda22f5f0a62161eba6f2b895889ed0fff71e4ba",
+        "axioms": 181310,
+        "publicRules": {
+          "annotated": 28,
+          "multiHead": 4,
+          "rules": 48,
+          "sha256": "b533c22ddc907b2ee050dd543f474b3c13d2f38c66c1b375b878f7897808f038"
+        },
+        "jsNetworkRequests": 0,
+        "javaNetworkAttempts": 0,
+        "receiptSha256": "b2bc864fec6c86e9f53beeaddec2beb174012290665603e5ed6938cf48a17838",
+        "receipt": {
+          "caseId": "759763f90f9b4c4b460cfe81bda22f5f0a62161eba6f2b895889ed0fff71e4ba",
+          "executionId": "01e6c14953a43896cfc13c196bba8790be6dd47622d076c762c696d66b6befec",
+          "java": {
+            "evidence": {
+              "byteLength": 1762,
+              "name": "native-result.json",
+              "sha256": "73c515500c47f3c3c5da7261efde5b90046dce8c73e7990485f83679802e23be"
+            },
+            "load": "completed"
+          },
+          "js": {
+            "evidence": {
+              "byteLength": 1455,
+              "name": "js-load.json",
+              "sha256": "53cc82d02fac609ea87955e3397f7d4e6d20ee17e305dd4c36bea08ea6b2dfb6"
+            },
+            "load": "completed"
+          },
+          "measures": {
+            "behavior": "observed",
+            "structure": "match"
+          },
+          "offline": true,
+          "schemaVersion": 1,
+          "status": "passed"
+        }
+      },
+      {
+        "inputId": "obo-vbo",
+        "caseId": "95c1d8fbb6a1d5ad4bf1c55299dc20564ec4c7787d62fe9a611fa2f5b3c4b539",
+        "axioms": 267744,
+        "publicRules": {
+          "annotated": 13,
+          "multiHead": 2,
+          "rules": 25,
+          "sha256": "1375af3c0aac025f38c0a8767d0896a4ed189f290041eb58443d22f990b8b157"
+        },
+        "jsNetworkRequests": 0,
+        "javaNetworkAttempts": 0,
+        "receiptSha256": "47c485ce9726852756537304c338c855c81a1882be2db0b776ca8b5848e31856",
+        "receipt": {
+          "caseId": "95c1d8fbb6a1d5ad4bf1c55299dc20564ec4c7787d62fe9a611fa2f5b3c4b539",
+          "executionId": "01e6c14953a43896cfc13c196bba8790be6dd47622d076c762c696d66b6befec",
+          "java": {
+            "evidence": {
+              "byteLength": 1749,
+              "name": "native-result.json",
+              "sha256": "cb14154140b318107b6d10c393292cd2a283d30741729f45aae1242d34eb4aaf"
+            },
+            "load": "completed"
+          },
+          "js": {
+            "evidence": {
+              "byteLength": 1447,
+              "name": "js-load.json",
+              "sha256": "6359494623d06a38a65b16d5f9befac73d66753b728fc441b45c4342d00d0fcf"
+            },
+            "load": "completed"
+          },
+          "measures": {
+            "behavior": "observed",
+            "structure": "match"
+          },
+          "offline": true,
+          "schemaVersion": 1,
+          "status": "passed"
+        }
+      }
+    ],
+    "verification": {
+      "schemaVersion": 2,
+      "action": "verify",
+      "executionId": "01e6c14953a43896cfc13c196bba8790be6dd47622d076c762c696d66b6befec",
+      "cases": [
+        {
+          "input": "obo-clo",
+          "caseId": "e6b61dea85f92db0f8c4fab7d94cf0c9b55129f328f49af8e949422e89159ecf",
+          "measures": {
+            "behavior": "observed",
+            "structure": "match"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "obo-fovt",
+          "caseId": "759763f90f9b4c4b460cfe81bda22f5f0a62161eba6f2b895889ed0fff71e4ba",
+          "measures": {
+            "behavior": "observed",
+            "structure": "match"
+          },
+          "status": "passed",
+          "offline": true
+        },
+        {
+          "input": "obo-vbo",
+          "caseId": "95c1d8fbb6a1d5ad4bf1c55299dc20564ec4c7787d62fe9a611fa2f5b3c4b539",
+          "measures": {
+            "behavior": "observed",
+            "structure": "match"
+          },
+          "status": "passed",
+          "offline": true
+        }
+      ]
+    }
+  },
+  "controls": {
+    "reportSha256": "5c47862430859c117e21895eb0b6be01e98195f016d779611fdf1d1a8c2437bb",
+    "fixtures": [
+      {
+        "id": "simple",
+        "caseId": "b7b6688ea7e57bb61d061eb29b825244c803c6b7364ef6e0e8565f8dc72ef1c0",
+        "executionId": "6630f88bf4aecd5cb3dbb67ea7879e52095d502211365e48d920d47a2fb50458",
+        "axioms": 4,
+        "artifacts": [
+          {
+            "name": "expected.rdf",
+            "byteLength": 1340,
+            "sha256": "834105922288e321d70451a727174c0214c1d0d79922fd291b3839c3d29ee08f"
+          },
+          {
+            "name": "model.ofn",
+            "byteLength": 467,
+            "sha256": "e611e58877bc80ab4e22b97ca1cf45e0cf352089c5d3fb0102248440197cc7d6"
+          },
+          {
+            "name": "model.rdf",
+            "byteLength": 4170,
+            "sha256": "fe6e1a075de3adeadae6bce5b9eb2bf785a7d56183f06bf4a9efcc0e84bcf95c"
+          },
+          {
+            "name": "native-result.json",
+            "byteLength": 1585,
+            "sha256": "e11561f348e3659d1e836d5a5fde7e6d87339a8bb99ce76af6c86e0b3b5baf3a"
+          }
+        ],
+        "structure": "match",
+        "nativeRdfXmlReload": "match",
+        "networkAttempts": 0
+      },
+      {
+        "id": "changed-head",
+        "caseId": "33b4b4c8e8802270581a804fca1defd354d7088f53334bd41ce08c1139b769cb",
+        "executionId": "6adbfa735941a1c6d0510edf135b707cb466c3bb2d878dee7cf0a408b0ab2716",
+        "axioms": 4,
+        "artifacts": [
+          {
+            "name": "expected.rdf",
+            "byteLength": 1340,
+            "sha256": "834105922288e321d70451a727174c0214c1d0d79922fd291b3839c3d29ee08f"
+          },
+          {
+            "name": "model.ofn",
+            "byteLength": 467,
+            "sha256": "fbaaa9d9be3cd9f96cc29c12ee41ebb8832908b203649dd8ff2e4092e541c955"
+          },
+          {
+            "name": "model.rdf",
+            "byteLength": 4170,
+            "sha256": "ac6bef5b92faa4b50dd6df234c8a4eb7798714593e4cf74feba4a9e068ff2162"
+          },
+          {
+            "name": "native-result.json",
+            "byteLength": 2471,
+            "sha256": "fa4b85bd8768c40e7885cd5e86cdeccc505bf76b208f475a58fea0cfcd0a7e96"
+          }
+        ],
+        "structure": "mismatch",
+        "nativeRdfXmlReload": "match",
+        "networkAttempts": 0
+      },
+      {
+        "id": "edited-annotated",
+        "caseId": "9339503ebdcac2618ab3a898b1ba66012509264961bbd12ae3b65b8a32a6f3e8",
+        "executionId": "5024bf6a775609c63eeadb440a7f9be8edb229de4c33d0d2e88ede16a85016e3",
+        "axioms": 5,
+        "artifacts": [
+          {
+            "name": "expected.rdf",
+            "byteLength": 1926,
+            "sha256": "d82ae388c084f9a7ca0efe0bc63ce303a3cf214e45ff9bf4243a3e9481250a98"
+          },
+          {
+            "name": "model.ofn",
+            "byteLength": 891,
+            "sha256": "39eb7c384e0d30d470a4c0286ef65d376844256d90e0f4d4f798ad0b1bfc81a2"
+          },
+          {
+            "name": "model.rdf",
+            "byteLength": 5576,
+            "sha256": "404848f806364896b83ffe3cae37ced4737c9e44bb593c2a8377c56074ada4cc"
+          },
+          {
+            "name": "native-result.json",
+            "byteLength": 1607,
+            "sha256": "21e4d6c28c1793ab13a1e759fb0f71d92b2d2de8660b0ff31d3bda66287b640e"
+          }
+        ],
+        "structure": "match",
+        "nativeRdfXmlReload": "match",
+        "networkAttempts": 0
+      }
+    ]
+  },
+  "installedContract": {
+    "reportSha256": "be5d535fd635958c60aa5111506dea431d5c323860980f16a090319fdc2d7f07",
+    "result": "PASS",
+    "assertions": 70,
+    "consumerSources": [
+      {
+        "repository": "Hadden-Industries/universal-ontology",
+        "commit": "9a3b5bff5aeaff4540f14bdf65baeffc1c0d188d",
+        "tree": "0acb04ff39696a385187fd16b3dbb69a3b7e10ba",
+        "sourceSha256": "2ff16b929d957cbc045b1287a4fea42d1af117a86d24be194205de60be77e6c1"
+      },
+      {
+        "repository": "Hadden-Industries/webvowl",
+        "commit": "a468e17701d495fd9e1a801aef169894b2045186",
+        "tree": "3daba374c5861cff51e7523aa5dbd541db16edf2",
+        "sourceSha256": "7f295758891d98c4990d200e53d106a39ba12a217343627a02afe18934185448"
+      }
+    ]
+  },
+  "browsers": {
+    "manifestSha256": "8e14970bb475f84e5695d8892a71a1eedfe70736be162a3be0ac88002a333a83",
+    "engines": [
+      "Chromium",
+      "Firefox",
+      "WebKit"
+    ],
+    "consumers": [
+      "bundler",
+      "import-map",
+      "DedicatedWorker"
+    ],
+    "passed": 9
+  },
+  "packageAudit": {
+    "productionHighOrCritical": 0,
+    "lockedAndLocklessGraphsEquivalent": true
+  },
+  "repositoryChecks": {
+    "jest": {
+      "suites": 326,
+      "passed": 17481,
+      "skipped": 2,
+      "failed": 0,
+      "reportSha256": "a10b827d1769a879cb976c24204d01a3ef928834fdc1ea77cbe6e218285f5d3a"
+    },
+    "packageBoundary": {
+      "passed": 4
+    },
+    "architecture": {
+      "runtimeModules": 198,
+      "violations": 0
+    },
+    "packageLint": "passed"
+  }
+}
