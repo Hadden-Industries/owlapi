@@ -320,20 +320,22 @@ No import is dereferenced, and the existing native oracle compares all structure
 
 The Phase 3 Java reference pair is `fixtures/manchester/phase3-structural.omn` and `fixtures/manchester/phase3-structural.java.json`.
 The sibling `phase3-structural.ofn` is the project-owned Functional counterpart used for cross-syntax structural conformance.
-The Java snapshot deliberately preserves OWLAPI 5.5.1's comparison-facet result; the two standards-correct JavaScript differences are matched only by the exact fixture-scoped rules in `docs/compatibility/expected-differences.json`.
+The Manchester snapshot test selects `java-owlapi-5.5.1` and compares its range facets directly with the pinned Java output.
 
-The Phase 4 OWL/XML reference pair is `fixtures/owlxml/phase4-structural.owx` and `fixtures/owlxml/phase4-structural.java.json`. The sibling `phase4-structural.ofn` is the project-owned Functional counterpart used for cross-syntax structural conformance. The Java snapshot omits the anonymous individual inside one `ObjectOneOf`; JavaScript retains it as required by the W3C OWL/XML schema.
-That single semantic divergence is calculated as an atomic field and accepted only by its exact fixture-scoped expected-difference rule.
+The Phase 4 OWL/XML reference pair is `fixtures/owlxml/phase4-structural.owx` and `fixtures/owlxml/phase4-structural.java.json`.
+The Java compatibility test checks the pinned Java output, including the omitted anonymous individual inside one `ObjectOneOf`.
+The normative test compares OWL/XML with the sibling `phase4-structural.ofn` and checks that the anonymous individual is present.
 
 The Phase 5 RDF reference set is under `fixtures/rdf/`:
 
-- `phase5-structural.rdf` is the RDF/XML document loaded only by the Java oracle;
+- `phase5-structural.rdf` is the source document for the pinned Java snapshot;
 - `phase5-structural.dataset.json` is the independently constructed canonical RDF/JS quad fixture consumed directly by the JavaScript translator test;
 - `phase5-structural.ofn` is the project-owned Functional counterpart used for full cross-syntax structural comparison; and
 - `phase5-structural.java.json` is the pinned OWLAPI 5.5.1 structural snapshot.
 
 The Phase 5 differential deliberately does not parse the `.rdf` file in JavaScript: syntax parsing belongs to Phase 6.
-It compares the constructed dataset translation with the Functional ontology in full, then compares ontology identity, imports, counts and signature categories with the Java snapshot.
+The normative test compares the constructed dataset translation with the Functional ontology in full.
+The Java compatibility test compares ontology identity, imports, counts and signature categories with the Java snapshot.
 
 `phase5-malformed-list.rdf` is a separate black-box probe recording that OWLAPI 5.5.1 accepts the two pinned W3C Rational fixtures' malformed non-`rdf:nil` collection terminal.
 It is not a general compatibility fixture and does not authorize silent list repair.

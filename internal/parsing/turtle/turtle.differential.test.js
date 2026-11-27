@@ -39,7 +39,9 @@ const structuralSnapshot = (ontology) => {
 };
 
 const loadFixture = (fileName) =>
-  OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+  OWLManager.createOWLOntologyManager({
+    behaviorProfileId: "normative-v1",
+  }).loadOntologyFromOntologyDocument(
     new StringDocumentSource(
       readFileSync(new URL(fileName, FIXTURE_ROOT), "utf8"),
       {
@@ -53,7 +55,7 @@ const loadFixture = (fileName) =>
   );
 
 describe("Turtle structural differential", () => {
-  it("reconstructs the same ontology as the paired RDF/XML and Java fixture", async () => {
+  it("matches the normative RDF/XML model and the shared fixture summary", async () => {
     const [turtle, rdfXml] = await Promise.all([
       loadFixture("phase5-structural.ttl"),
       loadFixture("phase5-structural.rdf"),

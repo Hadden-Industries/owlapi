@@ -36,8 +36,10 @@ const removeJavaListTyping = (dataset) => {
 };
 
 describe("OwlToRdfTranslator Java differential", () => {
-  it("is graph-equivalent to the pinned OWLAPI 5.5.1 public storer result", async () => {
-    const manager = OWLManager.createOWLOntologyManager();
+  it("matches the normative RDF mapping after reconciling Java list types", async () => {
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "normative-v1",
+    });
     const ontology = await manager.loadOntologyFromOntologyDocument(
       new StringDocumentSource(readFileSync(STRUCTURAL_URL, "utf8"), {
         contentType: "text/owl-functional",

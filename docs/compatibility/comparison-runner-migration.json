@@ -1543,7 +1543,7 @@
       "the current behavior ledger binds the released oracle and paired contracts separately from historical receipts"
     ],
     "internal/mapping/owlToRdfTranslator.differential.test.js": [
-      "OwlToRdfTranslator Java differential is graph-equivalent to the pinned OWLAPI 5.5.1 public storer result"
+      "OwlToRdfTranslator Java differential matches the normative RDF mapping after reconciling Java list types"
     ],
     "internal/mapping/rdfToOwlTranslator.conformance.test.js": [
       "pinned W3C OWL 2 RDF-to-OWL mapping documents Datatype-DataComplementOf-001 / rdfXmlPremiseOntology satisfies its complete-reconstruction disposition",
@@ -1862,7 +1862,8 @@
       "strict RDF completeness regressions rejects the Universal Ontology ignored-RDF-statement shape"
     ],
     "internal/mapping/rdfToOwlTranslator.differential.test.js": [
-      "RdfToOwlTranslator structural differential matches the Functional counterpart and pinned Java OWLAPI summary"
+      "RdfToOwlTranslator structural differential matches the Functional counterpart under the normative profile",
+      "RdfToOwlTranslator structural differential matches the pinned Java OWLAPI summary under the Java compatibility profile"
     ],
     "internal/parsing/dl/dlSyntax.conformance.test.js": [
       "project-owned OWLAPI DL dialect conformance loads the pinned DL document in strict mode without recovery",
@@ -2438,14 +2439,15 @@
       "KRSS2 grammar conformance treats grammar keywords case-insensitively and accepts integer names"
     ],
     "internal/parsing/krss2/krss2Syntax.differential.test.js": [
-      "KRSS2 structural differential matches the shared OWL-native and RDF syntax subset exactly"
+      "KRSS2 structural differential matches the shared OWL-native and RDF syntax subset exactly",
+      "KRSS2 structural differential matches the pinned Java summary under the Java compatibility profile"
     ],
     "internal/parsing/manchester/manchesterSyntax.conformance.test.js": [
       "W3C Manchester grammar mapping conformance maps the Manchester grammar pair to the same structural ontology",
       "W3C Manchester grammar mapping conformance pins the project-owned Manchester and Functional structural pair"
     ],
     "internal/parsing/manchester/manchesterSyntax.differential.test.js": [
-      "Manchester Syntax OWLAPI 5.5.1 structural differential matches the pinned Java snapshot with only exact governed differences"
+      "Manchester Syntax OWLAPI 5.5.1 structural differential matches the pinned Java snapshot under the Java compatibility profile"
     ],
     "internal/parsing/nquads/nQuads.conformance.test.js": [
       "pinned W3C N-Quads syntax conformance accepts the positive syntax case rdf11/comment_following_triple without losing graph terms",
@@ -2679,7 +2681,8 @@
       "W3C OWL/XML grammar coverage records the complete axiom inventory including the property-chain alternative"
     ],
     "internal/parsing/owlxml/owlXml.differential.test.js": [
-      "OWL/XML structural differential matches the Functional counterpart and pinned Java OWLAPI summary"
+      "OWL/XML structural differential matches the Functional counterpart under the normative profile",
+      "OWL/XML structural differential matches the pinned Java OWLAPI summary under the Java compatibility profile"
     ],
     "internal/parsing/rdfxml/rdfXml.conformance.test.js": [
       "pinned W3C RDF/XML syntax conformance matches the expected RDF graph for amp-in-url-test001",
@@ -2851,7 +2854,8 @@
       "pinned W3C RDF/XML syntax conformance rejects the negative syntax case rdfms-syntax-incomplete-error006"
     ],
     "internal/parsing/rdfxml/rdfXml.differential.test.js": [
-      "RDF/XML structural differential matches its Functional, Manchester, OWL/XML, and pinned Java counterparts",
+      "RDF/XML structural differential matches its Functional, Manchester, and OWL/XML counterparts under the normative profile",
+      "RDF/XML structural differential matches the pinned Java summary under the Java compatibility profile",
       "RDF/XML structural differential preserves the pinned Rational source defect at the RDF seam"
     ],
     "internal/parsing/trig/trig.conformance.test.js": [
@@ -3664,7 +3668,7 @@
       "pinned W3C Turtle syntax conformance rejects the negative syntax case rdf12Syntax/turtle12-version-bad-06"
     ],
     "internal/parsing/turtle/turtle.differential.test.js": [
-      "Turtle structural differential reconstructs the same ontology as the paired RDF/XML and Java fixture"
+      "Turtle structural differential matches the normative RDF/XML model and the shared fixture summary"
     ],
     "internal/parsing/xml/behaviorXml.test.js": [
       "Java DTD syntax: dtd-bad-comment",

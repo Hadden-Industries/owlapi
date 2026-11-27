@@ -1,7 +1,6 @@
 import { readFileSync } from "node:fs";
 import { reconcileStructuralSnapshots } from "../../../util/owlapi-reference/reconcile-structural-differences.mjs";
 
-import { OWLOntologyLoaderConfiguration } from "../../../index.js";
 import { OWLManager } from "../../../index.js";
 import { OWLObjectKind } from "../../../model/index.js";
 
@@ -162,7 +161,7 @@ const jsRangeSnapshot = (ontology) => {
 };
 
 describe("Manchester Syntax OWLAPI 5.5.1 structural differential", () => {
-  it("matches the pinned Java snapshot with only exact governed differences", async () => {
+  it("matches the pinned Java snapshot under the Java compatibility profile", async () => {
     const fixture = readFileSync(FIXTURE_URL, "utf8");
     const expectedDocument = JSON.parse(
       readFileSync(JAVA_SNAPSHOT_URL, "utf8"),
@@ -171,10 +170,12 @@ describe("Manchester Syntax OWLAPI 5.5.1 structural differential", () => {
       readFileSync(EXPECTED_DIFFERENCES_URL, "utf8"),
     );
     const expected = expectedDocument.snapshot;
-    const manager = OWLManager.createOWLOntologyManager();
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    });
     const ontology = await manager.loadOntologyFromOntologyDocument(
       fixture,
-      new OWLOntologyLoaderConfiguration({
+      manager.getOntologyLoaderConfiguration().with({
         missingImportHandling: "diagnostic",
       }),
     );

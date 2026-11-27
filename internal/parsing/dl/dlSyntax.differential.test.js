@@ -53,7 +53,9 @@ const structuralSnapshot = (ontology) => ({
   versionIRI: ontology.getOntologyID().versionIRI?.value || null,
 });
 const loadFixture = (fileName) =>
-  OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+  OWLManager.createOWLOntologyManager({
+    behaviorProfileId: "normative-v1",
+  }).loadOntologyFromOntologyDocument(
     new StringDocumentSource(
       readFileSync(new URL(fileName, FIXTURE_ROOT), "utf8"),
       {
@@ -81,6 +83,7 @@ describe("DL Syntax structural differential", () => {
         "utf8",
       ),
     );
+    // The native snapshot uses an injected fixed namespace for this shared fixture.
     const java = javaDocument.snapshot;
 
     expect(structuralSnapshot(dl)).toEqual(expected);

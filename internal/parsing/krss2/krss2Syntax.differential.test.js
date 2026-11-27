@@ -1,10 +1,6 @@
 import { readFileSync } from "node:fs";
 
-import {
-  OWLOntologyLoaderConfiguration,
-  StringDocumentSource,
-} from "../../../index.js";
-import { OWLManager } from "../../../index.js";
+import { OWLManager, StringDocumentSource } from "../../../index.js";
 import { OWLObjectKind } from "../../../model/index.js";
 
 const KRSS2_FIXTURE = new URL(
@@ -55,16 +51,18 @@ const signature = (ontology) => {
     datatypes: iris(ontology.getDatatypesInSignature()),
   };
 };
-const load = (url, fileName) =>
-  OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+const load = (url, fileName, behaviorProfileId = "normative-v1") => {
+  const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId });
+  return manager.loadOntologyFromOntologyDocument(
     new StringDocumentSource(readFileSync(url, "utf8"), {
       documentIRI: "urn:test:phase10",
       fileName,
     }),
-    new OWLOntologyLoaderConfiguration({
+    manager.getOntologyLoaderConfiguration().with({
       missingImportHandling: "diagnostic",
     }),
   );
+};
 
 describe("KRSS2 structural differential", () => {
   it("matches the shared OWL-native and RDF syntax subset exactly", async () => {
@@ -93,7 +91,14 @@ describe("KRSS2 structural differential", () => {
     expect(structuralKeys(rdfXml)).toEqual(expected);
     expect(structuralKeys(turtle)).toEqual(expected);
     expect(krss2.getAxioms()).toHaveProperty("size", 12);
+  });
 
+  it("matches the pinned Java summary under the Java compatibility profile", async () => {
+    const krss2 = await load(
+      KRSS2_FIXTURE,
+      "phase11-structural.krss2",
+      "java-owlapi-5.5.1",
+    );
     const javaDocument = JSON.parse(
       readFileSync(
         new URL("phase11-structural.java.json", KRSS2_FIXTURE_ROOT),

@@ -22,10 +22,11 @@ const fixture = JSON.parse(
     "utf8",
   ),
 );
+const normativeOptions = { behaviorProfileId: "normative-v1" };
 const profiles = [
-  new OWL2ELProfile(),
-  new OWL2QLProfile(),
-  new OWL2RLProfile(),
+  new OWL2ELProfile(normativeOptions),
+  new OWL2QLProfile(normativeOptions),
+  new OWL2RLProfile(normativeOptions),
 ];
 // Owner-accepted W3C differences remain exact fixture/profile expectations;
 // every other profile result and diagnostic still compares with native Java.
@@ -128,7 +129,7 @@ test.each(
     )
     .map((row) => [row.id, row]),
 )("per-rule native profile vector %s", async (_id, row) => {
-  const manager = new OWLOntologyManager();
+  const manager = new OWLOntologyManager(normativeOptions);
   const ontology = await manager.loadOntologyFromOntologyDocument(
     new StringDocumentSource(row.input),
     { parsingMode: "strict" },
@@ -223,11 +224,11 @@ test.each(
 )(
   "preserves inherited common validation and native observation for %s",
   async (id, row) => {
-    const ontology =
-      await new OWLOntologyManager().loadOntologyFromOntologyDocument(
-        new StringDocumentSource(row.input),
-        { parsingMode: "preserve" },
-      );
+    const ontology = await new OWLOntologyManager(
+      normativeOptions,
+    ).loadOntologyFromOntologyDocument(new StringDocumentSource(row.input), {
+      parsingMode: "preserve",
+    });
     const rule = id.slice("common_".length);
     const code = rule.startsWith("nonsimple_")
       ? "NONSIMPLE_OBJECT_PROPERTY"

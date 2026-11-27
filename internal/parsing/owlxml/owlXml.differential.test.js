@@ -1,11 +1,6 @@
 import { readFileSync } from "node:fs";
-import { reconcileStructuralSnapshots } from "../../../util/owlapi-reference/reconcile-structural-differences.mjs";
 
-import {
-  OWLOntologyLoaderConfiguration,
-  StringDocumentSource,
-} from "../../../index.js";
-import { OWLManager } from "../../../index.js";
+import { OWLManager, StringDocumentSource } from "../../../index.js";
 import { OWLObjectKind } from "../../../model/index.js";
 
 const OWLXML_FIXTURE_URL = new URL(
@@ -18,10 +13,6 @@ const FUNCTIONAL_FIXTURE_URL = new URL(
 );
 const JAVA_SNAPSHOT_URL = new URL(
   "../../../util/owlapi-reference/fixtures/owlxml/phase4-structural.java.json",
-  import.meta.url,
-);
-const EXPECTED_DIFFERENCES_URL = new URL(
-  "../../../docs/compatibility/expected-differences.json",
   import.meta.url,
 );
 const JAVA_COUNT_ALIASES = Object.freeze({
@@ -105,22 +96,16 @@ const structuralSnapshot = (ontology) => {
   };
 };
 
-const javaObjectOneOfSnapshot = (axioms) => {
+const javaAnonymousOperandCount = (axioms) => {
   const rendered = axioms.find((axiom) => axiom.startsWith("DisjointUnion("));
   const operands = rendered?.match(/ObjectOneOf\(([^)]*)\)/u)?.[1];
   if (operands === undefined) {
     throw new Error("Pinned Java snapshot has no DisjointUnion ObjectOneOf");
   }
-  return {
-    disjointUnion: {
-      objectOneOf: {
-        anonymousIndividualCount: (operands.match(/_:[^\s)]+/gu) || []).length,
-      },
-    },
-  };
+  return (operands.match(/_:[^\s)]+/gu) || []).length;
 };
 
-const jsObjectOneOfSnapshot = (ontology) => {
+const jsAnonymousOperandCount = (ontology) => {
   const [axiom] = ontology.getAxiomsByType(OWLObjectKind.DISJOINT_UNION_AXIOM);
   const oneOf = [...axiom.classExpressions].find(
     ({ kind }) => kind === OWLObjectKind.OBJECT_ONE_OF,
@@ -128,48 +113,52 @@ const jsObjectOneOfSnapshot = (ontology) => {
   if (!oneOf) {
     throw new Error("OWL/XML snapshot has no DisjointUnion ObjectOneOf");
   }
-  return {
-    disjointUnion: {
-      objectOneOf: {
-        anonymousIndividualCount: [...oneOf.individuals].filter(
-          ({ kind }) => kind === OWLObjectKind.ANONYMOUS_INDIVIDUAL,
-        ).length,
-      },
-    },
-  };
+  return [...oneOf.individuals].filter(
+    ({ kind }) => kind === OWLObjectKind.ANONYMOUS_INDIVIDUAL,
+  ).length;
+};
+
+const loadFixture = (fixture, fileName, behaviorProfileId) => {
+  const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId });
+  return manager.loadOntologyFromOntologyDocument(
+    new StringDocumentSource(readFileSync(fixture, "utf8"), {
+      documentIRI: "urn:owlapi-js:phase4:document",
+      fileName,
+    }),
+    manager.getOntologyLoaderConfiguration().with({
+      missingImportHandling: "diagnostic",
+    }),
+  );
 };
 
 describe("OWL/XML structural differential", () => {
-  it("matches the Functional counterpart and pinned Java OWLAPI summary", async () => {
-    const owlXmlFixture = readFileSync(OWLXML_FIXTURE_URL, "utf8");
-    const functionalFixture = readFileSync(FUNCTIONAL_FIXTURE_URL, "utf8");
+  it("matches the Functional counterpart under the normative profile", async () => {
+    const owlXmlOntology = await loadFixture(
+      OWLXML_FIXTURE_URL,
+      "phase4-structural.owx",
+      "normative-v1",
+    );
+    const functionalOntology = await loadFixture(
+      FUNCTIONAL_FIXTURE_URL,
+      "phase4-structural.ofn",
+      "normative-v1",
+    );
+
+    expect(structuralSnapshot(owlXmlOntology)).toEqual(
+      structuralSnapshot(functionalOntology),
+    );
+    expect(jsAnonymousOperandCount(owlXmlOntology)).toBe(1);
+  });
+
+  it("matches the pinned Java OWLAPI summary under the Java compatibility profile", async () => {
+    const owlXmlOntology = await loadFixture(
+      OWLXML_FIXTURE_URL,
+      "phase4-structural.owx",
+      "java-owlapi-5.5.1",
+    );
     const expectedDocument = JSON.parse(
       readFileSync(JAVA_SNAPSHOT_URL, "utf8"),
     );
-    const differenceManifest = JSON.parse(
-      readFileSync(EXPECTED_DIFFERENCES_URL, "utf8"),
-    );
-    const configuration = new OWLOntologyLoaderConfiguration({
-      missingImportHandling: "diagnostic",
-    });
-    const documentIRI = "urn:owlapi-js:phase4:document";
-    const owlXmlManager = OWLManager.createOWLOntologyManager();
-    const functionalManager = OWLManager.createOWLOntologyManager();
-    const owlXmlOntology = await owlXmlManager.loadOntologyFromOntologyDocument(
-      new StringDocumentSource(owlXmlFixture, {
-        documentIRI,
-        fileName: "phase4-structural.owx",
-      }),
-      configuration,
-    );
-    const functionalOntology =
-      await functionalManager.loadOntologyFromOntologyDocument(
-        new StringDocumentSource(functionalFixture, {
-          documentIRI,
-          fileName: "phase4-structural.ofn",
-        }),
-        configuration,
-      );
     const expected = expectedDocument.snapshot;
 
     expect(expectedDocument).toMatchObject({
@@ -179,9 +168,6 @@ describe("OWL/XML structural differential", () => {
         version: "5.5.1",
       },
     });
-    expect(structuralSnapshot(owlXmlOntology)).toEqual(
-      structuralSnapshot(functionalOntology),
-    );
     expect({
       axiomTypeCounts: typeCounts(owlXmlOntology.getAxioms()),
       imports: [...owlXmlOntology.getImportsDeclarations()]
@@ -222,23 +208,8 @@ describe("OWL/XML structural differential", () => {
       value: { lexicalForm: "0" },
     });
 
-    const reconciliation = reconcileStructuralSnapshots(
-      javaObjectOneOfSnapshot(expected.axioms),
-      jsObjectOneOfSnapshot(owlXmlOntology),
-      {
-        fixture: expectedDocument.fixture,
-        referenceRevision: expectedDocument.oracle.revision,
-        parser: "OWL/XML",
-        capability: "parser.owlxml",
-        rules: differenceManifest.rules,
-      },
+    expect(jsAnonymousOperandCount(owlXmlOntology)).toBe(
+      javaAnonymousOperandCount(expected.axioms),
     );
-    expect(reconciliation).toMatchObject({
-      status: "PASS",
-      unmatched: [],
-      ambiguous: [],
-      unsatisfied: [],
-    });
-    expect(reconciliation.matches).toHaveLength(1);
   });
 });

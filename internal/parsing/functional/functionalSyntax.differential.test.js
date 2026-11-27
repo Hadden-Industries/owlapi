@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 
-import { OWLOntologyLoaderConfiguration } from "../../../index.js";
 import { OWLManager } from "../../../index.js";
 import { OWLObjectKind } from "../../../model/index.js";
 
@@ -110,10 +109,12 @@ describe("Functional Syntax OWLAPI 5.5.1 structural differential", () => {
       readFileSync(JAVA_SNAPSHOT_URL, "utf8"),
     );
     const expected = expectedDocument.snapshot;
-    const manager = OWLManager.createOWLOntologyManager();
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    });
     const ontology = await manager.loadOntologyFromOntologyDocument(
       fixture,
-      new OWLOntologyLoaderConfiguration({
+      manager.getOntologyLoaderConfiguration().with({
         missingImportHandling: "diagnostic",
       }),
     );

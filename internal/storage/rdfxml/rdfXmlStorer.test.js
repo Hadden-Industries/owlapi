@@ -42,9 +42,9 @@ const functionalFixture = readFileSync(
   ),
   "utf8",
 );
-const read = (manager, text) =>
+const read = (manager, text, parsingMode = "strict") =>
   manager.loadOntologyFromOntologyDocument(new StringDocumentSource(text), {
-    parsingMode: "strict",
+    parsingMode,
   });
 const targetWithPriorText = () => {
   const target = new StringDocumentTarget();
@@ -200,9 +200,14 @@ describe("manager-selected lossless RDF/XML storage", () => {
       ),
       "utf8",
     );
-    const ontology = await read(OWLManager.createOWLOntologyManager(), rdfxml);
+    const options = { behaviorProfileId: "java-owlapi-5.5.1" };
+    const ontology = await read(
+      OWLManager.createOWLOntologyManager(options),
+      rdfxml,
+      "compatible",
+    );
     const expected = await representableFixture(
-      OWLManager.createOWLOntologyManager(),
+      OWLManager.createOWLOntologyManager(options),
     );
     expect(compareOntologies(expected, ontology)).toEqual({
       equal: true,

@@ -38,10 +38,12 @@ describe("manager-selected Functional Syntax storage", () => {
       revision: "d7e997a53b470e32700de89cc610d9daf01ea769",
       version: "5.5.1",
     });
-    const manager = OWLManager.createOWLOntologyManager();
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    });
     const ontology = await manager.loadOntologyFromOntologyDocument(
       new StringDocumentSource(fixture),
-      { parsingMode: "strict" },
+      { parsingMode: "compatible" },
     );
     const counts = {};
     for (const { kind } of ontology.getAxioms()) {

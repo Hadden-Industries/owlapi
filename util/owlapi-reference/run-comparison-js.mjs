@@ -733,8 +733,20 @@ async function observe(request, directory) {
     networkRequests.push(String(input));
     throw new Error("Comparison workers run offline");
   };
-  const createManager = () =>
-    api.OWLManager.createOWLOntologyManager({
+  const configuration = new api.OWLOntologyLoaderConfiguration({
+    ...parameters,
+    ...request.loaderOptions,
+  });
+  if (
+    configuration.getBehaviorProfileId() !== parameters.behaviorProfileId ||
+    configuration.parsingMode !== parameters.parsingMode
+  ) {
+    throw new Error(
+      "Comparison loader settings differ from the case definition",
+    );
+  }
+  const createManager = () => {
+    const manager = api.OWLManager.createOWLOntologyManager({
       behaviorProfileId: request.behaviorProfileId,
       iriMappers: [
         {
@@ -758,10 +770,13 @@ async function observe(request, directory) {
         },
       },
     });
-  const configuration = new api.OWLOntologyLoaderConfiguration({
-    ...parameters,
-    ...request.loaderOptions,
-  });
+    if (manager.getBehaviorProfileId() !== parameters.behaviorProfileId) {
+      throw new Error(
+        "Comparison manager profile differs from the case definition",
+      );
+    }
+    return manager;
+  };
   if (request.performance) {
     await sampleLoad(
       request,
@@ -779,8 +794,8 @@ async function observe(request, directory) {
     schemaVersion: 1,
     operation: "loadOntologyGraphFromOntologyDocument",
     effectiveSettings: {
-      ...parameters,
       behaviorProfileId: manager.getBehaviorProfileId(),
+      parsingMode: configuration.parsingMode,
       defaultBehaviorProfileId:
         api.OWLManager.createOWLOntologyManager().getBehaviorProfileId(),
       remoteImports: configuration.remoteImports,

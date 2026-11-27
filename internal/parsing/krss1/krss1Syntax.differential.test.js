@@ -5,6 +5,7 @@ import { OWLManager } from "../../../index.js";
 import { IRI, OWLDataFactory, OWLObjectKind } from "../../../model/index.js";
 
 const namespace = "urn:test:phase17#";
+const behaviorProfileId = "normative-v1";
 const representations = [
   [
     "subset.krss",
@@ -43,7 +44,9 @@ const structuralKeys = (ontology) =>
     .map((axiom) => axiom.structuralKey())
     .sort();
 const load = (text, fileName) =>
-  OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+  OWLManager.createOWLOntologyManager({
+    behaviorProfileId,
+  }).loadOntologyFromOntologyDocument(
     new StringDocumentSource(text, {
       documentIRI: "urn:test:phase17",
       fileName,
@@ -94,7 +97,7 @@ describe("KRSS1 structural differentials", () => {
       readFileSync(new URL("source-preservation-supported.krss", root), "utf8"),
       "source-preservation-supported.krss",
     );
-    const f = new OWLDataFactory();
+    const f = new OWLDataFactory({ behaviorProfileId });
     const iri = (name) => IRI.create(`${namespace}${name}`);
     const c = (name) => f.getOWLClass(iri(name));
     const p = (name) => f.getOWLObjectProperty(iri(name));

@@ -57,36 +57,43 @@ const structuralSnapshot = (ontology) => {
   };
 };
 
-const loadFixture = async (fileName, configuration) => {
+const loadFixture = (fileName, behaviorProfileId) => {
   const text = readFileSync(new URL(fileName, FIXTURE_ROOT), "utf8");
-  return OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+  const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId });
+  return manager.loadOntologyFromOntologyDocument(
     new StringDocumentSource(text, {
       documentIRI: IRI.create(`urn:owlapi-js:phase6:${fileName}`),
       fileName,
     }),
-    configuration,
+    manager.getOntologyLoaderConfiguration().with({
+      missingImportHandling: "diagnostic",
+    }),
   );
 };
 
 describe("RDF/XML structural differential", () => {
-  it("matches its Functional, Manchester, OWL/XML, and pinned Java counterparts", async () => {
-    const configuration = new OWLOntologyLoaderConfiguration({
-      missingImportHandling: "diagnostic",
-    });
+  it("matches its Functional, Manchester, and OWL/XML counterparts under the normative profile", async () => {
     const [rdfXml, functional, manchester, owlXml] = await Promise.all([
-      loadFixture("phase5-structural.rdf", configuration),
-      loadFixture("phase5-structural.ofn", configuration),
-      loadFixture("phase5-structural.omn", configuration),
-      loadFixture("phase5-structural.owx", configuration),
+      loadFixture("phase5-structural.rdf", "normative-v1"),
+      loadFixture("phase5-structural.ofn", "normative-v1"),
+      loadFixture("phase5-structural.omn", "normative-v1"),
+      loadFixture("phase5-structural.owx", "normative-v1"),
     ]);
+    expect(structuralSnapshot(rdfXml)).toEqual(structuralSnapshot(functional));
+    expect(structuralSnapshot(rdfXml)).toEqual(structuralSnapshot(manchester));
+    expect(structuralSnapshot(rdfXml)).toEqual(structuralSnapshot(owlXml));
+  });
+
+  it("matches the pinned Java summary under the Java compatibility profile", async () => {
+    const rdfXml = await loadFixture(
+      "phase5-structural.rdf",
+      "java-owlapi-5.5.1",
+    );
     const expectedDocument = JSON.parse(
       readFileSync(JAVA_SNAPSHOT_URL, "utf8"),
     );
     const expected = expectedDocument.snapshot;
 
-    expect(structuralSnapshot(rdfXml)).toEqual(structuralSnapshot(functional));
-    expect(structuralSnapshot(rdfXml)).toEqual(structuralSnapshot(manchester));
-    expect(structuralSnapshot(rdfXml)).toEqual(structuralSnapshot(owlXml));
     expect({
       axiomTypeCounts: typeCounts(rdfXml.getAxioms()),
       imports: [...rdfXml.getImportsDeclarations()]

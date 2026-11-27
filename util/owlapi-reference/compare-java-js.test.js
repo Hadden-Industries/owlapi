@@ -1,8 +1,8 @@
 import { expect, jest, test } from "@jest/globals";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, relative, resolve, sep } from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { gzipSync } from "node:zlib";
 import { comparisonCases, runComparison } from "./compare-java-js.mjs";
 import {
@@ -11,7 +11,11 @@ import {
   referenceCaptureVerdicts,
 } from "./comparison-reference-captures.mjs";
 import { runWindowsComparisonJob } from "./comparison-job.mjs";
-import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
+import {
+  executeComparisonProcess,
+  oracleLockPath,
+  oracleVersion,
+} from "./comparison-oracle.mjs";
 import {
   corpusQualificationRoster,
   installedDependencyGraphIdentity,
@@ -114,6 +118,88 @@ async function withScratch(run) {
     await rm(directory, { recursive: true, force: true });
   }
 }
+
+test.each([
+  ["source observation", undefined],
+  [
+    "timed load",
+    { mode: "warm", sampleId: "profile-control", warmups: 0, repetitions: 1 },
+  ],
+])(
+  "%s uses the selected profile and refuses a changed parsing mode",
+  async (label, performance) => {
+    await withScratch(async (directory) => {
+      const xml = `<Ontology xmlns="http://www.w3.org/2002/07/owl#">
+      <SubClassOf><Class IRI="urn:control:C"/><ObjectOneOf/></SubClassOf>
+    </Ontology>`;
+      const document = {
+        path: join(directory, "control.owx"),
+        documentIRI: "urn:control:document",
+        syntax: "owlxml",
+        byteLength: Buffer.byteLength(xml),
+        sha256: sha256(xml),
+      };
+      await writeFile(document.path, xml);
+      const worker = fileURLToPath(
+        new URL("./run-comparison-js.mjs", import.meta.url),
+      );
+      const packageDirectory = fileURLToPath(
+        new URL("../../", import.meta.url),
+      );
+      const observe = async (name, behaviorProfileId, loaderOptions) => {
+        const output = join(directory, name);
+        await mkdir(output);
+        const requestFile = join(output, "request.json");
+        const resultFile = join(output, "result.json");
+        await writeFile(
+          requestFile,
+          JSON.stringify({
+            caseId: comparisonIdentity([label, name]),
+            executionId: "1".repeat(64),
+            scenario: "direct-load",
+            document,
+            imports: [],
+            packageDirectory,
+            behaviorProfileId,
+            parsingMode: "compatible",
+            loaderOptions,
+            performance,
+          }),
+        );
+        const result = await executeComparisonProcess(process.execPath, [
+          worker,
+          requestFile,
+          resultFile,
+        ]);
+        return { ...result, resultFile };
+      };
+      for (const [profile, status] of [
+        ["java-owlapi-5.5.1", "completed"],
+        ["normative-v1", "failed"],
+      ]) {
+        const result = await observe(profile, profile);
+        expect(result.exitCode).toBe(0);
+        if (performance) {
+          expect(JSON.parse(result.stdout).status).toBe(status);
+        } else {
+          const observation = JSON.parse(
+            await readFile(result.resultFile, "utf8"),
+          );
+          expect(observation.effectiveSettings).toMatchObject({
+            behaviorProfileId: profile,
+            parsingMode: "compatible",
+          });
+          expect(observation.load.status).toBe(status);
+        }
+      }
+      const overridden = await observe("overridden", "java-owlapi-5.5.1", {
+        parsingMode: "strict",
+      });
+      expect(overridden.stderr).toContain("Comparison loader settings differ");
+      expect(overridden.exitCode).not.toBe(0);
+    });
+  },
+);
 
 test("the Linux reference covers the frozen inventory and detects a changed Turtle writer", async () => {
   const suite = "reference-behavior";

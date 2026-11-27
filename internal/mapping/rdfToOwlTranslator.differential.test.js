@@ -1,10 +1,6 @@
 import { readFileSync } from "node:fs";
 
-import {
-  OWLOntologyLoaderConfiguration,
-  StringDocumentSource,
-} from "../../index.js";
-import { OWLManager } from "../../index.js";
+import { OWLManager, StringDocumentSource } from "../../index.js";
 import { IRI } from "../../model/index.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../rdfjs/environment.js";
 import { RdfToOwlTranslator } from "./rdfToOwlTranslator.js";
@@ -89,29 +85,46 @@ const structuralSnapshot = (ontology) => {
   };
 };
 
+const documentIRI = IRI.create("urn:owlapi-js:phase5:document");
+const datasetDocument = JSON.parse(readFileSync(DATASET_URL, "utf8"));
+const configurationFor = (manager) =>
+  manager.getOntologyLoaderConfiguration().with({
+    missingImportHandling: "diagnostic",
+  });
+const translateFixture = (manager) =>
+  new RdfToOwlTranslator({
+    dataFactory: manager.getOWLDataFactory(),
+  }).translate(constructDataset(datasetDocument), {
+    configuration: configurationFor(manager),
+    documentIRI,
+  });
+
 describe("RdfToOwlTranslator structural differential", () => {
-  it("matches the Functional counterpart and pinned Java OWLAPI summary", async () => {
-    const datasetDocument = JSON.parse(readFileSync(DATASET_URL, "utf8"));
-    const functionalDocument = readFileSync(FUNCTIONAL_URL, "utf8");
+  it("matches the Functional counterpart under the normative profile", async () => {
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "normative-v1",
+    });
+    const { ontology: rdfOntology } = await translateFixture(manager);
+    const functionalOntology = await manager.loadOntologyFromOntologyDocument(
+      new StringDocumentSource(readFileSync(FUNCTIONAL_URL, "utf8"), {
+        documentIRI,
+        fileName: "phase5-structural.ofn",
+      }),
+      configurationFor(manager),
+    );
+    expect(structuralSnapshot(rdfOntology)).toEqual(
+      structuralSnapshot(functionalOntology),
+    );
+  });
+
+  it("matches the pinned Java OWLAPI summary under the Java compatibility profile", async () => {
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    });
+    const { ontology: rdfOntology } = await translateFixture(manager);
     const expectedDocument = JSON.parse(
       readFileSync(JAVA_SNAPSHOT_URL, "utf8"),
     );
-    const configuration = new OWLOntologyLoaderConfiguration({
-      missingImportHandling: "diagnostic",
-    });
-    const documentIRI = IRI.create("urn:owlapi-js:phase5:document");
-    const { ontology: rdfOntology } = await new RdfToOwlTranslator().translate(
-      constructDataset(datasetDocument),
-      { configuration, documentIRI },
-    );
-    const functionalOntology =
-      await OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
-        new StringDocumentSource(functionalDocument, {
-          documentIRI,
-          fileName: "phase5-structural.ofn",
-        }),
-        configuration,
-      );
     const expected = expectedDocument.snapshot;
 
     expect(datasetDocument).toMatchObject({
@@ -125,9 +138,6 @@ describe("RdfToOwlTranslator structural differential", () => {
         version: "5.5.1",
       },
     });
-    expect(structuralSnapshot(rdfOntology)).toEqual(
-      structuralSnapshot(functionalOntology),
-    );
     expect({
       axiomTypeCounts: typeCounts(rdfOntology.getAxioms()),
       imports: [...rdfOntology.getImportsDeclarations()]
