@@ -61,20 +61,20 @@
     {
       "repository": "Hadden-Industries/webvowl",
       "defaultBranch": "main",
-      "commit": "a468e17701d495fd9e1a801aef169894b2045186",
-      "tree": "3daba374c5861cff51e7523aa5dbd541db16edf2",
+      "commit": "785d6c6301e8df4303dbf57f7492e5df06f6705b",
+      "tree": "889eaebae39440f88d43e81591c9c4f0d2c3d106",
       "sources": [
         {
           "path": "package.json",
-          "blob": "de77d334727469ee4b67c8d6b47e3d75823d8849"
+          "blob": "7f32b8ad3e0f643d988f6010914e62431da5779e"
         },
         {
           "path": "packages/vowl/package.json",
-          "blob": "ca16614be501f998b6ac25ae1d103518a32735f1"
+          "blob": "8380e07c89e5f95f5a7e93af9d5128506ff2e39d"
         },
         {
           "path": "packages/vowl/src/owl/compatibleLoading.js",
-          "blob": "b34180e040564618f36937fc8b02fc710c431f56"
+          "blob": "e90f74c4727a9435aaaea46679d6b0dc7afe9c3e"
         },
         {
           "path": "packages/vowl/src/owl/exportRdf.js",
@@ -82,42 +82,58 @@
         },
         {
           "path": "packages/vowl/src/owl/index.js",
-          "blob": "1a8e19acf7bf33dd4d7cdec3734d4c7c622040ad"
+          "blob": "367fc266ba4ab828068f7d5d309fdda2d514711d"
         },
         {
           "path": "packages/vowl/src/owl/loading.js",
-          "blob": "f0bea2b9f5b5d3769595b458f8d942a7443a5a64"
+          "blob": "d2c7b3f126fee5f4cf9e4f2cc5c8e0fd150c2489"
+        },
+        {
+          "path": "packages/vowl/src/owl/localBase.js",
+          "blob": "d1868c4d642f13fc7c8a3fd764b69d35c5918632"
         },
         {
           "path": "packages/vowl/src/owl/modelBuilder.js",
-          "blob": "59f0b4bbd5de28905d60b932f00a2ca5ae89ad33"
+          "blob": "ffb8c02af1b2e32b117febb1ad69f9cd59f844bc"
         },
         {
           "path": "packages/vowl/src/owl/policy.js",
-          "blob": "06fda351aa50696c2e9d6ad143f43ca65fa83c8a"
+          "blob": "8f78c1f8715315dc650c3df14d23264f844b9235"
         },
         {
           "path": "packages/vowl/src/owl/sourceEvidence.js",
-          "blob": "bdfc3c186b861d80b9297178b66d141992898723"
+          "blob": "d5a13e14b78c9d8d5a8aa63f99cdaf5d8eb8629e"
         },
         {
           "path": "src/app/js/controller/canonicalVowlSourceAcquisition.js",
-          "blob": "78e01ccf753ce482eae5239eef1945c2a960d8d5"
+          "blob": "f07216116d9116d99b44f415624c022437dceda1"
         },
         {
           "path": "src/app/js/controller/importResolver.js",
-          "blob": "ecae525c25fb38380c5ef30af8c0b2f911664a99"
+          "blob": "6e00e2d9ffbdc35708d1d86bbbd0982c80865dbf"
         },
         {
           "path": "src/app/js/ui/canonicalInputSelection.js",
-          "blob": "83cfe99d34da69c999ca2b1b886ea4d9b046656d"
+          "blob": "4f5f3392c2c207f5225a46482b0069d54a8e96ac"
         },
         {
           "path": "src/app/js/webmcp/webMcpToolContracts.js",
-          "blob": "a7288a89e360a7c72d11e2be022c8b3c1e402329"
+          "blob": "f10688a1e843eff0555a1110fba4d295cf1d3811"
+        },
+        {
+          "path": "src/ontology-loading/cachedOntologySourceAcquisition.js",
+          "blob": "9951f8a86fd16d7981838c11339c1c54b2bf5cdb"
+        },
+        {
+          "path": "src/ontology-loading/oasisXmlOntologyCatalog.js",
+          "blob": "28c914e3bf71a038ad9b84c562d0bc53c3db7b5a"
+        },
+        {
+          "path": "src/ontology-loading/ontologyMaterializationClient.js",
+          "blob": "3fec7d377cea8a3f7f3bebfbe5773f87817df4fd"
         }
       ],
-      "sourceSha256": "7f295758891d98c4990d200e53d106a39ba12a217343627a02afe18934185448"
+      "sourceSha256": "e85c08754fe19442290c6901216cce4f1a992fd13b6fe49f7d70faca72707705"
     }
   ]
 }

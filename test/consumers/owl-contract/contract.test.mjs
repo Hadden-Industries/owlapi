@@ -27,6 +27,126 @@ const { OWLManager, IRI, StringDocumentSource, OWLDocumentFormats } = owl;
 const publicContract = createPublicContract(owl);
 const { values, probes } = createPublicModelProbes(owl);
 
+async function exerciseLocalDocumentLoading() {
+  let importAttempts = 0;
+  const load = async (source, configuration) => {
+    const manager = OWLManager.createOWLOntologyManager({
+      documentLoader: {
+        load() {
+          importAttempts++;
+        },
+      },
+    });
+    const graph = await manager.loadOntologyGraphFromOntologyDocument(
+      source,
+      configuration,
+    );
+    return { ...graph, format: manager.getOntologyFormat(graph.ontology) };
+  };
+  const importedIRI = "https://example.invalid/contract/import.owl";
+  const xml = `<Ontology xmlns="http://www.w3.org/2002/07/owl#" ontologyIRI="urn:contract:local">
+    <Import>${importedIRI}</Import>
+    <Declaration><Class IRI="Relative"/></Declaration>
+  </Ontology>`;
+  const configuration = new model.OWLOntologyLoaderConfiguration({
+    parsingMode: "preserve",
+    missingImportHandling: "diagnostic",
+    remoteImports: true,
+  });
+
+  await assert.rejects(
+    load(new StringDocumentSource(xml), configuration),
+    (error) =>
+      error instanceof io.OWLSyntaxError &&
+      error.code === "OWL_SYNTAX_ERROR" &&
+      error.iri === "Relative" &&
+      !Object.hasOwn(error, "baseIRI") &&
+      !Object.hasOwn(error, "abbreviatedIRI"),
+  );
+  const rdfXml = `<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:owl="http://www.w3.org/2002/07/owl#">
+    <owl:Class rdf:about="Relative"/>
+  </rdf:RDF>`;
+  await assert.rejects(
+    load(
+      new StringDocumentSource(rdfXml, {
+        format: OWLDocumentFormats.RDF_XML,
+      }),
+      configuration,
+    ),
+    (error) =>
+      error instanceof io.OWLSyntaxError &&
+      error.code === "OWL_SYNTAX_ERROR" &&
+      error.syntax === undefined &&
+      typeof error.parserMessage === "string",
+  );
+
+  const source = new StringDocumentSource(xml, {
+    documentIRI: IRI.create("https://example.invalid/contract/local.owl"),
+  });
+  const diagnostic = await load(
+    source,
+    configuration.with({ remoteImports: false }),
+  );
+  assert.equal(diagnostic.format.key, "owlxml");
+  assert.equal(diagnostic.format, diagnostic.documents[0].context.format);
+  assert.equal(
+    diagnostic.documents[0].context.documentIRI.value,
+    "https://example.invalid/contract/local.owl",
+  );
+  assert.deepEqual(
+    [...diagnostic.ontology.getClassesInSignature()].map(
+      ({ iri }) => iri.value,
+    ),
+    ["https://example.invalid/contract/Relative"],
+  );
+  assert.deepEqual(
+    diagnostic.documents[0].context.diagnostics.map(({ code, importIRI }) => [
+      code,
+      importIRI?.value,
+    ]),
+    [["MISSING_IMPORT", importedIRI]],
+  );
+  assert.equal(configuration.remoteImports, true);
+  await assert.rejects(
+    load(source, configuration.with({ maxImportCount: 0 })),
+    {
+      name: "ResourceLimitError",
+      code: "RESOURCE_LIMIT_EXCEEDED",
+      resource: "maxImportCount",
+      limit: 0,
+      observed: 1,
+    },
+  );
+
+  const expandedJsonLd = `[
+    {"@id":"urn:contract:normalized","@type":["http://www.w3.org/2002/07/owl#Ontology"]},
+    {"@id":"urn:contract:NormalizedClass","@type":["http://www.w3.org/2002/07/owl#Class"]}
+  ]`;
+  const normalized = new StringDocumentSource(expandedJsonLd, {
+    format: OWLDocumentFormats.JSON_LD,
+  });
+  const byteLength = new TextEncoder().encode(expandedJsonLd).byteLength;
+  const bounded = configuration.with({ maxInputBytes: byteLength - 1 });
+  await assert.rejects(load(normalized, bounded), {
+    name: "ResourceLimitError",
+    code: "RESOURCE_LIMIT_EXCEEDED",
+    resource: "maxInputBytes",
+    limit: byteLength - 1,
+    observed: byteLength,
+  });
+  const accepted = await load(
+    normalized,
+    bounded.with({ maxInputBytes: byteLength }),
+  );
+  assert.equal(bounded.maxInputBytes, byteLength - 1);
+  assert.equal(accepted.documents[0].context.documentIRI, undefined);
+  assert.deepEqual(
+    [...accepted.ontology.getClassesInSignature()].map(({ iri }) => iri.value),
+    ["urn:contract:NormalizedClass"],
+  );
+  assert.equal(importAttempts, 0);
+}
+
 test(OWL_CONTRACT_ASSERTIONS[0], () => {
   const installedRoot = realpathSync("node_modules/owlapi");
   for (const suffix of [
@@ -159,6 +279,7 @@ test(OWL_CONTRACT_ASSERTIONS[2], async () => {
       error.code === "UNLOADABLE_IMPORT" &&
       error.cause === cause,
   );
+  await exerciseLocalDocumentLoading();
   assertNoNetworkOperations();
 });
 test(OWL_CONTRACT_ASSERTIONS[3], async () => {
@@ -214,6 +335,17 @@ test(OWL_CONTRACT_ASSERTIONS[6], () => {
 });
 test(OWL_CONTRACT_ASSERTIONS[7], () => {
   assert.equal(exercisePublicErrors(owl), 4);
+  const transportCause = new TypeError("fetch could not produce a response");
+  const transportFailure = new io.MissingImportError("unreadable import", {
+    cause: transportCause,
+  });
+  assert.equal(transportFailure.cause, transportCause);
+  assert.equal(transportFailure.status, undefined);
+  const httpFailure = new io.MissingImportError("import returned HTTP 404", {
+    status: 404,
+  });
+  assert.equal(httpFailure.status, 404);
+  assert.equal(httpFailure.cause, undefined);
 });
 for (const { kind, value, fields } of probes)
   test(`public model fields: ${kind}`, () => {

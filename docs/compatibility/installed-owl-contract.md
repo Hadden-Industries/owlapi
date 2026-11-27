@@ -57,8 +57,14 @@ Each acquisition reads those exact commits and their complete native Git trees, 
 The report preserves every configured identity; `defaultBranch` records review provenance and does not select a moving branch.
 Missing or substituted pinned source fails admission without falling back to a branch head or another revision.
 
-The bounded scopes cover UO's `scripts/ontology` and its three relevant entry points, VOWL's `packages/vowl/src/owl`, the four direct WebVOWL metadata/error call sites, and consumer package manifests.
+The bounded scopes cover UO's `scripts/ontology` and its three relevant entry points, VOWL's `packages/vowl/src/owl`, and the consumer package manifests.
+WebVOWL also uses the public format and error APIs at four application call sites and in cached source acquisition, OASIS catalogue loading, and the materialization client under `src/ontology-loading`.
 Production imports were checked at the immutable SHAs with native Git search; consumer tests, historical migration generators and notice tooling are not runtime interface oracles.
+
+The installed loader probe covers local documents without a retrieval IRI, OWL/XML format detection, and missing-base diagnostics from OWL/XML and explicitly selected RDF/XML.
+It checks base resolution with remote imports suppressed and the resource details returned at the import-count and input-byte limits.
+The error probe distinguishes a missing import with a transport cause from one with an HTTP status.
+Catalogue and materialization size failures use the existing `ResourceLimitError` contract.
 
 A proposed pin update requires review of edited interface files, removed/new adapter files and new interface subdirectories.
 A changed consumer algorithm does not justify a new producer assertion.

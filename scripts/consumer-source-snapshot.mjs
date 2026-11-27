@@ -34,6 +34,9 @@ export const CONSUMER_SOURCE_SCOPES = Object.freeze([
       "src/app/js/controller/importResolver.js",
       "src/app/js/ui/canonicalInputSelection.js",
       "src/app/js/webmcp/webMcpToolContracts.js",
+      "src/ontology-loading/cachedOntologySourceAcquisition.js",
+      "src/ontology-loading/oasisXmlOntologyCatalog.js",
+      "src/ontology-loading/ontologyMaterializationClient.js",
     ],
   },
 ]);
