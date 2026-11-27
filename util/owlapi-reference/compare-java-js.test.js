@@ -1857,6 +1857,88 @@ test("entity-free OGG requires structural measurements", async () => {
   );
 });
 
+test("upstream direct loads compare the same pinned documents and imports in both profiles", () => {
+  const input = ["w3c-owl-time-rdfxml", "w3c-skos", "w3c-time-gregorian"];
+  const javaRequest = {
+    input,
+    profile: "java-owlapi-5.5.1",
+    parsingMode: "compatible",
+  };
+  const requests = [
+    javaRequest,
+    { input, profile: "normative-v1", parsingMode: "compatible" },
+    { input, profile: "normative-v1", parsingMode: "strict" },
+  ];
+  const entries = requests.flatMap((request) => comparisonCases(request));
+  const cases = entries.map(({ definition }) => definition);
+  expect(cases).toHaveLength(9);
+
+  const byInput = Map.groupBy(cases, ({ input }) => input.id);
+  expect([...byInput.keys()]).toEqual(input);
+  for (const [java, compatible, strict] of byInput.values()) {
+    expect(java).toMatchObject({
+      scenario: "direct-load",
+      behaviorProfileId: "java-owlapi-5.5.1",
+      parsingMode: "compatible",
+    });
+    expect(compatible).toMatchObject({
+      scenario: "direct-load",
+      behaviorProfileId: "normative-v1",
+      parsingMode: "compatible",
+      input: java.input,
+      imports: java.imports,
+      requiredImportClosure: java.requiredImportClosure,
+    });
+    expect(strict).toMatchObject({
+      scenario: "direct-load",
+      behaviorProfileId: "normative-v1",
+      parsingMode: "strict",
+      measurements: ["behavior"],
+      input: java.input,
+      imports: java.imports,
+      expectedLoadRefusals: {
+        js: { category: "UNSUPPORTED_CONSTRUCT" },
+        java: { closure: java.requiredImportClosure },
+      },
+    });
+  }
+  const skosCaseIds = (definitions) =>
+    definitions
+      .filter(({ input }) => input.id === "w3c-skos")
+      .map(({ caseId }) => caseId);
+  expect(skosCaseIds(comparisonCases({ suite: "wider" }))).toEqual(
+    skosCaseIds(entries),
+  );
+  const [gregorian] = byInput.get("w3c-time-gregorian");
+  expect(gregorian.imports).toEqual([
+    expect.objectContaining({
+      id: "w3c-owl-time-rdfxml",
+      ontologyIRI: "http://www.w3.org/2006/time",
+    }),
+  ]);
+  gregorian.requiredImportClosure[1].versionIRI = "urn:changed";
+  const [fresh] = comparisonCases({
+    ...javaRequest,
+    input: gregorian.input.id,
+  });
+  expect(fresh.definition.requiredImportClosure).toContainEqual({
+    ontologyIRI: "http://www.w3.org/2006/time",
+    versionIRI: "http://www.w3.org/2006/time#2026",
+  });
+
+  const swapped = {
+    ...comparisonCatalogue,
+    fixtures: comparisonCatalogue.fixtures.map((fixture) =>
+      fixture.id === "w3c-time-gregorian"
+        ? { ...fixture, imports: ["w3c-time"] }
+        : fixture,
+    ),
+  };
+  expect(() => comparisonCases(javaRequest, swapped)).toThrow(
+    /exact pinned inputs for w3c-time-gregorian/u,
+  );
+});
+
 test("entity-free OGG requires the native original comparison and its finite allowance", () => {
   const [{ definition }] = comparisonCases({
     suite: "ogg-archive-entity-free",

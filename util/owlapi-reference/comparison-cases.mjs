@@ -7,7 +7,7 @@ import {
 } from "./comparison-fixtures.mjs";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
 import { scopedRuleExpectation } from "./comparison-scoped-swrl.mjs";
-import { pinnedSourceOracle } from "./comparison-oracle.mjs";
+import { oracleVersion, pinnedSourceOracle } from "./comparison-oracle.mjs";
 import { configurationComparisonCases } from "./comparison-configuration.mjs";
 import { mutationComparisonCases } from "./comparison-mutation.mjs";
 import { loadPublicationComparisonCase } from "./comparison-load-publication.mjs";
@@ -152,6 +152,57 @@ const compatibleIdmpNativeLimit = {
   },
   java: stockXmlEntityLimitRefusal.java,
 };
+const owlTimeIdentity = {
+  ontologyIRI: "http://www.w3.org/2006/time",
+  versionIRI: "http://www.w3.org/2006/time#2026",
+};
+// These outcomes apply to the exact admitted source and import bytes.
+const upstreamProfileControls = new Map([
+  [
+    "w3c-owl-time-rdfxml",
+    {
+      inputsSha256:
+        "5bf3e01fb2573c198deed05e18fa7b0ec905dca57d7617bdcdba4b3b5a7ce305",
+      closure: [owlTimeIdentity],
+      axioms: 1073,
+      predicate: "http://www.w3.org/2004/02/skos/core#changeNote",
+      object: "2024-02-29 - Fixed datatype on all cardinality restrictions",
+    },
+  ],
+  [
+    "w3c-skos",
+    {
+      inputsSha256:
+        "03c7ad9bd6a1be8d6d7af01b06b6cb64022137ac9e47c22104067bc97c206350",
+      closure: [
+        {
+          ontologyIRI: "http://www.w3.org/2004/02/skos/core",
+          versionIRI: null,
+        },
+      ],
+      axioms: 205,
+      predicate: "http://purl.org/dc/terms/title",
+      object: "SKOS Vocabulary",
+    },
+  ],
+  [
+    "w3c-time-gregorian",
+    {
+      inputsSha256:
+        "d65849b34efdd4ee5e3f81ee497cd4b3a14f51c285c4ab9ef2e9d3a6873ac3f6",
+      closure: [
+        {
+          ontologyIRI: "http://www.w3.org/ns/time/gregorian",
+          versionIRI: null,
+        },
+        owlTimeIdentity,
+      ],
+      axioms: 184,
+      predicate: "http://purl.org/dc/terms/created",
+      object: "2017-01-20",
+    },
+  ],
+]);
 const profileSelections = [
   { behaviorProfileId: javaProfile, parsingMode: "compatible" },
   { behaviorProfileId: normativeProfile, parsingMode: "compatible" },
@@ -532,6 +583,20 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
         : [scenarios[0]];
     return selectedScenarios.flatMap((scenario) =>
       profiles.map((profile) => {
+        const upstreamControl =
+          scenario === "direct-load" &&
+          policy === "recorded" &&
+          !request.javaTurtle
+            ? upstreamProfileControls.get(input.id)
+            : undefined;
+        if (
+          upstreamControl &&
+          comparisonIdentity(admittedInputs) !== upstreamControl.inputsSha256
+        ) {
+          throw new Error(
+            `Upstream profile control requires the exact pinned inputs for ${input.id}`,
+          );
+        }
         const normativeMappedIfcowl =
           exactMappedIfcowlInputs &&
           profile.behaviorProfileId === normativeProfile &&
@@ -579,7 +644,29 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           );
         }
         const oggArchivePin = oggArchiveXmlRefusalInputs.get(input.id);
-        if (normativeMappedIfcowl && profile.parsingMode === "strict") {
+        if (
+          upstreamControl &&
+          profile.behaviorProfileId === normativeProfile &&
+          profile.parsingMode === "strict"
+        ) {
+          const { closure, axioms, predicate, object } = upstreamControl;
+          const [identity] = closure;
+          expectedLoadRefusals = {
+            dependentStageReason: "expected-undeclared-ontology-annotation",
+            authority:
+              "https://www.w3.org/TR/owl2-mapping-to-rdf/#Parsing_of_Annotations",
+            js: {
+              category: "UNSUPPORTED_CONSTRUCT",
+              statement: {
+                graph: "",
+                subject: identity.ontologyIRI,
+                predicate,
+                objectSha256: sha256(object),
+              },
+            },
+            java: { oracleVersion, identity, axioms, closure },
+          };
+        } else if (normativeMappedIfcowl && profile.parsingMode === "strict") {
           expectedLoadRefusals = ifcowlMappedStrictRefusal;
         } else if (
           scenario === "direct-load" &&
@@ -636,9 +723,11 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
               input.documentIRI,
               ...new Set(imports.map(([, member]) => member.ontologyIRI)),
             ].map((ontologyIRI) => ({ ontologyIRI, versionIRI: null }))
-          : exactMappedIfcowlInputs && !strictFirst && !expectedLoadRefusals
-            ? ifcowlImportClosure("mapped")
-            : undefined;
+          : upstreamControl && !expectedLoadRefusals
+            ? structuredClone(upstreamControl.closure)
+            : exactMappedIfcowlInputs && !strictFirst && !expectedLoadRefusals
+              ? ifcowlImportClosure("mapped")
+              : undefined;
         const expectedScopedRules = scopedRuleExpectation(
           input,
           scenario,

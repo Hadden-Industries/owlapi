@@ -29,6 +29,11 @@ The [comparison fixture catalogue](https://github.com/Hadden-Industries/owlapi/b
 | STATO in RDF/XML                                             | Exposes one structural `SWRLRule`, including a same-individual atom.                                                                            | Loads the ontology with zero `SWRLRule` axioms.                                                         | `getAxiomsByType("SWRLRule")` returns different results.             |
 | The OWL/XML fixture `phase4-structural.owx`                  | Omits the anonymous individual inside an `ObjectOneOf` expression.                                                                              | Retains the anonymous individual in the enumeration.                                                    | The enumeration's members and structural identity differ.            |
 
+With compatible parsing, both profiles load the original OWL-Time RDF/XML, SKOS and Gregorian time documents to the same direct ontology structures as Java OWLAPI 5.5.1.
+With the normative profile's default strict parsing, each load fails on an undeclared ontology annotation property (`UNSUPPORTED_CONSTRUCT`).
+The Gregorian time comparison uses the same pinned OWL-Time import in both profiles.
+[Pinned W3C OWL-Time](https://github.com/w3c/sdw-time/blob/0ce7630471f2053cb4116d3361f90a9188ff04f6/rdf/time.rdf) · [W3C SKOS vocabulary](https://www.w3.org/2004/02/skos/vocabs) · [Pinned W3C Gregorian time](https://github.com/w3c/sdw-time/blob/0ce7630471f2053cb4116d3361f90a9188ff04f6/rdf/time-gregorian.ttl)
+
 ## Structural SWRL rules
 
 In `java-owlapi-5.5.1`, compatible RDF/XML and Functional Syntax recognize `SWRLRule`, `SWRLClassAtom`, `SWRLObjectPropertyAtom`, `SWRLSameIndividualAtom`, `SWRLDifferentIndividualsAtom` and `SWRLVariable`.

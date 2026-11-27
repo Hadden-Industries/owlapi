@@ -2550,6 +2550,45 @@
       "historicalLoad": "compatible"
     },
     {
+      "id": "w3c-owl-time-rdfxml",
+      "collection": "w3c",
+      "syntax": "rdfxml",
+      "byteLength": 125817,
+      "sha256": "df7f9f0b7bb6465fb91c5ac4ccc0d122447886cfd8b9e9a26b5c30b5af9c3927",
+      "documentIRI": "http://www.w3.org/2006/time",
+      "ontologyIRI": "http://www.w3.org/2006/time",
+      "basePolicy": "canonical-ontology-base",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/w3c/sdw-time/0ce7630471f2053cb4116d3361f90a9188ff04f6/rdf/time.rdf",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "licenseLead": "W3C and OGC terms recorded in the pinned OWL-Time representation",
+      "role": "root"
+    },
+    {
+      "id": "w3c-time-gregorian",
+      "collection": "w3c",
+      "syntax": "turtle",
+      "byteLength": 7221,
+      "sha256": "90ba0b3298ed7dddc56f623c82e820c775a5a20c59e8bbd4af8b2bef62e54162",
+      "documentIRI": "http://www.w3.org/ns/time/gregorian",
+      "ontologyIRI": "http://www.w3.org/ns/time/gregorian",
+      "basePolicy": "canonical-ontology-base",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/w3c/sdw-time/0ce7630471f2053cb4116d3361f90a9188ff04f6/rdf/time-gregorian.ttl",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Source attribution and terms in the pinned Gregorian time representation",
+      "role": "root",
+      "imports": [
+        "w3c-owl-time-rdfxml"
+      ]
+    },
+    {
       "id": "w3c-shacl",
       "collection": "w3c",
       "suite": "wider",

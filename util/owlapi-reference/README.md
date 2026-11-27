@@ -44,6 +44,20 @@ Publication qualification reconciles the versioned roster on both release routes
 - [EXPRESS publication](https://pi.pauwel.be/evoc/express_W3ID/20151211/index.html)
 - [LIST publication](https://pi.pauwel.be/evoc/list_W3ID/20151211/index.html)
 
+Use the standard direct-load comparison to test the original RDF/XML OWL-Time, SKOS and Turtle Gregorian time documents against Java OWLAPI 5.5.1.
+
+```sh
+npm run compare:java-js -- list --input w3c-owl-time-rdfxml --input w3c-skos --input w3c-time-gregorian --profile java-owlapi-5.5.1 --parsing-mode compatible
+```
+
+Use the same inputs with `prepare`, `run` and `verify`.
+Run them with `--profile normative-v1 --parsing-mode compatible` and `--profile normative-v1 --parsing-mode strict` to check the two normative parsing modes.
+The W3C SKOS and Gregorian time pins match the pre-declaration copies in Universal Ontology byte for byte.
+Gregorian time maps its import to the same pinned W3C RDF/XML document used by the OWL-Time case.
+Both JavaScript profiles in compatible parsing mode must match Java's direct ontology structure and import closure membership.
+The normative profile in strict mode must fail during loading with `UNSUPPORTED_CONSTRUCT` for the exact recorded ontology annotation, while Java completes the load.
+[Pinned W3C OWL-Time](https://github.com/w3c/sdw-time/blob/0ce7630471f2053cb4116d3361f90a9188ff04f6/rdf/time.rdf) · [Pinned W3C Gregorian time](https://github.com/w3c/sdw-time/blob/0ce7630471f2053cb4116d3361f90a9188ff04f6/rdf/time-gregorian.ttl) · [Universal Ontology declaration changes](https://github.com/Hadden-Industries/universal-ontology/commit/ef1d278d9c63b1b9fdb9047a8700d887c118051b)
+
 Use `--input pistoia-idmp --imports mapped --java-xml historical-idmp` for the same original IDMP document with the publisher's Commons and LCC imports.
 The catalogue pins 22 direct dependencies and the transitive LCC LanguageRepresentation ontology to [Commons 1.3](https://www.omg.org/spec/Commons/1.3/) and [LCC 1.2](https://www.omg.org/spec/LCC/1.2/).
 The mapped cases have separate IDs and leave the recorded stand-in cases in the qualification roster.
