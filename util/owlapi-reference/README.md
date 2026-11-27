@@ -81,6 +81,10 @@ The shared harness also compares the Java and JavaScript models for every member
 The OGG sources credit Yongqun He, Yue Liu and Bin Zhao under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 The imported taxonomic material comes from [NCBI Taxonomy](https://obofoundry.org/ontology/ncbitaxon.html).
 
+Use `--input obo-ovae-entity-free` for Java-compatible direct-load measurements of OVAE.
+The same bounded recipe expands 24,184 internal entity references totalling 772,390 code units in the pinned original.
+The Java worker compares the resulting model with the original, and both engines benchmark the same expanded bytes.
+
 This corpus uses the Human Phenotype Ontology Consortium's HPO release of 2026-09-01.
 Credit [Köhler et al. (2014)](https://doi.org/10.1093/nar/gkt1026) and the [HPO licence](https://human-phenotype-ontology.github.io/license.html).
 

@@ -2137,7 +2137,7 @@ async function executeComparison(request, environment = {}) {
     entries.some(({ definition }) => definition.originalRdfXml) &&
     !measurements.includes("structure")
   ) {
-    throw new Error("Entity-free OGG requires a structural measurement");
+    throw new Error("Entity-free RDF/XML requires a structural measurement");
   }
   options.performanceProtocol = {
     coldSamples: 3,

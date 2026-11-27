@@ -43,7 +43,10 @@ import {
   isolatedLoadReport,
   loadPerformanceReport,
 } from "./comparison-performance.mjs";
-import { matchesOriginalRdfXml } from "./comparison-rdfxml-expansion.mjs";
+import {
+  compareExpandedRdfXmlDocuments,
+  matchesOriginalRdfXml,
+} from "./comparison-rdfxml-expansion.mjs";
 import { benchmarkSourceDigest } from "./comparison-benchmarks.mjs";
 
 import {
@@ -1705,6 +1708,52 @@ test("entity-free OGG compares the pinned derivatives to the original inputs and
       comparisonCases({ suite: "ogg-archive-entity-free" }, altered),
     ).toThrow(/approved original/u);
   }
+});
+
+test("entity-free OVAE compares the pinned original without imports", () => {
+  const [original] = comparisonCases({
+    input: "obo-ovae",
+    profile: "java-owlapi-5.5.1",
+  });
+  const request = { input: "obo-ovae-entity-free" };
+  const [expanded] = comparisonCases(request);
+
+  expect(expanded.definition).toMatchObject({
+    scenario: "direct-load",
+    behaviorProfileId: "java-owlapi-5.5.1",
+    parsingMode: "compatible",
+    imports: [],
+    requiredImportClosure: [
+      {
+        ontologyIRI: original.definition.input.documentIRI,
+        versionIRI: null,
+      },
+    ],
+    originalRdfXml: {
+      document: original.definition.input,
+      recipe: "jaxp-sax-v1",
+      limits: { entityExpansionLimit: 30000, totalEntitySizeLimit: 800000 },
+    },
+  });
+  expect(expanded.definition.input.documentIRI).toBe(
+    original.definition.input.documentIRI,
+  );
+  expect(expanded.definition.input.sha256).not.toBe(
+    original.definition.input.sha256,
+  );
+  expect(() =>
+    comparisonCases({ ...request, profile: "normative-v1" }),
+  ).toThrow(/Java-compatible direct load/u);
+  expect(
+    compareExpandedRdfXmlDocuments(
+      expanded.definition,
+      {},
+      { structure: { status: "match" } },
+    ),
+  ).toBe("match");
+  expect(compareExpandedRdfXmlDocuments(expanded.definition, {}, {})).toBe(
+    "inconclusive",
+  );
 });
 
 test("entity-free OGG requires structural measurements", async () => {

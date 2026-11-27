@@ -7,8 +7,12 @@ import {
 
 export const rdfXmlExpansionKind = "rdfxml-expansion";
 // Each fingerprint binds the original and derivative, their acquisition
-// details, the original taxonomy module, and the measured finite limits.
+// details, any imports of the original, and the measured finite limits.
 const approvedExpansions = new Map([
+  [
+    "obo-ovae-entity-free",
+    "ce7400b032e0634831f20509f7d8f41aee5351ce82338beabb0707e6b26099a1",
+  ],
   [
     "obo-ogg-archive-ce-entity-free",
     "5f5ec69d9597ce5246655889ce0918d29d5a0624cff451b881e85123ac8dab97",
@@ -35,7 +39,7 @@ const fixtureWitness = (fixture) => ({
   source: fixture.source,
 });
 
-/** Resolve the exact archived RDF/XML and shared taxonomy behind a derivative. */
+/** Resolve the exact original RDF/XML and its imports behind a derivative. */
 export function rdfXmlExpansionSource(fixture, catalogue) {
   const source = fixture.source;
   const approved = approvedExpansions.get(fixture.id);
@@ -64,7 +68,7 @@ export function rdfXmlExpansionSource(fixture, catalogue) {
     }) !== approved
   )
     throw new Error(
-      "RDF/XML expansion requires the approved original, derivative, taxonomy and limits",
+      "RDF/XML expansion requires the approved original, derivative, imports and limits",
     );
   const { recipe, entityExpansionLimit, totalEntitySizeLimit } = source;
   return {
@@ -98,6 +102,10 @@ export function matchesOriginalRdfXml(definition, js, native) {
 
 /** Compare each document in the pinned derivative's actual import closure. */
 export function compareExpandedRdfXmlDocuments(definition, js, native) {
+  // A direct load without imports already compares the entire closure as the root model.
+  if (definition.imports.length === 0)
+    return native.structure?.status ?? "inconclusive";
+
   const comparisons = native.documentComparisons;
   const required = new Set([
     definition.input.documentIRI,

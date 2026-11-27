@@ -575,7 +575,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           (scenario !== "direct-load" || policy !== "mapped" || !compatibleJava)
         ) {
           throw new Error(
-            "Entity-free OGG requires a Java-compatible direct load with mapped imports",
+            "Entity-free RDF/XML requires a Java-compatible direct load with mapped imports",
           );
         }
         const oggArchivePin = oggArchiveXmlRefusalInputs.get(input.id);

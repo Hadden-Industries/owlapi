@@ -3390,7 +3390,10 @@
       "licenseLead": "CC0 1.0",
       "role": "root",
       "historicalLoad": "compatible",
-      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/doid.owl"
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/doid.owl",
+      "imports": [
+        "obo-import-doid-obo-ext"
+      ]
     },
     {
       "id": "obo-dpo",
@@ -3787,7 +3790,12 @@
       "licenseLead": "CC0 1.0",
       "role": "root",
       "historicalLoad": "compatible",
-      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/flopo/releases/2026-11-15/flopo.owl"
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/flopo/releases/2026-11-15/flopo.owl",
+      "imports": [
+        "obo-import-flopo-imports-go-import",
+        "obo-pato",
+        "obo-po"
+      ]
     },
     {
       "id": "obo-fobi",
@@ -3809,7 +3817,11 @@
       "licenseLead": "CC BY 3.0",
       "role": "root",
       "historicalLoad": "strict",
-      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/fobi/fobi.owl"
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/fobi/fobi.owl",
+      "imports": [
+        "obo-import-fobi-imports-chebi-import",
+        "obo-import-fobi-imports-foodon-import"
+      ]
     },
     {
       "id": "obo-foodon",
@@ -5015,7 +5027,10 @@
       "licenseLead": "CC BY 3.0",
       "role": "root",
       "historicalLoad": "compatible",
-      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/omit/dev/omit.owl"
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/omit/dev/omit.owl",
+      "imports": [
+        "obo-import-ncro-2015-12-10-ncro"
+      ]
     },
     {
       "id": "obo-omo",
@@ -5289,6 +5304,27 @@
       "versionIriOrSourceLead": "https://raw.githubusercontent.com/OVAE-Ontology/ovae/master/src/ontology/ovae_merged.owl"
     },
     {
+      "id": "obo-ovae-entity-free",
+      "collection": "obo",
+      "suite": "ovae-entity-free",
+      "syntax": "rdfxml",
+      "byteLength": 4657342,
+      "sha256": "5121a9264bdd6c2d522072dd6533a2bf7072b024176e8692814bd1560a05efa2",
+      "documentIRI": "http://purl.obolibrary.org/obo/ovae.owl",
+      "basePolicy": "recorded-request",
+      "source": {
+        "kind": "rdfxml-expansion",
+        "recipe": "jaxp-sax-v1",
+        "originalId": "obo-ovae",
+        "originalSha256": "25d1bf39ba7eade77d08ab59558d54b8de58c519a725dae290f98d3d97e20cd4",
+        "entityExpansionLimit": 30000,
+        "totalEntitySizeLimit": 800000
+      },
+      "acquisition": "derived",
+      "role": "root",
+      "licenseLead": "CC BY 3.0"
+    },
+    {
       "id": "obo-pain",
       "collection": "obo",
       "suite": "wider",
@@ -5508,7 +5544,11 @@
       "role": "root",
       "historicalLoad": "rejected",
       "versionIriOrSourceLead": "https://raw.githubusercontent.com/Planteome/plant-ontology/master/po.owl",
-      "historicalMediaHint": "text/plain"
+      "historicalMediaHint": "text/plain",
+      "imports": [
+        "obo-import-po-imports-ncbitaxon-import",
+        "obo-import-po-imports-ro-import"
+      ]
     },
     {
       "id": "obo-poro",
@@ -6021,7 +6061,15 @@
       "licenseLead": "CC BY 4.0",
       "role": "root",
       "historicalLoad": "compatible",
-      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/to/releases/2026-01-14/to.owl"
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/to/releases/2026-01-14/to.owl",
+      "imports": [
+        "obo-po",
+        "obo-import-to-imports-chebi-import",
+        "obo-import-to-imports-go-import",
+        "obo-import-to-imports-ncbitaxon-import",
+        "obo-import-to-imports-pato-import",
+        "obo-import-to-patterns-merge-patterns"
+      ]
     },
     {
       "id": "obo-trans",
@@ -7192,6 +7240,816 @@
         "reportedLength": 176700913,
         "source": "https://purl.obolibrary.org/obo/zp.owl"
       }
+    },
+    {
+      "id": "obo-import-doid-obo-ext",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 10745,
+      "sha256": "dc2ca68a16f7c86e00bc993840bf1e694be86f40383d313e10988eed8b578633",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/obo/ext.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/ext.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/ext.owl",
+      "imports": [
+        "obo-import-doid-imports-chebi-import",
+        "obo-import-doid-imports-cl-import",
+        "obo-import-doid-imports-disdriv-import",
+        "obo-import-doid-imports-eco-import",
+        "obo-import-doid-imports-foodon-import",
+        "obo-import-doid-imports-geno-import",
+        "obo-import-doid-imports-hp-import",
+        "obo-import-doid-imports-ncbitaxon-import",
+        "obo-import-doid-imports-omim-susc-import",
+        "obo-import-doid-imports-ro-import",
+        "obo-import-doid-imports-so-import",
+        "obo-import-doid-imports-symp-import",
+        "obo-import-doid-imports-trans-import",
+        "obo-import-doid-imports-uberon-import"
+      ]
+    },
+    {
+      "id": "obo-import-fobi-imports-chebi-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 88232,
+      "sha256": "6571fe8af5a064f255d10ac5843c0ddc67ea0aaef6ae5b5ca7b1d9ed941f6678",
+      "documentIRI": "http://purl.obolibrary.org/obo/fobi/imports/chebi_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/pcastellanoescuder/FoodBiomarkerOntology/04f97ef9b556b2d6fc797a421ee10921d4f95481/imports/chebi_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "FOBI publisher import; CC BY 3.0 licence lead",
+      "role": "module"
+    },
+    {
+      "id": "obo-import-fobi-imports-foodon-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 156433,
+      "sha256": "2ff2b22b0c1fd6295d754f8805b9b24eb3fb4b9b72550914dd0251dbde414d5c",
+      "documentIRI": "http://purl.obolibrary.org/obo/fobi/imports/foodon_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/pcastellanoescuder/FoodBiomarkerOntology/04f97ef9b556b2d6fc797a421ee10921d4f95481/imports/foodon_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "FOBI publisher import; CC BY 3.0 licence lead",
+      "role": "module"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-ncro",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 1449937,
+      "sha256": "f19629186f32b59fd4c8b03f27bc9ae9cc393da40d54e084395d8f86a8609111",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/ncro.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/ncro.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/ncro.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/ncro.owl",
+      "imports": [
+        "obo-bfo",
+        "obo-import-iao-ontology-metadata",
+        "obo-import-ncro-2015-12-10-chebi-imports",
+        "obo-import-ncro-2015-12-10-clo-imports",
+        "obo-import-ncro-2015-12-10-doid-imports",
+        "obo-import-ncro-2015-12-10-go-imports",
+        "obo-import-ncro-2015-12-10-iao-imports",
+        "obo-import-ncro-2015-12-10-obi-imports",
+        "obo-import-ncro-2015-12-10-pr-imports",
+        "obo-import-ncro-2015-12-10-ro-imports",
+        "obo-import-ncro-2015-12-10-so-imports",
+        "obo-import-ncro-2015-12-10-uberon-imports"
+      ]
+    },
+    {
+      "id": "obo-import-to-imports-chebi-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 2336979,
+      "sha256": "0551dad0b09fc068a660cde284106a4ad61796cff7104badfda8e6329de2fced",
+      "documentIRI": "http://purl.obolibrary.org/obo/to/imports/chebi_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/Planteome/plant-trait-ontology/bfaf67ed28d7021f4be9619162f309529c64e9c0/imports/chebi_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Planteome publisher import; CC BY 4.0 licence lead",
+      "role": "module"
+    },
+    {
+      "id": "obo-import-to-imports-go-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 430785,
+      "sha256": "4e2fc23190620d2f322cfb7c18e9f8fbc4ea5bcb4dec4bdbd94c64c951703dbd",
+      "documentIRI": "http://purl.obolibrary.org/obo/to/imports/go_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/Planteome/plant-trait-ontology/bfaf67ed28d7021f4be9619162f309529c64e9c0/imports/go_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Planteome publisher import; CC BY 4.0 licence lead",
+      "role": "module"
+    },
+    {
+      "id": "obo-import-to-imports-ncbitaxon-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 44355,
+      "sha256": "aa3fb1dbb0cfc8caa15b07f080f7d43f2747e456119e59cb308d98314a271203",
+      "documentIRI": "http://purl.obolibrary.org/obo/to/imports/ncbitaxon_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/Planteome/plant-trait-ontology/bfaf67ed28d7021f4be9619162f309529c64e9c0/imports/ncbitaxon_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Planteome publisher import; CC BY 4.0 licence lead",
+      "role": "module"
+    },
+    {
+      "id": "obo-import-to-imports-pato-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 137797,
+      "sha256": "51729e48aefc8e9e61c1f0d3059484446a8d4c642fd4e7830f409e66631e8b55",
+      "documentIRI": "http://purl.obolibrary.org/obo/to/imports/pato_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/Planteome/plant-trait-ontology/bfaf67ed28d7021f4be9619162f309529c64e9c0/imports/pato_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Planteome publisher import; CC BY 4.0 licence lead",
+      "role": "module"
+    },
+    {
+      "id": "obo-import-to-patterns-merge-patterns",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 705346,
+      "sha256": "d2b22c9d1cafb941c9664f6b882f630f833ac1d6c4f31e7a76b1328d1856e67e",
+      "documentIRI": "http://purl.obolibrary.org/obo/to/patterns/merge_patterns.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/Planteome/plant-trait-ontology/bfaf67ed28d7021f4be9619162f309529c64e9c0/patterns/merge_patterns.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Planteome publisher import; CC BY 4.0 licence lead",
+      "role": "module"
+    },
+    {
+      "id": "obo-import-flopo-imports-go-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 7438,
+      "sha256": "b50aa5e49b90aa4618bf4f56085b6a97a9737b3f17d37224193a51405bc4a97c",
+      "documentIRI": "https://raw.githubusercontent.com/flora-phenotype-ontology/flopoontology/master/ontology/imports/go_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/flora-phenotype-ontology/flopoontology/8002570af7ec16508dee372bc9e9f794ba3caad0/ontology/imports/go_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/flopo/imports/go_import.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/flopo/releases/2026-06-15/imports/go_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-chebi-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 148275,
+      "sha256": "b3d853c69908ee6f6d0a698f683b9ac021d1c2a3c8b442458115b7499c00e015",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/chebi_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/chebi_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/chebi_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-cl-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 66136,
+      "sha256": "4e1d357d9b3cd20b9903a74a446d334a9fff312e1f29cd588d6ed13193847b7a",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/cl_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/cl_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/cl_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-disdriv-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 110329,
+      "sha256": "9f1924d7da14c52a24155e8f64b4d37b45305304fc0bd77d4c99eb0959b1dab8",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/disdriv_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/disdriv_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/disdriv_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-eco-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 15193,
+      "sha256": "9c5dce8541cf34aa3b6a2ca7f7d258f9d8760706b64886e4c299473d51a701b2",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/eco_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/eco_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/eco_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-foodon-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 20336,
+      "sha256": "5573ba985984be8fc05089c8ac97e3789808b50087e45d35f12fee20545f0722",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/foodon_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/foodon_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/foodon_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-geno-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 10541,
+      "sha256": "56bbd28e6630d0da4fdff2251eb0647e5ef12072a6ca2a31c0a931ae32469d72",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/geno_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/geno_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/geno_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-hp-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 209033,
+      "sha256": "8c104c9a3ef573c84d4f60936f1ec6af464e2a9483ed0a3baebd73438b7ee425",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/hp_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/hp_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/hp_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-ncbitaxon-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 370164,
+      "sha256": "51d4e6e449cef048c0101b2379833171a15fd7c771959dbe21dada08f0526c72",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/ncbitaxon_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/ncbitaxon_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/ncbitaxon_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-omim-susc-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 190556,
+      "sha256": "7fdae4c9a9a03c0eb422eb440ffe3b05f675b7d6ef0b4feac83ef4ffbffd67fa",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/omim_susc_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/omim_susc_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/omim_susc_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-ro-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 15125,
+      "sha256": "c816df9557c2312c17b4aa71608bb4a995101a033436159e5fa71e024b81e967",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/ro_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/ro_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/ro_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-so-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 95972,
+      "sha256": "c04f5cac4699c940f5b9dd1b8bd8c9e777eb560682e997b50194c2e5b39a19af",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/so_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/so_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/so_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-symp-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 762271,
+      "sha256": "862f027d87f54f609944ff2476db99d176f85f6fbd9841ec7b17f65c825d793d",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/symp_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/symp_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/symp_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-trans-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 49111,
+      "sha256": "dfd416a74dceddc78a299c9165907a11bc83cbad99e83c41797c95faebb99a79",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/trans_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/trans_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/trans_import.owl"
+    },
+    {
+      "id": "obo-import-doid-imports-uberon-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 334354,
+      "sha256": "164b2f84e681f27eebec967d6973bf37935f2a270f23239ed9bd64e59aaa35c0",
+      "documentIRI": "http://purl.obolibrary.org/obo/doid/imports/uberon_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/99e76f3e562bce63ca929607b37cc175fd9951b6/src/ontology/imports/uberon_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Publisher import from the pinned ontology release; CC0 1.0 licence lead",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/doid/releases/2026-10-29/imports/uberon_import.owl"
+    },
+    {
+      "id": "obo-import-iao-ontology-metadata",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 74339,
+      "sha256": "63c6d8ee767d16a3cddec52fc94beb47836ee682c54ce409652a9f9cfe3c55af",
+      "documentIRI": "http://purl.obolibrary.org/obo/iao/ontology-metadata.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/information-artifact-ontology/ontology-metadata/df95ab2e067ddfbdc7ecb4455ce5875d19551c05/ontology-metadata.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Ontology Metadata upstream import from its 2019-08-26 release",
+      "role": "module",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/iao/2019-08-26/ontology-metadata.owl"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-chebi-imports",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 10123,
+      "sha256": "2906d018ef38262c747c31cddad9a240bb61878299b8872f9c4226ad1ba9b187",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/chebi-imports.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/chebi-imports.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/chebi-imports.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/chebi-imports.owl"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-clo-imports",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 6818,
+      "sha256": "963813f9b5a6642dcd25f78e87989c6509b9a402df754c4e2e42cbe1d78883a1",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/clo-imports.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/clo-imports.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/clo-imports.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/clo-imports.owl"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-doid-imports",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 7582,
+      "sha256": "39b1b185304cb73f4a1d6614f5f19106e17fffc9a73a01f39ce1a84c7ba6c862",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/doid-imports.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/doid-imports.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/doid-imports.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/doid-imports.owl"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-go-imports",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 332232,
+      "sha256": "9c1e91621ebf245144fe733420a69172835951e32dad4d527d2893daaf65f08d",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/go-imports.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/go-imports.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/go-imports.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/go-imports.owl"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-iao-imports",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 8179,
+      "sha256": "2ac40763f4db27d080456b81b8518e2ac3ab76cfbd5022df2a7ede6b2c02736e",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/iao-imports.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/iao-imports.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/iao-imports.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/iao-imports.owl"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-obi-imports",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 13500,
+      "sha256": "d94f6d382c5a5693c9342256701d1fcf14c922780246ea181eaa692ecc1bcfae",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/obi-imports.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/obi-imports.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/obi-imports.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/obi-imports.owl"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-pr-imports",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 3398,
+      "sha256": "73289da575bad0e135cee30300abaa385daa0c03a68f9254ebe1012dad7a5255",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/pr-imports.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/pr-imports.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/pr-imports.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/pr-imports.owl"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-ro-imports",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 13083,
+      "sha256": "8836d021ff7c7596633760e2b9c83d86239d9179f23e800ab7f72b96555d518c",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/ro-imports.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/ro-imports.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/ro-imports.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/ro-imports.owl"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-so-imports",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 157891,
+      "sha256": "c8c2cf0ae3798790bc5e7b46e1553b34d3301fd4b4b4e22cd5be2ae61b72b3c0",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/so-imports.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/so-imports.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/so-imports.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/so-imports.owl"
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-uberon-imports",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 11947,
+      "sha256": "8f26880eac5cdd489df5d24d8dcd842a5ce8a9a4be0bc163d267d3a57cb780ff",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/uberon-imports.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/OmniSearch/ncro/abd363fe32db52cf4245c370c5ba7bb00b9ce4dc/src/ontology/uberon-imports.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "module",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/uberon-imports.owl",
+      "versionIriOrSourceLead": "http://purl.obolibrary.org/obo/ncro/2015-12-10/uberon-imports.owl"
+    },
+    {
+      "id": "obo-import-po-imports-ncbitaxon-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 19808,
+      "sha256": "8174010212381f9b2ecc9e28d184d2585aac1a95460a39eb845b2724742a9d51",
+      "documentIRI": "http://purl.obolibrary.org/obo/po/imports/ncbitaxon_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/Planteome/plant-ontology/94750e01c897da6955c2fef97379f4d99cb333a8/imports/ncbitaxon_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Planteome publisher import; CC BY 4.0 licence lead",
+      "role": "module"
+    },
+    {
+      "id": "obo-import-po-imports-ro-import",
+      "collection": "obo",
+      "suite": "imports",
+      "syntax": "rdfxml",
+      "byteLength": 201853,
+      "sha256": "a027a1911230186fecd6b2d4a06a84b0d2cb8bc76bdad90cc95e15679e806c70",
+      "documentIRI": "http://purl.obolibrary.org/obo/po/imports/ro_import.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "https",
+        "url": "https://raw.githubusercontent.com/Planteome/plant-ontology/94750e01c897da6955c2fef97379f4d99cb333a8/imports/ro_import.owl",
+        "redirects": [
+          "https://raw.githubusercontent.com"
+        ]
+      },
+      "acquisition": "publisher",
+      "licenseLead": "Planteome publisher import; CC BY 4.0 licence lead",
+      "role": "module"
     }
   ]
 }
