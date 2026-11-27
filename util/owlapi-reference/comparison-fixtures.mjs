@@ -7,6 +7,7 @@ import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
 import { sha256 } from "./comparison-evidence.mjs";
 import { rdfXmlExpansionSource } from "./comparison-rdfxml-expansion.mjs";
+import { readUniversalOntologyManifest } from "./universal-ontology-manifest.mjs";
 
 const project = JSON.parse(
   readFileSync(new URL("../../package.json", import.meta.url), "utf8"),
@@ -16,12 +17,7 @@ const publisherUserAgent = `owlapi-corpus-qualification/${project.version} (+${p
 export const comparisonCatalogue = JSON.parse(
   readFileSync(new URL("./comparison-fixtures.json", import.meta.url), "utf8"),
 );
-export const julyComparisonManifest = JSON.parse(
-  readFileSync(
-    new URL("./universal-ontology-july-2026.json", import.meta.url),
-    "utf8",
-  ),
-);
+export const universalOntologyManifest = readUniversalOntologyManifest();
 
 export const comparisonSyntaxes = Object.freeze({
   rdfxml: { mime: "application/rdf+xml", format: "RDF_XML" },
@@ -244,27 +240,27 @@ export const comparisonWitnesses = Object.freeze([
   ].map((fixture) => ({ ...fixture, suite: "java-permissive" })),
 ]);
 
-const julyRoots = new Map(
-  julyComparisonManifest.roots.map(({ path, name }) => [path, name]),
+const universalOntologyRoots = new Map(
+  universalOntologyManifest.roots.map(({ path, name }) => [path, name]),
 );
-const julyId = (path) =>
-  `july/${julyRoots.get(path) ?? path.split("/").at(-1)}`;
-export const julyComparisonFixtures = Object.freeze(
-  julyComparisonManifest.mappings.map(({ path, ontologyIRI }) => ({
-    ...julyComparisonManifest.originals[path],
-    id: julyId(path),
-    collection: "universal-ontology-july-2026",
-    suite: "july",
+const universalOntologyInputId = (path) =>
+  `universal-ontology/${universalOntologyRoots.get(path) ?? path.split("/").at(-1)}`;
+export const universalOntologyFixtures = Object.freeze(
+  universalOntologyManifest.mappings.map(({ path, ontologyIRI }) => ({
+    ...universalOntologyManifest.originals[path],
+    id: universalOntologyInputId(path),
+    collection: `universal-ontology-${universalOntologyManifest.version}`,
+    suite: "universal-ontology",
     documentIRI: ontologyIRI,
     ontologyIRI,
     basePolicy: "canonical-ontology-base",
-    source: { kind: "git", path, revision: julyComparisonManifest.revision },
+    source: { kind: "git", path, revision: universalOntologyManifest.revision },
     acquisition: "local-only",
-    role: julyRoots.has(path) ? "root" : "module",
-    closure: julyRoots.has(path),
-    imports: julyComparisonManifest.mappings
+    role: universalOntologyRoots.has(path) ? "root" : "module",
+    closure: universalOntologyRoots.has(path),
+    imports: universalOntologyManifest.mappings
       .filter((entry) => entry.path !== path)
-      .map((entry) => julyId(entry.path)),
+      .map((entry) => universalOntologyInputId(entry.path)),
   })),
 );
 

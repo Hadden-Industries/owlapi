@@ -112,7 +112,7 @@ The suite checks the original layout and separately uses Java to verify the relo
 The `canonical-vowl-dl` suite uses the same reference checkout.
 It runs the 20 Functional Syntax input sequences and verifies the native OWL 2 DL verdicts and the JS preserve-mode formal and source assessments against their original expectations.
 
-The `july` suite also selects that historical Java revision.
+The `universal-ontology` suite also selects that historical Java revision.
 It uses the pinned Universal Ontology Git objects and their original catalog mappings.
 Supply the same released classpath or historical reference checkout to `verify` that the selected cases used in `run`.
 
@@ -203,10 +203,9 @@ Its verifier consumes receipts after the producer artifacts and installed candid
 Accepted public behavior decisions without a registered case hold shadow qualification.
 The stock IDMP direct and closure cases each require the typed XML refusals from both runtimes and the recorded import behavior.
 Their dependent structure stages are inapplicable once those refusals are verified.
-The normative July core and extended closures apply the OWL-Time approvals to their exact compared member.
-Java then merges the verified JavaScript models and compares that merge with the JavaScript closure.
+For the Universal Ontology closure checks, Java merges the verified JavaScript models and compares that merge with the JavaScript closure.
 Both RDF/XML writer and reload results still contribute independent verdicts.
-The four normative July closures explicitly disable native missing-type generation for the structural check.
+Every active Universal Ontology closure case disables native missing-type generation for the structural check.
 The separate native default result retains the added declarations and its own reload verdict.
 The pinned Java-profile ePO, CGMES Equipment, IOF Core and ESCO closures use the same structural check and retain the native default result.
 Run the `js-closure-after-native-refusal` input with the normative profile and the closure scenario to check both independent outcomes.
@@ -469,37 +468,25 @@ The synthetic fixture under `fixtures/import-closure/` deliberately combines a c
 Synthetic and real-family runs are permitted as provisional Task 14 development evidence before baseline reconciliation.
 Neither constitutes final release acceptance: fresh evidence from the reconciled candidate remains required after the pinned source-integration baseline and accepted Phase 21 commits are ancestors.
 
-### July source-driven parsing and import-closure reconciliation
+### Universal Ontology qualification
 
-Use `npm run compare:java-js -- prepare --suite july --profile normative-v1 --parsing-mode compatible --ontology-repository <checkout> --reference-checkout <built-java-checkout> --cache <absolute-cache> --output <absolute-preparation-directory>`.
+CI and release qualification use the ISO/IEC 11179-3 edition 4, Reference Data, Core and Extended roots.
+The [qualification manifest](universal-ontology.json) pins their common version, Git revision and source fingerprints, including the external imports.
+The comparator and the shared GitHub checkout action derive the versioned paths from that manifest.
+To switch versions, update the version, revision and fingerprints there, along with any changed import membership.
+
+Use `npm run compare:java-js -- prepare --suite universal-ontology --profile normative-v1 --parsing-mode compatible --ontology-repository <checkout> --reference-checkout <built-java-checkout> --cache <absolute-cache> --output <absolute-preparation-directory>`.
 Then use `run` and `verify` with the same suite, profile, parsing mode, reference checkout and cache, and a separate absolute result directory.
-The prepared cache can move between directories.
-This fail-closed command covers all four original July variants at Universal Ontology revision `e2c667f3584b8fb705671cada0fe205b1000b617`: ISO11179-3 edition 4, reference-data, core and extended.
-It consumes only original source blobs; historical `-full` documents and VOWL projections are not reference outputs.
+The suite checks seven source documents and four merged closures with the pinned source Java oracle.
+It verifies each closure in Functional Syntax and RDF/XML, with offline import resolution and strict JavaScript reloads.
 
-The shared suite reports seven distinct direct-source cases and four closure cases.
-Within the four original import contexts it checks 18 document models, then writes and reloads each merged closure in Functional Syntax and RDF/XML.
-This produces eight serialization checks.
-Parsing includes each document's own annotations and imports.
-Closures retain only root ontology identity and ontology annotations, plus the structural union of direct axioms.
-All resolution remains offline.
+The suite requires exact structural equality.
+The normative closure cases also require the expected import membership and clean source diagnostics.
+The lossless Java RDF/XML control disables `addMissingTypes` so the round trip preserves the admitted axiom set.
+The default Java writer's declaration additions are recorded separately.
 
-Native Java OWLAPI owns structural equality and the independent merge of the compared JavaScript document models.
-Exact specification-grounded differences use the one expected-difference ledger; unknown, ambiguous or stale rules fail.
-Raw Java outcomes remain visible alongside reconciliation outcomes.
-
-The [named OWL-Time restriction decision](../../docs/compatibility/july-ontology-reconciliation.md) explains why a reconciled pass for core/extended is not raw Java equality.
-July ledger rules apply to direct document differences.
-The native `closurePropagation` result requires exact equality after Java merges those reconciled document models.
-
-To compare the retired and current runners on the same candidate, run `node scripts/verify-comparison-migration.mjs --july-control <original-qualification.json> --july-output <shared-result-directory> --jest <full-jest-report.json>`.
-The frozen inventory names the original assertions and probe arguments.
-The qualification record gives the observed results for the November candidate.
-[Migration inventory](../../docs/compatibility/comparison-runner-migration.json) · [Qualification results](../../docs/compatibility/2026-11-25-corpus-qualification.json)
-It verifies the source and artifact digests and checks every named independent Jest assertion in the migration inventory.
-
-The standalone Java oracle exits with code 1 for unparsed source RDF and retains `SOURCE_UNPARSED_RDF`; only the qualification command adjudicates that evidence against the exact ledger.
-Do not treat a raw oracle exit as the reconciled result.
+Use `node scripts/verify-comparison-migration.mjs --jest <full-jest-report.json>` to check the required independent Jest assertions and probe inventory.
+[Migration inventory](../../docs/compatibility/comparison-runner-migration.json)
 
 Source mode records actual source bytes, including dirty changes.
 Optional `--candidate <directory>` installs the retained tarball with scripts disabled and verifies its digest before testing the public package.
@@ -525,7 +512,7 @@ Node resolves and executes the real public modules; Jest asserts the returned ev
 This preserves concurrent imports and the exact production qualification path without depending on Jest's experimental VM module linker, which can reject shared concurrent imports on Node 22.
 Both supported Node lines run these same assertions; native failures and missing import mappings remain test failures.
 
-CI and release verification prepare the four July families, run their shared comparison and verify the results against the pinned source oracle.
+CI and release verification prepare the pinned Universal Ontology sources, run their shared comparison and verify the results against the pinned source oracle.
 Both workflows retain the diagnostics when a comparison fails.
 The installed release candidate also needs its own qualification on the protected release path.
 

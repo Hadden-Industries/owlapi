@@ -2,8 +2,8 @@ import {
   comparisonCatalogue,
   comparisonWitnesses,
   generatedFixture,
-  julyComparisonFixtures,
-  julyComparisonManifest,
+  universalOntologyFixtures,
+  universalOntologyManifest,
 } from "./comparison-fixtures.mjs";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
 import { scopedRuleExpectation } from "./comparison-scoped-swrl.mjs";
@@ -20,7 +20,6 @@ import { localityBehaviorComparisonCase } from "./comparison-locality.mjs";
 import { xmlProviderComparisonCase } from "./comparison-xml-provider.mjs";
 import { jsonLdComparisonCases } from "./comparison-jsonld.mjs";
 import { transportComparisonCases } from "./comparison-transport.mjs";
-import { julyTimeDifferenceScope } from "./comparison-july-differences.mjs";
 import { writerComparisonCases } from "./comparison-writer.mjs";
 import { profileComparisonCases } from "./comparison-profile.mjs";
 import {
@@ -51,8 +50,6 @@ export const selectsVowl = ({ suite, scenario }) =>
   suite === "canonical-vowl-dl" || scenario === "canonical-vowl-dl";
 export const selectsPublicBehavior = ({ suite, scenario }) =>
   suite === "public-api-behavior" || scenario === "public-api-behavior";
-const julyTimePath = "src/external/time.rdf";
-const julyTimeClosureRoots = new Set(["july/core", "july/extended"]);
 
 const originalIdmp = comparisonCatalogue.fixtures.find(
   ({ id }) => id === "pistoia-idmp",
@@ -242,14 +239,14 @@ const pinnedScenarioInputs = (() => {
     [
       ...comparisonCatalogue.fixtures,
       ...comparisonWitnesses,
-      ...julyComparisonFixtures,
+      ...universalOntologyFixtures,
     ].map((input) => [input.id, input]),
   );
   const scopedIds = [
     originalIdmp.id,
     brickInputId,
     ...nativeClosureControls,
-    ...julyComparisonFixtures.map(({ id }) => id),
+    ...universalOntologyFixtures.map(({ id }) => id),
   ];
   const identity = (id, policy) => {
     const input = canonicalInputs.get(id);
@@ -441,7 +438,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
   const inputs = [
     ...catalogue.fixtures,
     ...comparisonWitnesses,
-    ...julyComparisonFixtures,
+    ...universalOntologyFixtures,
   ];
   const all = new Map(inputs.map((fixture) => [fixture.id, fixture]));
   if (all.size !== inputs.length)
@@ -507,7 +504,8 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       (request.suite === "prospects" && input.id === ifcowlInputId)
         ? "mapped"
         : "recorded");
-    const oracle = input.suite === "july" ? pinnedSourceOracle() : null;
+    const universalOntology = input.suite === "universal-ontology";
+    const oracle = universalOntology ? pinnedSourceOracle() : null;
     const imports = importedDocuments(input, all, catalogue.standIns, policy);
     const admittedInputs = {
       input: documentIdentity(input),
@@ -534,46 +532,15 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
         : [scenarios[0]];
     return selectedScenarios.flatMap((scenario) =>
       profiles.map((profile) => {
-        let expectedDifferences;
-        const normativeJuly =
-          oracle &&
-          exactRecordedInputs &&
-          profile.behaviorProfileId === normativeProfile &&
-          profile.parsingMode === "compatible";
-        if (normativeJuly) {
-          if (
-            scenario === "direct-load" &&
-            input.source.path === julyTimePath
-          ) {
-            expectedDifferences = julyTimeDifferenceScope(
-              input.source,
-              oracle.revision,
-            );
-          } else if (
-            scenario === "closure-roundtrip" &&
-            julyTimeClosureRoots.has(input.id)
-          ) {
-            const time = imports.find(
-              ([, document]) => document.source.path === julyTimePath,
-            )?.[1];
-            if (!time)
-              throw new Error(
-                "The pinned July closure is missing its OWL-Time mapping",
-              );
-            expectedDifferences = {
-              ...julyTimeDifferenceScope(time.source, oracle.revision),
-              memberDocumentIRI: time.documentIRI,
-            };
-          }
-        }
         const normativeMappedIfcowl =
           exactMappedIfcowlInputs &&
           profile.behaviorProfileId === normativeProfile &&
           !strictFirst &&
           !request.javaTurtle;
-        if (normativeMappedIfcowl && profile.parsingMode === "compatible") {
-          expectedDifferences = ifcowlSingletonUnionScope(scenario);
-        }
+        const expectedDifferences =
+          normativeMappedIfcowl && profile.parsingMode === "compatible"
+            ? ifcowlSingletonUnionScope(scenario)
+            : undefined;
         const expectedJsRdfXmlWriteRefusal =
           scenario === "closure-roundtrip" &&
           profile.behaviorProfileId === normativeProfile &&
@@ -584,12 +551,17 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
                 ? normativeRdfXmlWriteRefusals.get(input.id)
                 : undefined
             : undefined;
+        const pinnedOntologyClosure =
+          scenario === "closure-roundtrip" &&
+          input.closure &&
+          universalOntology &&
+          exactRecordedInputs;
         // The exact round trip preserves the admitted axiom set. Keep the
         // unconfigured native writer result as a separate observation.
         const checkExactClosureWriter =
           scenario === "closure-roundtrip" &&
           (expectedJsRdfXmlWriteRefusal !== undefined ||
-            (normativeJuly && input.closure) ||
+            pinnedOntologyClosure ||
             (((nativeClosureControls.has(input.id) && exactRecordedInputs) ||
               exactMappedIfcowlInputs) &&
               profile.behaviorProfileId === javaProfile &&
@@ -687,13 +659,14 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           ...(strictFirst ? { loadSequence: ["strict", "compatible"] } : {}),
           ...(oracle ? { oracle } : {}),
           ...admittedInputs,
-          ...(normativeJuly && input.closure && scenario === "closure-roundtrip"
+          ...(pinnedOntologyClosure &&
+          profile.behaviorProfileId === normativeProfile
             ? {
-                expectedClosure: julyComparisonManifest.roots.find(
+                expectedClosure: universalOntologyManifest.roots.find(
                   (root) => root.path === input.source.path,
                 ).expectedClosure,
                 allowedSourceDiagnostics:
-                  julyComparisonManifest.allowedSourceDiagnostics,
+                  universalOntologyManifest.allowedSourceDiagnostics,
               }
             : {}),
           importPolicy: policy,

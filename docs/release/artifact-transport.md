@@ -5,7 +5,7 @@ That action and `collect-artifacts` execute one self-contained JavaScript bundle
 Their callers select literal payload paths, logical names and retention periods.
 Recovery limits, waits, compression defaults and inventory limits belong to `artifact-transport-policy.json`.
 
-ScanCode reports, July reconciliation diagnostics and failed OWL contract assertions use pinned `actions/upload-artifact`.
+ScanCode reports, Universal Ontology comparison diagnostics and failed OWL contract assertions use pinned `actions/upload-artifact`.
 These six uploads are for inspection and have no downstream workflow consumer.
 They stage the selected payload with the existing path, symlink and size checks before the official uploader runs.
 Each artifact name includes the workflow attempt so reruns preserve earlier reports.

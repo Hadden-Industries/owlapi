@@ -56,6 +56,8 @@ const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
 const ACTION_DIRECTORY = join(REPOSITORY_ROOT, ".github", "actions");
 const SHARED_SETUP = "./.github/actions/setup-producer";
 const SCANCODE_SETUP = "./.github/actions/setup-scancode";
+const UNIVERSAL_ONTOLOGY_CHECKOUT =
+  "./.github/actions/checkout-universal-ontology";
 const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
 const candidateRetentionWorkflow = "candidate-retention.yml";
 const runtimeFreezer = "./.github/actions/freeze-runtime-matrix";
@@ -600,6 +602,22 @@ const validateActionUses = (fileName, workflow, document, violations) => {
       }
       // validateQualityTooling checks the inventory and ordering of these steps.
       if (step.uses === SCANCODE_SETUP) continue;
+      if (step.uses === UNIVERSAL_ONTOLOGY_CHECKOUT) {
+        const canonical =
+          ["ci.yml", "release.yml"].includes(fileName) &&
+          jobId === "source_canonical" &&
+          step.if === undefined;
+        const shadow =
+          fileName === "release.yml" &&
+          jobId === "corpus_shard" &&
+          step.if === "matrix.universal_ontology";
+        add(
+          violations,
+          (canonical || shadow) && step.with === undefined,
+          `${fileName}:${jobId}: use the shared Universal Ontology checkout in its qualification lane`,
+        );
+        continue;
+      }
       if (
         [
           RETAIN_ARTIFACT,
@@ -2203,13 +2221,15 @@ const validateJavaReferenceBoundary = (job, violations) => {
     upload.length === 1 &&
       observed.some(
         (step) =>
-          step.id === "july_qualification" &&
+          step.id === "universal_ontology_qualification" &&
           ["prepare", "run", "verify"].every((action) =>
             step.run?.includes(`npm run compare:java-js -- ${action} `),
           ),
       ) &&
       observed.indexOf(upload[0]) >
-        observed.findIndex((step) => step.id === "july_qualification") &&
+        observed.findIndex(
+          (step) => step.id === "universal_ontology_qualification",
+        ) &&
       observed.indexOf(upload[0]) <
         observed.findIndex((step) => step.id === "reference_publication"),
     `${label}: publication must follow all live Java qualification`,
@@ -4857,7 +4877,7 @@ const validateConsumerRuntimeControls = (
 
 function validateDiagnosticUploads(workflows, violations) {
   const scanPath = ".release/scancode-qualification/reports";
-  const julyPath = ".release/july-qualification";
+  const universalOntologyPath = ".release/universal-ontology-qualification";
   const failurePath = ".release/owl-contract/native.ndjson";
   const diagnosticSites = [
     ...["source_canonical", "quality_windows"].map((job) => [
@@ -4875,9 +4895,9 @@ function validateDiagnosticUploads(workflows, violations) {
     ].map(([file, retention]) => [
       file,
       "source_canonical",
-      "july_diagnostics",
-      "july-ontology-reconciliation",
-      julyPath,
+      "universal_ontology_diagnostics",
+      "universal-ontology-reconciliation",
+      universalOntologyPath,
       retention,
       6,
     ]),

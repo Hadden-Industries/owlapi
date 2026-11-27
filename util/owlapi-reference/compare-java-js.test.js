@@ -500,8 +500,12 @@ test("the reviewed roster preserves all original, closure and held cases", async
   ).toEqual(["obo-ogg"]);
   expect(comparisonCatalogue.collections).toHaveLength(24);
   expect(comparisonCatalogue.standIns).toHaveLength(57);
-  expect(comparisonCases({ suite: "july", ...named })).toHaveLength(11);
-  for (const { definition } of comparisonCases({ suite: "july", ...named })) {
+  const universalOntology = comparisonCases({
+    suite: "universal-ontology",
+    ...named,
+  });
+  expect(universalOntology).toHaveLength(11);
+  for (const { definition } of universalOntology) {
     expect(definition.oracle).toEqual({
       kind: "pinned-source",
       revision: "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
@@ -516,6 +520,28 @@ test("the reviewed roster preserves all original, closure and held cases", async
   expect(list.cases.map(({ caseId }) => caseId)).toEqual(
     prospects.map(({ caseId }) => caseId),
   );
+});
+
+test("all active Universal Ontology closure cases use lossless RDF/XML and observe the native default", () => {
+  const cases = comparisonCases({ suite: "universal-ontology" });
+  const closures = cases.filter(
+    ({ definition }) => definition.scenario === "closure-roundtrip",
+  );
+  expect(cases).toHaveLength(33);
+  expect(closures).toHaveLength(12);
+  for (const { definition } of closures) {
+    expect(definition.javaRdfXml).toEqual({
+      addMissingTypes: false,
+      observeDefault: true,
+    });
+    if (definition.behaviorProfileId === "normative-v1") {
+      expect(definition).toMatchObject({
+        expectedClosure: expect.any(Array),
+        allowedSourceDiagnostics: [],
+      });
+    }
+    expect(definition.expectedDifferences).toBeUndefined();
+  }
 });
 
 test("the benchmark registry accounts for all 70 workloads under both profiles", async () => {
@@ -534,7 +560,7 @@ test("the benchmark registry accounts for all 70 workloads under both profiles",
 });
 
 test("registry comparisons reject version ranges, mixed subjects and a benchmark selector before installation", async () => {
-  const request = { action: "verify", suite: "july" };
+  const request = { action: "verify", suite: "universal-ontology" };
   await expect(
     runComparison(request, { registryVersion: "latest" }),
   ).rejects.toThrow(/exact public package version/u);
@@ -2296,65 +2322,6 @@ test("mapped IDMP resolves its published imports without replacing the recorded 
   expect(mapped.imports.map(([iri]) => iri)).toContain(
     "https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/",
   );
-});
-
-test("July closure propagation uses the OWL-Time approval only on its exact imported document", () => {
-  const selection = {
-    input: "july/core",
-    profile: "normative-v1",
-    scenario: "closure-roundtrip",
-  };
-  const [selected] = comparisonCases(selection);
-  expect(selected.definition.javaRdfXml).toEqual({
-    addMissingTypes: false,
-    observeDefault: true,
-  });
-  const [time] = comparisonCases({
-    ...selection,
-    input: "july/time.rdf",
-    scenario: "direct-load",
-  });
-  expect(selected.definition.expectedDifferences).toEqual({
-    ...time.definition.expectedDifferences,
-    memberDocumentIRI: "http://www.w3.org/2006/time",
-  });
-  for (const variant of [
-    { input: "july/reference-data" },
-    { profile: "java-owlapi-5.5.1" },
-    { parsingMode: "strict" },
-    { imports: "none" },
-    { scenario: "direct-load" },
-  ]) {
-    const [alternate] = comparisonCases({ ...selection, ...variant });
-    expect(alternate.definition.expectedDifferences).toBeUndefined();
-    expect(alternate.definition.javaRdfXml).toEqual(
-      variant.input === "july/reference-data"
-        ? selected.definition.javaRdfXml
-        : undefined,
-    );
-  }
-});
-
-test("the approved July Time differences bind only the exact normative compatible direct load", () => {
-  const request = { input: "july/time.rdf", profile: "normative-v1" };
-  const [compatible] = comparisonCases(request);
-  expect(compatible.definition.expectedDifferences).toMatchObject({
-    fixture:
-      "universal-ontology@e2c667f3584b8fb705671cada0fe205b1000b617:src/external/time.rdf",
-    ruleIds: expect.arrayContaining([
-      "JULY-TIME-JAVA-UNPARSED-NAMED-RESTRICTIONS-B61EBE2",
-    ]),
-  });
-  expect(compatible.definition.expectedDifferences.ruleIds).toHaveLength(7);
-  for (const changes of [
-    { profile: "java-owlapi-5.5.1" },
-    { parsingMode: "strict" },
-    { scenario: "closure-roundtrip" },
-    { imports: "none" },
-  ]) {
-    const [different] = comparisonCases({ ...request, ...changes });
-    expect(different.definition.expectedDifferences).toBeUndefined();
-  }
 });
 
 test("relative imports bind distinct logical documents with the same basename", () => {

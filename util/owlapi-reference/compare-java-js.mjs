@@ -11,8 +11,8 @@ import {
 } from "../../scripts/public-registry-consumer.mjs";
 import {
   comparisonCatalogue,
-  julyComparisonFixtures,
-  julyComparisonManifest,
+  universalOntologyFixtures,
+  universalOntologyManifest,
   resolveComparisonFixture,
   verifyPinnedFile,
 } from "./comparison-fixtures.mjs";
@@ -59,10 +59,6 @@ import {
 import { runWindowsComparisonJob } from "./comparison-job.mjs";
 import { normalizeTransportCapture } from "./comparison-transport.mjs";
 import {
-  reconcileJulyTimeClosure,
-  reconcileJulyTimeLoad,
-} from "./comparison-july-differences.mjs";
-import {
   matchesRecordedIfcowlMismatch,
   reconcileIfcowlSingletonUnions,
   recordedIfcowlSuite,
@@ -99,6 +95,7 @@ import {
 export { comparisonCases };
 
 import { matchesScopedRules } from "./comparison-scoped-swrl.mjs";
+import { universalOntologyManifestFile } from "./universal-ontology-manifest.mjs";
 
 const repository = fileURLToPath(new URL("../../", import.meta.url));
 const comparisonInputs = [
@@ -112,7 +109,8 @@ const comparisonInputs = [
   "./comparison-evidence.mjs",
   "./comparison-fixtures.mjs",
   "./comparison-fixtures.json",
-  "./universal-ontology-july-2026.json",
+  "./universal-ontology-manifest.mjs",
+  `./${universalOntologyManifestFile}`,
   "./comparison-job.mjs",
   "./run-comparison-job.ps1",
   "./comparison-oracle.mjs",
@@ -163,9 +161,6 @@ const comparisonInputs = [
   "./ObserveCompressionContracts.java",
   "./ObserveJsonLdTransport.java",
   "../../docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
-  "./comparison-july-differences.mjs",
-  "./reconcile-structural-differences.mjs",
-  "../../docs/compatibility/expected-differences.json",
   "./pinned-version.json",
   "./validate-released-oracle.mjs",
   "../../docs/compatibility/profiles/java-owlapi-5.5.1/java-dependencies.lock.json",
@@ -489,17 +484,7 @@ function matchesStrictFirstAttempts(attempts) {
         attempts[1].status === "completed";
 }
 
-async function reconcileCaseDifferences(definition, js, native) {
-  const scope = definition.expectedDifferences;
-  if (!scope) return null;
-  if (scope.kind === "ifcowl-singleton-unions")
-    return reconcileIfcowlSingletonUnions(definition, js, native);
-  return scope.memberDocumentIRI
-    ? reconcileJulyTimeClosure(definition, js, native)
-    : reconcileJulyTimeLoad(definition, native);
-}
-
-async function caseVerdict(definition, measurements, js, native, performance) {
+function caseVerdict(definition, measurements, js, native, performance) {
   const offline =
     js.networkRequests?.length === 0 &&
     (definition.transport
@@ -675,9 +660,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
           row.diagnostics?.length === 0,
       ) &&
       native.documentComparisons?.every(
-        ({ documentIRI, unparsedRdf }) =>
-          documentIRI === definition.expectedDifferences?.memberDocumentIRI ||
-          unparsedRdf?.length === 0,
+        ({ unparsedRdf }) => unparsedRdf?.length === 0,
       ));
   const matchedOriginalRdfXml =
     !definition.originalRdfXml || matchesOriginalRdfXml(definition, js, native);
@@ -703,9 +686,10 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       : "incomplete";
   const reconciledRuleIds =
     behavior === "observed" &&
+    definition.expectedDifferences?.kind === "ifcowl-singleton-unions" &&
     (measurements.includes("structure") ||
       definition.expectedJsRdfXmlWriteRefusal)
-      ? await reconcileCaseDifferences(definition, js, native)
+      ? reconcileIfcowlSingletonUnions(definition, js, native)
       : null;
   const sourceStructure = reconciledRuleIds
     ? "reconciled"
@@ -730,12 +714,10 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       );
     }
     if (sourceStructure === "reconciled") {
-      const { memberDocumentIRI, memberDocumentIRIs } =
-        definition.expectedDifferences;
       const stages = compareClosureStages(
         js,
         native,
-        memberDocumentIRIs ?? [memberDocumentIRI],
+        definition.expectedDifferences.memberDocumentIRIs,
         definition.expectedJsRdfXmlWriteRefusal,
       );
       structure = stages === "match" ? "reconciled" : stages;
@@ -1186,7 +1168,7 @@ async function observeCase(
   }
   return {
     caseId,
-    ...(await caseVerdict(definition, measurements, js, native, performance)),
+    ...caseVerdict(definition, measurements, js, native, performance),
     ...(performanceEvidence ? { performance: performanceEvidence } : {}),
     js: {
       load: js.load.status,
@@ -1598,7 +1580,7 @@ async function verifyComparison(entries, measurements, options) {
           );
         }
       }
-      const verdict = await caseVerdict(
+      const verdict = caseVerdict(
         definition,
         measurements,
         js,
@@ -1797,7 +1779,12 @@ async function executeComparison(request, environment = {}) {
       throw new Error(
         "Registry comparisons require the exact public package version and a separate candidate selection",
       );
-    const ontologySuites = ["july", "prospects", "wider", "smoke"];
+    const ontologySuites = [
+      "universal-ontology",
+      "prospects",
+      "wider",
+      "smoke",
+    ];
     if (
       !["run", "verify"].includes(request.action) ||
       !(request.input?.length || request.suite) ||
@@ -2174,12 +2161,13 @@ async function executeComparison(request, environment = {}) {
   if (request.action === "prepare") {
     if (
       options.ontologyRepository &&
-      entries.some(({ input }) => input.suite === "july")
+      entries.some(({ input }) => input.suite === "universal-ontology")
     ) {
+      options.localSeeds = new Map(options.localSeeds);
       const sources = await materializePinnedOntologySources(
         options.ontologyRepository,
-        join(options.outputDirectory, "git-originals"),
-        julyComparisonManifest,
+        join(options.outputDirectory, "universal-ontology-originals"),
+        universalOntologyManifest,
       );
       const byPath = new Map(
         sources.catalogMappings.map(({ path, documentPath }) => [
@@ -2187,8 +2175,7 @@ async function executeComparison(request, environment = {}) {
           documentPath,
         ]),
       );
-      options.localSeeds = new Map(options.localSeeds);
-      for (const fixture of julyComparisonFixtures) {
+      for (const fixture of universalOntologyFixtures) {
         options.localSeeds.set(fixture.id, byPath.get(fixture.source.path));
       }
     }

@@ -155,11 +155,6 @@ describe("assertions using an undeclared annotation property", () => {
   // the assertion at the end of parsing, once the unconsumed triples are swept
   // up, is far too late: the reification has already failed to find it and its
   // own annotations are lost.
-  //
-  // `universal_reference-data_20260714` is the case. It declares eight
-  // annotation properties and uses dozens, so almost every `skos:definition`
-  // assertion is recovered - and 144 `dcterms:source`, `skos:note` and position
-  // annotations hanging off those assertions were dropped with them.
   it("lets an owl:Axiom reification annotate a recovered assertion", async () => {
     const { ontology } = await load(
       `<vs:definition>A definition</vs:definition>

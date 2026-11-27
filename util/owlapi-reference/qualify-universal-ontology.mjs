@@ -1,4 +1,4 @@
-/** Same-input July parsing and closure qualification; never consumes historical merges. */
+/** Source and installed-package helpers for ontology qualification. */
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -22,10 +22,6 @@ import {
   PACKAGE_VERSION,
   assertPackageIdentity,
 } from "../../scripts/package-identity.mjs";
-import {
-  reconcileStructuralDifferences,
-  reconcileUnparsedRdf,
-} from "./reconcile-structural-differences.mjs";
 import { bindRetainedConsumerLock } from "./comparison-release-evidence.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../../", import.meta.url));
@@ -245,7 +241,7 @@ export const materializePinnedOntologySources = async (
       (pin?.sha256 !== digest || pin?.byteLength !== bytes.length)
     ) {
       throw new Error(
-        `Pinned July document differs from the original bytes: ${path}`,
+        `Pinned ontology source differs from the original bytes: ${path}`,
       );
     }
     documents.push({ path, sha256: digest, bytes: bytes.length });
@@ -504,7 +500,7 @@ export const installCandidate = async (
   if (bound)
     await writeJson(join(consumerDirectory, "package-lock.json"), bound);
   await writeJson(join(consumerDirectory, "package.json"), {
-    name: bound?.packages[""].name ?? "owlapi-july-ontology-qualification",
+    name: bound?.packages[""].name ?? "owlapi-ontology-qualification",
     ...(bound ? { version: bound.packages[""].version } : {}),
     private: true,
     type: "module",
@@ -540,139 +536,5 @@ export const installCandidate = async (
     packageDirectory: join(consumerDirectory, "node_modules", "owlapi"),
     consumerDirectory,
     identity: candidate,
-  };
-};
-
-const identityKey = ({ ontologyIRI, versionIRI }) =>
-  JSON.stringify([ontologyIRI, versionIRI]);
-const sameIdentities = (left, right) =>
-  left.length === right.length &&
-  new Set(left.map(identityKey)).size === left.length &&
-  new Set(right.map(identityKey)).size === right.length &&
-  left.every((id) =>
-    right.some((other) => identityKey(id) === identityKey(other)),
-  );
-
-/** Approve a closure only through fully reconciled documents and native merge propagation. */
-export const reconcileFamilyEvidence = async (
-  { source, documents, closures },
-  context,
-) => {
-  // Historical approvals stay revision-bound; they cannot waive differences
-  // in the currently selected native reference or impose obsolete cardinality.
-  const referenceContext = {
-    ...context,
-    rules: context.rules.filter(
-      (rule) => rule.referenceRevision === context.referenceRevision,
-    ),
-  };
-  const documentsById = new Map(
-    documents.map((document) => [identityKey(document.ontologyID), document]),
-  );
-  const reconcileOracleDiagnostics = async (oracle) => {
-    const sourceDiagnostics = [];
-    for (const diagnostic of oracle.sourceDiagnostics ?? []) {
-      const document = documentsById.get(identityKey(diagnostic.ontologyID));
-      if (!document)
-        return {
-          status: "FAIL",
-          sourceDiagnostics,
-          reason: "UNKNOWN_SOURCE_ONTOLOGY",
-        };
-      sourceDiagnostics.push({
-        ontologyID: diagnostic.ontologyID,
-        ...(await reconcileUnparsedRdf(diagnostic.unparsedNQuads, {
-          ...referenceContext,
-          fixture: context.fixtureFor(document.sourceDocumentPath),
-        })),
-      });
-    }
-    const allowedOutcome =
-      ["MATCH", "MISMATCH"].includes(oracle.comparisonOutcome) ||
-      (oracle.comparisonOutcome === "ERROR" &&
-        oracle.mismatchCategory === "SOURCE_UNPARSED_RDF");
-    const success =
-      allowedOutcome &&
-      oracle.pinnedRevision === context.referenceRevision &&
-      ["MATCH", "MISMATCH"].includes(oracle.structuralComparisonOutcome) &&
-      Array.isArray(oracle.outputUnparsedTriples) &&
-      oracle.outputUnparsedTriples.length === 0 &&
-      oracle.networkEvidence?.networkAccessAttemptCount === 0 &&
-      sameIdentities(oracle.closureMemberIds ?? [], source.closureMembers) &&
-      sameIdentities(
-        sourceDiagnostics.map(({ ontologyID }) => ontologyID),
-        source.closureMembers,
-      ) &&
-      sourceDiagnostics.every(
-        ({ reconciliation }) => reconciliation.status === "PASS",
-      );
-    return { status: success ? "PASS" : "FAIL", sourceDiagnostics };
-  };
-  const parsingDocuments = [];
-  for (const document of documents) {
-    const diagnostics = await reconcileOracleDiagnostics(document.oracle);
-    const structural = reconcileStructuralDifferences(
-      document.oracle.structuralDifferences,
-      {
-        ...referenceContext,
-        fixture: context.fixtureFor(document.sourceDocumentPath),
-      },
-    );
-    parsingDocuments.push({
-      ontologyID: document.ontologyID,
-      structural,
-      diagnostics,
-      status:
-        structural.status === "PASS" && diagnostics.status === "PASS"
-          ? "PASS"
-          : "FAIL",
-    });
-  }
-  const parsingStatus =
-    source.sourceLosslessness === "PASS" &&
-    sameIdentities(
-      documents.map(({ ontologyID }) => ontologyID),
-      source.closureMembers,
-    ) &&
-    parsingDocuments.every(({ status }) => status === "PASS")
-      ? "PASS"
-      : "FAIL";
-  const closureResults = [];
-  for (const closure of closures) {
-    const diagnostics = await reconcileOracleDiagnostics(closure.oracle);
-    const propagation = closure.oracle.propagationEvidence;
-    const exactPropagation =
-      propagation?.comparisonOutcome === "MATCH" &&
-      reconcileStructuralDifferences(propagation.structuralDifferences, {
-        ...referenceContext,
-        rules: [],
-      }).status === "PASS";
-    closureResults.push({
-      format: closure.format,
-      diagnostics,
-      status:
-        parsingStatus === "PASS" &&
-        diagnostics.status === "PASS" &&
-        exactPropagation &&
-        closure.diagnostics.length === 0
-          ? "PASS"
-          : "FAIL",
-    });
-  }
-  const completeClosures =
-    closures.length === 2 &&
-    ["FUNCTIONAL", "RDF_XML"].every((format) =>
-      closures.some((closure) => closure.format === format),
-    );
-  return {
-    status:
-      parsingStatus === "PASS" &&
-      completeClosures &&
-      closureResults.every(({ status }) => status === "PASS")
-        ? "PASS"
-        : "FAIL",
-    parsingStatus,
-    parsingDocuments,
-    closures: closureResults,
   };
 };

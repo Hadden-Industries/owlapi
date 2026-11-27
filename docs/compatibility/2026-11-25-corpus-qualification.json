@@ -613,10 +613,6 @@
     "duplicateJest": {
       "rejected": true,
       "replaced": "current contract schema rejects retargeted authority, ambiguous profiles, unclassified behavior and missing paired evidence"
-    },
-    "duplicateClosureMember": {
-      "rejected": true,
-      "family": "iso11179-3"
     }
   },
   "migration": {
@@ -633,80 +629,7 @@
     "jest": {
       "files": 53,
       "assertions": 3970
-    },
-    "july": {
-      "tarballSha256": "a5ed444d3ae8262df985053ec65a824b811b56f2f0a86907f0c28604df6b5c55",
-      "oracle": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
-      "jdk": {
-        "compilerSha256": "eb4868afeea938e2db2d8bb8c535d6a02268d5d1ae6d758be676d24ce007a9d1",
-        "executableSha256": "d412ea875f8d8441db42c15dfacb52d95e76ceaee72d58f4ef81c7a9e5836707",
-        "releaseSha256": "a993648ddcc822491fc88f2253e6ebc29f37b3047fa0bfd7ee480afed8793c94",
-        "runtime": "25.0.5.1+2-LTS",
-        "setupJavaVersion": "25.0.5+1.2",
-        "vendor": "Eclipse Adoptium",
-        "version": "25.0.5.1"
-      },
-      "executionId": "a906620a5d1f24a2d77134a0f82eb9e034c2f3e2ceba80ea66b00724ab060a0e",
-      "families": [
-        {
-          "family": "iso11179-3",
-          "directModels": [
-            "2cc083d7b0693750775c89b21a0b6b84547e18260ae6b0b4472923a7833daf34",
-            "5c43d3676f57f8cfded6401dff501c903a52e55df428c487e95ca6b2c9ea0cbf"
-          ],
-          "closures": {
-            "FUNCTIONAL": "8d3e00d773e38e940d8d2a071e718428a4461807db10ffb8f83769ee1ef87026",
-            "RDF_XML": "26271eb4a512473ea2cfc01da7dbade7ad53292ce8f35f0ee39eaad052a99a81"
-          }
-        },
-        {
-          "family": "reference-data",
-          "directModels": [
-            "79e569b0cbeecd158faa6494a8b7384980813eba0655989e6ef99ca0a0716331",
-            "2cc083d7b0693750775c89b21a0b6b84547e18260ae6b0b4472923a7833daf34",
-            "5c43d3676f57f8cfded6401dff501c903a52e55df428c487e95ca6b2c9ea0cbf"
-          ],
-          "closures": {
-            "FUNCTIONAL": "dac38758b8186eee57d3ec2eeaaa1011f25df08bef44c10e701a7e3954950add",
-            "RDF_XML": "f92cf4d95180c71bdcb096ae957ba5a12f92b391e23e857fc017a8c419dc1e76"
-          }
-        },
-        {
-          "family": "core",
-          "directModels": [
-            "8e10e05affa17b4930e85869032765a3e5170a877104c0cc682cb8d1e41c21ef",
-            "8569fbd720867068258402dff248936bb770d431c8c97dba9f0529ba236c698a",
-            "74f3fa2697f41b1bfcaa76bda99db0486e5e2e38a5b3579cc52f4ff77843bdb7",
-            "79e569b0cbeecd158faa6494a8b7384980813eba0655989e6ef99ca0a0716331",
-            "2cc083d7b0693750775c89b21a0b6b84547e18260ae6b0b4472923a7833daf34",
-            "5c43d3676f57f8cfded6401dff501c903a52e55df428c487e95ca6b2c9ea0cbf"
-          ],
-          "closures": {
-            "FUNCTIONAL": "979262741ca97ac148afade56088a464b3728e5ffc2b157eb61490cc357c16f4",
-            "RDF_XML": "9ed1c7920654d550914a198fa49bb962bc5a288ff0184860018bd28cbe820b2e"
-          }
-        },
-        {
-          "family": "extended",
-          "directModels": [
-            "dd8cb4ba67d96f5a7479d1ae98261338f6f217925b5789d3b8e307ee373d9858",
-            "8e10e05affa17b4930e85869032765a3e5170a877104c0cc682cb8d1e41c21ef",
-            "8569fbd720867068258402dff248936bb770d431c8c97dba9f0529ba236c698a",
-            "74f3fa2697f41b1bfcaa76bda99db0486e5e2e38a5b3579cc52f4ff77843bdb7",
-            "79e569b0cbeecd158faa6494a8b7384980813eba0655989e6ef99ca0a0716331",
-            "2cc083d7b0693750775c89b21a0b6b84547e18260ae6b0b4472923a7833daf34",
-            "5c43d3676f57f8cfded6401dff501c903a52e55df428c487e95ca6b2c9ea0cbf"
-          ],
-          "closures": {
-            "FUNCTIONAL": "89a2e55293f9da4dbe50cbdc98c2892aa103ccc265b58644bb49d683ac5c4f8d",
-            "RDF_XML": "17b20a1d4bcb9750cef218037f668a32e97af406e0667f2b7f2c76b99a9c62f9"
-          }
-        }
-      ]
-    },
-    "predecessorReportSha256": "4a67e8cec400ed47c09a111a299559c1ba9f511695e040cd2aab3515aaf5d149",
-    "successorReportSha256": "2ca947b1a773ff95dddc297987ef62fa2c92271597224bc739c3a1da8091803e",
-    "relocatedInputs": true
+    }
   },
   "fibo": {
     "input": {

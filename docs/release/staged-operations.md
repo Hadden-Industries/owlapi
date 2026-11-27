@@ -335,7 +335,7 @@ A first stable with no predecessor can remove the npm default while its GitHub d
 
 Weekly maintenance retains its exact tarball bundle and per-lane receipts for one day.
 The weekly aggregate validates every lane and leaves its outcome in the run.
-Ordinary CI diagnostics for July reconciliation expire after 14 days.
+Ordinary CI diagnostics for the Universal Ontology comparison expire after 14 days.
 Release-capable candidates and their required proof retain the 90-day ceiling.
 The immutable completion workflow retains its exact completion receipt.
 

@@ -1,6 +1,10 @@
 import { execFileSync } from "node:child_process";
-import { lstat, readFile, realpath } from "node:fs/promises";
+import { lstat, realpath } from "node:fs/promises";
 import { isAbsolute, join, relative } from "node:path";
+import {
+  readUniversalOntologyManifest,
+  universalOntologyManifestFile,
+} from "./universal-ontology-manifest.mjs";
 
 /** Admit the owner-approved foreign checkout boundary, never OwlAPI reports. */
 export async function verifyPinnedIntegrationCheckout(root) {
@@ -35,22 +39,11 @@ export async function verifyPinnedIntegrationCheckout(root) {
   const gitRoot = await realpath(git(["rev-parse", "--show-toplevel"]));
   if (relative(actualCheckout, gitRoot) !== "")
     throw new Error("Pinned integration checkout must have its own Git root.");
-  const manifest = JSON.parse(
-    await readFile(
-      join(
-        root,
-        "util",
-        "owlapi-reference",
-        "universal-ontology-july-2026.json",
-      ),
-      "utf8",
-    ),
+  const { revision } = readUniversalOntologyManifest(
+    join(root, "util", "owlapi-reference", universalOntologyManifestFile),
   );
-  if (
-    !/^[a-f0-9]{40}$/u.test(manifest.revision) ||
-    git(["rev-parse", "--verify", "HEAD^{commit}"]) !== manifest.revision
-  )
+  if (git(["rev-parse", "--verify", "HEAD^{commit}"]) !== revision)
     throw new Error(
-      "Pinned integration checkout differs from the July revision.",
+      "Pinned integration checkout differs from the Universal Ontology revision.",
     );
 }

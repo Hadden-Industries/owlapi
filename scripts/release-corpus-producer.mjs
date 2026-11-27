@@ -36,7 +36,6 @@ import {
   selectArtifactGroups,
 } from "../tooling/artifact-transport/identity.mjs";
 import { comparisonCases } from "../util/owlapi-reference/comparison-cases.mjs";
-import { julyComparisonManifest } from "../util/owlapi-reference/comparison-fixtures.mjs";
 import {
   comparisonIdentity,
   sha256,
@@ -55,7 +54,6 @@ import {
 const javaSelection = corpusShadowJava.setupJavaVersion;
 export const corpusSourcePins = Object.freeze({
   javaRevision: pinnedSourceOracle().revision,
-  julyRevision: julyComparisonManifest.revision,
   javaSelection,
 });
 const freshJobName = "Release / retained candidate / Produce";
@@ -101,7 +99,7 @@ export function corpusProducerMatrix(
         runner: corpusShardRunner(shard.platform),
         shell: shard.platform === "win32" ? "pwsh" : "bash",
         sourceOracle: shard.caseIds.some((caseId) => sourceCases.has(caseId)),
-        july: shard.selection.suite === "july",
+        universal_ontology: shard.selection.suite === "universal-ontology",
       }),
     ),
   };
@@ -289,7 +287,6 @@ async function plan(env) {
   await emit(env, {
     matrix: JSON.stringify(corpusProducerMatrix(roster)),
     java_revision: corpusSourcePins.javaRevision,
-    july_revision: corpusSourcePins.julyRevision,
     java_selection: corpusSourcePins.javaSelection,
     plan: JSON.stringify({
       source,

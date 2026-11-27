@@ -19,7 +19,7 @@ const releaseSuites = [
     scenario,
   })),
   { suite: "wider" },
-  { suite: "july" },
+  { suite: "universal-ontology" },
   { scenario: "large-literal-roundtrip" },
   { scenario: "large-literal-rendering" },
   { suite: "rdfxml-writer" },

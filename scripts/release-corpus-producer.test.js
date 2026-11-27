@@ -172,11 +172,11 @@ test("the native matrix schedules every shard once on a pinned host", () => {
   expect(new Set(include.map(({ shell }) => shell))).toEqual(
     new Set(["bash", "pwsh"]),
   );
-  expect(
-    include
-      .filter(({ july }) => july)
-      .every(({ sourceOracle }) => sourceOracle),
-  ).toBe(true);
+  const ontologyShards = include.filter(
+    ({ universal_ontology }) => universal_ontology,
+  );
+  expect(ontologyShards.length).toBeGreaterThan(0);
+  expect(ontologyShards.every(({ sourceOracle }) => sourceOracle)).toBe(true);
 });
 
 test("descriptor collection rejects ambiguous native products and ignores failed jobs", async () => {

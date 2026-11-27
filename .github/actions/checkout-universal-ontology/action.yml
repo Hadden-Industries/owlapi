@@ -1,0 +1,17 @@
+name: Check out the pinned Universal Ontology sources
+description: Use the revision and sparse paths from the qualification manifest
+runs:
+  using: composite
+  steps:
+    - name: Read the Universal Ontology qualification manifest
+      id: manifest
+      shell: bash
+      run: node "$GITHUB_ACTION_PATH/../../../util/owlapi-reference/universal-ontology-manifest.mjs"
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        repository: Hadden-Industries/universal-ontology
+        ref: ${{ steps.manifest.outputs.revision }}
+        path: .release/universal-ontology
+        persist-credentials: false
+        sparse-checkout-cone-mode: false
+        sparse-checkout: ${{ steps.manifest.outputs.sparse_checkout }}

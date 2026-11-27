@@ -1,8 +1,23 @@
 import { execFileSync } from "node:child_process";
-import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  symlink,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { verifyPinnedIntegrationCheckout } from "./pinned-integration-checkout.mjs";
+import { universalOntologyManifestFile } from "./universal-ontology-manifest.mjs";
+
+const manifest = JSON.parse(
+  await readFile(
+    new URL(universalOntologyManifestFile, import.meta.url),
+    "utf8",
+  ),
+);
 
 let root;
 beforeEach(async () => {
@@ -41,8 +56,8 @@ async function writeManifest(revision) {
   const directory = join(root, "util", "owlapi-reference");
   await mkdir(directory, { recursive: true });
   await writeFile(
-    join(directory, "universal-ontology-july-2026.json"),
-    JSON.stringify({ revision }),
+    join(directory, universalOntologyManifestFile),
+    JSON.stringify({ ...manifest, revision }),
   );
 }
 test("an absent integration checkout is normal", async () => {
@@ -55,7 +70,7 @@ test("only the declared revision in a separate contained Git root is admitted", 
   await expect(verifyPinnedIntegrationCheckout(root)).resolves.toBeUndefined();
   await writeManifest("0".repeat(40));
   await expect(verifyPinnedIntegrationCheckout(root)).rejects.toThrow(
-    /July revision/u,
+    /Universal Ontology revision/u,
   );
 });
 test("a directory inheriting OwlAPI's Git root cannot claim the foreign boundary", async () => {

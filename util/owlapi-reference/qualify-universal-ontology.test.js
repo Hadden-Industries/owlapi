@@ -11,7 +11,6 @@ import {
   materializePinnedOntologySources,
   parseQualificationArguments,
   qualificationStage,
-  reconcileFamilyEvidence,
   verifyEvidenceDigests,
 } from "./qualify-universal-ontology.mjs";
 
@@ -90,117 +89,6 @@ afterEach(async () => {
     await rm(directory, { recursive: true, force: true });
 });
 
-test("family qualification requires parsing, native propagation, zero loss and both closure formats", async () => {
-  const id = { ontologyIRI: "urn:root", versionIRI: null };
-  const differences = {
-    ontologyId: null,
-    imports: { javaOnly: [], jsOnly: [] },
-    annotations: { javaOnly: [], jsOnly: [] },
-    axioms: { javaOnly: [], jsOnly: [] },
-    anonymousIndividualGraphs: { javaOnly: [], jsOnly: [] },
-    anonymousIndividualComparison: "NOT_REQUIRED",
-  };
-  const oracle = {
-    pinnedRevision: "java-pin",
-    comparisonOutcome: "MATCH",
-    structuralComparisonOutcome: "MATCH",
-    structuralDifferences: differences,
-    outputUnparsedTriples: [],
-    sourceDiagnostics: [{ ontologyID: id, unparsedNQuads: "" }],
-    closureMemberIds: [id],
-    networkEvidence: { networkAccessAttemptCount: 0 },
-    propagationEvidence: {
-      comparisonOutcome: "MATCH",
-      structuralDifferences: differences,
-    },
-  };
-  const evidence = {
-    source: { sourceLosslessness: "PASS", closureMembers: [id] },
-    documents: [{ sourceDocumentPath: "root", ontologyID: id, oracle }],
-    closures: ["FUNCTIONAL", "RDF_XML"].map((format) => ({
-      format,
-      diagnostics: [],
-      oracle,
-    })),
-  };
-  const context = {
-    fixtureFor: () => "fixture",
-    rules: [],
-    referenceRevision: "java-pin",
-  };
-  expect((await reconcileFamilyEvidence(evidence, context)).status).toBe(
-    "PASS",
-  );
-  const historicalRule = {
-    id: "HISTORICAL-DIAGNOSTIC",
-    artifactType: "RDF parsing diagnostics",
-    fixture: "fixture",
-    referenceRevision: "historical-pin",
-    differenceCategory: "SPECIFICATION_GROUNDED_RECOVERY",
-    differenceType: "EXTRA",
-    side: "Java",
-    selector: "$['unparsedNQuads']",
-    javaValue: "<urn:s> <urn:p> <urn:o> .\n",
-    jsValue: null,
-    cardinality: { form: "exact", value: 1 },
-    rationale: "An exact diagnostic at a different native source pin.",
-    authority: "https://www.w3.org/TR/owl2-rdf-based-semantics/",
-  };
-  const historicalContext = { ...context, rules: [historicalRule] };
-  expect(
-    (await reconcileFamilyEvidence(evidence, historicalContext)).status,
-  ).toBe("PASS");
-  const unexpected = structuredClone(evidence);
-  unexpected.documents[0].oracle.sourceDiagnostics[0].unparsedNQuads =
-    historicalRule.javaValue;
-  expect(
-    (await reconcileFamilyEvidence(unexpected, historicalContext)).status,
-  ).toBe("FAIL");
-  expect(
-    (
-      await reconcileFamilyEvidence(evidence, {
-        ...context,
-        rules: [{ ...historicalRule, referenceRevision: "java-pin" }],
-      })
-    ).status,
-  ).toBe("FAIL");
-  for (const mutate of [
-    (value) => {
-      value.source.sourceLosslessness = "FAIL";
-    },
-    (value) => {
-      value.documents[0].oracle.structuralDifferences.axioms.jsOnly.push(
-        "unknown",
-      );
-    },
-    (value) => {
-      value.closures.pop();
-    },
-    (value) => {
-      value.closures[0].oracle.propagationEvidence = null;
-    },
-    (value) => {
-      value.closures[0].oracle.outputUnparsedTriples = ["ignored"];
-    },
-    (value) => {
-      value.closures[0].oracle.networkEvidence.networkAccessAttemptCount = 1;
-    },
-    (value) => {
-      value.documents[0].oracle.comparisonOutcome = "ERROR";
-      value.documents[0].oracle.mismatchCategory = "COMPARISON_LIMIT";
-    },
-    (value) => {
-      value.documents[0].oracle.sourceDiagnostics = [];
-    },
-  ]) {
-    const invalid = structuredClone(evidence);
-    mutate(invalid);
-    expect((await reconcileFamilyEvidence(invalid, context)).status).toBe(
-      "FAIL",
-    );
-  }
-});
-
 test("requires a source repository and fresh output, not an arbitrary candidate", () => {
   expect(
     parseQualificationArguments([
@@ -250,14 +138,14 @@ test("evidence identity detects a changed compared model rather than trusting it
   ]);
 });
 
-test("the shared July command fails when its Java oracle is unavailable", () => {
+test("the Universal Ontology command fails when its Java oracle is unavailable", () => {
   const execution = spawnSync(
     process.execPath,
     [
       fileURLToPath(new URL("./compare-java-js.mjs", import.meta.url)),
       "prepare",
       "--suite",
-      "july",
+      "universal-ontology",
       "--profile",
       "normative-v1",
       "--parsing-mode",
@@ -288,7 +176,7 @@ test("source qualification rejects self-invalidating output before checking Java
       fileURLToPath(new URL("./compare-java-js.mjs", import.meta.url)),
       "prepare",
       "--suite",
-      "july",
+      "universal-ontology",
       "--profile",
       "normative-v1",
       "--parsing-mode",
@@ -296,7 +184,9 @@ test("source qualification rejects self-invalidating output before checking Java
       "--ontology-repository",
       ".",
       "--output",
-      fileURLToPath(new URL("../../nonignored-july-evidence", import.meta.url)),
+      fileURLToPath(
+        new URL("../../nonignored-ontology-evidence", import.meta.url),
+      ),
     ],
     {
       encoding: "utf8",
@@ -316,7 +206,7 @@ test("native Git ignore rules permit owned source evidence without excluding oth
   expect(() =>
     assertSourceQualificationOutputDirectory(
       repository,
-      join(repository, ".release", "july"),
+      join(repository, ".release", "ontology-qualification"),
     ),
   ).not.toThrow();
   expect(() =>

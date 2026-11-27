@@ -1,0 +1,74 @@
+{
+  "version": "20260912",
+  "revision": "5b8f7434a5bf436281ee0a09352bf40fdc9d82d2",
+  "ontologyBase": "https://haddenindustries.com/ontology/",
+  "roots": {
+    "iso11179-3": {
+      "path": "iso-iec/11179/-3/ed-4",
+      "closure": [
+        "skos"
+      ],
+      "byteLength": 602693,
+      "sha256": "b621c3d545343cbfab9e8c41cf296046df32722204b8ff76251b7b5a6f3a2e74"
+    },
+    "reference-data": {
+      "path": "universal/reference-data",
+      "closure": [
+        "iso11179-3",
+        "skos"
+      ],
+      "byteLength": 1139625,
+      "sha256": "1354d260a8bf33d0e67b6145b45438be719203f71e0280d61fc498b697860260"
+    },
+    "core": {
+      "path": "universal/core",
+      "closure": [
+        "time-gregorian",
+        "time",
+        "reference-data",
+        "iso11179-3",
+        "skos"
+      ],
+      "byteLength": 376694,
+      "sha256": "214f21e9116c0515bd52e5e8e893c83fcf93eb4ce586a49dbd8afc8a05e2c190"
+    },
+    "extended": {
+      "path": "universal/extended",
+      "closure": [
+        "core",
+        "time-gregorian",
+        "time",
+        "reference-data",
+        "iso11179-3",
+        "skos"
+      ],
+      "byteLength": 730907,
+      "sha256": "92ad97ccb1acf4f2413dc3f1100433adbaa965ce98821f863de9df22eced7f24"
+    }
+  },
+  "external": {
+    "skos": {
+      "path": "external/skos.rdf",
+      "ontologyIRI": "http://www.w3.org/2004/02/skos/core",
+      "syntax": "rdfxml",
+      "byteLength": 29264,
+      "sha256": "378fe72e82a529a3338e00c1fb157112d9941c94ac5c8bc7e88a8463ea879e96"
+    },
+    "time-gregorian": {
+      "path": "external/time-gregorian.ttl",
+      "ontologyIRI": "http://www.w3.org/ns/time/gregorian",
+      "syntax": "turtle",
+      "byteLength": 7414,
+      "sha256": "e7a5e5f6ba555bf2086169ed05bdde9901f146ffc25f3d0aa62798170b2b5880"
+    },
+    "time": {
+      "path": "external/time.rdf",
+      "ontologyIRI": "http://www.w3.org/2006/time",
+      "versionIRI": "http://www.w3.org/2006/time#2016",
+      "syntax": "rdfxml",
+      "byteLength": 136737,
+      "sha256": "8ce934e406401e0e6cb9b6d4407bb69103d62c94107e2a1a30b4a31cc2772e58"
+    }
+  },
+  "allowedSourceDiagnostics": []
+}

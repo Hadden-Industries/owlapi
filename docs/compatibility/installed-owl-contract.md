@@ -101,7 +101,7 @@ Partial reruns retain only bounded earlier successful producing attempts in the 
 Selective omission remains unapproved.
 
 Release uses identical assertions and native coverage.
-Both source Node 24 jobs also run the complete live pinned Java parity inventory and the pinned UO-origin July producer corpus (parsing and both closure formats).
+Both source Node 24 jobs also run the complete live pinned Java parity inventory and the [pinned Universal Ontology corpus](../../util/owlapi-reference/universal-ontology.json) (parsing and both closure formats).
 The retained candidate depends on that same-commit source qualification; the installed interface suite separately binds the exact retained tarball.
 
 These producer semantic checks execute no UO materialization code or WebVOWL application code.

@@ -1939,8 +1939,6 @@ class RdfGraphInterpreter {
   // exists when reifications are indexed. Reconstructing the assertion later,
   // while sweeping up unconsumed triples, is too late - the reification has
   // already failed to find it, and its own annotations go with it.
-  // `universal_reference-data_20260714` declares eight annotation properties and
-  // uses dozens, so this cost it 144 annotations.
   //
   // The sets that decide whether an IRI-valued triple qualifies are captured
   // before the scan, so declaring one property cannot change the verdict for a
