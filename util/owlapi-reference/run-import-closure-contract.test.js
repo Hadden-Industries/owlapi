@@ -18,6 +18,7 @@ import { fileURLToPath } from "node:url";
 import {
   compileOntologyReferenceOracles,
   executeImportClosureOracle,
+  hasConfiguredPinnedReference,
   OntologyReferenceOracleLauncherError,
   parseImportClosureContractArguments,
   parseOasisXmlCatalog,
@@ -444,7 +445,7 @@ describe("pinned reference checkout configuration", () => {
 });
 
 let pinnedReferenceEnvironment;
-if (process.env.OWLAPI_REFERENCE_CHECKOUT) {
+if (hasConfiguredPinnedReference()) {
   pinnedReferenceEnvironment = await resolvePinnedReferenceEnvironment();
 }
 

@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import {
   compileOntologyReferenceOracles,
+  hasConfiguredPinnedReference,
   parseOasisXmlCatalog,
   resolvePinnedReferenceEnvironment,
 } from "./run-import-closure-contract.mjs";
@@ -16,7 +17,7 @@ const fixtureDirectory = fileURLToPath(
   new URL("./fixtures/import-closure/", import.meta.url),
 );
 const fixturePath = (name) => join(fixtureDirectory, name);
-const reference = process.env.OWLAPI_REFERENCE_CHECKOUT
+const reference = hasConfiguredPinnedReference()
   ? await resolvePinnedReferenceEnvironment()
   : null;
 const describePinnedOracle = reference ? describe : describe.skip;

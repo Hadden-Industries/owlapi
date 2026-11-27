@@ -1,6 +1,7 @@
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { hasConfiguredPinnedReference } from "./run-import-closure-contract.mjs";
 import {
   compareRdfXmlPresentation,
   runWriterConfigurationContract,
@@ -40,7 +41,7 @@ describe("RDF/XML presentation comparison", () => {
   });
 });
 
-const nativeTest = process.env.OWLAPI_REFERENCE_CHECKOUT ? it : it.skip;
+const nativeTest = hasConfiguredPinnedReference() ? it : it.skip;
 nativeTest(
   "compares the same input and seven save modes against fresh pinned Java output",
   async () => {

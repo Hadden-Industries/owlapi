@@ -456,8 +456,8 @@ $env:OWLAPI_REFERENCE_CHECKOUT = "<pinned-owlapi-checkout>"
 node util/owlapi-reference/run-import-closure-contract.mjs --root <root-document> --catalog <catalog.xml> --verify-output <collapsed-document>
 ```
 
-The focused Jest suite uses that same environment variable to enable its Java integration tests.
-Without it, the portable launcher tests still run and Java integration tests are explicitly skipped; such a run is not oracle evidence.
+The focused Jest suites enable their Java integration tests with either `OWLAPI_REFERENCE_CHECKOUT` or `OWLAPI_REFERENCE_DISTRIBUTION`.
+With neither configured, the portable launcher tests still run and the Java integration tests are explicitly skipped.
 
 Standard output contains exactly one JSON object.
 It identifies the pinned revision and loaded OWLAPI version; lists closure member ontology/version IDs; reports expected and actual direct counts; records the anonymous-individual bijection size; classifies the comparison outcome and mismatch path; and includes catalog-resolution and zero-network evidence.

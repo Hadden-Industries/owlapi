@@ -419,6 +419,12 @@ const defaultExecuteProcess = (
     });
   });
 
+export const hasConfiguredPinnedReference = () =>
+  Boolean(
+    process.env.OWLAPI_REFERENCE_CHECKOUT ||
+    process.env.OWLAPI_REFERENCE_DISTRIBUTION,
+  );
+
 export const resolvePinnedReferenceEnvironment = async ({
   executeProcess = defaultExecuteProcess,
   pinnedVersionPath = PINNED_VERSION_PATH,
