@@ -1592,7 +1592,7 @@
         },
         "postconditions": [
           "Unavailable Java parser formats remain listed omissions, never fabricated successful parsers. Host authorization is not reset by fallback.",
-          "The java-owlapi-5.5.1 compatible RDF/XML and Functional Syntax readers publish the scoped structural SWRL family. Unsupported rule members reject the document with UNSUPPORTED_CONSTRUCT. The normative OWL grammar excludes this extension. The scope, list ownership and released reference observations are specified in docs/plans/2026-11-25-scoped-swrl-structural-parity.md."
+          "The java-owlapi-5.5.1 compatible RDF/XML and Functional Syntax readers publish structural SWRL rules with class-expression predicates, object-property predicates, individual comparison atoms and variable arguments. Unsupported rule members reject the document with UNSUPPORTED_CONSTRUCT. The normative OWL grammar excludes this extension. The current scope is recorded in docs/compatibility/behavior-profiles.md."
         ],
         "compatibilityConsequences": "Structural API omissions are separate from hidden resource/validation restrictions on matched formats.",
         "authorityReferences": [

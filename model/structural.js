@@ -62,6 +62,7 @@ export let isPackageStructuralObject;
 export let isFactoryStructuralObject;
 export let isNativeGroundStructuralObject;
 export let nativeStructuralMethods;
+export let readAnonymousOntologyOrdinal;
 let stableComponent;
 const nativeTupleSerialization = () => !("toJSON" in Array.prototype);
 /** Can a read index reuse keys captured by the native tuple protocol? */
@@ -415,6 +416,12 @@ export class OWLStructuralObject {
     });
     const branded = (value) =>
       value !== null && typeof value === "object" && #flags in value;
+    readAnonymousOntologyOrdinal = (value) =>
+      branded(value) &&
+      value.kind === OWLObjectKind.ONTOLOGY_ID &&
+      value.#flags < 0
+        ? -value.#flags - 1
+        : undefined;
     isPackageStructuralObject = (value) =>
       branded(value) &&
       Object.isFrozen(value) &&

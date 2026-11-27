@@ -411,7 +411,7 @@ describe("Canonical structural AST & full API equivalence witnesses", () => {
       }).status,
     ).toBe("failed");
 
-    // RDFParserMetaData: ONLY guessedDeclarations may differ.
+    // Normative metadata may report its own guessed declarations.
     const metaJava = {
       tripleCount: 101,
       headerState: "HEADER_PARSED_MULTIPLE_TIMES",
@@ -421,7 +421,7 @@ describe("Canonical structural AST & full API equivalence witnesses", () => {
     expect(
       classifyApiWorkloadRow({
         groupId: "load.rdfParserMetaData",
-        behaviorProfileId: "java-owlapi-5.5.1",
+        behaviorProfileId: "normative-v1",
         javaObservation: metaJava,
         jsObservation: {
           ...metaJava,
@@ -449,7 +449,7 @@ describe("Canonical structural AST & full API equivalence witnesses", () => {
       }).status,
     ).toBe("failed");
 
-    // EntitySignatureLookups: ONLY punnedExcl / punnedIncl may differ.
+    // The normative signature query counts distinct entity roles.
     const lookupJava = {
       perClass: [{ classIRI: "urn:a", containsExcl: true }],
       punnedExcl: ["urn:pun"],
@@ -460,7 +460,7 @@ describe("Canonical structural AST & full API equivalence witnesses", () => {
     expect(
       classifyApiWorkloadRow({
         groupId: "ontology.entitySignatureLookups",
-        behaviorProfileId: "java-owlapi-5.5.1",
+        behaviorProfileId: "normative-v1",
         javaObservation: lookupJava,
         jsObservation: { ...lookupJava, punnedExcl: [], punnedIncl: [] },
       }),
@@ -478,7 +478,7 @@ describe("Canonical structural AST & full API equivalence witnesses", () => {
       }).status,
     ).toBe("failed");
 
-    // Manchester renderer: whitespace-only diffs accepted under renderer-presentation; token diff fails.
+    // Normative Manchester layout can differ in whitespace.
     expect(
       classifyApiWorkloadRow({
         groupId: "renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
@@ -496,7 +496,7 @@ describe("Canonical structural AST & full API equivalence witnesses", () => {
     expect(
       classifyApiWorkloadRow({
         groupId: "renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
-        behaviorProfileId: "java-owlapi-5.5.1",
+        behaviorProfileId: "normative-v1",
         javaObservation: {
           axioms: ["A SubClassOf B"],
           complexExpressions: ["D and op some D"],
@@ -511,6 +511,33 @@ describe("Canonical structural AST & full API equivalence witnesses", () => {
       admission: "known-behavioral-difference",
       reasonId: "renderer-presentation",
     });
+
+    for (const [groupId, javaObservation, jsObservation] of [
+      [
+        "load.rdfParserMetaData",
+        metaJava,
+        { ...metaJava, guessedDeclarations: [] },
+      ],
+      [
+        "ontology.entitySignatureLookups",
+        lookupJava,
+        { ...lookupJava, punnedIncl: [] },
+      ],
+      [
+        "renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+        { axioms: [], complexExpressions: ["A and B"] },
+        { axioms: [], complexExpressions: ["A\n and B"] },
+      ],
+    ]) {
+      expect(
+        classifyApiWorkloadRow({
+          groupId,
+          behaviorProfileId: "java-owlapi-5.5.1",
+          javaObservation,
+          jsObservation,
+        }).status,
+      ).toBe("failed");
+    }
 
     // OWLOntologyImportsClosureSetProvider: semantic match -> unequal-work, mismatch -> failed.
     expect(
@@ -830,10 +857,18 @@ describe("Canonical structural AST & full API equivalence witnesses", () => {
         },
       })),
     });
-    for (const [syntax, javaBase] of [
-      ["dl", "http://www.semanticweb.org/ontologies/Ontology7806350647501#"],
-      ["krss2", "OntologyID(Anonymous-56)#"],
-      ["krss1", "http://www.w3.org/2002/07/owl#"],
+    for (const [syntax, javaBase, jsJavaBase] of [
+      [
+        "dl",
+        "http://www.semanticweb.org/ontologies/Ontology7806350647501#",
+        "http://www.semanticweb.org/ontologies/Ontology7806350647502#",
+      ],
+      ["krss2", "OntologyID(Anonymous-56)#", "OntologyID(Anonymous-88)#"],
+      [
+        "krss1",
+        "http://www.w3.org/2002/07/owl#",
+        "http://www.w3.org/2002/07/owl#",
+      ],
     ]) {
       const expectedLoad = expectedGeneratedLoadWorkload(syntax, 2);
       const javaLoad = replaceBase(
@@ -841,6 +876,33 @@ describe("Canonical structural AST & full API equivalence witnesses", () => {
         `urn:bench:load:${syntax}#`,
         javaBase,
       );
+      const javaProfileRow = {
+        groupId: `load.${syntax}`,
+        behaviorProfileId: "java-owlapi-5.5.1",
+        javaObservation: javaLoad,
+        expectedLoadOntology: expectedLoad,
+      };
+      const jsLoad = replaceBase(
+        expectedLoad,
+        `urn:bench:load:${syntax}#`,
+        jsJavaBase,
+      );
+      expect(
+        classifyApiWorkloadRow({ ...javaProfileRow, jsObservation: jsLoad })
+          .status,
+      ).toBe("passed");
+      expect(
+        classifyApiWorkloadRow({
+          ...javaProfileRow,
+          jsObservation: expectedLoad,
+        }).status,
+      ).toBe("failed");
+      expect(
+        classifyApiWorkloadRow({
+          ...javaProfileRow,
+          jsObservation: { ...jsLoad, axioms: jsLoad.axioms.slice(0, 1) },
+        }).status,
+      ).toBe("failed");
       expect(
         classifyApiWorkloadRow({
           groupId: `load.${syntax}`,
@@ -955,9 +1017,16 @@ describe("Canonical structural AST & full API equivalence witnesses", () => {
             format,
           }),
         );
-        expect(canonicalJson(canonicalizeOntology(ont))).toBe(
-          canonicalJson(expectedGeneratedLoadWorkload(name, count)),
-        );
+        const observed = canonicalizeOntology(ont);
+        expect(
+          classifyApiWorkloadRow({
+            groupId: `load.${name}`,
+            behaviorProfileId: "java-owlapi-5.5.1",
+            javaObservation: observed,
+            jsObservation: observed,
+            expectedLoadOntology: expectedGeneratedLoadWorkload(name, count),
+          }).status,
+        ).toBe("passed");
       }
     } finally {
       fixtures.cleanup();

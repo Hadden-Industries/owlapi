@@ -14,6 +14,8 @@ export const SWRL_VOCABULARY = Object.freeze(
       "Variable",
       "ClassAtom",
       "IndividualPropertyAtom",
+      "SameIndividualAtom",
+      "DifferentIndividualsAtom",
       "classPredicate",
       "propertyPredicate",
       "argument1",

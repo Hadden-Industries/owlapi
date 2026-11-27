@@ -1253,8 +1253,10 @@
         "SUB_OBJECT_PROPERTY_AXIOM",
         "SUB_PROPERTY_CHAIN_AXIOM",
         "SWRL_CLASS_ATOM",
+        "SWRL_DIFFERENT_INDIVIDUALS_ATOM",
         "SWRL_OBJECT_PROPERTY_ATOM",
         "SWRL_RULE",
+        "SWRL_SAME_INDIVIDUAL_ATOM",
         "SWRL_VARIABLE",
         "SYMMETRIC_OBJECT_PROPERTY_AXIOM",
         "TRANSITIVE_OBJECT_PROPERTY_AXIOM"
@@ -1835,7 +1837,9 @@
         "SWRLRule",
         "SWRLClassAtom",
         "SWRLObjectPropertyAtom",
-        "SWRLVariable"
+        "SWRLVariable",
+        "SWRLSameIndividualAtom",
+        "SWRLDifferentIndividualsAtom"
       ],
       "omittedMembers": [],
       "publicErrors": [],

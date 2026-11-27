@@ -55,7 +55,7 @@ const definitions = new Map([
         recoversAnonymousUndeclaredAnnotations: false,
         recoversRdfPropertyRolesWithoutDeclarations: false,
         recoversDetachedPropertyChainAnnotations: false,
-        separatesReifiedAnnotationAssertions: false,
+        separatesReifiedAxioms: false,
         recoversDatatypePropertyRanges: false,
         preservesUnparsedOrphanDatatypeUnions: false,
         retainsLiteralVersionAsAnnotation: false,
@@ -73,6 +73,7 @@ const definitions = new Map([
       rdfParserMetadataPolicy: Object.freeze({
         headerStatus: "explicit-header-count",
         tripleCount: "selected-unique-triples",
+        reportsGuessedDeclarations: true,
       }),
       ontologyCopyPolicy: Object.freeze({
         mergePublication: "after-snapshot-validation",
@@ -184,7 +185,7 @@ const definitions = new Map([
         recoversRepeatedClassExpressionAnnotations: true,
         defersInverseAxiomsPastAnnotations: true,
         recoversDetachedPropertyChainAnnotations: true,
-        separatesReifiedAnnotationAssertions: true,
+        separatesReifiedAxioms: true,
         recoversDatatypePropertyRanges: true,
         preservesUnparsedOrphanDatatypeUnions: true,
         retainsLiteralVersionAsAnnotation: true,
@@ -202,6 +203,7 @@ const definitions = new Map([
       rdfParserMetadataPolicy: Object.freeze({
         headerStatus: "java-consumer-one-header",
         tripleCount: "source-statement-occurrences",
+        reportsGuessedDeclarations: false,
       }),
       ontologyCopyPolicy: Object.freeze({
         mergePublication: "before-provider-read",

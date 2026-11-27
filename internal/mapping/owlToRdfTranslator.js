@@ -42,6 +42,16 @@ const GRAPH_TERM_TYPES = new Set(RDF_GRAPH_TERM_TYPES);
 const RDF_PLAIN_LITERAL = `${RDF_NAMESPACE}PlainLiteral`;
 import { ENTITY_DECLARATION_TYPES } from "./entityDeclarations.js";
 
+const swrlAtomTypes = new Map([
+  [OWLObjectKind.SWRL_CLASS_ATOM, SWRL.ClassAtom],
+  [OWLObjectKind.SWRL_OBJECT_PROPERTY_ATOM, SWRL.IndividualPropertyAtom],
+  [OWLObjectKind.SWRL_SAME_INDIVIDUAL_ATOM, SWRL.SameIndividualAtom],
+  [
+    OWLObjectKind.SWRL_DIFFERENT_INDIVIDUALS_ATOM,
+    SWRL.DifferentIndividualsAtom,
+  ],
+]);
+
 const requireMethod = (value, method, name) => {
   if (typeof value?.[method] !== "function") {
     throw new TypeError(`${name} must implement ${method}()`);
@@ -1038,14 +1048,19 @@ class TranslationSession {
     };
     const atom = (value) => {
       const isClass = value.kind === OWLObjectKind.SWRL_CLASS_ATOM;
-      const result = this.#typedBlankNode(
-        isClass ? SWRL.ClassAtom : SWRL.IndividualPropertyAtom,
-      );
-      this.#add(
-        result,
-        isClass ? SWRL.classPredicate : SWRL.propertyPredicate,
-        this.#namedNode(value.predicate.iri.value),
-      );
+      const result = this.#typedBlankNode(swrlAtomTypes.get(value.kind));
+      if (isClass)
+        this.#add(
+          result,
+          SWRL.classPredicate,
+          this.#mapClassExpression(value.predicate),
+        );
+      else if (value.kind === OWLObjectKind.SWRL_OBJECT_PROPERTY_ATOM)
+        this.#add(
+          result,
+          SWRL.propertyPredicate,
+          this.#namedNode(value.predicate.iri.value),
+        );
       this.#add(
         result,
         SWRL.argument1,

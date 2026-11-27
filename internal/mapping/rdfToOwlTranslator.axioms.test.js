@@ -1,3 +1,6 @@
+import { OWLManager } from "../../apibinding/index.js";
+import { OWLDocumentFormats } from "../../formats/index.js";
+import { StringDocumentSource, StringDocumentTarget } from "../../io/index.js";
 import {
   OWLDataFactory,
   OWLObjectKind,
@@ -35,6 +38,141 @@ const expectAxiomCount = (ontology, kind, size = 1) =>
   expect(ontology.getAxiomsByType(kind)).toHaveProperty("size", size);
 
 describe("RdfToOwlTranslator axiom reconstruction", () => {
+  it("recovers the reified annotation on an anonymous subclass in the Java profile", async () => {
+    const behaviorProfileId = "java-owlapi-5.5.1";
+    const subclass = bn("subclass");
+    const target = bn("asserted-target");
+    const copy = bn("repeated-target");
+    const property = nn(`${EX}p`);
+    const first = nn(`${EX}A`);
+    const second = nn(`${EX}B`);
+    const restriction = (node, filler) => [
+      declaration(node, `${OWL}Restriction`),
+      q(node, nn(`${OWL}onProperty`), property),
+      q(node, nn(`${OWL}someValuesFrom`), filler),
+    ];
+    const annotation = bn("axiom-annotation");
+    const predicate = nn(`${RDFS}subClassOf`);
+    const input = datasetOf(
+      declaration(property, `${OWL}ObjectProperty`),
+      declaration(first, `${OWL}Class`),
+      declaration(second, `${OWL}Class`),
+      restriction(subclass, first),
+      restriction(target, second),
+      restriction(copy, second),
+      q(subclass, predicate, target),
+      declaration(annotation, `${OWL}Axiom`),
+      q(annotation, nn(`${OWL}annotatedSource`), subclass),
+      q(annotation, nn(`${OWL}annotatedProperty`), predicate),
+      q(annotation, nn(`${OWL}annotatedTarget`), copy),
+      q(annotation, nn(`${RDFS}label`), literal("source evidence")),
+    );
+    const { ontology } = await new RdfToOwlTranslator({
+      dataFactory: new OWLDataFactory({ behaviorProfileId }),
+    }).translate(input, {
+      configuration: new OWLOntologyLoaderConfiguration({
+        behaviorProfileId,
+        parsingMode: "compatible",
+      }),
+    });
+    const axioms = [
+      ...ontology.getAxiomsByType(OWLObjectKind.SUBCLASS_OF_AXIOM),
+    ];
+    expect(axioms).toHaveLength(1);
+    expect(axioms[0].subClass.kind).toBe(OWLObjectKind.OBJECT_SOME_VALUES_FROM);
+    expect(axioms[0].annotations.map(({ value }) => value.lexicalForm)).toEqual(
+      ["source evidence"],
+    );
+  });
+
+  it.each([
+    [
+      "java-owlapi-5.5.1",
+      "compatible",
+      [["first source", "first source detail"], ["second source"]],
+    ],
+    [
+      "java-owlapi-5.5.1",
+      "strict",
+      [["first source", "first source detail"], ["second source"]],
+    ],
+    [
+      "normative-v1",
+      "compatible",
+      [["first source", "first source detail", "second source"]],
+    ],
+  ])(
+    "loads independently annotated subproperty axioms in %s %s",
+    async (behaviorProfileId, parsingMode, expected) => {
+      const reifications = [
+        ["first source", "first source detail"],
+        ["second source"],
+      ].map(
+        (group) => `<owl:Axiom>
+      <owl:annotatedSource rdf:resource="${EX}p"/>
+      <owl:annotatedProperty rdf:resource="${RDFS}subPropertyOf"/>
+      <owl:annotatedTarget rdf:resource="${EX}q"/>
+      ${group.map((label) => `<rdfs:label>${label}</rdfs:label>`).join("")}
+    </owl:Axiom>`,
+      );
+      const content = `<rdf:RDF xmlns:rdf="${RDF}" xmlns:rdfs="${RDFS}" xmlns:owl="${OWL}">
+      <owl:Ontology rdf:about="${EX}ontology"/>
+      <owl:ObjectProperty rdf:about="${EX}p">
+        <rdfs:subPropertyOf rdf:resource="${EX}q"/>
+        <owl:inverseOf rdf:resource="${EX}q"/>
+      </owl:ObjectProperty>
+      <owl:ObjectProperty rdf:about="${EX}q"/>
+      ${reifications.join("\n")}
+      <owl:Axiom>
+        <owl:annotatedSource rdf:resource="${EX}p"/>
+        <owl:annotatedProperty rdf:resource="${OWL}inverseOf"/>
+        <owl:annotatedTarget rdf:resource="${EX}q"/>
+        <rdfs:label>inverse source</rdfs:label>
+      </owl:Axiom>
+    </rdf:RDF>`;
+      const load = (manager, text) =>
+        manager.loadOntologyFromOntologyDocument(
+          new StringDocumentSource(text, {
+            contentType: "application/rdf+xml",
+          }),
+          { parsingMode },
+        );
+      const subpropertyAxioms = (ontology) => [
+        ...ontology.getAxiomsByType(OWLObjectKind.SUB_OBJECT_PROPERTY_AXIOM),
+      ];
+      const labels = (axiom) =>
+        axiom.annotations.map(({ value }) => value.lexicalForm).sort();
+      const manager = OWLManager.createOWLOntologyManager({
+        behaviorProfileId,
+      });
+      const ontology = await load(manager, content);
+      expect(subpropertyAxioms(ontology).map(labels).sort()).toEqual(expected);
+      const inverseAxioms = [
+        ...ontology.getAxiomsByType(
+          OWLObjectKind.INVERSE_OBJECT_PROPERTIES_AXIOM,
+        ),
+      ];
+      expect(inverseAxioms.map(labels)).toEqual(
+        behaviorProfileId === "normative-v1" ? [["inverse source"]] : [[]],
+      );
+
+      const target = new StringDocumentTarget();
+      await manager.saveOntology(ontology, OWLDocumentFormats.RDF_XML, target);
+      const reloaded = await load(
+        OWLManager.createOWLOntologyManager({ behaviorProfileId }),
+        target.toString(),
+      );
+      expect(subpropertyAxioms(reloaded).map(labels).sort()).toEqual(expected);
+
+      if (expected.length === 2) {
+        const [first, second] = subpropertyAxioms(ontology);
+        manager.removeAxiom(ontology, first);
+        expect(ontology.containsAxiom(first)).toBe(false);
+        expect(ontology.containsAxiom(second)).toBe(true);
+      }
+    },
+  );
+
   it.each([
     ["java-owlapi-5.5.1", [["first source"], ["second source"]]],
     ["normative-v1", [["first source", "second source"]]],
@@ -85,9 +223,17 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
   );
 
   it.each([
-    ["java-owlapi-5.5.1", "ordinary RDF terms", ["defining chain"]],
-    ["java-owlapi-5.5.1", "a foreign predicate identifier", ["defining chain"]],
-    ["normative-v1", "ordinary RDF terms", []],
+    [
+      "java-owlapi-5.5.1",
+      "ordinary RDF terms",
+      [["defining chain"], ["second source"]],
+    ],
+    [
+      "java-owlapi-5.5.1",
+      "a foreign predicate identifier",
+      [["defining chain"], ["second source"]],
+    ],
+    ["normative-v1", "ordinary RDF terms", [[]]],
   ])(
     "applies %s property-chain reification semantics with %s",
     async (behaviorProfileId, representation, expected) => {
@@ -101,6 +247,10 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
         reifiedProperty.id = foreignPredicate.value;
       const chain = rdfList("base-chain", [first, second]);
       const detached = rdfList("annotation-chain", [first, second]);
+      const secondDetached = rdfList("second-annotation-chain", [
+        first,
+        second,
+      ]);
       const reversed = rdfList("different-chain", [second, first]);
       const reification = (name, list, label) => {
         const node = bn(name);
@@ -120,6 +270,7 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
         q(superProperty, propertyChain, chain.head),
         chain.quads,
         reification("matching-reification", detached, "defining chain"),
+        reification("second-reification", secondDetached, "second source"),
         reification("mismatching-reification", reversed, "different order"),
         ...(reifiedProperty.id === foreignPredicate.value
           ? [q(superProperty, foreignPredicate, detached.head)]
@@ -135,12 +286,16 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
         }),
       });
 
-      const [axiom] = ontology.getAxiomsByType(
-        OWLObjectKind.SUB_PROPERTY_CHAIN_AXIOM,
-      );
-      expect(axiom.annotations.map(({ value }) => value.lexicalForm)).toEqual(
-        expected,
-      );
+      const axioms = [
+        ...ontology.getAxiomsByType(OWLObjectKind.SUB_PROPERTY_CHAIN_AXIOM),
+      ];
+      expect(
+        axioms
+          .map(({ annotations }) =>
+            annotations.map(({ value }) => value.lexicalForm).sort(),
+          )
+          .sort(),
+      ).toEqual(expected);
     },
   );
 

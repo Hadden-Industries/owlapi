@@ -5,6 +5,7 @@ import {
   OWLOntologyManager,
   OWLObjectKind,
   AddImport,
+  AddOntologyAnnotation,
 } from "./index.js";
 import { Imports } from "./parameters/index.js";
 import { StringDocumentSource } from "../io/index.js";
@@ -18,6 +19,35 @@ const label = factory.getOWLAnnotation(
 );
 
 describe("accepted rc.2 direct queries and axiom copies", () => {
+  it("counts repeated signature IRIs and direct ontology annotation properties in the Java profile", () => {
+    const manager = new OWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    });
+    const root = manager.createOntology(
+      factory.getOWLOntologyID(IRI.create("urn:signature:root")),
+    );
+    const imported = manager.createOntology(
+      factory.getOWLOntologyID(IRI.create("urn:signature:import")),
+    );
+    const declaration = factory.getOWLDeclarationAxiom(a);
+    manager.addAxiom(root, declaration);
+    manager.addAxiom(imported, declaration);
+    manager.addAxiom(root, factory.getOWLDeclarationAxiom(label.property));
+    manager.applyChanges([
+      new AddOntologyAnnotation(root, label),
+      new AddImport(
+        root,
+        factory.getOWLImportsDeclaration(imported.getOntologyID().ontologyIRI),
+      ),
+    ]);
+    expect(root.getPunnedIRIs(Imports.EXCLUDED)).toEqual(
+      new Set([label.property.iri]),
+    );
+    expect(root.getPunnedIRIs(Imports.INCLUDED)).toEqual(
+      new Set([a.iri, label.property.iri]),
+    );
+  });
+
   it("deduplicates diamond and cycle closures structurally and observes later edits", () => {
     const manager = new OWLOntologyManager();
     const members = ["A", "B", "C", "D"].map((name) =>

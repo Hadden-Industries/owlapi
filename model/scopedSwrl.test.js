@@ -45,6 +45,41 @@ const read = (manager, entry, options = {}) =>
     manager.getOntologyLoaderConfiguration().setStrict(false).with(options),
   );
 
+test("individual comparison atoms and anonymous class predicates survive both rule formats", async () => {
+  const manager = createManager();
+  const ontology = await read(manager, {
+    id: "individual-comparison-rule",
+    format: "functional",
+    text: `Prefix(:=<urn:test:rule#>)
+      Ontology(<urn:test:rule>
+        Declaration(Class(:C))
+        DLSafeRule(Body(
+          SameIndividualAtom(Variable(:x) Variable(:y))
+          DifferentIndividualsAtom(Variable(:x) Variable(:z))
+        ) Head(ClassAtom(ObjectComplementOf(:C) Variable(:x))))
+      )`,
+  });
+  const [rule] = ontology.getAxiomsByType("SWRLRule");
+  expect(rule.body.map((atom) => atom.kind)).toEqual([
+    "SWRLSameIndividualAtom",
+    "SWRLDifferentIndividualsAtom",
+  ]);
+  expect(rule.head[0].predicate.kind).toBe("OWLObjectComplementOf");
+  expect(rule.body[1].secondArgument.iri.value).toBe("urn:test:rule#z");
+  for (const format of [
+    OWLDocumentFormats.FUNCTIONAL,
+    OWLDocumentFormats.RDF_XML,
+  ]) {
+    const target = new StringDocumentTarget();
+    await manager.saveOntology(ontology, format, target);
+    const reloaded = await createManager().loadOntologyFromOntologyDocument(
+      new StringDocumentSource(target.toString(), { format }),
+      { parsingMode: "compatible" },
+    );
+    expect(reloaded.containsAxiom(rule)).toBe(true);
+  }
+});
+
 test.each(["simple", "simple-functional"])(
   "%s exposes one logical rule before any writer runs",
   async (id) => {

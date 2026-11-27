@@ -3819,8 +3819,8 @@
       "Java-compatible RDF loader metadata makes RDF/XML metadata available through the same Java format accessor",
       "Java-compatible RDF loader metadata reports the selected graph and keeps repeated blank labels document local",
       "Java-compatible RDF loader metadata retains exact unparsed terms even when diagnostics are disabled",
-      "Java-compatible RDF loader metadata retains nested inferred datatype metadata and scalar lexical values for java-owlapi-5.5.1",
-      "Java-compatible RDF loader metadata retains nested inferred datatype metadata and scalar lexical values for normative-v1"
+      "Java-compatible RDF loader metadata reports guessed datatypes by profile and retains lexical values for java-owlapi-5.5.1",
+      "Java-compatible RDF loader metadata reports guessed datatypes by profile and retains lexical values for normative-v1"
     ],
     "model/behaviorInstalledContract.test.js": [
       "the installed Node/browser exercise reaches both behavior contracts"

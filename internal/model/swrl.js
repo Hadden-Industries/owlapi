@@ -1,4 +1,7 @@
-import { OWLObjectKind as K } from "../../model/kinds.js";
+import {
+  CLASS_EXPRESSION_KINDS,
+  OWLObjectKind as K,
+} from "../../model/kinds.js";
 import {
   OWLStructuralObject,
   StructuralSet,
@@ -19,14 +22,20 @@ function requireKind(value, kind) {
 /** Internal construction shared by the two readers and structural validation. */
 export const swrlVariable = (iri) =>
   createStructuralUnary(K.SWRL_VARIABLE, "iri", requireKind(iri, K.IRI));
-export const swrlClassAtom = (predicate, argument) =>
-  createStructuralPair(
+export function swrlClassAtom(predicate, argument) {
+  if (
+    !CLASS_EXPRESSION_KINDS.includes(predicate?.kind) ||
+    !isCanonicalStructuralObject(predicate)
+  )
+    throw new TypeError("Expected a class expression");
+  return createStructuralPair(
     K.SWRL_CLASS_ATOM,
     "predicate",
-    requireKind(predicate, K.CLASS),
+    predicate,
     "argument",
     requireKind(argument, K.SWRL_VARIABLE),
   );
+}
 export function swrlObjectPropertyAtom(
   predicate,
   firstArgument,
@@ -44,13 +53,29 @@ export function swrlObjectPropertyAtom(
   );
 }
 
+const swrlIndividualRelationAtom = (kind, first, second) =>
+  createStructuralPair(
+    kind,
+    "firstArgument",
+    requireKind(first, K.SWRL_VARIABLE),
+    "secondArgument",
+    requireKind(second, K.SWRL_VARIABLE),
+  );
+export const swrlSameIndividualAtom = (first, second) =>
+  swrlIndividualRelationAtom(K.SWRL_SAME_INDIVIDUAL_ATOM, first, second);
+export const swrlDifferentIndividualsAtom = (first, second) =>
+  swrlIndividualRelationAtom(K.SWRL_DIFFERENT_INDIVIDUALS_ATOM, first, second);
+
+const swrlAtomKinds = new Set([
+  K.SWRL_CLASS_ATOM,
+  K.SWRL_OBJECT_PROPERTY_ATOM,
+  K.SWRL_SAME_INDIVIDUAL_ATOM,
+  K.SWRL_DIFFERENT_INDIVIDUALS_ATOM,
+]);
 function ruleSide(atoms) {
   const result = new StructuralSet();
   for (const atom of atoms) {
-    if (
-      atom?.kind !== K.SWRL_CLASS_ATOM &&
-      atom?.kind !== K.SWRL_OBJECT_PROPERTY_ATOM
-    )
+    if (!swrlAtomKinds.has(atom?.kind))
       throw new TypeError("Expected a supported SWRL atom");
     result.add(atom);
   }
@@ -122,5 +147,7 @@ export const swrlConstructors = new Map([
   [K.SWRL_VARIABLE, swrlVariable],
   [K.SWRL_CLASS_ATOM, swrlClassAtom],
   [K.SWRL_OBJECT_PROPERTY_ATOM, swrlObjectPropertyAtom],
+  [K.SWRL_SAME_INDIVIDUAL_ATOM, swrlSameIndividualAtom],
+  [K.SWRL_DIFFERENT_INDIVIDUALS_ATOM, swrlDifferentIndividualsAtom],
   [K.SWRL_RULE, swrlRule],
 ]);

@@ -434,6 +434,14 @@ const swrlRenderers = Object.freeze({
   ...renderers,
   [OWLObjectKind.SWRL_VARIABLE]: form("Variable", ["iri"]),
   [OWLObjectKind.SWRL_CLASS_ATOM]: form("ClassAtom", ["predicate", "argument"]),
+  [OWLObjectKind.SWRL_SAME_INDIVIDUAL_ATOM]: form("SameIndividualAtom", [
+    "firstArgument",
+    "secondArgument",
+  ]),
+  [OWLObjectKind.SWRL_DIFFERENT_INDIVIDUALS_ATOM]: form(
+    "DifferentIndividualsAtom",
+    ["firstArgument", "secondArgument"],
+  ),
   [OWLObjectKind.SWRL_OBJECT_PROPERTY_ATOM]: form("ObjectPropertyAtom", [
     "predicate",
     "firstArgument",

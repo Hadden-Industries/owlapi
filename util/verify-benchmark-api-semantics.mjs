@@ -895,32 +895,17 @@ const rewriteIriPrefix = (value, fromPrefix, toPrefix) => {
   return out;
 };
 
-const matchesHeaderlessBaseIriDiff = (
-  groupId,
-  javaObs,
-  jsObs,
-  expectedLoadOntology,
-) => {
+const normalizeJavaHeaderlessNamespace = (groupId, observation) => {
   const basePattern = HEADERLESS_LOAD_JAVA_BASES[groupId];
-  if (
-    !basePattern ||
-    expectedLoadOntology === undefined ||
-    !canonicalEqual(jsObs, expectedLoadOntology)
-  ) {
-    return false;
-  }
-  const firstSubIri = javaObs?.axioms?.[0]?.subClass?.iri?.value;
-  if (typeof firstSubIri !== "string") {
-    return false;
-  }
+  const firstSubIri = observation?.axioms?.[0]?.subClass?.iri?.value;
+  if (!basePattern || typeof firstSubIri !== "string") return undefined;
   const match = /^(.*#)C0$/u.exec(firstSubIri);
-  if (!match || !basePattern.test(match[1])) {
-    return false;
-  }
-  const javaBase = match[1];
-  const jsBase = `urn:bench:load:${groupId.slice("load.".length)}#`;
-  const rewrittenJava = rewriteIriPrefix(javaObs, javaBase, jsBase);
-  return canonicalEqual(rewrittenJava, expectedLoadOntology);
+  if (!match || !basePattern.test(match[1])) return undefined;
+  return rewriteIriPrefix(
+    observation,
+    match[1],
+    `urn:bench:load:${groupId.slice("load.".length)}#`,
+  );
 };
 
 const matchesLiteralLanguagePolicyDiff = (javaObs, jsObs) => {
@@ -1052,14 +1037,25 @@ export function classifyApiWorkloadRow({
 }) {
   const javaSha256 = structuralDigest(javaObservation);
   const jsSha256 = structuralDigest(jsObservation);
+  // Independently allocated namespaces must both have the native form, and
+  // every generated IRI must occur in the right place in the expected model.
+  const javaHeaderlessLoad =
+    behaviorProfileId === "java-owlapi-5.5.1" &&
+    Object.hasOwn(HEADERLESS_LOAD_JAVA_BASES, groupId);
+  const comparableJava = javaHeaderlessLoad
+    ? normalizeJavaHeaderlessNamespace(groupId, javaObservation)
+    : javaObservation;
+  const comparableJs = javaHeaderlessLoad
+    ? normalizeJavaHeaderlessNamespace(groupId, jsObservation)
+    : jsObservation;
   const directMatch =
-    canonicalJson(javaObservation) === canonicalJson(jsObservation);
+    comparableJava !== undefined &&
+    comparableJs !== undefined &&
+    canonicalEqual(comparableJava, comparableJs);
 
   if (directMatch) {
     if (expectedLoadOntology !== undefined) {
-      if (
-        canonicalJson(jsObservation) !== canonicalJson(expectedLoadOntology)
-      ) {
+      if (!canonicalEqual(comparableJs, expectedLoadOntology)) {
         return {
           status: "failed",
           admission: "failed",
@@ -1069,7 +1065,7 @@ export function classifyApiWorkloadRow({
           jsSha256,
           firstDifference: findFirstDifference(
             expectedLoadOntology,
-            jsObservation,
+            comparableJs,
             "$.expectedLoad",
           ),
         };
@@ -1149,7 +1145,10 @@ export function classifyApiWorkloadRow({
     return {
       status: "passed",
       admission: "independently-witnessed",
-      reasonId: "equivalent-workload",
+      reasonId:
+        javaHeaderlessLoad && javaSha256 !== jsSha256
+          ? "equivalent-workload-generated-namespace"
+          : "equivalent-workload",
       semanticMatch: true,
       javaSha256,
       jsSha256,
@@ -1173,10 +1172,11 @@ export function classifyApiWorkloadRow({
   }
 
   if (
-    matchesHeaderlessBaseIriDiff(
-      groupId,
-      javaObservation,
-      jsObservation,
+    behaviorProfileId === "normative-v1" &&
+    expectedLoadOntology !== undefined &&
+    canonicalEqual(jsObservation, expectedLoadOntology) &&
+    canonicalEqual(
+      normalizeJavaHeaderlessNamespace(groupId, javaObservation),
       expectedLoadOntology,
     )
   ) {
@@ -1225,6 +1225,7 @@ export function classifyApiWorkloadRow({
 
   if (
     groupId === "load.rdfParserMetaData" &&
+    behaviorProfileId === "normative-v1" &&
     matchesRdfMetadataDiff(javaObservation, jsObservation)
   ) {
     return {
@@ -1240,6 +1241,7 @@ export function classifyApiWorkloadRow({
 
   if (
     groupId === "ontology.entitySignatureLookups" &&
+    behaviorProfileId === "normative-v1" &&
     matchesEntityPunningDiff(javaObservation, jsObservation)
   ) {
     return {
@@ -1255,6 +1257,7 @@ export function classifyApiWorkloadRow({
 
   if (
     groupId === "renderer.ManchesterOWLSyntaxOWLObjectRendererImpl" &&
+    behaviorProfileId === "normative-v1" &&
     matchesRendererPresentationDiff(javaObservation, jsObservation)
   ) {
     return {

@@ -8,7 +8,10 @@ import {
   ResourceLimitError,
   UnsupportedConstructError,
 } from "../../../io/errors.js";
-import { IRI } from "../../../model/structural.js";
+import {
+  IRI,
+  readAnonymousOntologyOrdinal,
+} from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
 import { KRSSLexer } from "./lexer.js";
 
@@ -103,10 +106,25 @@ export class KRSSParserCore {
   async parse(source, transaction, configuration) {
     this.#configuration = configuration;
     this.#dataFactory = transaction.getOWLDataFactory();
-    this.#namespace = documentNamespace(
-      source,
-      this.#policy.anonymousNamespacePrefix,
-    );
+    if (this.#dataFactory.getBehaviorProfileId() === "java-owlapi-5.5.1") {
+      let id = transaction.getOntologyID?.();
+      if (id?.ontologyIRI)
+        this.#namespace = `Optional[${id.ontologyIRI.value}]#`;
+      else if (this.#policy.primitiveRoleGrammar === "krss1")
+        this.#namespace = OWL_NAMESPACE;
+      else {
+        if (!id) {
+          id = this.#dataFactory.getOWLOntologyID();
+          transaction.setOntologyID(id);
+        }
+        this.#namespace = `OntologyID(Anonymous-${readAnonymousOntologyOrdinal(id)})#`;
+      }
+    } else {
+      this.#namespace = documentNamespace(
+        source,
+        this.#policy.anonymousNamespacePrefix,
+      );
+    }
     this.#seenABox = false;
     this.#tboxClosed = false;
     const startedAt = monotonicNow();

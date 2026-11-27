@@ -1,4 +1,5 @@
 import {
+  OWLObjectKind,
   OWLOntologyLoaderConfiguration,
   StringDocumentSource,
 } from "../../index.js";
@@ -35,6 +36,38 @@ const load = (text, parsingMode) =>
   );
 
 describe("cross-category property declarations", () => {
+  it("reconstructs an IRI range as an annotation range for a Java object and annotation property", async () => {
+    const manager = OWLManager.createOWLOntologyManager({
+      behaviorProfileId: "java-owlapi-5.5.1",
+    });
+    const ontology = await manager.loadOntologyFromOntologyDocument(
+      new StringDocumentSource(
+        `<rdf:RDF xmlns:rdf="${RDF}" xmlns:rdfs="${RDFS}" xmlns:owl="${OWL}">
+        <owl:Ontology rdf:about="urn:range:ontology"/>
+        <owl:AnnotationProperty rdf:about="urn:range:p"/>
+        <owl:ObjectProperty rdf:about="urn:range:p">
+          <rdfs:range rdf:resource="urn:range:C"/>
+          <rdfs:subPropertyOf rdf:resource="urn:range:q"/>
+        </owl:ObjectProperty>
+        <owl:ObjectProperty rdf:about="urn:range:q"/>
+        <owl:Class rdf:about="urn:range:C"/>
+      </rdf:RDF>`,
+        { contentType: "application/rdf+xml" },
+      ),
+      { parsingMode: "compatible" },
+    );
+    expect(
+      ontology.getAxiomsByType(OWLObjectKind.ANNOTATION_PROPERTY_RANGE_AXIOM)
+        .size,
+    ).toBe(1);
+    expect(
+      ontology.getAxiomsByType(OWLObjectKind.OBJECT_PROPERTY_RANGE_AXIOM).size,
+    ).toBe(0);
+    expect(
+      ontology.getAxiomsByType(OWLObjectKind.SUB_OBJECT_PROPERTY_AXIOM).size,
+    ).toBe(1);
+  });
+
   it.each([
     ["owl:DatatypeProperty", "owl:ObjectProperty"],
     ["owl:AnnotationProperty", "owl:DatatypeProperty"],

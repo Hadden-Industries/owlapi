@@ -4,6 +4,7 @@ This contract implements the [bounded consumer plan](../plans/2026-10-02-rdf-con
 The [behavior profiles](behavior-profiles.md) now distinguish released Java metadata from the retained normative reconstruction metadata.
 The table below describes `normative-v1`.
 For `java-owlapi-5.5.1`, `getTripleCount()` counts source statement occurrences before dataset deduplication, and `getHeaderState()` keeps the released Java consumer's constant `PARSED_ONE_HEADER`, even for zero or multiple explicit ontology headers.
+`getGuessedDeclarations()` returns an empty collection after the Java parser clears its state.
 
 The independently replayed `ObserveParserSelection` rows and `model/behaviorParserSelection.test.js` bind these results.
 Record the manager's profile alongside metadata when comparing it.

@@ -393,12 +393,13 @@ function createOntologyReadModel(snapshot) {
   function discoverSignature() {
     if (signature) return signature;
     const entities = new StructuralHashTable();
-    for (const roots of [stored, snapshot.directOntologyAnnotations]) {
-      for (const root of roots)
-        visitStructuralValues(root, (value) => {
-          if (signatureKinds.has(value.kind)) entities.add(value);
-        });
-    }
+    const collectEntity = (value) => {
+      if (signatureKinds.has(value.kind)) entities.add(value);
+    };
+    for (const axiom of stored) visitStructuralValues(axiom, collectEntity);
+    const axiomEntityCount = entities.size;
+    for (const annotation of snapshot.directOntologyAnnotations)
+      visitStructuralValues(annotation, collectEntity);
     const allNamed = signatureKinds.size;
     const byEntityKind = buildCsrPostingIndex(allNamed + 1, (emit) => {
       let id = 0;
@@ -417,7 +418,7 @@ function createOntologyReadModel(snapshot) {
         id++;
       }
     });
-    signature = { entities, byEntityKind, allNamed, byIRI };
+    signature = { entities, byEntityKind, allNamed, byIRI, axiomEntityCount };
     return signature;
   }
   function annotationValues(subjectKey, includeAssertionAnnotations) {
@@ -485,6 +486,13 @@ function createOntologyReadModel(snapshot) {
         found.byEntityKind,
         kind === undefined ? found.allNamed : (signatureKinds.get(kind) ?? -1),
       );
+    },
+    forEachAxiomEntity(visit) {
+      const { entities, axiomEntityCount } = discoverSignature();
+      for (let id = 0; id < axiomEntityCount; id++) {
+        const entity = entities.valueAt(id);
+        if (entity.kind !== OWLObjectKind.ANONYMOUS_INDIVIDUAL) visit(entity);
+      }
     },
     entities(iriKey) {
       const found = discoverSignature();

@@ -90,7 +90,7 @@ const renderers = Object.freeze({
           ? enclosed(render(operand))
           : render(operand),
       )
-      .join(context.axiom ? " and " : "\n and "),
+      .join(context.inlineIntersections ? " and " : "\n and "),
   [K.OBJECT_UNION_OF]: (value, render) =>
     sortedDisplayObjects(value.operands)
       .map((operand) =>
@@ -279,8 +279,11 @@ export class ManchesterOWLSyntaxOWLObjectRendererImpl {
     const labels = new Map();
     const usedLabels = new Set();
     let nextAnonymousLabel = 0;
+    const axiom = object.kind.endsWith("Axiom");
     const context = {
-      axiom: object.kind.endsWith("Axiom"),
+      axiom,
+      inlineIntersections:
+        axiom || this.getBehaviorProfileId() === "java-owlapi-5.5.1",
       anonymous(value) {
         const key = value.structuralKey();
         if (!labels.has(key)) {

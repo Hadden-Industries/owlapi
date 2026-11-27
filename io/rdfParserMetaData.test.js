@@ -17,7 +17,7 @@ const load = async (manager, document, config) =>
 
 describe("Java-compatible RDF loader metadata", () => {
   it.each(["java-owlapi-5.5.1", "normative-v1"])(
-    "retains nested inferred datatype metadata and scalar lexical values for %s",
+    "reports guessed datatypes by profile and retains lexical values for %s",
     async (behaviorProfileId) => {
       const manager = owlapi.OWLManager.createOWLOntologyManager({
         behaviorProfileId,
@@ -36,10 +36,14 @@ describe("Java-compatible RDF loader metadata", () => {
           .getGuessedDeclarations()
           .map(({ iri, entityType }) => [iri.value, entityType])
           .sort(),
-      ).toEqual([
-        ["urn:metadata:Custom", owlapi.OWLObjectKind.DATATYPE],
-        ["urn:metadata:Other", owlapi.OWLObjectKind.DATATYPE],
-      ]);
+      ).toEqual(
+        behaviorProfileId === "java-owlapi-5.5.1"
+          ? []
+          : [
+              ["urn:metadata:Custom", owlapi.OWLObjectKind.DATATYPE],
+              ["urn:metadata:Other", owlapi.OWLObjectKind.DATATYPE],
+            ],
+      );
       expect(
         [...parsed.ontology.getAnnotations()]
           .map((annotation) => annotation.value.lexicalForm)

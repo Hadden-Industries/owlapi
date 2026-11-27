@@ -81,6 +81,17 @@ const cases = {
   ),
 };
 
+test("the Java renderer keeps a standalone intersection on one line", () => {
+  const renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl({
+    behaviorProfileId: "java-owlapi-5.5.1",
+  });
+  const value = f.getOWLObjectIntersectionOf([
+    a,
+    f.getOWLObjectAllValuesFrom(p, a),
+  ]);
+  expect(renderer.render(value)).toBe("A and (p only A)");
+});
+
 test.each(Object.keys(cases))(
   "renderer matches native %s spelling, precedence and whitespace",
   (id) => {

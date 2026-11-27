@@ -267,6 +267,13 @@ class ParseTransaction {
     return this.#dataFactory;
   }
 
+  getOntologyID() {
+    return (
+      this.#ontologyID ??
+      this.#publication?.managedOntology.ontology.getOntologyID()
+    );
+  }
+
   #recordAxiom(axiom) {
     if (this.#axioms.has(axiom)) {
       return false;

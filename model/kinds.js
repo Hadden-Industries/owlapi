@@ -84,6 +84,8 @@ export const OWLObjectKind = Object.freeze({
   SWRL_CLASS_ATOM: "SWRLClassAtom",
   SWRL_OBJECT_PROPERTY_ATOM: "SWRLObjectPropertyAtom",
   SWRL_VARIABLE: "SWRLVariable",
+  SWRL_SAME_INDIVIDUAL_ATOM: "SWRLSameIndividualAtom",
+  SWRL_DIFFERENT_INDIVIDUALS_ATOM: "SWRLDifferentIndividualsAtom",
 });
 
 export const CLASS_EXPRESSION_KINDS = Object.freeze([

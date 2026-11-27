@@ -17,6 +17,7 @@ const XSD_DOUBLE_IRI = XSD_NAMESPACE + "double";
 const XSD_INTEGER_IRI = XSD_NAMESPACE + "integer";
 
 let anonymousDocumentSequence = 0;
+let javaDLSyntaxSequence = BigInt(Date.now()) * 1_000_000n;
 
 const documentNamespace = (source) => {
   const documentIri = source.getDocumentIRI()?.value;
@@ -51,7 +52,10 @@ export class OWLDLSyntaxOWLParser {
   async parse(source, transaction, configuration) {
     this.#configuration = configuration;
     this.#dataFactory = transaction.getOWLDataFactory();
-    this.#namespace = documentNamespace(source);
+    this.#namespace =
+      this.#dataFactory.getBehaviorProfileId() === "java-owlapi-5.5.1"
+        ? `http://www.semanticweb.org/ontologies/Ontology${++javaDLSyntaxSequence}#`
+        : documentNamespace(source);
     const startedAt = monotonicNow();
     this.#executionBudget = Object.freeze({
       deadline: startedAt + configuration.timeoutMs,

@@ -128,6 +128,10 @@ register(
 register([K.SWRL_VARIABLE], ["iri"]);
 register([K.SWRL_CLASS_ATOM], ["predicate", "argument"]);
 register(
+  [K.SWRL_SAME_INDIVIDUAL_ATOM, K.SWRL_DIFFERENT_INDIVIDUALS_ATOM],
+  ["firstArgument", "secondArgument"],
+);
+register(
   [K.SWRL_OBJECT_PROPERTY_ATOM],
   ["predicate", "firstArgument", "secondArgument"],
 );

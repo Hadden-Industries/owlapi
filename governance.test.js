@@ -752,7 +752,7 @@ describe("owlapi governance artifacts", () => {
         let expected = firstReleaseRetargetedBindings.has(prior.id)
           ? { ...mappedPrior, firstPublicReleaseTarget: "0.1.0-rc.1" }
           : mappedPrior;
-        // The scoped SWRL plan adds four inspectable structural kinds.
+        // The supported structural SWRL subset adds its own inspectable kinds.
         if (prior.id === "model.OWLObjectKind")
           expected = {
             ...expected,
@@ -762,6 +762,8 @@ describe("owlapi governance artifacts", () => {
               "SWRL_CLASS_ATOM",
               "SWRL_OBJECT_PROPERTY_ATOM",
               "SWRL_VARIABLE",
+              "SWRL_SAME_INDIVIDUAL_ATOM",
+              "SWRL_DIFFERENT_INDIVIDUALS_ATOM",
             ].sort(),
           };
         // The separate Canonical VOWL prerequisite authorization adds exactly

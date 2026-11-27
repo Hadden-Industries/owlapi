@@ -15,7 +15,9 @@ import { IRI } from "../../../model/structural.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
 import {
   swrlClassAtom,
+  swrlDifferentIndividualsAtom,
   swrlObjectPropertyAtom,
+  swrlSameIndividualAtom,
   swrlRule,
   swrlVariable,
 } from "../../model/swrl.js";
@@ -506,23 +508,43 @@ export class OWLFunctionalSyntaxOWLParser {
         "WORD",
         this.#lexer.consume() ?? (yield READ_TOKEN),
       );
-      if (atom.value !== "ClassAtom" && atom.value !== "ObjectPropertyAtom")
+      if (
+        ![
+          "ClassAtom",
+          "ObjectPropertyAtom",
+          "SameIndividualAtom",
+          "DifferentIndividualsAtom",
+        ].includes(atom.value)
+      )
         this.#unsupportedRuleMember(atom.value, atom);
       this.#expectType("(", this.#lexer.consume() ?? (yield READ_TOKEN));
-      const predicate = this.#lexer.consume() ?? (yield READ_TOKEN);
-      if (predicate.type === "WORD")
-        this.#unsupportedRuleMember(predicate.value, predicate);
-      const iri = this.#parseIri(predicate);
-      const first = yield* this.#parseSwrlVariable();
-      atoms.push(
-        atom.value === "ClassAtom"
-          ? swrlClassAtom(this.#dataFactory.getOWLClass(iri), first)
-          : swrlObjectPropertyAtom(
-              this.#dataFactory.getOWLObjectProperty(iri),
-              first,
-              yield* this.#parseSwrlVariable(),
-            ),
-      );
+      if (atom.value === "ClassAtom") {
+        const predicate = yield* this.#parseClassExpression(0);
+        atoms.push(swrlClassAtom(predicate, yield* this.#parseSwrlVariable()));
+      } else if (atom.value === "ObjectPropertyAtom") {
+        const token = this.#lexer.consume() ?? (yield READ_TOKEN);
+        if (token.type === "WORD")
+          this.#unsupportedRuleMember(token.value, token);
+        const property = this.#dataFactory.getOWLObjectProperty(
+          this.#parseIri(token),
+        );
+        const first = yield* this.#parseSwrlVariable();
+        atoms.push(
+          swrlObjectPropertyAtom(
+            property,
+            first,
+            yield* this.#parseSwrlVariable(),
+          ),
+        );
+      } else {
+        const first = yield* this.#parseSwrlVariable();
+        const second = yield* this.#parseSwrlVariable();
+        atoms.push(
+          atom.value === "SameIndividualAtom"
+            ? swrlSameIndividualAtom(first, second)
+            : swrlDifferentIndividualsAtom(first, second),
+        );
+      }
       this.#expectType(")", this.#lexer.consume() ?? (yield READ_TOKEN));
       const pause = this.#cooperate();
       if (pause) yield pause;

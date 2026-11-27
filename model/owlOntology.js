@@ -756,8 +756,27 @@ export class OWLOntology {
   }
 
   getPunnedIRIs(imports = Imports.EXCLUDED) {
-    const kindsByIRI = new Map();
     const result = new StructuralSet();
+    if (
+      readOntologyBehaviorDefinition(this)?.behaviorProfileId ===
+      "java-owlapi-5.5.1"
+    ) {
+      // Java counts an IRI again when it occurs in another member's axiom
+      // signature or as the property of a direct ontology annotation.
+      const seen = new Set();
+      const visit = ({ iri }) => {
+        if (seen.has(iri.value)) result.add(iri);
+        else seen.add(iri.value);
+      };
+      for (const member of this.#scope(imports)) {
+        const snapshot = readOntologySnapshot(member);
+        readOntologyModel(snapshot).forEachAxiomEntity(visit);
+        for (const { property } of snapshot.directOntologyAnnotations)
+          visit(property);
+      }
+      return result.toSet();
+    }
+    const kindsByIRI = new Map();
     for (const entity of this.#reader(imports).signature(undefined)) {
       const previous = kindsByIRI.get(entity.iri.value);
       if (previous !== undefined && previous !== entity.kind)

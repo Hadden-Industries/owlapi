@@ -18,12 +18,13 @@ Its `currentBehaviorContracts` section is separate from the retained phase 21/22
 
 ## Structural SWRL rules
 
-In `java-owlapi-5.5.1`, compatible RDF/XML and Functional Syntax recognize `SWRLRule`, `SWRLClassAtom`, `SWRLObjectPropertyAtom` and `SWRLVariable`.
+In `java-owlapi-5.5.1`, compatible RDF/XML and Functional Syntax recognize `SWRLRule`, `SWRLClassAtom`, `SWRLObjectPropertyAtom`, `SWRLSameIndividualAtom`, `SWRLDifferentIndividualsAtom` and `SWRLVariable`.
 These are structural values corresponding to the Java model interfaces.
 Read them through `getAxiomsByType("SWRLRule")` and `getLogicalAxioms()`.
 A variable's `iri` retains its full identifier.
-A class atom exposes `predicate` and `argument`.
+A class atom exposes a class expression as `predicate` and a variable as `argument`.
 A property atom exposes `predicate`, `firstArgument` and `secondArgument`.
+Same-individual and different-individuals atoms each expose `firstArgument` and `secondArgument`.
 
 Each rule exposes frozen `body`, `head` and `annotations` arrays.
 The two sides retain first encounter order for iteration.
@@ -219,6 +220,7 @@ Java target reuse appends and can retain a failed writer prefix; normative stora
 An error is not a promise that no state changed, and in-memory rollback cannot undo authorized external requests.
 
 Java RDF metadata reports the observed constant `PARSED_ONE_HEADER` and counts source statement occurrences, including duplicates.
+Its guessed-declarations collection is empty after parsing.
 Normative metadata reports actual distinct header count and selected unique triples.
 Both describe the original parse, not later edits or complete source preservation.
 
@@ -241,9 +243,14 @@ For resource assertions, Java compatible mode uses the predicate roles available
 A property expression recovered inside a restriction can coexist with an annotation assertion using the same IRI.
 An object-property declaration in the document or its imports, an explicit inverse-property link, or a known class range can still identify an object-property assertion.
 An `owl:equivalentProperty` link requires an established role on both sides and remains in the unparsed RDF metadata when a role is missing.
+When a property has both object and annotation declarations, the Java profile reads an IRI range as an annotation property range and still uses the object role where a logical axiom requires it.
+
+For axioms encoded by a main RDF triple, the Java profile preserves distinct `owl:Axiom` annotation groups on separate axioms in compatible and strict parsing.
+Java processes inverse object property axioms after the annotation pass, so their reified annotations are absent from the reconstructed axioms.
 
 Compatible RDF parsing retains subclass annotations when an exporter repeats a flat existential or qualified minimum-cardinality restriction under `owl:annotatedTarget`.
 The repeated target must be used only by the reification and match exactly one asserted restriction on the same named subclass.
+The Java profile applies the same recovery when the asserted subclass is anonymous.
 Missing, ambiguous and different targets remain visible as unparsed RDF.
 Strict mapping requires the original RDF term identity specified in [Table 17 of the OWL 2 RDF mapping](https://www.w3.org/TR/owl2-mapping-to-rdf/#Parsing_of_Annotated_Axioms).
 
@@ -253,6 +260,13 @@ If every remaining candidate collides with a loaded ontology, the load fails and
 When several candidates survive, Java's choice is unspecified.
 An occupied original ID leaves the JavaScript load anonymous when a candidate is available.
 The normative loader selects the header under [Table 4 of the OWL 2 RDF mapping](https://www.w3.org/TR/owl2-mapping-to-rdf/#Parsing_of_the_Ontology_Header_and_Declarations).
+
+In the Java profile, unqualified DL Syntax names use a fresh `http://www.semanticweb.org/ontologies/Ontology<number>#` namespace per parse.
+KRSS uses `http://www.w3.org/2002/07/owl#` for anonymous ontologies and KRSS2 uses its anonymous ontology identifier as the namespace.
+Both KRSS parsers use `Optional[<ontology IRI>]#` when the receiving ontology already has an IRI.
+
+The Java profile's `getPunnedIRIs()` reports repeated IRIs across the selected ontologies' axiom signatures and their direct ontology annotation properties.
+The Java Manchester renderer joins standalone intersections with inline `and`.
 
 EntitySearcher results are deferred and single-use in both profiles; materialize once when repeat traversal is needed.
 Closure providers query current membership on each call and return that call's defensive snapshot.
