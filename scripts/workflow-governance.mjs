@@ -56,8 +56,6 @@ const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
 const ACTION_DIRECTORY = join(REPOSITORY_ROOT, ".github", "actions");
 const SHARED_SETUP = "./.github/actions/setup-producer";
 const SCANCODE_SETUP = "./.github/actions/setup-scancode";
-const UNIVERSAL_ONTOLOGY_CHECKOUT =
-  "./.github/actions/checkout-universal-ontology";
 const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
 const candidateRetentionWorkflow = "candidate-retention.yml";
 const runtimeFreezer = "./.github/actions/freeze-runtime-matrix";
@@ -602,22 +600,6 @@ const validateActionUses = (fileName, workflow, document, violations) => {
       }
       // validateQualityTooling checks the inventory and ordering of these steps.
       if (step.uses === SCANCODE_SETUP) continue;
-      if (step.uses === UNIVERSAL_ONTOLOGY_CHECKOUT) {
-        const canonical =
-          ["ci.yml", "release.yml"].includes(fileName) &&
-          jobId === "source_canonical" &&
-          step.if === undefined;
-        const shadow =
-          fileName === "release.yml" &&
-          jobId === "corpus_shard" &&
-          step.if === "matrix.universal_ontology";
-        add(
-          violations,
-          (canonical || shadow) && step.with === undefined,
-          `${fileName}:${jobId}: use the shared Universal Ontology checkout in its qualification lane`,
-        );
-        continue;
-      }
       if (
         [
           RETAIN_ARTIFACT,

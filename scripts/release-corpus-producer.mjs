@@ -99,7 +99,6 @@ export function corpusProducerMatrix(
         runner: corpusShardRunner(shard.platform),
         shell: shard.platform === "win32" ? "pwsh" : "bash",
         sourceOracle: shard.caseIds.some((caseId) => sourceCases.has(caseId)),
-        universal_ontology: shard.selection.suite === "universal-ontology",
       }),
     ),
   };
@@ -376,7 +375,7 @@ async function produceShard(env) {
   const { runComparison } =
     await import("../util/owlapi-reference/compare-java-js.mjs");
   const { installCandidate } =
-    await import("../util/owlapi-reference/qualify-universal-ontology.mjs");
+    await import("../util/owlapi-reference/comparison-subject.mjs");
   const work = workDirectory(env);
   const consumerLock = await readJson(join(work, "consumer-lock.json"));
   const candidateDirectory = join(work, "candidate");
@@ -407,17 +406,13 @@ async function produceShard(env) {
     cacheDirectory: join(work, "objects"),
     mavenDirectory: join(work, "released-maven"),
     referenceCheckout: resolve(".release/java-owlapi"),
-    ontologyRepository: resolve(".release/universal-ontology"),
     javaHome: env.JAVA_HOME,
     javaSelection,
   };
   const request = { suite: "release-semantics", shard: shard.shardId };
   const prepared = await runComparison(
     { ...request, action: "prepare" },
-    {
-      ...options,
-      outputDirectory: join(work, "preparation"),
-    },
+    options,
   );
   const incompleteInputs =
     prepared.cases?.filter(({ status }) => status !== "prepared") ?? [];

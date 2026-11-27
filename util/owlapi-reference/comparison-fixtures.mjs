@@ -1,23 +1,96 @@
 import { createHash, randomUUID } from "node:crypto";
 import { createReadStream, createWriteStream, readFileSync } from "node:fs";
-import { link, lstat, mkdir, rm } from "node:fs/promises";
+import { link, lstat, mkdir, readFile, rm } from "node:fs/promises";
 import { dirname, isAbsolute, join, resolve } from "node:path";
 import { Readable, Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
 import { sha256 } from "./comparison-evidence.mjs";
-import { rdfXmlExpansionSource } from "./comparison-rdfxml-expansion.mjs";
-import { readUniversalOntologyManifest } from "./universal-ontology-manifest.mjs";
+import {
+  rdfXmlCharacterReferenceKind,
+  rdfXmlDerivationSource,
+} from "./comparison-rdfxml-expansion.mjs";
 
 const project = JSON.parse(
   readFileSync(new URL("../../package.json", import.meta.url), "utf8"),
 );
 const publisherUserAgent = `owlapi-corpus-qualification/${project.version} (+${project.bugs.url})`;
 
-export const comparisonCatalogue = JSON.parse(
-  readFileSync(new URL("./comparison-fixtures.json", import.meta.url), "utf8"),
-);
-export const universalOntologyManifest = readUniversalOntologyManifest();
+function versionedFixture(fixture, version) {
+  const { versionFromCollection, ...source } = fixture.source;
+  if (!versionFromCollection) return fixture;
+  const base = new URL(source.url);
+  if (
+    typeof version !== "string" ||
+    !/^[a-z0-9._-]+$/iu.test(version) ||
+    version === "." ||
+    version === ".." ||
+    source.kind !== "https" ||
+    base.protocol !== "https:" ||
+    !base.pathname.endsWith("/") ||
+    base.search ||
+    base.hash
+  ) {
+    throw new Error(`Invalid versioned publication for ${fixture.id}`);
+  }
+  const versionIRI = new URL(version, base).href;
+  return {
+    ...fixture,
+    documentIRI: versionIRI,
+    ontologyIRI: versionIRI,
+    declaredOntologyIRI: base.href,
+    declaredVersionIRI: versionIRI,
+    source: { ...source, url: versionIRI },
+  };
+}
+
+function readComparisonCatalogue() {
+  const catalogue = JSON.parse(
+    readFileSync(
+      new URL("./comparison-fixtures.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const collections = new Map(
+    catalogue.collections.map((row) => [row.id, row]),
+  );
+  const fixtures = catalogue.fixtures.map((fixture) =>
+    versionedFixture(fixture, collections.get(fixture.collection)?.version),
+  );
+  const byId = new Map(fixtures.map((fixture) => [fixture.id, fixture]));
+  for (const fixture of fixtures) {
+    const collection = collections.get(fixture.collection);
+    if (collection?.mapAllMembersAsImports && fixture.imports === undefined) {
+      fixture.imports = fixtures
+        .filter(
+          (member) =>
+            member !== fixture && member.collection === fixture.collection,
+        )
+        .map(({ id }) => id);
+    }
+    const { expectedImports, ...verification } = fixture.verification ?? {};
+    if (expectedImports) {
+      fixture.verification = {
+        ...verification,
+        expectedClosure: [fixture.id, ...expectedImports].map((id) => {
+          const member = byId.get(id);
+          if (!member)
+            throw new Error(`Unknown expected import ${id} for ${fixture.id}`);
+          return {
+            ontologyIRI:
+              member.declaredOntologyIRI ??
+              member.ontologyIRI ??
+              member.documentIRI,
+            versionIRI: member.declaredVersionIRI ?? null,
+          };
+        }),
+      };
+    }
+  }
+  return { ...catalogue, fixtures };
+}
+
+export const comparisonCatalogue = readComparisonCatalogue();
 
 export const comparisonSyntaxes = Object.freeze({
   rdfxml: { mime: "application/rdf+xml", format: "RDF_XML" },
@@ -239,30 +312,6 @@ export const comparisonWitnesses = Object.freeze([
     ),
   ].map((fixture) => ({ ...fixture, suite: "java-permissive" })),
 ]);
-
-const universalOntologyRoots = new Map(
-  universalOntologyManifest.roots.map(({ path, name }) => [path, name]),
-);
-const universalOntologyInputId = (path) =>
-  `universal-ontology/${universalOntologyRoots.get(path) ?? path.split("/").at(-1)}`;
-export const universalOntologyFixtures = Object.freeze(
-  universalOntologyManifest.mappings.map(({ path, ontologyIRI }) => ({
-    ...universalOntologyManifest.originals[path],
-    id: universalOntologyInputId(path),
-    collection: `universal-ontology-${universalOntologyManifest.version}`,
-    suite: "universal-ontology",
-    documentIRI: ontologyIRI,
-    ontologyIRI,
-    basePolicy: "canonical-ontology-base",
-    source: { kind: "git", path, revision: universalOntologyManifest.revision },
-    acquisition: "local-only",
-    role: universalOntologyRoots.has(path) ? "root" : "module",
-    closure: universalOntologyRoots.has(path),
-    imports: universalOntologyManifest.mappings
-      .filter((entry) => entry.path !== path)
-      .map((entry) => universalOntologyInputId(entry.path)),
-  })),
-);
 
 function assertFixturePin(fixture) {
   if (
@@ -498,7 +547,7 @@ export async function resolveComparisonFixture(
     );
   }
   assertFixturePin(fixture);
-  const expansion = rdfXmlExpansionSource(
+  const derivation = rdfXmlDerivationSource(
     fixture,
     environment.catalogue ?? comparisonCatalogue,
   );
@@ -524,12 +573,26 @@ export async function resolveComparisonFixture(
     if (seed) return resolve(seed);
     throw new Error(`Missing verified offline object for ${fixture.id}`);
   }
-  if (expansion && !seed) {
+  if (derivation && !seed) {
     const original = await resolveComparisonFixture(
-      expansion.original,
+      derivation.original,
       environment,
       true,
     );
+    if (derivation.kind === rdfXmlCharacterReferenceKind) {
+      const text = new TextDecoder("utf-8", {
+        fatal: true,
+        ignoreBOM: true,
+      }).decode(await readFile(original));
+      const parts = text.split("\uFFFD");
+      if (parts.length !== derivation.count + 1)
+        throw new Error(
+          `RDF/XML character reference count changed for ${fixture.id}`,
+        );
+      return publishPinnedBytes(path, fixture, () =>
+        Readable.from([parts.join("&#xFFFD;")]),
+      );
+    }
     const pending = `${path}.${randomUUID()}.expansion`;
     const { expandRdfXmlEntities } = await import("./comparison-oracle.mjs");
     await mkdir(dirname(path), { recursive: true });
@@ -538,7 +601,7 @@ export async function resolveComparisonFixture(
         original,
         pending,
         fixture.byteLength,
-        expansion.limits,
+        derivation.limits,
         environment,
       );
       return await publishPinnedBytes(path, fixture, () =>

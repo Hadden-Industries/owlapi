@@ -12,6 +12,11 @@ import {
 import { zipArchive } from "./fixtures/zip-archive.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 import { sha256 } from "../util/owlapi-reference/comparison-evidence.mjs";
+import { comparisonCases } from "../util/owlapi-reference/comparison-cases.mjs";
+import {
+  corpusQualificationRoster,
+  corpusQualificationShards,
+} from "../util/owlapi-reference/comparison-release-evidence.mjs";
 import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
 import {
@@ -165,18 +170,28 @@ test("promoted planning retains the producer of the admitted CI archive and lock
 });
 
 test("the native matrix schedules every shard once on a pinned host", () => {
-  const { include } = corpusProducerMatrix();
+  const roster = corpusQualificationRoster(comparisonCases);
+  const { include } = corpusProducerMatrix(roster);
   expect(include.length).toBeGreaterThan(100);
   expect(include.length).toBeLessThanOrEqual(256);
   expect(new Set(include.map(({ id }) => id)).size).toBe(include.length);
   expect(new Set(include.map(({ shell }) => shell))).toEqual(
     new Set(["bash", "pwsh"]),
   );
-  const ontologyShards = include.filter(
-    ({ universal_ontology }) => universal_ontology,
+  const sourceCases = new Set(
+    roster.cells
+      .filter(({ oracle }) => oracle?.kind === "pinned-source")
+      .map(({ caseId }) => caseId),
   );
-  expect(ontologyShards.length).toBeGreaterThan(0);
-  expect(ontologyShards.every(({ sourceOracle }) => sourceOracle)).toBe(true);
+  const sourceShards = corpusQualificationShards(comparisonCases, roster)
+    .filter(({ caseIds }) => caseIds.some((id) => sourceCases.has(id)))
+    .map(({ shardId }) => shardId);
+  expect(sourceShards.length).toBeGreaterThan(0);
+  expect(
+    new Set(
+      include.filter(({ sourceOracle }) => sourceOracle).map(({ id }) => id),
+    ),
+  ).toEqual(new Set(sourceShards));
 });
 
 test("descriptor collection rejects ambiguous native products and ignores failed jobs", async () => {

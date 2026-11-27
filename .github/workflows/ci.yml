@@ -403,7 +403,6 @@ jobs:
       - name: Observe integration applicability while retaining full qualification
         run: node scripts/ci-check-applicability.mjs
         timeout-minutes: 1
-      - uses: ./.github/actions/checkout-universal-ontology
       - name: Check out the pinned Java OWLAPI reference
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -513,9 +512,9 @@ jobs:
         env:
           OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
         run: |
-          suite=(--suite universal-ontology --profile normative-v1 --parsing-mode compatible --cache "$GITHUB_WORKSPACE/.release/universal-ontology-cache" --reference-checkout "$OWLAPI_REFERENCE_CHECKOUT")
+          suite=(--suite universal-ontology --profile normative-v1 --parsing-mode compatible --cache "$GITHUB_WORKSPACE/.release/comparison-cache" --reference-checkout "$OWLAPI_REFERENCE_CHECKOUT")
           output="$GITHUB_WORKSPACE/.release/universal-ontology-qualification"
-          npm run compare:java-js -- prepare "${suite[@]}" --ontology-repository "$GITHUB_WORKSPACE/.release/universal-ontology" --output "$GITHUB_WORKSPACE/.release/universal-ontology-prepare"
+          npm run compare:java-js -- prepare "${suite[@]}"
           npm run compare:java-js -- run "${suite[@]}" --output "$output"
           npm run compare:java-js -- verify "${suite[@]}" --output "$output"
           node scripts/verify-comparison-migration.mjs --jest "$GITHUB_WORKSPACE/.release/java-qualification/jest.json"

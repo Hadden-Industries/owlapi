@@ -6,9 +6,9 @@ import {
 } from "./comparison-evidence.mjs";
 
 export const rdfXmlExpansionKind = "rdfxml-expansion";
-// Each fingerprint binds the original and derivative, their acquisition
-// details, any imports of the original, and the measured finite limits.
-const approvedExpansions = new Map([
+export const rdfXmlCharacterReferenceKind = "rdfxml-character-references";
+// Bind the source, derivative, dependencies and the exact conversion recipe.
+const approvedDerivations = new Map([
   [
     "obo-ovae-entity-free",
     "ce7400b032e0634831f20509f7d8f41aee5351ce82338beabb0707e6b26099a1",
@@ -21,11 +21,23 @@ const approvedExpansions = new Map([
     "obo-ogg-archive-dm-entity-free",
     "dace61092e86c054b27020af8bfc63bbd07841ee7eb2250e282469ec7d54b3d3",
   ],
+  [
+    "obo-omit-entity-free",
+    "4ce70902bb3916e701767b08509575edd50d168ad01fa01743dd2c126516b8f1",
+  ],
+  [
+    "obo-import-ncro-2015-12-10-ncro-entity-free",
+    "ae82660298ff3e3e5fcc9a52fb4eec206c09eb54afdddb72d84127852a77bb44",
+  ],
+  [
+    "obo-po-character-references",
+    "c852e7e72a6341a16e2ec8e2ae36876212dc5bc3fab4bd697135fdd27105c82e",
+  ],
 ]);
 
 const fixtureWitness = (fixture) => ({
   id: fixture.id,
-  suite: fixture.suite,
+  suite: fixture.suite ?? null,
   role: fixture.role,
   byteLength: fixture.byteLength,
   sha256: fixture.sha256,
@@ -40,10 +52,14 @@ const fixtureWitness = (fixture) => ({
 });
 
 /** Resolve the exact original RDF/XML and its imports behind a derivative. */
-export function rdfXmlExpansionSource(fixture, catalogue) {
+export function rdfXmlDerivationSource(fixture, catalogue) {
   const source = fixture.source;
-  const approved = approvedExpansions.get(fixture.id);
-  if (!approved && source.kind !== rdfXmlExpansionKind) return null;
+  const approved = approvedDerivations.get(fixture.id);
+  const supported = [
+    rdfXmlExpansionKind,
+    rdfXmlCharacterReferenceKind,
+  ].includes(source.kind);
+  if (!approved && !supported) return null;
   const original = catalogue.fixtures.find(
     ({ id }) => id === source.originalId,
   );
@@ -58,7 +74,7 @@ export function rdfXmlExpansionSource(fixture, catalogue) {
   );
   if (
     !approved ||
-    source.kind !== rdfXmlExpansionKind ||
+    !supported ||
     !original ||
     taxonomy.some((module) => !module) ||
     comparisonIdentity({
@@ -70,10 +86,19 @@ export function rdfXmlExpansionSource(fixture, catalogue) {
     throw new Error(
       "RDF/XML expansion requires the approved original, derivative, imports and limits",
     );
-  const { recipe, entityExpansionLimit, totalEntitySizeLimit } = source;
+  if (source.kind === rdfXmlCharacterReferenceKind)
+    return { kind: source.kind, original, count: source.count };
+  const {
+    recipe,
+    entityExpansionLimit,
+    totalEntitySizeLimit,
+    expectedClosure,
+  } = source;
   return {
+    kind: source.kind,
     original,
     recipe,
+    expectedClosure,
     limits: { entityExpansionLimit, totalEntitySizeLimit },
   };
 }

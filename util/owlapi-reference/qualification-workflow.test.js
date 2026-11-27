@@ -4,47 +4,25 @@ import { parse } from "yaml";
 const readYaml = async (relativePath) =>
   parse(await readFile(new URL(relativePath, import.meta.url), "utf8"));
 
-test("CI and release use the shared manifest-based Universal Ontology checkout", async () => {
-  const [ci, release, action] = await Promise.all([
+test("CI and release prepare pinned publisher inputs through the shared comparison runner", async () => {
+  const workflows = await Promise.all([
     readYaml("../../.github/workflows/ci.yml"),
     readYaml("../../.github/workflows/release.yml"),
-    readYaml("../../.github/actions/checkout-universal-ontology/action.yml"),
   ]);
-  const uses = "./.github/actions/checkout-universal-ontology";
-  for (const workflow of [ci, release]) {
+  for (const workflow of workflows) {
     const steps = workflow.jobs.source_canonical.steps;
-    const checkout = steps.find(({ uses: action }) => action === uses);
-    expect(checkout?.if).toBeUndefined();
-    expect(steps.indexOf(checkout)).toBeGreaterThan(
-      steps.findIndex(
-        ({ uses }) => uses === "./.github/actions/setup-producer",
-      ),
+    const gate = steps.find(
+      ({ id }) => id === "universal_ontology_qualification",
     );
-    expect(steps.indexOf(checkout)).toBeLessThan(
-      steps.findIndex(({ id }) => id === "universal_ontology_qualification"),
-    );
+    expect(
+      gate.run.split("\n").find((line) => line.includes("-- prepare ")),
+    ).toBe('npm run compare:java-js -- prepare "${suite[@]}"');
+    expect(gate.run).toContain("/.release/comparison-cache");
+    expect(gate.run).not.toContain("--ontology-repository");
+    expect(
+      steps.some(({ uses }) => uses?.includes("checkout-universal-ontology")),
+    ).toBe(false);
   }
-  expect(release.jobs.corpus_shard.steps).toContainEqual({
-    uses,
-    if: "matrix.universal_ontology",
-  });
-  expect(action.runs.steps).toMatchObject([
-    {
-      id: "manifest",
-      run: 'node "$GITHUB_ACTION_PATH/../../../util/owlapi-reference/universal-ontology-manifest.mjs"',
-    },
-    {
-      uses: expect.stringMatching(/^actions\/checkout@/u),
-      with: {
-        repository: "Hadden-Industries/universal-ontology",
-        path: ".release/universal-ontology",
-        ref: "${{ steps.manifest.outputs.revision }}",
-        "persist-credentials": false,
-        "sparse-checkout-cone-mode": false,
-        "sparse-checkout": "${{ steps.manifest.outputs.sparse_checkout }}",
-      },
-    },
-  ]);
 });
 
 test("required canonical CI builds the pinned Java reference and compares the Universal Ontology", async () => {
@@ -84,9 +62,6 @@ test("required canonical CI builds the pinned Java reference and compares the Un
   expect(gate.if).toBeUndefined();
   expect(gate["continue-on-error"]).toBeUndefined();
   expect(gate.run).toContain("--suite universal-ontology");
-  expect(gate.run).toContain(
-    '--ontology-repository "$GITHUB_WORKSPACE/.release/universal-ontology"',
-  );
   expect(gate.run.match(/npm run compare:java-js -- (\w+)/gu)).toEqual(
     ["prepare", "run", "verify"].map(
       (action) => "npm run compare:java-js -- " + action,

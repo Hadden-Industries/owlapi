@@ -9,7 +9,8 @@ Historical observations below retain their original JDK identities.
 ## Java/JS comparison
 
 Use `npm run compare:java-js -- list --suite smoke` to inspect the published CGMES and SAREF inputs and the reduced witness.
-`prepare` restores and verifies fixture and JAR bytes.
+`prepare` restores and verifies fixture and JAR bytes and prints a JSON summary.
+For the ontology comparisons, supply `--output` only when you want a saved copy of that summary.
 Publisher retrieval allows long transfers and stops after one minute without network progress.
 Publisher gzip archives have a separate byte pin.
 The cache stores the verified decoded fixture.
@@ -179,7 +180,7 @@ Each document has two class declarations separated by 64 KiB ASCII chunks.
 The OWL/XML case also writes the same input to a temporary file, loads it through a manager using `NodeDocumentLoader`, and removes the file.
 Allow a little more than 512 MiB of free temporary disk space on the qualified runtime.
 
-A ratio requires equivalent untimed structural evidence on the same profile and input.
+A ratio requires equivalent untimed structural evidence at the selected profile and parsing mode on the same input.
 The verifier checks the requested sample counts and calculates the summary from the retained observations.
 Imported loads qualify for ratios only after independent agreement on every model in the loaded closure.
 Mixed or incomplete loads retain their diagnostic observations.
@@ -187,8 +188,16 @@ The November six-ontology run includes full string/stream model comparisons, ind
 [Six-ontology measurements](../../docs/performance/2026-11-25-six-ontology-memory.json)
 The `api-benchmarks` suite carries the 70 generated workload IDs and their raw historical or live observations.
 Use `--benchmark-mode live` to collect fresh Java timings with the selected JDK and run the independent API witness on the same fixture sizes and source.
+Use the same `--candidate` directory for the API timings, their semantic witness, and the ontology comparisons.
+The API receipt binds the candidate, dependency graph, generator and effective fixture bytes.
+Its engine-specific heap deltas describe the API workload's sampling protocol.
 Each workload/profile row records a ratio only when its observations pass the equal-work checks.
 Historical rows retain their Java baseline digest and diagnostic status.
+
+Use `--suite paired-corpus --measure structure,behavior,performance` for the 75-ontology comparison.
+Both behavior profiles use compatible parsing by default and consume the same pinned roots and mapped imports.
+The catalogue also pins the effective RDF/XML derivatives used for FLOPO, TO, OMIT and OVAE.
+Run `prepare`, `run`, and `verify` with the same selection, retained candidate, Java runtime and sampling settings.
 
 `--benchmark-mode refresh --java-baseline <absolute-file>` replaces a complete Java baseline.
 `--benchmark-mode missing --java-baseline <absolute-file>` measures only missing workload IDs using the same generator, parameters, platform, Java version and OWLAPI distribution.
@@ -491,12 +500,12 @@ Neither constitutes final release acceptance: fresh evidence from the reconciled
 ### Universal Ontology qualification
 
 CI and release qualification use the ISO/IEC 11179-3 edition 4, Reference Data, Core and Extended roots.
-The [qualification manifest](universal-ontology.json) pins their common version, Git revision and source fingerprints, including the external imports.
-The comparator and the shared GitHub checkout action derive the versioned paths from that manifest.
-To switch versions, update the version, revision and fingerprints there, along with any changed import membership.
+The [shared fixture catalogue](comparison-fixtures.json) pins the version once in the Universal Ontology collection and records the source fingerprints for each document.
+The comparator reads the versioned documents and published import copies through the shared fixture cache.
+To switch versions, update the collection version and fixture fingerprints, along with any changed import membership.
 
-Use `npm run compare:java-js -- prepare --suite universal-ontology --profile normative-v1 --parsing-mode compatible --ontology-repository <checkout> --reference-checkout <built-java-checkout> --cache <absolute-cache> --output <absolute-preparation-directory>`.
-Then use `run` and `verify` with the same suite, profile, parsing mode, reference checkout and cache, and a separate absolute result directory.
+Use `npm run compare:java-js -- prepare --suite universal-ontology --profile normative-v1 --parsing-mode compatible --reference-checkout <built-java-checkout> --cache <absolute-cache>`.
+Then use `run` and `verify` with the same options and a single absolute result directory.
 The suite checks seven source documents and four merged closures with the pinned source Java oracle.
 It verifies each closure in Functional Syntax and RDF/XML, with offline import resolution and strict JavaScript reloads.
 

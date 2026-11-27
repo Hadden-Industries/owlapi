@@ -10,7 +10,7 @@ import {
   publishComparisonJson,
 } from "./comparison-evidence.mjs";
 import { resolveComparisonFixture } from "./comparison-fixtures.mjs";
-import { captureSourceIdentity } from "./qualify-universal-ontology.mjs";
+import { captureSourceIdentity } from "./comparison-subject.mjs";
 
 const entries = rdfXmlCorpusEvidence.map(({ fixture, expected }) => {
   const input = {

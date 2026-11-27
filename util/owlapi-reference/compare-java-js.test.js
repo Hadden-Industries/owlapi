@@ -4,7 +4,11 @@ import { tmpdir } from "node:os";
 import { join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { gzipSync } from "node:zlib";
-import { comparisonCases, runComparison } from "./compare-java-js.mjs";
+import {
+  captureHarnessIdentity,
+  comparisonCases,
+  runComparison,
+} from "./compare-java-js.mjs";
 import {
   bindLinuxBehaviorBaseline,
   referenceCaptureBaseline,
@@ -51,7 +55,12 @@ import {
   compareExpandedRdfXmlDocuments,
   matchesOriginalRdfXml,
 } from "./comparison-rdfxml-expansion.mjs";
-import { benchmarkSourceDigest } from "./comparison-benchmarks.mjs";
+import { benchmarkFixtureDigest } from "./comparison-benchmarks.mjs";
+import {
+  assertSourceQualificationOutputDirectory,
+  captureSourceIdentity,
+} from "./comparison-subject.mjs";
+import { prepareSharedFixtureDirectory } from "../benchmark-owlapi-java-parity.mjs";
 
 import {
   scopedRuleExpectation,
@@ -587,7 +596,7 @@ test("the reviewed roster preserves all original, closure and held cases", async
   expect(
     corpusQualificationRoster(comparisonCases).held.map(({ input }) => input),
   ).toEqual(["obo-ogg"]);
-  expect(comparisonCatalogue.collections).toHaveLength(24);
+  expect(comparisonCatalogue.collections).toHaveLength(25);
   expect(comparisonCatalogue.standIns).toHaveLength(57);
   const universalOntology = comparisonCases({
     suite: "universal-ontology",
@@ -609,6 +618,33 @@ test("the reviewed roster preserves all original, closure and held cases", async
   expect(list.cases.map(({ caseId }) => caseId)).toEqual(
     prospects.map(({ caseId }) => caseId),
   );
+});
+
+test("the shared catalogue resolves the Universal Ontology publisher pins", () => {
+  const { version } = comparisonCatalogue.collections.find(
+    ({ id }) => id === "universal-ontology",
+  );
+  const fixtures = comparisonCatalogue.fixtures.filter(
+    ({ collection }) => collection === "universal-ontology",
+  );
+  const base = "https://haddenindustries.com/ontology/";
+  expect(fixtures.map(({ source }) => source.url)).toEqual([
+    base + "iso-iec/11179/-3/ed-4/" + version,
+    base + "universal/reference-data/" + version,
+    base + "universal/core/" + version,
+    base + "universal/extended/" + version,
+    base + "external/skos.rdf",
+    base + "external/time-gregorian.ttl",
+    base + "external/time.rdf",
+  ]);
+  for (const fixture of fixtures) {
+    expect(fixture).toMatchObject({
+      byteLength: expect.any(Number),
+      sha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+      acquisition: "publisher",
+      source: { kind: "https", redirects: [] },
+    });
+  }
 });
 
 test("all active Universal Ontology closure cases use lossless RDF/XML and observe the native default", () => {
@@ -634,10 +670,10 @@ test("all active Universal Ontology closure cases use lossless RDF/XML and obser
 });
 
 test("the benchmark registry accounts for all 70 workloads under both profiles", async () => {
-  const { cases } = await runComparison({
-    action: "list",
-    suite: "api-benchmarks",
-  });
+  const { cases } = await runComparison(
+    { action: "list", suite: "api-benchmarks" },
+    { candidateDirectory: resolve("candidate") },
+  );
   expect(cases).toHaveLength(140);
   expect(new Set(cases.map(({ input }) => input)).size).toBe(70);
   expect(new Set(cases.map(({ caseId }) => caseId)).size).toBe(140);
@@ -646,6 +682,42 @@ test("the benchmark registry accounts for all 70 workloads under both profiles",
       ({ behaviorProfileId }) => behaviorProfileId === "normative-v1",
     ),
   ).toHaveLength(70);
+});
+
+test("the paired corpus selects identical effective roots and import pins for both profiles", () => {
+  const cases = comparisonCases({ suite: "paired-corpus" });
+  const profiles = Map.groupBy(
+    cases,
+    ({ definition }) => definition.behaviorProfileId,
+  );
+  const pins = ({ definition }) => ({
+    input: definition.input,
+    imports: definition.imports,
+  });
+  const java = profiles.get("java-owlapi-5.5.1");
+  const normative = profiles.get("normative-v1");
+  expect(java).toHaveLength(75);
+  expect(normative.map(pins)).toEqual(java.map(pins));
+  expect(
+    normative.every(
+      ({ definition }) => definition.parsingMode === "compatible",
+    ),
+  ).toBe(true);
+  const selected = new Map(
+    normative.map(({ definition }) => [definition.input.id, definition]),
+  );
+  for (const id of ["obo-flopo", "obo-to"])
+    expect(selected.get(id).imports).toContainEqual(
+      expect.objectContaining({ id: "obo-po-character-references" }),
+    );
+  expect(selected.get("obo-omit-entity-free").imports).toContainEqual(
+    expect.objectContaining({
+      id: "obo-import-ncro-2015-12-10-ncro-entity-free",
+    }),
+  );
+  expect(selected.get("obo-ovae-entity-free").originalRdfXml.document.id).toBe(
+    "obo-ovae",
+  );
 });
 
 test("registry comparisons reject version ranges, mixed subjects and a benchmark selector before installation", async () => {
@@ -680,7 +752,7 @@ test("the api-semantics suite registers all 70 workloads across both profiles", 
   expect(cases[0].scenario).toBe("api-semantics");
 });
 
-test("api-semantics verify rejects stale harness, sink, or fixture generator evidence", async () => {
+test("api-semantics verify binds the subject, effective fixtures and semantic evidence", async () => {
   await withScratch(async (outputDirectory) => {
     const { cases: definitions } = await runComparison({
       action: "list",
@@ -709,11 +781,24 @@ test("api-semantics verify rejects stale harness, sink, or fixture generator evi
       admission: "independently-witnessed",
       semanticMatch: true,
     }));
+    const fixtures = prepareSharedFixtureDirectory(definitions[0]);
+    let fixtureSha256;
+    try {
+      fixtureSha256 = await benchmarkFixtureDigest(fixtures);
+    } finally {
+      fixtures.cleanup();
+    }
     const validReport = {
-      schemaVersion: 1,
+      schemaVersion: 2,
       action: "run",
       scenario: "api-semantics",
-      sourceSha256: await benchmarkSourceDigest(),
+      subject: {
+        candidate: await captureSourceIdentity(
+          fileURLToPath(new URL("../../", import.meta.url)),
+        ),
+        harnessSha256: await captureHarnessIdentity(),
+      },
+      fixtureSha256,
       definitions,
       evidence: {
         rows,
@@ -735,34 +820,28 @@ test("api-semantics verify rejects stale harness, sink, or fixture generator evi
       })),
     };
     const reportPath = join(outputDirectory, "api-semantics.json");
-    await writeFile(
-      reportPath,
-      JSON.stringify({
-        ...validReport,
-        evidence: { ...validReport.evidence, sinkSha256: "0".repeat(64) },
-      }),
-      "utf8",
-    );
-    await expect(
+    const verify = () =>
       runComparison(
-        {
-          action: "verify",
-          suite: "api-semantics",
-          input: "model.IRI.create",
-        },
+        { action: "verify", suite: "api-semantics", input: "model.IRI.create" },
         { outputDirectory },
-      ),
-    ).rejects.toThrow(/API semantic evidence/u);
+      );
+    for (const change of [
+      { evidence: { ...validReport.evidence, sinkSha256: "0".repeat(64) } },
+      { fixtureSha256: "0".repeat(64) },
+      {
+        subject: { ...validReport.subject, candidate: { mode: "unexpected" } },
+      },
+    ]) {
+      await writeFile(
+        reportPath,
+        JSON.stringify({ ...validReport, ...change }),
+        "utf8",
+      );
+      await expect(verify()).rejects.toThrow(/API semantic evidence/u);
+    }
 
     await writeFile(reportPath, JSON.stringify(validReport), "utf8");
-    const verified = await runComparison(
-      {
-        action: "verify",
-        suite: "api-semantics",
-        input: "model.IRI.create",
-      },
-      { outputDirectory },
-    );
+    const verified = await verify();
     expect(verified.cases).toHaveLength(2);
   });
 }, 30_000);
@@ -1581,6 +1660,82 @@ test("an explicit unguarded comparison reaches the normal run boundary", async (
   ).rejects.toThrow("Comparison requires an absolute output directory");
 });
 
+test.each([
+  {
+    label: "requires a Java reference",
+    output: [],
+    diagnostic:
+      /^Set OWLAPI_REFERENCE_CHECKOUT.*OWLAPI_REFERENCE_DISTRIBUTION/u,
+  },
+  {
+    label: "checks the source output path before looking up Java",
+    output: [
+      "--output",
+      fileURLToPath(
+        new URL("../../nonignored-ontology-evidence", import.meta.url),
+      ),
+    ],
+    diagnostic:
+      /^Source-mode --output must be outside the owlapi checkout or in a Git-ignored directory/u,
+  },
+])("pinned-source preparation $label", async ({ output, diagnostic }) => {
+  const result = await executeComparisonProcess(
+    process.execPath,
+    [
+      fileURLToPath(new URL("./compare-java-js.mjs", import.meta.url)),
+      "prepare",
+      "--input",
+      "universal-ontology/reference-data",
+      "--profile",
+      "normative-v1",
+      "--parsing-mode",
+      "compatible",
+      ...output,
+    ],
+    {
+      env: {
+        ...process.env,
+        OWLAPI_REFERENCE_CHECKOUT: "",
+        OWLAPI_REFERENCE_DISTRIBUTION: "",
+      },
+    },
+  );
+  expect(result.exitCode).toBe(2);
+  expect(result.stderr).toMatch(diagnostic);
+});
+
+test("source comparison output accepts external and Git-ignored paths", () =>
+  withScratch(async (directory) => {
+    const repository = join(directory, "checkout");
+    await mkdir(repository);
+    const git = await executeComparisonProcess("git", ["init", "--quiet"], {
+      cwd: repository,
+    });
+    expect(git.exitCode).toBe(0);
+    await writeFile(join(repository, ".gitignore"), ".release/\n");
+    expect(() =>
+      assertSourceQualificationOutputDirectory(
+        repository,
+        join(repository, ".release", "comparison-output"),
+      ),
+    ).not.toThrow();
+    expect(() =>
+      assertSourceQualificationOutputDirectory(
+        repository,
+        join(directory, "external-evidence"),
+      ),
+    ).not.toThrow();
+    expect(() =>
+      assertSourceQualificationOutputDirectory(
+        repository,
+        join(repository, ".release-other"),
+      ),
+    ).toThrow(/Git-ignored/u);
+    expect(() =>
+      assertSourceQualificationOutputDirectory(repository, repository),
+    ).toThrow(/Git-ignored/u);
+  }));
+
 test("the exact stock IDMP load gates both direct and closure observations", () => {
   const request = { input: "pistoia-idmp", profile: "java-owlapi-5.5.1" };
   const [stock] = comparisonCases({ ...request, javaXml: "stock" });
@@ -1827,9 +1982,11 @@ test("entity-free OVAE compares the pinned original without imports", () => {
   expect(expanded.definition.input.sha256).not.toBe(
     original.definition.input.sha256,
   );
-  expect(() =>
-    comparisonCases({ ...request, profile: "normative-v1" }),
-  ).toThrow(/Java-compatible direct load/u);
+  const [normative] = comparisonCases({ ...request, profile: "normative-v1" });
+  expect(normative.definition.input).toEqual(expanded.definition.input);
+  expect(normative.definition.originalRdfXml).toEqual(
+    expanded.definition.originalRdfXml,
+  );
   expect(
     compareExpandedRdfXmlDocuments(
       expanded.definition,

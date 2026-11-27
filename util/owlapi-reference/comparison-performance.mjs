@@ -152,7 +152,7 @@ export async function measureComparisonWorker(
   return { ...result, checkpoints };
 }
 
-const median = (values) => {
+export const median = (values) => {
   const sorted = [...values].sort((left, right) => left - right);
   const center = Math.floor(sorted.length / 2);
   return sorted.length % 2

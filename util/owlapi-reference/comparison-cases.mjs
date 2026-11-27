@@ -2,8 +2,6 @@ import {
   comparisonCatalogue,
   comparisonWitnesses,
   generatedFixture,
-  universalOntologyFixtures,
-  universalOntologyManifest,
 } from "./comparison-fixtures.mjs";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
 import { scopedRuleExpectation } from "./comparison-scoped-swrl.mjs";
@@ -35,7 +33,7 @@ import {
 } from "./comparison-ifcowl.mjs";
 import {
   rdfXmlExpansionKind,
-  rdfXmlExpansionSource,
+  rdfXmlDerivationSource,
 } from "./comparison-rdfxml-expansion.mjs";
 
 export const javaProfile = "java-owlapi-5.5.1";
@@ -287,17 +285,18 @@ const importIdentities = (imports) =>
 
 const pinnedScenarioInputs = (() => {
   const canonicalInputs = new Map(
-    [
-      ...comparisonCatalogue.fixtures,
-      ...comparisonWitnesses,
-      ...universalOntologyFixtures,
-    ].map((input) => [input.id, input]),
+    [...comparisonCatalogue.fixtures, ...comparisonWitnesses].map((input) => [
+      input.id,
+      input,
+    ]),
   );
   const scopedIds = [
     originalIdmp.id,
     brickInputId,
     ...nativeClosureControls,
-    ...universalOntologyFixtures.map(({ id }) => id),
+    ...comparisonCatalogue.fixtures
+      .filter(({ verification }) => verification?.expectedClosure)
+      .map(({ id }) => id),
   ];
   const identity = (id, policy) => {
     const input = canonicalInputs.get(id);
@@ -455,9 +454,17 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
   if (catalogue.schemaVersion !== 1)
     throw new Error("Unsupported comparison catalogue");
   const inputIds = [request.input ?? []].flat();
+  const pairedCorpus = request.suite === "paired-corpus";
   const selectsInputs = inputIds.length > 0;
   if (Boolean(request.suite) === selectsInputs) {
     throw new Error("Select exactly one comparison suite or input");
+  }
+  if (
+    pairedCorpus &&
+    ((request.scenario && request.scenario !== "direct-load") ||
+      (request.imports && request.imports !== "mapped"))
+  ) {
+    throw new Error("The paired corpus uses direct loads and mapped imports");
   }
   const scenarios = ["direct-load", "closure-roundtrip"];
   const strictFirst = request.scenario === "strict-first";
@@ -486,16 +493,18 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
   ) {
     throw new Error("Unknown native XML configuration");
   }
-  const inputs = [
-    ...catalogue.fixtures,
-    ...comparisonWitnesses,
-    ...universalOntologyFixtures,
-  ];
+  const inputs = [...catalogue.fixtures, ...comparisonWitnesses];
   const all = new Map(inputs.map((fixture) => [fixture.id, fixture]));
   if (all.size !== inputs.length)
     throw new Error("Duplicate input ID in comparison catalogue");
-  const selected = inputIds.length
-    ? inputIds.map((id) => {
+  const selectedIds = pairedCorpus ? catalogue.pairedCorpus : inputIds;
+  if (
+    pairedCorpus &&
+    (!Array.isArray(selectedIds) || selectedIds.length !== 75)
+  )
+    throw new Error("The paired corpus requires 75 pinned inputs");
+  const selected = selectedIds.length
+    ? selectedIds.map((id) => {
         const fixture = all.get(id);
         if (!fixture) throw new Error(`Unknown comparison input ${id}`);
         return fixture;
@@ -534,11 +543,13 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             parsingMode: request.parsingMode ?? "compatible",
           },
         ]
-      : selected.every(({ source }) => source.kind === rdfXmlExpansionKind)
-        ? [profileSelections[0]]
-        : request.suite
-          ? profileSelections
-          : [profileSelections[1]];
+      : pairedCorpus
+        ? profileSelections.slice(0, 2)
+        : selected.every(({ source }) => source.kind === rdfXmlExpansionKind)
+          ? [profileSelections[0]]
+          : request.suite
+            ? profileSelections
+            : [profileSelections[1]];
   for (const { behaviorProfileId, parsingMode } of profiles) {
     if (
       ![normativeProfile, javaProfile].includes(behaviorProfileId) ||
@@ -548,15 +559,19 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
     }
   }
   return selected.flatMap((input) => {
-    const expansion = rdfXmlExpansionSource(input, catalogue);
+    const derivation = rdfXmlDerivationSource(input, catalogue);
+    const expansion =
+      derivation?.kind === rdfXmlExpansionKind ? derivation : undefined;
     const policy =
       request.imports ??
-      (expansion ||
+      (pairedCorpus ||
+      expansion ||
       (request.suite === "prospects" && input.id === ifcowlInputId)
         ? "mapped"
         : "recorded");
-    const universalOntology = input.suite === "universal-ontology";
-    const oracle = universalOntology ? pinnedSourceOracle() : null;
+    const verification = input.verification;
+    const oracle =
+      verification?.oracle === "pinned-source" ? pinnedSourceOracle() : null;
     const imports = importedDocuments(input, all, catalogue.standIns, policy);
     const admittedInputs = {
       input: documentIdentity(input),
@@ -575,7 +590,9 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
       /^https?:/u.test(document.documentIRI),
     );
     const includeClosure =
-      input.closure || (request.suite === "prospects" && input.role === "root");
+      !pairedCorpus &&
+      (input.closure ||
+        (request.suite === "prospects" && input.role === "root"));
     const selectedScenarios = request.scenario
       ? [request.scenario]
       : request.suite && includeClosure
@@ -619,7 +636,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
         const pinnedOntologyClosure =
           scenario === "closure-roundtrip" &&
           input.closure &&
-          universalOntology &&
+          verification?.expectedClosure &&
           exactRecordedInputs;
         // The exact round trip preserves the admitted axiom set. Keep the
         // unconfigured native writer result as a separate observation.
@@ -635,12 +652,9 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
         const compatibleJava =
           profile.behaviorProfileId === javaProfile &&
           profile.parsingMode === "compatible";
-        if (
-          expansion &&
-          (scenario !== "direct-load" || policy !== "mapped" || !compatibleJava)
-        ) {
+        if (expansion && (scenario !== "direct-load" || policy !== "mapped")) {
           throw new Error(
-            "Entity-free RDF/XML requires a Java-compatible direct load with mapped imports",
+            "Entity-free RDF/XML requires a direct load with mapped imports",
           );
         }
         const oggArchivePin = oggArchiveXmlRefusalInputs.get(input.id);
@@ -719,10 +733,13 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           }
         }
         const requiredImportClosure = expansion
-          ? [
-              input.documentIRI,
-              ...new Set(imports.map(([, member]) => member.ontologyIRI)),
-            ].map((ontologyIRI) => ({ ontologyIRI, versionIRI: null }))
+          ? structuredClone(
+              expansion.expectedClosure ??
+                [
+                  input.documentIRI,
+                  ...new Set(imports.map(([, member]) => member.ontologyIRI)),
+                ].map((ontologyIRI) => ({ ontologyIRI, versionIRI: null })),
+            )
           : upstreamControl && !expectedLoadRefusals
             ? structuredClone(upstreamControl.closure)
             : exactMappedIfcowlInputs && !strictFirst && !expectedLoadRefusals
@@ -751,11 +768,8 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           ...(pinnedOntologyClosure &&
           profile.behaviorProfileId === normativeProfile
             ? {
-                expectedClosure: universalOntologyManifest.roots.find(
-                  (root) => root.path === input.source.path,
-                ).expectedClosure,
-                allowedSourceDiagnostics:
-                  universalOntologyManifest.allowedSourceDiagnostics,
+                expectedClosure: verification.expectedClosure,
+                allowedSourceDiagnostics: verification.allowedSourceDiagnostics,
               }
             : {}),
           importPolicy: policy,

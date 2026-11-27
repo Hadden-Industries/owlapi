@@ -11,8 +11,6 @@ import {
 } from "../../scripts/public-registry-consumer.mjs";
 import {
   comparisonCatalogue,
-  universalOntologyFixtures,
-  universalOntologyManifest,
   resolveComparisonFixture,
   verifyPinnedFile,
 } from "./comparison-fixtures.mjs";
@@ -79,12 +77,10 @@ import {
   captureSourceIdentity,
   installCandidate,
   loadPublicApi,
-  materializePinnedOntologySources,
-} from "./qualify-universal-ontology.mjs";
+} from "./comparison-subject.mjs";
 import {
   comparisonCases,
   documentIdentity,
-  javaProfile,
   literalScenarios,
   normativeProfile,
   selectsPublicBehavior,
@@ -95,7 +91,6 @@ import {
 export { comparisonCases };
 
 import { matchesScopedRules } from "./comparison-scoped-swrl.mjs";
-import { universalOntologyManifestFile } from "./universal-ontology-manifest.mjs";
 
 const repository = fileURLToPath(new URL("../../", import.meta.url));
 const comparisonInputs = [
@@ -109,8 +104,6 @@ const comparisonInputs = [
   "./comparison-evidence.mjs",
   "./comparison-fixtures.mjs",
   "./comparison-fixtures.json",
-  "./universal-ontology-manifest.mjs",
-  `./${universalOntologyManifestFile}`,
   "./comparison-job.mjs",
   "./run-comparison-job.ps1",
   "./comparison-oracle.mjs",
@@ -123,10 +116,14 @@ const comparisonInputs = [
   "./RunWithClasspath.java",
   "./comparison-performance.mjs",
   "./comparison-benchmarks.mjs",
+  "../benchmark-owlapi-java-parity.mjs",
+  "../generate-owlapi-benchmark-fixtures.cjs",
+  "./BenchmarkPublicApiSurface.java",
+  "./run-java-observation.mjs",
   "../verify-benchmark-api-semantics.mjs",
   "./VerifyBenchmarkApiSemantics.java",
   "./comparison-release-evidence.mjs",
-  "./qualify-universal-ontology.mjs",
+  "./comparison-subject.mjs",
   "./run-import-closure-contract.mjs",
   "./comparison-writer.mjs",
   "./comparison-writer-fixtures.mjs",
@@ -174,7 +171,7 @@ const comparisonInputs = [
   "../../test/consumers/browser/import-map/reference-import-map.json",
 ];
 
-async function captureHarnessIdentity() {
+export async function captureHarnessIdentity() {
   const files = [];
   for (const path of comparisonInputs) {
     files.push([path, sha256(await readFile(new URL(path, import.meta.url)))]);
@@ -791,8 +788,8 @@ function summarizeLoadPerformance(
   const nativeLoad = native.javaLoad?.ontology;
   const sameOperation =
     definition.scenario === "direct-load" &&
-    definition.behaviorProfileId === javaProfile &&
-    definition.parsingMode === "compatible" &&
+    caseVerdict(definition, ["behavior"], js, native, null).measures
+      .behavior === "observed" &&
     native.structure?.status === "match" &&
     native.networkAttempts === 0 &&
     nativeLoad?.unparsedRdf?.length === 0 &&
@@ -1311,6 +1308,44 @@ async function observeComparisonSubject(options) {
   return captureSourceIdentity(options.packageDirectory);
 }
 
+async function installComparisonSubject(options) {
+  if (options.registryMetadata) {
+    const directory = join(options.outputDirectory, "consumer");
+    installRegistryConsumer({ directory, metadata: options.registryMetadata });
+    options.consumerDirectory = directory;
+    options.packageDirectory = join(directory, "node_modules", "owlapi");
+  } else if (options.candidateDirectory) {
+    const installed = await installCandidate(
+      options.candidateDirectory,
+      options.outputDirectory,
+      { consumerLock: options.consumerLock, offline: options.offline },
+    );
+    options.packageDirectory = installed.packageDirectory;
+    options.consumerDirectory = installed.consumerDirectory;
+  }
+}
+
+function benchmarkEnvironment(environment) {
+  const options = {
+    ...environment,
+    packageDirectory: environment.packageDirectory ?? repository,
+  };
+  return {
+    ...options,
+    async benchmarkSubject(install = false) {
+      if (install) await installComparisonSubject(options);
+      return {
+        packageDirectory: options.packageDirectory,
+        consumerDirectory: options.consumerDirectory,
+        identity: {
+          candidate: await observeComparisonSubject(options),
+          harnessSha256: await captureHarnessIdentity(),
+        },
+      };
+    },
+  };
+}
+
 async function readEvidence(directory, pin, name, caseId, executionId) {
   if (
     pin?.name !== name ||
@@ -1760,13 +1795,6 @@ async function executeComparison(request, environment = {}) {
     throw new Error(
       "Java timing baseline controls require the api-benchmarks suite",
     );
-  if (
-    ["api-benchmarks", "api-semantics"].includes(suite) &&
-    environment.candidateDirectory
-  )
-    throw new Error(
-      "The API benchmark workers measure the local source package",
-    );
   if (environment.registryVersion !== undefined) {
     if (environment.offline)
       throw new Error(
@@ -1866,7 +1894,10 @@ async function executeComparison(request, environment = {}) {
         environment.outputDirectory,
       );
     }
-    return runBenchmarkApiSemanticsComparison(request, environment);
+    return runBenchmarkApiSemanticsComparison(
+      request,
+      benchmarkEnvironment(environment),
+    );
   }
   if (request.suite === "io-admission" || request.scenario === "io-admission") {
     if (
@@ -2018,7 +2049,7 @@ async function executeComparison(request, environment = {}) {
         environment.outputDirectory,
       );
     }
-    return runBenchmarkComparison(request, environment);
+    return runBenchmarkComparison(request, benchmarkEnvironment(environment));
   }
   const available = comparisonCases(request, environment.catalogue);
   const planned = request.plannedCases ? new Set(request.plannedCases) : null;
@@ -2067,9 +2098,14 @@ async function executeComparison(request, environment = {}) {
     options.registryMetadata = await fetchRegistryMetadata(
       environment.registryVersion,
     );
-  if (!isAbsolute(options.outputDirectory ?? ""))
-    throw new Error("Comparison requires an absolute output directory");
-  assertSourceQualificationOutputDirectory(repository, options.outputDirectory);
+  if (request.action !== "prepare" || options.outputDirectory !== undefined) {
+    if (!isAbsolute(options.outputDirectory ?? ""))
+      throw new Error("Comparison requires an absolute output directory");
+    assertSourceQualificationOutputDirectory(
+      repository,
+      options.outputDirectory,
+    );
+  }
   if (
     entries.some(
       ({ definition }) => definition.oracle?.kind === "pinned-source",
@@ -2156,29 +2192,9 @@ async function executeComparison(request, environment = {}) {
   }
   if (request.action === "verify")
     return verifyComparison(entries, measurements, options);
-  await mkdir(options.outputDirectory);
   const cases = [];
   if (request.action === "prepare") {
-    if (
-      options.ontologyRepository &&
-      entries.some(({ input }) => input.suite === "universal-ontology")
-    ) {
-      options.localSeeds = new Map(options.localSeeds);
-      const sources = await materializePinnedOntologySources(
-        options.ontologyRepository,
-        join(options.outputDirectory, "universal-ontology-originals"),
-        universalOntologyManifest,
-      );
-      const byPath = new Map(
-        sources.catalogMappings.map(({ path, documentPath }) => [
-          path,
-          documentPath,
-        ]),
-      );
-      for (const fixture of universalOntologyFixtures) {
-        options.localSeeds.set(fixture.id, byPath.get(fixture.source.path));
-      }
-    }
+    if (options.outputDirectory) await mkdir(options.outputDirectory);
     for (const entry of entries) {
       try {
         if (!builtInObservation(entry.definition))
@@ -2203,27 +2219,16 @@ async function executeComparison(request, environment = {}) {
       oracle: classpath.identity,
       cases,
     };
-    await publishComparisonJson(
-      options.outputDirectory,
-      "preparation.json",
-      result,
-    );
+    if (options.outputDirectory)
+      await publishComparisonJson(
+        options.outputDirectory,
+        "preparation.json",
+        result,
+      );
     return result;
   }
-  if (options.registryMetadata) {
-    const directory = join(options.outputDirectory, "consumer");
-    installRegistryConsumer({ directory, metadata: options.registryMetadata });
-    options.consumerDirectory = directory;
-    options.packageDirectory = join(directory, "node_modules", "owlapi");
-  } else if (options.candidateDirectory) {
-    const installed = await installCandidate(
-      options.candidateDirectory,
-      options.outputDirectory,
-      { consumerLock: options.consumerLock, offline: options.offline },
-    );
-    options.packageDirectory = installed.packageDirectory;
-    options.consumerDirectory = installed.consumerDirectory;
-  }
+  await mkdir(options.outputDirectory);
+  await installComparisonSubject(options);
   const candidate = await observeComparisonSubject(options);
   if (!candidate)
     throw new Error("An installed candidate identity is required");
@@ -2366,7 +2371,6 @@ const optionNames = [
   "source-transport",
   "maven-directory",
   "classpath-file",
-  "ontology-repository",
   "reference-checkout",
   "reference-distribution",
   "java-build-cache",
@@ -2441,7 +2445,6 @@ function parseComparisonArguments([action, ...args]) {
       javaSelection: values["java-selection"],
       mavenDirectory: values["maven-directory"],
       classpathFile: values["classpath-file"],
-      ontologyRepository: values["ontology-repository"],
       referenceCheckout: values["reference-checkout"],
       referenceDistribution: values["reference-distribution"],
       javaBuildCacheDirectory: values["java-build-cache"],

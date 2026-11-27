@@ -10,65 +10,25 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { delimiter, join, resolve } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
-import { parseArgs } from "node:util";
-import { OWLManager } from "../apibinding/index.js";
-import { OWLDocumentFormats, RDFXMLDocumentFormat } from "../formats/index.js";
-import { StringDocumentSource, StringDocumentTarget } from "../io/index.js";
-import { NodeDocumentLoader } from "../io/node/index.js";
-import { ManchesterOWLSyntaxOWLObjectRendererImpl } from "../manchestersyntax/renderer/index.js";
-import {
-  AXIOM_KINDS,
-  AddAxiom,
-  AddImport,
-  AddOntologyAnnotation,
-  CLASS_EXPRESSION_KINDS,
-  IRI,
-  OWLOntologyLoaderConfiguration,
-  OWLOntologyWriterConfiguration,
-  OWLObjectKind,
-  OWL_OBJECT_KINDS,
-  RemoveAxiom,
-  RemoveImport,
-  RemoveOntologyAnnotation,
-  SetOntologyID,
-  StructuralSet,
-  dispatchAxiom,
-  dispatchClassExpression,
-  dispatchOwlObject,
-} from "../model/index.js";
-import { AxiomAnnotations, Imports } from "../model/parameters/index.js";
-import {
-  LocalityClass,
-  SyntacticLocalityModuleExtractor,
-} from "../modularity/locality/index.js";
-import {
-  OWL2DLProfile,
-  OWL2ELProfile,
-  OWL2QLProfile,
-  OWL2RLProfile,
-} from "../profiles/index.js";
+import { fileURLToPath } from "node:url";
+import { OWLObjectKind } from "../model/kinds.js";
+import { dispatchOwlObject } from "../model/dispatch.js";
 import { canonicalJson } from "../scripts/canonical-json.mjs";
 import {
   javaProcessEnvironment,
   javaToolchainSelection,
   observeSelectedJavaJdk,
 } from "../scripts/java-toolchain.mjs";
-import { EntitySearcher } from "../search/index.js";
 import {
   BEHAVIOR_PROFILES,
   BENCHMARK_DEFINITIONS,
+  benchmarkImportClosureManager,
+  buildAxiomBatch,
+  buildProfileOntology,
+  createRichOntologyFixture,
+  loadBenchmarkApi,
   prepareSharedFixtureDirectory,
 } from "./benchmark-owlapi-java-parity.mjs";
-import {
-  AnnotationValueShortFormProvider,
-  OWLEntityRemover,
-  OWLEntityRenamer,
-  OWLObjectDuplicator,
-  OWLOntologyImportsClosureSetProvider,
-  OWLOntologyMerger,
-  SimpleShortFormProvider,
-} from "./index.js";
 import { admitReleasedClasspath } from "./owlapi-reference/comparison-oracle.mjs";
 import {
   ensureCachedJavaHelperBuild,
@@ -79,25 +39,13 @@ export const API_SEMANTICS_SCHEMA_VERSION = 1;
 
 const ROOT_DIR = fileURLToPath(new URL("../", import.meta.url));
 const HARNESS_PATH = "util/owlapi-reference/VerifyBenchmarkApiSemantics.java";
-const RICH_NS = "urn:bench:rich#";
-const IMPORT_NS = "urn:bench:rich:import#";
 const RICH_COUNT = 60;
-const IMPORT_COUNT = 20;
 const SAVE_FORMATS = Object.freeze([
   "functional",
   "owlxml",
   "rdfxml",
   "turtle",
 ]);
-const XSD_STRING_IRI = IRI.create("http://www.w3.org/2001/XMLSchema#string");
-const XSD_INTEGER_IRI = IRI.create("http://www.w3.org/2001/XMLSchema#integer");
-const XSD_DECIMAL_IRI = IRI.create("http://www.w3.org/2001/XMLSchema#decimal");
-const XSD_FLOAT_IRI = IRI.create("http://www.w3.org/2001/XMLSchema#float");
-const XSD_BOOLEAN_IRI = IRI.create("http://www.w3.org/2001/XMLSchema#boolean");
-const MIN_INCLUSIVE_IRI = IRI.create(
-  "http://www.w3.org/2001/XMLSchema#minInclusive",
-);
-
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const structuralDigest = (value) => sha256(canonicalJson(value));
 
@@ -120,20 +68,21 @@ const sortCanonical = (values, mapper) => {
   return entries.map((entry) => entry.ast);
 };
 
-const FORMATS = Object.freeze({
-  functional: OWLDocumentFormats.FUNCTIONAL,
-  manchester: OWLDocumentFormats.MANCHESTER,
-  owlxml: OWLDocumentFormats.OWL_XML,
-  rdfxml: OWLDocumentFormats.RDF_XML,
-  turtle: OWLDocumentFormats.TURTLE,
-  ntriples: OWLDocumentFormats.N_TRIPLES,
-  nquads: OWLDocumentFormats.N_QUADS,
-  trig: OWLDocumentFormats.TRIG,
-  jsonld: OWLDocumentFormats.JSON_LD,
-  dl: OWLDocumentFormats.DL,
-  krss2: OWLDocumentFormats.KRSS2,
-  krss1: OWLDocumentFormats.KRSS1,
-});
+const benchmarkFormats = (OWLDocumentFormats) =>
+  Object.freeze({
+    functional: OWLDocumentFormats.FUNCTIONAL,
+    manchester: OWLDocumentFormats.MANCHESTER,
+    owlxml: OWLDocumentFormats.OWL_XML,
+    rdfxml: OWLDocumentFormats.RDF_XML,
+    turtle: OWLDocumentFormats.TURTLE,
+    ntriples: OWLDocumentFormats.N_TRIPLES,
+    nquads: OWLDocumentFormats.N_QUADS,
+    trig: OWLDocumentFormats.TRIG,
+    jsonld: OWLDocumentFormats.JSON_LD,
+    dl: OWLDocumentFormats.DL,
+    krss2: OWLDocumentFormats.KRSS2,
+    krss1: OWLDocumentFormats.KRSS1,
+  });
 
 const canonicalIri = (iri) => ({
   kind: OWLObjectKind.IRI,
@@ -1282,255 +1231,6 @@ export function classifyApiWorkloadRow({
   };
 }
 
-const buildAxiomBatch = (df, ns, count, recordEntities, target) => {
-  const axioms = [];
-  const xsdString = df.getOWLDatatype(XSD_STRING_IRI);
-  const xsdInteger = df.getOWLDatatype(XSD_INTEGER_IRI);
-  const xsdDecimal = df.getOWLDatatype(XSD_DECIMAL_IRI);
-  const rdfsLabel = df.getRDFSLabel();
-
-  for (let i = 0; i < count; i += 1) {
-    const c = df.getOWLClass(IRI.create(`${ns}C${i}`));
-    const d = df.getOWLClass(IRI.create(`${ns}D${i}`));
-    const op = df.getOWLObjectProperty(IRI.create(`${ns}op${i}`));
-    const q = df.getOWLObjectProperty(IRI.create(`${ns}q${i}`));
-    const dp = df.getOWLDataProperty(IRI.create(`${ns}dp${i}`));
-    const dp2 = df.getOWLDataProperty(IRI.create(`${ns}dp2${i}`));
-    const ap = df.getOWLAnnotationProperty(IRI.create(`${ns}ap${i}`));
-    const dt = df.getOWLDatatype(IRI.create(`${ns}dt${i}`));
-    const ind = df.getOWLNamedIndividual(IRI.create(`${ns}ind${i}`));
-    const ind2 = df.getOWLNamedIndividual(IRI.create(`${ns}ind2${i}`));
-
-    if (recordEntities && target) {
-      target.classes.push(c);
-      target.superClasses.push(d);
-      target.objectProps.push(op);
-      target.superObjectProps.push(q);
-      target.dataProps.push(dp);
-      target.superDataProps.push(dp2);
-      target.annProps.push(ap);
-      target.datatypes.push(dt);
-      target.individuals.push(ind);
-      target.otherIndividuals.push(ind2);
-    }
-
-    axioms.push(df.getOWLDeclarationAxiom(c));
-    axioms.push(df.getOWLDeclarationAxiom(d));
-    axioms.push(df.getOWLDeclarationAxiom(op));
-    axioms.push(df.getOWLDeclarationAxiom(q));
-    axioms.push(df.getOWLDeclarationAxiom(dp));
-    axioms.push(df.getOWLDeclarationAxiom(dp2));
-    axioms.push(df.getOWLDeclarationAxiom(ap));
-    axioms.push(df.getOWLDeclarationAxiom(dt));
-    axioms.push(df.getOWLDeclarationAxiom(ind));
-    axioms.push(df.getOWLDeclarationAxiom(ind2));
-
-    if (i < 10) {
-      const punIri = IRI.create(`${ns}pun${i}`);
-      axioms.push(df.getOWLDeclarationAxiom(df.getOWLClass(punIri)));
-      axioms.push(df.getOWLDeclarationAxiom(df.getOWLNamedIndividual(punIri)));
-    }
-    if (i < 20) {
-      const anon = df.getOWLAnonymousIndividual(`bnode_${i}`);
-      axioms.push(df.getOWLObjectPropertyAssertionAxiom(op, ind, anon));
-    }
-
-    const ann = df.getOWLAnnotation(rdfsLabel, df.getOWLLiteral(`sub_${i}`));
-    axioms.push(df.getOWLSubClassOfAxiom(c, d, [ann]));
-    const someExpr = df.getOWLObjectSomeValuesFrom(op, d);
-    const allExpr = df.getOWLObjectAllValuesFrom(op, d);
-    const interExpr = df.getOWLObjectIntersectionOf([d, allExpr]);
-    if (recordEntities && target) {
-      target.complexExpressions.push(someExpr);
-      target.complexExpressions.push(interExpr);
-    }
-    axioms.push(df.getOWLSubClassOfAxiom(c, someExpr));
-    axioms.push(df.getOWLEquivalentClassesAxiom([c, interExpr]));
-    axioms.push(df.getOWLDisjointClassesAxiom([c, d]));
-    if (i < 20) {
-      axioms.push(
-        df.getOWLDisjointUnionAxiom(c, [d, df.getOWLObjectHasSelf(op)]),
-      );
-    }
-
-    axioms.push(df.getOWLSubObjectPropertyOfAxiom(op, q));
-    if (i < 20) {
-      axioms.push(df.getOWLSubPropertyChainOfAxiom([op, q], q));
-      axioms.push(df.getOWLEquivalentObjectPropertiesAxiom([op, q]));
-    } else if (i < 40) {
-      axioms.push(df.getOWLDisjointObjectPropertiesAxiom([op, q]));
-    }
-    axioms.push(df.getOWLObjectPropertyDomainAxiom(op, c));
-    axioms.push(df.getOWLObjectPropertyRangeAxiom(op, d));
-    axioms.push(df.getOWLInverseObjectPropertiesAxiom(op, q));
-    axioms.push(df.getOWLFunctionalObjectPropertyAxiom(op));
-    if (i < 20) {
-      axioms.push(df.getOWLInverseFunctionalObjectPropertyAxiom(op));
-      axioms.push(df.getOWLSymmetricObjectPropertyAxiom(op));
-      axioms.push(df.getOWLReflexiveObjectPropertyAxiom(op));
-      axioms.push(df.getOWLTransitiveObjectPropertyAxiom(q));
-    } else if (i < 40) {
-      axioms.push(df.getOWLAsymmetricObjectPropertyAxiom(q));
-      axioms.push(df.getOWLIrreflexiveObjectPropertyAxiom(q));
-    }
-
-    axioms.push(df.getOWLSubDataPropertyOfAxiom(dp, dp2));
-    if (i < 20) {
-      axioms.push(df.getOWLEquivalentDataPropertiesAxiom([dp, dp2]));
-    } else if (i < 40) {
-      axioms.push(df.getOWLDisjointDataPropertiesAxiom([dp, dp2]));
-    }
-    axioms.push(df.getOWLDataPropertyDomainAxiom(dp, c));
-    axioms.push(df.getOWLDataPropertyRangeAxiom(dp, xsdString));
-    axioms.push(df.getOWLFunctionalDataPropertyAxiom(dp));
-    if (i < 20) {
-      axioms.push(
-        df.getOWLDatatypeDefinitionAxiom(
-          dt,
-          df.getOWLDataIntersectionOf([xsdInteger, xsdDecimal]),
-        ),
-      );
-      axioms.push(df.getOWLHasKeyAxiom(c, [op], [dp]));
-    }
-
-    axioms.push(df.getOWLClassAssertionAxiom(c, ind));
-    axioms.push(df.getOWLObjectPropertyAssertionAxiom(op, ind, ind2));
-    axioms.push(df.getOWLNegativeObjectPropertyAssertionAxiom(q, ind, ind2));
-    axioms.push(
-      df.getOWLDataPropertyAssertionAxiom(
-        dp,
-        ind,
-        df.getOWLLiteral(`val_${i}`),
-      ),
-    );
-    axioms.push(
-      df.getOWLNegativeDataPropertyAssertionAxiom(
-        dp2,
-        ind,
-        df.getOWLLiteral(`neg_${i}`),
-      ),
-    );
-    if (i < 30) {
-      axioms.push(df.getOWLSameIndividualAxiom([ind, ind2]));
-    } else {
-      axioms.push(df.getOWLDifferentIndividualsAxiom([ind, ind2]));
-    }
-
-    axioms.push(
-      df.getOWLAnnotationAssertionAxiom(
-        rdfsLabel,
-        c.iri,
-        df.getOWLLiteral(`Class ${i}`, "en"),
-      ),
-    );
-    axioms.push(
-      df.getOWLAnnotationAssertionAxiom(
-        ap,
-        c.iri,
-        df.getOWLLiteral(`Alt ${i}`, "fr"),
-      ),
-    );
-    axioms.push(df.getOWLSubAnnotationPropertyOfAxiom(ap, rdfsLabel));
-    axioms.push(df.getOWLAnnotationPropertyDomainAxiom(ap, c.iri));
-    axioms.push(df.getOWLAnnotationPropertyRangeAxiom(ap, d.iri));
-  }
-  return axioms;
-};
-
-const createRichOntologyFixture = (behaviorProfileId) => {
-  const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId });
-  const df = manager.getOWLDataFactory();
-  const importedIRI = IRI.create("urn:bench:rich:imported");
-  const mainIRI = IRI.create("urn:bench:rich:main");
-  const importedOntology = manager.createOntology(
-    df.getOWLOntologyID(importedIRI),
-  );
-  const mainOntology = manager.createOntology(df.getOWLOntologyID(mainIRI));
-  const fixture = {
-    manager,
-    df,
-    mainOntology,
-    importedOntology,
-    classes: [],
-    superClasses: [],
-    objectProps: [],
-    superObjectProps: [],
-    dataProps: [],
-    superDataProps: [],
-    annProps: [],
-    datatypes: [],
-    individuals: [],
-    otherIndividuals: [],
-    allMainAxioms: [],
-    complexExpressions: [],
-  };
-  manager.addAxioms(
-    importedOntology,
-    buildAxiomBatch(df, IMPORT_NS, IMPORT_COUNT, false, null),
-  );
-  const mainAxioms = buildAxiomBatch(df, RICH_NS, RICH_COUNT, true, fixture);
-  fixture.allMainAxioms.push(...mainAxioms);
-  manager.addAxioms(mainOntology, mainAxioms);
-  manager.applyChange(
-    new AddImport(mainOntology, df.getOWLImportsDeclaration(importedIRI)),
-  );
-  for (let i = 0; i < 5; i += 1) {
-    manager.applyChange(
-      new AddOntologyAnnotation(
-        mainOntology,
-        df.getOWLAnnotation(
-          df.getRDFSLabel(),
-          df.getOWLLiteral(`Ontology Label ${i}`, "en"),
-        ),
-      ),
-    );
-  }
-  return fixture;
-};
-
-const buildProfileOntology = (behaviorProfileId) => {
-  const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId });
-  const df = manager.getOWLDataFactory();
-  const ont = manager.createOntology(
-    df.getOWLOntologyID(IRI.create("urn:bench:profile")),
-  );
-  const xsdString = df.getOWLDatatype(XSD_STRING_IRI);
-  const xsdInteger = df.getOWLDatatype(XSD_INTEGER_IRI);
-  const axioms = [];
-  for (let i = 0; i < 40; i += 1) {
-    const c = df.getOWLClass(IRI.create(`urn:bench:profile#C${i}`));
-    const d = df.getOWLClass(IRI.create(`urn:bench:profile#D${i}`));
-    const op = df.getOWLObjectProperty(IRI.create(`urn:bench:profile#op${i}`));
-    const dp = df.getOWLDataProperty(IRI.create(`urn:bench:profile#dp${i}`));
-    const ind = df.getOWLNamedIndividual(
-      IRI.create(`urn:bench:profile#ind${i}`),
-    );
-    axioms.push(df.getOWLDeclarationAxiom(c));
-    axioms.push(df.getOWLDeclarationAxiom(d));
-    axioms.push(df.getOWLDeclarationAxiom(op));
-    axioms.push(df.getOWLDeclarationAxiom(dp));
-    axioms.push(df.getOWLDeclarationAxiom(ind));
-    axioms.push(df.getOWLSubClassOfAxiom(c, d));
-    axioms.push(
-      df.getOWLSubClassOfAxiom(c, df.getOWLObjectSomeValuesFrom(op, d)),
-    );
-    axioms.push(df.getOWLObjectPropertyDomainAxiom(op, c));
-    axioms.push(df.getOWLObjectPropertyRangeAxiom(op, d));
-    axioms.push(df.getOWLDataPropertyDomainAxiom(dp, c));
-    axioms.push(df.getOWLDataPropertyRangeAxiom(dp, xsdString));
-    axioms.push(df.getOWLClassAssertionAxiom(c, ind));
-    axioms.push(
-      df.getOWLDataPropertyAssertionAxiom(
-        dp,
-        ind,
-        df.getOWLLiteral(String(i), xsdInteger),
-      ),
-    );
-  }
-  manager.addAxioms(ont, axioms);
-  return ont;
-};
-
 const literalSnapshot = (lit) => ({
   lexicalForm: lit.lexicalForm,
   datatypeIRI: lit.datatype.iri.value,
@@ -1578,30 +1278,75 @@ const rdfTripleSnapshot = (triple) => ({
 /** Observe all 70 public API workloads semantically for one JS behavior profile without timers. */
 export async function observeJsApiSemantics(
   behaviorProfileId,
-  { fixtures, syntaxCount = 100, importClosureCount = 8, saveDirectory } = {},
+  {
+    fixtures,
+    syntaxCount = 100,
+    importClosureCount = 8,
+    saveDirectory,
+    publicApi,
+  } = {},
 ) {
   const ownsFixtures = !fixtures;
   const resolvedFixtures =
     fixtures ??
     prepareSharedFixtureDirectory({ syntaxCount, importClosureCount });
   try {
-    const rich = createRichOntologyFixture(behaviorProfileId);
-    const profileOntology = buildProfileOntology(behaviorProfileId);
-    const createImportClosureManager = () =>
-      OWLManager.createOWLOntologyManager({
-        behaviorProfileId,
-        documentLoader: new NodeDocumentLoader({ authorize: () => true }),
-        iriMappers: [
-          {
-            getDocumentIRI(iri) {
-              return iri.value === resolvedFixtures.importClosure.rootIRI
-                ? null
-                : (resolvedFixtures.importClosure.fileIRIs.get(iri.value) ??
-                    null);
-            },
-          },
-        ],
-      });
+    const api = publicApi ?? (await loadBenchmarkApi());
+    const {
+      OWLManager,
+      OWLDocumentFormats,
+      RDFXMLDocumentFormat,
+      StringDocumentSource,
+      StringDocumentTarget,
+      ManchesterOWLSyntaxOWLObjectRendererImpl,
+      AXIOM_KINDS,
+      CLASS_EXPRESSION_KINDS,
+      OWL_OBJECT_KINDS,
+      AddAxiom,
+      AddImport,
+      AddOntologyAnnotation,
+      IRI,
+      OWLOntologyLoaderConfiguration,
+      OWLOntologyWriterConfiguration,
+      RemoveAxiom,
+      RemoveImport,
+      RemoveOntologyAnnotation,
+      SetOntologyID,
+      StructuralSet,
+      dispatchAxiom,
+      dispatchClassExpression,
+      dispatchOwlObject,
+      AxiomAnnotations,
+      Imports,
+      LocalityClass,
+      SyntacticLocalityModuleExtractor,
+      OWL2DLProfile,
+      OWL2ELProfile,
+      OWL2QLProfile,
+      OWL2RLProfile,
+      EntitySearcher,
+      AnnotationValueShortFormProvider,
+      OWLEntityRemover,
+      OWLEntityRenamer,
+      OWLObjectDuplicator,
+      OWLOntologyImportsClosureSetProvider,
+      OWLOntologyMerger,
+      SimpleShortFormProvider,
+      XSD_STRING_IRI,
+      XSD_INTEGER_IRI,
+      XSD_DECIMAL_IRI,
+      XSD_FLOAT_IRI,
+      XSD_BOOLEAN_IRI,
+      MIN_INCLUSIVE_IRI,
+    } = api;
+    const FORMATS = benchmarkFormats(OWLDocumentFormats);
+    const rich = createRichOntologyFixture(behaviorProfileId, api);
+    const profileOntology = buildProfileOntology(behaviorProfileId, api);
+    const createImportClosureManager = benchmarkImportClosureManager(
+      behaviorProfileId,
+      resolvedFixtures.importClosure,
+      api,
+    );
     const closureManager = createImportClosureManager();
     const loadedClosureRoot =
       await closureManager.loadOntologyFromOntologyDocument(
@@ -1642,6 +1387,7 @@ export async function observeJsApiSemantics(
       20,
       false,
       null,
+      api,
     );
     utilManager.addAxioms(utilOntology, utilAxioms);
     const utilSeedEntities = [...utilOntology.getClassesInSignature()]
@@ -1881,7 +1627,14 @@ export async function observeJsApiSemantics(
       const df = OWLManager.createOWLOntologyManager({
         behaviorProfileId,
       }).getOWLDataFactory();
-      const built = buildAxiomBatch(df, "urn:bench:factory#", 35, false, null);
+      const built = buildAxiomBatch(
+        df,
+        "urn:bench:factory#",
+        35,
+        false,
+        null,
+        api,
+      );
       workloads["factory.axioms"] = {
         ordered: built.map(canonicalizeOwlObject),
         uniqueSorted: sortCanonical(
@@ -2859,6 +2612,9 @@ export async function verifyBenchmarkApiSemantics({
   syntaxCount = 100,
   importClosureCount = 8,
   filterIds = null,
+  fixtures: sharedFixtures,
+  publicApi,
+  javaHeapMiB,
 }) {
   assert(javaHome, "javaHome is required");
   javaHome = resolve(javaHome);
@@ -2874,10 +2630,12 @@ export async function verifyBenchmarkApiSemantics({
       ? undefined
       : javaToolchainSelection(javaSelection),
   );
-  const fixtures = prepareSharedFixtureDirectory({
-    syntaxCount,
-    importClosureCount,
-  });
+  const api = publicApi ?? (await loadBenchmarkApi());
+  const { OWLManager, StringDocumentSource } = api;
+  const FORMATS = benchmarkFormats(api.OWLDocumentFormats);
+  const fixtures =
+    sharedFixtures ??
+    prepareSharedFixtureDirectory({ syntaxCount, importClosureCount });
   const scratch = mkdtempSync(join(tmpdir(), "owlapi-api-semantics-"));
   let compiledClassDirectory = scratch;
   let helperBuild = {
@@ -2896,6 +2654,9 @@ export async function verifyBenchmarkApiSemantics({
       [
         `${program === "javac" ? "-J" : ""}-Djava.io.tmpdir=${scratch}`,
         `${program === "javac" ? "-J" : ""}-XX:ErrorFile=${join(scratch, "hs_err_pid%p.log")}`,
+        ...(program === "java" && javaHeapMiB !== undefined
+          ? ["-Xmx" + javaHeapMiB + "m"]
+          : []),
         ...args,
       ],
       {
@@ -2993,6 +2754,7 @@ export async function verifyBenchmarkApiSemantics({
         syntaxCount,
         importClosureCount,
         saveDirectory: saveDir,
+        publicApi: api,
       });
       jsObservedByProfile[profile] = observed;
       for (const name of SAVE_FORMATS) {
@@ -3153,50 +2915,7 @@ export async function verifyBenchmarkApiSemantics({
       rows,
     };
   } finally {
-    fixtures.cleanup();
+    if (!sharedFixtures) fixtures.cleanup();
     rmSync(scratch, { recursive: true, force: true });
-  }
-}
-
-if (
-  process.argv[1] &&
-  import.meta.url === pathToFileURL(resolve(process.argv[1])).href
-) {
-  const { values } = parseArgs({
-    options: {
-      "classpath-file": { type: "string" },
-      "maven-directory": { type: "string" },
-      cache: { type: "string" },
-      "java-home": { type: "string" },
-      "java-selection": { type: "string" },
-      "java-build-cache": { type: "string" },
-      "syntax-count": { type: "string" },
-      "import-closure-count": { type: "string" },
-      output: { type: "string" },
-    },
-  });
-  const report = await verifyBenchmarkApiSemantics({
-    classpathFile: values["classpath-file"],
-    mavenDirectory: values["maven-directory"],
-    cacheDirectory: values.cache,
-    javaHome: values["java-home"] ?? process.env.JAVA_HOME,
-    javaSelection: values["java-selection"],
-    javaBuildCacheDirectory: values["java-build-cache"],
-    syntaxCount:
-      values["syntax-count"] === undefined
-        ? 100
-        : Number(values["syntax-count"]),
-    importClosureCount:
-      values["import-closure-count"] === undefined
-        ? 8
-        : Number(values["import-closure-count"]),
-  });
-  const encoded = `${canonicalJson(report)}\n`;
-  if (values.output) {
-    writeFileSync(resolve(values.output), encoded, "utf8");
-  }
-  process.stdout.write(encoded);
-  if (report.summary.failed > 0) {
-    process.exitCode = 1;
   }
 }

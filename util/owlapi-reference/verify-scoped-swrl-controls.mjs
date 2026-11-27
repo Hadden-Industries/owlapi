@@ -4,7 +4,7 @@ import { join, resolve } from "node:path";
 import { captureInstalledIdentity } from "./compare-java-js.mjs";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
 import { verifyPinnedFile } from "./comparison-fixtures.mjs";
-import { loadPublicApi } from "./qualify-universal-ontology.mjs";
+import { loadPublicApi } from "./comparison-subject.mjs";
 import {
   admitReleasedClasspath,
   compileComparisonOracle,

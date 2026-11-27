@@ -4,55 +4,12 @@ import path from "node:path";
 import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { performance } from "node:perf_hooks";
-import { isDeepStrictEqual, parseArgs } from "node:util";
-import { createHash, randomUUID } from "node:crypto";
+import { isDeepStrictEqual } from "node:util";
+import { randomUUID } from "node:crypto";
 import { format as prettierFormat, resolveConfig } from "prettier";
-import { OWLManager } from "../apibinding/index.js";
-import { OWLDocumentFormats, RDFXMLDocumentFormat } from "../formats/index.js";
-import { StringDocumentSource, StringDocumentTarget } from "../io/index.js";
-import { NodeDocumentLoader } from "../io/node/index.js";
-import { ManchesterOWLSyntaxOWLObjectRendererImpl } from "../manchestersyntax/renderer/index.js";
-import {
-  AXIOM_KINDS,
-  CLASS_EXPRESSION_KINDS,
-  OWL_OBJECT_KINDS,
-  AddAxiom,
-  AddImport,
-  AddOntologyAnnotation,
-  IRI,
-  OWLOntologyLoaderConfiguration,
-  OWLOntologyWriterConfiguration,
-  RemoveAxiom,
-  RemoveImport,
-  RemoveOntologyAnnotation,
-  SetOntologyID,
-  StructuralSet,
-  dispatchAxiom,
-  dispatchClassExpression,
-  dispatchOwlObject,
-} from "../model/index.js";
-import { AxiomAnnotations, Imports } from "../model/parameters/index.js";
-import {
-  LocalityClass,
-  SyntacticLocalityModuleExtractor,
-} from "../modularity/locality/index.js";
-import {
-  OWL2DLProfile,
-  OWL2ELProfile,
-  OWL2QLProfile,
-  OWL2RLProfile,
-} from "../profiles/index.js";
-import { EntitySearcher } from "../search/index.js";
-import {
-  AnnotationValueShortFormProvider,
-  OWLEntityRemover,
-  OWLEntityRenamer,
-  OWLObjectDuplicator,
-  OWLOntologyImportsClosureSetProvider,
-  OWLOntologyMerger,
-  SimpleShortFormProvider,
-} from "../util/index.js";
 import { runJavaObservation } from "./owlapi-reference/run-java-observation.mjs";
+import { loadPublicApi } from "./owlapi-reference/comparison-subject.mjs";
+import { median } from "./owlapi-reference/comparison-performance.mjs";
 
 const require = createRequire(import.meta.url);
 const {
@@ -71,14 +28,32 @@ export const DEFAULT_JAVA_BASELINE_PATH = path.resolve(
   "docs/performance/java-owlapi-5.5.1-baseline.json",
 );
 
-const XSD_STRING_IRI = IRI.create("http://www.w3.org/2001/XMLSchema#string");
-const XSD_INTEGER_IRI = IRI.create("http://www.w3.org/2001/XMLSchema#integer");
-const XSD_DECIMAL_IRI = IRI.create("http://www.w3.org/2001/XMLSchema#decimal");
-const XSD_FLOAT_IRI = IRI.create("http://www.w3.org/2001/XMLSchema#float");
-const XSD_BOOLEAN_IRI = IRI.create("http://www.w3.org/2001/XMLSchema#boolean");
-const MIN_INCLUSIVE_IRI = IRI.create(
-  "http://www.w3.org/2001/XMLSchema#minInclusive",
-);
+export async function loadBenchmarkApi({
+  packageDirectory = REPO_ROOT,
+  consumerDirectory,
+} = {}) {
+  const api = await loadPublicApi({
+    packageDirectory,
+    consumerDirectory,
+    includeManchesterRenderer: true,
+    includeProfiles: true,
+    includeSearch: true,
+    includeLocality: true,
+    includeNodeTransport: true,
+    includeParameters: true,
+  });
+  const xsd = (name) =>
+    api.IRI.create(`http://www.w3.org/2001/XMLSchema#${name}`);
+  return {
+    ...api,
+    XSD_STRING_IRI: xsd("string"),
+    XSD_INTEGER_IRI: xsd("integer"),
+    XSD_DECIMAL_IRI: xsd("decimal"),
+    XSD_FLOAT_IRI: xsd("float"),
+    XSD_BOOLEAN_IRI: xsd("boolean"),
+    MIN_INCLUSIVE_IRI: xsd("minInclusive"),
+  };
+}
 
 const RICH_NS = "urn:bench:rich#";
 const IMPORT_NS = "urn:bench:rich:import#";
@@ -715,31 +690,20 @@ export const BENCHMARK_DEFINITIONS = Object.freeze([
   },
 ]);
 
-const roundMs = (value) => Math.round(value * 1000) / 1000;
-
-const median = (values) => {
-  const sorted = [...values].sort((left, right) => left - right);
-  const middle = Math.floor(sorted.length / 2);
-  return sorted.length % 2 === 0
-    ? (sorted[middle - 1] + sorted[middle]) / 2
-    : sorted[middle];
-};
-
-const medianInteger = (values) => {
-  const sorted = [...values].sort((left, right) => left - right);
-  const middle = Math.floor(sorted.length / 2);
-  return sorted.length % 2 === 0
-    ? Math.round((sorted[middle - 1] + sorted[middle]) / 2)
-    : sorted[middle];
-};
-
 const maybeGc = () => {
   if (typeof globalThis.gc === "function") {
     globalThis.gc();
   }
 };
 
-const buildAxiomBatch = (df, ns, count, recordEntities, target) => {
+export const buildAxiomBatch = (
+  df,
+  ns,
+  count,
+  recordEntities,
+  target,
+  { IRI, XSD_STRING_IRI, XSD_INTEGER_IRI, XSD_DECIMAL_IRI },
+) => {
   const axioms = [];
   const xsdString = df.getOWLDatatype(XSD_STRING_IRI);
   const xsdInteger = df.getOWLDatatype(XSD_INTEGER_IRI);
@@ -894,7 +858,8 @@ const buildAxiomBatch = (df, ns, count, recordEntities, target) => {
   return axioms;
 };
 
-const createRichOntologyFixture = (behaviorProfileId) => {
+export const createRichOntologyFixture = (behaviorProfileId, api) => {
+  const { OWLManager, IRI, AddImport, AddOntologyAnnotation } = api;
   const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId });
   const df = manager.getOWLDataFactory();
   const importedIRI = IRI.create("urn:bench:rich:imported");
@@ -929,10 +894,18 @@ const createRichOntologyFixture = (behaviorProfileId) => {
     IMPORT_COUNT,
     false,
     null,
+    api,
   );
   manager.addAxioms(importedOntology, importedAxioms);
 
-  const mainAxioms = buildAxiomBatch(df, RICH_NS, RICH_COUNT, true, fixture);
+  const mainAxioms = buildAxiomBatch(
+    df,
+    RICH_NS,
+    RICH_COUNT,
+    true,
+    fixture,
+    api,
+  );
   fixture.allMainAxioms.push(...mainAxioms);
   manager.addAxioms(mainOntology, mainAxioms);
   manager.applyChange(
@@ -952,7 +925,10 @@ const createRichOntologyFixture = (behaviorProfileId) => {
   return fixture;
 };
 
-const buildProfileOntology = (behaviorProfileId) => {
+export const buildProfileOntology = (
+  behaviorProfileId,
+  { OWLManager, IRI, XSD_STRING_IRI, XSD_INTEGER_IRI },
+) => {
   const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId });
   const df = manager.getOWLDataFactory();
   const ont = manager.createOntology(
@@ -1058,7 +1034,6 @@ export const prepareSharedFixtureDirectory = ({
     generateBenchmarkFixture("import-closure", { count: importClosureCount }),
   );
   const closureFiles = {};
-  const closureFileIRIs = new Map();
   let fileIndex = 0;
   for (const [docIri, rawHeader] of Object.entries(rawClosure.documents)) {
     const memberAxioms = Array.from(
@@ -1071,7 +1046,6 @@ export const prepareSharedFixtureDirectory = ({
     fileIndex += 1;
     fs.writeFileSync(filePath, enrichedText, "utf8");
     closureFiles[docIri] = filePath;
-    closureFileIRIs.set(docIri, IRI.create(pathToFileURL(filePath).href));
   }
 
   return {
@@ -1082,13 +1056,39 @@ export const prepareSharedFixtureDirectory = ({
       rootIRI: rawClosure.entry,
       rootText: fs.readFileSync(closureFiles[rawClosure.entry], "utf8"),
       files: closureFiles,
-      fileIRIs: closureFileIRIs,
     },
     cleanup() {
       fs.rmSync(rootDir, { recursive: true, force: true });
     },
   };
 };
+
+export function benchmarkImportClosureManager(
+  behaviorProfileId,
+  { rootIRI, files },
+  { OWLManager, NodeDocumentLoader, IRI },
+) {
+  const fileIRIs = new Map(
+    Object.entries(files).map(([iri, file]) => [
+      iri,
+      IRI.create(pathToFileURL(file).href),
+    ]),
+  );
+  return () =>
+    OWLManager.createOWLOntologyManager({
+      behaviorProfileId,
+      documentLoader: new NodeDocumentLoader({ authorize: () => true }),
+      iriMappers: [
+        {
+          getDocumentIRI(iri) {
+            return iri.value === rootIRI
+              ? null
+              : (fileIRIs.get(iri.value) ?? null);
+          },
+        },
+      ],
+    });
+}
 
 export const runJsProfileBenchmarks = async (
   behaviorProfileId,
@@ -1097,6 +1097,7 @@ export const runJsProfileBenchmarks = async (
     runCount = 3,
     filterIds = null,
     sharedFixtures = null,
+    publicApi,
   } = {},
 ) => {
   const ownsFixtures = !sharedFixtures;
@@ -1105,23 +1106,61 @@ export const runJsProfileBenchmarks = async (
     filterIds && filterIds.length > 0 ? new Set(filterIds) : null;
 
   try {
-    const rich = createRichOntologyFixture(behaviorProfileId);
-    const profileOntology = buildProfileOntology(behaviorProfileId);
-
-    const createImportClosureManager = () =>
-      OWLManager.createOWLOntologyManager({
-        behaviorProfileId,
-        documentLoader: new NodeDocumentLoader({ authorize: () => true }),
-        iriMappers: [
-          {
-            getDocumentIRI(iri) {
-              return iri.value === fixtures.importClosure.rootIRI
-                ? null
-                : (fixtures.importClosure.fileIRIs.get(iri.value) ?? null);
-            },
-          },
-        ],
-      });
+    const api = publicApi ?? (await loadBenchmarkApi());
+    const {
+      OWLManager,
+      OWLDocumentFormats,
+      RDFXMLDocumentFormat,
+      StringDocumentSource,
+      StringDocumentTarget,
+      ManchesterOWLSyntaxOWLObjectRendererImpl,
+      AXIOM_KINDS,
+      CLASS_EXPRESSION_KINDS,
+      OWL_OBJECT_KINDS,
+      AddAxiom,
+      AddImport,
+      AddOntologyAnnotation,
+      IRI,
+      OWLOntologyLoaderConfiguration,
+      OWLOntologyWriterConfiguration,
+      RemoveAxiom,
+      RemoveImport,
+      RemoveOntologyAnnotation,
+      SetOntologyID,
+      StructuralSet,
+      dispatchAxiom,
+      dispatchClassExpression,
+      dispatchOwlObject,
+      AxiomAnnotations,
+      Imports,
+      LocalityClass,
+      SyntacticLocalityModuleExtractor,
+      OWL2DLProfile,
+      OWL2ELProfile,
+      OWL2QLProfile,
+      OWL2RLProfile,
+      EntitySearcher,
+      AnnotationValueShortFormProvider,
+      OWLEntityRemover,
+      OWLEntityRenamer,
+      OWLObjectDuplicator,
+      OWLOntologyImportsClosureSetProvider,
+      OWLOntologyMerger,
+      SimpleShortFormProvider,
+      XSD_STRING_IRI,
+      XSD_INTEGER_IRI,
+      XSD_DECIMAL_IRI,
+      XSD_FLOAT_IRI,
+      XSD_BOOLEAN_IRI,
+      MIN_INCLUSIVE_IRI,
+    } = api;
+    const rich = createRichOntologyFixture(behaviorProfileId, api);
+    const profileOntology = buildProfileOntology(behaviorProfileId, api);
+    const createImportClosureManager = benchmarkImportClosureManager(
+      behaviorProfileId,
+      fixtures.importClosure,
+      api,
+    );
 
     const closureManager = createImportClosureManager();
     const loadedClosureRoot =
@@ -1166,6 +1205,7 @@ export const runJsProfileBenchmarks = async (
       20,
       false,
       null,
+      api,
     );
     utilManager.addAxioms(utilOntology, utilAxioms);
     const utilSeedEntities = [...utilOntology.getClassesInSignature()]
@@ -1413,7 +1453,14 @@ export const runJsProfileBenchmarks = async (
       const df = OWLManager.createOWLOntologyManager({
         behaviorProfileId,
       }).getOWLDataFactory();
-      const built = buildAxiomBatch(df, "urn:bench:factory#", 35, false, null);
+      const built = buildAxiomBatch(
+        df,
+        "urn:bench:factory#",
+        35,
+        false,
+        null,
+        api,
+      );
       return built.length;
     });
 
@@ -2229,7 +2276,7 @@ export const runJsProfileBenchmarks = async (
         measurements,
         median: {
           wallMs: median(wallSamples),
-          sampledHeapDeltaBytes: medianInteger(heapSamples),
+          sampledHeapDeltaBytes: Math.round(median(heapSamples)),
         },
       });
     }
@@ -2246,32 +2293,15 @@ export const runJsProfileBenchmarks = async (
   }
 };
 
-export const resolveDefaultJavaClasspath = () => {
-  if (process.env.OWLAPI_JAVA_CLASSPATH) {
-    return process.env.OWLAPI_JAVA_CLASSPATH;
-  }
-  const distJar =
-    "C:/Users/maksy/GitHub/owlcs/owlapi/distribution/target/owlapi-distribution-5.5.1.jar";
-  const runtimeCpFile =
-    "C:/Users/maksy/GitHub/owlcs/owlapi/distribution/target/owlapi-runtime-classpath.txt";
-  if (fs.existsSync(distJar) && fs.existsSync(runtimeCpFile)) {
-    return [distJar, fs.readFileSync(runtimeCpFile, "utf8").trim()].join(
-      path.delimiter,
-    );
-  }
-  throw new Error(
-    "Unable to resolve Java OWLAPI 5.5.1 classpath. Set OWLAPI_JAVA_CLASSPATH or build owlapi-distribution-5.5.1.jar.",
-  );
-};
-
 export const runJavaBenchmarks = ({
   warmupCount = 1,
   runCount = 3,
   filterIds = null,
   sharedFixtures = null,
-  classpath = resolveDefaultJavaClasspath(),
+  classpath,
   sourcePath = DEFAULT_JAVA_SOURCE_PATH,
   java,
+  javaHeapMiB,
 } = {}) => {
   const ownsFixtures = !sharedFixtures;
   const fixtures = sharedFixtures ?? prepareSharedFixtureDirectory();
@@ -2301,6 +2331,7 @@ export const runJavaBenchmarks = ({
       classpath,
       sourcePath,
       java,
+      javaHeapMiB,
       arguments: [specPath],
     });
     if (observation.status !== 0) {
@@ -2559,562 +2590,5 @@ export async function resolveJavaBaselineSuite(options = {}) {
   } finally {
     fs.closeSync(descriptor);
     fs.unlinkSync(lock);
-  }
-}
-
-const safeRatio = (numerator, denominator) => {
-  return denominator === 0 ? null : numerator / denominator;
-};
-
-/** A comparison must account for every requested case exactly once. */
-const selectedDefinitions = (filterIds) => {
-  if (filterIds === null) return BENCHMARK_DEFINITIONS;
-  if (!Array.isArray(filterIds) || !filterIds.length)
-    throw new TypeError("Benchmark filter must contain case IDs");
-  const known = new Set(BENCHMARK_DEFINITIONS.map(({ id }) => id));
-  const seen = new Set();
-  for (const id of filterIds) {
-    if (!known.has(id)) throw new TypeError(`Unknown benchmark ID: ${id}`);
-    if (seen.has(id)) throw new TypeError(`Duplicate benchmark ID: ${id}`);
-    seen.add(id);
-  }
-  return BENCHMARK_DEFINITIONS.filter(({ id }) => seen.has(id));
-};
-
-const admittedRows = (suite, definitions, label, runCount) => {
-  const rows = new Map();
-  const known = new Set(BENCHMARK_DEFINITIONS.map(({ id }) => id));
-  for (const row of suite?.results ?? []) {
-    if (!known.has(row.id))
-      throw new TypeError(`Unknown ${label} benchmark ID: ${row.id}`);
-    if (rows.has(row.id))
-      throw new TypeError(`Duplicate ${label} benchmark ID: ${row.id}`);
-    rows.set(row.id, row);
-  }
-  if (runCount !== undefined && rows.size > definitions.length)
-    throw new TypeError(`Unexpected ${label} rows outside the requested cases`);
-  for (const { id } of definitions) {
-    const row = rows.get(id);
-    if (!row) throw new TypeError(`Missing ${label} benchmark ID: ${id}`);
-    for (const value of [
-      row.median?.wallMs,
-      row.firstUseWallMs,
-      row.verificationCount,
-    ])
-      if (!Number.isFinite(value) || value < 0)
-        throw new TypeError(
-          `${label} ${id} requires finite nonnegative measurements`,
-        );
-    if (
-      runCount !== undefined &&
-      (!Array.isArray(row.measurements) || row.measurements.length !== runCount)
-    )
-      throw new TypeError(`${label} ${id} requires ${runCount} raw samples`);
-    const heapField =
-      runCount === undefined
-        ? "retainedHeapDeltaBytes"
-        : "sampledHeapDeltaBytes";
-    if (!Number.isFinite(row.median[heapField]))
-      throw new TypeError(
-        `${label} ${id} requires a finite ${heapField} median`,
-      );
-    for (const sample of row.measurements ?? []) {
-      if (
-        !Number.isFinite(sample.wallMs) ||
-        sample.wallMs < 0 ||
-        !Number.isFinite(
-          runCount === undefined
-            ? sample.retainedHeapDeltaBytes
-            : sample.sampledHeapDeltaBytes,
-        )
-      )
-        throw new TypeError(`${label} ${id} requires finite raw samples`);
-    }
-  }
-  return rows;
-};
-
-const reportedJsRow = (row, javaMedianMs, comparability) => ({
-  comparability,
-  verificationCount: row.verificationCount,
-  firstUseWallMs: row.firstUseWallMs,
-  medianWallMs: row.median.wallMs,
-  medianSampledHeapDeltaBytes: row.median.sampledHeapDeltaBytes,
-  measurements: row.measurements.map((sample) => ({
-    wallMs: sample.wallMs,
-    sampledHeapDeltaBytes: sample.sampledHeapDeltaBytes,
-  })),
-  ratioVsJava: safeRatio(row.median.wallMs, javaMedianMs),
-  deltaMsVsJava: roundMs(row.median.wallMs - javaMedianMs),
-});
-
-export const compareBenchmarkSuites = ({
-  javaSuite,
-  jsSuites,
-  warmupCount,
-  runCount,
-  filterIds = null,
-  syntaxCount = 100,
-  importClosureCount = 8,
-  javaBaselinePath = "docs/performance/java-owlapi-5.5.1-baseline.json",
-}) => {
-  const definitions = selectedDefinitions(filterIds);
-  const javaById = admittedRows(javaSuite, definitions, "Java");
-  const jsCompatById = admittedRows(
-    jsSuites["java-owlapi-5.5.1"],
-    definitions,
-    "compatible JS",
-    runCount,
-  );
-  const jsNormativeById = admittedRows(
-    jsSuites["normative-v1"],
-    definitions,
-    "normative JS",
-    runCount,
-  );
-
-  const comparisons = [];
-  const fixtureMismatch =
-    javaSuite.parameters &&
-    (javaSuite.fixtureGeneratorVersion !== GENERATOR_VERSION ||
-      javaSuite.parameters.syntaxCount !== syntaxCount ||
-      javaSuite.parameters.importClosureCount !== importClosureCount);
-  const measurementMismatch =
-    javaSuite.parameters &&
-    (javaSuite.parameters.warmupCount !== warmupCount ||
-      javaSuite.parameters.runCount !== runCount);
-  for (const def of definitions) {
-    const javaRow = javaById.get(def.id);
-    const compatRow = jsCompatById.get(def.id);
-    const normativeRow = jsNormativeById.get(def.id);
-    const javaMedianMs = javaRow.median.wallMs;
-    const compatMedianMs = compatRow.median.wallMs;
-    const normativeMedianMs = normativeRow.median.wallMs;
-    const compatVsJavaRatio = safeRatio(compatMedianMs, javaMedianMs);
-    const normativeVsJavaRatio = safeRatio(normativeMedianMs, javaMedianMs);
-    const admission = (row) =>
-      fixtureMismatch
-        ? "fixture-mismatch"
-        : measurementMismatch
-          ? "measurement-parameters-mismatch"
-          : javaMedianMs === 0
-            ? "resolution-limited"
-            : javaRow.verificationCount !== row.verificationCount
-              ? "checksum-mismatch"
-              : def.comparisonLimitation
-                ? "workload-mismatch"
-                : "checksum-only";
-    const compatAdmission = admission(compatRow);
-    const normativeAdmission = admission(normativeRow);
-    const comparability =
-      compatAdmission === normativeAdmission
-        ? compatAdmission
-        : "checksum-mismatch";
-    const admittedRatios = [];
-    // A different profile's checksum must neither qualify nor conceal this
-    // profile's timing. Rank only ratios admitted for their own profile.
-    if (compatAdmission === "checksum-only")
-      admittedRatios.push(compatVsJavaRatio);
-    if (normativeAdmission === "checksum-only")
-      admittedRatios.push(normativeVsJavaRatio);
-    const maxJsVsJavaRatio = admittedRatios.length
-      ? Math.max(...admittedRatios)
-      : null;
-
-    comparisons.push({
-      id: def.id,
-      category: def.category,
-      apiSymbols: def.apiSymbols,
-      description: def.description,
-      ...(def.comparisonLimitation
-        ? { comparisonLimitation: def.comparisonLimitation }
-        : {}),
-      comparability,
-      java551: {
-        verificationCount: javaRow.verificationCount,
-        firstUseWallMs: javaRow.firstUseWallMs,
-        medianWallMs: javaMedianMs,
-        medianRetainedHeapDeltaBytes: javaRow.median.retainedHeapDeltaBytes,
-      },
-      jsJavaOwlapi551: reportedJsRow(compatRow, javaMedianMs, compatAdmission),
-      jsNormativeV1: reportedJsRow(
-        normativeRow,
-        javaMedianMs,
-        normativeAdmission,
-      ),
-      maxJsVsJavaRatio,
-      slowerInJs: maxJsVsJavaRatio !== null && maxJsVsJavaRatio > 1.1,
-    });
-  }
-
-  const slowerApisRanked = [...comparisons]
-    .filter((entry) => entry.slowerInJs)
-    .sort((left, right) => right.maxJsVsJavaRatio - left.maxJsVsJavaRatio);
-
-  const fasterOrParityApis = [...comparisons]
-    .filter(
-      (entry) => entry.comparability === "checksum-only" && !entry.slowerInJs,
-    )
-    .sort((left, right) => left.maxJsVsJavaRatio - right.maxJsVsJavaRatio);
-
-  return {
-    schemaVersion: 2,
-    fixtureGeneratorVersion: GENERATOR_VERSION,
-    javaBaselinePath,
-    parameters: {
-      warmupCount,
-      runCount,
-      syntaxCount,
-      importClosureCount,
-      profiles: [...BEHAVIOR_PROFILES],
-    },
-    environment: {
-      nodeVersion:
-        jsSuites["java-owlapi-5.5.1"]?.nodeVersion ?? process.version,
-      platform: `${process.platform}-${process.arch}`,
-      v8Version: process.versions.v8,
-      cpuModel: os.cpus()[0]?.model,
-      osRelease: os.release(),
-      explicitGc: typeof globalThis.gc === "function",
-      javaVersion: javaSuite.javaVersion,
-      javaVmName: javaSuite.javaVmName,
-      javaOwlapiVersion: javaSuite.owlapiVersion,
-    },
-    summary: {
-      totalBenchmarks: comparisons.length,
-      slowerInJsCount: slowerApisRanked.length,
-      fasterOrParityInJsCount: fasterOrParityApis.length,
-      unqualifiedCount: comparisons.filter(
-        (entry) => !entry.slowerInJs && entry.comparability !== "checksum-only",
-      ).length,
-      incompleteComparabilityCount: comparisons.filter(
-        (entry) => entry.comparability !== "checksum-only",
-      ).length,
-      slowerInCompatProfileCount: comparisons.filter(
-        (c) =>
-          c.jsJavaOwlapi551.comparability === "checksum-only" &&
-          c.jsJavaOwlapi551.medianWallMs > c.java551.medianWallMs &&
-          c.jsJavaOwlapi551.ratioVsJava > 1.1,
-      ).length,
-      slowerInNormativeProfileCount: comparisons.filter(
-        (c) =>
-          c.jsNormativeV1.comparability === "checksum-only" &&
-          c.jsNormativeV1.medianWallMs > c.java551.medianWallMs &&
-          c.jsNormativeV1.ratioVsJava > 1.1,
-      ).length,
-    },
-    comparisons,
-    slowerApisRanked: slowerApisRanked.map((entry, idx) => ({
-      rank: idx + 1,
-      id: entry.id,
-      category: entry.category,
-      javaMedianWallMs: entry.java551.medianWallMs,
-      jsCompatMedianWallMs: entry.jsJavaOwlapi551.medianWallMs,
-      jsCompatVsJavaRatio: entry.jsJavaOwlapi551.ratioVsJava,
-      jsCompatAdmission: entry.jsJavaOwlapi551.comparability,
-      jsNormativeMedianWallMs: entry.jsNormativeV1.medianWallMs,
-      jsNormativeVsJavaRatio: entry.jsNormativeV1.ratioVsJava,
-      jsNormativeAdmission: entry.jsNormativeV1.comparability,
-      maxJsVsJavaRatio: entry.maxJsVsJavaRatio,
-    })),
-  };
-};
-
-/** Render current observations; historical P1–P9 prose stays in the schema-1 report. */
-export const formatComparisonMarkdown = (report) => {
-  const ratio = (row) =>
-    row.comparability !== "checksum-only"
-      ? "unqualified"
-      : row.ratioVsJava.toFixed(2) + "x";
-  const lines = [
-    "# Public API Performance Comparison: JS OWLAPI vs. Java OWLAPI 5.5.1",
-    "",
-    "These grouped workloads do not exhaustively cover public methods or overloads.",
-    "Counts are checksums, not structural equivalence proofs; checksum-only rows remain provisional.",
-    "Unqualified rows retain measured times and raw JSON ratios; known unequal work is excluded from parity ranking.",
-    "",
-    "- Node: " +
-      report.environment.nodeVersion +
-      "; V8: " +
-      report.environment.v8Version,
-    "- Warmup/measured calls: " +
-      report.parameters.warmupCount +
-      "/" +
-      report.parameters.runCount,
-    "- First-use timing measures a case call inside an initialized suite, not process startup.",
-    "- Heap samples measure before/after heap use without post-call GC; they are neither retained nor peak memory.",
-    "- Qualified-by-checksum slower groups: " + report.summary.slowerInJsCount,
-    "- Qualified-by-checksum parity/faster groups: " +
-      report.summary.fasterOrParityInJsCount,
-    "- Unqualified groups: " + report.summary.unqualifiedCount,
-    "",
-    "| Benchmark ID | Java ms | Compatible JS ms | Ratio | Normative JS ms | Ratio | Admission |",
-    "| --- | ---: | ---: | ---: | ---: | ---: | --- |",
-  ];
-  for (const entry of report.comparisons)
-    lines.push(
-      "| \x60" +
-        entry.id +
-        "\x60 | " +
-        entry.java551.medianWallMs.toFixed(3) +
-        " | " +
-        entry.jsJavaOwlapi551.medianWallMs.toFixed(3) +
-        " | " +
-        ratio(entry.jsJavaOwlapi551) +
-        " | " +
-        entry.jsNormativeV1.medianWallMs.toFixed(3) +
-        " | " +
-        ratio(entry.jsNormativeV1) +
-        " | " +
-        entry.comparability +
-        " |",
-    );
-  const limitations = report.comparisons.filter(
-    (entry) => entry.comparisonLimitation,
-  );
-  if (limitations.length)
-    lines.push(
-      "",
-      "Comparison limits:",
-      "",
-      ...limitations.map(
-        (entry) => "- `" + entry.id + "`: " + entry.comparisonLimitation,
-      ),
-    );
-  return lines.join("\n") + "\n";
-};
-
-export const runPublicApiParityBenchmarkSuite = async ({
-  warmupCount = 2,
-  runCount = 5,
-  filterIds = null,
-  syntaxCount = 100,
-  importClosureCount = 8,
-  javaBaselinePath = DEFAULT_JAVA_BASELINE_PATH,
-  updateMissingJavaBaseline = false,
-  refreshJavaBaseline = false,
-  runJava = runJavaBenchmarks,
-} = {}) => {
-  selectedDefinitions(filterIds);
-  for (const [name, value, minimum] of [
-    ["warmupCount", warmupCount, 0],
-    ["runCount", runCount, 1],
-    ["syntaxCount", syntaxCount, 1],
-    ["importClosureCount", importClosureCount, 1],
-  ])
-    if (!Number.isSafeInteger(value) || value < minimum)
-      throw new TypeError(name + " is invalid");
-  const sharedFixtures = prepareSharedFixtureDirectory({
-    syntaxCount,
-    importClosureCount,
-  });
-  try {
-    const javaSuite = await resolveJavaBaselineSuite({
-      javaBaselinePath,
-      filterIds,
-      updateMissingJavaBaseline,
-      refreshJavaBaseline,
-      warmupCount,
-      runCount,
-      syntaxCount,
-      importClosureCount,
-      sharedFixtures,
-      runJava,
-    });
-    const jsSuites = {};
-    for (const profileId of BEHAVIOR_PROFILES) {
-      jsSuites[profileId] = await runJsProfileBenchmarks(profileId, {
-        warmupCount,
-        runCount,
-        filterIds,
-        sharedFixtures,
-      });
-    }
-    const relativeBaselinePath = path
-      .relative(REPO_ROOT, javaBaselinePath)
-      .replaceAll("\\", "/");
-    const report = compareBenchmarkSuites({
-      javaSuite,
-      jsSuites,
-      warmupCount,
-      runCount,
-      javaBaselinePath: relativeBaselinePath,
-      filterIds,
-      syntaxCount,
-      importClosureCount,
-    });
-    const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
-    const baselineBytes = fs.readFileSync(javaBaselinePath);
-    const fixtureBytes = JSON.stringify({
-      syntaxTexts: sharedFixtures.syntaxTexts,
-      closure: Object.entries(sharedFixtures.importClosure.files).map(
-        ([iri, filename]) => [iri, fs.readFileSync(filename, "utf8")],
-      ),
-    });
-    const runtimeSources = [];
-    const visit = (relative) => {
-      const absolute = path.join(REPO_ROOT, relative);
-      for (const entry of fs.readdirSync(absolute, { withFileTypes: true })) {
-        const filename = `${relative}/${entry.name}`;
-        if (entry.isDirectory()) visit(filename);
-        else if (entry.name.endsWith(".js") && !entry.name.endsWith(".test.js"))
-          runtimeSources.push([
-            filename,
-            digest(fs.readFileSync(path.join(REPO_ROOT, filename))),
-          ]);
-      }
-    };
-    for (const directory of [
-      "apibinding",
-      "formats",
-      "internal",
-      "io",
-      "model",
-      "search",
-      "profiles",
-      "util",
-      "modularity",
-      "manchestersyntax",
-    ])
-      visit(directory);
-    runtimeSources.sort(([left], [right]) =>
-      left < right ? -1 : left > right ? 1 : 0,
-    );
-    report.provenance = {
-      javaBaselineSha256: digest(baselineBytes),
-      javascriptHarnessSha256: digest(
-        fs.readFileSync(fileURLToPath(import.meta.url)),
-      ),
-      javaHarnessSha256: digest(fs.readFileSync(DEFAULT_JAVA_SOURCE_PATH)),
-      fixtureGeneratorSha256: digest(
-        fs.readFileSync(
-          path.join(MODULE_DIR, "generate-owlapi-benchmark-fixtures.cjs"),
-        ),
-      ),
-      fixtureSha256: digest(fixtureBytes),
-      runtimeSourcesSha256: digest(JSON.stringify(runtimeSources)),
-      recordedAt: new Date().toISOString(),
-      semanticQualification:
-        "Counts alone cannot qualify structural equivalence; see the coverage and comparability manifest.",
-      legacyJavaMemoryMeaning:
-        "Historical schema-1 heap delta; no peak or retained-memory claim is admitted.",
-      javascriptTimingMeaning:
-        "Raw performance.now() differences and medians retain API precision; Markdown display rounding is separate. Earlier recordings may have rounded samples to three decimal milliseconds.",
-    };
-    return report;
-  } finally {
-    sharedFixtures.cleanup();
-  }
-};
-
-/** Strict native argument parsing prevents accidental all-case or invalid runs. */
-export const parseCliArgs = (argv) => {
-  const types = {
-    warmup: "string",
-    runs: "string",
-    filter: "string",
-    "java-baseline": "string",
-    "update-missing-java-baseline": "boolean",
-    "refresh-java-baseline": "boolean",
-    output: "string",
-    "markdown-output": "string",
-  };
-  const { values, tokens } = parseArgs({
-    args: argv,
-    strict: true,
-    allowPositionals: false,
-    tokens: true,
-    options: Object.fromEntries(
-      Object.entries(types).map(([name, type]) => [name, { type }]),
-    ),
-  });
-  const seen = new Set();
-  for (const { name } of tokens) {
-    if (seen.has(name)) throw new TypeError("Duplicate option: --" + name);
-    seen.add(name);
-  }
-  const integer = (name, fallback, minimum) => {
-    const value = values[name];
-    if (value === undefined) return fallback;
-    if (
-      !/^\d+$/.test(value) ||
-      !Number.isSafeInteger(Number(value)) ||
-      Number(value) < minimum
-    )
-      throw new TypeError(name + " must be a safe integer >= " + minimum);
-    return Number(value);
-  };
-  const filterIds =
-    values.filter === undefined
-      ? null
-      : values.filter.split(",").map((value) => value.trim());
-  selectedDefinitions(filterIds);
-  if (values["refresh-java-baseline"] && values["update-missing-java-baseline"])
-    throw new TypeError(
-      "Java refresh and missing-only update are mutually exclusive",
-    );
-  const output = (name, fallback = null) => {
-    if (values[name] === undefined) return fallback;
-    if (!values[name].trim())
-      throw new TypeError(name + " requires a nonempty path");
-    return path.resolve(REPO_ROOT, values[name]);
-  };
-  return {
-    warmupCount: integer("warmup", 2, 0),
-    runCount: integer("runs", 5, 1),
-    filterIds,
-    javaBaselinePath: output("java-baseline", DEFAULT_JAVA_BASELINE_PATH),
-    updateMissingJavaBaseline: values["update-missing-java-baseline"] ?? false,
-    refreshJavaBaseline: values["refresh-java-baseline"] ?? false,
-    outputPath: output("output"),
-    markdownOutputPath: output("markdown-output"),
-  };
-};
-
-if (
-  process.argv[1] &&
-  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
-) {
-  const cliOptions = parseCliArgs(process.argv.slice(2));
-  const report = await runPublicApiParityBenchmarkSuite(cliOptions);
-  const prettierBase = (await resolveConfig(
-    path.join(REPO_ROOT, "package.json"),
-  )) ?? { endOfLine: "lf" };
-
-  if (cliOptions.outputPath) {
-    fs.mkdirSync(path.dirname(cliOptions.outputPath), { recursive: true });
-    const formattedJson = await prettierFormat(JSON.stringify(report), {
-      ...prettierBase,
-      parser: "json-stringify",
-    });
-    fs.writeFileSync(
-      cliOptions.outputPath,
-      formattedJson.replaceAll("\r\n", "\n"),
-      "utf8",
-    );
-  }
-
-  if (cliOptions.markdownOutputPath) {
-    fs.mkdirSync(path.dirname(cliOptions.markdownOutputPath), {
-      recursive: true,
-    });
-    const rawMarkdown = formatComparisonMarkdown(report);
-    const formattedMarkdown = await prettierFormat(rawMarkdown, {
-      ...prettierBase,
-      parser: "markdown",
-    });
-    fs.writeFileSync(
-      cliOptions.markdownOutputPath,
-      formattedMarkdown.replaceAll("\r\n", "\n"),
-      "utf8",
-    );
-  }
-
-  if (!cliOptions.outputPath && !cliOptions.markdownOutputPath) {
-    process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
-  } else {
-    process.stdout.write(
-      `Completed ${report.summary.totalBenchmarks} public API parity benchmarks (${report.summary.slowerInJsCount} slower in JS, ${report.summary.fasterOrParityInJsCount} at parity or faster in JS).\n`,
-    );
   }
 }

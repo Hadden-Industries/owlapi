@@ -12,7 +12,7 @@ import {
 } from "./comparison-evidence.mjs";
 import { resolveComparisonFixture } from "./comparison-fixtures.mjs";
 import { executeComparisonProcess } from "./comparison-oracle.mjs";
-import { captureSourceIdentity } from "./qualify-universal-ontology.mjs";
+import { captureSourceIdentity } from "./comparison-subject.mjs";
 
 const chunked = (format) => [
   ...[16_384, 65_536, 262_144].map(

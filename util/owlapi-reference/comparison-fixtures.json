@@ -1,5 +1,82 @@
 {
   "schemaVersion": 1,
+  "pairedCorpus": [
+    "obo-ado",
+    "obo-agro",
+    "obo-aism",
+    "obo-aro",
+    "obo-bto",
+    "obo-cdno",
+    "obo-chmo",
+    "obo-cido",
+    "obo-clo",
+    "obo-cmo",
+    "obo-colao",
+    "obo-doid",
+    "obo-dpo",
+    "obo-ecao",
+    "obo-eco",
+    "obo-ecocore",
+    "obo-ecto",
+    "obo-emapa",
+    "obo-envo",
+    "obo-epio",
+    "obo-fbcv",
+    "obo-fideo",
+    "obo-flopo",
+    "obo-fobi",
+    "obo-foodon",
+    "obo-fovt",
+    "obo-genepio",
+    "obo-gsso",
+    "obo-hancestro",
+    "obo-hao",
+    "obo-iceo",
+    "obo-lepao",
+    "obo-ma",
+    "obo-maxo",
+    "obo-mco",
+    "obo-mi",
+    "obo-mod",
+    "obo-mop",
+    "obo-mro",
+    "obo-nbo",
+    "obo-ncro",
+    "obo-oae",
+    "obo-occo",
+    "obo-ohd",
+    "obo-ohmi",
+    "obo-ohpi",
+    "obo-omit-entity-free",
+    "obo-omp",
+    "obo-ons",
+    "obo-ontoneo",
+    "obo-ovae-entity-free",
+    "obo-pato",
+    "obo-pbpko",
+    "obo-phipo",
+    "obo-plana",
+    "obo-planp",
+    "obo-prefer",
+    "obo-pso",
+    "obo-pw",
+    "obo-rs",
+    "obo-scdo",
+    "obo-so",
+    "obo-stato",
+    "obo-swo",
+    "obo-to",
+    "obo-txpo",
+    "obo-vbo",
+    "obo-vt",
+    "obo-wbbt",
+    "obo-wbphenotype",
+    "obo-xao",
+    "obo-xco",
+    "obo-xlmod",
+    "obo-zfa",
+    "obo-zfs"
+  ],
   "collections": [
     {
       "id": "eu-epo-core",
@@ -216,6 +293,12 @@
         "direct": "JS rejects non-IRI annotation range",
         "writer": "Prerequisite failed"
       }
+    },
+    {
+      "id": "universal-ontology",
+      "name": "Universal Ontology",
+      "version": "20260912",
+      "mapAllMembersAsImports": true
     }
   ],
   "standIns": [
@@ -3834,6 +3917,11 @@
         "obo-import-flopo-imports-go-import",
         "obo-pato",
         "obo-po"
+      ],
+      "mappedImports": [
+        "obo-import-flopo-imports-go-import",
+        "obo-pato",
+        "obo-po-character-references"
       ]
     },
     {
@@ -6108,6 +6196,14 @@
         "obo-import-to-imports-ncbitaxon-import",
         "obo-import-to-imports-pato-import",
         "obo-import-to-patterns-merge-patterns"
+      ],
+      "mappedImports": [
+        "obo-po-character-references",
+        "obo-import-to-imports-chebi-import",
+        "obo-import-to-imports-go-import",
+        "obo-import-to-imports-ncbitaxon-import",
+        "obo-import-to-imports-pato-import",
+        "obo-import-to-patterns-merge-patterns"
       ]
     },
     {
@@ -8089,6 +8185,324 @@
       "acquisition": "publisher",
       "licenseLead": "Planteome publisher import; CC BY 4.0 licence lead",
       "role": "module"
+    },
+    {
+      "id": "obo-po-character-references",
+      "collection": "obo",
+      "syntax": "rdfxml",
+      "byteLength": 5426336,
+      "sha256": "0b64de25adfe3b20ff9c387bb0684876958d86bf20f94d82ce00794dde5e4fd4",
+      "documentIRI": "http://purl.obolibrary.org/obo/po.owl",
+      "basePolicy": "recorded-request",
+      "source": {
+        "kind": "rdfxml-character-references",
+        "originalId": "obo-po",
+        "originalSha256": "a066a2091b96dc6c960683a67936ccda4926afd96e4edb22df9e30feec16e9e0",
+        "count": 6
+      },
+      "acquisition": "derived",
+      "licenseLead": "CC BY 4.0",
+      "role": "import",
+      "imports": [
+        "obo-import-po-imports-ncbitaxon-import",
+        "obo-import-po-imports-ro-import"
+      ]
+    },
+    {
+      "id": "obo-omit-entity-free",
+      "collection": "obo",
+      "syntax": "rdfxml",
+      "byteLength": 46407723,
+      "sha256": "6993a5bdf5218c16b2434587f8260371e00dc4431d6a179139292e4d8f40e779",
+      "documentIRI": "http://purl.obolibrary.org/obo/omit.owl",
+      "basePolicy": "recorded-request",
+      "source": {
+        "kind": "rdfxml-expansion",
+        "recipe": "jaxp-sax-v1",
+        "originalId": "obo-omit",
+        "originalSha256": "aebcc5503200b9c2605255142fb14d35d801c399972ac4b6d816e8921214af3a",
+        "entityExpansionLimit": 400000,
+        "totalEntitySizeLimit": 13000000,
+        "expectedClosure": [
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/bfo.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/chebi-imports.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/chebi-imports.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/clo-imports.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/clo-imports.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/iao/ontology-metadata.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/iao/2019-08-26/ontology-metadata.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/doid-imports.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/doid-imports.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/go-imports.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/go-imports.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/iao-imports.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/iao-imports.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/ncro.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/ncro.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/obi-imports.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/obi-imports.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/pr-imports.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/pr-imports.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/ro-imports.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/ro-imports.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/so-imports.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/so-imports.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/uberon-imports.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/uberon-imports.owl"
+          },
+          {
+            "ontologyIRI": "http://purl.obolibrary.org/obo/omit.owl",
+            "versionIRI": "http://purl.obolibrary.org/obo/omit/dev/omit.owl"
+          }
+        ]
+      },
+      "acquisition": "derived",
+      "licenseLead": "CC BY 3.0",
+      "role": "root",
+      "imports": [
+        "obo-import-ncro-2015-12-10-ncro-entity-free"
+      ]
+    },
+    {
+      "id": "obo-import-ncro-2015-12-10-ncro-entity-free",
+      "collection": "obo",
+      "syntax": "rdfxml",
+      "byteLength": 1874985,
+      "sha256": "8f52af7f2c3114c92521d708d9819e813f76815e1dfe23e4d3dfcd84025f0555",
+      "documentIRI": "http://purl.obolibrary.org/obo/ncro/2015-12-10/ncro.owl",
+      "ontologyIRI": "http://purl.obolibrary.org/obo/ncro/ncro.owl",
+      "basePolicy": "official-import-iri",
+      "source": {
+        "kind": "rdfxml-expansion",
+        "recipe": "jaxp-sax-v1",
+        "originalId": "obo-import-ncro-2015-12-10-ncro",
+        "originalSha256": "f19629186f32b59fd4c8b03f27bc9ae9cc393da40d54e084395d8f86a8609111",
+        "entityExpansionLimit": 15000,
+        "totalEntitySizeLimit": 500000
+      },
+      "acquisition": "derived",
+      "licenseLead": "Dated NCRO publisher import; CC BY 4.0 licence lead",
+      "role": "import",
+      "imports": [
+        "obo-bfo",
+        "obo-import-iao-ontology-metadata",
+        "obo-import-ncro-2015-12-10-chebi-imports",
+        "obo-import-ncro-2015-12-10-clo-imports",
+        "obo-import-ncro-2015-12-10-doid-imports",
+        "obo-import-ncro-2015-12-10-go-imports",
+        "obo-import-ncro-2015-12-10-iao-imports",
+        "obo-import-ncro-2015-12-10-obi-imports",
+        "obo-import-ncro-2015-12-10-pr-imports",
+        "obo-import-ncro-2015-12-10-ro-imports",
+        "obo-import-ncro-2015-12-10-so-imports",
+        "obo-import-ncro-2015-12-10-uberon-imports"
+      ]
+    },
+    {
+      "id": "universal-ontology/iso11179-3",
+      "collection": "universal-ontology",
+      "suite": "universal-ontology",
+      "syntax": "rdfxml",
+      "byteLength": 602693,
+      "sha256": "b621c3d545343cbfab9e8c41cf296046df32722204b8ff76251b7b5a6f3a2e74",
+      "basePolicy": "canonical-ontology-base",
+      "source": {
+        "kind": "https",
+        "url": "https://haddenindustries.com/ontology/iso-iec/11179/-3/ed-4/",
+        "versionFromCollection": true,
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "root",
+      "closure": true,
+      "verification": {
+        "oracle": "pinned-source",
+        "allowedSourceDiagnostics": [],
+        "expectedImports": [
+          "universal-ontology/skos.rdf"
+        ]
+      }
+    },
+    {
+      "id": "universal-ontology/reference-data",
+      "collection": "universal-ontology",
+      "suite": "universal-ontology",
+      "syntax": "rdfxml",
+      "byteLength": 1139625,
+      "sha256": "1354d260a8bf33d0e67b6145b45438be719203f71e0280d61fc498b697860260",
+      "basePolicy": "canonical-ontology-base",
+      "source": {
+        "kind": "https",
+        "url": "https://haddenindustries.com/ontology/universal/reference-data/",
+        "versionFromCollection": true,
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "root",
+      "closure": true,
+      "verification": {
+        "oracle": "pinned-source",
+        "allowedSourceDiagnostics": [],
+        "expectedImports": [
+          "universal-ontology/iso11179-3",
+          "universal-ontology/skos.rdf"
+        ]
+      }
+    },
+    {
+      "id": "universal-ontology/core",
+      "collection": "universal-ontology",
+      "suite": "universal-ontology",
+      "syntax": "rdfxml",
+      "byteLength": 376694,
+      "sha256": "214f21e9116c0515bd52e5e8e893c83fcf93eb4ce586a49dbd8afc8a05e2c190",
+      "basePolicy": "canonical-ontology-base",
+      "source": {
+        "kind": "https",
+        "url": "https://haddenindustries.com/ontology/universal/core/",
+        "versionFromCollection": true,
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "root",
+      "closure": true,
+      "verification": {
+        "oracle": "pinned-source",
+        "allowedSourceDiagnostics": [],
+        "expectedImports": [
+          "universal-ontology/time-gregorian.ttl",
+          "universal-ontology/time.rdf",
+          "universal-ontology/reference-data",
+          "universal-ontology/iso11179-3",
+          "universal-ontology/skos.rdf"
+        ]
+      }
+    },
+    {
+      "id": "universal-ontology/extended",
+      "collection": "universal-ontology",
+      "suite": "universal-ontology",
+      "syntax": "rdfxml",
+      "byteLength": 730907,
+      "sha256": "92ad97ccb1acf4f2413dc3f1100433adbaa965ce98821f863de9df22eced7f24",
+      "basePolicy": "canonical-ontology-base",
+      "source": {
+        "kind": "https",
+        "url": "https://haddenindustries.com/ontology/universal/extended/",
+        "versionFromCollection": true,
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "root",
+      "closure": true,
+      "verification": {
+        "oracle": "pinned-source",
+        "allowedSourceDiagnostics": [],
+        "expectedImports": [
+          "universal-ontology/core",
+          "universal-ontology/time-gregorian.ttl",
+          "universal-ontology/time.rdf",
+          "universal-ontology/reference-data",
+          "universal-ontology/iso11179-3",
+          "universal-ontology/skos.rdf"
+        ]
+      }
+    },
+    {
+      "id": "universal-ontology/skos.rdf",
+      "collection": "universal-ontology",
+      "suite": "universal-ontology",
+      "syntax": "rdfxml",
+      "byteLength": 29264,
+      "sha256": "378fe72e82a529a3338e00c1fb157112d9941c94ac5c8bc7e88a8463ea879e96",
+      "documentIRI": "http://www.w3.org/2004/02/skos/core",
+      "ontologyIRI": "http://www.w3.org/2004/02/skos/core",
+      "basePolicy": "canonical-ontology-base",
+      "source": {
+        "kind": "https",
+        "url": "https://haddenindustries.com/ontology/external/skos.rdf",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "module",
+      "closure": false,
+      "verification": {
+        "oracle": "pinned-source",
+        "allowedSourceDiagnostics": []
+      }
+    },
+    {
+      "id": "universal-ontology/time-gregorian.ttl",
+      "collection": "universal-ontology",
+      "suite": "universal-ontology",
+      "syntax": "turtle",
+      "byteLength": 7414,
+      "sha256": "e7a5e5f6ba555bf2086169ed05bdde9901f146ffc25f3d0aa62798170b2b5880",
+      "documentIRI": "http://www.w3.org/ns/time/gregorian",
+      "ontologyIRI": "http://www.w3.org/ns/time/gregorian",
+      "basePolicy": "canonical-ontology-base",
+      "source": {
+        "kind": "https",
+        "url": "https://haddenindustries.com/ontology/external/time-gregorian.ttl",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "module",
+      "closure": false,
+      "verification": {
+        "oracle": "pinned-source",
+        "allowedSourceDiagnostics": []
+      }
+    },
+    {
+      "id": "universal-ontology/time.rdf",
+      "collection": "universal-ontology",
+      "suite": "universal-ontology",
+      "syntax": "rdfxml",
+      "byteLength": 136737,
+      "sha256": "8ce934e406401e0e6cb9b6d4407bb69103d62c94107e2a1a30b4a31cc2772e58",
+      "documentIRI": "http://www.w3.org/2006/time",
+      "ontologyIRI": "http://www.w3.org/2006/time",
+      "declaredVersionIRI": "http://www.w3.org/2006/time#2016",
+      "basePolicy": "canonical-ontology-base",
+      "source": {
+        "kind": "https",
+        "url": "https://haddenindustries.com/ontology/external/time.rdf",
+        "redirects": []
+      },
+      "acquisition": "publisher",
+      "role": "module",
+      "closure": false,
+      "verification": {
+        "oracle": "pinned-source",
+        "allowedSourceDiagnostics": []
+      }
     }
   ]
 }

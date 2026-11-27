@@ -13,7 +13,7 @@ import {
   sha256,
   isRetryableStrictRefusal,
 } from "./comparison-evidence.mjs";
-import { loadPublicApi } from "./qualify-universal-ontology.mjs";
+import { loadPublicApi } from "./comparison-subject.mjs";
 import { observeConfiguration } from "./comparison-configuration.mjs";
 import { observeMutation } from "./comparison-mutation.mjs";
 import { observeLoadPublication } from "./comparison-load-publication.mjs";

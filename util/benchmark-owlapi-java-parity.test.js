@@ -8,14 +8,11 @@ import {
   BEHAVIOR_PROFILES,
   BENCHMARK_DEFINITIONS,
   DEFAULT_JAVA_BASELINE_PATH,
-  compareBenchmarkSuites,
   findMissingJavaBaselineIds,
-  formatComparisonMarkdown,
   loadJavaBaseline,
   prepareSharedFixtureDirectory,
   resolveJavaBaselineSuite,
   runJsProfileBenchmarks,
-  runPublicApiParityBenchmarkSuite,
   writeJavaBaseline,
 } from "./benchmark-owlapi-java-parity.mjs";
 
@@ -77,7 +74,7 @@ describe("Public API performance parity harness (JS vs Java OWLAPI 5.5.1)", () =
     ]);
   });
 
-  test("executes JS benchmarks across both java-owlapi-5.5.1 and normative-v1 profiles and compares with Java baseline", async () => {
+  test("measures the selected public API workloads under both profiles", async () => {
     const sampleIds = [
       "manager.createOWLOntologyManager",
       "formats.RDFXMLDocumentFormat.prefixes",
@@ -113,37 +110,6 @@ describe("Public API performance parity harness (JS vs Java OWLAPI 5.5.1)", () =
           expect(row.median.wallMs).toBeGreaterThanOrEqual(0);
         }
       }
-
-      const syntheticJavaSuite = {
-        javaVersion: "21.0.10",
-        javaVmName: "OpenJDK 64-Bit Server VM",
-        owlapiVersion: "5.5.1",
-        results: jsSuites["java-owlapi-5.5.1"].results.map((row) => ({
-          id: row.id,
-          verificationCount: row.verificationCount,
-          firstUseWallMs: 1,
-          measurements: [{ wallMs: 1, retainedHeapDeltaBytes: 1024 }],
-          median: { wallMs: 1, retainedHeapDeltaBytes: 1024 },
-        })),
-      };
-
-      const comparison = compareBenchmarkSuites({
-        javaSuite: syntheticJavaSuite,
-        jsSuites,
-        warmupCount: 0,
-        runCount: 1,
-        filterIds: sampleIds,
-      });
-
-      expect(comparison.summary.totalBenchmarks).toBe(sampleIds.length);
-      expect(comparison.comparisons).toHaveLength(sampleIds.length);
-
-      const markdown = formatComparisonMarkdown(comparison);
-      expect(markdown).toContain(
-        "# Public API Performance Comparison: JS OWLAPI vs. Java OWLAPI 5.5.1",
-      );
-      expect(markdown).toContain("`manager.addAxioms.bulk`");
-      expect(markdown).toContain("`ontology.getReferencingAxioms`");
     } finally {
       sharedFixtures.cleanup();
     }
@@ -166,34 +132,18 @@ describe("Public API performance parity harness (JS vs Java OWLAPI 5.5.1)", () =
     }
   });
 
-  test("reuses pinned Java baseline on comparison runs without invoking Java and incrementally profiles only missing APIs when requested", async () => {
+  test("updates only missing benchmark IDs in a retained Java baseline", async () => {
     const sampleIds = [
       "manager.createOWLOntologyManager",
       "formats.RDFXMLDocumentFormat.prefixes",
     ];
     let javaCallCount = 0;
-    const baselineBefore = fs.readFileSync(DEFAULT_JAVA_BASELINE_PATH);
     const neverCallJava = () => {
-      javaCallCount += 1;
-      throw new Error("Java should not be executed when baseline is complete");
+      javaCallCount++;
+      throw new Error(
+        "Java should not run when a frozen baseline is incomplete",
+      );
     };
-
-    const report = await runPublicApiParityBenchmarkSuite({
-      warmupCount: 0,
-      runCount: 1,
-      filterIds: sampleIds,
-      syntaxCount: 15,
-      importClosureCount: 3,
-      javaBaselinePath: DEFAULT_JAVA_BASELINE_PATH,
-      runJava: neverCallJava,
-    });
-    expect(javaCallCount).toBe(0);
-    expect(fs.readFileSync(DEFAULT_JAVA_BASELINE_PATH)).toEqual(baselineBefore);
-    expect(report.javaBaselinePath).toBe(
-      "docs/performance/java-owlapi-5.5.1-baseline.json",
-    );
-    expect(report.summary.totalBenchmarks).toBe(sampleIds.length);
-
     const tempDir = fs.mkdtempSync(
       path.join(os.tmpdir(), "owlapi-java-baseline-test-"),
     );
