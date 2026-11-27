@@ -501,12 +501,12 @@ Neither constitutes final release acceptance: fresh evidence from the reconciled
 
 CI and release qualification use the ISO/IEC 11179-3 edition 4, Reference Data, Core and Extended roots.
 The [shared fixture catalogue](comparison-fixtures.json) pins the version once in the Universal Ontology collection and records the source fingerprints for each document.
-The comparator reads the versioned documents and published import copies through the shared fixture cache.
+The comparator reads the versioned documents and published import copies through the shared fixture cache and maps each declared import to its pinned fixture.
 To switch versions, update the collection version and fixture fingerprints, along with any changed import membership.
 
-Use `npm run compare:java-js -- prepare --suite universal-ontology --profile normative-v1 --parsing-mode compatible --reference-checkout <built-java-checkout> --cache <absolute-cache>`.
-Then use `run` and `verify` with the same options and a single absolute result directory.
-The suite checks seven source documents and four merged closures with the pinned source Java oracle.
+Use `npm run compare:java-js -- prepare --suite universal-ontology --profile normative-v1 --parsing-mode compatible --cache <absolute-cache>`.
+Then use `run` and `verify` with the same options, `--offline`, and a single absolute result directory.
+The suite checks seven source documents and four merged closures with released Java OWLAPI 5.5.1.
 It verifies each closure in Functional Syntax and RDF/XML, with offline import resolution and strict JavaScript reloads.
 
 The suite requires exact structural equality.
@@ -541,7 +541,7 @@ Node resolves and executes the real public modules; Jest asserts the returned ev
 This preserves concurrent imports and the exact production qualification path without depending on Jest's experimental VM module linker, which can reject shared concurrent imports on Node 22.
 Both supported Node lines run these same assertions; native failures and missing import mappings remain test failures.
 
-CI and release verification prepare the pinned Universal Ontology sources, run their shared comparison and verify the results against the pinned source oracle.
+CI and release use the shared ontology comparison action scoped to the Universal Ontology fixtures.
 Both workflows retain the diagnostics when a comparison fails.
 The installed release candidate also needs its own qualification on the protected release path.
 

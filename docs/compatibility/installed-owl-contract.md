@@ -107,7 +107,7 @@ Partial reruns retain only bounded earlier successful producing attempts in the 
 Selective omission remains unapproved.
 
 Release uses identical assertions and native coverage.
-Both source Node 24 jobs also run the complete live pinned Java parity inventory and the [pinned Universal Ontology corpus](../../util/owlapi-reference/comparison-fixtures.json) (parsing and both closure formats).
+Both canonical source jobs run the live pinned Java parity inventory and use released Java OWLAPI 5.5.1 to compare the [Universal Ontology fixtures](../../util/owlapi-reference/comparison-fixtures.json) through the shared ontology harness.
 The retained candidate depends on that same-commit source qualification; the installed interface suite separately binds the exact retained tarball.
 
 These producer semantic checks execute no UO materialization code or WebVOWL application code.

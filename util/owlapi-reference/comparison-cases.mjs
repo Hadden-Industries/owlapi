@@ -570,18 +570,16 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
         ? "mapped"
         : "recorded");
     const verification = input.verification;
-    const oracle =
-      verification?.oracle === "pinned-source" ? pinnedSourceOracle() : null;
     const imports = importedDocuments(input, all, catalogue.standIns, policy);
     const admittedInputs = {
       input: documentIdentity(input),
       imports: importIdentities(imports),
     };
     const frozenInputs = pinnedScenarioInputs.recorded.get(input.id);
-    const exactRecordedInputs =
-      policy === "recorded" &&
+    const matchesRecordedInputs =
       frozenInputs !== undefined &&
       frozenInputs === comparisonIdentity(admittedInputs);
+    const exactRecordedInputs = policy === "recorded" && matchesRecordedInputs;
     const exactMappedIfcowlInputs =
       policy === "mapped" &&
       input.id === ifcowlInputId &&
@@ -633,17 +631,17 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
                 ? normativeRdfXmlWriteRefusals.get(input.id)
                 : undefined
             : undefined;
-        const pinnedOntologyClosure =
+        const checksDeclaredClosure =
           scenario === "closure-roundtrip" &&
           input.closure &&
           verification?.expectedClosure &&
-          exactRecordedInputs;
+          matchesRecordedInputs;
         // The exact round trip preserves the admitted axiom set. Keep the
         // unconfigured native writer result as a separate observation.
         const checkExactClosureWriter =
           scenario === "closure-roundtrip" &&
           (expectedJsRdfXmlWriteRefusal !== undefined ||
-            pinnedOntologyClosure ||
+            checksDeclaredClosure ||
             (((nativeClosureControls.has(input.id) && exactRecordedInputs) ||
               exactMappedIfcowlInputs) &&
               profile.behaviorProfileId === javaProfile &&
@@ -763,9 +761,8 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
                 ? "public-direct-load"
                 : "merged-closure-roundtrip",
           ...(strictFirst ? { loadSequence: ["strict", "compatible"] } : {}),
-          ...(oracle ? { oracle } : {}),
           ...admittedInputs,
-          ...(pinnedOntologyClosure &&
+          ...(checksDeclaredClosure &&
           profile.behaviorProfileId === normativeProfile
             ? {
                 expectedClosure: verification.expectedClosure,

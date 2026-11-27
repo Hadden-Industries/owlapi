@@ -1,0 +1,27 @@
+name: Compare ontology fixtures
+description: Prepare pinned inputs and verify a scoped Java and JavaScript comparison
+inputs:
+  suite:
+    description: Fixture suite to compare
+    required: true
+  profile:
+    description: JavaScript behavior profile
+    required: true
+  parsing-mode:
+    description: JavaScript parsing mode
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Prepare, run and verify the fixture comparison
+      shell: bash
+      env:
+        OWLAPI_COMPARISON_SUITE: ${{ inputs.suite }}
+        OWLAPI_COMPARISON_PROFILE: ${{ inputs.profile }}
+        OWLAPI_COMPARISON_PARSING_MODE: ${{ inputs.parsing-mode }}
+      run: |
+        selection=(--suite "$OWLAPI_COMPARISON_SUITE" --profile "$OWLAPI_COMPARISON_PROFILE" --parsing-mode "$OWLAPI_COMPARISON_PARSING_MODE" --cache "$GITHUB_WORKSPACE/.release/comparison-cache")
+        output="$GITHUB_WORKSPACE/.release/ontology-comparison"
+        npm run compare:java-js -- prepare "${selection[@]}"
+        npm run compare:java-js -- run "${selection[@]}" --offline --output "$output"
+        npm run compare:java-js -- verify "${selection[@]}" --offline --output "$output"

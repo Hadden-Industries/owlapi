@@ -69,7 +69,7 @@ export function artifactStorage(inventory, now = Date.now()) {
     const purpose =
       [
         [/^java-reference-/, "Java reference"],
-        [/^universal-ontology-/, "Universal Ontology"],
+        [/^ontology-comparison-/, "Ontology comparisons"],
         [
           /^(?:consumer-runtime-|runtime-qualification-|public-recipient-)/,
           "Consumer reports",

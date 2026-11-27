@@ -57,6 +57,7 @@ const ACTION_DIRECTORY = join(REPOSITORY_ROOT, ".github", "actions");
 const SHARED_SETUP = "./.github/actions/setup-producer";
 const SCANCODE_SETUP = "./.github/actions/setup-scancode";
 const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
+const COMPARE_ONTOLOGY_FIXTURES = "./.github/actions/compare-ontology-fixtures";
 const candidateRetentionWorkflow = "candidate-retention.yml";
 const runtimeFreezer = "./.github/actions/freeze-runtime-matrix";
 const recipientEvidenceRetentionDays = 30;
@@ -600,6 +601,25 @@ const validateActionUses = (fileName, workflow, document, violations) => {
       }
       // validateQualityTooling checks the inventory and ordering of these steps.
       if (step.uses === SCANCODE_SETUP) continue;
+      if (step.uses === COMPARE_ONTOLOGY_FIXTURES) {
+        add(
+          violations,
+          ["ci.yml", "release.yml"].includes(fileName) &&
+            jobId === "source_canonical" &&
+            step.id === "ontology_comparison" &&
+            step.if === undefined &&
+            step["continue-on-error"] === undefined &&
+            steps(job)
+              .slice(0, index)
+              .some(
+                (prior) =>
+                  prior.uses?.startsWith("actions/checkout@") &&
+                  !prior.with?.path,
+              ),
+          `${fileName}:${jobId}: ontology comparison must run as a required source check after checkout`,
+        );
+        continue;
+      }
       if (
         [
           RETAIN_ARTIFACT,
@@ -2198,20 +2218,23 @@ const validateJavaReferenceBoundary = (job, violations) => {
     `${label}: main-only reference transport`,
     violations,
   );
+  const comparisonIndex = observed.findIndex(
+    (step) =>
+      step.id === "ontology_comparison" &&
+      step.uses === COMPARE_ONTOLOGY_FIXTURES,
+  );
+  const migrationIndex = observed.findIndex(
+    (step) =>
+      step.id === "comparison_migration" &&
+      step.run ===
+        'node scripts/verify-comparison-migration.mjs --jest "$GITHUB_WORKSPACE/.release/java-qualification/jest.json"',
+  );
   add(
     violations,
     upload.length === 1 &&
-      observed.some(
-        (step) =>
-          step.id === "universal_ontology_qualification" &&
-          ["prepare", "run", "verify"].every((action) =>
-            step.run?.includes(`npm run compare:java-js -- ${action} `),
-          ),
-      ) &&
-      observed.indexOf(upload[0]) >
-        observed.findIndex(
-          (step) => step.id === "universal_ontology_qualification",
-        ) &&
+      comparisonIndex >= 0 &&
+      comparisonIndex < migrationIndex &&
+      observed.indexOf(upload[0]) > migrationIndex &&
       observed.indexOf(upload[0]) <
         observed.findIndex((step) => step.id === "reference_publication"),
     `${label}: publication must follow all live Java qualification`,
@@ -3366,10 +3389,12 @@ const validateReleaseReconciliation = (workflow, violations) => {
   );
   add(
     violations,
-    !allSteps(workflow).some((step) =>
-      /(?:scancode|playwright|universal-ontology|webvowl|benchmark|npm test|npm run (?:test|lint|build))/iu.test(
-        step.run ?? "",
-      ),
+    !allSteps(workflow).some(
+      (step) =>
+        step.uses === COMPARE_ONTOLOGY_FIXTURES ||
+        /(?:scancode|playwright|compare:java-js|webvowl|benchmark|npm test|npm run (?:test|lint|build))/iu.test(
+          step.run ?? "",
+        ),
     ),
     `${fileName} must not repeat completed qualification workloads`,
   );
@@ -4307,7 +4332,7 @@ const validateOwlContractQualification = (fileName, workflow, violations) => {
   add(
     violations,
     !JSON.stringify(job).match(
-      /test:webvowl|test:universal-ontology|consumer-workspace|npm run build|playwright|browser-project/iu,
+      /test:webvowl|compare:java-js|compare-ontology-fixtures|consumer-workspace|npm run build|playwright|browser-project/iu,
     ),
     `${fileName}: OWL contract cannot execute downstream applications or a duplicate browser suite`,
   );
@@ -4859,7 +4884,7 @@ const validateConsumerRuntimeControls = (
 
 function validateDiagnosticUploads(workflows, violations) {
   const scanPath = ".release/scancode-qualification/reports";
-  const universalOntologyPath = ".release/universal-ontology-qualification";
+  const comparisonPath = ".release/ontology-comparison";
   const failurePath = ".release/owl-contract/native.ndjson";
   const diagnosticSites = [
     ...["source_canonical", "quality_windows"].map((job) => [
@@ -4877,9 +4902,9 @@ function validateDiagnosticUploads(workflows, violations) {
     ].map(([file, retention]) => [
       file,
       "source_canonical",
-      "universal_ontology_diagnostics",
-      "universal-ontology-reconciliation",
-      universalOntologyPath,
+      "ontology_comparison_diagnostics",
+      "ontology-comparison",
+      comparisonPath,
       retention,
       6,
     ]),

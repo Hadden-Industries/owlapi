@@ -202,22 +202,6 @@ const referenceCheckout = (options) =>
 const referenceDistribution = (options) =>
   options.referenceDistribution ?? process.env.OWLAPI_REFERENCE_DISTRIBUTION;
 
-async function admitCaseClasspath(entries, options, prepare = false) {
-  const usesPinnedSource = Boolean(entries[0].definition.oracle);
-  if (
-    entries.some(
-      ({ definition }) => Boolean(definition.oracle) !== usesPinnedSource,
-    )
-  ) {
-    throw new Error("Select cases that use the same Java oracle in one run");
-  }
-  return usesPinnedSource
-    ? admitPinnedSourceClasspath(referenceCheckout(options), {
-        referenceDistributionPath: referenceDistribution(options),
-      })
-    : admitReleasedClasspath(options, prepare);
-}
-
 const matchesNativeVersion = (version, oracle) =>
   version === oracle.version ||
   (oracle.kind === "pinned-source" &&
@@ -1426,10 +1410,7 @@ async function verifyComparison(entries, measurements, options) {
     harnessSha256,
   } = attempt;
   const expectedIds = entries.map(({ caseId }) => caseId);
-  const { identity: expectedOracle } = await admitCaseClasspath(
-    entries,
-    options,
-  );
+  const { identity: expectedOracle } = await admitReleasedClasspath(options);
   const recordedOracle = Object.fromEntries(
     Object.keys(expectedOracle).map((key) => [key, oracle?.[key] ?? null]),
   );
@@ -1795,42 +1776,6 @@ async function executeComparison(request, environment = {}) {
     throw new Error(
       "Java timing baseline controls require the api-benchmarks suite",
     );
-  if (environment.registryVersion !== undefined) {
-    if (environment.offline)
-      throw new Error(
-        "Public-registry comparison requires registry metadata access",
-      );
-    if (
-      environment.candidateDirectory ||
-      environment.registryVersion !== PACKAGE_VERSION
-    )
-      throw new Error(
-        "Registry comparisons require the exact public package version and a separate candidate selection",
-      );
-    const ontologySuites = [
-      "universal-ontology",
-      "prospects",
-      "wider",
-      "smoke",
-    ];
-    if (
-      !["run", "verify"].includes(request.action) ||
-      !(request.input?.length || request.suite) ||
-      (request.suite && !ontologySuites.includes(request.suite)) ||
-      (request.scenario &&
-        !["direct-load", "closure-roundtrip", "strict-first"].includes(
-          request.scenario,
-        ))
-    )
-      throw new Error(
-        "Select a direct or closure ontology comparison for public-registry evidence",
-      );
-    if (!isAbsolute(environment.outputDirectory ?? ""))
-      throw new Error(
-        "Registry evidence requires an absolute output directory",
-      );
-    assertRegistryQualificationOutputDirectory(environment.outputDirectory);
-  }
   if (
     request.loadOnly &&
     (!request.input ||
@@ -1850,6 +1795,45 @@ async function executeComparison(request, environment = {}) {
     throw new Error("Load measurement controls require --load-only");
   if (request.shard && request.suite !== "release-semantics") {
     throw new Error("A shard selection requires the release-semantics suite");
+  }
+  if (environment.registryVersion !== undefined) {
+    if (environment.offline)
+      throw new Error(
+        "Public-registry comparison requires registry metadata access",
+      );
+    if (
+      environment.candidateDirectory ||
+      environment.registryVersion !== PACKAGE_VERSION
+    )
+      throw new Error(
+        "Registry comparisons require the exact public package version and a separate candidate selection",
+      );
+    const ontologyScenarios = [
+      "direct-load",
+      "closure-roundtrip",
+      "strict-first",
+    ];
+    const selectionError =
+      "Select a direct or closure ontology comparison for public-registry evidence";
+    if (
+      !["run", "verify"].includes(request.action) ||
+      !(request.input?.length || request.suite) ||
+      (request.scenario && !ontologyScenarios.includes(request.scenario))
+    )
+      throw new Error(selectionError);
+    const entries = comparisonCases(request, environment.catalogue);
+    if (
+      entries.some(
+        ({ definition }) => !ontologyScenarios.includes(definition.scenario),
+      )
+    )
+      throw new Error(selectionError);
+    if (!isAbsolute(environment.outputDirectory ?? ""))
+      throw new Error(
+        "Registry evidence requires an absolute output directory",
+      );
+    assertRegistryQualificationOutputDirectory(environment.outputDirectory);
+    return executeComparisonCases(request, environment, entries);
   }
   if (
     request.suite === "format-performance" ||
@@ -2051,7 +2035,14 @@ async function executeComparison(request, environment = {}) {
     }
     return runBenchmarkComparison(request, benchmarkEnvironment(environment));
   }
-  const available = comparisonCases(request, environment.catalogue);
+  return executeComparisonCases(
+    request,
+    environment,
+    comparisonCases(request, environment.catalogue),
+  );
+}
+
+async function executeComparisonCases(request, environment, available) {
   const planned = request.plannedCases ? new Set(request.plannedCases) : null;
   const entries = planned
     ? available.filter(({ caseId }) => planned.has(caseId))
@@ -2212,7 +2203,7 @@ async function executeComparison(request, environment = {}) {
         });
       }
     }
-    const classpath = await admitCaseClasspath(entries, options, true);
+    const classpath = await admitReleasedClasspath(options, true);
     const result = {
       schemaVersion: 1,
       action: "prepare",
@@ -2232,7 +2223,7 @@ async function executeComparison(request, environment = {}) {
   const candidate = await observeComparisonSubject(options);
   if (!candidate)
     throw new Error("An installed candidate identity is required");
-  const classpath = await admitCaseClasspath(entries, options);
+  const classpath = await admitReleasedClasspath(options);
   const java = await compileComparisonOracle(
     options,
     options.outputDirectory,
@@ -2306,7 +2297,7 @@ async function executeComparison(request, environment = {}) {
   if ((await captureHarnessIdentity()) !== harnessSha256) {
     throw new Error("Comparison harness changed during execution");
   }
-  const confirmedClasspath = await admitCaseClasspath(entries, options);
+  const confirmedClasspath = await admitReleasedClasspath(options);
   const { jdk: confirmedJdk } = comparisonJavaTools(
     options,
     options.outputDirectory,

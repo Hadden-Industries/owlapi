@@ -59,15 +59,6 @@ function readComparisonCatalogue() {
   );
   const byId = new Map(fixtures.map((fixture) => [fixture.id, fixture]));
   for (const fixture of fixtures) {
-    const collection = collections.get(fixture.collection);
-    if (collection?.mapAllMembersAsImports && fixture.imports === undefined) {
-      fixture.imports = fixtures
-        .filter(
-          (member) =>
-            member !== fixture && member.collection === fixture.collection,
-        )
-        .map(({ id }) => id);
-    }
     const { expectedImports, ...verification } = fixture.verification ?? {};
     if (expectedImports) {
       fixture.verification = {

@@ -604,11 +604,7 @@ test("the reviewed roster preserves all original, closure and held cases", async
   });
   expect(universalOntology).toHaveLength(11);
   for (const { definition } of universalOntology) {
-    expect(definition.oracle).toEqual({
-      kind: "pinned-source",
-      revision: "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
-      version: "5.5.1",
-    });
+    expect(definition.oracle).toBeUndefined();
   }
   const list = await runComparison({
     action: "list",
@@ -620,7 +616,7 @@ test("the reviewed roster preserves all original, closure and held cases", async
   );
 });
 
-test("the shared catalogue resolves the Universal Ontology publisher pins", () => {
+test("the shared catalogue resolves the publisher pins and declared imports", () => {
   const { version } = comparisonCatalogue.collections.find(
     ({ id }) => id === "universal-ontology",
   );
@@ -637,6 +633,48 @@ test("the shared catalogue resolves the Universal Ontology publisher pins", () =
     base + "external/time-gregorian.ttl",
     base + "external/time.rdf",
   ]);
+  const importIds = (imports) =>
+    imports.map((id) => id.replace(/^universal-ontology\//u, ""));
+  expect(fixtures.map(({ imports = [] }) => importIds(imports))).toEqual([
+    ["skos.rdf"],
+    ["iso11179-3"],
+    ["time-gregorian.ttl", "reference-data"],
+    ["core"],
+    [],
+    ["time.rdf"],
+    [],
+  ]);
+  const loads = comparisonCases({
+    suite: "universal-ontology",
+    scenario: "direct-load",
+    profile: "normative-v1",
+  });
+  expect(
+    loads.map(({ definition }) =>
+      importIds(definition.imports.map(({ id }) => id)).sort(),
+    ),
+  ).toEqual([
+    ["skos.rdf"],
+    ["iso11179-3", "skos.rdf"],
+    [
+      "iso11179-3",
+      "reference-data",
+      "skos.rdf",
+      "time-gregorian.ttl",
+      "time.rdf",
+    ],
+    [
+      "core",
+      "iso11179-3",
+      "reference-data",
+      "skos.rdf",
+      "time-gregorian.ttl",
+      "time.rdf",
+    ],
+    [],
+    ["time.rdf"],
+    [],
+  ]);
   for (const fixture of fixtures) {
     expect(fixture).toMatchObject({
       byteLength: expect.any(Number),
@@ -647,27 +685,30 @@ test("the shared catalogue resolves the Universal Ontology publisher pins", () =
   }
 });
 
-test("all active Universal Ontology closure cases use lossless RDF/XML and observe the native default", () => {
-  const cases = comparisonCases({ suite: "universal-ontology" });
-  const closures = cases.filter(
-    ({ definition }) => definition.scenario === "closure-roundtrip",
-  );
-  expect(cases).toHaveLength(33);
-  expect(closures).toHaveLength(12);
-  for (const { definition } of closures) {
-    expect(definition.javaRdfXml).toEqual({
-      addMissingTypes: false,
-      observeDefault: true,
-    });
-    if (definition.behaviorProfileId === "normative-v1") {
-      expect(definition).toMatchObject({
-        expectedClosure: expect.any(Array),
-        allowedSourceDiagnostics: [],
+test.each(["recorded", "mapped"])(
+  "the declared closure cases use lossless RDF/XML and observe the native default with %s imports",
+  (imports) => {
+    const cases = comparisonCases({ suite: "universal-ontology", imports });
+    const closures = cases.filter(
+      ({ definition }) => definition.scenario === "closure-roundtrip",
+    );
+    expect(cases).toHaveLength(33);
+    expect(closures).toHaveLength(12);
+    for (const { definition } of closures) {
+      expect(definition.javaRdfXml).toEqual({
+        addMissingTypes: false,
+        observeDefault: true,
       });
+      if (definition.behaviorProfileId === "normative-v1") {
+        expect(definition).toMatchObject({
+          expectedClosure: expect.any(Array),
+          allowedSourceDiagnostics: [],
+        });
+      }
+      expect(definition.expectedDifferences).toBeUndefined();
     }
-    expect(definition.expectedDifferences).toBeUndefined();
-  }
-});
+  },
+);
 
 test("the benchmark registry accounts for all 70 workloads under both profiles", async () => {
   const { cases } = await runComparison(
@@ -720,7 +761,7 @@ test("the paired corpus selects identical effective roots and import pins for bo
   );
 });
 
-test("registry comparisons reject version ranges, mixed subjects and a benchmark selector before installation", async () => {
+test("registry comparisons admit ontology cases and check the exact package identity before installation", async () => {
   const request = { action: "verify", suite: "universal-ontology" };
   await expect(
     runComparison(request, { registryVersion: "latest" }),
@@ -735,10 +776,22 @@ test("registry comparisons reject version ranges, mixed subjects and a benchmark
   ).rejects.toThrow(/exact public package version/u);
   await expect(
     runComparison(
-      { ...request, suite: "api-benchmarks" },
+      { ...request, suite: "public-api-behavior" },
       { registryVersion: PACKAGE_VERSION },
     ),
   ).rejects.toThrow(/direct or closure ontology comparison/u);
+  await expect(
+    runComparison(
+      { ...request, suite: "api-benchmarks" },
+      { registryVersion: PACKAGE_VERSION },
+    ),
+  ).rejects.toThrow(/No inputs match/u);
+  await expect(
+    runComparison(
+      { ...request, suite: "paired-corpus" },
+      { registryVersion: PACKAGE_VERSION },
+    ),
+  ).rejects.toThrow(/Registry evidence requires an absolute output directory/u);
 });
 
 test("the api-semantics suite registers all 70 workloads across both profiles", async () => {
@@ -1662,10 +1715,9 @@ test("an explicit unguarded comparison reaches the normal run boundary", async (
 
 test.each([
   {
-    label: "requires a Java reference",
+    label: "uses the released Java cache for a mixed fixture selection",
     output: [],
-    diagnostic:
-      /^Set OWLAPI_REFERENCE_CHECKOUT.*OWLAPI_REFERENCE_DISTRIBUTION/u,
+    diagnostic: /^An absolute Maven artifact directory is required/u,
   },
   {
     label: "checks the source output path before looking up Java",
@@ -1678,7 +1730,7 @@ test.each([
     diagnostic:
       /^Source-mode --output must be outside the owlapi checkout or in a Git-ignored directory/u,
   },
-])("pinned-source preparation $label", async ({ output, diagnostic }) => {
+])("ontology comparison preparation $label", async ({ output, diagnostic }) => {
   const result = await executeComparisonProcess(
     process.execPath,
     [
@@ -1686,6 +1738,8 @@ test.each([
       "prepare",
       "--input",
       "universal-ontology/reference-data",
+      "--input",
+      "w3c-skos",
       "--profile",
       "normative-v1",
       "--parsing-mode",

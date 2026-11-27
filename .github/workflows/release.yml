@@ -388,30 +388,30 @@ jobs:
         run: npm run verify:workflow-governance
         timeout-minutes: 45
 
-      - name: Compare the pinned Universal Ontology sources and both closure formats
-        id: universal_ontology_qualification
-        env:
-          OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
-        run: |
-          suite=(--suite universal-ontology --profile normative-v1 --parsing-mode compatible --cache "$GITHUB_WORKSPACE/.release/comparison-cache" --reference-checkout "$OWLAPI_REFERENCE_CHECKOUT")
-          output="$GITHUB_WORKSPACE/.release/universal-ontology-qualification"
-          npm run compare:java-js -- prepare "${suite[@]}"
-          npm run compare:java-js -- run "${suite[@]}" --output "$output"
-          npm run compare:java-js -- verify "${suite[@]}" --output "$output"
-          node scripts/verify-comparison-migration.mjs --jest "$GITHUB_WORKSPACE/.release/java-qualification/jest.json"
+      - name: Compare the selected ontology fixtures
+        id: ontology_comparison
+        uses: ./.github/actions/compare-ontology-fixtures
+        with:
+          suite: universal-ontology
+          profile: normative-v1
+          parsing-mode: compatible
         timeout-minutes: 15
-      - name: Prepare Universal Ontology comparison diagnostics for upload
-        id: universal_ontology_diagnostics
+      - name: Verify comparison coverage
+        id: comparison_migration
+        run: node scripts/verify-comparison-migration.mjs --jest "$GITHUB_WORKSPACE/.release/java-qualification/jest.json"
+        timeout-minutes: 5
+      - name: Prepare ontology comparison diagnostics for upload
+        id: ontology_comparison_diagnostics
         if: ${{ !cancelled() }}
         env:
-          OWLAPI_DIAGNOSTIC_PATH: .release/universal-ontology-qualification
+          OWLAPI_DIAGNOSTIC_PATH: .release/ontology-comparison
         run: node scripts/prepare-artifact-diagnostic.mjs
-      - name: Retain Universal Ontology comparison evidence, including failed comparisons
-        if: ${{ !cancelled() && steps.universal_ontology_diagnostics.outcome == 'success' }}
+      - name: Retain ontology comparison evidence, including failed comparisons
+        if: ${{ !cancelled() && steps.ontology_comparison_diagnostics.outcome == 'success' }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: universal-ontology-reconciliation-${{ github.run_attempt }}
-          path: ${{ steps.universal_ontology_diagnostics.outputs.path }}
+          name: ontology-comparison-${{ github.run_attempt }}
+          path: ${{ steps.ontology_comparison_diagnostics.outputs.path }}
           if-no-files-found: error
           overwrite: false
           include-hidden-files: false

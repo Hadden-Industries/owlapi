@@ -297,8 +297,7 @@
     {
       "id": "universal-ontology",
       "name": "Universal Ontology",
-      "version": "20260912",
-      "mapAllMembersAsImports": true
+      "version": "20260912"
     }
   ],
   "standIns": [
@@ -8341,8 +8340,10 @@
       "acquisition": "publisher",
       "role": "root",
       "closure": true,
+      "imports": [
+        "universal-ontology/skos.rdf"
+      ],
       "verification": {
-        "oracle": "pinned-source",
         "allowedSourceDiagnostics": [],
         "expectedImports": [
           "universal-ontology/skos.rdf"
@@ -8366,8 +8367,10 @@
       "acquisition": "publisher",
       "role": "root",
       "closure": true,
+      "imports": [
+        "universal-ontology/iso11179-3"
+      ],
       "verification": {
-        "oracle": "pinned-source",
         "allowedSourceDiagnostics": [],
         "expectedImports": [
           "universal-ontology/iso11179-3",
@@ -8392,8 +8395,11 @@
       "acquisition": "publisher",
       "role": "root",
       "closure": true,
+      "imports": [
+        "universal-ontology/time-gregorian.ttl",
+        "universal-ontology/reference-data"
+      ],
       "verification": {
-        "oracle": "pinned-source",
         "allowedSourceDiagnostics": [],
         "expectedImports": [
           "universal-ontology/time-gregorian.ttl",
@@ -8421,8 +8427,10 @@
       "acquisition": "publisher",
       "role": "root",
       "closure": true,
+      "imports": [
+        "universal-ontology/core"
+      ],
       "verification": {
-        "oracle": "pinned-source",
         "allowedSourceDiagnostics": [],
         "expectedImports": [
           "universal-ontology/core",
@@ -8451,11 +8459,7 @@
       },
       "acquisition": "publisher",
       "role": "module",
-      "closure": false,
-      "verification": {
-        "oracle": "pinned-source",
-        "allowedSourceDiagnostics": []
-      }
+      "closure": false
     },
     {
       "id": "universal-ontology/time-gregorian.ttl",
@@ -8475,10 +8479,9 @@
       "acquisition": "publisher",
       "role": "module",
       "closure": false,
-      "verification": {
-        "oracle": "pinned-source",
-        "allowedSourceDiagnostics": []
-      }
+      "imports": [
+        "universal-ontology/time.rdf"
+      ]
     },
     {
       "id": "universal-ontology/time.rdf",
@@ -8498,11 +8501,7 @@
       },
       "acquisition": "publisher",
       "role": "module",
-      "closure": false,
-      "verification": {
-        "oracle": "pinned-source",
-        "allowedSourceDiagnostics": []
-      }
+      "closure": false
     }
   ]
 }
