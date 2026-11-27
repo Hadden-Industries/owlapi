@@ -220,27 +220,23 @@ test("ignored and hidden bad peers block an eligible guarded batch and unapprove
   }
   const policy = await readPolicyFixture(root);
   await assert.rejects(
-    validateRepositoryJsonPolicy(
-      { ...policy, exceptions: [exclusion(["generated/**"])] },
-      root,
-    ),
+    validateRepositoryJsonPolicy({
+      ...policy,
+      exceptions: [exclusion(["generated/**"])],
+    }),
     /new owner decision/u,
   );
 });
 
 test("only the approved installation trees are excluded and retained cargo provenance remains in scope", async () => {
   const policy = await readPolicyFixture(repository);
-  await validateRepositoryJsonPolicy(policy, repository);
+  await validateRepositoryJsonPolicy(policy);
   assert.deepEqual(
     policy.exceptions
       .filter((entry) => entry.excludeUntrackedSources)
       .flatMap((entry) => entry.paths)
       .sort(),
-    [
-      "node_modules/**",
-      "tooling/artifact-transport/node_modules/**",
-      ".release/universal-ontology/**",
-    ].sort(),
+    ["node_modules/**", "tooling/artifact-transport/node_modules/**"].sort(),
   );
   const path =
     "docs/provenance/markdown-quality-1.0.3-linux-cargo-notices.json";
@@ -261,7 +257,7 @@ test("only the approved installation trees are excluded and retained cargo prove
     ]),
   );
   await assert.rejects(
-    validateRepositoryJsonPolicy(altered, repository),
+    validateRepositoryJsonPolicy(altered),
     /new owner decision/u,
   );
 });
@@ -382,7 +378,7 @@ test("captured policy approval rejects a changed exclusion before any guarded wr
           minimumDocuments: 0,
           containerPaths: [".json-quality.json"],
         },
-        inventory: (access) => capturedRepositoryPolicy(access, { root }),
+        inventory: capturedRepositoryPolicy,
       },
     ],
   });

@@ -42,7 +42,7 @@ const context = () => ({
         minimumDocuments: 0,
         containerPaths: [".json-quality.json"],
       },
-      inventory: (access) => capturedRepositoryPolicy(access, { root }),
+      inventory: capturedRepositoryPolicy,
     },
     {
       definition: {

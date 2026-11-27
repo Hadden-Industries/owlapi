@@ -237,14 +237,6 @@
     },
     {
       "paths": [
-        ".release/universal-ontology/**"
-      ],
-      "owner": "pinned Universal Ontology integration checkout",
-      "reason": "Owner-approved separately owned checkout boundary, guarded by its real contained Git root and the Universal Ontology qualification manifest's pinned revision. Full native ontology reconciliation and every OwlAPI JSON report remain checked; tracked OwlAPI JSON remains independently checked.",
-      "excludeUntrackedSources": true
-    },
-    {
-      "paths": [
         "docs/conformance/generated/w3c-jsonld.json"
       ],
       "owner": "W3C conformance fixture generators",
