@@ -1,10 +1,10 @@
+import { ABSOLUTE_RDF_IRI_REFERENCE as ABSOLUTE_IRI } from "../iriCharacters.js";
 import { skipTrivia } from "../unicodeLeadingTrivia.js";
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { ParserDescriptor } from "../parserRegistry.js";
 
 import { NQuadsParser } from "./parser.js";
 
-const ABSOLUTE_IRI = "<[A-Za-z][A-Za-z0-9+.-]*:[^>\\r\\n]*>";
 const BLANK_NODE = "_:[A-Za-z0-9_][A-Za-z0-9._-]*";
 const SUBJECT = `(?:${ABSOLUTE_IRI}|${BLANK_NODE})`;
 const PREDICATE = ABSOLUTE_IRI;

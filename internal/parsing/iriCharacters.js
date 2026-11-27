@@ -33,5 +33,8 @@ export const hasForbiddenIriCharacter = (value) => {
 export const isAbsoluteIri = (value) =>
   /^[A-Za-z][A-Za-z0-9+.-]*:/u.test(value) && !hasForbiddenIriCharacter(value);
 
+// Line-format detectors inspect raw IRI references, which can contain UCHAR escapes.
+export const ABSOLUTE_RDF_IRI_REFERENCE = String.raw`<[A-Za-z][A-Za-z0-9+.-]*:(?:[^\x00-\x20<>"{}|^\x60\\]|\\u[0-9A-Fa-f]{4}|\\U[0-9A-Fa-f]{8})*>`;
+
 export const SIMPLE_ASCII_IRI =
   /^(?:https?:\/\/[A-Za-z0-9._-]+(?::\d+)?(?:\/[A-Za-z0-9._~!$&'()*+,;=:@/-]*)?|urn:[A-Za-z0-9][A-Za-z0-9-]*:[A-Za-z0-9._~!$&'()*+,;=:@/-]+)(?:#[A-Za-z0-9._~!$&'()*+,;=:@/-]*)?$/u;

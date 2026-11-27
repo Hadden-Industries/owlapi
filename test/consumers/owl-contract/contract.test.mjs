@@ -67,17 +67,12 @@ async function exerciseLocalDocumentLoading() {
     <owl:Class rdf:about="Relative"/>
   </rdf:RDF>`;
   await assert.rejects(
-    load(
-      new StringDocumentSource(rdfXml, {
-        format: OWLDocumentFormats.RDF_XML,
-      }),
-      configuration,
-    ),
+    load(new StringDocumentSource(rdfXml), configuration),
     (error) =>
       error instanceof io.OWLSyntaxError &&
       error.code === "OWL_SYNTAX_ERROR" &&
       error.syntax === undefined &&
-      typeof error.parserMessage === "string",
+      /missing baseIRI/u.test(error.parserMessage),
   );
 
   const source = new StringDocumentSource(xml, {

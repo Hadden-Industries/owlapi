@@ -34,6 +34,11 @@ describe("N-Quads parser descriptor", () => {
     [
       "MATCH",
       "NQUADS_QUAD",
+      String.raw`<urn:s> <urn:p> <urn:test:\U00000041> <urn:graph> .`,
+    ],
+    [
+      "MATCH",
+      "NQUADS_QUAD",
       "<urn:s> <urn:p> <<( <urn:quoted-s> <urn:quoted-p> <urn:quoted-o> )>> <urn:graph> .",
     ],
     [
@@ -44,6 +49,17 @@ describe("N-Quads parser descriptor", () => {
     ["NO_MATCH", "NQUADS_NTRIPLES_STATEMENT", "<urn:s> <urn:p> <urn:o> ."],
     ["NO_MATCH", "NQUADS_TURTLE_DIRECTIVE", "@prefix ex: <urn:test:> ."],
     ["NO_MATCH", "NQUADS_SIGNATURE_ABSENT", '<?xml version="1.0"?><rdf:RDF />'],
+    [
+      "NO_MATCH",
+      "NQUADS_SIGNATURE_ABSENT",
+      `<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ex="urn:test:">
+        <rdf:Description rdf:about="urn:test:root">
+          <ex:note rdf:parseType="Literal">
+            <ex:span ex:style="plain">.</ex:span>
+          </ex:note>
+        </rdf:Description>
+      </rdf:RDF>`,
+    ],
     ["INDETERMINATE", "NQUADS_EMPTY", "# comments only\n"],
   ])("returns %s with %s", (result, reasonCode, text) => {
     expect(detectNQuads(source(text))).toMatchObject({ reasonCode, result });

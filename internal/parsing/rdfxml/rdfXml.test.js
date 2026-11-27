@@ -117,6 +117,30 @@ describe("RDF/XML manager integration", () => {
     ).toEqual(["urn:test:A", "urn:test:B"]);
   });
 
+  it("reports a missing base for unhinted multiline RDF/XML", async () => {
+    const manager = OWLManager.createOWLOntologyManager();
+    const text = `<rdf:RDF xmlns:rdf="${RDF}" xmlns:owl="${OWL}">
+      <owl:Class rdf:about="Relative"/>
+    </rdf:RDF>`;
+    const preserve = configuration({ parsingMode: "preserve" });
+
+    await expect(
+      manager.loadOntologyGraphFromOntologyDocument(source(text), preserve),
+    ).rejects.toMatchObject({
+      code: "OWL_SYNTAX_ERROR",
+      parserMessage: expect.stringMatching(/missing baseIRI/u),
+    });
+
+    const { ontology } = await manager.loadOntologyGraphFromOntologyDocument(
+      source(text, { documentIRI: "https://example.test/local/document" }),
+      preserve,
+    );
+    expect(manager.getOntologyFormat(ontology).key).toBe("rdfxml");
+    expect(
+      [...ontology.getClassesInSignature()].map(({ iri }) => iri.value),
+    ).toEqual(["https://example.test/local/Relative"]);
+  });
+
   it("accepts an RDF node element as the document root", async () => {
     const manager = OWLManager.createOWLOntologyManager();
     const ontology = await manager.loadOntologyFromOntologyDocument(

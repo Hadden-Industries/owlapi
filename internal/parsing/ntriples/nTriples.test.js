@@ -19,6 +19,11 @@ describe("N-Triples parser descriptor", () => {
       "# leading comment\n<urn:test:s> <urn:test:p> <urn:test:o> .",
     ],
     ["MATCH", "NTRIPLES_TRIPLE", '_:subject <urn:test:p> "value"@en .'],
+    [
+      "MATCH",
+      "NTRIPLES_TRIPLE",
+      String.raw`<urn:test:\u0041> <urn:test:p> "value" .`,
+    ],
     ["NO_MATCH", "NTRIPLES_TURTLE_DIRECTIVE", "@prefix ex: <urn:test:> ."],
     [
       "NO_MATCH",

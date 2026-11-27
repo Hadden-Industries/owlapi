@@ -1,8 +1,25 @@
+import { ABSOLUTE_RDF_IRI_REFERENCE as ABSOLUTE_IRI } from "../iriCharacters.js";
 import { skipTrivia } from "../unicodeLeadingTrivia.js";
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { ParserDescriptor } from "../parserRegistry.js";
 
 import { NTriplesParser } from "./parser.js";
+
+const RESOURCE = `(?:${ABSOLUTE_IRI}|_:[A-Za-z0-9_][A-Za-z0-9._-]*)`;
+const LITERAL = String.raw`"(?:[^"\\\r\n]|\\.)*"(?:@[A-Za-z]+(?:-[A-Za-z0-9]+)*|\^\^${ABSOLUTE_IRI})?`;
+const TRIPLE_PREFIX = new RegExp(
+  String.raw`^${RESOURCE}\s+${ABSOLUTE_IRI}\s+`,
+  "u",
+);
+const QUAD_STATEMENT = new RegExp(
+  String.raw`${TRIPLE_PREFIX.source}(?:${RESOURCE}|${LITERAL})\s+${RESOURCE}\s*\.`,
+  "u",
+);
+// A triple term can be nested. Check the graph label after the closing term.
+const TRIPLE_TERM_QUAD = new RegExp(
+  String.raw`<<\([\s\S]*\)>>\s*${RESOURCE}\s*\.`,
+  "u",
+);
 
 export const detectNTriples = (source) => {
   const text = source.getText();
@@ -16,29 +33,14 @@ export const detectNTriples = (source) => {
       result: "NO_MATCH",
     };
   }
-  // The scheme is essential here: accepting an arbitrary `<...>` token makes
-  // XML declarations and element tags look like an N-Triples subject/predicate.
-  if (
-    /^(?:<[A-Za-z][A-Za-z0-9+.-]*:[^>\r\n]*>|_:[A-Za-z0-9_][A-Za-z0-9._-]*)\s+<[A-Za-z][A-Za-z0-9+.-]*:[^>\r\n]*>\s+(?:<[A-Za-z][A-Za-z0-9+.-]*:[^>\r\n]*>|_:[A-Za-z0-9_][A-Za-z0-9._-]*|"(?:[^"\\\r\n]|\\.)*"(?:@[A-Za-z]+(?:-[A-Za-z0-9]+)*|\^\^<[A-Za-z][A-Za-z0-9+.-]*:[^>\r\n]*>)?)\s+(?:<[A-Za-z][A-Za-z0-9+.-]*:[^>\r\n]*>|_:[A-Za-z0-9_][A-Za-z0-9._-]*)\s*\./u.test(
-      remaining,
-    ) ||
-    // RDF 1.2 triple terms may contain nested terms, so detect the decisive
-    // graph label at the end instead of trying to parse that recursive object.
-    /<<\([\s\S]*\)>>\s*(?:<[A-Za-z][A-Za-z0-9+.-]*:[^>\r\n]*>|_:[A-Za-z0-9_][A-Za-z0-9._-]*)\s*\./u.test(
-      remaining,
-    )
-  ) {
+  if (QUAD_STATEMENT.test(remaining) || TRIPLE_TERM_QUAD.test(remaining)) {
     return {
       reason: "An N-Quads graph term was found after the RDF object",
       reasonCode: "NTRIPLES_NQUADS_STATEMENT",
       result: "NO_MATCH",
     };
   }
-  if (
-    /^(?:<[A-Za-z][A-Za-z0-9+.-]*:[^>\r\n]*>|_:[A-Za-z0-9_][A-Za-z0-9._-]*)\s+<[A-Za-z][A-Za-z0-9+.-]*:[^>\r\n]*>\s+/u.test(
-      remaining,
-    )
-  ) {
+  if (TRIPLE_PREFIX.test(remaining)) {
     return {
       reason: "An N-Triples subject and absolute-IRI predicate were found",
       reasonCode: "NTRIPLES_TRIPLE",

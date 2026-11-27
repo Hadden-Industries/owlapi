@@ -61,7 +61,7 @@ The bounded scopes cover UO's `scripts/ontology` and its three relevant entry po
 WebVOWL also uses the public format and error APIs at four application call sites and in cached source acquisition, OASIS catalogue loading, and the materialization client under `src/ontology-loading`.
 Production imports were checked at the immutable SHAs with native Git search; consumer tests, historical migration generators and notice tooling are not runtime interface oracles.
 
-The installed loader probe covers local documents without a retrieval IRI, OWL/XML format detection, and missing-base diagnostics from OWL/XML and explicitly selected RDF/XML.
+The installed loader probe covers local documents without a retrieval IRI, automatic XML format selection, and missing-base diagnostics from OWL/XML and multiline RDF/XML.
 It checks base resolution with remote imports suppressed and the resource details returned at the import-count and input-byte limits.
 The error probe distinguishes a missing import with a transport cause from one with an HTTP status.
 Catalogue and materialization size failures use the existing `ResourceLimitError` contract.
