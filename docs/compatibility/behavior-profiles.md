@@ -16,6 +16,19 @@ The [implementation record](https://github.com/Hadden-Industries/owlapi/blob/mai
 The [current decision ledger](java-api-parity-decisions.json) records paired expectations, native probes, tests and accepted-plan traceability.
 Its `currentBehaviorContracts` section is separate from the retained phase 21/22 receipts and their historical Java revision.
 
+## Profile differences on tested ontologies
+
+Both columns describe the JavaScript package.
+The examples use the same document bytes, import mappings and `parsingMode: "compatible"` in each profile.
+The [comparison fixture catalogue](https://github.com/Hadden-Industries/owlapi/blob/main/util/owlapi-reference/comparison-fixtures.json) records the pins for the corpus examples.
+
+| Tested example                                               | `java-owlapi-5.5.1`                                                                                                                             | `normative-v1`                                                                                          | Effect on application code                                           |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Reified RDF axioms in AGRO, ECAO, ECOCORE, OHD, OHPI and PSO | Preserves separate annotation groups. An affected OHD subproperty statement produces two `SubObjectPropertyOf` axioms with one annotation each. | Combines the annotations on one axiom. The same OHD statement produces one axiom with both annotations. | Axiom counts, exact equality, lookups and removals can differ.       |
+| ifcOWL IFC4 ADD2 with the mapped EXPRESS and LIST imports    | Retains one-operand `ObjectUnionOf` expressions.                                                                                                | Replaces each of those unions with its single operand.                                                  | Code that inspects expression kinds encounters the operand directly. |
+| STATO in RDF/XML                                             | Exposes one structural `SWRLRule`, including a same-individual atom.                                                                            | Loads the ontology with zero `SWRLRule` axioms.                                                         | `getAxiomsByType("SWRLRule")` returns different results.             |
+| The OWL/XML fixture `phase4-structural.owx`                  | Omits the anonymous individual inside an `ObjectOneOf` expression.                                                                              | Retains the anonymous individual in the enumeration.                                                    | The enumeration's members and structural identity differ.            |
+
 ## Structural SWRL rules
 
 In `java-owlapi-5.5.1`, compatible RDF/XML and Functional Syntax recognize `SWRLRule`, `SWRLClassAtom`, `SWRLObjectPropertyAtom`, `SWRLSameIndividualAtom`, `SWRLDifferentIndividualsAtom` and `SWRLVariable`.
@@ -231,7 +244,8 @@ Source-preservation mode requires at least two entries in the original Boolean l
 
 Java OWL/XML preserves the released parser's omission of anonymous individuals inside `ObjectOneOf`, including its empty result, and the Java factory accepts an empty enumeration. Normative OWL/XML includes anonymous operands and requires at least one individual, as specified by the [OWL 2 XML serialization schema](https://www.w3.org/TR/owl2-xml-serialization/#sec-xml-schema).
 
-These contracts have paired tests; the older expected-difference receipt retains its original Java revision and is not used as a Java-profile exemption.
+The OWL/XML snapshot test compares the Java compatibility profile with the pinned OWLAPI 5.5.1 result.
+The normative test compares the OWL/XML and Functional Syntax fixtures and checks that the anonymous operand is present.
 
 Compatible RDF parsing also distinguishes named datatype restrictions.
 Java retains their orphan literal facets as anonymous annotations without adding a datatype definition.

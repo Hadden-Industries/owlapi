@@ -49,7 +49,9 @@ The [rc.2 Java-parity programme](plans/0.1.0-rc.2-java-parity.md) remains the ea
 - `conformance/owl-to-rdf-mapping.json`: exhaustive canonical structural-model to RDF/JS mapping inventory completed in Phase 16.
 - `conformance/krss-corpus-register.json`: strict separation of KRSS fixture classes and the verified zero qualifying historical-corpus result.
 - `compatibility/krss1-behavioral-oracle.json`: finite pinned Java observations and controlled KRSS1 compatibility decisions.
-- `compatibility/expected-differences.json`: exact Java/JavaScript differential exceptions.
+- `compatibility/expected-differences.json` defines the snapshot exception policy.
+  Its rule list is empty.
+  See [profile differences on tested ontologies](compatibility/behavior-profiles.md#profile-differences-on-tested-ontologies) for the user-facing comparison.
 - `dependency-governance.json`: selected dependency authority, risk, licence, and replacement records.
 - `release/producer-release-policy.json` and generated `release/producer-gates.json`: active producer obligations; historical gate records retain their original identities.
 - `ontology-lifecycle-capability-implementation-plan.md`: import closures, mutation, merging, and storage in 0.1.0.

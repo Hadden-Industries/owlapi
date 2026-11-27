@@ -157,7 +157,7 @@ console.log(javaManager.getBehaviorProfileId()); // java-owlapi-5.5.1
 
 <!-- release-documentation:example-behavior-profiles:end -->
 
-Read the [behavior profile comparison](./docs/compatibility/behavior-profiles.md) before choosing a profile.
+See the [profile differences on tested ontologies](./docs/compatibility/behavior-profiles.md#profile-differences-on-tested-ontologies) before choosing a profile.
 
 ## Java OWLAPI and JavaScript call shapes
 
@@ -407,7 +407,7 @@ Raising a ceiling accepts the corresponding memory, CPU, and denial-of-service r
 - **Transform and render.**
   Merge ontologies, duplicate OWL objects, rename or remove entities, and render Manchester Syntax with short names.
 
-With `java-owlapi-5.5.1`, compatible RDF/XML and Functional Syntax retain a structural SWRL subset. Inspect `ontology.getAxiomsByType("SWRLRule")` for each rule's body, head and direct literal annotations. Each atom uses a named class or object property with full-IRI variables. A rule outside the subset rejects its document. [SWRL behavior and visitor migration](docs/compatibility/behavior-profiles.md#structural-swrl-rules)
+With `java-owlapi-5.5.1`, compatible RDF/XML and Functional Syntax retain a structural SWRL subset. Inspect `ontology.getAxiomsByType("SWRLRule")` for each rule's body, head and direct literal annotations. The subset supports class-expression and object-property predicates, same-individual and different-individuals atoms, and full-IRI variables. A rule outside the subset rejects its document. [SWRL behavior and visitor migration](docs/compatibility/behavior-profiles.md#structural-swrl-rules)
 
 Reasoning, rule execution, general SWRL authoring, OBO parsing, the broader N3 language, Java listener APIs, directly constructible storer classes, a public RDF/JS subpath, and official TypeScript declarations are outside this release's scope.
 The [capability matrix](./docs/compatibility/capabilities.json) and [Java compatibility reference](./docs/compatibility/java-api-surface.md) define the supported features and known gaps.
