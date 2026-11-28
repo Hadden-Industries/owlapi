@@ -646,11 +646,11 @@ public final class RunOntologyComparisonCase {
                     StreamDocumentSource source = new StreamDocumentSource(stream,
                         IRI.create(document.required("documentIRI").asText()),
                         sourceFormat(request), null);
-                    if (cold) observeCheckpoint(caseId, executionId, sampleId, "before");
+                    if (cold) ComparisonMemoryCheckpoint.observe(JSON, caseId, executionId, sampleId, "before");
                     long start = System.nanoTime();
                     ontology = manager.loadOntologyFromOntologyDocument(source, configuration);
                     long elapsed = System.nanoTime() - start;
-                    if (cold) observeCheckpoint(caseId, executionId, sampleId, "after");
+                    if (cold) ComparisonMemoryCheckpoint.observe(JSON, caseId, executionId, sampleId, "after");
                     if (protocol.path("loadOnly").asBoolean()) {
                         observation.put("witness", Map.of(
                             "identity", OntologyStructuralComparison.ontologyIdentity(ontology.getOntologyID()),
@@ -659,7 +659,7 @@ public final class RunOntologyComparisonCase {
                             "imports", ontology.importsDeclarations().map(d -> d.getIRI().toString()).sorted().toList()));
                         if (protocol.path("materializeAxioms").asBoolean()) {
                             var materialized = ontology.getAxioms();
-                            observeCheckpoint(caseId, executionId, sampleId, "materialized");
+                            ComparisonMemoryCheckpoint.observe(JSON, caseId, executionId, sampleId, "materialized");
                             if (materialized.size() != ontology.getAxiomCount())
                                 throw new IllegalStateException("Materialized axiom set differs from the direct count");
                             java.lang.ref.Reference.reachabilityFence(materialized);
@@ -675,16 +675,6 @@ public final class RunOntologyComparisonCase {
             observation.putAll(failure("public-load", failure));
         }
         System.out.println(JSON.writeValueAsString(observation));
-    }
-
-    private static void observeCheckpoint(String caseId, String executionId, String sampleId, String phase) throws Exception {
-        Runtime runtime = Runtime.getRuntime();
-        System.out.println(JSON.writeValueAsString(Map.of("caseId", caseId, "executionId", executionId,
-            "sampleId", sampleId, "kind", "checkpoint",
-            "phase", phase, "pid", ProcessHandle.current().pid(),
-            "heapUsedBytes", runtime.totalMemory() - runtime.freeMemory(),
-            "heapTotalBytes", runtime.totalMemory())));
-        if (System.in.read() != '.') throw new IllegalStateException("Working-set observer disconnected");
     }
 
     private static OWLOntology loadFunctional(Path path, Path absent,

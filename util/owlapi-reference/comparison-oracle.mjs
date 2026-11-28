@@ -25,6 +25,7 @@ export const oracleLockPath = new URL("java-dependencies.lock.json", profiles);
 const mavenCentral = "https://repo.maven.apache.org/maven2/";
 const sourceFile = (name) => fileURLToPath(new URL(name, import.meta.url));
 const oracleSources = [
+  "ComparisonMemoryCheckpoint.java",
   "OntologyReferenceContract.java",
   "OntologyStructuralComparison.java",
   "OntologyStorageComparison.java",

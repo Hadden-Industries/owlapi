@@ -111,6 +111,7 @@ const comparisonInputs = [
   "./historical-reference-distribution.mjs",
   "./reference-publication-catalogue.json",
   "./OntologyReferenceContract.java",
+  "./ComparisonMemoryCheckpoint.java",
   "./OntologyStructuralComparison.java",
   "./RunOntologyComparisonCase.java",
   "./RunWithClasspath.java",
