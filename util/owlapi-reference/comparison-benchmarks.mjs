@@ -1,9 +1,12 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
 import { delimiter, isAbsolute, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   BEHAVIOR_PROFILES,
   BENCHMARK_DEFINITIONS,
   DEFAULT_JAVA_BASELINE_PATH,
+  benchmarkFixtureSpec,
   loadJavaBaseline,
   loadBenchmarkApi,
   prepareSharedFixtureDirectory,
@@ -20,8 +23,16 @@ import {
   publishComparisonJson,
   sha256,
 } from "./comparison-evidence.mjs";
-import { admitReleasedClasspath, oracleVersion } from "./comparison-oracle.mjs";
-import { median } from "./comparison-performance.mjs";
+import {
+  admitReleasedClasspath,
+  comparisonJavaTools,
+  oracleVersion,
+} from "./comparison-oracle.mjs";
+import {
+  hasMemoryCheckpoints,
+  measureComparisonWorker,
+  median,
+} from "./comparison-performance.mjs";
 import { verifyBenchmarkApiSemantics } from "../verify-benchmark-api-semantics.mjs";
 import { verifyBenchmarkIoSemantics } from "../verify-benchmark-io-semantics.mjs";
 
@@ -385,6 +396,28 @@ export function benchmarkComparisonCases(
   );
 }
 
+function workloadComparisonReason(
+  { workload, definition },
+  java,
+  js,
+  basis,
+  witness,
+) {
+  if (basis.kind !== "fresh-observation") return "Historical Java baseline";
+  if (workload.comparisonLimitation) return workload.comparisonLimitation;
+  if (java.verificationCount !== js.verificationCount)
+    return "Worker checksums differ";
+  if (
+    witness?.groupId !== definition.input ||
+    witness.behaviorProfileId !== definition.behaviorProfileId ||
+    witness.status !== "passed" ||
+    witness.admission !== "independently-witnessed" ||
+    witness.semanticMatch !== true
+  )
+    return witness?.reasonId ?? "Missing independent semantic witness";
+  return null;
+}
+
 export function benchmarkVerdict(
   { workload, definition },
   java,
@@ -437,20 +470,16 @@ export function benchmarkVerdict(
     }
   }
   const reason =
-    basis.kind !== "fresh-observation"
-      ? "Historical Java baseline"
-      : (workload.comparisonLimitation ??
-        (java.verificationCount !== js.verificationCount
-          ? "Worker checksums differ"
-          : witness?.groupId !== definition.input ||
-              witness.behaviorProfileId !== definition.behaviorProfileId ||
-              witness.status !== "passed" ||
-              witness.admission !== "independently-witnessed" ||
-              witness.semanticMatch !== true
-            ? (witness?.reasonId ?? "Missing independent semantic witness")
-            : java.median.wallMs === 0 || js.median.wallMs === 0
-              ? "Timer resolution"
-              : null));
+    workloadComparisonReason(
+      { workload, definition },
+      java,
+      js,
+      basis,
+      witness,
+    ) ??
+    (java.median.wallMs === 0 || js.median.wallMs === 0
+      ? "Timer resolution"
+      : null);
   return reason
     ? { status: "diagnostic-only", reason }
     : {
@@ -458,6 +487,298 @@ export function benchmarkVerdict(
         ratioVsJava: js.median.wallMs / java.median.wallMs,
         witnessCaseId: witness.caseId,
       };
+}
+
+function memoryProtocol(
+  coldSamples,
+  { subject, fixtureSha256, javaBasis, definitions, limits, javascript },
+  attemptId,
+) {
+  if (
+    typeof attemptId !== "string" ||
+    !/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/u.test(attemptId)
+  )
+    throw new Error("Missing API memory attempt identity");
+  const protocol = {
+    version: 1,
+    boundary: "first-api-workload-invocation",
+    platform: process.platform,
+    arch: process.arch,
+    coldSamples,
+    attemptId,
+    supported: ["win32", "linux"].includes(process.platform),
+  };
+  return {
+    ...protocol,
+    executionId: comparisonIdentity({
+      protocol,
+      subject,
+      fixtureSha256,
+      javaBasis,
+      definitions,
+      limits,
+      javascript,
+    }),
+  };
+}
+
+function memoryTrialIdentity(input, engine, index, executionId) {
+  return {
+    caseId: comparisonIdentity({ input, engine }),
+    executionId,
+    sampleId: `${engine}-cold-${index}`,
+  };
+}
+
+/** Recompute each process-footprint summary from its two OS checkpoints. */
+export function benchmarkMemoryVerdict(
+  entry,
+  java,
+  js,
+  basis,
+  witness,
+  protocol,
+  raw,
+) {
+  if (!protocol)
+    return { status: "unavailable", reason: "Historical Java baseline" };
+  if (!protocol.supported)
+    return {
+      status: "unavailable",
+      reason: "OS working-set sampler unavailable",
+    };
+  const { input, behaviorProfileId } = entry.definition;
+  const summary = {};
+  let reason = workloadComparisonReason(entry, java, js, basis, witness);
+  for (const [key, row] of [
+    ["java", java],
+    [behaviorProfileId, js],
+  ]) {
+    const engine = key === "java" ? "java" : "js";
+    const trials = raw?.[key];
+    if (!Array.isArray(trials) || trials.length !== protocol.coldSamples)
+      throw new Error(`Wrong API memory sample count for ${input} (${key})`);
+    for (const [index, trial] of trials.entries()) {
+      const identity = memoryTrialIdentity(
+        input,
+        key,
+        index,
+        protocol.executionId,
+      );
+      if (
+        trial?.kind !== "sample" ||
+        trial.status !== "completed" ||
+        trial.input !== input ||
+        trial.caseId !== identity.caseId ||
+        trial.executionId !== identity.executionId ||
+        trial.sampleId !== identity.sampleId ||
+        !Number.isSafeInteger(trial.verificationCount) ||
+        (engine === "java"
+          ? trial.owlapiVersion !== oracleVersion ||
+            trial.javaVersion !== basis.jdk.version
+          : trial.behaviorProfileId !== key ||
+            trial.nodeVersion !== process.version) ||
+        !hasMemoryCheckpoints(trial, ["before", "after"], engine) ||
+        trial.checkpoints[1].peakRssBytes < trial.checkpoints[0].peakRssBytes
+      )
+        throw new Error(
+          `Invalid API memory sample for ${input} (${identity.sampleId})`,
+        );
+      if (trial.verificationCount !== row.verificationCount)
+        reason ??= "Cold workload checksum differs from the timed workload";
+    }
+    summary[engine] = {
+      beforeRssBytes: median(trials.map((t) => t.checkpoints[0].rssBytes)),
+      afterRssBytes: median(trials.map((t) => t.checkpoints[1].rssBytes)),
+      peakRssBytes: median(trials.map((t) => t.checkpoints[1].peakRssBytes)),
+      peakGrowthBytes: median(
+        trials.map(
+          (t) => t.checkpoints[1].peakRssBytes - t.checkpoints[0].peakRssBytes,
+        ),
+      ),
+    };
+  }
+  return reason
+    ? { ...summary, status: "diagnostic-only", reason }
+    : {
+        ...summary,
+        status: "qualified",
+        peakRssRatio: summary.js.peakRssBytes / summary.java.peakRssBytes,
+      };
+}
+
+function memoryRoster(definitions) {
+  const roster = new Map();
+  for (const { input, behaviorProfileId } of definitions) {
+    if (!roster.has(input)) roster.set(input, ["java"]);
+    roster.get(input).push(behaviorProfileId);
+  }
+  return roster;
+}
+
+const memoryFile = (input) => input + ".json";
+const localPath = (name) => fileURLToPath(new URL(name, import.meta.url));
+
+async function collectBenchmarkMemory(
+  environment,
+  selected,
+  fixtures,
+  classpath,
+  definitions,
+  protocol,
+) {
+  const directory = join(environment.outputDirectory, "memory");
+  await mkdir(directory);
+  const raw = new Map();
+  const receipts = [];
+  const { jdk, env, timeout, executeProcess } = comparisonJavaTools(
+    environment,
+    fixtures.rootDir,
+  );
+  const classes = join(fixtures.rootDir, "classes");
+  await mkdir(classes);
+  // Compile outside the measured JVM. Argument files allow the full pinned classpath on Windows.
+  const compileArgs = join(fixtures.rootDir, "javac.args");
+  await writeFile(
+    compileArgs,
+    [
+      "-encoding",
+      "UTF-8",
+      "-cp",
+      classpath.jars.join(delimiter),
+      "-d",
+      classes,
+      localPath("./BenchmarkPublicApiSurface.java"),
+      localPath("./ComparisonMemoryCheckpoint.java"),
+    ]
+      .map((value) => JSON.stringify(value))
+      .join("\n"),
+  );
+  const compiler = await executeProcess("javac", ["@" + compileArgs]);
+  if (compiler.exitCode !== 0)
+    throw new Error("API memory worker compilation failed: " + compiler.stderr);
+  const javaArgs = join(fixtures.rootDir, "java.args");
+  await writeFile(
+    javaArgs,
+    [
+      ...(environment.javaHeapMiB ? [`-Xmx${environment.javaHeapMiB}m`] : []),
+      "-Duser.language=en",
+      "-Duser.country=GB",
+      "-Duser.timezone=UTC",
+      "-Dfile.encoding=UTF-8",
+      `-Djava.io.tmpdir=${fixtures.rootDir}`,
+      `-XX:ErrorFile=${join(fixtures.rootDir, "hs_err_pid%p.log")}`,
+      "-cp",
+      [classes, ...classpath.jars].join(delimiter),
+      "BenchmarkPublicApiSurface",
+    ]
+      .map((value) => JSON.stringify(value))
+      .join("\n"),
+  );
+  const requestPath = join(fixtures.rootDir, "memory-request.json");
+  const javaWorker = {
+    file: jdk.javaPath,
+    args: ["@" + javaArgs, requestPath],
+    options: { cwd: fixtures.rootDir, env },
+  };
+  const jsWorker = {
+    file: process.execPath,
+    args: [
+      ...(environment.nodeHeapMiB
+        ? [`--max-old-space-size=${environment.nodeHeapMiB}`]
+        : []),
+      localPath("./run-comparison-js.mjs"),
+      requestPath,
+      join(fixtures.rootDir, "unused.json"),
+    ],
+    options: { cwd: fixtures.rootDir },
+  };
+  const fixtureSpec = benchmarkFixtureSpec(fixtures);
+  for (const [input, engines] of memoryRoster(definitions)) {
+    const samples = Object.fromEntries(engines.map((engine) => [engine, []]));
+    for (let index = 0; index < protocol.coldSamples; index++) {
+      for (let slot = 0; slot < engines.length; slot++) {
+        const engine = engines[(slot + index) % engines.length];
+        const identity = memoryTrialIdentity(
+          input,
+          engine,
+          index,
+          protocol.executionId,
+        );
+        await writeFile(
+          requestPath,
+          JSON.stringify({
+            ...fixtureSpec,
+            ...identity,
+            input,
+            filterIds: [input],
+            scenario: "api-benchmarks",
+            ...(engine === "java"
+              ? {}
+              : {
+                  behaviorProfileId: engine,
+                  packageDirectory: selected.packageDirectory,
+                  consumerDirectory: selected.consumerDirectory,
+                }),
+          }),
+        );
+        try {
+          samples[engine].push(
+            await measureComparisonWorker(
+              engine === "java" ? javaWorker : jsWorker,
+              identity,
+              "cold",
+              timeout,
+            ),
+          );
+        } catch (error) {
+          throw new Error(
+            `API memory trial failed for ${input} (${identity.sampleId}): ${error.message}`,
+            { cause: error },
+          );
+        }
+      }
+    }
+    receipts.push(
+      await publishComparisonJson(directory, memoryFile(input), {
+        input,
+        executionId: protocol.executionId,
+        samples,
+      }),
+    );
+    raw.set(input, samples);
+  }
+  return { receipts, raw };
+}
+
+async function readBenchmarkMemory(output, definitions, protocol, receipts) {
+  const roster = memoryRoster(definitions);
+  if (
+    !Array.isArray(receipts) ||
+    receipts.length !== (protocol?.supported ? roster.size : 0)
+  )
+    throw new Error("API memory receipts do not cover the requested workloads");
+  const raw = new Map();
+  if (!protocol?.supported) return raw;
+  for (const [input, engines] of roster) {
+    const receipt = receipts[raw.size];
+    const name = memoryFile(input);
+    if (receipt?.name !== name)
+      throw new Error(`Missing API memory receipt for ${input}`);
+    const bytes = await readFile(join(output, "memory", name));
+    if (receipt.byteLength !== bytes.length || receipt.sha256 !== sha256(bytes))
+      throw new Error(`Changed API memory receipt for ${input}`);
+    const row = JSON.parse(bytes);
+    if (
+      row.input !== input ||
+      row.executionId !== protocol.executionId ||
+      comparisonIdentity(Object.keys(row.samples).sort()) !==
+        comparisonIdentity([...engines].sort())
+    )
+      throw new Error(`API memory engines or attempt changed for ${input}`);
+    raw.set(input, row.samples);
+  }
+  return raw;
 }
 
 async function admitBenchmarkReference(environment) {
@@ -490,6 +811,12 @@ export async function runBenchmarkComparison(request, environment) {
   const mode = environment.benchmarkMode ?? "frozen";
   if (!["frozen", "live", "refresh", "missing"].includes(mode))
     throw new Error("Unknown Java benchmark basis");
+  const coldSamples = environment.performanceProtocol?.coldSamples ?? 3;
+  if (
+    mode === "live" &&
+    (!Number.isSafeInteger(coldSamples) || coldSamples < 1)
+  )
+    throw new Error("API memory requires a positive cold sample count");
   const baselinePath =
     environment.javaBaselinePath ?? DEFAULT_JAVA_BASELINE_PATH;
   if (!isAbsolute(baselinePath))
@@ -527,8 +854,49 @@ export async function runBenchmarkComparison(request, environment) {
       ? await admitBenchmarkReference(environment)
       : null;
     const frozen = witness ? null : loadJavaBaseline(baselinePath);
+    const requestedLimits = {
+      nodeHeapMiB: environment.nodeHeapMiB,
+      javaHeapMiB: environment.javaHeapMiB,
+      windowsJobMiB:
+        process.platform === "win32" ? environment.memoryBudgetMiB : undefined,
+    };
     if (
-      report.schemaVersion !== 3 ||
+      witness &&
+      (report.javascript?.node !== process.version ||
+        Object.entries(requestedLimits).some(
+          ([key, value]) =>
+            value !== undefined && value !== report.limits?.[key],
+        ))
+    )
+      throw new Error(
+        "API memory evidence has a different runtime or memory budget",
+      );
+    const protocol = witness
+      ? memoryProtocol(
+          coldSamples,
+          {
+            ...report,
+            subject,
+            definitions,
+            fixtureSha256,
+          },
+          report.memoryProtocol?.attemptId,
+        )
+      : null;
+    if (
+      comparisonIdentity(report.memoryProtocol) !== comparisonIdentity(protocol)
+    )
+      throw new Error(
+        "API memory evidence does not match the selected protocol",
+      );
+    const memory = await readBenchmarkMemory(
+      output,
+      definitions,
+      protocol,
+      report.memoryReceipts,
+    );
+    if (
+      report.schemaVersion !== 4 ||
       report.mode !== mode ||
       comparisonIdentity(report.subject) !== comparisonIdentity(subject) ||
       report.fixtureSha256 !== fixtureSha256 ||
@@ -574,6 +942,15 @@ export async function runBenchmarkComparison(request, environment) {
                 report.javaBasis,
                 witness?.cases[index],
               ),
+              memory: benchmarkMemoryVerdict(
+                entries[index],
+                row.java,
+                row.js,
+                report.javaBasis,
+                witness?.cases[index],
+                protocol,
+                memory.get(row.input),
+              ),
             }),
       )
     ) {
@@ -606,8 +983,10 @@ export async function runBenchmarkComparison(request, environment) {
     let javaSuite;
     let javaBasis;
     let witness;
-    if (mode !== "frozen") {
-      const { classpath, jdk } = await admitBenchmarkReference(environment);
+    const reference =
+      mode === "frozen" ? null : await admitBenchmarkReference(environment);
+    if (reference) {
+      const { classpath, jdk } = reference;
       const runJava = (args) => {
         const suite = runJavaBenchmarks({
           ...args,
@@ -702,6 +1081,38 @@ export async function runBenchmarkComparison(request, environment) {
         }),
       );
     }
+    const binding = {
+      subject: selected.identity,
+      fixtureSha256,
+      javaBasis,
+      definitions,
+      javascript: {
+        node: process.version,
+        explicitGc: typeof globalThis.gc === "function",
+      },
+      limits: {
+        windowsJobMiB:
+          process.platform === "win32"
+            ? (environment.memoryBudgetMiB ?? null)
+            : null,
+        nodeHeapMiB: environment.nodeHeapMiB ?? null,
+        javaHeapMiB: environment.javaHeapMiB ?? null,
+      },
+    };
+    const protocol =
+      mode === "live"
+        ? memoryProtocol(coldSamples, binding, randomUUID())
+        : null;
+    const memory = protocol?.supported
+      ? await collectBenchmarkMemory(
+          environment,
+          selected,
+          sharedFixtures,
+          reference.classpath,
+          definitions,
+          protocol,
+        )
+      : { receipts: [], raw: new Map() };
     const cases = entries.map(({ caseId, definition, workload }, index) => {
       const java = javaSuite.results.find((row) => row.id === definition.input);
       const js = jsSuites
@@ -720,34 +1131,30 @@ export async function runBenchmarkComparison(request, environment) {
           javaBasis,
           witness?.cases[index],
         ),
+        memory: benchmarkMemoryVerdict(
+          entries[index],
+          java,
+          js,
+          javaBasis,
+          witness?.cases[index],
+          protocol,
+          memory.raw.get(definition.input),
+        ),
         java,
         js,
       };
     });
     const report = {
-      schemaVersion: 3,
+      schemaVersion: 4,
       mode,
-      subject: selected.identity,
-      fixtureSha256,
+      ...binding,
+      memoryProtocol: protocol,
+      memoryReceipts: memory.receipts,
       ...(witness ? { witnessSha256: comparisonIdentity(witness) } : {}),
       action: "run",
       scenario: "api-benchmarks",
-      definitions,
       cases,
-      javaBasis,
       fixtureGeneratorSha256: sha256(await readFile(fixtureGenerator)),
-      javascript: {
-        node: process.version,
-        explicitGc: typeof globalThis.gc === "function",
-      },
-      limits: {
-        windowsJobMiB:
-          process.platform === "win32"
-            ? (environment.memoryBudgetMiB ?? null)
-            : null,
-        nodeHeapMiB: environment.nodeHeapMiB ?? null,
-        javaHeapMiB: environment.javaHeapMiB ?? null,
-      },
     };
     if (
       fixtureSha256 !== (await benchmarkFixtureDigest(sharedFixtures)) ||

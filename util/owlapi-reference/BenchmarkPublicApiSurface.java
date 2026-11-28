@@ -273,8 +273,9 @@ public final class BenchmarkPublicApiSurface {
 
     Path specPath = Path.of(args[0]);
     var specNode = JSON.readTree(Files.readString(specPath));
-    int warmupCount = specNode.get("warmupCount").asInt();
-    int runCount = specNode.get("runCount").asInt();
+    boolean memoryTrial = specNode.has("sampleId");
+    int warmupCount = specNode.path("warmupCount").asInt();
+    int runCount = specNode.path("runCount").asInt();
     Path fixturesDir = Path.of(specNode.get("fixturesDirectory").asText());
     Set<String> filterIds = new HashSet<>();
     if (specNode.has("filterIds") && specNode.get("filterIds").isArray()) {
@@ -1436,10 +1437,30 @@ public final class BenchmarkPublicApiSurface {
       if (!filterIds.isEmpty() && !filterIds.contains(bench.id)) {
         continue;
       }
-      System.gc();
+      if (memoryTrial) {
+        if (filterIds.size() != 1 || !bench.id.equals(specNode.required("input").asText())) {
+          throw new IllegalArgumentException("A memory trial requires exactly one workload");
+        }
+        ComparisonMemoryCheckpoint.observe(JSON, specNode.required("caseId").asText(),
+            specNode.required("executionId").asText(), specNode.required("sampleId").asText(), "before");
+      } else {
+        System.gc();
+      }
       long coldStartNs = System.nanoTime();
       long verificationCount = bench.operation.getAsLong();
       double firstUseWallMs = roundMs(System.nanoTime() - coldStartNs);
+      if (memoryTrial) {
+        String caseId = specNode.required("caseId").asText();
+        String executionId = specNode.required("executionId").asText();
+        String sampleId = specNode.required("sampleId").asText();
+        ComparisonMemoryCheckpoint.observe(JSON, caseId, executionId, sampleId, "after");
+        System.out.println(JSON.writeValueAsString(Map.of(
+            "caseId", caseId, "executionId", executionId, "sampleId", sampleId,
+            "kind", "sample", "status", "completed", "input", bench.id,
+            "verificationCount", verificationCount, "javaVersion", System.getProperty("java.version"),
+            "owlapiVersion", VersionInfo.getVersionInfo().getVersion())));
+        return;
+      }
 
       for (int w = 0; w < warmupCount; w++) {
         bench.operation.getAsLong();

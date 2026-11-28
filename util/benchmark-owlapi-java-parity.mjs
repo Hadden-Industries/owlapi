@@ -6,10 +6,12 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { performance } from "node:perf_hooks";
 import { isDeepStrictEqual } from "node:util";
 import { randomUUID } from "node:crypto";
-import { format as prettierFormat, resolveConfig } from "prettier";
 import { runJavaObservation } from "./owlapi-reference/run-java-observation.mjs";
 import { loadPublicApi } from "./owlapi-reference/comparison-subject.mjs";
-import { median } from "./owlapi-reference/comparison-performance.mjs";
+import {
+  median,
+  performanceWorkerReporter,
+} from "./owlapi-reference/comparison-performance.mjs";
 
 const require = createRequire(import.meta.url);
 const {
@@ -1090,6 +1092,17 @@ export function benchmarkImportClosureManager(
     });
 }
 
+export function benchmarkFixtureSpec(fixtures) {
+  return {
+    fixturesDirectory: fixtures.fixturesDir,
+    syntaxNames: Object.keys(fixtures.syntaxTexts),
+    importClosure: {
+      rootIRI: fixtures.importClosure.rootIRI,
+      files: fixtures.importClosure.files,
+    },
+  };
+}
+
 export const runJsProfileBenchmarks = async (
   behaviorProfileId,
   {
@@ -1098,6 +1111,7 @@ export const runJsProfileBenchmarks = async (
     filterIds = null,
     sharedFixtures = null,
     publicApi,
+    memoryTrial,
   } = {},
 ) => {
   const ownsFixtures = !sharedFixtures;
@@ -2234,10 +2248,23 @@ export const runJsProfileBenchmarks = async (
       if (!op) {
         throw new Error(`Missing JS benchmark implementation for ${def.id}`);
       }
-      maybeGc();
+      if (memoryTrial) await memoryTrial.checkpoint("before");
+      else maybeGc();
       const firstUseStarted = performance.now();
       const verificationCount = await op();
       const firstUseWallMs = performance.now() - firstUseStarted;
+      if (memoryTrial) {
+        await memoryTrial.checkpoint("after");
+        memoryTrial.emit({
+          kind: "sample",
+          status: "completed",
+          input: def.id,
+          behaviorProfileId,
+          verificationCount,
+          nodeVersion: process.version,
+        });
+        return;
+      }
 
       for (let w = 0; w < warmupCount; w += 1) {
         await op();
@@ -2293,6 +2320,32 @@ export const runJsProfileBenchmarks = async (
   }
 };
 
+/** Reopen the same generated files that the Java worker receives. */
+export async function sampleBenchmarkMemory(request) {
+  const { fixturesDirectory, syntaxNames, importClosure } = request;
+  const sharedFixtures = {
+    syntaxTexts: Object.fromEntries(
+      syntaxNames.map((name) => [
+        name,
+        fs.readFileSync(path.join(fixturesDirectory, name + ".txt"), "utf8"),
+      ]),
+    ),
+    importClosure: {
+      ...importClosure,
+      rootText: fs.readFileSync(
+        importClosure.files[importClosure.rootIRI],
+        "utf8",
+      ),
+    },
+  };
+  await runJsProfileBenchmarks(request.behaviorProfileId, {
+    filterIds: [request.input],
+    sharedFixtures,
+    publicApi: await loadBenchmarkApi(request),
+    memoryTrial: performanceWorkerReporter(request),
+  });
+}
+
 export const runJavaBenchmarks = ({
   warmupCount = 1,
   runCount = 3,
@@ -2316,12 +2369,8 @@ export const runJavaBenchmarks = ({
       JSON.stringify({
         warmupCount,
         runCount,
-        fixturesDirectory: fixtures.fixturesDir,
+        ...benchmarkFixtureSpec(fixtures),
         filterIds: filterIds ?? [],
-        importClosure: {
-          rootIRI: fixtures.importClosure.rootIRI,
-          files: fixtures.importClosure.files,
-        },
       }),
       "utf8",
     );
@@ -2468,6 +2517,7 @@ export const writeJavaBaseline = async (
   baselineData,
   baselinePath = DEFAULT_JAVA_BASELINE_PATH,
 ) => {
+  const { format: prettierFormat, resolveConfig } = await import("prettier");
   const prettierBase = (await resolveConfig(
     path.join(REPO_ROOT, "package.json"),
   )) ?? { endOfLine: "lf" };

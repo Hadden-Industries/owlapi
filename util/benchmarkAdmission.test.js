@@ -1,7 +1,10 @@
 import {
   benchmarkComparisonCases,
+  benchmarkMemoryVerdict,
   benchmarkVerdict,
 } from "./owlapi-reference/comparison-benchmarks.mjs";
+import { comparisonIdentity } from "./owlapi-reference/comparison-evidence.mjs";
+import { oracleVersion } from "./owlapi-reference/comparison-oracle.mjs";
 
 const id = "manager.createOWLOntologyManager";
 const [entry] = benchmarkComparisonCases(
@@ -119,3 +122,90 @@ test("zero resolution and differing verification counts are diagnostic", () => {
     ),
   ).toEqual({ status: "diagnostic-only", reason: "Worker checksums differ" });
 });
+
+const protocol = {
+  supported: true,
+  executionId: "a".repeat(64),
+  coldSamples: 3,
+};
+const javaBasis = { ...fresh, jdk: { version: "test-jdk" } };
+
+function coldTrials(engine, peaks) {
+  return peaks.map((peak, index) => ({
+    kind: "sample",
+    status: "completed",
+    input: id,
+    caseId: comparisonIdentity({ input: id, engine }),
+    executionId: protocol.executionId,
+    sampleId: `${engine}-cold-${index}`,
+    verificationCount: 3,
+    ...(engine === "java"
+      ? { javaVersion: "test-jdk", owlapiVersion: oracleVersion }
+      : { behaviorProfileId: engine, nodeVersion: process.version }),
+    checkpoints: ["before", "after"].map((phase) => ({
+      phase,
+      rssBytes: 100,
+      peakRssBytes: phase === "before" ? 100 : peak,
+      heapUsedBytes: 10,
+      heapTotalBytes: 20,
+      ...(engine === "java" ? {} : { externalBytes: 1, arrayBufferBytes: 0 }),
+    })),
+  }));
+}
+
+test.each(["java-owlapi-5.5.1", "normative-v1"])(
+  "reconstructs %s process peaks and checks evidence independently of timer resolution",
+  (profile) => {
+    const [selected] = benchmarkComparisonCases({ input: id, profile });
+    const raw = {
+      java: coldTrials("java", [400, 900, 500]),
+      [profile]: coldTrials(profile, [200, 1000, 300]),
+    };
+    const evaluate = (
+      observations,
+      plan = protocol,
+      proof = { ...witness, behaviorProfileId: profile },
+    ) =>
+      benchmarkMemoryVerdict(
+        selected,
+        row("retainedHeapDeltaBytes", 0),
+        row("sampledHeapDeltaBytes", 0),
+        javaBasis,
+        proof,
+        plan,
+        observations,
+      );
+    expect(evaluate(raw)).toMatchObject({
+      status: "qualified",
+      peakRssRatio: 0.6,
+      java: { peakRssBytes: 500, peakGrowthBytes: 400 },
+      js: { peakRssBytes: 300, peakGrowthBytes: 200 },
+    });
+    expect(evaluate(raw, null).status).toBe("unavailable");
+    expect(evaluate(raw, { ...protocol, supported: false }).status).toBe(
+      "unavailable",
+    );
+    const diagnostic = evaluate(raw, protocol, null);
+    expect(diagnostic).toMatchObject({
+      status: "diagnostic-only",
+      js: { peakRssBytes: 300 },
+    });
+    expect(diagnostic.peakRssRatio).toBeUndefined();
+    expect(() => evaluate({ ...raw, java: raw.java.slice(1) })).toThrow(
+      /sample count/u,
+    );
+    for (const change of [
+      { executionId: "b".repeat(64) },
+      { behaviorProfileId: "other" },
+      { sampleId: "other-cold-0" },
+      { input: "another-workload" },
+      { checkpoints: raw[profile][0].checkpoints.slice(1) },
+    ]) {
+      const altered = structuredClone(raw);
+      Object.assign(altered[profile][0], change);
+      expect(() => evaluate(altered)).toThrow(/Invalid API memory sample/u);
+    }
+    raw[profile][0].verificationCount++;
+    expect(evaluate(raw).status).toBe("diagnostic-only");
+  },
+);

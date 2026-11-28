@@ -2,7 +2,6 @@ import { constants as bufferLimits } from "node:buffer";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
 import { readFile } from "node:fs/promises";
-import { once } from "node:events";
 import { basename, dirname, join } from "node:path";
 import { comparisonSyntaxes } from "./comparison-fixtures.mjs";
 import {
@@ -14,6 +13,7 @@ import {
   isRetryableStrictRefusal,
 } from "./comparison-evidence.mjs";
 import { loadPublicApi } from "./comparison-subject.mjs";
+import { performanceWorkerReporter } from "./comparison-performance.mjs";
 import { observeConfiguration } from "./comparison-configuration.mjs";
 import { observeMutation } from "./comparison-mutation.mjs";
 import { observeLoadPublication } from "./comparison-load-publication.mjs";
@@ -363,32 +363,11 @@ async function sampleLoad(
   directory,
 ) {
   const { caseId, performance: protocol } = request;
-  const emit = (message) =>
-    process.stdout.write(
-      JSON.stringify({
-        caseId,
-        executionId: request.executionId,
-        sampleId: protocol.sampleId,
-        ...message,
-      }) + "\n",
-    );
-  const checkpoint = async (phase) => {
-    const waiting = once(process.stdin, "data");
-    const { heapUsed, heapTotal, external, arrayBuffers } =
-      process.memoryUsage();
-    emit({
-      kind: "checkpoint",
-      phase,
-      pid: process.pid,
-      heapUsedBytes: heapUsed,
-      heapTotalBytes: heapTotal,
-      externalBytes: external,
-      arrayBufferBytes: arrayBuffers,
-    });
-    process.stdin.resume();
-    await waiting;
-    process.stdin.pause();
-  };
+  const { emit, checkpoint } = performanceWorkerReporter({
+    caseId,
+    executionId: request.executionId,
+    sampleId: protocol.sampleId,
+  });
   const cold = protocol.mode === "cold";
   const warmups = cold ? 0 : protocol.warmups;
   const repetitions = cold ? 1 : protocol.repetitions;
@@ -606,6 +585,12 @@ function observeManchesterLiteral(api, request) {
 }
 
 async function observe(request, directory) {
+  if (request.scenario === "api-benchmarks") {
+    const { sampleBenchmarkMemory } =
+      await import("../benchmark-owlapi-java-parity.mjs");
+    await sampleBenchmarkMemory(request);
+    return null;
+  }
   const includeManchesterRenderer =
     request.scenario === "large-literal-rendering";
   const api = await loadPublicApi({

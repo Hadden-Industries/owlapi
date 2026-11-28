@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import { once } from "node:events";
 import { readFile } from "node:fs/promises";
 import {
   arch,
@@ -11,6 +12,36 @@ import { join } from "node:path";
 import { createInterface } from "node:readline";
 import { executeComparisonProcess } from "./comparison-oracle.mjs";
 import { comparisonIdentity } from "./comparison-evidence.mjs";
+
+/** Suspend a JS worker outside its operation while the parent reads its OS counters. */
+export function performanceWorkerReporter({ caseId, executionId, sampleId }) {
+  const emit = (message) =>
+    process.stdout.write(
+      JSON.stringify({ caseId, executionId, sampleId, ...message }) + "\n",
+    );
+  return {
+    emit,
+    async checkpoint(phase) {
+      const waiting = once(process.stdin, "data");
+      const { heapUsed, heapTotal, external, arrayBuffers } =
+        process.memoryUsage();
+      emit({
+        kind: "checkpoint",
+        phase,
+        pid: process.pid,
+        heapUsedBytes: heapUsed,
+        heapTotalBytes: heapTotal,
+        externalBytes: external,
+        arrayBufferBytes: arrayBuffers,
+      });
+      process.stdin.resume();
+      const [acknowledgement] = await waiting;
+      process.stdin.pause();
+      if (acknowledgement.toString() !== ".")
+        throw new Error("Working-set observer disconnected");
+    },
+  };
+}
 
 async function observeWorkingSet(pid) {
   if (!Number.isSafeInteger(pid) || pid <= 0)
@@ -201,16 +232,10 @@ function validLoadWitness({ witness, axioms, networkAttempts }) {
   );
 }
 
-function hasIsolatedCheckpoints(sample, phases, engine, sourceTransport) {
-  if (
-    engine === "js" &&
-    (!["stream", "string"].includes(sample.sourceTransport) ||
-      (sourceTransport !== "auto" &&
-        sample.sourceTransport !== sourceTransport))
-  )
-    return false;
+export function hasMemoryCheckpoints(sample, phases, engine) {
   return (
-    sample.checkpoints?.length === phases.length &&
+    Array.isArray(sample.checkpoints) &&
+    sample.checkpoints.length === phases.length &&
     sample.checkpoints.every(
       (point, i) =>
         hasWorkingSet(point, phases[i]) &&
@@ -252,12 +277,11 @@ export function isolatedLoadReport(samples, protocol, identity) {
       if (
         !hasTimings(sample, identity, 1, `${engine}-cold-${index}`) ||
         !validLoadWitness(sample) ||
-        !hasIsolatedCheckpoints(
-          sample,
-          phases,
-          engine,
-          protocol.sourceTransport,
-        )
+        !hasMemoryCheckpoints(sample, phases, engine) ||
+        (engine === "js" &&
+          (!["stream", "string"].includes(sample.sourceTransport) ||
+            (protocol.sourceTransport !== "auto" &&
+              sample.sourceTransport !== protocol.sourceTransport)))
       )
         throw new Error("Invalid isolated load witness or phase checkpoint");
       peaks.push(sample.checkpoints[1].peakRssBytes);

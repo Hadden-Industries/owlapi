@@ -190,7 +190,15 @@ The `api-benchmarks` suite carries the 70 generated workload IDs and their raw h
 Use `--benchmark-mode live` to collect fresh Java timings with the selected JDK and run the independent API witness on the same fixture sizes and source.
 Use the same `--candidate` directory for the API timings, their semantic witness, and the ontology comparisons.
 The API receipt binds the candidate, dependency graph, generator and effective fixture bytes.
-Its engine-specific heap deltas describe the API workload's sampling protocol.
+On Windows and Linux a live run also measures the process working set for each workload, using the ontology sampler.
+Each cold trial starts a fresh Node process for each selected profile and a fresh JVM for the shared Java baseline.
+The worker prepares the benchmark fixtures and pauses immediately before and after one invocation of the timed workload.
+Select the number of trials with `--cold-samples` (default 3).
+The memory summary reports the median process peak through that invocation, including runtime startup and fixture preparation.
+It also reports the working set at both checkpoints and the increase over the pre-invocation peak.
+The `memory/` receipts preserve the individual observations.
+Memory ratios require matching work and an independent semantic witness for the selected profile.
+Warm timing samples keep their engine-specific heap deltas as diagnostics.
 Each workload/profile row records a ratio only when its observations pass the equal-work checks.
 Historical rows retain their Java baseline digest and diagnostic status.
 
