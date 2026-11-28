@@ -333,10 +333,49 @@ export function isolatedLoadReport(samples, protocol, identity) {
   };
 }
 
+function loadRefusalSummary(engine, samples, protocol, identity, category) {
+  if (!category) return undefined;
+  const matches = (sample, slot, count) =>
+    sample?.status === "failed" &&
+    sample.phase === "public-load" &&
+    sample.category === category &&
+    sample.networkAttempts === 0 &&
+    sample.caseId === identity.caseId &&
+    sample.executionId === identity.executionId &&
+    sample.sampleId === slot &&
+    Array.isArray(sample.wallNanos) &&
+    sample.wallNanos.length === 0 &&
+    Array.isArray(sample.refusalNanos) &&
+    sample.refusalNanos.length === count &&
+    sample.refusalNanos.every(
+      (nanos) => Number.isSafeInteger(nanos) && nanos > 0,
+    );
+  if (
+    !samples.cold.every(
+      (sample, i) =>
+        matches(sample, `${engine}-cold-${i}`, 1) &&
+        hasMemoryCheckpoints(sample, ["before", "after"], engine),
+    ) ||
+    !matches(samples.warm, `${engine}-warm-0`, protocol.repetitions)
+  )
+    return undefined;
+  return {
+    category,
+    coldPeakBytes: median(
+      samples.cold.map((sample) => sample.checkpoints[1].peakRssBytes),
+    ),
+    coldMedianNanos: median(
+      samples.cold.map((sample) => sample.refusalNanos[0]),
+    ),
+    warmMedianNanos: median(samples.warm.refusalNanos),
+  };
+}
+
 export function loadPerformanceReport({
   samples,
   sameOperation,
   expectedCounts,
+  expectedRefusals = {},
   protocol,
   identity,
 }) {
@@ -398,6 +437,16 @@ export function loadPerformanceReport({
       },
     ]),
   );
+  for (const engine of engines) {
+    const refusal = loadRefusalSummary(
+      engine,
+      samples[engine],
+      protocol,
+      identity,
+      expectedRefusals[engine],
+    );
+    if (refusal) summary[engine].refusal = refusal;
+  }
   return {
     schemaVersion: 1,
     boundary: "loadOntologyFromOntologyDocument",

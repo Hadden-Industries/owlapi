@@ -1645,6 +1645,72 @@ test("native and JavaScript closures must cover the same unique document IRIs", 
   expect(exactComparedDocuments([root, dependency], [root, root])).toBe(false);
 });
 
+test.each(["js", "java"])(
+  "measures a %s load refusal only when all trials match the untimed outcome",
+  (engine) => {
+    const identity = { caseId: "case", executionId: "attempt" };
+    const protocol = { coldSamples: 1, warmups: 0, repetitions: 2 };
+    const category = "parse-refusal";
+    const makeSample = (sampleId, refusalNanos) => ({
+      ...identity,
+      sampleId,
+      status: "failed",
+      phase: "public-load",
+      category,
+      wallNanos: [],
+      refusalNanos,
+      networkAttempts: 0,
+      checkpoints: [],
+    });
+    const cold = makeSample(`${engine}-cold-0`, [12]);
+    cold.checkpoints = ["before", "after"].map((phase, i) => ({
+      phase,
+      rssBytes: 10,
+      peakRssBytes: 15 + i,
+      heapUsedBytes: 4,
+      heapTotalBytes: 8,
+      ...(engine === "js" ? { externalBytes: 1, arrayBufferBytes: 0 } : {}),
+    }));
+    const warm = makeSample(`${engine}-warm-0`, [10, 20]);
+    const samples = {
+      [engine]: { cold: [cold], warm },
+      [engine === "js" ? "java" : "js"]: {
+        cold: [{ status: "incomplete" }],
+        warm: { status: "incomplete" },
+      },
+    };
+    const evaluate = () =>
+      loadPerformanceReport({
+        samples,
+        protocol,
+        identity,
+        sameOperation: false,
+        expectedCounts: {},
+        expectedRefusals: { [engine]: category },
+      });
+    const measured = evaluate();
+    expect(measured.comparison.status).toBe("diagnostic-only");
+    expect(measured.summary[engine]).toEqual({
+      coldPeakBytes: null,
+      warmMedianNanos: null,
+      refusal: {
+        category,
+        coldPeakBytes: 16,
+        coldMedianNanos: 12,
+        warmMedianNanos: 15,
+      },
+    });
+    warm.wallNanos.push(1);
+    expect(evaluate().summary[engine].refusal).toBeUndefined();
+    warm.wallNanos.pop();
+    warm.category = "different";
+    expect(evaluate().summary[engine].refusal).toBeUndefined();
+    warm.category = category;
+    cold.checkpoints.pop();
+    expect(evaluate().summary[engine].refusal).toBeUndefined();
+  },
+);
+
 test("a performance result requires every requested cold sample and warm repetition", () => {
   const identity = { caseId: "1".repeat(64), executionId: "2".repeat(64) };
   const timings = {

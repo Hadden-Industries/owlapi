@@ -372,6 +372,8 @@ async function sampleLoad(
   const warmups = cold ? 0 : protocol.warmups;
   const repetitions = cold ? 1 : protocol.repetitions;
   const wallNanos = [];
+  const refusalNanos = [];
+  let refusal;
   const loadSequences = request.scenario === "strict-first" ? [] : undefined;
   let ontology;
   let sourceTransport;
@@ -408,10 +410,27 @@ async function sampleLoad(
         manager = undefined;
         ({ value: ontology } = await retry);
       } else {
-        ontology = await manager.loadOntologyFromOntologyDocument(
-          document,
-          configuration,
-        );
+        try {
+          ontology = await manager.loadOntologyFromOntologyDocument(
+            document,
+            configuration,
+          );
+        } catch (error) {
+          const elapsed = Math.round((performance.now() - start) * 1e6);
+          if (protocol.loadOnly) throw error;
+          if (cold) await checkpoint("after");
+          if (index >= warmups) {
+            const outcome = failure("public-load", error);
+            if (refusal && refusal.category !== outcome.category)
+              throw new Error(
+                "Public load returned inconsistent refusal categories",
+                { cause: error },
+              );
+            refusal = outcome;
+            refusalNanos.push(elapsed);
+          }
+          continue;
+        }
       }
       const nanos = Math.round((performance.now() - start) * 1e6);
       if (cold) await checkpoint("after");
@@ -421,6 +440,16 @@ async function sampleLoad(
           protocol.sampleId,
         );
       if (index >= warmups) wallNanos.push(nanos);
+    }
+    if (refusal) {
+      emit({
+        kind: "sample",
+        ...refusal,
+        wallNanos,
+        refusalNanos,
+        networkAttempts: networkRequests.length,
+      });
+      return;
     }
     const witness = protocol.loadOnly && {
       identity: ontologyIdentity(ontology),

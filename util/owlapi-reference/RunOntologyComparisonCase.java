@@ -630,6 +630,8 @@ public final class RunOntologyComparisonCase {
         int warmups = cold ? 0 : protocol.required("warmups").asInt();
         int repetitions = cold ? 1 : protocol.required("repetitions").asInt();
         List<Long> wallNanos = new java.util.ArrayList<>();
+        List<Long> refusalNanos = new java.util.ArrayList<>();
+        Map<String, Object> refusal = null;
         OWLOntology ontology = null;
         Map<String, Object> observation = new LinkedHashMap<>();
         observation.put("caseId", caseId);
@@ -648,7 +650,22 @@ public final class RunOntologyComparisonCase {
                         sourceFormat(request), null);
                     if (cold) ComparisonMemoryCheckpoint.observe(JSON, caseId, executionId, sampleId, "before");
                     long start = System.nanoTime();
-                    ontology = manager.loadOntologyFromOntologyDocument(source, configuration);
+                    try {
+                        ontology = manager.loadOntologyFromOntologyDocument(source, configuration);
+                    } catch (Exception error) {
+                        long elapsed = System.nanoTime() - start;
+                        if (protocol.path("loadOnly").asBoolean()
+                            || !"direct-load".equals(request.required("scenario").asText())) throw error;
+                        if (cold) ComparisonMemoryCheckpoint.observe(JSON, caseId, executionId, sampleId, "after");
+                        if (index >= warmups) {
+                            if (refusal != null && !refusal.get("category").equals(error.getClass().getSimpleName())) {
+                                throw new IllegalStateException("Public load returned inconsistent refusal categories", error);
+                            }
+                            refusal = failure("public-load", error);
+                            refusalNanos.add(elapsed);
+                        }
+                        continue;
+                    }
                     long elapsed = System.nanoTime() - start;
                     if (cold) ComparisonMemoryCheckpoint.observe(JSON, caseId, executionId, sampleId, "after");
                     if (protocol.path("loadOnly").asBoolean()) {
@@ -668,8 +685,13 @@ public final class RunOntologyComparisonCase {
                     if (index >= warmups) wallNanos.add(elapsed);
                 }
             }
-            observation.put("status", "completed");
-            observation.put("axioms", ontology.getAxiomCount());
+            if (refusal == null) {
+                observation.put("status", "completed");
+                observation.put("axioms", ontology.getAxiomCount());
+            } else {
+                observation.putAll(refusal);
+                observation.put("refusalNanos", refusalNanos);
+            }
             observation.put("networkAttempts", OntologyReferenceContract.networkAccessAttemptCount());
         } catch (Exception failure) {
             observation.putAll(failure("public-load", failure));

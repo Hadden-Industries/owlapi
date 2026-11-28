@@ -205,6 +205,8 @@ Historical rows retain their Java baseline digest and diagnostic status.
 Use `--suite paired-corpus --measure structure,behavior,performance` for the 75-ontology comparison.
 Both behavior profiles use compatible parsing by default and consume the same pinned roots and mapped imports.
 The catalogue also pins the effective RDF/XML derivatives used for FLOPO, TO, OMIT and OVAE.
+When a direct load consistently refuses a document, the sampler records its time and working set through refusal.
+The verifier checks the refusal category against the untimed observation and reports those measurements separately from successful loads.
 Run `prepare`, `run`, and `verify` with the same selection, retained candidate, Java runtime and sampling settings.
 
 `--benchmark-mode refresh --java-baseline <absolute-file>` replaces a complete Java baseline.

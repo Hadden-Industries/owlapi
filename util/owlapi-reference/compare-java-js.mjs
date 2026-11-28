@@ -786,6 +786,13 @@ function summarizeLoadPerformance(
     protocol,
     identity,
     expectedCounts: { js: js.load?.axioms, java: nativeLoad?.counts?.axioms },
+    expectedRefusals: {
+      js: js.load?.status === "failed" ? js.load.category : undefined,
+      java:
+        native.javaLoad?.status === "failed"
+          ? native.javaLoad.category
+          : undefined,
+    },
   });
 }
 
